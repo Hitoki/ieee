@@ -1,0 +1,22 @@
+{% extends 'base_table.html' %}
+
+{% block main_table_content %}
+    
+    <h1>Admin Login</h1>
+    
+    <form action="{% url admin_login %}" method="post">
+        {% if error %}
+            <ul class="error">
+                <li>{{ error }}</li>
+            </div>
+        {% endif %}
+        <table id="login-table">
+            {{ form }}
+        </table>
+        <p>
+            <a href="{% url forgot_password %}">Forget your password?</a>
+        </p>
+        <input type="submit" value="Ok" />
+    </form>
+    
+{% endblock %}

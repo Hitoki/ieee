@@ -1,0 +1,50 @@
+
+{% block content %}
+    <div class="node-tooltip">
+        <h3 class="{{tagLevel}}">{{tag.name}}</h3>
+        <table class="node-tooltip-grid">
+            <tr>
+                <td>
+                    <table class="sector-block vert-center">
+                        <tr>
+                            <td class="{{sectorLevel}}">
+                                Sectors
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    {% for relatedSector in relatedSectors %}
+                        {% ifequal relatedSector tag.parent %}
+                            {{relatedSector.name}}
+                        {% else %}
+                            <a href="{% url textui %}?tagId={{relatedSector.id}}">{{relatedSector.name}}</a>
+                        {% endifequal %}
+                        {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table class="related-tags-block vert-center">
+                        <tr>
+                            <td class="{{relatedTagLevel}}">
+                                Related Tags
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    {% for related_tag in tag.related_tags.all %}
+                        <a href="javascript:Tags.selectTag({{ related_tag.id }});">
+                            {{ related_tag }}
+                        </a>
+                        {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+        </table>
+        <div class="results-links"><a href="javascript:Tags.selectTag({{tag.id}});">{{tag.num_resources}} Resource Results</a></div>
+        
+    </div>
+{% endblock %}

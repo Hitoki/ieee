@@ -1,0 +1,62 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>Create New Tag</h1>
+    
+    {% if sector %}
+        <p>
+            <a href="{% url admin_view_sector sector.id %}">back</a>
+        </p>
+    {% endif %}
+    
+    <form action="{% url admin_create_tag %}?society_id={{ society_id }}&amp;return_url={{ return_url|urlencode }}" method="post">
+        <table class="grid edit-create">
+            {{ form.id }}
+            <tr>
+                <th>
+                    <label for="id_name">{{ form.name.label }} <span class="help_icon flyover {position:'top'}" title="Tag Name">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.name.errors }}
+                    {{ form.name }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_sector">{{ form.sector.label }} <span class="help_icon flyover {position:'top'}" title="Sector">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.sector.errors }}
+                    {{ form.sector }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_filters">{{ form.filters.label }} <span class="help_icon flyover {position:'top'}" title="Filters">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.filters.errors }}
+                    {{ form.filters }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_related_tags">{{ form.related_tags.label }} <span class="help_icon flyover {position:'top'}" title="Related Tags">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.related_tags.errors }}
+                    {{ form.related_tags }}
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="Ok" class="button" />
+        {% if return_url %}
+            <input type="button" value="Cancel" onclick="window.location='{{ return_url }}';" />
+        {% endif %}
+        {% if sector %}
+            <input type="button" value="Cancel" onclick="window.location='{% url admin_view_sector sector.id %}';" />
+        {% endif %}
+    </form>
+    
+{% endblock %}

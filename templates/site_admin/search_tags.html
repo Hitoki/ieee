@@ -1,0 +1,21 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>Search Tags</h1>
+    
+    <form action="{% url admin_search_tags %}" method="post">
+        <table>
+            {{ form }}
+        </table>
+        <input type="submit" value="Ok" />
+    </form>
+    
+    {% if tag_results %}
+        <b>Results:</b><br/>
+        {% for tag in tag_results %}
+            &nbsp;&nbsp; <a href="{% url admin_view_tag tag.id %}">{{ tag.name_with_sector }} ({{ tag.id }})</a><br/>
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}

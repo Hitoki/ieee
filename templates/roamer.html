@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div id="alternate-page">
+        <a name="toppage" />
+        <table class="main alternate-page">
+            <tr>
+                <td class="left">
+                </td>
+                <td class="center">
+                    
+                    <!-- Begin center column -->
+                    
+                    <div id="page-min-width"></div>
+                    
+                    <div id="header">
+                        <img class="leftCorner" src="{{MEDIA_URL}}images/mainTopLeftCorner.gif" />
+                        <a href="/" class="home"><img class="banner" src="{{MEDIA_URL}}images/ieee_banner.jpg" /></a>
+                        
+                        <a id="switch-link" class="floating" href="{% url textui %}">
+                            <img src="{{MEDIA_URL}}images/tags_icon.png"/>
+                            Switch to<br/>
+                            Tags Interface
+                        </a>
+                        
+                        <img class="rightCorner" src="{{MEDIA_URL}}images/mainTopRightCorner.gif" />
+                    </div>
+                    
+                    <div class="center-pad">
+                        
+                        <!-- Navigation links -->
+                        <div id="left-column">
+                            <h2>Choose Sector:</h2>
+                            <div id="left-column-container">  
+                            
+                                <div class="alt-box" style="height: 71.3%;">
+                                    <ul id="sectors">
+                                        {% for sector in sectors %}
+                                            <li><a href="javascript:Roamer.setNode({{sector.id}});" class="{id:{{sector.id}}}">{{sector.name}}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                
+                                <!-- Filters --> 
+                                <h2>Apply Filters:</h2>
+                                <div class="alt-box" style="height: 20.5%;">
+                                    <ul id="views">
+                                        {% for filter in filters %}
+                                            <li>
+                                                <input id="{{filter.value}}" value="{{filter.value}}" type="checkbox" onclick="Roamer.filter(this.id, this.checked);" class="filter" checked="checked" />
+                                                <label for="{{filter.value}}">{{filter.name}}</label>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>  
+                            </div>
+                       </div>
+                           
+                        <!-- Constellation Roamer -->
+                        <div id="right-column">
+                            <div id="frequencybar">
+                            
+                            <span id="homeico"><a href="javascript:Roamer.setNode(1);"><img src="{{MEDIA_URL}}images/home_icon.png" alt="home" height="18" /></a></span>
+                            <span style="float: right;">
+                                Key:
+                                Sector: <img src="{{MEDIA_URL}}images/sector.png" alt="sector" height="15" />
+                                Tag: <img src="{{MEDIA_URL}}images/tag.png" alt="tag" height="15" /></span>
+                            </div>
+                          <div id="roamer-outline">
+                                <script type="text/javascript">
+                                    // Constellation Roamer configuration
+                                    
+                                    /** the background color of the Constellation SWF */
+                                    var backgroundColor = "#ffffff";
+                                    
+                                    /** the dimensions of the Constellation SWF */
+                                    var constellationWidth = "100%";
+                                    var constellationHeight = "413px";
+                                    
+                                    /** the ID of the node which is displayed as soon as the Constellation SWF loads */
+                                    var selectedNodeID = "{{nodeId}}";
+                                    
+                                    /** the ID of this instance of the Constellation SWF */
+                                    var instanceID = "1";
+                                    
+                                    // The path to the config xml file
+                                    var configURL = "/media/flash/constellation_config.xml";
+                                    
+                                    var flashvars = 'selected_node_id=' + selectedNodeID + '&instance_id=' + instanceID + "&config_url=" + configURL;
+                                    
+                                    // print out the HTML which embeds the Constellation SWF in this page
+                                    writeHTML('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" '
+                                        + 'codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" '
+                                        + 'width="' + constellationWidth + '" '
+                                        + 'height="' + constellationHeight + '" '
+                                        + 'id="constellation-roamer-object">'
+                                            + '<param name="allowScriptAccess" value="sameDomain">'
+                                            + '<param name="movie" value="{{MEDIA_URL}}flash/constellation_roamer.swf">'
+                                            + '<param name="quality" value="high">'
+                                            + '<param name="bgcolor" value="' + backgroundColor + '">'
+                                            + '<param name="scale" value="noscale">'
+                                            + '<param name="flashvars" value="' + flashvars + '">'
+                                            + '<param name="wmode" value="transparent">'
+                                        + '<embed id="constellation-roamer-embed" src="{{MEDIA_URL}}flash/constellation_roamer.swf" quality="high" '
+                                            + 'bgcolor="' + backgroundColor + '" '
+                                            + 'width="' + constellationWidth + '" '
+                                            + 'height="' + constellationHeight + '" '
+                                            + 'name="constellation_roamer" align="middle" '
+                                            + 'scale="noscale" allowScriptAccess="sameDomain" '
+                                            + 'type="application/x-shockwave-flash" '
+                                            + 'flashvars="' + flashvars + '" '
+                                            + 'wmode="transparent" '
+                                            + 'pluginspage="http://www.macromedia.com/go/getflashplayer"><\/object>');
+                                </script>
+                            </div>       
+                        </div>
+                        <h2 id="content-title">Resource Results</h2> <div class="backtotop" style="float:right;"><a href="#toppage">Back to top     <img src="{{MEDIA_URL}}images/arrow2-up.gif" alt="back to top" /></a></div>
+                          <div class="alt-box">
+                              <div id="content" class="alt-box-pad">
+                                  <p>
+                                    Click a tag above to display associated resources.
+                                  </p>
+                              </div>
+                          </div>
+                        <div class="backtotop" style="float:right;"><a href="#toppage">Back to top     <img src="{{MEDIA_URL}}images/arrow2-up.gif" alt="back to top" /></a></div>
+                        
+                        <div id="feedback-bar">
+                            Comments, Suggestions? <a href="{% url feedback %}" class="lightbox">Send Feedback</a>
+                        </div>
+                        
+                    </div>
+                    
+                    <div id="footer">
+                        <img class="leftCorner" src="{{MEDIA_URL}}images/mainBottomLeftCorner.png" />
+                        <img class="rightCorner" src="{{MEDIA_URL}}images/mainBottomRightCorner.png" />
+                    </div>
+                    
+                    <!-- End center column -->
+                    
+                </td>
+                <td class="right" rowspan="2">
+                </td>
+            </tr>
+        </table>
+    </div>
+
+{% endblock %}

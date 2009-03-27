@@ -1,0 +1,58 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block nav_home %}highlight{% endblock %}
+
+{% block main_table_content %}
+    
+    <p class="version">
+        user: {{ user.username }} ({{ user.get_profile.role }})<br/>
+        ver {{ version }}, {{ date }}
+    </p>
+    <h1>Admin Home</h1>
+    
+    <ul class="section-list">
+        {% if user.is_superuser %}
+        <li>
+            Django:
+            <ul>
+                <li><a href="/djangoadmin">Django Admin</a></li>
+            </ul>
+        </li>
+        {% endif %}
+        <li>
+            Manage:
+            <ul>
+                {% if user.is_superuser %}
+                <li><a href="{% url admin_users %}">List Users</a></li>
+                {% endif %}
+                <li><a href="{% url admin_societies %}">List Societies</a></li>
+                <li><a href="{% url admin_list_sectors %}">List Sectors</a></li>
+                <li><a href="{% url admin_list_resources %}">List Resources</a></li>
+                <li><a href="{% url admin_search_tags %}">Search Tags</a></li>
+                <li><a href="{% url admin_search_societies %}">Search Societies</a></li>
+                <li><a href="{% url admin_search_resources %}">Search Resources</a></li>
+            </ul>
+        </li>
+        {% if user.is_superuser %}
+        <li>
+            Import Data:
+            <ul>
+                <li><a href="{% url admin_import_societies_and_tags %}">Import Societies &amp; Tags</a></li>
+                {% comment %}
+                <li><a href="{% url admin_import_tags %}">Import Tags</a></li>
+                <li><a href="{% url admin_import_societies %}">Import Societies</a></li>
+                {% endcomment %}
+                <li><a href="{% url admin_import_conferences %}">Import Conferences</a></li>
+                <li><a href="{% url admin_import_resources %}">Import Resources</a></li>
+                <li><a href="{% url admin_assign_related_tags %}">Assign related tags</a></li>
+                <li><a href="{% url admin_assign_filters %}">Assign Filters</a></li>
+                <li><a href="{% url admin_update_tag_counts %}">Update tag counts</a></li>
+                <li><a href="{% url admin_assign_resources %}">Assign random resources</a></li>
+            </ul>
+        </li>
+        {% endif %}
+        
+        <li><a href="{% url admin_logout %}">Logout</a></li>
+    </ul>
+    
+{% endblock %}

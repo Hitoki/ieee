@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div id="choose-page">
+        <table class="main">
+            <tr>
+                <td class="left">
+                </td>
+                <td class="center">
+                    
+                    <!-- Begin center column -->
+                    
+                    <div id="header">
+                        <img class="leftCorner" src="{{MEDIA_URL}}images/mainTopLeftCorner.gif" />
+                        <a href="/" class="home"><img class="banner" src="{{MEDIA_URL}}images/ieee_banner.jpg" /></a>
+                        <img class="rightCorner" src="{{MEDIA_URL}}images/mainTopRightCorner.gif" />
+                    </div>
+                    
+                    <div class="center-pad">
+                        <br/>
+                        <h1>Please choose an interface to start browsing:</h1>
+                        <div class="screenshot-container">
+                            <h2><a href="{% url roamer %}" style="color:#006699;">Visual Map</a></h2>
+                            <a href="{% url roamer %}">
+                                <img src="{{MEDIA_URL}}images/screenshot_roamer.png" />
+                            </a>
+                        </div>
+                        
+                        <div class="screenshot-container">
+                            <h2><a href="{% url textui %}" style="color:#006699;">Textual</a></h2>
+                            <a href="{% url textui %}">
+                                <img src="{{MEDIA_URL}}images/screenshot_tags.png" />
+                            </a>
+                        </div>
+                    </div>
+                        
+                    <div id="footer">
+                        <img class="leftCorner" src="{{MEDIA_URL}}images/mainBottomLeftCorner.png" />
+                        <img class="rightCorner" src="{{MEDIA_URL}}images/mainBottomRightCorner.png" />
+                    </div>
+                    
+                    <!-- End center column -->
+                    
+                </td>
+                <td class="right" rowspan="2">
+                </td>
+            </tr>
+        </table>
+    </div>
+{% endblock %}

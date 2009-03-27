@@ -1,0 +1,21 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block nav_home %}highlight{% endblock %}
+
+{% block main_table_content %}
+    
+    <h1>Home</h1>
+    
+    <div class="simple-society-list">
+        {% for society in societies %}
+            <a href="{% url admin_view_society society.id %}" class="name">
+                <div class="name">{{ society.name }} ({{ society.abbreviation }}) Society</div>
+                {% if society.url %}
+                    {{ society.url }}<br/>
+                {% endif %}
+                {{ society.tags.all|length }} tags, {{ society.resources.all|length }} resources<br/>
+            </a>
+        {% endfor %}
+    </div>
+    
+{% endblock %}

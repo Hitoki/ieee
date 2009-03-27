@@ -1,0 +1,54 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block nav_societies %}highlight{% endblock %}
+
+{% block main_table_content %}
+    
+    <h1>Admin Manage Societies</h1>
+    
+    <table class="grid">
+        <tr>
+            <th>
+                Society
+            </th>
+            <th>
+                URL
+            </th>
+            <th>
+                # Tags
+            </th>
+            <th>
+                # Resources
+            </th>
+        </tr>
+        {% for society in societies %}
+            <tr>
+                <td>
+                    <a href="{% url admin_view_society society.id %}">{{ society.name }}</a> ({{ society.abbreviation }})
+                </td>
+                <td>
+                    {{ society.url }}
+                </td>
+                <td>
+                    {{ society.tags.all|length }}
+                    {% comment %}
+                        {% for tag in society.tags.all %}
+                            <a href="{% url admin_view_tag tag.id %}">{{ tag.name_with_sector }}</a>, 
+                        {% endfor %}
+                        {% if society.more_tags %}
+                            <em>... {{ society.more_tags }} more tags</em>
+                        {% endif %}
+                    {% endcomment %}
+                </td>
+                <td>
+                    {{ society.resources.all|length }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+    {% if user.is_superuser %}
+        <p><a href="{% url admin_create_society %}">Create a new society</a></p>
+    {% endif %}
+    
+{% endblock %}

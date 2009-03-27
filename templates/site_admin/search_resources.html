@@ -1,0 +1,21 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>Search Resources</h1>
+    
+    <form action="{% url admin_search_resources %}" method="post">
+        <table>
+            {{ form }}
+        </table>
+        <input type="submit" value="Ok" />
+    </form>
+    
+    {% if resource_results %}
+        <b>Results:</b><br/>
+        {% for resource in resource_results %}
+            &nbsp;&nbsp; <a href="{% url admin_view_resource resource.id %}?return_url={{ current_url|urlencode }}">{{ resource.name }} ({{ resource.id }})</a><br/>
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}

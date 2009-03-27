@@ -1,0 +1,127 @@
+
+.flyover-container {
+    /* Start out hidden so we can display when content is ready */
+    visibility: hidden;
+    position: absolute;
+    z-index: 5555;
+    min-height: 10px;
+    background-color: #EFF9FF;
+    border: 1px solid #6F7985;
+    padding: 8px;
+    /* NOTE: Set initial position so the page doesn't 'skip' when first positioning this DIV */
+    top: 0px;
+    left: 0px;
+    cursor: default;
+    line-height: 1.5em;
+    
+    /* Non IE compatible: */
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+}
+
+.flyover-container ul li {
+    list-style-type: inside;
+    margin-left: 15px;
+}
+
+.flyover-container ol li {
+    list-style-type: inside;
+    margin-left: 20px;
+}
+
+.flyover-arrow {
+    position:absolute;
+    display:block;
+    width:15px;
+    height:15px;
+}
+
+.flyover-shadow-bottom-left {
+    background:url(../images/flyover_shadow_bottom_left.png);
+    position:absolute;
+    width:10px;
+    height:5px;
+    left:0px;
+    bottom:-6px;
+}
+
+.flyover-shadow-bottom-mid {
+    background:url(../images/flyover_shadow_bottom_mid.png);
+    position:absolute;
+    height:5px;
+    left:10px;
+    bottom:-6px;
+}
+
+.flyover-shadow-bottom-right {
+    background:url(../images/flyover_shadow_bottom_right.png);
+    position:absolute;
+    width:10px;
+    height:10px;
+    right:-6px;
+    bottom:-6px;
+}
+
+.flyover-shadow-right-top {
+    background:url(../images/flyover_shadow_right_top.png);
+    position:absolute;
+    width:5px;
+    height:5px;
+    right:-6px;
+    top:4px;
+}
+
+.flyover-shadow-right-mid {
+    background:url(../images/flyover_shadow_right_mid.png);
+    position:absolute;
+    width:5px;
+    right:-6px;
+    bottom:4px;
+}
+
+.flyover-content .flyover-heading {
+    font-size:120%;
+    font-weight:bold;
+    margin:0px;
+    line-height: 1.2em;
+}
+
+.flyover-close-button {
+    display:block;
+    position:absolute !important;
+    top:3px;
+    right:3px;
+    width:14px;
+    height:13px;
+    background:white url(../images/close.gif);
+}
+
+
+
+/* Custom classes */
+
+/*
+NOTE: These are the two classes you can override.
+The container is the entire flyover.
+The content is just the contents of the flyover.
+
+.[custom_class_here]-flyover-container {
+    text-align:right;
+}
+.[custom_class_here]-flyover-content {
+    text-align:right;
+}
+*/
+
+.helpico-flyover-container {
+    position: absolute;
+}
+
+.wikiword-flyover-container {
+    width: 300px;
+}
+
+.openid-flyover-container {
+    position: fixed;
+}
+

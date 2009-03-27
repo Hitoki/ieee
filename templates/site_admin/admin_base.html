@@ -1,0 +1,38 @@
+{% extends 'base_table.html' %}
+
+{% block extra_head %}
+    <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/admin.css" />
+{% endblock %}
+
+{% block extra_header %}
+    {% if user.is_authenticated %}
+        <span class="floating">Logged in as {{ user.username }} |<a href="{% url admin_logout %}" class="logout">Log Out</a></span>
+    {% endif %}
+{% endblock %}
+
+{% block main_content_nopad %}
+    
+    {% if user.is_authenticated %}
+        <ul class="nav">
+            <li class="{% block nav_home %}{% endblock %}">
+                <a href="{% url admin_home %}">home</a>
+            </li>
+            {% if user.is_superuser %}
+            <li class="{% block nav_sectors %}{% endblock %}">
+                <a href="{% url admin_list_sectors %}">sectors</a>
+            </li>
+            <li class="{% block nav_users %}{% endblock %}">
+                <a href="{% url admin_users %}">users</a>
+            </li>
+            <li class="{% block nav_societies %}{% endblock %}">
+                <a href="{% url admin_societies %}">societies</a>
+            </li>
+            {% endif %}
+        </ul>
+    {% endif %}
+    
+    <div class="center-pad">
+        {% block main_table_content %}{% endblock %}
+    </div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% load permissions %}
+
+{% block main_table_content %}
+    
+    {% ifpermission "user_can_edit_society" society %}
+        <a href="{% url admin_edit_society society.id %}" class="edit">Edit Society</a>
+    {% endifpermission %}
+    
+    <h1>{{ society.name }} ({{ society.abbreviation }}) Society</h1>
+    
+    <table class="full-grid">
+        {% comment %}
+        <tr>
+            <th>
+                Name:
+            </th>
+            <td width="80%">
+                {{ society.name }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Abbreviation:
+            </th>
+            <td>
+                {{ society.abbreviation }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Url
+            </th>
+            <td>
+                {{ society.url }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Users
+            </th>
+            <td>
+                {% for user in society.users.all %}
+                    <a href="{% url admin_view_user user.id %}">{{ user.username }}</a>, 
+                {% endfor %}
+            </td>
+        </tr>
+        {% endcomment %}
+        <tr>
+            <td colspan="2">
+                
+                <div id="society-resource-tabs" class="nootabs {useCookies:false}">
+                    <ul class="nootabs-menus">
+                        <li><a href="">Tags</a></li>
+                        <li><a href="">Resources</a></li>
+                    </ul>
+                    <div>
+                        {% if not society.tags.all %}
+                            <em>No tags associated yet with this society.</em>
+                        {% else %}
+                            {% for tag in society.tags.all %}
+                                <a href="{% url admin_view_tag tag.id %}">{{ tag.name_with_sector }}</a><br/>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div>
+                        {% if not society.resources.all %}
+                            <em>No resources associated yet with this society.</em>
+                        {% else %}
+                            <table>
+                                {% for resource in society.resources.all %}
+                                    <tr>
+                                        <td>
+                                            <a href="{% url admin_view_resource resource.id %}?return_url={{ current_url|urlencode }}">{{ resource }}</a><br/>
+                                        </td>
+                                        <td>
+                                            {{ resource.resource_type.name }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        {% endif %}
+                        <p>
+                            <a href="{% url admin_create_resource %}?society_id={{ society.id }}&amp;return_url={{ current_url|urlencode }}">(create a new resource)</a>
+                        </p>
+                    </div>
+                </div>
+                
+            </td>
+        </tr>
+        
+    </table>
+    
+{% endblock %}

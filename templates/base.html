@@ -1,0 +1,36 @@
+{% load noo_jscssmin %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html>
+    <head>
+        <title>
+            IEEE/Constellation Demo {% block server_title %}{% endblock %}
+        </title>
+        
+        {% cssmin css/style.css css/tooltip.css css/lightbox.css css/nootabs.css css/multisearch.css css/flyover.css %}
+        <!--[if IE 7]>
+        <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/style-ie7.css" title="Style for IE7" />
+        <![endif]-->
+        
+        {% jsmin js/jquery-1.2.6.min.js js/jquery.scrollTo.js js/jquery.metadata.js js/global.js js/console.js js/roamer.js js/tags.js js/tooltip.js js/lightbox.js js/nootabs.js js/json2.js js/multisearch.js js/flyover.js js/blurText.js %}
+        
+        <!-- BEGIN IE ActiveX activation workaround for Constellation Roamer by Chris Benjaminsen -->
+        <script type="text/javascript">function writeHTML(a){document.write(a)}</script>
+        <!--
+        <script type="text/javascript" src="javascript%3A'function+writeHTML(a)%7Bdocument.write(a)%7D'"></script>
+        -->
+        <!-- END Workaround -->
+        
+        {% block extra_head %}{% endblock %}
+    </head>
+    <body>
+        {% block server_info %}{% endblock %}
+        {% block content %}{% endblock %}
+    </body>
+</html>
+
+
+
+
+

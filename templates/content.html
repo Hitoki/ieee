@@ -1,0 +1,99 @@
+
+{% block content %}
+
+    <div id="guts">
+        
+        {% if iconSocieties or noIconSocieties %}
+            <div class="group">
+                <p class="item_head"><img src="{{MEDIA_URL}}images/content_icon_societies.png"/> Societies & Councils:</p>
+                
+                {% if iconSocieties %}
+                    <!-- Societies with icons -->
+                    <p class="{% cycle 'item_even' 'item_odd' %}">
+                        {% for society in iconSocieties %}
+                            <img src="{{MEDIA_URL}}images/sc_logos/{{society.abbreviation}}.jpg" />
+                        {% endfor %}
+                    </p>
+                {% endif %}
+                
+                <!-- Societies w/o icons -->
+                {% for society in noIconSocieties %}
+                    <p class="{% cycle 'item_odd' 'item_even' %}">
+                        {{society.name}} ({{society.abbreviation}})
+                    </p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <div id="resource-tabs" class="nootabs {useCookies:false}">
+            <ul class="nootabs-menus">
+                <li><a href="">Periodicals <span>({{periodicals|length}})</span></a></li>
+                <li><a href="">Conferences <span>({{conferences|length}})</span></a></li>
+                <li><a href="">Standards <span>({{standards|length}})</span></a></li>
+                <li><a href="">Experts <span>({{experts|length}})</span></a></li>
+            </ul>
+            
+            <div>
+                <!-- Periodicals -->
+                <div class="group">
+                    {% if periodicals|length %}
+                        {% for periodical in periodicals %}
+                            <p class="{% cycle 'item_odd' 'item_even' %}">{{periodical.name}}</p>
+                            <p class="{% cycle 'desc_odd' 'desc_even' %}">{{periodical.description}}</p>
+                        {% endfor %}
+                    {% else %}
+                        <p class="no-resources">(no periodicals)</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div>
+                <!-- Conferences -->
+                <div class="group">
+                    {% if conferences|length %}
+                        {% for periodical in conferences %}
+                            <p class="{% cycle 'item_odd' 'item_even' %}">{{periodical.name}}</p>
+                            <p class="{% cycle 'desc_odd' 'desc_even' %}">{{periodical.description}}</p>
+                        {% endfor %}
+                    {% else %}
+                        <p class="no-resources">(no conferences)</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div>
+                <!-- Standards -->
+                <div class="group">
+                    {% if standards|length %}
+                        {% for periodical in standards %}
+                            <p class="{% cycle 'item_odd' 'item_even' %}">{{periodical.name}}</p>
+                            <p class="{% cycle 'desc_odd' 'desc_even' %}">{{periodical.description}}</p>
+                        {% endfor %}
+                    {% else %}
+                        <p class="no-resources">(no standards)</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div>
+                <!-- Experts -->
+                <div class="group">
+                    {% if experts|length %}
+                        {% for periodical in experts %}
+                            <p class="{% cycle 'item_odd' 'item_even' %}">{{periodical.name}}</p>
+                            <p class="{% cycle 'desc_odd' 'desc_even' %}">{{periodical.description}}</p>
+                        {% endfor %}
+                    {% else %}
+                        <p class="no-resources">(no experts)</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+
+        </div>
+
+
+    </div>
+    
+{% endblock %}
+

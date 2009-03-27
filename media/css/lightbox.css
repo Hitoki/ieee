@@ -1,0 +1,73 @@
+
+#lightbox {
+    position:absolute;
+    width:100%;
+    height:100%;
+    margin:0px auto;
+    /*background:silver;*/
+    /*border:1px solid blue;*/
+    z-index:10000;
+}
+
+#lightbox .lightbox-background {
+    position:absolute;
+    width:100%;
+    height:100%;
+    top:0px;
+    left:0px;
+    background:gray;
+    opacity:0.50;
+    filter:alpha(opacity=50)
+    /*border:1px solid red;*/
+}
+
+#lightbox .lightbox-content {
+    position:absolute;
+    width:50%;
+    /*height:50%;*/
+    top:20%;
+    left:25%;
+    z-index:2;
+    background:white;
+}
+
+#lightbox .lightbox-content .lightbox-pad {
+    padding:1em;
+}
+
+#lightbox .lightbox-content h3 {
+    margin:0em 0em .5em 0em;
+    padding-bottom:.5em;
+    border-bottom:1px solid silver;
+}
+
+table#feedback tr td {
+    width:100%;
+    /*border:1px solid black;*/
+}
+
+table#feedback tr td.left-column {
+    width:1%;
+}
+
+table#feedback tr td.right-column {
+    width:99%;
+}
+
+table#feedback tr td {
+    padding-top:.5em;
+    padding-right:.5em;
+}
+
+input.text, textarea {
+    border:1px inset gray;
+}
+
+input.text {
+    width:50%;
+}
+
+textarea {
+    width:99%;
+    height:100px;
+}

@@ -1,0 +1,85 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    {% if resource %}
+        <h1>Edit Resource</h1>
+    {% else %}
+        <h1>Create Resource</h1>
+    {% endif %}
+    
+    <form action="{% url admin_save_resource %}?return_url={{ return_url }}" method="post">
+        <table class="full-grid edit-create">
+            {{ form.id }}
+            <tr>
+                <th>
+                    <label for="id_name">{{ form.name.label }} <span class="help_icon flyover {position:'top'}" title="Resource Name">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.name.errors }}
+                    {{ form.name }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_type">{{ form.resource_type.label }} <span class="help_icon flyover {position:'top'} " title="Resource Type">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.resource_type.errors }}
+                    {{ form.resource_type }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_id">{{ form.ieee_id.label }} <span class="help_icon flyover {position:'top'}" title="ID">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.ieee_id.errors }}
+                    {{ form.ieee_id }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_description">{{ form.description.label }} <span class="help_icon flyover {position:'top'}" title="Description">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.description.errors }}
+                    {{ form.description }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_url">{{ form.url.label }}  <span class="help_icon flyover {position:'top'}" title="URL">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.url.errors }}
+                    {{ form.url }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_nodes">{{ form.nodes.label }}  <span class="help_icon flyover {position:'top'}" title="Tags">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.nodes.errors }}
+                    {{ form.nodes }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_societies">{{ form.societies.label }}  <span class="help_icon flyover {position:'top'}" title="Societies">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.societies.errors }}
+                    {{ form.societies }}
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="Ok" class="button" />
+        {% if user.is_superuser and resource %}
+            <input type="button" value="Delete" onclick="if (confirm('Delete this resource?')) window.location='{% url admin_delete_resource resource.id %}';" />
+        {% endif %}
+        <input type="button" value="Cancel" onclick="window.location='{{ return_url }}';" />
+    </form>
+    
+{% endblock %}

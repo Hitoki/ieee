@@ -1,0 +1,138 @@
+
+/* Common nootabs styles */
+
+.nootabs {
+}
+
+.nootabs-menus {
+    /* Trigger hasLayout bug in IE7 */
+    min-height: 0;
+}
+
+.nootabs-menu {
+    list-style: none;
+    float: left;
+    text-align: left;
+    width: auto;
+    font-size: 12px;
+}
+
+.nootabs-menu a {
+    padding: 5px 40px 5px 5px;
+    display: block;
+    text-decoration: none !important;
+    line-height: 16px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.nootabs-menu a:hover {
+    color: var(link-hover);
+}
+
+.nootabs-menu-filler {
+    padding: 0px;
+    border-bottom: 1px solid var(pallette-lines);
+}
+
+.nootabs-selected-menu {
+    text-decoration: none; 
+    border: 1px solid var(pallette-lines);
+    border-bottom: 0px solid white;
+}
+
+.nootabs-selected-menu a, .nootabs-selected-menu a:hover {
+    color: var(current-page);
+}
+
+.nootabs-tab {
+    display: none;
+    clear: both;
+    clear: left;
+}
+
+.nootabs-selected-tab {
+    display: block;
+    top: 5px;
+    border: 1px solid var(pallette-lines);
+}
+
+.noocontainer {
+    padding: 5px;  
+}
+
+/* used to be .nootab_tab */
+.nootabs-tab2 {
+    height: auto;
+    overflow: hidden;
+    clear: both;
+}
+
+/* These styles are for second level tabs (ie. tabs embedded in other tabs) */ 
+
+.nootabs-second-level ul.nootabs-menus {
+    margin-left: 0px !important;
+}
+
+.nootabs-second-level li.nootabs-menu {
+    border:none;
+    background:#f9f9f9;
+    padding:0px;
+}
+
+.nootabs-second-level li.nootabs-menu a {
+    border-top:1px solid var(pallette-lines);
+    border-right:1px solid var(pallette-lines);
+    padding: 5px 5px 5px 5px;
+    font-size:90%;
+}
+
+.nootabs-second-level li.nootabs-first-menu a {
+    border-left:1px solid var(pallette-lines);
+}
+
+.nootabs-second-level li.nootabs-selected-menu a {
+    /*border-top:1px solid #fafafa;*/
+    border-top:none;
+    background:white;
+}
+
+.nootabs-second-level div.nootabs-selected-tab {
+    border:none;
+}
+
+
+/* Page-specific styling below: */
+
+ul.nootabs-menus li {
+    margin:0em 0em -1px 1em;
+}
+
+ul.nootabs-menus li a {
+    color:#666;
+    background:silver;
+}
+
+ul.nootabs-menus li a span {
+    font-weight:normal;
+}
+
+ul.nootabs-menus li.nootabs-selected-menu a {
+    /*background:#006599;*/
+    background: white;
+    color: black;
+}
+
+div.nootabs-tab {
+    border:1px solid var(pallette-lines);
+}
+
+#resource-tabs {
+    margin:1em 0em;
+}
+
+#resource-tabs p.no-resources {
+    text-align:center;
+    padding:1em;
+    color:gray;
+}

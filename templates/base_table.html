@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    
+    <table class="main">
+        <tr>
+            <td class="left">
+            </td>
+            <td class="center">
+                
+                <!-- Begin center column -->
+                
+                <div id="header">
+                    <img class="leftCorner" src="{{MEDIA_URL}}images/mainTopLeftCorner.gif" />
+                    <a href="/admin/" class="home"><img class="banner" src="{{MEDIA_URL}}images/ieee_banner.jpg" /></a>
+                    <img class="rightCorner" src="{{MEDIA_URL}}images/mainTopRightCorner.gif" />
+                    {% block extra_header %}{% endblock %}
+                </div>
+                
+                {% block main_content_nopad %}
+                    <div class="center-pad">
+                        {% block main_table_content %}{% endblock %}
+                    </div>
+                {% endblock %}
+                    
+                <div id="footer">
+                    <img class="leftCorner" src="{{MEDIA_URL}}images/mainBottomLeftCorner.png" />
+                    <img class="rightCorner" src="{{MEDIA_URL}}images/mainBottomRightCorner.png" />
+                </div>
+                
+                <!-- End center column -->
+                
+            </td>
+            <td class="right" rowspan="2">
+            </td>
+        </tr>
+    </table>
+    
+{% endblock %}

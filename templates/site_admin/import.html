@@ -1,0 +1,18 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>Admin Import</h1>
+    
+    <form action="{% url admin_import_action %}" method="post">
+        <table>
+            {{form}}
+            <tr>
+                <td>
+                    <input type="submit" value="Ok"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+    
+{% endblock %}

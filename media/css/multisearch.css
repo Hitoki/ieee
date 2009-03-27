@@ -1,0 +1,97 @@
+
+.multi-search {
+    /* NOTE: This causes a bad scrolling bug, was intended to fix float-enclosing issue */
+    /*overflow:auto;*/
+}
+
+.multi-search-input {
+    width: 350px;
+}
+
+.multi-search-input-blur {
+    color:#aaa;
+}
+
+.multi-search-selected-options {
+}
+
+.remove-link {
+    font-size: 8pt;
+}
+
+.small-tab-table {
+    font-weight: bold;
+}
+
+.multi-search-selected-option {
+    float:left;
+    cursor:pointer;
+    font-size:90%;
+    -moz-border-radius: 5px;
+    border:1px solid #ccc;
+    background:#eee url(/media/images/search_tag_x_off.png) right no-repeat;
+    margin:.3em .5em;
+    padding:.1em 1.3em .1em .3em;
+    
+}
+
+.multi-search-selected-option:hover {
+    border:1px solid gray;
+    background:#ddd url(/media/images/search_tag_x_on.png) right no-repeat;
+}
+
+.multi-search-popup-anchor {
+    position:relative;
+}
+
+.multi-search-popup {
+    display:none;
+    position:absolute;
+    left:0px;
+    top:0px;
+    width:400px;
+    height:200px;
+    border:1px solid silver;
+    background:white;
+    z-index:1;
+    overflow:auto;
+}
+
+.multi-search-no-results,
+.multi-search-more-results
+{
+    text-align:center;
+    padding:1em 0em;
+    font-style:italic;
+    color:gray;
+}
+
+.multi-search-popup-item {
+    padding:.1em .4em;
+    cursor:pointer;
+}
+
+.multi-search-popup-item-checkbox {
+    margin-right:.2em;
+}
+
+.multi-search-popup-highlighted-item {
+    background:#0a246a;
+    color:white;
+}
+
+.multi-search-popup-loading {
+    width:100%;
+    height:100%;
+}
+
+.multi-search-popup-loading img {
+    position:absolute;
+    top:50%;
+    left:50%;
+    /* NOTE: These are hard-coded horizontal & vertical centering: */
+    margin-top:-16px;
+    margin-left:-16px;
+    width:32px;
+    height:32px;
+}

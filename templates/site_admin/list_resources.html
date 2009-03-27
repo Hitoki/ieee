@@ -1,0 +1,42 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>Resource List</h1>
+    
+    <p><a href="{% url admin_create_resource %}?return_url={{ current_url|urlencode }}">Create a resource</a></p>
+    
+    <table class="grid">
+        <tr>
+            <th>
+                Resource ({{ resources|length }})
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                # Tags
+            </th>
+            <th>
+                # Societies
+            </th>
+        </tr>
+        {% for resource in resources %}
+            <tr>
+                <td>
+                    <a href="{% url admin_view_resource resource.id %}?return_url={{ current_url|urlencode }}">{{resource.name}}</a>
+                </td>
+                <td>
+                    {{ resource.resource_type.name }}
+                </td>
+                <td>
+                    {{ resource.nodes.all|length }}
+                </td>
+                <td>
+                    {{ resource.societies.all|length }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+{% endblock %}

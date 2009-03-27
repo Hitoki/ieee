@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="lightbox-pad">
+        <h3>Feedback Form</h3>
+        
+        <form action="{% url feedback %}" method="post">
+            <table id="feedback">
+                <tr>
+                    <td class="left-column">
+                        Name:
+                    </td>
+                    <td class="right-column">
+                        {{ form.name.errors }}
+                        <input name="name" value="{% if form.name.data %}{{ form.name.data }}{% endif %}" class="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left-column">
+                        Email:
+                    </td>
+                    <td class="right-column">
+                        {{ form.email.errors }}
+                        <input name="email" value="{% if form.email.data %}{{ form.email.data }}{% endif %}" class="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        Comments:<br/>
+                        {{ form.comments.errors }}
+                        <textarea name="comments" class="text">{% if form.comments.data %}{{ form.comments.data }}{% endif %}</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="text-align:center;">
+                        <input type="submit" value="Send" class="button" />
+                        <input type="button" value="Cancel" class="lightbox-close button" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+        
+</div>
+{% endblock %}
+

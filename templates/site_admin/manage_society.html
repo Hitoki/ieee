@@ -1,0 +1,199 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% load eval permissions %}
+
+{% block main_table_content %}
+    
+    <script type="text/javascript">
+        
+        function updateTagCount() {
+            var count = $('#multisearch_tags').data('multisearch').getNumSelectedOptions();
+            $('#tag-count').html('(' + count + ')');
+            
+        }
+        
+        window.notify = function(action, data) {
+            //console.log('notify()');
+            //console.log('  action: ' + action);
+            //console.log('  data:');
+            //logobj(data, '    ');
+            
+            if (action == 'created_tag') {
+                // Just created a tag, add it to the field
+                var multisearch = $('#multisearch_tags').data('multisearch');
+                // TODO: This needs to be fixed!
+                multisearch.addSelectedOption({
+                    name: data.tag.name_with_sector,
+                    value: data.tag.id
+                });
+            
+            } else if (action == 'added_multisearch_option') {
+                $.post('/ajax/update_society', {
+                    action: 'add_tag',
+                    society_id: {{ society.id }},
+                    tag_id: data.option.value
+                });
+                updateTagCount()
+                
+            } else if (action == 'preloaded_multisearch_option') {
+                updateTagCount()
+                
+            } else if (action == 'removed_multisearch_option') {
+                $.post('/ajax/update_society', {
+                    action: 'remove_tag',
+                    society_id: {{ society.id }},
+                    tag_id: data.option.value
+                });
+                updateTagCount()
+                
+            } else {
+                alert('notify(): unknown action "' + action + '"');
+            }
+        
+        }
+
+        /*
+        $(function() {
+            $('form').submit(function() {
+                return false;
+            });
+        });
+        */
+        
+    </script>
+
+    {% comment %}
+    {% ifpermission "user_can_edit_society" society %}
+        <a href="{% url admin_edit_society society.id %}?return_url={{ current_url|urlencode }}" class="edit">Edit Society</a>
+    {% endifpermission %}
+    {% endcomment %}
+    <h1>{{ society.name }} ({{ society.abbreviation }}) Society</h1>
+    
+    <table class="full-grid manage-grid">
+        {% comment %}
+        <tr>
+            <th>
+                Name:
+            </th>
+            <td width="80%">
+                {{ society.name }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Abbreviation:
+            </th>
+            <td>
+                {{ society.abbreviation }}
+            </td>
+        </tr>
+        {% endcomment %}
+        {% comment %}
+        <tr>
+            <th>
+                Url
+            </th>
+            <td>
+                {{ society.url }}
+            </td>
+        </tr>
+        {% endcomment %}
+        {% comment %}
+        <tr>
+            <th>
+                Users
+            </th>
+            <td>
+                {% for user in society.users.all %}
+                    <a href="{% url admin_view_user user.id %}">{{ user.username }}</a>, 
+                {% endfor %}
+            </td>
+        </tr>
+        {% endcomment %}
+        <tr>
+            <td colspan="2" style="border: none;">
+                
+                {# <form action="{% url admin_manage_society society.id %}" method="post"> #}
+                    
+                    <div id="society-resource-tabs" class="nootabs {useCookies:false, useHash:true}">
+                        <ul class="nootabs-menus">
+                            <li><a href="">Manage this Society's Resources ({{ resources|length }})</a></li>
+                            <li><a href="">Manage this Society's Tags <span id="tag-count"></span></a></li>
+                        </ul>
+                        
+                        <!-- Resources Tab -->
+                        <div id="resources-tab">
+                            {% comment %}
+                            {% eval form['resources'] %}
+                            {% endcomment %}
+                            
+                            <table class="resources">
+                                <tr>
+                                    <th class="first-item">
+                                        <span class="header-with-note">Resource Name <span class="help_icon flyover" title="Resource">[?]</span></span>
+                                        <span class="header-note">Click resource to edit</span>
+                                    </th>
+                                    <th>
+                                        ID <span class="help_icon flyover" title="ID">[?]</span>
+                                    </th>
+                                    <th>
+                                        Resource Type <span class="help_icon flyover" title="Resource Type">[?]</span>
+                                    </th>
+                                    <th>
+                                        URL <span class="help_icon flyover" title="URL">[?]</span>
+                                    </th>
+                                    <th>
+                                        Tags <span class="help_icon flyover" title="Tags">[?]</span>
+                                    </th>
+                                    <th>
+                                        Societies <span class="help_icon flyover" title="Societies">[?]</span>
+                                    </th>
+                                </tr>
+                                {% for resource in resources %}
+                                    <tr>
+                                        <td class="first-item">
+                                            <a href="{% url admin_edit_resource resource.id %}?return_url={{ current_url|urlencode }}">{{ resource.name }}</a>
+                                        </td>
+                                        <td>
+                                            {{ resource.ieee_id }}
+                                        </td>
+                                        <td>
+                                            {{ resource.resource_type.name|capfirst }}
+                                        </td>
+                                        <td>
+                                            {% if resource.url %}<a href="{{ resource.url }}" target="_blank"><span class="flyover {position:'bottom'}" title="{{ resource.url }}"><img src="{{ MEDIA_URL }}/images/popup.png"/></span></a>{% endif %}
+                                        </td>
+                                        <td>
+                                            {% if resource.nodes.all %}{{ resource.nodes.all|length }}{% endif %}
+                                        </td>
+                                        <td>
+                                            {% if resource.societies.all %}
+                                                {{ resource.society_abbreviations|join:", "}}
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                        
+                        <!-- Tags Tab -->
+                        <div id="tags-tab">
+                            <input type="button" id="create-tag-float" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ tags_tab_url|urlencode }}';" value="Create New Tag" />
+                            {% eval form['tags'] %}
+                            <input type="button" id="create-tag" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ tags_tab_url|urlencode }}';" value="Create New Tag" />
+                        </div>
+                        
+                    </div>
+                    
+                    {% comment %}
+                    <input type="submit" value="Save" class="button" />
+                    {% endcomment %}
+                    
+                {# </form> #}
+                
+            </td>
+        </tr>
+        
+    </table>
+    
+{% endblock %}

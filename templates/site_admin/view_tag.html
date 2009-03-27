@@ -1,0 +1,88 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>{{ tag.name_with_sector }} Tag</h1>
+    
+    <p><a href="{% url admin_edit_tag tag.id %}">Edit tag</a></p>
+    
+    <table class="grid">
+        {% comment %}
+        <tr>
+            <th>
+                Name
+            </th>
+            <td>
+                {{ tag.name }} <!--({{ tag.id }})-->
+            </td>
+        </tr>
+        {% endcomment %}
+        <tr>
+            <th>
+                Sector
+            </th>
+            <td>
+                <a href="{% url admin_view_sector tag.parent.id %}">{{ tag.parent.name }}</a> <!--({{ tag.parent.id }})-->
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Societies
+            </th>
+            <td>
+                {% for society in tag.societies.all %}
+                    {{ society.name }}<br/>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Filters
+            </th>
+            <td>
+                {% for filter in tag.filters.all %}
+                    {{ filter.name }}<br/>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Related Tags
+            </th>
+            <td>
+                {% for related_tag in tag.related_tags.all %}
+                    <a href="{% url admin_view_tag related_tag.id %}">{{ related_tag.name }}</a><br/>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                # Resources
+            </th>
+            <td>
+                {{ tag.num_resources }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                # Related Sectors
+            </th>
+            <td>
+                {{ tag.num_related_sectors }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Resources
+            </th>
+            <td>
+                {% for resource in tag.resources.all %}
+                    <a href="{% url admin_view_resource resource.id %}?return_url={{ current_url|urlencode }}">{{ resource.name }}</a><br/>
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+    
+    <p><a href="{% url admin_home %}">home</a></p>
+    
+{% endblock %}

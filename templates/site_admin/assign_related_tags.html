@@ -1,0 +1,14 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>Assign Related Tags</h1>
+    
+    <p>
+        Page time: {{ page_time }}<br/>
+        Tags: {{ tag_count }}<br/>
+    </p>
+    
+    <p><a href="{% url admin_home %}">home</a></p>
+    
+{% endblock %}

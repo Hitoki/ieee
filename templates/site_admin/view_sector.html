@@ -1,0 +1,57 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>"{{ sector.name }}" Sector</h1>
+    
+    <table class="grid">
+        <tr>
+            <th>
+                Tag
+            </th>
+            <th>
+                Resources
+            </th>
+            <th>
+                Related<br/>
+                Tags
+            </th>
+            <th>
+                Related<br/>
+                Sectors
+            </th>
+            <th>
+                Filters
+            </th>
+        </tr>
+        {% for tag in tags %}
+            <tr>
+                <td>
+                    <a href="{% url admin_view_tag tag.id %}">{{ tag.name }}</a>
+                </td>
+                <td>
+                    {{ tag.num_resources }}
+                </td>
+                <td>
+                    {{ tag.num_related_tags }}
+                </td>
+                <td>
+                    {{ tag.num_related_sectors }}
+                </td>
+                <td>
+                    {{ tag.filters.all|join:", " }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+    <p>
+        {% comment %}
+        TODO: Fix this link
+        <a href="{% url admin_show_create_tag_form sector.id %}">Create a tag</a>
+        {% endcomment %}
+    </p>
+    
+    <p><a href="{% url admin_home %}">home</a></p>
+    
+{% endblock %}

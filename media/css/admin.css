@@ -1,0 +1,289 @@
+
+/* Admin Styles */
+
+/*
+.admin {
+    font-family:arial;
+    padding:1em;
+    background:white;
+}
+*/
+
+h1,
+h2
+{
+    font-weight:bold;
+    margin:.5em 0em;
+}
+
+h1 {
+    font-size:130%;
+}
+
+h2 {
+    font-size:110%;
+}
+
+ul li {
+    margin-left:1em;
+}
+
+td, th {
+    vertical-align:top;
+}
+
+p {
+    margin:.5em 0em;
+}
+
+em {
+    font-style:italic;
+}
+
+/* */
+
+#header a.logout {
+    margin:.5em;
+}
+
+#header a.logout span {
+    color:black;
+}
+
+.simple-society-list a {
+    padding:1em;
+    margin:1em;
+    border:1px solid #eee;
+    display:block;
+    color:black;
+}
+.simple-society-list a:hover {
+    text-decoration:none;
+    background:#f0f4f4;
+}
+
+.simple-society-list a div.name {
+    color:#016699;
+    font-size:130%;
+    font-weight:bold;
+}
+
+/* Navigation */
+
+ul.nav {
+    background:#555;
+    margin:0px;
+    list-style:none;
+    /* NOTE: This allows the UL to contain the floating LI's, IE7 & Fx3 */
+    overflow:auto;
+}
+
+ul.nav li {
+    margin:0px;
+    float:left;
+}
+
+ul.nav li a {
+    display:block;
+    padding:.3em 1em;
+    color:white;
+}
+
+ul.nav li a:hover {
+    text-decoration:none;
+    color:black;
+    background:#eee;
+}
+
+ul.nav li.highlight a {
+    background:white;
+    color:#016699;
+    font-weight:bold;
+}
+
+/* */
+
+ul.section-list li {
+    margin-bottom:1em;
+    font-weight:bold;
+}
+
+ul.section-list li li {
+    margin-bottom:0px;
+    font-weight:normal;
+}
+
+/* Tables */
+
+#id_name, #id_url, #id_description {
+    width: 400px;
+}
+
+.header-with-note {
+    float: left;
+}
+
+.header-note {
+    display: block;
+    margin-top: 4px;
+    float: right;
+    font-size: 7pt;
+}
+
+#id_sector {
+    width: 200px;
+}
+
+table.edit-create {
+    width: 900px;
+}
+
+table.edit-create th {
+    background: white;
+    color: black;
+}
+
+table.edit-create th, 
+table.edit-create td {
+    padding: 5px;
+    border: none;
+}
+
+#id_ieee_id {
+    width: 50px;
+}
+
+.grid-name {
+    font-weight:bold;
+    margin-bottom:.5em;
+}
+
+.grid,
+.full-grid
+{
+    border-collapse:collapse;
+    margin-bottom:1em;
+}
+
+.manage-grid {
+    width: 100%;
+}
+
+.grid td,
+.grid th,
+.full-grid td,
+.full-grid th
+{
+    border:1px solid #ddd;
+    padding:.1em .5em;
+}
+
+.grid th,
+.full-grid th
+{
+    font-weight:bold;
+    text-align:left;
+    background:#006599;
+    color:white;
+    border:1px solid #005888;
+}
+
+/* Forms */
+
+.grid select,
+.full-grid select
+{
+    width:100%;
+    border:1px inset gray;
+    padding:2px;
+}
+
+table.resources, table.tags {
+    width: 100%;
+}
+
+table.tags {
+    margin: 10px 0 10px 0;
+}
+
+table.resources th, table.tags th {
+    white-space: nowrap;
+    text-align: center;
+}
+
+table.resources td, table.tags td {
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle;
+    width: 10%;
+}
+
+th.first-item {
+    min-width: 250px;
+}
+
+table.resources td.first-item, 
+table.tags td.first-item,
+table.resources th.first-item,
+table.tags th.first-item {
+    padding-left: 10px;
+    text-align: left;
+    width: 20%;
+}
+
+table.resources td.left-text, 
+table.tags td.left-text,
+table.resources th.left-text,
+table.tags th.left-text {
+    text-align: left;
+}
+
+/* */
+
+.version {
+    font-size:80%;
+    float:right;
+    color:silver;
+    text-align:right;
+}
+
+/* */
+
+#society-resource-tabs {
+    /* NOTE: This causes strange spacing in IE7 */
+    margin:.4em;
+}
+
+.nootabs-tab {
+    padding:1em;
+}
+
+/* */
+
+a.edit {
+    display:block;
+    float:right;
+    margin-right:1em;
+}
+
+.help_icon {
+    font-weight: normal;
+    font-size: 7pt;
+    margin-left: 2px;
+    cursor: default;
+}
+
+#create-tag-float {
+    float:right;
+}
+
+/* */
+
+table.forgot-password th {
+    text-align:right;
+}
+
+ul.error {
+    margin-bottom:.5em;
+    font-weight:bold;
+}

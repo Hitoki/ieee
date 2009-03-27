@@ -1,0 +1,46 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% load eval %}
+
+{% block main_table_content %}
+    
+    <h1>"{{ society.name }}" Society</h1>
+    
+    <form action="{% url admin_save_society %}?return_url={{ return_url }}" method="post">
+        
+        <table class="full-grid">
+            {% eval form.as_table('id') %}
+            {% eval form.as_table('name') %}
+            {% eval form.as_table('abbreviation') %}
+            {% eval form.as_table('url') %}
+            {% eval form.as_table('users') %}
+            
+            {% if user.is_superuser %}
+                <tr>
+                    <td colspan="2">
+                        {# Show tags and resources fields as tabs #}
+                        <div id="society-resource-tabs" class="nootabs {useCookies:false}">
+                            <ul class="nootabs-menus">
+                                <li><a href="">Tags</a></li>
+                                <li><a href="">Resources</a></li>
+                            </ul>
+                            <div>
+                                {% eval form['tags'] %}
+                            </div>
+                            <div>
+                                {% eval form['resources'] %}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            {% endif %}
+            
+        </table>
+        <input type="submit" value="Ok" />
+        
+        {% if society and user.is_superuser %}
+            <input type="button" value="Delete" onclick="if (confirm('Delete this society?')) window.location='{% url admin_delete_society society.id %}';" />
+        {% endif %}
+    </form>
+    
+{% endblock %}
