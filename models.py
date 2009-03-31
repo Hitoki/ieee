@@ -293,12 +293,16 @@ class ResourceManager(models.Manager):
     #    return self.all().order_by('?')[:count]
 
 class Resource(models.Model):
+    STANDARD_STATUS_PROJECT = 'project'
+    STANDARD_STATUS_STANDARD = 'standard'
+    
     resource_type = models.ForeignKey(ResourceType)
     ieee_id = models.CharField(max_length=500,blank=True, null=True)
     name = models.CharField(max_length=500)
     description = models.CharField(blank=True, max_length=1000)
     url = models.CharField(blank=True, max_length=1000)
     year = models.IntegerField(blank=True, null=True)
+    standard_status = models.CharField(blank=True, max_length=100)
     
     nodes = models.ManyToManyField(Node, related_name='resources')
     societies = models.ManyToManyField(Society, related_name='resources')

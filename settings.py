@@ -99,6 +99,7 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
+    'dmigrations',
     'ieeetags',
     'ieeetags.site_admin',
     'noomake',
@@ -114,6 +115,9 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 LOG_FILENAME = relpath(__file__, 'log.txt')
 LOG_CONSOLE = True
+
+DMIGRATIONS_DIR = relpath(__file__, 'migrations')
+#DISABLE_SYNCDB = True
 
 try:
     from local_settings import *
