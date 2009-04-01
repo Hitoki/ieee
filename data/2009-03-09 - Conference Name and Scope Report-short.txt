@@ -1,8 +1,0 @@
-﻿conference ID|year|name|description|url
-3478|1998|1998 IEEE/MTT-S International Microwave Symposium - MTT '98||
-3556|1998|1998 Annual Reliability and Maintainability Symposium - Product Quality & Integrity (RAMS)||
-9934|2009|2009 IEEE/MTT-S International Microwave Symposium - MTT 2009|The IEEE International Microwave Symposium (IMS) is the worlds foremost conference covering the UHF, RF, wireless, microwave, millimeter-wave, terahertz, and optical frequencies; encompassing everything from basic technologies to components to systems including the latest RFIC, MIC, MEMS and filter technologies, advances in CAD, modeling, EM simulation and more. The IMS includes technical and interactive sessions, e|http://www.ims2009.org
-9935|2004|2004 12th IEEE International Conference on Networks (ICON)||http://www.sp.edu.sg/icon2004/
-9936|2006|GLOBECOM 2006 - 2006 IEEE Global Telecommunications Conference||http://www.ieee-globecom.org/2006
-9937|2005|2005 IEEE Wireless Communications & Networking Conference (WCNC)||http://www.ieee-wcnc.org/
-9938|2004|2004 IEEE Lester Eastman Conference on High Performance Devices||http://nina.ecse.rpi.edu/shur/EastmanConference/
