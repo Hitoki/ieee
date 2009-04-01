@@ -131,22 +131,119 @@
                                 <tr>
                                     <th class="first-item">
                                         <span class="header-with-note">Resource Name <span class="help_icon flyover" title="Resource">[?]</span></span>
+                                        
+                                        &nbsp;
+                                        <a href="{% url admin_manage_society society.id %}?sort=name_ascending" class="live-url {hashOnly:true}">
+                                            {% ifequal sort "name_ascending" %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_up.png" />
+                                            {% else %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+                                            {% endifequal %}
+                                        </a>
+                                        <a href="{% url admin_manage_society society.id %}?sort=name_descending" class="live-url {hashOnly:true}">
+                                            {% ifequal sort "name_descending" %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_down.png" />
+                                            {% else %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+                                            {% endifequal %}
+                                        </a>
+                                        
                                         <span class="header-note">Click resource to edit</span>
                                     </th>
                                     <th>
                                         ID <span class="help_icon flyover" title="ID">[?]</span>
+                                        
+                                        &nbsp;
+                                        <a href="{% url admin_manage_society society.id %}?sort=ieee_id_ascending" class="live-url {hashOnly:true}">
+                                            {% ifequal sort "ieee_id_ascending" %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_up.png" />
+                                            {% else %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+                                            {% endifequal %}
+                                        </a>
+                                        <a href="{% url admin_manage_society society.id %}?sort=ieee_id_descending" class="live-url {hashOnly:true}">
+                                            {% ifequal sort "ieee_id_descending" %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_down.png" />
+                                            {% else %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+                                            {% endifequal %}
+                                        </a>
                                     </th>
                                     <th>
                                         Resource Type <span class="help_icon flyover" title="Resource Type">[?]</span>
+                                        
+                                        &nbsp;
+                                        <a href="{% url admin_manage_society society.id %}?sort=resource_type_ascending" class="live-url {hashOnly:true}">
+                                            {% ifequal sort "resource_type_ascending" %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_up.png" />
+                                            {% else %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+                                            {% endifequal %}
+                                        </a>
+                                        <a href="{% url admin_manage_society society.id %}?sort=resource_type_descending" class="live-url {hashOnly:true}">
+                                            {% ifequal sort "resource_type_descending" %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_down.png" />
+                                            {% else %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+                                            {% endifequal %}
+                                        </a>
                                     </th>
                                     <th>
                                         URL <span class="help_icon flyover" title="URL">[?]</span>
+                                        
+                                        &nbsp;
+                                        <a href="{% url admin_manage_society society.id %}?sort=url_ascending" class="live-url {hashOnly:true}">
+                                            {% ifequal sort "url_ascending" %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_up.png" />
+                                            {% else %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+                                            {% endifequal %}
+                                        </a>
+                                        <a href="{% url admin_manage_society society.id %}?sort=url_descending" class="live-url {hashOnly:true}">
+                                            {% ifequal sort "url_descending" %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_down.png" />
+                                            {% else %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+                                            {% endifequal %}
+                                        </a>
                                     </th>
                                     <th>
                                         Tags <span class="help_icon flyover" title="Tags">[?]</span>
+                                        
+                                        &nbsp;
+                                        <a href="{% url admin_manage_society society.id %}?sort=num_tags_ascending" class="live-num_tags {hashOnly:true}">
+                                            {% ifequal sort "num_tags_ascending" %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_up.png" />
+                                            {% else %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+                                            {% endifequal %}
+                                        </a>
+                                        <a href="{% url admin_manage_society society.id %}?sort=num_tags_descending" class="live-num_tags {hashOnly:true}">
+                                            {% ifequal sort "num_tags_descending" %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_down.png" />
+                                            {% else %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+                                            {% endifequal %}
+                                        </a>
                                     </th>
                                     <th>
                                         Societies <span class="help_icon flyover" title="Societies">[?]</span>
+                                        
+                                        &nbsp;
+                                        <a href="{% url admin_manage_society society.id %}?sort=num_societies_ascending" class="live-num_societies {hashOnly:true}">
+                                            {% ifequal sort "num_societies_ascending" %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_up.png" />
+                                            {% else %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+                                            {% endifequal %}
+                                        </a>
+                                        <a href="{% url admin_manage_society society.id %}?sort=num_societies_descending" class="live-num_societies {hashOnly:true}">
+                                            {% ifequal sort "num_societies_descending" %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_down.png" />
+                                            {% else %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+                                            {% endifequal %}
+                                        </a>
                                     </th>
                                 </tr>
                                 {% for resource in resources %}

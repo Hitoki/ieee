@@ -27,6 +27,7 @@ urlpatterns = patterns('',
     url(r'^sector/(\d+)$', views.view_sector, name='admin_view_sector'),
     
     # Tags
+    url(r'^tags$', views.list_tags, name='admin_list_tags'),
     url(r'^tag/(\d+)$', views.view_tag, name='admin_view_tag'),
     #url(r'^show_create_tag_form$', views.show_create_tag_form, name='admin_show_create_tag_form'),
     url(r'^tag/create$', views.create_tag, name='admin_create_tag'),

@@ -726,6 +726,13 @@ def view_sector(request, sectorId):
     })
 
 @login_required
+def list_tags(request):
+    tags = Node.objects.getTags()
+    return render(request, 'site_admin/list_tags.html', {
+        'tags': tags,
+    })
+
+@login_required
 def view_tag(request, tagId):
     tag = Node.objects.get(id=tagId)
     return render(request, 'site_admin/view_tag.html', {
@@ -799,7 +806,7 @@ def create_tag(request):
                         }
                     })
                 )
-                #return HttpResponsePermanentRedirect(reverse('admin_view_tag', args=(tagId,)))
+        #return HttpResponsePermanentRedirect(reverse('admin_view_tag', args=(tagId,)))
             
     return render(request, 'site_admin/create_tag.html', {
         'form': form,
@@ -984,22 +991,78 @@ def view_society(request, society_id):
 
 @login_required
 def manage_society(request, society_id):
+    sort = request.GET.get('sort', '')
     society = Society.objects.get(id=society_id)
+    
+    #print 'sort:', sort
     
     form = ManageSocietyForm(initial={
         'tags': society.tags.all(),
         'resources': society.resources.all(),
     })
     
+    if sort == 'name_ascending':
+        resources1 = society.resources.order_by('name')
+    elif sort == 'name_descending':
+        resources1 = society.resources.order_by('-name')
+    
+    elif sort == 'ieee_id_ascending':
+        resources1 = society.resources.order_by('ieee_id', 'name')
+    elif sort == 'ieee_id_descending':
+        resources1 = society.resources.order_by('-ieee_id', '-name')
+    
+    elif sort == 'resource_type_ascending':
+        resources1 = society.resources.order_by('resource_type', 'name')
+    elif sort == 'resource_type_descending':
+        resources1 = society.resources.order_by('-resource_type', '-name')
+    
+    elif sort == 'url_ascending':
+        resources1 = society.resources.order_by('url', 'name')
+    elif sort == 'url_descending':
+        resources1 = society.resources.order_by('-url', '-name')
+    
+    elif sort == 'num_tags_ascending':
+        resources1 = society.resources.extra(select={
+            'num_tags': 'SELECT COUNT(ieeetags_resource_nodes.id) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.resource_id = ieeetags_resource.id',
+        }, order_by=[
+            'num_tags',
+        ])
+    elif sort == 'num_tags_descending':
+        resources1 = society.resources.extra(select={
+            'num_tags': 'SELECT COUNT(ieeetags_resource_nodes.id) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.resource_id = ieeetags_resource.id',
+        }, order_by=[
+            '-num_tags',
+        ])
+    
+    elif sort == 'num_societies_ascending':
+        resources1 = society.resources.extra(select={
+            'num_societies': 'SELECT COUNT(ieeetags_resource_societies.id) FROM ieeetags_resource_societies WHERE ieeetags_resource_societies.resource_id = ieeetags_resource.id',
+        }, order_by=[
+            'num_societies',
+        ])
+    elif sort == 'num_societies_descending':
+        resources1 = society.resources.extra(select={
+            'num_societies': 'SELECT COUNT(ieeetags_resource_societies.id) FROM ieeetags_resource_societies WHERE ieeetags_resource_societies.resource_id = ieeetags_resource.id',
+        }, order_by=[
+            '-num_societies',
+        ])
+    
+    elif sort == '':
+        # Default to name/ascending sort
+        resources1 = society.resources.order_by('name')
+    else:
+        raise Exception('Unknown sort "%s"' % sort)
+    
     # For each resource, get a list of society abbreviations in alphabetical order
     resources = []
-    for resource in society.resources.all():
+    for resource in resources1:
         resource.society_abbreviations = [society1.abbreviation for society1 in resource.societies.order_by('abbreviation')]
         resources.append(resource)
     
     tags_tab_url = reverse('admin_manage_society', args=[society_id]) + '#tab-tags-tab'
     
     return render(request, 'site_admin/manage_society.html', {
+        'sort': sort,
         'society': society,
         'form': form,
         'resources': resources,

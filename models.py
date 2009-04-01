@@ -70,15 +70,11 @@ class NodeType(NamedType):
 class NodeManager(models.Manager):
     
     def create(self, **kwargs):
-        #print 'create()'
-        #print 'kwargs:', kwargs
         if 'name' in kwargs:
             #print 'got name'
             kwargs['name'] = string.capwords(kwargs['name'])
-        #print 'kwargs:', kwargs
         return models.Manager.create(self, **kwargs)
         
-            
     def getNodesForType(self, node_type):
         if type(node_type) is str:
             node_type = NodeType.objects.getFromName(node_type)
@@ -173,6 +169,10 @@ class NodeManager(models.Manager):
         sector_type = NodeType.objects.getFromName(NodeType.SECTOR)
         return single_row(self.filter(name=name, node_type=sector_type), 'Looking up sector "%s"' % name)
     
+    def get_sectors_for_tag(self, node):
+        for node1 in self.filter(name=node.name):
+            yield node1.parent
+    
 class Node(models.Model):
     name = models.CharField(max_length=500)
     parent = models.ForeignKey('Node', related_name='child_nodes', null=True, blank=True)
@@ -195,17 +195,20 @@ class Node(models.Model):
         else:
             return self.name
     
-    def full_name(self):
-        if self.node_type.name == NodeType.TAG:
-            return '%s > %s' % (self.parent.name, self.name)
-        else:
-            return self.name
+    #def full_name(self):
+    #    if self.node_type.name == NodeType.TAG:
+    #        return '%s > %s' % (self.parent.name, self.name)
+    #    else:
+    #        return self.name
 
     def name_with_sector(self):
         if self.node_type.name == NodeType.TAG:
             return '%s (%s)' % (self.name, self.parent.name)
         else:
             return self.name
+        
+    def get_parents(self):
+        return self.objects.get_sectors_for_tag(self)
         
     class Meta:
         ordering = ['name', 'parent__name']
