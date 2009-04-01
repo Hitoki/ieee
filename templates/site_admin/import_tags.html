@@ -3,14 +3,11 @@
 {% block main_table_content %}
     
     <h1>Admin Import Tags</h1>
-    
     <p>
-    Page time: {{pageTime}}<br/>
-    Rows: {{rowCount}}<br/>
-    Tags added: {{tagsAdded}}<br/>
-    Duplicate tags: {{duplicates}}<br/>
-    <p>
-        {{log|safe}}
+        Page time: {{ page_time }}<br/>
+        Rows: {{ row_count }}<br/>
+        Tags added: {{ tags_created }}<br/>
+        Related Tags assigned: {{ related_tags_assigned }}<br/>
     </p>
     <p><a href="{% url admin_home %}">home</a></p>
     

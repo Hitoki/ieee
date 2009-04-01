@@ -28,7 +28,7 @@ class NamedTypeManager(models.Manager):
     def getFromName(self, name):
         types = self.filter(name=name)
         if len(types) != 1:
-            raise Exception('Found ' + str(len(types)) + ' NamedTypes for name ' + name + ', looking for 1 result')
+            raise Exception('Found %d %s for name "%s", looking for 1 result' % (len(types), self.__class__, name))
         return types[0]
 
 class NamedType(models.Model):
@@ -73,6 +73,18 @@ class NodeManager(models.Manager):
         if 'name' in kwargs:
             #print 'got name'
             kwargs['name'] = string.capwords(kwargs['name'])
+        return models.Manager.create(self, **kwargs)
+    
+    def create_tag(self, **kwargs):
+        if 'name' in kwargs:
+            kwargs['name'] = string.capwords(kwargs['name'])
+        if 'num_related_tags' not in kwargs:
+            kwargs['num_related_tags'] = 0
+        if 'num_resources' not in kwargs:
+            kwargs['num_resources'] = 0
+        if 'num_related_sectors' not in kwargs:
+            kwargs['num_related_sectors'] = 0
+        kwargs['node_type'] = NodeType.objects.getFromName(NodeType.TAG)
         return models.Manager.create(self, **kwargs)
         
     def getNodesForType(self, node_type):

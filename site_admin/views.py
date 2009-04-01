@@ -274,6 +274,104 @@ def update_tag_counts(request):
         'numTags': numTags,
     })
 
+
+def split_no_empty(string, char):
+    "Just like string.split(), except that an empty string results in an empty list []."
+    if string.strip() == '':
+        return []
+    else:
+        return string.split(char)
+
+@login_required
+def import_tags(request):
+    log('import_tags()')
+    start = time.time()
+    
+    filename = relpath(__file__, '../data/comsoc - tags.csv')
+    log('  filename: %s' % filename)
+    
+    # Delete all existing tags
+    Node.objects.getTags().delete()
+    
+    file = codecs.open(filename, 'r', 'utf8')
+    # Skip the UTF-8 BOM
+    strip_bom(file)
+    # Use a unicode csv reader:
+    reader = _unicode_csv_reader(file)
+    reader.next()
+    
+    # DEBUG: For comsoc only:
+    comsoc = Society.objects.all()[0]
+    
+    row_count = 0
+    tags_created = 0
+    related_tags_assigned = 0
+    for row in reader:
+        # Tag,Sectors,Filters,Related Tags
+        tag_name, sector_names, filter_names, related_tag_names = row
+        tag_name = tag_name.strip()
+        sector_names = [sector_name.strip() for sector_name in split_no_empty(sector_names, ',')]
+        filter_names = [filter_name.strip() for filter_name in split_no_empty(filter_names, ',')]
+        
+        sectors = [Node.objects.getSectorByName(sector_name) for sector_name in sector_names]
+        filters = [Filter.objects.getFromName(filter_name) for filter_name in filter_names]
+        
+        for sector in sectors:
+            tag = Node.objects.create_tag(
+                name=tag_name,
+                parent=sector,
+                #filters=filters,
+            )
+            tag.filters = filters
+            
+            # DEBUG: For comsoc demo, assign all tags to COMSOC society
+            tag.societies.add(comsoc)
+            tag.save()
+            tags_created += 1
+            
+        row_count += 1
+        if not row_count % 10:
+            print '  Parsing row %d' % row_count
+    file.close()
+    
+    # Now reopen the file to parse for related tags
+    file = codecs.open(filename, 'r', 'utf8')
+    # Skip the UTF-8 BOM
+    strip_bom(file)
+    # Use a unicode csv reader:
+    reader = _unicode_csv_reader(file)
+    reader.next()
+    row_count = 0
+    for row in reader:
+        # Tag,Sectors,Filters,Related Tags
+        tag_name, sector_names, filter_names, related_tag_names = row
+        tag_name = tag_name.strip()
+        sector_names = [sector_name.strip() for sector_name in split_no_empty(sector_names, ',')]
+        related_tag_names = [related_tag_name.strip() for related_tag_name in split_no_empty(related_tag_names, ',')]
+        
+        sectors = [Node.objects.getSectorByName(sector_name) for sector_name in sector_names]
+        
+        for sector in sectors:
+            tag = Node.objects.getTagByName(sector, tag_name)
+            related_tags = []
+            for related_tag_name in related_tag_names:
+                related_tags.extend(Node.objects.getTagsByName(related_tag_name))
+            tag.related_tags = related_tags
+            related_tags_assigned += len(related_tags)
+            tag.save()
+            
+        #row_count += 1
+        #if not row_count % 10:
+        #    print '  Parsing row %d' % row_count
+    file.close()
+    
+    return render(request, 'site_admin/import_tags.html', {
+        'row_count': row_count,
+        'tags_created': tags_created,
+        'related_tags_assigned': related_tags_assigned,
+        'page_time': time.time()-start,
+    })
+    
 @login_required
 def import_societies_and_tags(request):
     log('import_societies_and_tags()')

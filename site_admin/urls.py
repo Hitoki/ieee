@@ -14,7 +14,7 @@ urlpatterns = patterns('',
     url(r'^home_societies_list$', views.home_societies_list, name='admin_home_societies_list'),
     
     url(r'^update_tag_counts$', views.update_tag_counts, name='admin_update_tag_counts'),
-    #url(r'^import_tags$', views.import_tags, name='admin_import_tags'),
+    url(r'^import_tags$', views.import_tags, name='admin_import_tags'),
     #url(r'^import_societies$', views.import_societies, name='admin_import_societies'),
     url(r'^import_societies_and_tags$', views.import_societies_and_tags, name='admin_import_societies_and_tags'),
     url(r'^import_conferences$', views.import_conferences, name='admin_import_conferences'),
