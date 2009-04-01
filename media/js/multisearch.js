@@ -48,6 +48,94 @@ function listRemoveByIndex(list, i) {
     return list;
 }
 
+function stripTags(text) {
+    return text.replace( /<[^<>]*>/g, '' );
+}
+
+function sortTable(table, columnIndexes, order, headerRows) {
+    table = $(table);
+    
+    if (headerRows == undefined)
+        headerRows = 0;
+    
+    if (!(columnIndexes instanceof Array)) {
+        columnIndexes = [columnIndexes];
+    }
+    
+    var tbody = $(table.children('tbody')[0]);
+    
+    for (var i=headerRows; i<tbody.children('tr').length-1; i++) {
+        for (var j=i+1; j<tbody.children('tr').length; j++) {
+            var row1 = $(tbody.children('tr')[i]);
+            var cols1 = row1.children('td');
+            var col1 = $(cols1[columnIndexes[0]]);
+            
+            var row2 = $(tbody.children('tr')[j]);
+            var cols2 = $(row2).children('td');
+            var col2 = $(cols2[columnIndexes[0]]);
+            
+            if (order == 'ascending' && (stripTags(col1.html()) > stripTags(col2.html()))) {
+                swapRows(table, row1, row2);
+                
+            } else if (order == 'descending' && (stripTags(col1.html()) < stripTags(col2.html()))) {
+                swapRows(table, row1, row2);
+                
+            }
+            /*else if (stripTags(col1.html()) == stripTags(col2.html()) && columnIndexes.length > 1) {
+                // TODO: secondary sort
+                console.log('  secondary sort');
+                col1b = $(cols1[columnIndexes[1]]);
+                col2b = $(cols2[columnIndexes[1]]);
+                console.log('    col1b.html(): ' + col1b.html());
+                console.log('    col2b.html(): ' + col2b.html());
+                if (order == 'ascending' && col1b.html() > col2b.html()) {
+                    swapRows(table, row1, row2);
+                } else if (order == 'descending' && col1b.html() < col2b.html()) {
+                    swapRows(table, row1, row2);
+                }
+                
+            }*/
+            
+        }
+        
+    }
+}
+
+function arrayFind(array, value, field) {
+    for (var i=0; i<array.length; i++) {
+        if (array[i].field == value)
+            return i;
+    }
+    return null;
+}
+
+function arrayAddAlpha(array, item, field) {
+    for (var i=0; i<array.length; i++) {
+        if (array[i][field] > item[field]) {
+            break;
+        }
+    }
+    
+    array.splice(i, 0, item);
+    return i;
+}
+
+function swapRows(tableElem, row1, row2) {
+    var placeholder1 = $('<tr></tr>');
+    row1.after(placeholder1);
+    
+    var placeholder2 = $('<tr></tr>');
+    row2.after(placeholder2);
+    
+    placeholder1.before(row2);
+    placeholder2.before(row1);
+    
+    placeholder1.remove();
+    placeholder2.remove();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 function MultiSearch(container, options) {
     var multiSearch = this;
     
@@ -58,7 +146,9 @@ function MultiSearch(container, options) {
         {
             searchUrl: null,
             format: 'simple',
-            showAsTable: true
+            showAsTable: true,
+            sortCol: null,
+            sortOrder: null,
         },
         this.container.metadata(),
         options
@@ -122,13 +212,18 @@ function MultiSearch(container, options) {
         this.selectedOptionsTableElem = $('<table></table>').appendTo(this.selectedOptionsElem);
         if (this.options.format == 'full_tags_table') {
             this.selectedOptionsTableElem = $('<table class="tags"></table>').appendTo(this.selectedOptionsElem);
-            $('<tr><th class="first-item"><span class="header-with-note">Tag Name <span class="help_icon flyover" title="Tag Name">[?]</span></span><span class="header-note">Click tag to edit</span></th>'
-            + '<th>Sector <span class="help_icon flyover" title="Sector">[?]</span></th>'
-            + '<th>Societies <span class="help_icon flyover" title="Societies">[?]</span></th>'
-            + '<th>Filters <span class="help_icon flyover" title="Filters">[?]</span></th>'
-            + '<th>Resources <span class="help_icon flyover" title="Resources">[?]</span></th>'
-            + '<th>Related Tags <span class="help_icon flyover" title="Related Tags">[?]</span></th>'
-            + '<th>Remove <span class="help_icon flyover" title="Remove">[?]</span></th></tr>').appendTo(this.selectedOptionsTableElem);
+            
+            // Grab the template and use it for the headers
+            var template = $('#multisearch-tags-template');
+            this.selectedOptionsTableElem.html(template.html());
+            template.remove();
+            
+            this.selectedOptionsTableElem.find('a.multisearch-sort').each(function() {
+                $(this).click(function() {
+                    multiSearch.sort($(this).metadata().col, $(this).metadata().order);
+                    return false;
+                });
+            });
         }
         
     } else {
@@ -503,23 +598,22 @@ MultiSearch.prototype.findSelectedOptionByValue = function(value) {
     return null;
 }
 
-function arrayFind(array, value, field) {
-    for (var i=0; i<array.length; i++) {
-        if (array[i].field == value)
-            return i;
-    }
-    return null;
-}
-
-function arrayAddAlpha(array, item, field) {
-    for (var i=0; i<array.length; i++) {
-        if (array[i][field] > item[field]) {
-            break;
+MultiSearch.prototype.sort = function(col, order) {
+    // Highlight the correct sort arrow
+    var sortLinks = this.selectedOptionsTableElem.find('a.multisearch-sort');
+    for (var i=0; i<sortLinks.length; i++) {
+        var image = $($(sortLinks[i]).children('img')[0]);
+        if ($(sortLinks[i]).metadata().col == col &&  $(sortLinks[i]).metadata().order == order) {
+            image.attr('src', image.attr('src').replace('_inactive', '_active'));
+        } else {
+            image.attr('src', image.attr('src').replace('_active', '_inactive'));
         }
     }
     
-    array.splice(i, 0, item);
-    return i;
+    sortTable(this.selectedOptionsTableElem, [col, 0], order, 1);
+    
+    this.options.sortCol = col;
+    this.options.sortOrder = order;
 }
 
 MultiSearch.prototype.addSelectedOption = function(option, preload) {
@@ -573,7 +667,7 @@ MultiSearch.prototype.addSelectedOption = function(option, preload) {
                 
             }
             
-            option.removeElem = $('<td><a href="" class="remove-link">[x]</a></td>').appendTo(option.elem);
+            option.removeElem = $('<td><a href="#remove_' + option.value + '" class="remove-link">[x]</a></td>').appendTo(option.elem);
             option.removeElem.find('a').data('value', option.value);
             option.removeElem.find('a').click(function(e) {
                 // Remove the option when clicked
@@ -595,15 +689,9 @@ MultiSearch.prototype.addSelectedOption = function(option, preload) {
         
         var pos = arrayAddAlpha(this.selectedOptions, option, 'name');
         
-        // If there is more than one item in the list...
-        if (this.selectedOptions.length > 1) {
-            // If this is not the last item
-            if (pos < this.selectedOptions.length-1) {
-                // Insert in the correct order
-                this.selectedOptions[pos+1].elem.before(
-                    this.selectedOptions[pos].elem
-                );
-            }
+        // Apply the current sort to the new item
+        if (this.options.sortCol != null && this.options.sortOrder != null ) {
+            this.sort(this.options.sortCol, this.options.sortOrder);
         }
         
         // Add the value to the output element
