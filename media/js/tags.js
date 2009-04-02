@@ -107,11 +107,12 @@ var Tags = {
             
             var div = $(str);
             div.appendTo(tagWindow);
-            div[0].tagId = tag.id;
+            div.data('tagId', tag.id);
+            div.data('sectorId', this.sectorId);
             
             div.hover(
                 function() {
-                    Tooltip.show({elem:this, url:'/ajax/tooltip?tagId='+this.tagId, loadBeforeShowing:true});
+                    Tooltip.show({elem:this, url:'/ajax/tooltip?tag_id='+$(this).data('tagId')+'&sector_id='+$(this).data('sectorId'), loadBeforeShowing:true});
                 },
                 function() {
                     Tooltip.onMouseOut();

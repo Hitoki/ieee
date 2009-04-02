@@ -41,7 +41,6 @@ class EditTagForm(Form):
     societies = MultiSearchField(model=Society, search_url='/ajax/search_societies', label='Societies')
     filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultiple(), required=False, label='Filters')
     #num_resources = models.IntegerField(required=False, label='Resources')
-    #related_sectors = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), required=False, label='Related Sectors')
     related_tags = MultiSearchField(model=Node, search_url='/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags with this Tag')
 
 class LoginForm(Form):

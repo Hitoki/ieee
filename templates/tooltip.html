@@ -14,11 +14,11 @@
                     </table>
                 </td>
                 <td>
-                    {% for relatedSector in relatedSectors %}
-                        {% ifequal relatedSector tag.parent %}
-                            {{relatedSector.name}}
+                    {% for sector in tag.parents.all %}
+                        {% ifequal sector tag.parent %}
+                            {{sector.name}}
                         {% else %}
-                            <a href="{% url textui %}?tagId={{relatedSector.id}}">{{relatedSector.name}}</a>
+                            <a href="{% url textui %}?tagId={{sector.id}}">{{sector.name}}</a>
                         {% endifequal %}
                         {% if not forloop.last %}, {% endif %}
                     {% endfor %}

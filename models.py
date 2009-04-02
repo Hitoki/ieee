@@ -82,8 +82,6 @@ class NodeManager(models.Manager):
             kwargs['num_related_tags'] = 0
         if 'num_resources' not in kwargs:
             kwargs['num_resources'] = 0
-        if 'num_related_sectors' not in kwargs:
-            kwargs['num_related_sectors'] = 0
         kwargs['node_type'] = NodeType.objects.getFromName(NodeType.TAG)
         return models.Manager.create(self, **kwargs)
         
@@ -141,39 +139,45 @@ class NodeManager(models.Manager):
     def getFilteredNodes(self, nodeId, filterIds, sort):
         return []
     
-    def getRelatedSectors(self, tag):
-        # Get all related sectors (including the given tag's sector)
-        relatedSectors = self.filter(node_type__name=NodeType.SECTOR, child_nodes__name=tag.name)#.exclude(id=tag.parent.id)
-        #print '  relatedSectors:', relatedSectors
-        #print '  len(relatedSectors):', len(relatedSectors)
-        return relatedSectors
+    #def getRelatedSectors(self, tag):
+    #    # Get all related sectors (including the given tag's sector)
+    #    relatedSectors = self.filter(node_type__name=NodeType.SECTOR, child_nodes__name=tag.name)#.exclude(id=tag.parent.id)
+    #    #print '  relatedSectors:', relatedSectors
+    #    #print '  len(relatedSectors):', len(relatedSectors)
+    #    return relatedSectors
     
-    # Returns the min/max amount of resources-per-tag for the given sector
-    def getResourceRange(self, sector):
-        sql = """
-            SELECT MIN(num_resources) AS min, MAX(num_resources) AS max
-            FROM ieeetags_node
-            WHERE parent_id = %s
-            """
-        cursor = connection.cursor()
-        cursor.execute(sql, [sector.id])
-        return cursor.fetchall()[0]
+    def get_resource_range(self, sector):
+        "Returns the min/max amount of resources-per-tag for the given sector."
+
+        
+        resource_counts = [tag.resources.count() for tag in sector.child_nodes.all()]
+        if len(resource_counts) == 0:
+            min_resources = None
+            max_resources = None
+        else:
+            min_resources = min(resource_counts)
+            max_resources = max(resource_counts)
+        
+        return (min_resources, max_resources)
     
-    def getRelatedSectorRange(self, sector):
-        sql = """
-            SELECT MIN(num_related_sectors) AS min, MAX(num_related_sectors) AS max
-            FROM ieeetags_node
-            WHERE parent_id = %s
-            """
-        cursor = connection.cursor()
-        cursor.execute(sql, [sector.id])
-        return cursor.fetchall()[0]
+    def get_sector_range(self, sector):
+        "Returns the min/max amount of sectors-per-tag for the given sector."
+        
+        sector_counts = [tag.parents.count() for tag in sector.child_nodes.all()]
+        
+        if len(sector_counts) == 0:
+            min_sectors = None
+            max_sectors = None
+        else:
+            min_sectors = min(sector_counts)
+            max_sectors = max(sector_counts)
+        
+        return (min_sectors, max_sectors)
     
     def updateTagCounts(self):
         tags = self.getTags()
         for tag in tags:
             tag.num_resources = len(tag.resources.all())
-            tag.num_related_sectors = len(self.getRelatedSectors(tag))
             tag.save()
         return len(tags)
     
@@ -203,9 +207,6 @@ class Node(models.Model):
     num_related_tags = models.IntegerField(null=True, blank=True)
     
     num_resources = models.IntegerField(null=True, blank=True)
-    
-    related_sectors = models.ManyToManyField('Node', blank=True, null=True)
-    num_related_sectors = models.IntegerField(null=True, blank=True)
     
     objects = NodeManager()
     def __str__(self):

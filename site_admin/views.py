@@ -60,21 +60,6 @@ def _update_node_totals(nodes):
         node.num_resources = len(node.resources.all())
         node.save()
     
-def _update_tag_related_sectors(tag, recurse=True):
-    same_name_tags = Node.objects.getTagsByName(tag.name)
-    num_related_sectors = len(same_name_tags.all())-1
-    
-    # Update this tag's counts
-    tag.num_related_sectors = num_related_sectors
-    tag.related_sectors = [same_name_tag.parent for same_name_tag in same_name_tags.exclude(id=tag.id)]
-    tag.save()
-    
-    # Update all other same-name tags' counts
-    for tag2 in same_name_tags:
-        tag2.num_related_sectors = num_related_sectors
-        tag2.related_sectors = [same_name_tag.parent for same_name_tag in same_name_tags.exclude(id=tag2.id)]
-        tag2.save()
-
 def _unicode_csv_reader(unicode_csv_data, dialect=csv.excel, **kwargs):
     # csv.py doesn't do Unicode; encode temporarily as UTF-8:
     csv_reader = csv.reader(_utf_8_encoder(unicode_csv_data), dialect=dialect, **kwargs)
@@ -297,6 +282,12 @@ def _open_unicode_csv(filename):
     reader.next()
     return (file, reader)
 
+def _check_tags_in_same_sector(tag1, tag2):
+    for sector in tag1.parents.all():
+        if sector in tag2.parents.all():
+            return True
+    return False
+
 @login_required
 def import_tags(request):
     log('import_tags()')
@@ -371,15 +362,19 @@ def import_tags(request):
             related_tag = Node.objects.get_tag_by_name(related_tag_name)
             if related_tag is None:
                 raise Exception('Can\'t find matching related tag "%s"' % related_tag_name)
+            
+            if not _check_tags_in_same_sector(tag, related_tag):
+                raise Exception('Related tag "%s" is not in the same sector(s) as tag "%s".' % (related_tag, tag))
+            
             related_tags.append(related_tag)
         
         tag.related_tags = related_tags
         related_tags_assigned += len(related_tags)
         tag.save()
             
-        #row_count += 1
-        #if not row_count % 10:
-        #    print '  Parsing row %d' % row_count
+        row_count += 1
+        if not row_count % 10:
+            print '  Parsing row %d' % row_count
     file.close()
     
     return render(request, 'site_admin/import_tags.html', {
@@ -527,7 +522,6 @@ def import_societies(request):
 #                    #log('Created tag "%s"' % tag_name)
 #                    #tag.filters = []
 #                    tag.num_resources = 0
-#                    tag.num_related_sectors = 0
 #                    tags_created += 1
 #                tag.save()
 #                
@@ -974,9 +968,6 @@ def create_tag(request):
                 related_tag.num_related_tags = len(related_tag.related_tags.all())
                 related_tag.save()
             
-            # Update the related sectors
-            _update_tag_related_sectors(tag)
-            
             if return_url != '':
                 return HttpResponseRedirect(return_url)
             else:
@@ -1027,7 +1018,6 @@ def edit_tag(request, tag_id):
         'filters': [filter.id for filter in tag.filters.all()],
         'related_tags': tag.related_tags.all(),
         'num_resources': tag.num_resources,
-        'related_sectors': tag.related_sectors.all(),
     })
     
     if request.user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER:
@@ -1036,7 +1026,6 @@ def edit_tag(request, tag_id):
         make_display_only(form.fields['name'])
         make_display_only(form.fields['societies'], model=Society, is_multi_search=True)
         #make_display_only(form.fields['num_resources'])
-        #make_display_only(form.fields['related_sectors'], model=Node)
         
     return render(request, 'site_admin/edit_tag.html', {
         'form': form,
@@ -1072,9 +1061,6 @@ def save_tag(request):
         for related_tag in tag.related_tags.all():
             related_tag.num_related_tags = len(related_tag.related_tags.all())
             related_tag.save()
-        
-        # Update the related sectors
-        _update_tag_related_sectors(tag)
         
         if return_url != '':
             return HttpResponseRedirect(return_url)

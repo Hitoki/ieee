@@ -9,7 +9,7 @@ import os.path
 import string
 from urllib import quote
 
-from ieeetags.models import Filter, Node, NodeType, Resource, ResourceType, Society
+from ieeetags.models import single_row, Filter, Node, NodeType, Resource, ResourceType, Society
 from ieeetags.forms import *
 import settings
 import util
@@ -173,8 +173,8 @@ def ajax_nodes_json(request):
         orderBy = 'name'
     elif sort == 'frequency':
         orderBy = 'num_resources'
-    elif sort == 'related_sectors':
-        orderBy = 'num_related_sectors'
+    #elif sort == 'num_sectors':
+    #    orderBy = 'parents'
     else:
         raise Exception('Unrecognized sort "%s"' % sort)
     
@@ -189,30 +189,29 @@ def ajax_nodes_json(request):
     
     # Build node list
     sector = Node.objects.get(id=sectorId)
-    tags = Node.objects.filter(parent=sector).order_by(orderBy)
+    tags = sector.child_nodes.order_by(orderBy)
+    #tags = Node.objects.filter(parent=sector).order_by(orderBy)
     
-    (minResources, maxResources) = Node.objects.getResourceRange(sector)
-    (minRelatedSectors, maxRelatedSectors) = Node.objects.getRelatedSectorRange(sector)
+    (minResources, maxResources) = Node.objects.get_resource_range(sector)
+    (min_sectors, max_sectors) = Node.objects.get_sector_range(sector)
     
     # JSON Output
     data = []
     for tag in tags:
         #print 'tag.name:', tag.name
         resourceLevel = _get_popularity_level(minResources, maxResources, tag.num_resources)
-        relatedSectorLevel = _get_popularity_level(minRelatedSectors, maxRelatedSectors, tag.num_related_sectors)
+        sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.parents.count())
+        
         # TODO:
         relatedTagLevel = 'level1'
         
-        #print 'tag.filters:', tag.filters
-        #print 'tag.filters.filter(id__in=filterIds):', tag.filters.filter(id__in=filterIds)
-        #print 'len(tag.filters.filter(id__in=filterIds)):', len(tag.filters.filter(id__in=filterIds))
         if len(tag.filters.filter(id__in=filterIds)):
             data.append({
                 'id': tag.id,
                 'label': tag.name,
                 'type': tag.node_type.name,
                 'level': resourceLevel,
-                'sectorLevel': relatedSectorLevel,
+                'sectorLevel': sectorLevel,
                 'relatedTagLevel': relatedTagLevel,
             })
             
@@ -313,26 +312,25 @@ def ajax_nodes_xml(request):
     return HttpResponse(doc.toprettyxml(), 'text/xml')
 
 def tooltip(request):
-    tagId = request.GET['tagId']
-    #print 'tagId:', tagId
+    tag_id = request.GET['tag_id']
+    sector_id = request.GET['sector_id']
     
-    tag = Node.objects.get(id=tagId)
-    relatedSectors = Node.objects.getRelatedSectors(tag)
+    tag = Node.objects.get(id=tag_id)
+    sector = single_row(tag.parents.filter(id=sector_id))
 
-    (minResources, maxResources) = Node.objects.getResourceRange(tag.parent)
-    (minRelatedSectors, maxRelatedSectors) = Node.objects.getRelatedSectorRange(tag.parent)
+    (min_resources, max_resources) = Node.objects.get_resource_range(sector)
+    (min_sectors, max_sectors) = Node.objects.get_sector_range(sector)
     
-    resourceLevel = _get_popularity_level(minResources, maxResources, tag.num_resources)
-    relatedSectorLevel = _get_popularity_level(minRelatedSectors, maxRelatedSectors, tag.num_related_sectors)
+    resourceLevel = _get_popularity_level(min_resources, max_resources, tag.num_resources)
+    sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.parents.count())
     # TODO:
     #relatedTags = ['test', 'test']
     relatedTagLevel = 'level1'
     
     return render(request, 'tooltip.html', {
         'tag': tag,
-        'relatedSectors': relatedSectors,
         'tagLevel': resourceLevel,
-        'sectorLevel': relatedSectorLevel,
+        'sectorLevel': sectorLevel,
         #'limits': limits,
         #'relatedTags': relatedTags,
         'relatedTagLevel': relatedTagLevel,
