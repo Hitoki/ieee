@@ -30,7 +30,7 @@ class ModifiedFormBase(Form):
 
 class CreateTagForm(Form):
     name = CharField(max_length=100, label='Tag Name')
-    sector = ModelChoiceField(queryset=Node.objects.getSectors(), label='Sector')
+    sectors = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), label='Sector')
     filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultiple(), required=False, label='Filters')
     related_tags = MultiSearchField(model=Node, search_url='/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags')
 

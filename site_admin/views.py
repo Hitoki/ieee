@@ -373,7 +373,6 @@ def import_tags(request):
                 raise Exception('Can\'t find matching related tag "%s"' % related_tag_name)
             related_tags.append(related_tag)
         
-        
         tag.related_tags = related_tags
         related_tags_assigned += len(related_tags)
         tag.save()
@@ -556,12 +555,12 @@ def _import_resources(filename):
     
     (file, reader) = _open_unicode_csv(filename)
     
-    print 'filename:', filename
+    #print 'filename:', filename
     
     for row in reader:
         #Type, ID, Name, Description, URL, Tags, Societies, Year, Standard Status, Technical Committees, Keywords
         type1, ieee_id, name, description, url, tag_names, society_names, year, standard_status, technical_committees, keywords = row
-        print 'name:', name
+        #print 'name:', name
         
         # Fix formatting
         if year == '':
@@ -602,10 +601,10 @@ def _import_resources(filename):
             duplicate_resources += 1
         else:
             ##log('  Adding resource "%s"' % name)
-            print 'name:', name
-            print 'ieee_id:', ieee_id
-            print 'description:', description
-            print 'society_names:', society_names
+            #print 'name:', name
+            #print 'ieee_id:', ieee_id
+            #print 'description:', description
+            #print 'society_names:', society_names
         
             resource = Resource.objects.create(
                 resource_type=resource_type,
@@ -619,7 +618,7 @@ def _import_resources(filename):
             resource.save()
             resources_added += 1
                 
-        if not row_count % 200:
+        if not row_count % 10:
             print '  Reading row %d' % row_count
             
         row_count += 1
@@ -654,7 +653,7 @@ def import_conferences(request):
 @login_required
 def import_standards(request):
     start = time.time()
-    print 'import_standards()'
+    #print 'import_standards()'
     
     filename = relpath(__file__, '../data/comsoc/standards.csv')
     
@@ -663,8 +662,6 @@ def import_standards(request):
     
     # Import standards
     results = _import_resources(filename)
-    
-    print 'results:', results
     
     return render(request, 'site_admin/import_resources.html', {
         'page_time': time.time()-start,
@@ -957,9 +954,9 @@ def create_tag(request):
         if form.is_valid():
             tag = Node.objects.create(
                 name=form.cleaned_data['name'],
-                parent=form.cleaned_data['sector'],
                 node_type=NodeType.objects.getFromName(NodeType.TAG),
             )
+            tag.parents=form.cleaned_data['sectors']
             
             if society_id != '':
                 society = Society.objects.get(id=int(society_id))
@@ -1038,8 +1035,8 @@ def edit_tag(request, tag_id):
         make_display_only(form.fields['parents'], model=Node)
         make_display_only(form.fields['name'])
         make_display_only(form.fields['societies'], model=Society, is_multi_search=True)
-        make_display_only(form.fields['num_resources'])
-        make_display_only(form.fields['related_sectors'], model=Node)
+        #make_display_only(form.fields['num_resources'])
+        #make_display_only(form.fields['related_sectors'], model=Node)
         
     return render(request, 'site_admin/edit_tag.html', {
         'form': form,

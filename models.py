@@ -194,12 +194,12 @@ class NodeManager(models.Manager):
 class Node(models.Model):
     name = models.CharField(max_length=500)
     #parent = models.ForeignKey('Node', related_name='child_nodes', null=True, blank=True)
-    parents = models.ManyToManyField('Node', symmetrical=False, related_name='child_nodes', null=True, blank=True)
+    parents = models.ManyToManyField('self', symmetrical=False, related_name='child_nodes', null=True, blank=True)
     node_type = models.ForeignKey(NodeType)
     societies = models.ManyToManyField('Society', related_name='tags', blank=True)
     filters = models.ManyToManyField('Filter', related_name='nodes')
 
-    related_tags = models.ManyToManyField('Node', blank=True)
+    related_tags = models.ManyToManyField('self', null=True, blank=True)
     num_related_tags = models.IntegerField(null=True, blank=True)
     
     num_resources = models.IntegerField(null=True, blank=True)
@@ -216,10 +216,13 @@ class Node(models.Model):
     #        return '%s > %s' % (self.parent.name, self.name)
     #    else:
     #        return self.name
+    
+    def parent_names(self):
+        return ', '.join([parent.name for parent in self.parents.all()])
 
     def name_with_sector(self):
         if self.node_type.name == NodeType.TAG:
-            return '%s (%s)' % (self.name, self.parent.name)
+            return '%s (%s)' % (self.name, self.parent_names())
         else:
             return self.name
         

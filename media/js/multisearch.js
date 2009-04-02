@@ -386,7 +386,7 @@ MultiSearch.prototype.onGetOptions = function(data) {
                         name_link: data.options[i].name_link,
                         value: data.options[i].value,
                         tag_name: data.options[i].tag_name,
-                        sector_name: data.options[i].sector_name,
+                        sector_names: data.options[i].sector_names,
                         num_societies: data.options[i].num_societies.toString(),
                         num_related_tags: data.options[i].num_related_tags.toString(),
                         num_filters: data.options[i].num_filters.toString(),
@@ -555,7 +555,7 @@ MultiSearch.prototype.selectSearchOption = function(index) {
             name_link: searchOption.name_link,
             value: searchOption.value,
             tag_name: searchOption.tag_name,
-            sector_name: searchOption.sector_name,
+            sector_names: searchOption.sector_names,
             num_societies: searchOption.num_societies.toString(),
             num_related_tags: searchOption.num_related_tags.toString(),
             num_filters: searchOption.num_filters.toString(),
@@ -639,7 +639,7 @@ MultiSearch.prototype.addSelectedOption = function(option, preload) {
                 
                 var cell;
                 cell = $('<td class="left-text"></td>').appendTo(option.elem);
-                cell.html(option.sector_name);
+                cell.html(option.sector_names);
                 
                 cell = $('<td></td>').appendTo(option.elem);
                 if(option.num_societies != 0){
@@ -702,7 +702,7 @@ MultiSearch.prototype.addSelectedOption = function(option, preload) {
                 name_link: option.name_link,
                 value: option.value,
                 tag_name: option.tag_name,
-                sector_name: option.sector_name,
+                sector_names: option.sector_names,
                 num_societies: option.num_societies.toString(),
                 num_related_tags: option.num_related_tags.toString(),
                 num_filters: option.num_filters.toString(),

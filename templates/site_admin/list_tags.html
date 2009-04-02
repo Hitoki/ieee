@@ -14,6 +14,9 @@
             <th>
                 Sectors
             </th>
+            <th>
+                Related Tags
+            </th>
         </tr>
         {% for tag in tags %}
             <tr>
@@ -21,7 +24,14 @@
                     <a href="{% url admin_view_tag tag.id %}">{{tag.name}}</a>
                 </td>
                 <td>
-                    {{ tag.get_parents.|join:", " }}
+                    {% for sector in tag.parents.all %}
+                        <a href="{% url admin_view_sector sector.id %}">{{ sector.name }}</a>{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for related_tag in tag.related_tags.all %}
+                        <a href="{% url admin_view_tag related_tag.id %}">{{ related_tag.name }}</a>{% if not forloop.last %},{% endif %}
+                    {% endfor %}
                 </td>
             </tr>
         {% endfor %}

@@ -358,11 +358,11 @@ def ajax_search_tags(request):
     if tags:
         for tag in tags:
             data['options'].append({
-                'name': tag.name_with_sector(),
+                'name': tag.name,
                 'name_link': reverse('admin_edit_tag', args=[tag.id]) + '?return_url=%s' % quote('/admin/?hash=' + quote('#tab-tags-tab')),
                 'value': tag.id,
                 'tag_name': tag.name,
-                'sector_name': tag.parent.name,
+                'sector_names': tag.parent_names(),
                 'num_societies': len(tag.societies.all()),
                 'num_related_tags': len(tag.related_tags.all()),
                 'num_filters': len(tag.filters.all()),
