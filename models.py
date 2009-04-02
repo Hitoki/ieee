@@ -113,24 +113,30 @@ class NodeManager(models.Manager):
         tag_type = NodeType.objects.getFromName('tag')
         return self.filter(node_type=tag_type)
     
-    def getChildNodes(self, node):
-        return self.filter(parent=node)
+    #def getChildNodes(self, node):
+    #    return self.filter(parent=node)
     
     def getTagsByName(self, name):
         tag_type = NodeType.objects.getFromName('tag')
         return self.filter(name=name, node_type=tag_type)
     
-    def getTagByName(self, sector, tagName):
+    #def getTagByName(self, sector, tagName):
+    #    tag_type = NodeType.objects.getFromName('tag')
+    #    return single_row_or_none(self.filter(name=tagName, parent=sector, node_type=tag_type))
+    
+    def get_tag_by_name(self, tag_name):
+        #print 'get_tag_by_name()'
+        #print '  tag_name:', tag_name
         tag_type = NodeType.objects.getFromName('tag')
-        return single_row_or_none(self.filter(name=tagName, parent=sector, node_type=tag_type))
+        return single_row_or_none(self.filter(name=tag_name, node_type=tag_type))
         
     def getRandomTag(self):
         tag_type = NodeType.objects.getFromName('tag')
         return self.filter(node_type=tag_type).order_by('?')[0]
     
-    def get_random_related_tags(self, tag, count):
-        tag_type = NodeType.objects.getFromName('tag')
-        return self.filter(node_type=tag_type,parent=tag.parent).exclude(id=tag.id).order_by('?')[:count]
+    #def get_random_related_tags(self, tag, count):
+    #    tag_type = NodeType.objects.getFromName('tag')
+    #    return self.filter(node_type=tag_type,parent=tag.parent).exclude(id=tag.id).order_by('?')[:count]
     
     def getFilteredNodes(self, nodeId, filterIds, sort):
         return []
@@ -181,13 +187,14 @@ class NodeManager(models.Manager):
         sector_type = NodeType.objects.getFromName(NodeType.SECTOR)
         return single_row(self.filter(name=name, node_type=sector_type), 'Looking up sector "%s"' % name)
     
-    def get_sectors_for_tag(self, node):
-        for node1 in self.filter(name=node.name):
-            yield node1.parent
+    #def get_sectors_for_tag(self, node):
+    #    for node1 in self.filter(name=node.name):
+    #        yield node1.parent
     
 class Node(models.Model):
     name = models.CharField(max_length=500)
-    parent = models.ForeignKey('Node', related_name='child_nodes', null=True, blank=True)
+    #parent = models.ForeignKey('Node', related_name='child_nodes', null=True, blank=True)
+    parents = models.ManyToManyField('Node', symmetrical=False, related_name='child_nodes', null=True, blank=True)
     node_type = models.ForeignKey(NodeType)
     societies = models.ManyToManyField('Society', related_name='tags', blank=True)
     filters = models.ManyToManyField('Filter', related_name='nodes')
@@ -202,10 +209,7 @@ class Node(models.Model):
     
     objects = NodeManager()
     def __str__(self):
-        if self.node_type.name == NodeType.TAG:
-            return '%s (%s)' % (self.name, self.parent.name)
-        else:
-            return self.name
+        return self.name
     
     #def full_name(self):
     #    if self.node_type.name == NodeType.TAG:
@@ -219,11 +223,11 @@ class Node(models.Model):
         else:
             return self.name
         
-    def get_parents(self):
-        return self.objects.get_sectors_for_tag(self)
+    #def get_parents(self):
+    #    return self.objects.get_sectors_for_tag(self)
         
     class Meta:
-        ordering = ['name', 'parent__name']
+        ordering = ['name']
 
 # ------------------------------------------------------------------------------
 
@@ -273,9 +277,13 @@ class ResourceType(NamedType):
     STANDARD = 'standard'
 
 class ResourceManager(models.Manager):
-    def getConferences(self):
-        resourceType = ResourceType.getForName('conference')
-        return self.filter(resource_type=resourceType)
+    def get_conferences(self):
+        resource_type = ResourceType.objects.getFromName(ResourceType.CONFERENCE)
+        return self.filter(resource_type=resource_type)
+        
+    def get_standards(self):
+        resource_type = ResourceType.objects.getFromName(ResourceType.STANDARD)
+        return self.filter(resource_type=resource_type)
         
     def getForNode(self, node, resourceType=None):
         if type(resourceType) is str:

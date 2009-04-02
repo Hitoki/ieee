@@ -5,26 +5,21 @@
     <h1>Admin Import Resources</h1>
     
     <p>
-        Page time: {{pageTime}}<br/>
-        <br/>
-        
-        conferenceRowCount: {{conferenceRowCount}}<br/>
-        conferenceCount: {{conferenceCount}}<br/>
-        <br/>
-        
-        expertRowCount: {{expertRowCount}}<br/>
-        expertCount: {{expertCount}}<br/>
-        <br/>
-        
-        periodicalRowCount: {{periodicalRowCount}}<br/>
-        periodicalCount: {{periodicalCount}}<br/>
-        <br/>
-        
-        standardRowCount: {{standardRowCount}}<br/>
-        standardCount: {{standardCount}}<br/>
-        <br/>
-        
+        Page time: {{ page_time }}<br/>
     </p>
+    
+    <table class="grid">
+        {% for name,value in results.items %}
+            <tr>
+                <th>
+                    {{ name }}
+                </th>
+                <td>
+                    {{ value }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
     
     <p><a href="{% url admin_home %}">home</a></p>
     

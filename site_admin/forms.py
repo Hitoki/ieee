@@ -37,11 +37,11 @@ class CreateTagForm(Form):
 class EditTagForm(Form):
     id = IntegerField(widget=HiddenInput(), required=False)
     name = CharField(max_length=100, label='Tag Name')
-    parent = ModelChoiceField(queryset=Node.objects.getSectors(), label='Sector')
+    parents = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), label='Sectors', widget=CheckboxSelectMultiple())
     societies = MultiSearchField(model=Society, search_url='/ajax/search_societies', label='Societies')
     filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultiple(), required=False, label='Filters')
-    num_resources = models.IntegerField(required=False, label='Resources')
-    related_sectors = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), required=False, label='Related Sectors')
+    #num_resources = models.IntegerField(required=False, label='Resources')
+    #related_sectors = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), required=False, label='Related Sectors')
     related_tags = MultiSearchField(model=Node, search_url='/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags with this Tag')
 
 class LoginForm(Form):

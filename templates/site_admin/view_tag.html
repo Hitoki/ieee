@@ -19,10 +19,12 @@
         {% endcomment %}
         <tr>
             <th>
-                Sector
+                Sectors
             </th>
             <td>
-                <a href="{% url admin_view_sector tag.parent.id %}">{{ tag.parent.name }}</a> <!--({{ tag.parent.id }})-->
+                {% for sector in tag.parents.all %}
+                    <a href="{% url admin_view_sector sector.id %}">{{ sector.name }}</a>{% if not forloop.last %},{% endif %}
+                {% endfor %}
             </td>
         </tr>
         <tr>

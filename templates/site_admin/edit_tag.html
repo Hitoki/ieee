@@ -17,11 +17,11 @@
             </tr>
             <tr>
                 <th>
-                    <label for="id_parent">{{ form.parent.label }} <span class="help_icon flyover {position: 'top'" title="Sector">[?]</span>:</label>
+                    <label for="id_parents">{{ form.parents.label }} <span class="help_icon flyover {position: 'top'" title="Sector">[?]</span>:</label>
                 </th>
                 <td>
-                    {{ form.parent.errors }}
-                    {{ form.parent }}
+                    {{ form.parents.errors }}
+                    {{ form.parents }}
                 </td>
             </tr>
             <tr>
@@ -42,6 +42,7 @@
                     {{ form.filters }}
                 </td>
             </tr>
+            <!--
             <tr>
                 <th>
                     <label for="id_num_resources">{{ form.num_resources.label }} <span class="help_icon flyover {position:'top'}" title="Resources">[?]</span>:</label>
@@ -60,6 +61,7 @@
                     {{ form.related_sectors }}
                 </td>
             </tr>
+            -->
             <tr>
                 <th>
                     <label for="id_related_tags">{{ form.related_tags.label }} <span class="help_icon flyover {position:'top'}" title="Related Tags">[?]</span>:</label>

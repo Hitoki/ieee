@@ -55,7 +55,7 @@
             </th>
             <td>
                 {% for tag in resource.nodes.all %}
-                    <a href="{% url admin_view_tag tag.id %}">{{ tag.name_with_sector }}</a>, 
+                    <a href="{% url admin_view_tag tag.id %}">{{ tag.name_with_sector }}</a>{% if not forloop.last %},{% endif %}
                 {% endfor %}
             </td>
         </tr>
@@ -65,7 +65,7 @@
             </th>
             <td>
                 {% for society in resource.societies.all %}
-                    <a href="{% url admin_view_society society.id %}">{{ society.name }}</a>, 
+                    <a href="{% url admin_view_society society.id %}">{{ society.name }}</a>{% if not forloop.last %},{% endif %}
                 {% endfor %}
             </td>
         </tr>

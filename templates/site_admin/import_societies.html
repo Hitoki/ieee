@@ -4,15 +4,32 @@
     
     <h1>Admin Import Societies</h1>
     
-    <p>
-        Page time: {{pageTime}}<br/>
-        Rows: {{rowCount}}<br/>
-        Societies added: {{societiesAdded}}<br/>
-        Societies assigned: {{societiesAssigned}}<br/>
-        Find tag failures: {{findTagFailures}}<br/>
-    <p>
-        {{log|safe}}
-    </p>
+    <table class="grid">
+        <tr>
+            <th>
+                Page time:
+            </th>
+            <td>
+                {{ page_time }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Rows:
+            </th>
+            <td>
+                {{ row_count }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Societies created:
+            </th>
+            <td>
+                {{ societies_created }}
+            </td>
+        </tr>
+    </table>
     <p><a href="{% url admin_home %}">home</a></p>
     
 {% endblock %}
