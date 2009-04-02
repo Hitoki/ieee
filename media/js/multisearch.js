@@ -148,7 +148,7 @@ function MultiSearch(container, options) {
             format: 'simple',
             showAsTable: true,
             sortCol: null,
-            sortOrder: null,
+            sortOrder: null
         },
         this.container.metadata(),
         options
