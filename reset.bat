@@ -1,5 +1,5 @@
 
-cmd /c create_db.bat
+drop_all_tables.py
 @REM manage.py syncdb
 manage.py syncdb --noinput
 @REM manage.py dmigrate all
