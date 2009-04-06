@@ -63,6 +63,12 @@ urlpatterns = patterns('',
     url(r'^resource/save$', views.save_resource, name='admin_save_resource'),
     url(r'^resource/(?P<resource_id>\d+)/delete$', views.delete_resource, name='admin_delete_resource'),
     url(r'^resources/search$', views.search_resources, name='admin_search_resources'),
-
+    
+    # AJAX
+    url(r'^ajax/search_tags$', views.ajax_search_tags, name='search_tags'),
+    url(r'^ajax/search_resources$', views.ajax_search_resources, name='search_resources'),
+    url(r'^ajax/search_societies$', views.ajax_search_societies, name='search_societies'),
+    url(r'^ajax/update_society$', views.ajax_update_society, name='ajax_update_society'),
+    
     
 )
