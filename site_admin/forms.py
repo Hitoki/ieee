@@ -105,4 +105,4 @@ class UserForm(Form):
 
 class ManageSocietyForm(Form):
     resources = MultiSearchField(model=Resource, search_url='/ajax/search_resources')
-    tags = MultiSearchField(model=Node, search_url='/ajax/search_tags', format='full_tags_table', widget_label='Associate Tags with this Society')
+    tags = MultiSearchField(model=Node, search_url='/ajax/search_tags', format='full_tags_table', widget_label='Associate Tags with this Society', show_create_tag_link=True)

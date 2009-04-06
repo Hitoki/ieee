@@ -148,7 +148,8 @@ function MultiSearch(container, options) {
             format: 'simple',
             showAsTable: true,
             sortCol: null,
-            sortOrder: null
+            sortOrder: null,
+            showCreateTagLink: false
         },
         this.container.metadata(),
         options
@@ -359,10 +360,14 @@ MultiSearch.prototype.getOptions = function(value) {
 
 // Show a popup after loading the searchOptions
 MultiSearch.prototype.onGetOptions = function(data) {
+    var multiSearch = this;
+    
     // Make sure we're only handling the latest ajax request (that matches this.getOptionsValue)
     if (data.search_for == this.getOptionsValue) {
         // Close & reset the popup
         this.closePopup();
+        
+        var foundExactMatch = false;
         
         // Add the new searchOptions to the popup
         if (data.options.length == 0) {
@@ -393,15 +398,33 @@ MultiSearch.prototype.onGetOptions = function(data) {
                         num_resources: data.options[i].num_resources.toString()
                     }
                 }
-                //var option = data.options[i];
                 option.checked = checked;
                 this.addSearchOption(option);
+                
+                if (option.name == data.search_for)
+                    foundExactMatch = true;
             }
             
             if (data.more_results) {
                 $('<div class="multi-search-more-results">Enter more characters to view the rest of the results...</div>').appendTo(this.popupElem);
             }
-            
+        }
+        
+        //console.log('foundExactMatch: ' + foundExactMatch);
+        
+        // Add "Create tag" link at bottom
+        if (this.options.showCreateTagLink && !foundExactMatch) {
+            var createTag = $('<div class=""><a href="#create_new_tag" class="">Create a new tag "' + data.search_for + '"</a></div>').appendTo(this.popupElem);
+            createTag.click(function() {
+                // Notify the parent window of the "Create new tag" event
+                if (window.notify != undefined) {
+                    window.notify('multisearch_create_new_tag', {
+                        multisearch: multiSearch,
+                        tag_name: data.search_for
+                    });
+                }
+                return false;
+            });
         }
         
         this.showPopup();

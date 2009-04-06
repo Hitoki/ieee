@@ -6,7 +6,7 @@ import widgets
 class MultiSearchField(fields.Field):
     widget = widgets.MultiSearchWidget
     
-    def __init__(self, model, search_url, format='simple', widget_label=None, *args, **kwargs):
+    def __init__(self, model, search_url, format='simple', widget_label=None, show_create_tag_link=False, *args, **kwargs):
         super(MultiSearchField, self).__init__(*args, **kwargs)
         self.required = False
         self.model = model
@@ -15,6 +15,7 @@ class MultiSearchField(fields.Field):
         self.widget.set_search_url(search_url)
         self.widget.set_format(format)
         self.widget.set_widget_label(widget_label)
+        self.widget.set_show_create_tag_link(show_create_tag_link)
 
     def clean(self, value):
         "Returns an array of models."

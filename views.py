@@ -337,16 +337,17 @@ def tooltip(request):
     })
 
 def ajax_search_tags(request):
-    MAX_RESULTS = 50
+    #MAX_RESULTS = 50
     
     search_for = request.GET['search_for']
-    tags = Node.objects.searchTagsByNameSubstring(search_for)[:MAX_RESULTS+1]
+    #tags = Node.objects.searchTagsByNameSubstring(search_for)[:MAX_RESULTS+1]
+    tags = Node.objects.searchTagsByNameSubstring(search_for)
     
-    if len(tags) > MAX_RESULTS:
-        tags = tags[:MAX_RESULTS]
-        more_results = True
-    else:
-        more_results = False
+    #if len(tags) > MAX_RESULTS:
+    #    tags = tags[:MAX_RESULTS]
+    #    more_results = True
+    #else:
+    more_results = False
     
     data = {
         'search_for': search_for,
@@ -370,16 +371,17 @@ def ajax_search_tags(request):
     return HttpResponse(simplejson.dumps(data, sort_keys=True, indent=4), mimetype="text/plain")
 
 def ajax_search_resources(request):
-    MAX_RESULTS = 50
+    #MAX_RESULTS = 50
     
     search_for = request.GET['search_for']
-    resources = Resource.objects.searchByNameSubstring(search_for)[:MAX_RESULTS+1]
+    #resources = Resource.objects.searchByNameSubstring(search_for)[:MAX_RESULTS+1]
+    resources = Resource.objects.searchByNameSubstring(search_for)
     
-    if len(resources) > MAX_RESULTS:
-        resources = resources[:MAX_RESULTS]
-        more_results = True
-    else:
-        more_results = False
+    #if len(resources) > MAX_RESULTS:
+    #    resources = resources[:MAX_RESULTS]
+    #    more_results = True
+    #else:
+    more_results = False
     
     data = {
         'search_for': search_for,
@@ -396,16 +398,17 @@ def ajax_search_resources(request):
     return HttpResponse(simplejson.dumps(data, sort_keys=True, indent=4), mimetype="text/plain")
 
 def ajax_search_societies(request):
-    MAX_RESULTS = 50
+    #MAX_RESULTS = 50
     
     search_for = request.GET['search_for']
-    societies = Society.objects.searchByNameSubstring(search_for)[:MAX_RESULTS+1]
+    #societies = Society.objects.searchByNameSubstring(search_for)[:MAX_RESULTS+1]
+    societies = Society.objects.searchByNameSubstring(search_for)
     
-    if len(societies) > MAX_RESULTS:
-        societies = societies[:MAX_RESULTS]
-        more_results = True
-    else:
-        more_results = False
+    #if len(societies) > MAX_RESULTS:
+    #    societies = societies[:MAX_RESULTS]
+    #    more_results = True
+    #else:
+    more_results = False
     
     data = {
         'search_for': search_for,
