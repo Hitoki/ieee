@@ -1374,6 +1374,8 @@ def edit_resource(request, resource_id=None):
         raise Exception('query variable "return_url" not found')
     
     return_url = request.GET['return_url']
+    society_id = request.GET.get('society_id', '')
+    
     if resource_id is None:
         # creating a new resource
         if 'society_id' in request.GET:
@@ -1403,6 +1405,9 @@ def edit_resource(request, resource_id=None):
             'societies': resource.societies.all(),
         })
         
+        if society_id != '':
+            form.fields['nodes'].widget.set_search_url(reverse('search_tags') + '?society_id=' + society_id)
+        
         # Disable edit resource form fields for societies
         if not request.user.is_superuser:
             make_display_only(form.fields['societies'], is_multi_search=True)
@@ -1410,6 +1415,7 @@ def edit_resource(request, resource_id=None):
         
     return render(request, 'site_admin/edit_resource.html', {
         'return_url': return_url,
+        'society_id': society_id,
         'resource': resource,
         'form': form,
     })

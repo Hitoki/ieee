@@ -196,3 +196,57 @@ class DisplayOnlyWidget(widgets.HiddenInput):
                 super_render = super(DisplayOnlyWidget, self).render(name, value, attrs)
         
         return mark_safe(u'%s\n%s' % (super_render, escape(display)))
+
+
+class CheckboxSelectMultipleColumns(widgets.CheckboxSelectMultiple):
+    "Similar to a CheckboxSelectMultiple widget, except that checkboxes are rendered into columns."
+    
+    def __init__(self, columns, attrs=None):
+        super_render = super(CheckboxSelectMultipleColumns, self).__init__(attrs)
+        self.columns = columns
+            
+    def render(self, name, value, attrs=None, choices=()):
+        from itertools import chain
+        import math
+        from django.forms import CheckboxInput
+        from django.utils.encoding import force_unicode
+        from django.utils.html import conditional_escape
+        
+        print 'render()'
+        if value is None: value = []
+        has_id = attrs and 'id' in attrs
+        final_attrs = self.build_attrs(attrs, name=name)
+        # Normalize to strings
+        str_values = set([force_unicode(v) for v in value])
+        choices_per_column = int(math.ceil(len(list(self.choices)) / float(self.columns)))
+        
+        output_items = []
+        for i, (option_value, option_label) in enumerate(chain(self.choices, choices)):
+            # If an ID attribute was given, add a numeric index as a suffix,
+            # so that the checkboxes don't all have the same ID attribute.
+            if has_id:
+                final_attrs = dict(final_attrs, id='%s_%s' % (attrs['id'], i))
+                label_for = u' for="%s"' % final_attrs['id']
+            else:
+                label_for = ''
+
+            cb = CheckboxInput(final_attrs, check_test=lambda value: value in str_values)
+            option_value = force_unicode(option_value)
+            rendered_cb = cb.render(name, option_value)
+            option_label = conditional_escape(force_unicode(option_label))
+            output_items.append(u'<li><label%s>%s %s</label></li>' % (label_for, rendered_cb, option_label))
+        
+        output = []
+        for column in range(self.columns):
+            output.append(u'<ul class="checkbox-select-multiple-columns checkbox-select-multiple-columns-%d">' % self.columns)
+            output.extend(output_items[:choices_per_column])
+            output.append(u'</ul>')
+        
+        return mark_safe(u'\n'.join(output))
+
+    def id_for_label(self, id_):
+        # See the comment for RadioSelect.id_for_label()
+        if id_:
+            id_ += '_0'
+        return id_
+    id_for_label = classmethod(id_for_label)

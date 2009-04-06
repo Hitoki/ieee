@@ -4,7 +4,7 @@ from django.forms import *
 
 from ieeetags.models import Filter, Node, NodeType, Society, Resource, ResourceType, Profile
 from ieeetags.fields import MultiSearchField
-from ieeetags.widgets import MultiSearchWidget, DisplayOnlyWidget
+from ieeetags.widgets import MultiSearchWidget, DisplayOnlyWidget, CheckboxSelectMultipleColumns
 
 
 class ModifiedFormBase(Form):
@@ -30,8 +30,8 @@ class ModifiedFormBase(Form):
 
 class CreateTagForm(Form):
     name = CharField(max_length=100, label='Tag Name')
-    sectors = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), label='Sector')
-    filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultiple(), required=False, label='Filters')
+    sectors = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), label='Sector', widget=SelectMultiple(attrs={'size':3}))
+    filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultipleColumns(columns=2), required=False, label='Filters')
     related_tags = MultiSearchField(model=Node, search_url='/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags')
 
 class EditTagForm(Form):
@@ -39,7 +39,7 @@ class EditTagForm(Form):
     name = CharField(max_length=100, label='Tag Name')
     parents = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), label='Sectors', widget=CheckboxSelectMultiple())
     societies = MultiSearchField(model=Society, search_url='/ajax/search_societies', label='Societies')
-    filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultiple(), required=False, label='Filters')
+    filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultipleColumns(columns=2), required=False, label='Filters')
     #num_resources = models.IntegerField(required=False, label='Resources')
     related_tags = MultiSearchField(model=Node, search_url='/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags with this Tag')
 

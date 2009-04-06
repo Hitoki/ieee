@@ -287,3 +287,20 @@ ul.error {
     margin-bottom:.5em;
     font-weight:bold;
 }
+
+/* */
+
+ul.checkbox-select-multiple-columns {
+    float:left;
+    padding-right:2em;
+}
+
+/*
+ul.checkbox-select-multiple-columns-2 {
+    width:49%;
+}
+
+ul.checkbox-select-multiple-columns-3 {
+    width:32%;
+}
+*/
