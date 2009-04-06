@@ -1,0 +1,18 @@
+
+/* For Internet Explorer */
+
+.vert-center-outer {
+    position: relative;
+}
+
+.vert-center-middle {
+    position: absolute;
+    top: 50%;
+    left:0px;
+    width:100%;
+}
+
+.vert-center-inner {
+    position: relative;
+    top: -50%;
+}

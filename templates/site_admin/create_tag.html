@@ -1,6 +1,10 @@
 {% extends 'site_admin/admin_base.html' %}
 
 {% block main_table_content %}
+
+{% if is_ajax %}
+<div class="create-tag-lightbox">
+{% endif %}
     
     <h1>Create New Tag</h1>
     
@@ -51,12 +55,20 @@
             </tr>
         </table>
         <input type="submit" value="Ok" class="button" />
-        {% if return_url %}
-            <input type="button" value="Cancel" onclick="window.location='{{ return_url }}';" />
-        {% endif %}
-        {% if sector %}
-            <input type="button" value="Cancel" onclick="window.location='{% url admin_view_sector sector.id %}';" />
+        {% if is_ajax %}
+            <input type="button" value="Cancel" class="lightbox-close" />
+        {% else %}
+            {% if return_url %}
+                <input type="button" value="Cancel" onclick="window.location='{{ return_url }}';" />
+            {% endif %}
+            {% if sector %}
+                <input type="button" value="Cancel" onclick="window.location='{% url admin_view_sector sector.id %}';" />
+            {% endif %}
         {% endif %}
     </form>
+
+{% if is_ajax %}
+</div>
+{% endif %}
     
 {% endblock %}

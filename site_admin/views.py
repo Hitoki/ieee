@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.utils import simplejson as json
+from urllib import quote
 
 from ieeetags import settings
 from ieeetags.util import *
@@ -935,11 +936,13 @@ def create_tag(request):
     else:
         sector = Node.objects.get(id=sector_id)
     society_id = request.GET.get('society_id', '')
+    default_tag_name = request.GET.get('default_tag_name', '')
     
     if request.method == 'GET':
         # Show the create tag form
         form = CreateTagForm(initial={
             'sector': sector_id,
+            'name': default_tag_name,
         })
         
     else:
@@ -970,6 +973,25 @@ def create_tag(request):
             
             if return_url != '':
                 return HttpResponseRedirect(return_url)
+            
+            elif request.is_ajax():
+                return HttpResponse('ajax\n' + json.dumps({
+                    'event': 'created_tag',
+                    'data': {
+                        'tag': {
+                            'name': tag.name,
+                            'name_link': reverse('admin_edit_tag', args=[tag.id]) + '?return_url=%s' % quote('/admin/?hash=' + quote('#tab-tags-tab')),
+                            'value': tag.id,
+                            'tag_name': tag.name,
+                            'sector_names': tag.parent_names(),
+                            'num_societies': len(tag.societies.all()),
+                            'num_related_tags': len(tag.related_tags.all()),
+                            'num_filters': len(tag.filters.all()),
+                            'num_resources': len(tag.resources.all()),
+                        },
+                    },
+                }))
+                
             else:
                 return HttpResponse("""
                     <script>

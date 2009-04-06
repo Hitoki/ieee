@@ -13,6 +13,7 @@
 
 {% block main_content_nopad %}
     
+{% if not is_ajax %}    
     {% if user.is_authenticated %}
         <ul class="nav">
             <li class="{% block nav_home %}{% endblock %}">
@@ -31,8 +32,14 @@
             {% endif %}
         </ul>
     {% endif %}
+{% endif %}
     
+{% if not is_ajax %}    
     <div class="center-pad">
+{% endif %}
         {% block main_table_content %}{% endblock %}
+{% if not is_ajax %}    
     </div>
+{% endif %}
+
 {% endblock %}

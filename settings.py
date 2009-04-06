@@ -110,7 +110,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'ieeetags.context_processors.media_url',
     'ieeetags.context_processors.user',
     'ieeetags.context_processors.current_url',
-    #'context_processors.is_ajax',
+    'ieeetags.context_processors.is_ajax',
 )
 
 LOG_FILENAME = relpath(__file__, 'log.txt')

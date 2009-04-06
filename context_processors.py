@@ -17,5 +17,8 @@ def current_url(request):
     "Adds the current URL to the context as 'current_url'."
     return {'current_url': request.get_full_path()}
 
-#def is_ajax(request):
-#	return {'is_ajax': request.is_ajax()}
+def is_ajax(request):
+    if request.GET.get('ajax', None) is not None:
+        return {'is_ajax': True}
+    else:
+        return {'is_ajax': request.is_ajax()}

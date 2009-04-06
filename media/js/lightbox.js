@@ -14,18 +14,33 @@ var Lightbox = {
     },
     
     // Show the given URL in the lightbox
-    show: function(url) {
+    show: function(url, options) {
         var lightbox = this;
         if (!this.visible) {
+            
+            // Options
+            this.options = extendExisting(
+                {
+                    closeOnClickOutside: true
+                },
+                options
+            );
+            
             // Create the lightbox
-            this.lightbox = $('<div id="lightbox"><div class="lightbox-background"></div><div class="lightbox-content"></div></div>').appendTo('body');
+            this.lightbox = $('<div id="lightbox"></div>').appendTo('body');
+            //<div class="lightbox-background"></div>
             this.lightboxBackground = $('<div class="lightbox-background"></div>').appendTo(this.lightbox);
-            this.lightboxContent = $('<div class="lightbox-content"></div>').appendTo(this.lightbox);
+            
+            //this.lightboxContent = $('<div class="lightbox-content"></div>').appendTo(this.lightbox);
+            this.lightboxContentOuterElem = $('<div class="vert-center-outer lightbox-content-outer"></div>').appendTo(this.lightbox);
+            this.lightboxContentMiddleElem = $('<div class="vert-center-middle"></div>').appendTo(this.lightboxContentOuterElem);
+            this.lightboxContent = $('<div class="vert-center-inner lightbox-content"></div>').appendTo(this.lightboxContentMiddleElem);
             
             // Close the lightbox if user clicks outside the content area
             this.lightbox.click(function() {
                 console.log('lightbox.click()');
-                lightbox.hide();
+                if (lightbox.options.closeOnClickOutside)
+                    lightbox.hide();
             });
             this.lightboxContent.click(function(e) {
                 console.log('lightboxContent.click()');
@@ -37,36 +52,58 @@ var Lightbox = {
         }
         
         //this.lightbox.clear();
-        this.lightboxContent.load(url, null, function() { lightbox.onLoadContent(); } );
+        $.get(url, null, function(data) { lightbox.onLoadContent(data); }, 'text');
+        //this.lightboxContent.load(url, null, function() { lightbox.onLoadContent(); } );
     },
     
-    onLoadContent: function() {
+    onLoadContent: function(data) {
         var lightbox = this;
-        //console.log('onLoadContent()');
-        //console.log('this: ' + this);
-        //console.log('this.visible: ' + this.visible);
         if (this.visible) {
-            // Hook into any forms
-            var forms = this.lightboxContent.find('form');
-            for (var i=0; i<forms.length; i++) {
-                var form = $(forms[i]);
-                form.submit(function(e) {
-                    e.preventDefault();
-                    $.post(form[0].action, form.serializeArray(), function(data){ lightbox.onFormResults(data); } );
+            
+            console.log('  data: ' + data);
+            
+            if (data == 'close_lightbox') {
+                // Close the lightbox
+                this.hide();
+                
+            } else if (data.substr(0, 4) == 'ajax') {
+                var vars = eval("(" + data.substr(5, data.length-5) + ")");
+                for (var i in vars)
+                    console.log('vars['+i+']: ' + vars[i]);
+                    
+                if (window.notify != undefined) {
+                    window.notify(vars.event, vars.data);
+                }
+                
+                // TODO
+                this.hide();
+                
+            } else {
+                
+                // Received plain HTML, just render
+                this.lightboxContent.html(data);
+                
+                // Hook into any forms
+                var forms = this.lightboxContent.find('form');
+                for (var i=0; i<forms.length; i++) {
+                    var form = $(forms[i]);
+                    form.submit(function(e) {
+                        e.preventDefault();
+                        $.post(form[0].action, form.serializeArray(), function(data){ lightbox.onFormResults(data); } );
+                    });
+                }
+                
+                // Hook into any close buttons
+                this.lightboxContent.find('.lightbox-close').click(function(e) {
+                    lightbox.hide();
                 });
             }
-            
-            // Hook into any close buttons
-            this.lightboxContent.find('.lightbox-close').click(function(e) {
-                lightbox.hide();
-            });
         }
     },
     
     onFormResults: function(data) {
         if (this.visible) {
-            this.lightboxContent.html(data);
-            this.onLoadContent();
+            this.onLoadContent(data);
         }
     },
     

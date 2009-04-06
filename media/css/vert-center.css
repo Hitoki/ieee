@@ -1,0 +1,22 @@
+
+/* For the modern browsers */
+
+.vert-center-outer,
+.vert-center-outer-full
+{
+    display: table;
+}
+
+.vert-center-outer-full {
+    width:100%;
+    height:100%;
+}
+
+.vert-center-middle {
+    display: table-cell;
+    vertical-align: middle;
+    /*text-align:center;*/
+}
+
+.vert-center-inner {
+}

@@ -30,7 +30,6 @@ urlpatterns = patterns('',
     # Tags
     url(r'^tags$', views.list_tags, name='admin_list_tags'),
     url(r'^tag/(\d+)$', views.view_tag, name='admin_view_tag'),
-    #url(r'^show_create_tag_form$', views.show_create_tag_form, name='admin_show_create_tag_form'),
     url(r'^tag/create$', views.create_tag, name='admin_create_tag'),
     url(r'^tag/(?P<tag_id>\d+)/edit$', views.edit_tag, name='admin_edit_tag'),
     url(r'^tags/search$', views.search_tags, name='admin_search_tags'),

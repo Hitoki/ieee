@@ -21,12 +21,23 @@
             if (action == 'created_tag') {
                 // Just created a tag, add it to the field
                 var multisearch = $('#multisearch_tags').data('multisearch');
-                // TODO: This needs to be fixed!
+                
+                // Add the newly created tag to the list of options
                 multisearch.addSelectedOption({
-                    name: data.tag.name_with_sector,
-                    value: data.tag.id
+                    name: data.tag.name,
+                    name_link: data.tag.name_link,
+                    value: data.tag.value,
+                    tag_name: data.tag.tag_name,
+                    sector_names: data.tag.sector_names,
+                    num_societies: data.tag.num_societies.toString(),
+                    num_related_tags: data.tag.num_related_tags.toString(),
+                    num_filters: data.tag.num_filters.toString(),
+                    num_resources: data.tag.num_resources.toString()
                 });
-            
+                
+                // Trigger a refresh of the popup
+                multisearch.updatePopup();
+                
             } else if (action == 'added_multisearch_option') {
                 $.post('/ajax/update_society', {
                     action: 'add_tag',
@@ -47,12 +58,9 @@
                 updateTagCount()
                 
             } else if (action == 'multisearch_create_new_tag') {
-                
-                // TODO:
-                console.log('create new tag...');
-                console.log('  data.multisearch: ' + data.multisearch);
-                console.log('  data.tag_name: ' + data.tag_name);
-                
+                Lightbox.show('{% url admin_create_tag %}?default_tag_name=' + escape(data.tag_name) + '&society_id=' + {{ society.id }}, {
+                    closeOnClickOutside: false
+                });
                 
             } else {
                 alert('notify(): unknown action "' + action + '"');

@@ -116,7 +116,8 @@ ul.section-list li li {
 /* Tables */
 
 #id_name, #id_url, #id_description {
-    width: 400px;
+    /*width: 400px;*/
+    width: 95%;
 }
 
 .header-with-note {
@@ -135,7 +136,8 @@ ul.section-list li li {
 }
 
 table.edit-create {
-    width: 900px;
+    /*width: 900px;*/
+    width:100%;
 }
 
 table.edit-create th {
@@ -304,3 +306,4 @@ ul.checkbox-select-multiple-columns-3 {
     width:32%;
 }
 */
+

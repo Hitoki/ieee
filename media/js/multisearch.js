@@ -344,6 +344,17 @@ function url_encode(obj) {
     return data;
 }
 
+// Update and display the search options popup, in case something has changed
+MultiSearch.prototype.updatePopup = function() {
+    this.closePopup();
+    var value = this.input.attr('value');
+    if ($.trim(value) != '') {
+        // User has entered text, search for it
+        this.getOptionsValue = value;
+        this.getOptions(value);
+    }
+}
+
 // Initiate getting searchOptions for the given value
 MultiSearch.prototype.getOptions = function(value) {
     var multiSearch = this;
@@ -401,7 +412,7 @@ MultiSearch.prototype.onGetOptions = function(data) {
                 option.checked = checked;
                 this.addSearchOption(option);
                 
-                if (option.name == data.search_for)
+                if (option.name.toLowerCase() == data.search_for.toLowerCase())
                     foundExactMatch = true;
             }
             

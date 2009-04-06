@@ -1,5 +1,7 @@
 {% load noo_jscssmin %}
 
+{% if not is_ajax %}
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html>
@@ -8,9 +10,10 @@
             IEEE/Constellation Demo {% block server_title %}{% endblock %}
         </title>
         
-        {% cssmin css/style.css css/tooltip.css css/lightbox.css css/nootabs.css css/multisearch.css css/flyover.css %}
+        {% cssmin css/style.css css/tooltip.css css/lightbox.css css/nootabs.css css/multisearch.css css/flyover.css css/vert-center.css %}
         <!--[if IE 7]>
         <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/style-ie7.css" title="Style for IE7" />
+        <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/vert-center-ie.css" title="Vert Center Style for IE" />
         <![endif]-->
         
         {% jsmin js/jquery-1.2.6.min.js js/jquery.scrollTo.js js/jquery.metadata.js js/global.js js/console.js js/roamer.js js/tags.js js/tooltip.js js/lightbox.js js/nootabs.js js/json2.js js/multisearch.js js/flyover.js js/blurText.js %}
@@ -26,11 +29,9 @@
     </head>
     <body>
         {% block server_info %}{% endblock %}
+{% endif %}
         {% block content %}{% endblock %}
+{% if not is_ajax %}
     </body>
 </html>
-
-
-
-
-
+{% endif %}

@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    
+
+{% if not is_ajax %}    
     <table class="main">
         <tr>
             <td class="left">
@@ -17,11 +18,17 @@
                     {% block extra_header %}{% endblock %}
                 </div>
                 
+{% endif %}
                 {% block main_content_nopad %}
+{% if not is_ajax %}    
                     <div class="center-pad">
+{% endif %}
                         {% block main_table_content %}{% endblock %}
+{% if not is_ajax %}    
                     </div>
+{% endif %}
                 {% endblock %}
+{% if not is_ajax %}
                     
                 <div id="footer">
                     <img class="leftCorner" src="{{MEDIA_URL}}images/mainBottomLeftCorner.png" />
@@ -35,5 +42,6 @@
             </td>
         </tr>
     </table>
+{% endif %}
     
 {% endblock %}

@@ -4,8 +4,6 @@
     width:100%;
     height:100%;
     margin:0px auto;
-    /*background:silver;*/
-    /*border:1px solid blue;*/
     z-index:10000;
 }
 
@@ -18,17 +16,15 @@
     background:gray;
     opacity:0.50;
     filter:alpha(opacity=50)
-    /*border:1px solid red;*/
+}
+
+#lightbox .lightbox-content-outer {
+    width:100%;
+    height:100%;
+    position:absolute;
 }
 
 #lightbox .lightbox-content {
-    position:absolute;
-    width:50%;
-    /*height:50%;*/
-    top:20%;
-    left:25%;
-    z-index:2;
-    background:white;
 }
 
 #lightbox .lightbox-content .lightbox-pad {
@@ -70,4 +66,14 @@ input.text {
 textarea {
     width:99%;
     height:100px;
+}
+
+/* */
+
+.create-tag-lightbox {
+    background:white;
+    border:1px solid black;
+    width:50%;
+    margin:0px auto;
+    padding:1em;
 }
