@@ -3,6 +3,7 @@ from django.conf.urls.defaults import *
 import views
 
 urlpatterns = patterns('',
+    
     url(r'^login$', views.login, name='admin_login'),
     url(r'^logout$', views.logout, name='admin_logout'),
     url(r'^forgot_password$', views.forgot_password, name='forgot_password'),
@@ -46,9 +47,7 @@ urlpatterns = patterns('',
     # Societies
     url(r'^societies$', views.societies, name='admin_societies'),
     url(r'^society/(?P<society_id>\d+)$', views.view_society, name='admin_view_society'),
-    
     url(r'^society/(?P<society_id>\d+)/manage$', views.manage_society, name='admin_manage_society'),
-    
     url(r'^society/create$', views.edit_society, name='admin_create_society'),
     url(r'^society/(?P<society_id>\d+)/edit$', views.edit_society, name='admin_edit_society'),
     url(r'^society/save$', views.save_society, name='admin_save_society'),
@@ -65,10 +64,9 @@ urlpatterns = patterns('',
     url(r'^resources/search$', views.search_resources, name='admin_search_resources'),
     
     # AJAX
-    url(r'^ajax/search_tags$', views.ajax_search_tags, name='search_tags'),
-    url(r'^ajax/search_resources$', views.ajax_search_resources, name='search_resources'),
-    url(r'^ajax/search_societies$', views.ajax_search_societies, name='search_societies'),
+    url(r'^ajax/search_tags$', views.ajax_search_tags, name='ajax_search_tags'),
+    url(r'^ajax/search_resources$', views.ajax_search_resources, name='ajax_search_resources'),
+    url(r'^ajax/search_societies$', views.ajax_search_societies, name='ajax_search_societies'),
     url(r'^ajax/update_society$', views.ajax_update_society, name='ajax_update_society'),
-    
     
 )

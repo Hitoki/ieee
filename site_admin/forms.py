@@ -32,16 +32,16 @@ class CreateTagForm(Form):
     name = CharField(max_length=100, label='Tag Name')
     sectors = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), label='Sector', widget=SelectMultiple(attrs={'size':3}))
     filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultipleColumns(columns=2), required=False, label='Filters')
-    related_tags = MultiSearchField(model=Node, search_url='/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags')
+    related_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags')
 
 class EditTagForm(Form):
     id = IntegerField(widget=HiddenInput(), required=False)
     name = CharField(max_length=100, label='Tag Name')
     parents = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), label='Sectors', widget=CheckboxSelectMultiple())
-    societies = MultiSearchField(model=Society, search_url='/ajax/search_societies', label='Societies')
+    societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies', label='Societies')
     filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultipleColumns(columns=2), required=False, label='Filters')
     #num_resources = models.IntegerField(required=False, label='Resources')
-    related_tags = MultiSearchField(model=Node, search_url='/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags with this Tag')
+    related_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags with this Tag')
 
 class LoginForm(Form):
     username = CharField(max_length=30, label='User Name:')
@@ -61,8 +61,8 @@ class CreateResourceForm(Form):
     name = CharField(max_length=500)
     description = CharField(widget=Textarea, max_length=1000, required=False)
     url = CharField(max_length=1000, required=False)
-    nodes = MultiSearchField(label='Tags', model=Node, search_url='/ajax/search_tags')
-    societies = MultiSearchField(model=Society, search_url='/ajax/search_societies')
+    nodes = MultiSearchField(label='Tags', model=Node, search_url='/admin/ajax/search_tags')
+    societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies')
 
 class EditResourceForm(Form):
     id = IntegerField(widget=HiddenInput(), required=False)
@@ -71,8 +71,8 @@ class EditResourceForm(Form):
     ieee_id = IntegerField(required=False, label='ID')
     description = CharField(widget=Textarea, max_length=1000, required=False)
     url = CharField(max_length=1000, required=False, label='URL')
-    nodes = MultiSearchField(label='Tags', model=Node, search_url='/ajax/search_tags', widget_label='Associate Tags with this Resource')
-    societies = MultiSearchField(model=Society, search_url='/ajax/search_societies', label='Societies')
+    nodes = MultiSearchField(label='Tags', model=Node, search_url='/admin/ajax/search_tags', widget_label='Associate Tags with this Resource')
+    societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies', label='Societies')
 
 class SocietyForm(ModifiedFormBase):
     id = IntegerField(widget=HiddenInput(), required=False)
@@ -80,8 +80,8 @@ class SocietyForm(ModifiedFormBase):
     abbreviation = CharField(max_length=20)
     url = CharField(max_length=1000, required=False)
     users = ModelMultipleChoiceField(queryset=User.objects.all(), required=False)
-    tags = MultiSearchField(model=Node, search_url='/ajax/search_tags')
-    resources = MultiSearchField(model=Resource, search_url='/ajax/search_resources')
+    tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags')
+    resources = MultiSearchField(model=Resource, search_url='/admin/ajax/search_resources')
 
 class SearchTagsForm(Form):
     tag_name = CharField(max_length=100)
@@ -104,5 +104,5 @@ class UserForm(Form):
     societies = ModelMultipleChoiceField(queryset=Society.objects.all(), required=False)
 
 class ManageSocietyForm(Form):
-    resources = MultiSearchField(model=Resource, search_url='/ajax/search_resources')
-    tags = MultiSearchField(model=Node, search_url='/ajax/search_tags', format='full_tags_table', widget_label='Associate Tags with this Society', show_create_tag_link=True)
+    resources = MultiSearchField(model=Resource, search_url='/admin/ajax/search_resources')
+    tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', format='full_tags_table', widget_label='Associate Tags with this Society', show_create_tag_link=True)
