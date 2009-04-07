@@ -1201,6 +1201,8 @@ def manage_society(request, society_id):
         'resources': society.resources.all(),
     })
     
+    form.fields['tags'].widget.set_society_id(society_id)
+    
     if sort == 'name_ascending':
         resources1 = society.resources.order_by('name')
     elif sort == 'name_descending':
@@ -1428,7 +1430,10 @@ def edit_resource(request, resource_id=None):
         })
         
         if society_id != '':
-            form.fields['nodes'].widget.set_search_url(reverse('search_tags') + '?society_id=' + society_id)
+            form.fields['nodes'].widget.set_search_url(reverse('ajax_search_tags') + '?society_id=' + society_id)
+            form.fields['nodes'].widget.set_society_id(society_id)
+        
+        
         
         # Disable edit resource form fields for societies
         if not request.user.is_superuser:
@@ -1536,6 +1541,12 @@ def search_resources(request):
 def ajax_search_tags(request):
     #MAX_RESULTS = 50
     
+    society_id = request.GET.get('society_id', '')
+    if society_id != '':
+        society = Society.objects.get(id=society_id)
+    else:
+        society = None
+    
     search_for = request.GET['search_for']
     #tags = Node.objects.searchTagsByNameSubstring(search_for)[:MAX_RESULTS+1]
     tags = Node.objects.searchTagsByNameSubstring(search_for)
@@ -1553,6 +1564,13 @@ def ajax_search_tags(request):
     }
     if tags:
         for tag in tags:
+            societies = []
+            for society1 in tag.societies.all():
+                societies.append({
+                    'id': society1.id,
+                    'name': society1.name,
+                })
+                
             data['options'].append({
                 'name': tag.name,
                 'name_link': reverse('admin_edit_tag', args=[tag.id]) + '?return_url=%s' % quote('/admin/?hash=' + quote('#tab-tags-tab')),
@@ -1563,6 +1581,7 @@ def ajax_search_tags(request):
                 'num_related_tags': len(tag.related_tags.all()),
                 'num_filters': len(tag.filters.all()),
                 'num_resources': len(tag.resources.all()),
+                'societies': societies,
             })
     
     return HttpResponse(json.dumps(data, sort_keys=True, indent=4), mimetype="text/plain")

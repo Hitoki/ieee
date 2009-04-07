@@ -31,6 +31,9 @@ class MultiSearchWidget(widgets.Widget):
     def set_show_create_tag_link(self, show_create_tag_link):
         self.show_create_tag_link = show_create_tag_link
 
+    def set_society_id(self, society_id):
+        self.society_id = society_id
+
     def render(self, name, value, attrs=None):
         #print 'MultiSearchWidget()'
         #print '  name:', name
@@ -82,7 +85,12 @@ class MultiSearchWidget(widgets.Widget):
                 return 'false'
         
         output = []
-        output.append('<div id="%s" class="multi-search {searchUrl:\'%s\', format:\'%s\', showCreateTagLink:%s}">' % ('multisearch_'+name, self.search_url, self.format, js_true_or_false(self.show_create_tag_link)))
+        
+        classString = 'searchUrl:\'%s\', format:\'%s\', showCreateTagLink:%s' % (self.search_url, self.format, js_true_or_false(self.show_create_tag_link))
+        if self.society_id is not None:
+            classString += ', society_id:%s' % self.society_id
+        
+        output.append('<div id="%s" class="multi-search { %s }">' % ('multisearch_'+name, classString ))
         output.append('    <input type="hidden" name="%s" value="%s" class="multi-search-data" />' % (name, escape(initial_data)))
         output.append('    %s: <input class="multi-search-input blur-text {text:\'(Type a few characters to bring up matching %s)\', blurClass:\'multi-search-input-blur\' }" />' % (widget_label, name))
         output.append('    <div class="multi-search-selected-options">')

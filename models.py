@@ -185,7 +185,8 @@ class NodeManager(models.Manager):
         if substring.strip() == '':
             return None
         tag_type = NodeType.objects.getFromName(NodeType.TAG)
-        return self.filter(name__icontains=substring, node_type=tag_type)
+        results = self.filter(name__icontains=substring, node_type=tag_type)
+        return results
     
     def get_sector_by_name(self, name):
         sector_type = NodeType.objects.getFromName(NodeType.SECTOR)

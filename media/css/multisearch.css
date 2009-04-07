@@ -57,6 +57,17 @@
     overflow:auto;
 }
 
+.multi-search-popup-first,
+.multi-search-popup-second
+{
+    font-style:italic;
+    color:gray;
+}
+
+.multi-search-popup-second {
+    margin-top:.5em;
+}
+
 .multi-search-no-results,
 .multi-search-more-results
 {

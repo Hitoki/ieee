@@ -39,7 +39,7 @@
                 multisearch.updatePopup();
                 
             } else if (action == 'added_multisearch_option') {
-                $.post('/ajax/update_society', {
+                $.post('{% url ajax_update_society %}', {
                     action: 'add_tag',
                     society_id: {{ society.id }},
                     tag_id: data.option.value
@@ -50,7 +50,7 @@
                 updateTagCount()
                 
             } else if (action == 'removed_multisearch_option') {
-                $.post('/ajax/update_society', {
+                $.post('{% url ajax_update_society %}', {
                     action: 'remove_tag',
                     society_id: {{ society.id }},
                     tag_id: data.option.value

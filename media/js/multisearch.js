@@ -149,7 +149,9 @@ function MultiSearch(container, options) {
             showAsTable: true,
             sortCol: null,
             sortOrder: null,
-            showCreateTagLink: false
+            showCreateTagLink: false,
+            society_id: null,
+            society_tags_first: false
         },
         this.container.metadata(),
         options
@@ -161,6 +163,9 @@ function MultiSearch(container, options) {
     
     if (typeof this.options.format != 'string' || (this.options.format != 'simple' && this.options.format != 'full_tags_table'))
         return error('MultiSearch(): format must be "simple" or "full_tags_table"');
+    
+    if (this.options.society_id != null)
+        this.options.society_tags_first = true;
     
     /*
     // Prevent close popup if clicking within container... too big?
@@ -241,6 +246,7 @@ function MultiSearch(container, options) {
         // Prevent clicks in the popup from propagating to the document.click() and closing the popup
         e.stopPropagation();
     });
+    
     
     // TODO: This works in IE7 but not Firefox
     this.popupElem.keydown(function(e) {
@@ -394,7 +400,8 @@ MultiSearch.prototype.onGetOptions = function(data) {
                 if (this.options.format == 'simple') {
                     option = {
                         name: data.options[i].name,
-                        value: data.options[i].value
+                        value: data.options[i].value,
+                        societies: data.options[i].societies
                     }
                 } else {
                     option = {
@@ -406,8 +413,20 @@ MultiSearch.prototype.onGetOptions = function(data) {
                         num_societies: data.options[i].num_societies.toString(),
                         num_related_tags: data.options[i].num_related_tags.toString(),
                         num_filters: data.options[i].num_filters.toString(),
-                        num_resources: data.options[i].num_resources.toString()
+                        num_resources: data.options[i].num_resources.toString(),
+                        societies: data.options[i].societies
                     }
+                    
+                    console.log('  data.options[i].societies: ' + data.options[i].societies);
+                    
+                    /*
+                    for (var j=0; j<option.societies.length; j++) {
+                        for (var k in option.societies[j]) {
+                            console.log('option.societies['+j+']['+k+']: ' + option.societies[j][k]);
+                        }
+                    }
+                    */
+                    
                 }
                 option.checked = checked;
                 this.addSearchOption(option);
@@ -452,8 +471,40 @@ MultiSearch.prototype.addSearchOption = function(searchOption) {
     var index = this.searchOptions.length;
     this.searchOptions[index] = searchOption;
     
-    // Create this.searchOptions[index] element
-    this.searchOptions[index].elem = $("<div class=\"multi-search-popup-item\"><img class='multi-search-popup-item-checkbox' src='/media/images/checkbox.png' />" + this.searchOptions[index].name + "</div>").appendTo(this.popupElem);
+    // Create this.searchOptions[index] elementf
+    this.searchOptions[index].elem = $("<div class=\"multi-search-popup-item\"><img class='multi-search-popup-item-checkbox' src='/media/images/checkbox.png' />" + this.searchOptions[index].name + "</div>");
+    
+    if (this.options.society_tags_first) {
+        var belongsToSociety = false;
+        if (this.options.society_id != null) {
+            
+            /*
+            console.log('searchOption: ' + searchOption);
+            for (var i in searchOption) {
+                console.log('  ' + i + ': ' + searchOption[i]);
+            }
+            console.log('searchOption: ' + searchOption);
+            console.log('searchOption.societies: ' + searchOption.societies);
+            */
+            
+            for (var i=0; i<searchOption.societies.length; i++) {
+                if (searchOption.societies[i].id == this.options.society_id) {
+                    belongsToSociety = true;
+                    break;
+                }
+            }
+        }
+        if (belongsToSociety) {
+            this.searchOptions[index].elem.appendTo(this.popupFirstElem);
+        } else {
+            this.searchOptions[index].elem.appendTo(this.popupSecondElem);
+        }
+    } else {
+        this.searchOptions[index].elem.appendTo(this.popupElem);
+    }
+    
+    this.searchOptions[index].elem.html(this.searchOptions[index].elem.html() + ' hi');
+    
     this.searchOptions[index].elem.data('index', index);
     // Toggle the search option when it's clicked
     this.searchOptions[index].elem.click(function(e) {
@@ -593,7 +644,8 @@ MultiSearch.prototype.selectSearchOption = function(index) {
             num_societies: searchOption.num_societies.toString(),
             num_related_tags: searchOption.num_related_tags.toString(),
             num_filters: searchOption.num_filters.toString(),
-            num_resources: searchOption.num_resources.toString()
+            num_resources: searchOption.num_resources.toString(),
+            societies: searchOption.societies
         });
     } else {
         this.addSelectedOption({
@@ -740,7 +792,8 @@ MultiSearch.prototype.addSelectedOption = function(option, preload) {
                 num_societies: option.num_societies.toString(),
                 num_related_tags: option.num_related_tags.toString(),
                 num_filters: option.num_filters.toString(),
-                num_resources: option.num_resources.toString()
+                num_resources: option.num_resources.toString(),
+                societies: option.societies
             });
         } else {
             data.push({
@@ -817,6 +870,10 @@ MultiSearch.prototype.closePopup = function() {
     // Close the popup & reset options
     this.popupVisible = false;
     this.popupElem.html('');
+    if (this.options.society_tags_first) {
+        this.popupFirstElem = $('<div><div class="multi-search-popup-first">Society Tags:</div></div>').appendTo(this.popupElem);
+        this.popupSecondElem = $('<div><div class="multi-search-popup-second">Other Tags:</div></div>').appendTo(this.popupElem);
+    }
     this.popupElem.hide();
     this.searchOptions = [];
     this.highlightedSearchOption = null;
