@@ -416,17 +416,6 @@ MultiSearch.prototype.onGetOptions = function(data) {
                         num_resources: data.options[i].num_resources.toString(),
                         societies: data.options[i].societies
                     }
-                    
-                    console.log('  data.options[i].societies: ' + data.options[i].societies);
-                    
-                    /*
-                    for (var j=0; j<option.societies.length; j++) {
-                        for (var k in option.societies[j]) {
-                            console.log('option.societies['+j+']['+k+']: ' + option.societies[j][k]);
-                        }
-                    }
-                    */
-                    
                 }
                 option.checked = checked;
                 this.addSearchOption(option);
@@ -468,25 +457,13 @@ MultiSearch.prototype.showPopupLoading = function() {
 
 MultiSearch.prototype.addSearchOption = function(searchOption) {
     var multiSearch = this;
-    var index = this.searchOptions.length;
-    this.searchOptions[index] = searchOption;
     
-    // Create this.searchOptions[index] elementf
-    this.searchOptions[index].elem = $("<div class=\"multi-search-popup-item\"><img class='multi-search-popup-item-checkbox' src='/media/images/checkbox.png' />" + this.searchOptions[index].name + "</div>");
+    // Create searchOption elementf
+    searchOption.elem = $("<div class=\"multi-search-popup-item\"><img class='multi-search-popup-item-checkbox' src='/media/images/checkbox.png' />" + searchOption.name + "</div>");
     
     if (this.options.society_tags_first) {
         var belongsToSociety = false;
         if (this.options.society_id != null) {
-            
-            /*
-            console.log('searchOption: ' + searchOption);
-            for (var i in searchOption) {
-                console.log('  ' + i + ': ' + searchOption[i]);
-            }
-            console.log('searchOption: ' + searchOption);
-            console.log('searchOption.societies: ' + searchOption.societies);
-            */
-            
             for (var i=0; i<searchOption.societies.length; i++) {
                 if (searchOption.societies[i].id == this.options.society_id) {
                     belongsToSociety = true;
@@ -495,28 +472,33 @@ MultiSearch.prototype.addSearchOption = function(searchOption) {
             }
         }
         if (belongsToSociety) {
-            this.searchOptions[index].elem.appendTo(this.popupFirstElem);
+            searchOption.elem.appendTo(this.popupFirstElem);
+            this.searchOptionsFirst.push(searchOption);
+            this.searchOptions = this.searchOptionsFirst.concat(this.searchOptionsSecond);
         } else {
-            this.searchOptions[index].elem.appendTo(this.popupSecondElem);
+            searchOption.elem.appendTo(this.popupSecondElem);
+            this.searchOptionsSecond.push(searchOption);
+            this.searchOptions = this.searchOptionsFirst.concat(this.searchOptionsSecond);
         }
     } else {
-        this.searchOptions[index].elem.appendTo(this.popupElem);
+        searchOption.elem.appendTo(this.popupElem);
+        this.searchOptions.push(searchOption);
     }
     
-    this.searchOptions[index].elem.html(this.searchOptions[index].elem.html() + ' hi');
+    searchOption.elem.html(searchOption.elem.html());
     
-    this.searchOptions[index].elem.data('index', index);
+    searchOption.elem.data('value', searchOption.value);
     // Toggle the search option when it's clicked
-    this.searchOptions[index].elem.click(function(e) {
-        multiSearch.toggleSearchOption($(this).data('index'));
+    searchOption.elem.click(function(e) {
+        multiSearch.toggleSearchOption($(this).data('value'));
     });
-    this.searchOptions[index].checkboxElem = this.searchOptions[index].elem.children('img.multi-search-popup-item-checkbox');
-    if (this.searchOptions[index].checked == undefined)
-        this.searchOptions[index].checked = false;
-    //this.this.searchOptions[index]s.push(this.searchOptions[index]);
+    searchOption.checkboxElem = searchOption.elem.children('img.multi-search-popup-item-checkbox');
+    if (searchOption.checked == undefined)
+        searchOption.checked = false;
+    //this.searchOptions.push(searchOption);
     
-    if (this.searchOptions[index].checked) {
-        this.searchOptions[index].checkboxElem.attr('src', '/media/images/checkbox_on.png');
+    if (searchOption.checked) {
+        searchOption.checkboxElem.attr('src', '/media/images/checkbox_on.png');
     }
 }
 
@@ -527,19 +509,19 @@ MultiSearch.prototype.onKeyDown = function(e) {
             // The popup is visilble and has options... move down
             e.preventDefault();
             
-            var newHighlightedSearchOption;
-            if (this.highlightedSearchOption == null) {
+            var index;
+            if (this.highlightedSearchOptionValue == null) {
                 // No option is selected, start at the top
-                newHighlightedSearchOption = 0;
-            } else if (this.highlightedSearchOption < this.searchOptions.length-1) {
+                index = 0;
+            } else if (this.findSearchOptionIndex(this.highlightedSearchOptionValue) < this.searchOptions.length-1) {
                 // A option is already highlighted and is not the last one; select the next one down
-                newHighlightedSearchOption = this.highlightedSearchOption + 1;
+                index = this.findSearchOptionIndex(this.highlightedSearchOptionValue) + 1;
             } else {
                 // The last option is selected, do nothing
                 return;
             }
             
-            this.highlightSearchOption(newHighlightedSearchOption);
+            this.highlightSearchOption(this.searchOptions[index].value);
         }
     } else {
         // Popup is not visible, show it if a search phrase has been entered
@@ -550,6 +532,7 @@ MultiSearch.prototype.onKeyDown = function(e) {
     }
 }
 
+// For when user presses the up arrow
 MultiSearch.prototype.onKeyUp = function(e) {
     if (this.popupVisible) {
         // Make sure we have searchOptions
@@ -557,19 +540,19 @@ MultiSearch.prototype.onKeyUp = function(e) {
             // The popup is visilble and has options... move up
             e.preventDefault();
             
-            var newSelectedSearchOption;
-            if (this.highlightedSearchOption == null) {
+            var index;
+            if (this.highlightedSearchOptionValue == null) {
                 // No option is selected, start at the bottom
-                newHighlightedSearchOption = this.searchOptions.length - 1;
-            } else if (this.highlightedSearchOption > 0) {
+                index = this.searchOptions.length - 1;
+            } else if (this.findSearchOptionIndex(this.highlightedSearchOptionValue) > 0) {
                 // A option is already highlighted and is not the first one; select the next one up
-                newHighlightedSearchOption = this.highlightedSearchOption - 1;
+                index = this.findSearchOptionIndex(this.highlightedSearchOptionValue) - 1;
             } else {
                 // The last option is selected, do nothing
                 return;
             }
             
-            this.highlightSearchOption(newHighlightedSearchOption);
+            this.highlightSearchOption(this.searchOptions[index].value);
         }
     } else {
         // Popup is not visible, show it if a search phrase has been entered
@@ -582,53 +565,73 @@ MultiSearch.prototype.onKeyUp = function(e) {
 
 MultiSearch.prototype.onKeyEnter = function(e) {
     e.preventDefault();
-    if (this.popupVisible && this.highlightedSearchOption != null) {
+    if (this.popupVisible && this.highlightedSearchOptionValue != null) {
         // Toggle this searchOption
-        this.toggleSearchOption(this.highlightedSearchOption);
+        this.toggleSearchOption(this.highlightedSearchOptionValue);
     }
 }
 
-MultiSearch.prototype.toggleSearchOption = function(index) {
-    var searchOption = this.searchOptions[index];
-    if (searchOption.checked) {
-        this.unselectSearchOption(index);
-    } else {
-        this.selectSearchOption(index);
+MultiSearch.prototype.findSearchOption = function(value) {
+    for (var i=0; i<this.searchOptions.length; i++) {
+        if (this.searchOptions[i].value == value)
+            return this.searchOptions[i];
     }
+    return null;
 }
 
-MultiSearch.prototype.highlightSearchOption = function(index) {
-    if (index < 0 || index > this.searchOptions.length-1)
-        return error('MultiSearch.highlightSearchOption(): index is not within 0 to ' + this.searchOptions.length-1);
-    if (this.highlightedSearchOption != null)
-        // Unhighlight the previous option
-        this.searchOptions[this.highlightedSearchOption].elem.removeClass('multi-search-popup-highlighted-item');
-    // Highlight the option
-    this.highlightedSearchOption = index;
-    this.searchOptions[this.highlightedSearchOption].elem.addClass('multi-search-popup-highlighted-item');
+MultiSearch.prototype.findSearchOptionIndex = function(value) {
+    for (var i=0; i<this.searchOptions.length; i++) {
+        if (this.searchOptions[i].value == value)
+            return i;
+    }
+    return null;
+}
+
+MultiSearch.prototype.toggleSearchOption = function(value) {
+    var searchOption = this.findSearchOption(value);
+    if (searchOption == null)
+        return error('MultiSearch.toggleSearchOption(): value "' + value + '" not found');
     
-    var highlighted = this.searchOptions[this.highlightedSearchOption];
+    if (searchOption.checked) {
+        this.unselectSearchOption(value);
+    } else {
+        this.selectSearchOption(value);
+    }
+}
+
+MultiSearch.prototype.highlightSearchOption = function(value) {
+    var searchOption = this.findSearchOption(value);
+    if (searchOption == null)
+        return error('MultiSearch.highlightSearchOption(): value "' + value + '" not found');
+    
+    if (this.highlightedSearchOptionValue != null)
+        // Unhighlight the previous option
+        this.findSearchOption(this.highlightedSearchOptionValue).elem.removeClass('multi-search-popup-highlighted-item');
+        
+    // Highlight the option
+    this.highlightedSearchOptionValue = value;
+    searchOption.elem.addClass('multi-search-popup-highlighted-item');
     
     // Automatically scroll the popup when the user highlights an option out of view.
-    if ((highlighted.elem.attr("offsetTop") + highlighted.elem.attr("offsetHeight")) > (this.popupElem.attr('offsetHeight') + this.popupElem.attr('scrollTop'))) {
+    if ((searchOption.elem.attr("offsetTop") + searchOption.elem.attr("offsetHeight")) > (this.popupElem.attr('offsetHeight') + this.popupElem.attr('scrollTop'))) {
         // Highlighted element was further down, scroll down
         this.popupElem.attr('scrollTop',
-            highlighted.elem.attr("offsetTop") + highlighted.elem.attr("offsetHeight") - this.popupElem.attr('offsetHeight') + 1
+            searchOption.elem.attr("offsetTop") + searchOption.elem.attr("offsetHeight") - this.popupElem.attr('offsetHeight') + 1
         );
     }
-    else if (highlighted.elem.attr("offsetTop") < this.popupElem.attr('scrollTop')) {
+    else if (searchOption.elem.attr("offsetTop") < this.popupElem.attr('scrollTop')) {
         // Highlighted element was further up, scroll up
         this.popupElem.attr('scrollTop',
-            highlighted.elem.attr("offsetTop") - 1
+            searchOption.elem.attr("offsetTop") - 1
         );
     }
-    
 }
 
-MultiSearch.prototype.selectSearchOption = function(index) {
-    if (index < 0 || index > this.searchOptions.length-1)
-        return error('MultiSearch.selectSearchOption(): index is not within 0 to ' + this.searchOptions.length-1);
-    var searchOption = this.searchOptions[index];
+MultiSearch.prototype.selectSearchOption = function(value) {
+    var searchOption = this.findSearchOption(value);
+    if (searchOption == null)
+        return error('MultiSearch.selectSearchOption(): value "' + value + '" not found');
+    
     searchOption.checkboxElem.attr('src', '/media/images/checkbox_on.png');
     searchOption.checked = true;
     
@@ -655,10 +658,11 @@ MultiSearch.prototype.selectSearchOption = function(index) {
     }
 }
 
-MultiSearch.prototype.unselectSearchOption = function(index) {
-    if (index < 0 || index > this.searchOptions.length-1)
-        return error('MultiSearch.unselectSearchOption(): index is not within 0 to ' + this.searchOptions.length-1);
-    var searchOption = this.searchOptions[index];
+MultiSearch.prototype.unselectSearchOption = function(value) {
+    var searchOption = this.findSearchOption(value);
+    if (searchOption == null)
+        return error('MultiSearch.unselectSearchOption(): value "' + value + '" not found');
+    
     searchOption.checkboxElem.attr('src', '/media/images/checkbox.png');
     searchOption.checked = false;
     
@@ -876,7 +880,10 @@ MultiSearch.prototype.closePopup = function() {
     }
     this.popupElem.hide();
     this.searchOptions = [];
-    this.highlightedSearchOption = null;
+    this.searchOptionsFirst = [];
+    this.searchOptionsSecond = [];
+    
+    this.highlightedSearchOptionValue = null;
     this.getOptionsValue = null;
 }
 
