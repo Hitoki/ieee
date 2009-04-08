@@ -167,30 +167,30 @@ def ajax_nodes_json(request):
     sort = request.GET.get('sort')
     filterValues = request.GET.get('filterValues')
     
-    #print 'filterValues:', filterValues
-    
     if sort is None or sort == 'alphabetical':
         orderBy = 'name'
     elif sort == 'frequency':
         orderBy = 'num_resources'
-    #elif sort == 'num_sectors':
-    #    orderBy = 'parents'
+    elif sort == 'num_sectors':
+        orderBy = None
     else:
         raise Exception('Unrecognized sort "%s"' % sort)
     
     filterIds = []
     if filterValues != '':
         for filterValue in filterValues.split(','):
-            #print 'filterValue:', filterValue
-            #filterIds.append(Filter.objects.getFromValue(filterValue))
             filterIds.append(Filter.objects.getFromValue(filterValue).id)
-    
-    #print 'filterIds:', filterIds
     
     # Build node list
     sector = Node.objects.get(id=sectorId)
-    tags = sector.child_nodes.order_by(orderBy)
-    #tags = Node.objects.filter(parent=sector).order_by(orderBy)
+    if sort == 'num_sectors':
+        tags = sector.child_nodes.extra(
+            select={ 'num_parents': 'SELECT COUNT(*) FROM ieeetags_node_parents WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id' },
+            order_by=['-num_parents'],
+        )        
+        
+    else:
+        tags = sector.child_nodes.order_by(orderBy)
     
     (minResources, maxResources) = Node.objects.get_resource_range(sector)
     (min_sectors, max_sectors) = Node.objects.get_sector_range(sector)
