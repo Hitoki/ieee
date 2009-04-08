@@ -125,10 +125,10 @@ def ajax_tag_content(request):
 def ajax_node(request):
     nodeId = request.GET['nodeId']
     node = Node.objects.get(id=nodeId)
-    if node.parent is None:
+    if len(node.parents.all()) == 0:
         parentName = None
     else:
-        parentName = node.parent.name
+        parentName = ', '.join([parent.name for parent in node.parents.all()])
     
     data = {
         'id': node.id,
@@ -136,11 +136,13 @@ def ajax_node(request):
         'type': node.node_type.name,
     }
     
-    if node.parent is not None:
-        data['parent'] = {
-            'id': node.parent.id,
-            'name': node.parent.name,
-        }
+    if len(node.parents.all()) > 0:
+        data['parents'] = []
+        for parent in node.parents.all():
+            data['parents'].append({
+                'id': parent.id,
+                'name': parent.name,
+            })
     
     json = simplejson.dumps(data, sort_keys=True, indent=4)
     
@@ -219,21 +221,25 @@ def ajax_nodes_json(request):
     return HttpResponse(json, mimetype='text/plain')
 
 def ajax_nodes_xml(request):
-    #print 'ajax_nodes_xml()'
+    #logging.debug('ajax_nodes_xml()')
+    #logging.debug('  request:')
     
     nodeId = request.GET['nodeId']
-    #print '  nodeId: ' + nodeId
+    #logging.debug('  nodeId: ' + nodeId)
+    
+    #url = 'http://' + request.META['HTTP_HOST'] + request.META['PATH_INFO'] + '?' + request.META['QUERY_STRING']
+    #logging.debug('  url: ' + url)
     
     # TODO: the depth param is ignored, doesn't seem to affect anything now
     
     # Build node list
     node = Node.objects.get(id=nodeId)
-    childNodes = Node.objects.getChildNodes(node)
+    childNodes = node.child_nodes.all()
     
     nodes = [node]
     nodes.extend(childNodes)
-    if node.parent is not None:
-        nodes.append(node.parent)
+    for parent in node.parents.all():
+        nodes.append(parent)
     
     #print '  node:', node
     #print '  len(childNodes):', len(childNodes)
@@ -243,11 +249,10 @@ def ajax_nodes_xml(request):
     edges = []
     for childNode in childNodes:
         edges.append((node.id, childNode.id))
-    if node.parent is not None:
-        edges.append((node.parent.id, node.id))
+    for parent in node.parents.all():
+        edges.append((parent.id, node.id))
         
     #print '  len(edges):', len(edges)
-
 
     # XML Output
     

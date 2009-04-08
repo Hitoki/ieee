@@ -119,6 +119,12 @@ LOG_CONSOLE = True
 DMIGRATIONS_DIR = relpath(__file__, 'migrations')
 #DISABLE_SYNCDB = True
 
+logging.basicConfig(
+    level = logging.DEBUG,
+    #format = '%(asctime)s %(levelname)s %(message)s',
+    format = '%(levelname)s %(message)s',
+)
+
 try:
     from local_settings import *
 except ImportError, e:
