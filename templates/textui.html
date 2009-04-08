@@ -46,7 +46,7 @@
                             <h2>Choose Sector:</h2>
                             <div id="left-column-container">  
                             
-                                <div class="alt-box" style="height: 71.3%;">
+                                <div class="sectors-vert-box alt-box">
                                     <ul id="sectors">                                        
                                         {% for sector in sectors %}
                                             <li><a href="javascript:Tags.selectSector({{sector.id}});">{{sector.name}}</a></li>
@@ -56,7 +56,7 @@
                                 
                                 <!-- Filters --> 
                                 <h2>Apply Filters:</h2>
-                                <div class="alt-box" style="height: 20.5%;">
+                                <div class="filters-vert-box alt-box">
                                     <ul id="views">
                                         {% for filter in filters %}
                                             <li>

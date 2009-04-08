@@ -349,29 +349,33 @@ ul#view-header li {
 
 #alternate-page #left-column {
   /* width:23%;  */
-    height:480px;
+    height:500px;
     width:180px;   
 }
 
 #left-column-container {
     margin-top: .1em; 
     position:absolute;
-    height:437px;
+    /*height:437px;*/
     width: auto;
+}
+
+#left-column-container .sectors-vert-box {
+    height: 71.3%;
+}
+
+#left-column-container .filters-vert-box {
+    height: 20.5%;
 }
 
 #alternate-page #right-column {
     width:77%;
-    height:437px;
-      
+    height:440px;
 }
 
 #alternate-page .alt-box {
     border:1px solid #dadada;
     margin: .2em .2em 1em .2em;
-    /*
-    border:3px solid #006699;
-    */
 }
 
 #alternate-page .alt-box .alt-box-pad {
@@ -379,8 +383,6 @@ ul#view-header li {
 }
 
 #alternate-page #left-column ul#sectors li a {
-    /*font-weight:bold;*/
-    /*font-size:110%;*/
     color:#333333;
     margin:0px;
     padding:.2em .4em;
@@ -399,12 +401,18 @@ ul#view-header li {
 #alternate-page #left-column ul#views li {
     color: #333333;
     margin:0px;
-    /*padding:.6em;*/
-    padding: .05em 0em;
+    /*padding: .05em 0em;*/
+    font-size:80%;
+    padding:0px;
+}
+
+#alternate-page #left-column ul#views li input {
+    margin:2px;
+    vertical-align:middle;
 }
 
 #alternate-page #tags {
-    height: 437px;
+    height: 440px;
     overflow: hidden;
     line-height: 1.2em;
 }
