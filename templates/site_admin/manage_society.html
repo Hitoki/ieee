@@ -13,11 +13,6 @@
         }
         
         window.notify = function(action, data) {
-            //console.log('notify()');
-            //console.log('  action: ' + action);
-            //console.log('  data:');
-            //logobj(data, '    ');
-            
             if (action == 'created_tag') {
                 // Just created a tag, add it to the field
                 var multisearch = $('#multisearch_tags').data('multisearch');
@@ -68,14 +63,6 @@
         
         }
 
-        /*
-        $(function() {
-            $('form').submit(function() {
-                return false;
-            });
-        });
-        */
-        
     </script>
 
     {% comment %}

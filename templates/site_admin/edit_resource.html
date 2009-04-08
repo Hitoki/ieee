@@ -2,6 +2,52 @@
 
 {% block main_table_content %}
     
+    <script type="text/javascript">
+        
+        window.notify = function(action, data) {
+            
+            if (action == 'created_tag') {
+                // Just created a tag, add it to the field
+                var multisearch = $('#multisearch_nodes').data('multisearch');
+                
+                // Add the newly created tag to the list of options
+                multisearch.addSelectedOption({
+                    name: data.tag.name,
+                    value: data.tag.value,
+                    societies: data.tag.societies
+                });
+                
+                // Trigger a refresh of the popup
+                multisearch.updatePopup();
+                
+            } else if (action == 'added_multisearch_option') {
+                // Do nothing
+                
+            } else if (action == 'preloaded_multisearch_option') {
+                // Do nothing
+                
+            } else if (action == 'removed_multisearch_option') {
+                // Do nothing
+                
+            } else if (action == 'multisearch_create_new_tag') {
+                {% if society_id %}
+                    Lightbox.show('{% url admin_create_tag %}?default_tag_name=' + escape(data.tag_name) + '&society_id=' + {{ society_id }} + '&add_to_society=0', {
+                        closeOnClickOutside: false
+                    });
+                {% else %}
+                    Lightbox.show('{% url admin_create_tag %}?default_tag_name=' + escape(data.tag_name), {
+                        closeOnClickOutside: false
+                    });
+                {% endif %}
+                
+            } else {
+                alert('notify(): unknown action "' + action + '"');
+            }
+        
+        }
+
+    </script>
+    
     {% if resource %}
         <h1>Edit Resource</h1>
     {% else %}

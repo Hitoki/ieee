@@ -71,7 +71,7 @@ class EditResourceForm(Form):
     ieee_id = IntegerField(required=False, label='ID')
     description = CharField(widget=Textarea, max_length=1000, required=False)
     url = CharField(max_length=1000, required=False, label='URL')
-    nodes = MultiSearchField(label='Tags', model=Node, search_url='/admin/ajax/search_tags', widget_label='Associate Tags with this Resource')
+    nodes = MultiSearchField(label='Tags', model=Node, search_url='/admin/ajax/search_tags', widget_label='Associate Tags with this Resource', show_create_tag_link=True)
     societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies', label='Societies')
 
 class SocietyForm(ModifiedFormBase):

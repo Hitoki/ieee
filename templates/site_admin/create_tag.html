@@ -14,7 +14,7 @@
         </p>
     {% endif %}
     
-    <form action="{% url admin_create_tag %}?society_id={{ society_id }}&amp;return_url={{ return_url|urlencode }}" method="post">
+    <form action="{% url admin_create_tag %}?society_id={{ society_id }}&amp;add_to_society={{ add_to_society }}&amp;return_url={{ return_url|urlencode }}" method="post">
         <table class="grid edit-create">
             {{ form.id }}
             <tr>

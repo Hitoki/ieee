@@ -389,7 +389,6 @@ MultiSearch.prototype.onGetOptions = function(data) {
         // Add the new searchOptions to the popup
         if (data.options.length == 0) {
             // No options found
-            log('  no options found...');
             $("<div class='multi-search-no-results'>No results found.</div>").appendTo(this.popupElem);
         } else {
             // Add the options to the popup

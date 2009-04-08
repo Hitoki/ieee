@@ -936,6 +936,7 @@ def create_tag(request):
     else:
         sector = Node.objects.get(id=sector_id)
     society_id = request.GET.get('society_id', '')
+    add_to_society = request.GET.get('add_to_society', '')
     default_tag_name = request.GET.get('default_tag_name', '')
     
     if request.method == 'GET':
@@ -955,7 +956,8 @@ def create_tag(request):
             )
             tag.parents=form.cleaned_data['sectors']
             
-            if society_id != '':
+            # Don't add society if "add_to_society" is 0
+            if society_id != '' and add_to_society != '0':
                 society = Society.objects.get(id=int(society_id))
                 tag.societies = [society]
             
@@ -1017,6 +1019,7 @@ def create_tag(request):
         'form': form,
         'sector': sector,
         'society_id': society_id,
+        'add_to_society': add_to_society,
         'done_action': done_action,
         'return_url': return_url,
     })
