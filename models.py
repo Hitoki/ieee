@@ -1,4 +1,4 @@
-
+from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
@@ -181,11 +181,27 @@ class NodeManager(models.Manager):
             tag.save()
         return len(tags)
     
-    def searchTagsByNameSubstring(self, substring):
+    def searchTagsByNameSubstring(self, substring, sector_ids=None):
+        """
+        Search for tags matching the given substring.  Optionally limit to only the list of sectors given.
+        @param substring name substring to search for.
+        @param sector_ids optional, a list of sector ids to limit the search within.
+        """
         if substring.strip() == '':
             return None
         tag_type = NodeType.objects.getFromName(NodeType.TAG)
         results = self.filter(name__icontains=substring, node_type=tag_type)
+        
+        if sector_ids is not None:
+            # Filter to only the given sectors
+            q = None
+            for sector_id in sector_ids:
+                if q is not None:
+                    q = q | Q(parents=sector_id)
+                else:
+                    q = Q(parents=sector_id)
+            results = results.filter(q).distinct()
+            
         return results
     
     def get_sector_by_name(self, name):

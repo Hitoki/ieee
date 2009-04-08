@@ -5,6 +5,7 @@ import random
 import re
 import string
 import time
+from urllib import quote
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
@@ -12,7 +13,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.utils import simplejson as json
-from urllib import quote
 
 from ieeetags import settings
 from ieeetags.util import *
@@ -1052,6 +1052,9 @@ def edit_tag(request, tag_id):
         #make_display_only(form.fields['name'])
         make_display_only(form.fields['societies'], model=Society, is_multi_search=True)
         
+        sector_ids = [str(sector.id) for sector in tag.parents.all()]
+        form.fields['related_tags'].widget.set_search_url(reverse('ajax_search_tags') + '?filter_sector_ids=' + ','.join(sector_ids))
+        
     return render(request, 'site_admin/edit_tag.html', {
         'form': form,
         'return_url': return_url,
@@ -1549,9 +1552,16 @@ def ajax_search_tags(request):
     else:
         society = None
     
+    filter_sector_ids = request.GET.get('filter_sector_ids', None)
+    if filter_sector_ids is not None:
+        #sectors = [Node.objects.get(id=sector_id) for sector_id in filter_sector_ids.split(',')]
+        sector_ids = [sector_id for sector_id in filter_sector_ids.split(',')]
+    else:
+        sector_ids = None
+    
     search_for = request.GET['search_for']
     #tags = Node.objects.searchTagsByNameSubstring(search_for)[:MAX_RESULTS+1]
-    tags = Node.objects.searchTagsByNameSubstring(search_for)
+    tags = Node.objects.searchTagsByNameSubstring(search_for, sector_ids)
     
     #if len(tags) > MAX_RESULTS:
     #    tags = tags[:MAX_RESULTS]
