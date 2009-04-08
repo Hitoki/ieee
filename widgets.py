@@ -258,6 +258,7 @@ class CheckboxSelectMultipleColumns(widgets.CheckboxSelectMultiple):
             output.append(u'<ul class="checkbox-select-multiple-columns checkbox-select-multiple-columns-%d">' % self.columns)
             output.extend(output_items[:choices_per_column])
             output.append(u'</ul>')
+            output_items = output_items[choices_per_column:]
         
         return mark_safe(u'\n'.join(output))
 
