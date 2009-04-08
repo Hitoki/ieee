@@ -1436,10 +1436,9 @@ def edit_resource(request, resource_id=None):
             form.fields['nodes'].widget.set_search_url(reverse('ajax_search_tags') + '?society_id=' + society_id)
             form.fields['nodes'].widget.set_society_id(society_id)
         
-        
-        
         # Disable edit resource form fields for societies
         if not request.user.is_superuser:
+            make_display_only(form.fields['name'])
             make_display_only(form.fields['societies'], is_multi_search=True)
             make_display_only(form.fields['ieee_id'])
         
