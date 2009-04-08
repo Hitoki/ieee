@@ -1048,9 +1048,9 @@ def edit_tag(request, tag_id):
     if request.user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER:
         # Disable certain fields for the society managers
         make_display_only(form.fields['parents'], model=Node)
-        make_display_only(form.fields['name'])
+        # Question: make tag name editable by society managers?  Ticket #345
+        #make_display_only(form.fields['name'])
         make_display_only(form.fields['societies'], model=Society, is_multi_search=True)
-        #make_display_only(form.fields['num_resources'])
         
     return render(request, 'site_admin/edit_tag.html', {
         'form': form,
