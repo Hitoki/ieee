@@ -729,6 +729,7 @@ MultiSearch.prototype.addSelectedOption = function(option, preload) {
                 var cell;
                 cell = $('<td class="left-text"></td>').appendTo(option.elem);
                 cell.html(option.sector_names);
+                autoTruncate(cell, { length:40, flyover:true });
                 
                 cell = $('<td></td>').appendTo(option.elem);
                 if(option.num_societies != 0){
