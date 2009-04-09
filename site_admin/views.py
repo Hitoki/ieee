@@ -1260,6 +1260,11 @@ def manage_society(request, society_id):
     elif sort == 'priority_descending':
         resources1 = society.resources.order_by('-priority_to_tag', '-name')
     
+    elif sort == 'description_ascending':
+        resources1 = society.resources.order_by('description', 'name')
+    elif sort == 'description_descending':
+        resources1 = society.resources.order_by('-description', '-name')
+    
     elif sort == '':
         # Default to name/ascending sort
         resources1 = society.resources.order_by('name')

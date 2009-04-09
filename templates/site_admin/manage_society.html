@@ -267,6 +267,25 @@
                                             {% endifequal %}
                                         </a>
                                     </th>
+                                    <th>
+                                        Description <span class="help_icon flyover" title="Description">[?]</span>
+                                        
+                                        &nbsp;
+                                        <a href="{% url admin_manage_society society.id %}?sort=description_ascending" class="live-description {hashOnly:true}">
+                                            {% ifequal sort "description_ascending" %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
+                                            {% else %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+                                            {% endifequal %}
+                                        </a>
+                                        <a href="{% url admin_manage_society society.id %}?sort=description_descending" class="live-description {hashOnly:true}">
+                                            {% ifequal sort "description_descending" %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
+                                            {% else %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+                                            {% endifequal %}
+                                        </a>
+                                    </th>
                                 </tr>
                                 {% for resource in resources %}
                                     <tr>
@@ -293,6 +312,13 @@
                                         <td>
                                             {% if resource.priority_to_tag %}
                                                 {{ resource.priority_to_tag|yesno }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if resource.description %}
+                                                <span class="flyover { position:'left'} " title="{{ resource.description }}">
+                                                    (description)
+                                                </span>
                                             {% endif %}
                                         </td>
                                     </tr>
