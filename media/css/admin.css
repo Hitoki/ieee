@@ -221,7 +221,7 @@ table.resources td, table.tags td {
 }
 
 th.first-item {
-    min-width: 250px;
+    min-width: 150px;
 }
 
 table.resources td.first-item, 
