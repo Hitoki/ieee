@@ -347,6 +347,7 @@ class Resource(models.Model):
     url = models.CharField(blank=True, max_length=1000)
     year = models.IntegerField(blank=True, null=True)
     standard_status = models.CharField(blank=True, max_length=100)
+    priority_to_tag = models.BooleanField()
     
     nodes = models.ManyToManyField(Node, related_name='resources')
     societies = models.ManyToManyField(Society, related_name='resources')

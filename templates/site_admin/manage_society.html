@@ -248,6 +248,25 @@
                                             {% endifequal %}
                                         </a>
                                     </th>
+                                    <th>
+                                        Priority <span class="help_icon flyover" title="Priority">[?]</span>
+                                        
+                                        &nbsp;
+                                        <a href="{% url admin_manage_society society.id %}?sort=priority_ascending" class="live-priority {hashOnly:true}">
+                                            {% ifequal sort "priority_ascending" %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
+                                            {% else %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+                                            {% endifequal %}
+                                        </a>
+                                        <a href="{% url admin_manage_society society.id %}?sort=priority_descending" class="live-priority {hashOnly:true}">
+                                            {% ifequal sort "priority_descending" %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
+                                            {% else %}
+                                                <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+                                            {% endifequal %}
+                                        </a>
+                                    </th>
                                 </tr>
                                 {% for resource in resources %}
                                     <tr>
@@ -268,7 +287,12 @@
                                         </td>
                                         <td>
                                             {% if resource.societies.all %}
-                                                {{ resource.society_abbreviations|join:", "}}
+                                                {{ resource.society_abbreviations|join:", " }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if resource.priority_to_tag %}
+                                                {{ resource.priority_to_tag|yesno }}
                                             {% endif %}
                                         </td>
                                     </tr>

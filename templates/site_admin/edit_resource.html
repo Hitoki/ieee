@@ -120,6 +120,15 @@
                     {{ form.societies }}
                 </td>
             </tr>
+            <tr>
+                <th>
+                    <label for="id_priority_to_tag">{{ form.priority_to_tag.label }}  <span class="help_icon flyover {position:'top'}" title="Priority_to_tag">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.priority_to_tag.errors }}
+                    {{ form.priority_to_tag }}
+                </td>
+            </tr>
         </table>
         <input type="submit" value="Ok" class="button" />
         {% if user.is_superuser and resource %}

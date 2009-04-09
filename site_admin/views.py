@@ -1255,6 +1255,11 @@ def manage_society(request, society_id):
             '-num_societies',
         ])
     
+    elif sort == 'priority_ascending':
+        resources1 = society.resources.order_by('priority_to_tag', 'name')
+    elif sort == 'priority_descending':
+        resources1 = society.resources.order_by('-priority_to_tag', '-name')
+    
     elif sort == '':
         # Default to name/ascending sort
         resources1 = society.resources.order_by('name')
@@ -1433,6 +1438,7 @@ def edit_resource(request, resource_id=None):
             'url': resource.url,
             'nodes': resource.nodes.all(),
             'societies': resource.societies.all(),
+            'priority_to_tag': resource.priority_to_tag,
         })
         
         if society_id != '':
@@ -1496,6 +1502,7 @@ def save_resource(request):
         resource.nodes = form.cleaned_data['nodes']
         if form.cleaned_data['societies'] is not None:
             resource.societies = form.cleaned_data['societies']
+        resource.priority_to_tag = form.cleaned_data['priority_to_tag']
         resource.save()
         
         # Add all resource tags to the owning societies
