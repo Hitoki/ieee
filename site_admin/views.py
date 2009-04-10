@@ -23,6 +23,11 @@ from ieeetags.widgets import DisplayOnlyWidget
 from forms import *
 from widgets import make_display_only
 
+_IMPORT_SOURCES = [
+    'comsoc',
+    'v.7',
+]
+
 def _get_version():
     path = relpath(__file__, '../version.txt')
     #print 'path:', path
@@ -652,11 +657,16 @@ def _import_resources(filename):
     }
 
 @login_required
-def import_conferences(request):
+def import_conferences(request, source):
     start = time.time()
     
-    filename = relpath(__file__, '../data/comsoc/conferences.csv')
-    #filename = relpath(__file__, '../data/v.7/2009-03-13 - conference_list.txt')
+    if source not in _IMPORT_SOURCES:
+        raise Exception('Unknown import source "%s"' % source)
+    
+    if source == 'comsoc':
+        filename = relpath(__file__, '../data/comsoc/conferences.csv')
+    elif source == 'v.7':
+        filename = relpath(__file__, '../data/v.7/2009-03-13 - conference_list.csv')
 
     # Delete all conferences
     Resource.objects.get_conferences().delete()
