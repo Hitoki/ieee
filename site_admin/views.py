@@ -574,13 +574,17 @@ def _import_resources(filename):
     duplicate_resources = 0
     resources_added = 0
     societies_assigned = 0
-    invalid_societies = 0
+    num_invalid_societies = 0
     
     (file, reader) = _open_unicode_csv(filename)
     
     #print 'filename:', filename
     
+    valid_societies = {}
+    invalid_societies = {}
+    
     for row in reader:
+        
         #Type, ID, Name, Description, URL, Tags, Societies, Year, Standard Status, Technical Committees, Keywords
         type1, ieee_id, name, description, url, tag_names, society_names, year, standard_status, technical_committees, keywords = row
         #print 'name:', name
@@ -604,7 +608,7 @@ def _import_resources(filename):
         
         #print 'society_names:'
         for society_name in society_names:
-            if society_name.strip() != '':
+            if society_name != '':
                 parts = society_name.strip().split(' - ')
                 temp_name = parts[0]
                 # Remove the ' Society' part from the temp_name
@@ -613,33 +617,42 @@ def _import_resources(filename):
                 
                 society = Society.objects.getFromName(temp_name)
                 if society is None:
-                    invalid_societies += 1
+                    if temp_name not in invalid_societies:
+                        invalid_societies[temp_name] = 1
+                    else:
+                        invalid_societies[temp_name] += 1
+                    num_invalid_societies += 1
                 else:
+                    if temp_name not in valid_societies:
+                        valid_societies[temp_name] = 1
+                    else:
+                        valid_societies[temp_name] += 1
                     societies_assigned += 1
                     societies.append(society)
         
-        num_existing = len(Resource.objects.filter(resource_type=resource_type, ieee_id=ieee_id).all())
-        if num_existing > 0:
-            #log('  DUPLICATE: resource "%s" already exists.' % name)
-            duplicate_resources += 1
-        else:
-            ##log('  Adding resource "%s"' % name)
-            #print 'name:', name
-            #print 'ieee_id:', ieee_id
-            #print 'description:', description
-            #print 'society_names:', society_names
-        
-            resource = Resource.objects.create(
-                resource_type=resource_type,
-                ieee_id=ieee_id,
-                name=name,
-                description=description,
-                url=url,
-                year=year,
-            )
-            resource.societies = societies
-            resource.save()
-            resources_added += 1
+        if True:
+            num_existing = len(Resource.objects.filter(resource_type=resource_type, ieee_id=ieee_id).all())
+            if num_existing > 0:
+                #log('  DUPLICATE: resource "%s" already exists.' % name)
+                duplicate_resources += 1
+            else:
+                ##log('  Adding resource "%s"' % name)
+                #print 'name:', name
+                #print 'ieee_id:', ieee_id
+                #print 'description:', description
+                #print 'society_names:', society_names
+            
+                resource = Resource.objects.create(
+                    resource_type=resource_type,
+                    ieee_id=ieee_id,
+                    name=name,
+                    description=description,
+                    url=url,
+                    year=year,
+                )
+                resource.societies = societies
+                resource.save()
+                resources_added += 1
                 
         if not row_count % 10:
             print '  Reading row %d' % row_count
@@ -648,11 +661,29 @@ def _import_resources(filename):
             
     file.close()
     
+    results = '<table>\n'
+    items = valid_societies.items()
+    items.sort()
+    for name,value in items:
+        results += '<tr><td>%s</td><td>%s</td></tr>\n' % (name, value)
+    results += '</table>\n'
+    valid_societies = results
+    
+    results = '<table>\n'
+    items = invalid_societies.items()
+    items.sort()
+    for name,value in items:
+        results += '<tr><td>%s</td><td>%s</td></tr>\n' % (name, value)
+    results += '</table>\n'
+    invalid_societies = results
+    
     return {
         'row_count': row_count,
         'duplicate_resources': duplicate_resources,
         'resources_added': resources_added,
         'societies_assigned': societies_assigned,
+        'num_invalid_societies': num_invalid_societies,
+        'valid_societies': valid_societies,
         'invalid_societies': invalid_societies,
     }
 
