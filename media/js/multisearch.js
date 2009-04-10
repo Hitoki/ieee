@@ -896,6 +896,13 @@ MultiSearch.prototype.getNumSelectedOptions = function() {
 
 var multiSearches = [];
 
+function attachMultiSearches(elem) {
+    elem = $(elem);
+    elem.find('.multi-search').each(function() {
+        multiSearches.push(new MultiSearch(this));
+    });
+}
+
 $(function() {
     $('.multi-search').each(function() {
         multiSearches.push(new MultiSearch(this));

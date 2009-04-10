@@ -60,7 +60,7 @@ var Lightbox = {
         var lightbox = this;
         if (this.visible) {
             
-            console.log('  data: ' + data);
+            //console.log('  data: ' + data);
             
             if (data == 'close_lightbox') {
                 // Close the lightbox
@@ -68,8 +68,8 @@ var Lightbox = {
                 
             } else if (data.substr(0, 4) == 'ajax') {
                 var vars = eval("(" + data.substr(5, data.length-5) + ")");
-                for (var i in vars)
-                    console.log('vars['+i+']: ' + vars[i]);
+                //for (var i in vars)
+                //    console.log('vars['+i+']: ' + vars[i]);
                     
                 if (window.notify != undefined) {
                     window.notify(vars.event, vars.data);
@@ -82,6 +82,11 @@ var Lightbox = {
                 
                 // Received plain HTML, just render
                 this.lightboxContent.html(data);
+                
+                // Attach any multsearch objects
+                if (attachMultiSearches) {
+                    attachMultiSearches(this.lightboxContent);
+                }
                 
                 // Hook into any forms
                 var forms = this.lightboxContent.find('form');
