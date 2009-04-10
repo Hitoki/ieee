@@ -1,6 +1,7 @@
 import codecs
 import csv
 import hashlib
+import math
 import random
 import re
 import string
@@ -1262,14 +1263,19 @@ def view_society(request, society_id):
 
 @login_required
 def manage_society(request, society_id):
+    
+    _RESOURCES_PER_PAGE = 50
+    
     sort = request.GET.get('sort', '')
+    resource_page = int(request.GET.get('resource_page', 1))
+    
     society = Society.objects.get(id=society_id)
     
     #print 'sort:', sort
     
     form = ManageSocietyForm(initial={
         'tags': society.tags.all(),
-        'resources': society.resources.all(),
+        #'resources': society.resources.all(),
     })
     
     form.fields['tags'].widget.set_society_id(society_id)
@@ -1336,6 +1342,22 @@ def manage_society(request, society_id):
     else:
         raise Exception('Unknown sort "%s"' % sort)
     
+    # Limit search results to one page
+    num_resources = resources1.count()
+    num_resource_pages = int(math.ceil(num_resources / float(_RESOURCES_PER_PAGE)))
+    resource_pages = range(1, num_resource_pages+1)
+    
+    # NOTE: resource_page starts at 1, not 0
+    resource_start_count = (resource_page-1) * _RESOURCES_PER_PAGE
+    resource_end_count = (resource_page) * _RESOURCES_PER_PAGE
+    resources1 = resources1[resource_start_count:resource_end_count]
+    
+    # Add the resource row count to the resource object
+    count = resource_start_count
+    for resource1 in resources1:
+        resource1.count = count+1
+        count += 1 
+    
     # For each resource, get a list of society abbreviations in alphabetical order
     resources = []
     for resource in resources1:
@@ -1350,6 +1372,10 @@ def manage_society(request, society_id):
         'form': form,
         'resources': resources,
         'tags_tab_url': tags_tab_url,
+        'resource_page': resource_page,
+        'num_resources': num_resources,
+        'num_resource_pages': num_resource_pages,
+        'resource_pages': resource_pages,
     })
 
 @login_required

@@ -240,6 +240,11 @@ table.tags th.left-text {
     text-align: left;
 }
 
+table.resources td.count {
+    color:gray;
+    font-size:80%;
+}
+
 /* */
 
 .version {
@@ -307,3 +312,17 @@ ul.checkbox-select-multiple-columns-3 {
 }
 */
 
+/* */
+
+.resource_page {
+    background:#eee;
+    padding:.1em .3em;
+    margin:0em .1em;
+}
+
+.active_resource_page {
+    background:navy;
+    background:#f0f4f4;
+    background:#016699;
+    color:white;
+}

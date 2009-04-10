@@ -120,18 +120,33 @@
                     
                     <div id="society-resource-tabs" class="nootabs {useCookies:false, useHash:true}">
                         <ul class="nootabs-menus">
-                            <li><a href="">Manage this Society's Resources ({{ resources|length }})</a></li>
+                            <li><a href="">Manage this Society's Resources ({{ num_resources }})</a></li>
                             <li><a href="">Manage this Society's Tags <span id="tag-count"></span></a></li>
                         </ul>
                         
                         <!-- Resources Tab -->
                         <div id="resources-tab">
-                            {% comment %}
-                            {% eval form['resources'] %}
-                            {% endcomment %}
+                            
+                            Page: 
+                            {% for page in resource_pages %}
+                                <a
+                                    href="{% url admin_manage_society society.id %}?resource_page={{ page }}&amp;sort={{ sort }}"
+                                    {% ifequal page resource_page %}
+                                        class="resource_page active_resource_page"
+                                    {% else %}
+                                        class="resource_page"
+                                    {% endifequal %}
+                                >
+                                    {{ page }}
+                                </a>
+                            {% endfor %}
+                            <br/>
+                            <br/>
                             
                             <table class="resources">
                                 <tr>
+                                    <th>
+                                    </th>
                                     <th class="first-item">
                                         <span class="header-with-note">Resource Name <span class="help_icon flyover" title="Resource">[?]</span></span>
                                         
@@ -289,6 +304,9 @@
                                 </tr>
                                 {% for resource in resources %}
                                     <tr>
+                                        <td class="count">
+                                            {{ resource.count }}
+                                        </td>
                                         <td class="first-item">
                                             <a href="{% url admin_edit_resource resource.id %}?return_url={{ current_url|urlencode }}&amp;society_id={{ society.id }}">{{ resource.name }}</a>
                                         </td>

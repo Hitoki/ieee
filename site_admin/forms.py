@@ -105,5 +105,6 @@ class UserForm(Form):
     societies = ModelMultipleChoiceField(queryset=Society.objects.all(), required=False)
 
 class ManageSocietyForm(Form):
-    resources = MultiSearchField(model=Resource, search_url='/admin/ajax/search_resources')
+    # No longer used, page is live-edit (resources are just links)
+    #resources = MultiSearchField(model=Resource, search_url='/admin/ajax/search_resources')
     tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', format='full_tags_table', widget_label='Associate Tags with this Society', show_create_tag_link=True)
