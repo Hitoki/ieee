@@ -145,8 +145,10 @@
                             
                             <table class="resources">
                                 <tr>
-                                    <th>
-                                    </th>
+                                    {% comment %}
+                                        <th>
+                                        </th>
+                                    {% endcomment %}
                                     <th class="first-item">
                                         <span class="header-with-note">Resource Name <span class="help_icon flyover" title="Resource">[?]</span></span>
                                         
@@ -304,9 +306,11 @@
                                 </tr>
                                 {% for resource in resources %}
                                     <tr>
-                                        <td class="count">
-                                            {{ resource.count }}
-                                        </td>
+                                        {% comment %}
+                                            <td class="count">
+                                                {{ resource.count }}
+                                            </td>
+                                        {% endcomment %}
                                         <td class="first-item">
                                             <a href="{% url admin_edit_resource resource.id %}?return_url={{ current_url|urlencode }}&amp;society_id={{ society.id }}">{{ resource.name }}</a>
                                         </td>

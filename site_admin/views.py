@@ -1353,10 +1353,10 @@ def manage_society(request, society_id):
     resources1 = resources1[resource_start_count:resource_end_count]
     
     # Add the resource row count to the resource object
-    count = resource_start_count
-    for resource1 in resources1:
-        resource1.count = count+1
-        count += 1 
+    #count = resource_start_count
+    #for resource1 in resources1:
+    #    resource1.count = count+1
+    #    count += 1 
     
     # For each resource, get a list of society abbreviations in alphabetical order
     resources = []
