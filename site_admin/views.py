@@ -404,6 +404,7 @@ def import_societies(request):
     # Delete all existing societies
     Society.objects.all().delete()
     
+    # Get a unicode CSV reader
     (file, reader) = _open_unicode_csv(filename)
     
     row_count = 0
@@ -447,97 +448,97 @@ def import_societies(request):
         'page_time': time.time()-start,
     })
     
-#@login_required
-#def import_societies_and_tags(request):
-#    log('import_societies_and_tags()')
-#    start = time.time()
-#    
-#    filename = relpath(__file__, '../data/2009-03-15 societies and tags.csv')
-#    #filename = relpath(__file__, '../data/2009-03-15 societies and tags - short.csv')
-#    log('  filename: %s' % filename)
-#    
-#    # Delete all existing societies
-#    Society.objects.all().delete()
-#    
-#    # Delete all existing tags
-#    Node.objects.getTags().delete()
-#    
-#    file = codecs.open(filename, 'r', 'utf8')
-#    # Skip the UTF-8 BOM
-#    strip_bom(file)
-#    #reader = csv.reader(file)
-#    # Use a unicode csv reader:
-#    reader = _unicode_csv_reader(file)
-#    row_count = 0
-#    societies_created = 0
-#    tags_created = 0
-#        
-#    reader.next()
-#    
-#    tag_type = NodeType.objects.getFromName('tag')
-#    
-#    for row in reader:
-#        society_name, abbreviation, url, sector_name, tags1, tags2, tags3 = row
-#        
-#        society_name = society_name.strip()
-#        
-#        # Make sure the society name field does not contain a redundant acronym (there is already have an acronym field)
-#        matches = re.match(r'^(.+) \((.+)\)$', society_name)
-#        if matches is not None:
-#            society_name = matches.group(1)
-#        #log('society name: %s' % society_name)
-#        
-#        (society, created) = Society.objects.get_or_create(
-#            name=society_name,
-#        )
-#        society.abbreviation = abbreviation
-#        society.url = url
-#        society.save()
-#        
-#        if created:
-#            societies_created += 1
-#        
-#        sector = Node.objects.get_sector_by_name(sector_name)
-#        
-#        # Combine all the lists of tags
-#        tag_names = []
-#        if tags1.split(', ') is not None:
-#            tag_names.extend(tags1.split(','))
-#        if tags2.split(', ') is not None:
-#            tag_names.extend(tags2.split(','))
-#        if tags3.split(', ') is not None:
-#            tag_names.extend(tags3.split(','))
-#        
-#        for tag_name in tag_names:
-#            tag_name = string.capwords(tag_name).strip()
-#            if tag_name != '':
-#                
-#                (tag, created) = Node.objects.get_or_create(
-#                    name=tag_name,
-#                    parent=sector,
-#                    node_type=tag_type,
-#                )
-#                # Associate tag with society
-#                tag.societies.add(society)
-#                if created:
-#                    #log('Created tag "%s"' % tag_name)
-#                    #tag.filters = []
-#                    tag.num_resources = 0
-#                    tags_created += 1
-#                tag.save()
-#                
-#        row_count += 1
-#        if not row_count % 10:
-#            print '  Parsing row %d' % row_count
-#        
-#    file.close()
-#    
-#    return render(request, 'site_admin/import_societies_and_tags.html', {
-#        'row_count': row_count,
-#        'societies_created': societies_created,
-#        'tags_created': tags_created,
-#        'page_time': time.time()-start,
-#    })
+@login_required
+def import_societies_and_tags(request):
+    log('import_societies_and_tags()')
+    start = time.time()
+    
+    filename = relpath(__file__, '../data/v.7/2009-04-09 societies and tags.csv')
+    log('  filename: %s' % filename)
+    
+    # Delete all existing societies
+    Society.objects.all().delete()
+    
+    # Delete all existing tags
+    Node.objects.getTags().delete()
+    
+    # Get a unicode CSV reader
+    (file, reader) = _open_unicode_csv(filename)
+    
+    row_count = 0
+    societies_created = 0
+    tags_created = 0
+        
+    reader.next()
+    
+    tag_type = NodeType.objects.getFromName('tag')
+    
+    for row in reader:
+        society_name, abbreviation, url, sector_names, tags1, tags2, tags3 = row
+        
+        society_name = society_name.strip()
+        
+        # Make sure the society name field does not contain a redundant acronym (there is already have an acronym field)
+        matches = re.match(r'^(.+) \((.+)\)$', society_name)
+        if matches is not None:
+            society_name = matches.group(1)
+        #log('society name: %s' % society_name)
+        
+        (society, created) = Society.objects.get_or_create(
+            name=society_name,
+        )
+        society.abbreviation = abbreviation
+        society.url = url
+        society.save()
+        
+        if created:
+            societies_created += 1
+            
+        # DEBUG:
+        if True:
+            sector_names = [sector_name.strip() for sector_name in sector_names.split(',')]
+            sectors = [Node.objects.get_sector_by_name(sector_name) for sector_name in sector_names]
+            
+            # Combine all the lists of tags
+            tag_names = []
+            if tags1.split(', ') is not None:
+                tag_names.extend(tags1.split(','))
+            if tags2.split(', ') is not None:
+                tag_names.extend(tags2.split(','))
+            if tags3.split(', ') is not None:
+                tag_names.extend(tags3.split(','))
+            
+            for tag_name in tag_names:
+                tag_name = string.capwords(tag_name).strip()
+                if tag_name != '':
+                    
+                    (tag, created) = Node.objects.get_or_create(
+                        name=tag_name,
+                        node_type=tag_type,
+                    )
+                    tag.parents = sectors
+                    
+                    # Associate tag with society
+                    tag.societies.add(society)
+                    if created:
+                        #log('Created tag "%s"' % tag_name)
+                        #tag.filters = []
+                        tag.num_resources = 0
+                        tags_created += 1
+                    tag.save()
+                
+        row_count += 1
+        if not row_count % 10:
+            print '  Parsing row %d' % row_count
+        
+    file.close()
+    
+    return render(request, 'site_admin/import_societies_and_tags.html', {
+        'row_count': row_count,
+        'societies_created': societies_created,
+        'tags_created': tags_created,
+        'page_time': time.time()-start,
+    })
 
 def _import_resources(filename):
     #log('import_resources()')

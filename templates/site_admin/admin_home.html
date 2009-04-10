@@ -36,12 +36,17 @@
         </li>
         {% if user.is_superuser %}
         <li>
+            Import Data for v.7:
+            <ul>
+                <li><a href="{% url admin_import_societies_and_tags %}">Import Societies &amp; Tags</a></li>
+            </ul>
+        </li>
+        <li>
             Import Data:
             <ul>
                 <li><a href="{% url admin_import_tags %}">Import Tags</a></li>
                 <li><a href="{% url admin_import_societies %}">Import Societies</a></li>
                 {% comment %}
-                    <li><a href="{% url admin_import_societies_and_tags %}">Import Societies &amp; Tags</a></li>
                     <li><a href="{% url admin_import_societies %}">Import Societies</a></li>
                 {% endcomment %}
                 <li><a href="{% url admin_import_conferences %}">Import Conferences</a></li>
