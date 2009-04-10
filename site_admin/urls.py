@@ -10,6 +10,8 @@ urlpatterns = patterns('',
     url(r'^forgot_password_confirmation$', views.forgot_password_confirmation, name='forgot_password_confirmation'),
     url(r'^password_reset/(?P<user_id>\d+)/(?P<reset_key>.+)$', views.password_reset, name='password_reset'),
     url(r'^password_reset_success$', views.password_reset_success, name='password_reset_success'),
+    url(r'^change_password$', views.change_password, name='change_password'),
+    url(r'^change_password_success$', views.change_password_success, name='change_password_success'),
     
     url(r'^$', views.home, name='admin_home'),
     url(r'^home_societies_list$', views.home_societies_list, name='admin_home_societies_list'),

@@ -17,17 +17,20 @@
     {% if user.is_authenticated %}
         <ul class="nav">
             <li class="{% block nav_home %}{% endblock %}">
-                <a href="{% url admin_home %}">home</a>
+                <a href="{% url admin_home %}">Home</a>
+            </li>
+            <li class="{% block nav_change_password %}{% endblock %}">
+                <a href="{% url change_password %}">Change Password</a>
             </li>
             {% if user.is_superuser %}
             <li class="{% block nav_sectors %}{% endblock %}">
-                <a href="{% url admin_list_sectors %}">sectors</a>
+                <a href="{% url admin_list_sectors %}">Sectors</a>
             </li>
             <li class="{% block nav_users %}{% endblock %}">
-                <a href="{% url admin_users %}">users</a>
+                <a href="{% url admin_users %}">Users</a>
             </li>
             <li class="{% block nav_societies %}{% endblock %}">
-                <a href="{% url admin_societies %}">societies</a>
+                <a href="{% url admin_societies %}">Societies</a>
             </li>
             {% endif %}
         </ul>

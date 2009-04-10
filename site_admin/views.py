@@ -182,18 +182,14 @@ def forgot_password_confirmation(request):
 def password_reset(request, user_id, reset_key):
     user = User.objects.get(id=user_id)
     profile = user.get_profile()
-    #print 'password_reset()'
-    #print '  user_id:', user_id
-    #print '  user.get_profile().reset_key:', user.get_profile().reset_key
-    #print '  reset_key:', reset_key
     
     if profile.reset_key is not None and reset_key == profile.reset_key:
         # Got the right reset key
         error = ''
         if request.method == 'GET':
-            form = ResetPasswordForm()
+            form = ChangePasswordForm()
         else:
-            form = ResetPasswordForm(request.POST)
+            form = ChangePasswordForm(request.POST)
             if form.is_valid():
                 if form.cleaned_data['password1'].strip() == '':
                     error = '<ul class="error"><li>The password cannot be blank.</li></ul>'
@@ -218,6 +214,32 @@ def password_reset(request, user_id, reset_key):
 def password_reset_success(request):
     return render(request, 'site_admin/password_reset_success.html')
 
+@login_required
+def change_password(request):
+    # Got the right reset key
+    error = ''
+    if request.method == 'GET':
+        form = ChangePasswordForm()
+    else:
+        form = ChangePasswordForm(request.POST)
+        if form.is_valid():
+            if form.cleaned_data['password1'].strip() == '':
+                error = '<ul class="error"><li>The password cannot be blank.</li></ul>'
+            elif form.cleaned_data['password1'] != form.cleaned_data['password2']:
+                error = '<ul class="error"><li>The passwords did not match.</li></ul>'
+            else:
+                request.user.set_password(form.cleaned_data['password1'])
+                request.user.save()
+                return HttpResponseRedirect(reverse('change_password_success'))
+                
+    return render(request, 'site_admin/change_password.html', {
+        'error': error,
+        'form': form,
+    })
+
+@login_required
+def change_password_success(request):
+    return render(request, 'site_admin/change_password_success.html')
 
 @login_required
 def home(request):
@@ -634,6 +656,7 @@ def import_conferences(request):
     start = time.time()
     
     filename = relpath(__file__, '../data/comsoc/conferences.csv')
+    #filename = relpath(__file__, '../data/v.7/2009-03-13 - conference_list.txt')
 
     # Delete all conferences
     Resource.objects.get_conferences().delete()

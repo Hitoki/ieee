@@ -51,7 +51,7 @@ class ForgotPasswordForm(Form):
     username = CharField(max_length=30, label='Enter either your User Name:', required=False)
     email = CharField(label='Or your Email:', required=False)
 
-class ResetPasswordForm(Form):
+class ChangePasswordForm(Form):
     password1 = CharField(widget=PasswordInput(), label='Please enter your new password:')
     password2 = CharField(widget=PasswordInput(), label='Type your password again:')
 
