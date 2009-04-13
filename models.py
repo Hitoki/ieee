@@ -259,6 +259,9 @@ class SocietyManager(models.Manager):
     def getFromName(self, name):
         return single_row_or_none(self.filter(name=name))
     
+    def getFromAbbreviation(self, abbr):
+        return single_row_or_none(self.filter(abbreviation=abbr))
+    
     def searchByNameSubstring(self, substring):
         if substring.strip() == '':
             return None
@@ -306,6 +309,10 @@ class ResourceManager(models.Manager):
         resource_type = ResourceType.objects.getFromName(ResourceType.STANDARD)
         return self.filter(resource_type=resource_type)
         
+    def get_periodicals(self):
+        resource_type = ResourceType.objects.getFromName(ResourceType.PERIODICAL)
+        return self.filter(resource_type=resource_type)
+        
     def getForNode(self, node, resourceType=None):
         if type(resourceType) is str:
             resourceType = ResourceType.objects.getFromName(resourceType)
@@ -343,7 +350,7 @@ class Resource(models.Model):
     resource_type = models.ForeignKey(ResourceType)
     ieee_id = models.CharField(max_length=500,blank=True, null=True)
     name = models.CharField(max_length=500)
-    description = models.CharField(blank=True, max_length=1000)
+    description = models.CharField(blank=True, max_length=5000)
     url = models.CharField(blank=True, max_length=1000)
     year = models.IntegerField(blank=True, null=True)
     standard_status = models.CharField(blank=True, max_length=100)

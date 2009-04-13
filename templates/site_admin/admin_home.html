@@ -28,7 +28,9 @@
                 <li><a href="{% url admin_societies %}">List Societies</a></li>
                 <li><a href="{% url admin_list_sectors %}">List Sectors</a></li>
                 <li><a href="{% url admin_list_tags %}">List Tags</a></li>
-                <li><a href="{% url admin_list_resources %}">List Resources</a></li>
+                <li><a href="{% url admin_list_resources "conferences" %}">List Conferences</a></li>
+                <li><a href="{% url admin_list_resources "standards" %}">List Standards</a></li>
+                <li><a href="{% url admin_list_resources "periodicals" %}">List Periodicals</a></li>
                 <li><a href="{% url admin_search_tags %}">Search Tags</a></li>
                 <li><a href="{% url admin_search_societies %}">Search Societies</a></li>
                 <li><a href="{% url admin_search_resources %}">Search Resources</a></li>
@@ -40,6 +42,7 @@
             <ul>
                 <li><a href="{% url admin_import_societies_and_tags %}">Import Societies &amp; Tags</a></li>
                 <li><a href="{% url admin_import_conferences "v.7" %}">Import Conferences</a></li>
+                <li><a href="{% url admin_import_periodicals "v.7" %}">Import Periodicals</a></li>
             </ul>
         </li>
         <li>
@@ -53,10 +56,6 @@
         <li>
             Import Data:
             <ul>
-                <li><a href="{% url admin_import_standards %}">Import Standards</a></li>
-                {% comment %}
-                    <li><a href="{% url admin_import_resources %}">Import Resources</a></li>
-                {% endcomment %}
                 <li><a href="{% url admin_import_standards %}">Import Standards</a></li>
                 <li><a href="{% url admin_assign_related_tags %}">Assign related tags</a></li>
                 <li><a href="{% url admin_assign_filters %}">Assign Filters</a></li>

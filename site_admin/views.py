@@ -618,6 +618,9 @@ def _import_resources(filename):
                 
                 society = Society.objects.getFromName(temp_name)
                 if society is None:
+                    society = Society.objects.getFromAbbreviation(temp_name)
+                    
+                if society is None:
                     if temp_name not in invalid_societies:
                         invalid_societies[temp_name] = 1
                     else:
@@ -642,19 +645,27 @@ def _import_resources(filename):
                 #print 'ieee_id:', ieee_id
                 #print 'description:', description
                 #print 'society_names:', society_names
-            
-                resource = Resource.objects.create(
-                    resource_type=resource_type,
-                    ieee_id=ieee_id,
-                    name=name,
-                    description=description,
-                    url=url,
-                    year=year,
-                )
-                resource.societies = societies
-                resource.save()
-                resources_added += 1
                 
+                try:
+                    resource = Resource.objects.create(
+                        resource_type=resource_type,
+                        ieee_id=ieee_id,
+                        name=name,
+                        description=description,
+                        url=url,
+                        year=year,
+                    )
+                    resource.societies = societies
+                    resource.save()
+                    resources_added += 1
+                    
+                except Exception, e:
+                    print 'e:', e
+                    print 'ieee_id:', ieee_id
+                    print 'description:', description
+                    print 'len(description):', len(description)
+                    raise
+                    
         if not row_count % 10:
             print '  Reading row %d' % row_count
             
@@ -704,6 +715,29 @@ def import_conferences(request, source):
     Resource.objects.get_conferences().delete()
     
     # Import conferences
+    results = _import_resources(filename)
+    
+    return render(request, 'site_admin/import_resources.html', {
+        'page_time': time.time()-start,
+        'results': results,
+    })
+
+@login_required
+def import_periodicals(request, source):
+    start = time.time()
+    
+    if source not in _IMPORT_SOURCES:
+        raise Exception('Unknown import source "%s"' % source)
+    
+    if source == 'comsoc':
+        raise Exception('There is no periodicals file for COMSOC')
+    elif source == 'v.7':
+        filename = relpath(__file__, '../data/v.7/2009-04-10 - periodicals - mod.csv')
+
+    # Delete all periodicals
+    Resource.objects.get_periodicals().delete()
+    
+    # Import periodicals
     results = _import_resources(filename)
     
     return render(request, 'site_admin/import_resources.html', {
@@ -1481,9 +1515,18 @@ def search_societies(request):
     })
 
 @login_required
-def list_resources(request):
-    resources = Resource.objects.all()
+def list_resources(request, type1):
+    if type1 == 'conferences':
+        type1 = 'conference'
+    elif type1 == 'standards':
+        type1 = 'standard'
+    elif type1 == 'periodicals':
+        type1 = 'periodical'
+        
+    resource_type = ResourceType.objects.getFromName(type1)
+    resources = Resource.objects.filter(resource_type=resource_type)
     return render(request, 'site_admin/list_resources.html', {
+        'resource_type': resource_type,
         'resources': resources,
     })
 
