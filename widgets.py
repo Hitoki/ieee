@@ -12,6 +12,19 @@ class MultiSearchWidget(widgets.Widget):
     model = None
     
     def __init__(self, attrs=None):
+        print '__init__()'
+        print '  attrs:', attrs
+        
+        if attrs is not None and 'class' in attrs:
+            self.className = attrs['class']
+        else:
+            self.className = None
+        
+        if attrs is not None and 'classMetadata' in attrs:
+            self.classMetadata = attrs['classMetadata']
+        else:
+            self.classMetadata = None
+        
         super(MultiSearchWidget, self).__init__(attrs)
         
     def set_search_url(self, search_url):
@@ -35,9 +48,11 @@ class MultiSearchWidget(widgets.Widget):
         self.society_id = society_id
 
     def render(self, name, value, attrs=None):
-        #print 'MultiSearchWidget()'
-        #print '  name:', name
-        #print '  value:', value
+        print 'render()'
+        print '  name:', name
+        print '  value:', value
+        print '  attrs:', attrs
+        print '  self.className:', self.className
         #print '  type(value):', type(value)
         
         if type(value) is str or type(value) is unicode:
@@ -90,7 +105,10 @@ class MultiSearchWidget(widgets.Widget):
         if self.society_id is not None:
             classString += ', society_id:%s' % self.society_id
         
-        output.append('<div id="%s" class="multi-search { %s }">' % ('multisearch_'+name, classString ))
+        if self.classMetadata is not None:
+            classString += ', ' + self.classMetadata
+        
+        output.append('<div id="%s" class="multi-search { %s } %s">' % ('multisearch_'+name, classString, self.className ))
         output.append('    <input type="hidden" name="%s" value="%s" class="multi-search-data" />' % (name, escape(initial_data)))
         output.append('    %s: <input class="multi-search-input blur-text {text:\'(Type a few characters to bring up matching %s)\', blurClass:\'multi-search-input-blur\' }" />' % (widget_label, name))
         output.append('    <div class="multi-search-selected-options">')

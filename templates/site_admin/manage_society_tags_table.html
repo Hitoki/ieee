@@ -1,0 +1,155 @@
+Page: 
+{% for page in tag_pages %}
+    <a
+        href="{% url admin_manage_society society.id %}?tag_page={{ page }}&amp;tag_sort={{ tag_sort }}"
+        {% ifequal page tag_page %}
+            class="tag_page active_tag_page"
+        {% else %}
+            class="tag_page"
+        {% endifequal %}
+    >
+        {{ page }}
+    </a>
+{% endfor %}
+<br/>
+<br/>
+
+<table class="tags">
+    <tr>
+        {% comment %}
+            <th>
+            </th>
+        {% endcomment %}
+        <th class="first-item">
+            <span class="header-with-note">Tag Name <span class="help_icon flyover" title="Tag">[?]</span></span>
+            
+            &nbsp;
+            <a href="{% url admin_manage_society society.id %}?tag_sort=name_ascending" class="live-url {hashOnly:true}">
+                {% ifequal tag_sort "name_ascending" %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
+                {% else %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+                {% endifequal %}
+            </a>
+            <a href="{% url admin_manage_society society.id %}?tag_sort=name_descending" class="live-url {hashOnly:true}">
+                {% ifequal tag_sort "name_descending" %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
+                {% else %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+                {% endifequal %}
+            </a>
+            
+            <span class="header-note">Click tag to edit</span>
+        </th>
+        <th>
+            Sectors <span class="help_icon flyover" title="SECTORS">[?]</span>
+            
+            &nbsp;
+            <a href="{% url admin_manage_society society.id %}?tag_sort=sector_list_ascending" class="live-url {hashOnly:true}">
+                {% ifequal tag_sort "sector_list_ascending" %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
+                {% else %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+                {% endifequal %}
+            </a>
+            <a href="{% url admin_manage_society society.id %}?tag_sort=sector_list_descending" class="live-url {hashOnly:true}">
+                {% ifequal tag_sort "sector_list_descending" %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
+                {% else %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+                {% endifequal %}
+            </a>
+        </th>
+        <th>
+            Societies <span class="help_icon flyover" title="SECTORS">[?]</span>
+            
+            &nbsp;
+            <a href="{% url admin_manage_society society.id %}?tag_sort=num_societies_ascending" class="live-url {hashOnly:true}">
+                {% ifequal tag_sort "num_societies_ascending" %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
+                {% else %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+                {% endifequal %}
+            </a>
+            <a href="{% url admin_manage_society society.id %}?tag_sort=num_societies_descending" class="live-url {hashOnly:true}">
+                {% ifequal tag_sort "num_societies_descending" %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
+                {% else %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+                {% endifequal %}
+            </a>
+        </th>
+        <th>
+            Filters <span class="help_icon flyover" title="SECTORS">[?]</span>
+            
+            &nbsp;
+            <a href="{% url admin_manage_society society.id %}?tag_sort=num_filters_ascending" class="live-url {hashOnly:true}">
+                {% ifequal tag_sort "num_filters_ascending" %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
+                {% else %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+                {% endifequal %}
+            </a>
+            <a href="{% url admin_manage_society society.id %}?tag_sort=num_filters_descending" class="live-url {hashOnly:true}">
+                {% ifequal tag_sort "num_filters_descending" %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
+                {% else %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+                {% endifequal %}
+            </a>
+        </th>
+        <th>
+            Related_tags <span class="help_icon flyover" title="SECTORS">[?]</span>
+            
+            &nbsp;
+            <a href="{% url admin_manage_society society.id %}?tag_sort=num_related_tags_ascending" class="live-url {hashOnly:true}">
+                {% ifequal tag_sort "num_related_tags_ascending" %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
+                {% else %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+                {% endifequal %}
+            </a>
+            <a href="{% url admin_manage_society society.id %}?tag_sort=num_related_tags_descending" class="live-url {hashOnly:true}">
+                {% ifequal tag_sort "num_related_tags_descending" %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
+                {% else %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+                {% endifequal %}
+            </a>
+        </th>
+        <th>
+        </th>
+    </tr>
+    {% for tag in tags %}
+        <tr>
+            {% comment %}
+                <td class="count">
+                    {{ tag.count }}
+                </td>
+            {% endcomment %}
+            <td class="first-item">
+                <a href="{% url admin_edit_tag tag.id %}?return_url={{ current_url|urlencode }}&amp;society_id={{ society.id }}">{{ tag.name }}</a>
+            </td>
+            <td>
+                {{ tag.sectors_list }}
+            </td>
+            <td>
+                {% if tag.societies.all.count %}
+                    {{ tag.societies.all.count }}
+                {% endif %}
+            </td>
+            <td>
+                {% if tag.filters.all.count %}
+                    {{ tag.filters.all.count }}
+                {% endif %}
+            </td>
+            <td>
+                {% if tag.related_tags.all.count %}
+                    {{ tag.related_tags.all.count }}
+                {% endif %}
+            </td>
+            <td>
+            </td>
+        </tr>
+    {% endfor %}
+</table>

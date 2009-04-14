@@ -1,6 +1,6 @@
 {% extends 'site_admin/admin_base.html' %}
 
-{% load eval permissions %}
+{% load eval includes permissions %}
 
 {% block main_table_content %}
     
@@ -9,8 +9,57 @@
         function updateTagCount() {
             var count = $('#multisearch_tags').data('multisearch').getNumSelectedOptions();
             $('#tag-count').html('(' + count + ')');
-            
         }
+        
+        // Creates a shadow layer over the top of elem, matching the size & position.
+        // Uses 'html' as the content of the layer.
+        function OverShadow(elem, html) {
+            this.elem = $(elem);
+            elem.data('overShadow', this);
+            
+            var pos = getElemPos(elem);
+            this.shadowElem = $('<div class="over-shadow"></div>').appendTo('body');
+            this.shadowElem.css('left', pos.x + 'px');
+            this.shadowElem.css('top', pos.y + 'px');
+            this.shadowElem.css('width', elem.attr('offsetWidth') + 'px');
+            this.shadowElem.css('height', elem.attr('offsetHeight') + 'px');
+            
+            this.contentElem = $('<div class="over-shadow-content"></div>').appendTo('body');
+            this.contentElem.css('left', pos.x + 'px');
+            this.contentElem.css('top', pos.y + 'px');
+            this.contentElem.css('width', elem.attr('offsetWidth') + 'px');
+            this.contentElem.css('height', elem.attr('offsetHeight') + 'px');
+            this.contentElem.html(html);
+        }
+        
+        OverShadow.prototype.hide = function() {
+            this.shadowElem.remove();
+            this.shadowElem = null;
+            this.contentElem.remove();
+            this.contentElem = null;
+            this.elem.data('overShadow', null);
+            this.elem = null;
+        }
+        
+        //////////
+        
+        function refreshTagsTable() {
+            new OverShadow($('#tags-table-content'), '<div class="tags-table-loading">Loading...</div>');
+            $('#tags-table-content').load("{% url admin_manage_society_tags_table society.id "up" 12 %}", refreshTagsTable2);
+        }
+        
+        function refreshTagsTable2() {
+            $('#tags-table-content').data('overShadow').hide();
+        }
+        
+        $(function() {
+            $('#refresh-tags-table').click(function() {
+                refreshTagsTable();
+                return false;
+            });
+            
+            //overShadow($('#tags-table-content'), '<div class="tags-table-loading">Loading...</div>');
+        });
         
         window.notify = function(action, data) {
             if (action == 'created_tag') {
@@ -33,6 +82,9 @@
                 // Trigger a refresh of the popup
                 multisearch.updatePopup();
                 
+                // Update the tags table
+                refreshTagsTable();
+                
             } else if (action == 'added_multisearch_option') {
                 $.post('{% url ajax_update_society %}', {
                     action: 'add_tag',
@@ -40,6 +92,9 @@
                     tag_id: data.option.value
                 });
                 updateTagCount()
+                
+                // Update the tags table
+                refreshTagsTable();
                 
             } else if (action == 'preloaded_multisearch_option') {
                 updateTagCount()
@@ -51,6 +106,9 @@
                     tag_id: data.option.value
                 });
                 updateTagCount()
+                
+                // Update the tags table
+                refreshTagsTable();
                 
             } else if (action == 'multisearch_create_new_tag') {
                 Lightbox.show('{% url admin_create_tag %}?default_tag_name=' + escape(data.tag_name) + '&society_id=' + {{ society.id }}, {
@@ -130,7 +188,7 @@
                             Page: 
                             {% for page in resource_pages %}
                                 <a
-                                    href="{% url admin_manage_society society.id %}?resource_page={{ page }}&amp;sort={{ sort }}"
+                                    href="{% url admin_manage_society society.id %}?resource_page={{ page }}&amp;resource_sort={{ resource_sort }}"
                                     {% ifequal page resource_page %}
                                         class="resource_page active_resource_page"
                                     {% else %}
@@ -153,15 +211,15 @@
                                         <span class="header-with-note">Resource Name <span class="help_icon flyover" title="Resource">[?]</span></span>
                                         
                                         &nbsp;
-                                        <a href="{% url admin_manage_society society.id %}?sort=name_ascending" class="live-url {hashOnly:true}">
-                                            {% ifequal sort "name_ascending" %}
+                                        <a href="{% url admin_manage_society society.id %}?resource_sort=name_ascending" class="live-url {hashOnly:true}">
+                                            {% ifequal resource_sort "name_ascending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                                             {% else %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                                             {% endifequal %}
                                         </a>
-                                        <a href="{% url admin_manage_society society.id %}?sort=name_descending" class="live-url {hashOnly:true}">
-                                            {% ifequal sort "name_descending" %}
+                                        <a href="{% url admin_manage_society society.id %}?resource_sort=name_descending" class="live-url {hashOnly:true}">
+                                            {% ifequal resource_sort "name_descending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                                             {% else %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
@@ -174,15 +232,15 @@
                                         ID <span class="help_icon flyover" title="ID">[?]</span>
                                         
                                         &nbsp;
-                                        <a href="{% url admin_manage_society society.id %}?sort=ieee_id_ascending" class="live-url {hashOnly:true}">
-                                            {% ifequal sort "ieee_id_ascending" %}
+                                        <a href="{% url admin_manage_society society.id %}?resource_sort=ieee_id_ascending" class="live-url {hashOnly:true}">
+                                            {% ifequal resource_sort "ieee_id_ascending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                                             {% else %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                                             {% endifequal %}
                                         </a>
-                                        <a href="{% url admin_manage_society society.id %}?sort=ieee_id_descending" class="live-url {hashOnly:true}">
-                                            {% ifequal sort "ieee_id_descending" %}
+                                        <a href="{% url admin_manage_society society.id %}?resource_sort=ieee_id_descending" class="live-url {hashOnly:true}">
+                                            {% ifequal resource_sort "ieee_id_descending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                                             {% else %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
@@ -193,15 +251,15 @@
                                         Resource Type <span class="help_icon flyover" title="Resource Type">[?]</span>
                                         
                                         &nbsp;
-                                        <a href="{% url admin_manage_society society.id %}?sort=resource_type_ascending" class="live-url {hashOnly:true}">
-                                            {% ifequal sort "resource_type_ascending" %}
+                                        <a href="{% url admin_manage_society society.id %}?resource_sort=resource_type_ascending" class="live-url {hashOnly:true}">
+                                            {% ifequal resource_sort "resource_type_ascending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                                             {% else %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                                             {% endifequal %}
                                         </a>
-                                        <a href="{% url admin_manage_society society.id %}?sort=resource_type_descending" class="live-url {hashOnly:true}">
-                                            {% ifequal sort "resource_type_descending" %}
+                                        <a href="{% url admin_manage_society society.id %}?resource_sort=resource_type_descending" class="live-url {hashOnly:true}">
+                                            {% ifequal resource_sort "resource_type_descending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                                             {% else %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
@@ -212,15 +270,15 @@
                                         URL <span class="help_icon flyover" title="URL">[?]</span>
                                         
                                         &nbsp;
-                                        <a href="{% url admin_manage_society society.id %}?sort=url_ascending" class="live-url {hashOnly:true}">
-                                            {% ifequal sort "url_ascending" %}
+                                        <a href="{% url admin_manage_society society.id %}?resource_sort=url_ascending" class="live-url {hashOnly:true}">
+                                            {% ifequal resource_sort "url_ascending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                                             {% else %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                                             {% endifequal %}
                                         </a>
-                                        <a href="{% url admin_manage_society society.id %}?sort=url_descending" class="live-url {hashOnly:true}">
-                                            {% ifequal sort "url_descending" %}
+                                        <a href="{% url admin_manage_society society.id %}?resource_sort=url_descending" class="live-url {hashOnly:true}">
+                                            {% ifequal resource_sort "url_descending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                                             {% else %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
@@ -231,15 +289,15 @@
                                         Tags <span class="help_icon flyover" title="Tags">[?]</span>
                                         
                                         &nbsp;
-                                        <a href="{% url admin_manage_society society.id %}?sort=num_tags_ascending" class="live-num_tags {hashOnly:true}">
-                                            {% ifequal sort "num_tags_ascending" %}
+                                        <a href="{% url admin_manage_society society.id %}?resource_sort=num_tags_ascending" class="live-num_tags {hashOnly:true}">
+                                            {% ifequal resource_sort "num_tags_ascending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                                             {% else %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                                             {% endifequal %}
                                         </a>
-                                        <a href="{% url admin_manage_society society.id %}?sort=num_tags_descending" class="live-num_tags {hashOnly:true}">
-                                            {% ifequal sort "num_tags_descending" %}
+                                        <a href="{% url admin_manage_society society.id %}?resource_sort=num_tags_descending" class="live-num_tags {hashOnly:true}">
+                                            {% ifequal resource_sort "num_tags_descending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                                             {% else %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
@@ -250,15 +308,15 @@
                                         Societies <span class="help_icon flyover" title="Societies">[?]</span>
                                         
                                         &nbsp;
-                                        <a href="{% url admin_manage_society society.id %}?sort=num_societies_ascending" class="live-num_societies {hashOnly:true}">
-                                            {% ifequal sort "num_societies_ascending" %}
+                                        <a href="{% url admin_manage_society society.id %}?resource_sort=num_societies_ascending" class="live-num_societies {hashOnly:true}">
+                                            {% ifequal resource_sort "num_societies_ascending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                                             {% else %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                                             {% endifequal %}
                                         </a>
-                                        <a href="{% url admin_manage_society society.id %}?sort=num_societies_descending" class="live-num_societies {hashOnly:true}">
-                                            {% ifequal sort "num_societies_descending" %}
+                                        <a href="{% url admin_manage_society society.id %}?resource_sort=num_societies_descending" class="live-num_societies {hashOnly:true}">
+                                            {% ifequal resource_sort "num_societies_descending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                                             {% else %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
@@ -269,15 +327,15 @@
                                         Priority <span class="help_icon flyover" title="Priority">[?]</span>
                                         
                                         &nbsp;
-                                        <a href="{% url admin_manage_society society.id %}?sort=priority_ascending" class="live-priority {hashOnly:true}">
-                                            {% ifequal sort "priority_ascending" %}
+                                        <a href="{% url admin_manage_society society.id %}?resource_sort=priority_ascending" class="live-priority {hashOnly:true}">
+                                            {% ifequal resource_sort "priority_ascending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                                             {% else %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                                             {% endifequal %}
                                         </a>
-                                        <a href="{% url admin_manage_society society.id %}?sort=priority_descending" class="live-priority {hashOnly:true}">
-                                            {% ifequal sort "priority_descending" %}
+                                        <a href="{% url admin_manage_society society.id %}?resource_sort=priority_descending" class="live-priority {hashOnly:true}">
+                                            {% ifequal resource_sort "priority_descending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                                             {% else %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
@@ -288,15 +346,15 @@
                                         Description <span class="help_icon flyover" title="Description">[?]</span>
                                         
                                         &nbsp;
-                                        <a href="{% url admin_manage_society society.id %}?sort=description_ascending" class="live-description {hashOnly:true}">
-                                            {% ifequal sort "description_ascending" %}
+                                        <a href="{% url admin_manage_society society.id %}?resource_sort=description_ascending" class="live-description {hashOnly:true}">
+                                            {% ifequal resource_sort "description_ascending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                                             {% else %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                                             {% endifequal %}
                                         </a>
-                                        <a href="{% url admin_manage_society society.id %}?sort=description_descending" class="live-description {hashOnly:true}">
-                                            {% ifequal sort "description_descending" %}
+                                        <a href="{% url admin_manage_society society.id %}?resource_sort=description_descending" class="live-description {hashOnly:true}">
+                                            {% ifequal resource_sort "description_descending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                                             {% else %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
@@ -353,53 +411,11 @@
                             <input type="button" id="create-tag-float" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ tags_tab_url|urlencode }}';" value="Create New Tag" />
                             {% eval form['tags'] %}
                             
-                            {# NOTE: This is used by javascript for the 'forms' field.  It will be removed from the page by JS later on. #}
-                            <table id="multisearch-tags-template">
-                                <tr>
-                                    <th class="first-item">
-                                        <span class="header-with-note">
-                                            Tag Name <span class="help_icon flyover" title="Tag Name">[?]</span>
-                                        </span>
-                                        &nbsp;
-                                        <a href="#sort_name_ascending" class="multisearch-sort {order:'ascending', col:0}"><img src="{{MEDIA_URL}}images/sort_arrow_up_inactive.png" /></a>
-                                        <a href="#sort_name_descending" class="multisearch-sort {order:'descending', col:0}"><img src="{{MEDIA_URL}}images/sort_arrow_down_inactive.png" /></a>
-                                        <span class="header-note">Click tag to edit</span>
-                                    </th>
-                                    <th>
-                                        Sectors <span class="help_icon flyover" title="Sectors">[?]</span>
-                                        &nbsp;
-                                        <a href="#sort_name_ascending" class="multisearch-sort {order:'ascending', col:1}"><img src="{{MEDIA_URL}}images/sort_arrow_up_inactive.png" /></a>
-                                        <a href="#sort_name_descending" class="multisearch-sort {order:'descending', col:1}"><img src="{{MEDIA_URL}}images/sort_arrow_down_inactive.png" /></a>
-                                    </th>
-                                    <th>
-                                        Societies <span class="help_icon flyover" title="Societies">[?]</span>
-                                        &nbsp;
-                                        <a href="#sort_name_ascending" class="multisearch-sort {order:'ascending', col:2}"><img src="{{MEDIA_URL}}images/sort_arrow_up_inactive.png" /></a>
-                                        <a href="#sort_name_descending" class="multisearch-sort {order:'descending', col:2}"><img src="{{MEDIA_URL}}images/sort_arrow_down_inactive.png" /></a>
-                                    </th>
-                                    <th>
-                                        Filters <span class="help_icon flyover" title="Filters">[?]</span>
-                                        &nbsp;
-                                        <a href="#sort_name_ascending" class="multisearch-sort {order:'ascending', col:3}"><img src="{{MEDIA_URL}}images/sort_arrow_up_inactive.png" /></a>
-                                        <a href="#sort_name_descending" class="multisearch-sort {order:'descending', col:3}"><img src="{{MEDIA_URL}}images/sort_arrow_down_inactive.png" /></a>
-                                    </th>
-                                    <th>
-                                        Resources <span class="help_icon flyover" title="Resources">[?]</span>
-                                        &nbsp;
-                                        <a href="#sort_name_ascending" class="multisearch-sort {order:'ascending', col:4}"><img src="{{MEDIA_URL}}images/sort_arrow_up_inactive.png" /></a>
-                                        <a href="#sort_name_descending" class="multisearch-sort {order:'descending', col:4}"><img src="{{MEDIA_URL}}images/sort_arrow_down_inactive.png" /></a>
-                                    </th>
-                                    <th>
-                                        Related Tags <span class="help_icon flyover" title="Related Tags">[?]</span>
-                                        &nbsp;
-                                        <a href="#sort_name_ascending" class="multisearch-sort {order:'ascending', col:5}"><img src="{{MEDIA_URL}}images/sort_arrow_up_inactive.png" /></a>
-                                        <a href="#sort_name_descending" class="multisearch-sort {order:'descending', col:5}"><img src="{{MEDIA_URL}}images/sort_arrow_down_inactive.png" /></a>
-                                    </th>
-                                    <th>
-                                        Remove <span class="help_icon flyover" title="Remove">[?]</span>
-                                    </th>
-                                </tr>
-                            </table>
+                            <a href="#" id="refresh-tags-table">Refresh tags table</a>
+                            
+                            <div id="tags-table-content">
+                                {% manage_society_tags_table %}
+                            </div>
                             
                             <input type="button" id="create-tag" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ tags_tab_url|urlencode }}';" value="Create New Tag" />
                         </div>

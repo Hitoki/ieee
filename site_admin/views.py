@@ -1299,13 +1299,17 @@ def view_society(request, society_id):
 def manage_society(request, society_id):
     
     _RESOURCES_PER_PAGE = 50
+    _TAGS_PER_PAGE = 50
     
-    sort = request.GET.get('sort', '')
+    # Default to name/ascending resource_sort
+    resource_sort = request.GET.get('resource_sort', 'name_ascending')
     resource_page = int(request.GET.get('resource_page', 1))
     
-    society = Society.objects.get(id=society_id)
+    # Default to name/ascending tag_sort
+    tag_sort = request.GET.get('tag_sort', 'name_ascending')
+    tag_page = int(request.GET.get('tag_page', 1))
     
-    #print 'sort:', sort
+    society = Society.objects.get(id=society_id)
     
     form = ManageSocietyForm(initial={
         'tags': society.tags.all(),
@@ -1314,67 +1318,136 @@ def manage_society(request, society_id):
     
     form.fields['tags'].widget.set_society_id(society_id)
     
-    if sort == 'name_ascending':
+    if resource_sort == 'name_ascending':
         resources1 = society.resources.order_by('name')
-    elif sort == 'name_descending':
+    elif resource_sort == 'name_descending':
         resources1 = society.resources.order_by('-name')
     
-    elif sort == 'ieee_id_ascending':
+    elif resource_sort == 'ieee_id_ascending':
         resources1 = society.resources.order_by('ieee_id', 'name')
-    elif sort == 'ieee_id_descending':
+    elif resource_sort == 'ieee_id_descending':
         resources1 = society.resources.order_by('-ieee_id', '-name')
     
-    elif sort == 'resource_type_ascending':
+    elif resource_sort == 'resource_type_ascending':
         resources1 = society.resources.order_by('resource_type', 'name')
-    elif sort == 'resource_type_descending':
+    elif resource_sort == 'resource_type_descending':
         resources1 = society.resources.order_by('-resource_type', '-name')
     
-    elif sort == 'url_ascending':
+    elif resource_sort == 'url_ascending':
         resources1 = society.resources.order_by('url', 'name')
-    elif sort == 'url_descending':
+    elif resource_sort == 'url_descending':
         resources1 = society.resources.order_by('-url', '-name')
     
-    elif sort == 'num_tags_ascending':
+    elif resource_sort == 'num_tags_ascending':
         resources1 = society.resources.extra(select={
             'num_tags': 'SELECT COUNT(ieeetags_resource_nodes.id) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.resource_id = ieeetags_resource.id',
         }, order_by=[
             'num_tags',
         ])
-    elif sort == 'num_tags_descending':
+    elif resource_sort == 'num_tags_descending':
         resources1 = society.resources.extra(select={
             'num_tags': 'SELECT COUNT(ieeetags_resource_nodes.id) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.resource_id = ieeetags_resource.id',
         }, order_by=[
             '-num_tags',
         ])
     
-    elif sort == 'num_societies_ascending':
+    elif resource_sort == 'num_societies_ascending':
         resources1 = society.resources.extra(select={
             'num_societies': 'SELECT COUNT(ieeetags_resource_societies.id) FROM ieeetags_resource_societies WHERE ieeetags_resource_societies.resource_id = ieeetags_resource.id',
         }, order_by=[
             'num_societies',
         ])
-    elif sort == 'num_societies_descending':
+    elif resource_sort == 'num_societies_descending':
         resources1 = society.resources.extra(select={
             'num_societies': 'SELECT COUNT(ieeetags_resource_societies.id) FROM ieeetags_resource_societies WHERE ieeetags_resource_societies.resource_id = ieeetags_resource.id',
         }, order_by=[
             '-num_societies',
         ])
     
-    elif sort == 'priority_ascending':
+    elif resource_sort == 'priority_ascending':
         resources1 = society.resources.order_by('priority_to_tag', 'name')
-    elif sort == 'priority_descending':
+    elif resource_sort == 'priority_descending':
         resources1 = society.resources.order_by('-priority_to_tag', '-name')
     
-    elif sort == 'description_ascending':
+    elif resource_sort == 'description_ascending':
         resources1 = society.resources.order_by('description', 'name')
-    elif sort == 'description_descending':
+    elif resource_sort == 'description_descending':
         resources1 = society.resources.order_by('-description', '-name')
     
-    elif sort == '':
-        # Default to name/ascending sort
-        resources1 = society.resources.order_by('name')
     else:
-        raise Exception('Unknown sort "%s"' % sort)
+        raise Exception('Unknown resource_sort "%s"' % resource_sort)
+    
+    if tag_sort == 'name_ascending':
+        tags = society.tags.order_by('name')
+    elif tag_sort == 'name_descending':
+        tags = society.tags.order_by('-name')
+    
+    elif tag_sort == 'sector_list_ascending':
+        tags = society.tags.extra(select={
+            'sectors_list': """
+                SELECT GROUP_CONCAT(sectors.name ORDER BY sectors.name SEPARATOR ', ')
+                FROM ieeetags_node_parents INNER JOIN ieeetags_node AS sectors
+                ON ieeetags_node_parents.to_node_id = sectors.id
+                WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id
+                GROUP BY ieeetags_node_parents.from_node_id
+            """,
+        }, order_by=[
+            'sectors_list',
+        ])
+    elif tag_sort == 'sector_list_descending':
+        tags = society.tags.extra(select={
+            'sectors_list': """
+                SELECT GROUP_CONCAT(sectors.name ORDER BY sectors.name SEPARATOR ', ')
+                FROM ieeetags_node_parents INNER JOIN ieeetags_node AS sectors
+                ON ieeetags_node_parents.to_node_id = sectors.id
+                WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id
+                GROUP BY ieeetags_node_parents.from_node_id
+            """,
+        }, order_by=[
+            '-sectors_list',
+        ])
+    
+    elif tag_sort == 'num_societies_ascending':
+        tags = society.tags.extra(select={
+            'num_societies': 'SELECT COUNT(ieeetags_node_societies.id) FROM ieeetags_node_societies WHERE ieeetags_node_societies.node_id = ieeetags_node.id',
+        }, order_by=[
+            'num_societies',
+        ])
+    elif tag_sort == 'num_societies_descending':
+        tags = society.tags.extra(select={
+            'num_societies': 'SELECT COUNT(ieeetags_node_societies.id) FROM ieeetags_node_societies WHERE ieeetags_node_societies.node_id = ieeetags_node.id',
+        }, order_by=[
+            '-num_societies',
+        ])
+    
+    elif tag_sort == 'num_filters_ascending':
+        tags = society.tags.extra(select={
+            'num_filters': 'SELECT COUNT(ieeetags_node_filters.id) FROM ieeetags_node_filters WHERE ieeetags_node_filters.node_id = ieeetags_node.id',
+        }, order_by=[
+            'num_filters',
+        ])
+    elif tag_sort == 'num_filters_descending':
+        tags = society.tags.extra(select={
+            'num_filters': 'SELECT COUNT(ieeetags_node_filters.id) FROM ieeetags_node_filters WHERE ieeetags_node_filters.node_id = ieeetags_node.id',
+        }, order_by=[
+            '-num_filters',
+        ])
+    
+    elif tag_sort == 'num_related_tags_ascending':
+        tags = society.tags.extra(select={
+            'num_related_tags': 'SELECT COUNT(ieeetags_node_related_tags.id) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id',
+        }, order_by=[
+            'num_related_tags',
+        ])
+    elif tag_sort == 'num_related_tags_descending':
+        tags = society.tags.extra(select={
+            'num_related_tags': 'SELECT COUNT(ieeetags_node_related_tags.id) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id',
+        }, order_by=[
+            '-num_related_tags',
+        ])
+    
+    else:
+        raise Exception('Unknown tag_sort "%s"' % tag_sort)
     
     # Limit search results to one page
     num_resources = resources1.count()
@@ -1401,15 +1474,28 @@ def manage_society(request, society_id):
     tags_tab_url = reverse('admin_manage_society', args=[society_id]) + '#tab-tags-tab'
     
     return render(request, 'site_admin/manage_society.html', {
-        'sort': sort,
         'society': society,
         'form': form,
         'resources': resources,
-        'tags_tab_url': tags_tab_url,
+        'resource_sort': resource_sort,
         'resource_page': resource_page,
         'num_resources': num_resources,
         'num_resource_pages': num_resource_pages,
         'resource_pages': resource_pages,
+        'tags': tags,
+        'tag_sort': tag_sort,
+        'tags_tab_url': tags_tab_url,
+    })
+
+@login_required
+def manage_society_tags_table(request, society_id, tags_sort, tags_page):
+    society = Society.objects.get(id=society_id)
+    tags = society.tags.all()
+    return render(request, 'site_admin/manage_society_tags_table.html', {
+        'tags_sort': tags_sort,
+        'tags_page': tags_page,
+        'society': society,
+        'tags': tags,
     })
 
 @login_required

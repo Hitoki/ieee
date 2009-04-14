@@ -795,3 +795,26 @@ table#login-table {
 table#login-table td {
     padding: 5px 5px 5px 10px;
 }
+
+/* */
+
+.tags-table-loading {
+    text-align:center;
+    font-size:200%;
+    font-weight:bold;
+    padding:3em;
+    color:white;
+}
+
+/* */
+
+.over-shadow {
+    background:black;
+    position:absolute;
+    opacity:0.50;
+    filter:alpha(opacity=50)
+}
+
+.over-shadow-content {
+    position:absolute;
+}

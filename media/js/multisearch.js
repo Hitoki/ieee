@@ -151,7 +151,8 @@ function MultiSearch(container, options) {
             sortOrder: null,
             showCreateTagLink: false,
             society_id: null,
-            society_tags_first: false
+            society_tags_first: false,
+            showSelectedOptions: true
         },
         this.container.metadata(),
         options
@@ -213,6 +214,10 @@ function MultiSearch(container, options) {
     this.selectedOptionsElem = this.container.find('.multi-search-selected-options');
     if (this.selectedOptionsElem.length == 0)
         return error('MultiSearch(): did not find .multi-search-selected-options element');
+    if (!this.options.showSelectedOptions) {
+        this.selectedOptionsElem.hide();
+    }
+    
     
     if (this.options.showAsTable) {
         this.selectedOptionsTableElem = $('<table></table>').appendTo(this.selectedOptionsElem);
@@ -457,7 +462,7 @@ MultiSearch.prototype.showPopupLoading = function() {
 MultiSearch.prototype.addSearchOption = function(searchOption) {
     var multiSearch = this;
     
-    // Create searchOption elementf
+    // Create searchOption element
     searchOption.elem = $("<div class=\"multi-search-popup-item\"><img class='multi-search-popup-item-checkbox' src='/media/images/checkbox.png' />" + searchOption.name + "</div>");
     
     if (this.options.society_tags_first) {

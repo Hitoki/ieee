@@ -107,4 +107,4 @@ class UserForm(Form):
 class ManageSocietyForm(Form):
     # No longer used, page is live-edit (resources are just links)
     #resources = MultiSearchField(model=Resource, search_url='/admin/ajax/search_resources')
-    tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', format='full_tags_table', widget_label='Associate Tags with this Society', show_create_tag_link=True)
+    tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget_label='Associate Tags with this Society', show_create_tag_link=True, widget=MultiSearchWidget(attrs={'classMetadata':'showSelectedOptions:false' }))
