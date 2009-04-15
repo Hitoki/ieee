@@ -1,95 +1,24 @@
-/**
- * jQBrowser v0.2 - Extend jQuery's browser detection capabilities
- *   * http://davecardwell.co.uk/javascript/jquery/plugins/jquery-browserdetect/0.2/
+﻿/**
+ * jQBrowser² v1.0.1 - Extend jQuery's browser detection capabilities and implement CSS browser selectors
+ *   * http://www.alterform.com/resources/jqbrowser-2
  *
- * Dave Cardwell <http://davecardwell.co.uk/>
- *
- * Built on the shoulders of giants:
+ * Built on the shoulders of (and stolen from :) ) giants:
  *   * John Resig <http://jquery.com/>
  *   * Peter-Paul Koch <http://www.quirksmode.org/?/js/detect.html>
+ *	 * Dave Cardwell <http://davecardwell.co.uk/>
+ *	 * Rafael Lima <http://rafael.adm.br/css_browser_selector/>
  *
- *
- * Copyright (c) 2006 Dave Cardwell, dual licensed under the MIT and GPL
+ * Copyright (c) 2006 Nate Cavanaugh, dual licensed under the MIT and GPL
  * licenses:
  *   * http://www.opensource.org/licenses/mit-license.php
  *   * http://www.gnu.org/licenses/gpl.txt
  */
 
-
-/**
- * For the latest version of this plugin, and a discussion of its usage and
- * implementation, visit:
- *   * http://davecardwell.co.uk/javascript/jquery/plugins/jquery-browserdetect/
- */
-
-new function() {
-    /**
-     * The following functions and attributes form the Public interface of the
-     * jQBrowser plugin, accessed externally through the $.browser object.
-     * See the relevant function definition later in the source for further
-     * information.
-     *
-     * $.browser.browser()
-     * $.browser.version.number()
-     * $.browser.version.string()
-     * $.browser.OS()
-     *
-     * $.browser.aol()
-     * $.browser.camino()
-     * $.browser.firefox()
-     * $.browser.flock()
-     * $.browser.icab()
-     * $.browser.konqueror()
-     * $.browser.mozilla()
-     * $.browser.msie()
-     * $.browser.netscape()
-     * $.browser.opera()
-     * $.browser.safari()
-     *
-     * $.browser.linux()
-     * $.browser.mac()
-     * $.browser.win()
-     */
-    var Public = {
-        // The current browser, its version as a number or a string, and the
-        // operating system its running on.
-          'browser': function() { return Private.browser;   },
-          'version': {
-              'number': function() { return Private.version.number; },
-              'string': function() { return Private.version.string; }
-          },
-               'OS': function() { return Private.OS;        },
-
-        // A boolean value indicating whether or not the given browser was
-        // detected.
-              'aol': function() { return Private.aol;       },
-           'camino': function() { return Private.camino;    },
-          'firefox': function() { return Private.firefox;   },
-            'flock': function() { return Private.flock;     },
-             'icab': function() { return Private.icab;      },
-        'konqueror': function() { return Private.konqueror; },
-          'mozilla': function() { return Private.mozilla;   },
-             'msie': function() { return Private.msie;      },
-         'netscape': function() { return Private.netscape;  },
-            'opera': function() { return Private.opera;     },
-           'safari': function() { return Private.safari;    },
-
-        // A boolean value indicating whether or not the given OS was
-        // detected.
-            'linux': function() { return Private.linux;     },
-              'mac': function() { return Private.mac;       },
-              'win': function() { return Private.win;       }
-    };
-
-    // Allow external access to the 'Public' interface through the $.browser
-    // object.
-    $.browser = Public;
-
-
-
+var jQBrowser2 = function() {
+	var add_selectors = true;
     /**
      * The following functions and attributes form the internal methods and
-     * state of the jQBrowser plugin.  See the relevant function definition
+     * state of the jQBrowser² plugin.  See the relevant function definition
      * later in the source for further information.
      *
      * Private.browser
@@ -142,8 +71,7 @@ new function() {
               'mac': false,
               'win': false
     };
-
-
+	
 
     /**
      * Loop over the items in 'data' trying to find a browser match with the
@@ -170,76 +98,61 @@ new function() {
            data = [                     // browser tests and data
                 { // Safari <http://www.apple.com/safari/>
                           'name': 'Safari',
-                       'browser': function() { return /Apple/.test(ve) },
-                       'version': function() {
-                                      return ua.match(/Version\/([\d.]+)/)
-                                  }
+                       'browser':  /Apple/.test(ve)
                 },
                 { // Opera <http://www.opera.com/>
                           'name': 'Opera',
-                       'browser': function() {
-                                      return window.opera != undefined
-                                  }
+                       'browser': window.opera != undefined
                 },
                 { // iCab <http://www.icab.de/>
                           'name': 'iCab',
-                       'browser': function() { return /iCab/.test(ve) }
+                       'browser': /iCab/.test(ve)
                 },
                 { // Konqueror <http://www.konqueror.org/>
                           'name': 'Konqueror',
-                       'browser': function() { return /KDE/.test(ve) }
+                       'browser': /KDE/.test(ve)
                 },
                 { // AOL Explorer <http://downloads.channel.aol.com/browser>
                     'identifier': 'aol',
                           'name': 'AOL Explorer',
-                       'browser': function() {
-                                      return /America Online Browser/.test(ua)
-                                  },
-                       'version': function() {
-                                      return ua.match(/rev(\d+(?:\.\d+)+)/)
-                                  }
+                       'browser': /America Online Browser/.test(ua),
+                       'version': ua.match(/rev(\d+(?:\.\d+)+)/)
                 },
                 { // Flock <http://www.flock.com/>
                           'name': 'Flock',
-                       'browser': function() { return /Flock/.test(ua) }
+                       'browser': /Flock/.test(ua)
                 },
                 { // Camino <http://www.caminobrowser.org/>
                           'name': 'Camino',
-                       'browser': function() { return /Camino/.test(ve) }
+                       'browser': /Camino/.test(ve)
                 },
                 { // Firefox <http://www.mozilla.com/firefox/>
                           'name': 'Firefox',
-                       'browser': function() { return /Firefox/.test(ua) }
+                       'browser': /Firefox/.test(ua)
                 },
                 { // Netscape <http://browser.netscape.com/>
                           'name': 'Netscape',
-                       'browser': function() { return /Netscape/.test(ua) }
+                       'browser': /Netscape/.test(ua)
                 },
                 { // Internet Explorer <http://www.microsoft.com/windows/ie/>
                   //                   <http://www.microsoft.com/mac/ie/>
                     'identifier': 'msie',
                           'name': 'Internet Explorer',
-                       'browser': function() { return /MSIE/.test(ua) },
-                       'version': function() {
-                                      return ua.match(
+                       'browser': /MSIE/.test(ua),
+                       'version': ua.match(
                                           /MSIE (\d+(?:\.\d+)+(?:b\d*)?)/
                                       )
-                                  }
                 },
                 { // Mozilla <http://www.mozilla.org/products/mozilla1.x/>
                           'name': 'Mozilla',
-                       'browser': function() {
-                                      return /Gecko|Mozilla/.test(ua)
-                                  },
-                       'version': function() {
-                                      return ua.match(/rv:(\d+(?:\.\d+)+)/)
-                                  }
+                       'browser': /Gecko|Mozilla/.test(ua),
+                       'version': ua.match(/rv:(\d+(?:\.\d+)+)/)
                  }
              ];
          i < data.length;
          i++
     ) {
-        if( data[i].browser() ) { // we have a match
+        if( data[i].browser ) { // we have a match
             // If the identifier is not explicitly set, use a lowercase
             // version of the given name.
             var identifier = data[i].identifier ? data[i].identifier
@@ -252,7 +165,7 @@ new function() {
             Private.browser = data[i].name;
 
             var result;
-            if( data[i].version != undefined && (result = data[i].version()) ) {
+            if( data[i].version != undefined && (result = data[i].version) ) {
                 // Use the explicitly set test for browser version.
                 Private.version.string = result[1];
                 Private.version.number = parseFloat( result[1] );
@@ -275,6 +188,7 @@ new function() {
             // others.
             break;
         }
+		
     };
 
 
@@ -297,21 +211,21 @@ new function() {
                 { // Microsoft Windows <http://www.microsoft.com/windows/>
                     'identifier': 'win',
                           'name': 'Windows',
-                            'OS': function() { return /Win/.test(pl) }
+                            'OS': /Win/.test(pl)
                 },
                 { // Apple Mac OS <http://www.apple.com/macos/>
                           'name': 'Mac',
-                            'OS': function() { return /Mac/.test(pl) }
+                            'OS': /Mac/.test(pl)
                 },
                 { // Linux <http://www.linux.org/>
                           'name': 'Linux',
-                            'OS': function() { return /Linux/.test(pl) }
+                            'OS': /Linux/.test(pl)
                 }
            ];
        i < data.length;
        i++
     ) {
-        if( data[i].OS() ) { // we have a match
+        if( data[i].OS ) { // we have a match
             // If the identifier is not explicitly set, use a lowercase
             // version of the given name.
             var identifier = data[i].identifier ? data[i].identifier
@@ -328,4 +242,83 @@ new function() {
             break;
         }
     };
+	/**
+     * The following functions and attributes form the Public interface of the
+     * jQBrowser² plugin, accessed externally through the $.browser object.
+     * See the relevant function definition later in the source for further
+     * information.
+     *
+     * $.browser.browser
+     * $.browser.version.number()
+     * $.browser.version.string()
+	 * * * version.string() and version.number both take arguments ( best to use 'round'), to round out the version number
+     * $.browser.OS
+     *
+     * $.browser.aol
+     * $.browser.camino
+     * $.browser.firefox
+     * $.browser.flock
+     * $.browser.icab
+     * $.browser.konqueror
+     * $.browser.mozilla
+     * $.browser.msie
+     * $.browser.netscape
+     * $.browser.opera
+     * $.browser.safari
+     *
+     * $.browser.linux
+     * $.browser.mac
+     * $.browser.win
+     */
+	var Public = {
+        // The current browser, its version as a number or a string, and the
+        // operating system its running on.
+          'browser': Private.browser,
+          'version': {
+              'number': function() { return !arguments.length ? Private.version.number : Math.floor(Private.version.number); },
+              'string': function() { return !arguments.length ? Private.version.string : this.number('round').toString(); }
+          },
+               'OS': Private.OS,
+
+        // A boolean value indicating whether or not the given browser was
+        // detected.
+              'aol': Private.aol,
+           'camino': Private.camino,
+          'firefox': Private.firefox,
+            'flock': Private.flock,
+             'icab': Private.icab,
+        'konqueror': Private.konqueror,
+          'mozilla': Private.mozilla,
+             'msie': Private.msie,
+         'netscape': Private.netscape,
+            'opera': Private.opera,
+           'safari': Private.safari,
+
+        // A boolean value indicating whether or not the given OS was
+        // detected.
+            'linux': Private.linux,
+              'mac': Private.mac,
+              'win': Private.win
+    };
+	
+	jQuery.browser = Public;
+	// Browser selectors
+	if(!add_selectors){return;}
+	var b = jQuery.browser.msie // IE
+						? 'ie ie'+jQuery.browser.version.string('round')
+						: (jQuery.browser.firefox || jQuery.browser.camino || jQuery.browser.flock || jQuery.browser.mozilla || jQuery.browser.netscape) // Gecko
+							? 'gecko '+jQuery.browser.browser.toLowerCase()+jQuery.browser.version.string('round')
+								: (jQuery.browser.opera) // Opera
+									? 'opera opera'+jQuery.browser.version.string()
+										: (jQuery.browser.safari) // Safari
+											? 'safari'
+												: jQuery.browser.konqueror // Konqueror
+													? 'konqueror'
+														: jQuery.browser.icab // iCab
+															? 'icab'
+																: jQuery.browser.aol // AOL
+																 	? 'aol'
+																	: '',
+		os=jQuery.browser.linux?'linux':jQuery.browser.mac?'mac':jQuery.browser.win?'win':'';
+		jQuery('html').addClass(b).addClass(os).addClass('js');
 }();
