@@ -358,8 +358,9 @@ def import_tags(request):
         tag.parents = sectors
         tag.filters = filters
         
-        # DEBUG: For comsoc demo, assign all tags to COMSOC society
-        tag.societies.add(comsoc)
+        if settings.DEBUG_IMPORT_ASSIGN_ALL_TAGS_TO_COMSOC:
+            # For the comsoc demo only, assign all tags to COMSOC society
+            tag.societies.add(comsoc)
         
         tag.save()
         tags_created += 1

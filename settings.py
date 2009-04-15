@@ -113,6 +113,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'ieeetags.context_processors.is_ajax',
 )
 
+# Used for the COMSOC demo to assign all tags to comsoc by default
+DEBUG_IMPORT_ASSIGN_ALL_TAGS_TO_COMSOC = False
+
+# If true, all tags will show up for all filters in Roamer
+DEBUG_TAGS_HAVE_ALL_FILTERS = False
+
 LOG_FILENAME = relpath(__file__, 'log.txt')
 LOG_CONSOLE = True
 

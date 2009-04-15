@@ -291,9 +291,8 @@ def ajax_nodes_xml(request):
         nodeElem.setAttribute('graphic_type', 'shape')
         nodeElem.setAttribute('graphic_shape', 'circle')
         
-        if True:
-            # DEBUG:
-            # Fake that this node is in all filters, for debugging
+        if settings.DEBUG_TAGS_HAVE_ALL_FILTERS:
+            # DEBUG: Fake that this node is in all filters
             filters = []
             for filter in Filter.objects.all():
                 filters.append(filter.value)
