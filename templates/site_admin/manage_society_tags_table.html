@@ -99,7 +99,26 @@ Page:
             </a>
         </th>
         <th>
-            Related_tags <span class="help_icon flyover" title="SECTORS">[?]</span>
+            Resources <span class="help_icon flyover" title="SECTORS">[?]</span>
+            
+            &nbsp;
+            <a href="{% url admin_manage_society society.id %}?tag_sort=num_resources_ascending" class="live-url {hashOnly:true}">
+                {% ifequal tag_sort "num_resources_ascending" %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
+                {% else %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+                {% endifequal %}
+            </a>
+            <a href="{% url admin_manage_society society.id %}?tag_sort=num_resources_descending" class="live-url {hashOnly:true}">
+                {% ifequal tag_sort "num_resources_descending" %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
+                {% else %}
+                    <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+                {% endifequal %}
+            </a>
+        </th>
+        <th>
+            Related Tags <span class="help_icon flyover" title="SECTORS">[?]</span>
             
             &nbsp;
             <a href="{% url admin_manage_society society.id %}?tag_sort=num_related_tags_ascending" class="live-url {hashOnly:true}">
@@ -118,6 +137,7 @@ Page:
             </a>
         </th>
         <th>
+            Remove <span class="help_icon flyover" title="SECTORS">[?]</span>
         </th>
     </tr>
     {% for tag in tags %}
@@ -144,11 +164,17 @@ Page:
                 {% endif %}
             </td>
             <td>
+                {% if tag.resources.all.count %}
+                    {{ tag.resources.all.count }}
+                {% endif %}
+            </td>
+            <td>
                 {% if tag.related_tags.all.count %}
                     {{ tag.related_tags.all.count }}
                 {% endif %}
             </td>
             <td>
+                <a href="javascript:if (window.notify) notify('removed_multisearch_option', {option:{value:{{ tag.id }} }} );">[x]</a>
             </td>
         </tr>
     {% endfor %}

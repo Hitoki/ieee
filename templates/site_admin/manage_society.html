@@ -11,6 +11,17 @@
             $('#tag-count').html('(' + count + ')');
         }
         
+        function CreateOverShadow(elem, html) {
+            elem = $(elem);
+            if (elem.data('overShadow')) {
+                // Already has a shadow, update the html
+                elem.data('overShadow').updateHtml(html);
+            } else {
+                // Create a new shadow
+                new OverShadow(elem, html);
+            }
+        }
+        
         // Creates a shadow layer over the top of elem, matching the size & position.
         // Uses 'html' as the content of the layer.
         function OverShadow(elem, html) {
@@ -32,6 +43,10 @@
             this.contentElem.html(html);
         }
         
+        OverShadow.prototype.updateHtml = function(html) {
+            this.contentElem.html(html);
+        }
+        
         OverShadow.prototype.hide = function() {
             this.shadowElem.remove();
             this.shadowElem = null;
@@ -44,22 +59,16 @@
         //////////
         
         function refreshTagsTable() {
-            new OverShadow($('#tags-table-content'), '<div class="tags-table-loading">Loading...</div>');
+            //log('refreshTagsTable()');
+            CreateOverShadow($('#tags-table-content'), '<div class="tags-table-loading">Loading...</div>');
             $('#tags-table-content').load("{% url admin_manage_society_tags_table society.id "up" 12 %}", refreshTagsTable2);
         }
         
         function refreshTagsTable2() {
-            $('#tags-table-content').data('overShadow').hide();
+            //log('refreshTagsTable2()');
+            if ($('#tags-table-content').length && $('#tags-table-content').data('overShadow'))
+                $('#tags-table-content').data('overShadow').hide();
         }
-        
-        $(function() {
-            $('#refresh-tags-table').click(function() {
-                refreshTagsTable();
-                return false;
-            });
-            
-            //overShadow($('#tags-table-content'), '<div class="tags-table-loading">Loading...</div>');
-        });
         
         window.notify = function(action, data) {
             if (action == 'created_tag') {
@@ -410,8 +419,6 @@
                         <div id="tags-tab">
                             <input type="button" id="create-tag-float" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ tags_tab_url|urlencode }}';" value="Create New Tag" />
                             {% eval form['tags'] %}
-                            
-                            <a href="#" id="refresh-tags-table">Refresh tags table</a>
                             
                             <div id="tags-table-content">
                                 {% manage_society_tags_table %}
