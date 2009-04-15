@@ -66,7 +66,13 @@ def textui(request):
 @protect_frontend
 def feedback(request):
     if request.method == 'GET':
-        form = FeedbackForm()
+        if request.user.is_authenticated:
+            initial = {
+                'email': request.user.email,
+            }
+        else:
+            initial = {}
+        form = FeedbackForm(initial=initial)
         return render(request, 'feedback.html', {
             'form': form,
         })

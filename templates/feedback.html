@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="lightbox-pad">
+    <div class="feedback-lightbox lightbox-pad">
         <h3>Feedback Form</h3>
         
         <form action="{% url feedback %}" method="post">
@@ -12,7 +12,7 @@
                     </td>
                     <td class="right-column">
                         {{ form.name.errors }}
-                        <input name="name" value="{% if form.name.data %}{{ form.name.data }}{% endif %}" class="text" />
+                        {{ form.name }}
                     </td>
                 </tr>
                 <tr>
@@ -21,7 +21,7 @@
                     </td>
                     <td class="right-column">
                         {{ form.email.errors }}
-                        <input name="email" value="{% if form.email.data %}{{ form.email.data }}{% endif %}" class="text" />
+                        {{ form.email }}
                     </td>
                 </tr>
                 <tr>
