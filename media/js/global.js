@@ -93,7 +93,7 @@ function showBrowserWarning() {
 
 // Check if browser is IE7
 function browserIsIe7() {
-    return $.browser.msie() && $.browser.version.string().substr(0, 1) == "7";
+    return $.browser.msie && $.browser.version.string().substr(0, 1) == "7";
 }
 
 // Check if browser is Firefox 3.0
@@ -101,12 +101,12 @@ function browserIsFirefox30() {
     /*log('browserIsFirefox30()');
     log('$.browser.firefox(): ' + $.browser.firefox());
     log('$.browser.version.string(): ' + $.browser.version.string());*/
-    return $.browser.firefox() && $.browser.version.string().substr(0,3) == "3.0";
+    return $.browser.firefox && $.browser.version.string().substr(0,3) == "3.0";
 }
 
 // Check if browser is Safari 3
 function browserIsSafari3() {
-    return $.browser.safari() && $.browser.version.string().substr(0,1) == "3";
+    return $.browser.safari && $.browser.version.string().substr(0,1) == "3";
 }
 
 function isCompatibleBrowser() {
@@ -117,19 +117,20 @@ function isCompatibleBrowser() {
     //alert('$.browser.version.string(): ' + $.browser.version.string());
     //alert('$.browser.version.number(): ' + $.browser.version.number());
     
-    return browserIsFirefox30() || browserIsIe7() || browserIsSafari3();
+    //return browserIsFirefox30() || browserIsIe7() || browserIsSafari3();
+    
+    // TODO: Add safari back in later...
+    return browserIsFirefox30() || browserIsIe7();
 }
 
 $(function() {
     // Show browser compatibility warning
-    /*
     if (!isCompatibleBrowser()) {
         $('html').css('height', '100%');
         $('body').css('height', '100%');
         $('html').css('overflow', 'hidden');
         showBrowserWarning();
     }
-    */
 });
 
 

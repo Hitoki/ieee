@@ -5,8 +5,8 @@
  * Built on the shoulders of (and stolen from :) ) giants:
  *   * John Resig <http://jquery.com/>
  *   * Peter-Paul Koch <http://www.quirksmode.org/?/js/detect.html>
- *	 * Dave Cardwell <http://davecardwell.co.uk/>
- *	 * Rafael Lima <http://rafael.adm.br/css_browser_selector/>
+ *   * Dave Cardwell <http://davecardwell.co.uk/>
+ *   * Rafael Lima <http://rafael.adm.br/css_browser_selector/>
  *
  * Copyright (c) 2006 Nate Cavanaugh, dual licensed under the MIT and GPL
  * licenses:
@@ -15,7 +15,7 @@
  */
 
 var jQBrowser2 = function() {
-	var add_selectors = true;
+    var add_selectors = true;
     /**
      * The following functions and attributes form the internal methods and
      * state of the jQBrowser² plugin.  See the relevant function definition
@@ -71,7 +71,7 @@ var jQBrowser2 = function() {
               'mac': false,
               'win': false
     };
-	
+    
 
     /**
      * Loop over the items in 'data' trying to find a browser match with the
@@ -98,7 +98,8 @@ var jQBrowser2 = function() {
            data = [                     // browser tests and data
                 { // Safari <http://www.apple.com/safari/>
                           'name': 'Safari',
-                       'browser':  /Apple/.test(ve)
+                       'browser':  /Apple/.test(ve),
+                       'version': ua.match(/Version\/([^ ]+)/)
                 },
                 { // Opera <http://www.opera.com/>
                           'name': 'Opera',
@@ -188,7 +189,7 @@ var jQBrowser2 = function() {
             // others.
             break;
         }
-		
+        
     };
 
 
@@ -242,7 +243,7 @@ var jQBrowser2 = function() {
             break;
         }
     };
-	/**
+    /**
      * The following functions and attributes form the Public interface of the
      * jQBrowser² plugin, accessed externally through the $.browser object.
      * See the relevant function definition later in the source for further
@@ -251,7 +252,7 @@ var jQBrowser2 = function() {
      * $.browser.browser
      * $.browser.version.number()
      * $.browser.version.string()
-	 * * * version.string() and version.number both take arguments ( best to use 'round'), to round out the version number
+     * * * version.string() and version.number both take arguments ( best to use 'round'), to round out the version number
      * $.browser.OS
      *
      * $.browser.aol
@@ -270,7 +271,7 @@ var jQBrowser2 = function() {
      * $.browser.mac
      * $.browser.win
      */
-	var Public = {
+    var Public = {
         // The current browser, its version as a number or a string, and the
         // operating system its running on.
           'browser': Private.browser,
@@ -300,25 +301,25 @@ var jQBrowser2 = function() {
               'mac': Private.mac,
               'win': Private.win
     };
-	
-	jQuery.browser = Public;
-	// Browser selectors
-	if(!add_selectors){return;}
-	var b = jQuery.browser.msie // IE
-						? 'ie ie'+jQuery.browser.version.string('round')
-						: (jQuery.browser.firefox || jQuery.browser.camino || jQuery.browser.flock || jQuery.browser.mozilla || jQuery.browser.netscape) // Gecko
-							? 'gecko '+jQuery.browser.browser.toLowerCase()+jQuery.browser.version.string('round')
-								: (jQuery.browser.opera) // Opera
-									? 'opera opera'+jQuery.browser.version.string()
-										: (jQuery.browser.safari) // Safari
-											? 'safari'
-												: jQuery.browser.konqueror // Konqueror
-													? 'konqueror'
-														: jQuery.browser.icab // iCab
-															? 'icab'
-																: jQuery.browser.aol // AOL
-																 	? 'aol'
-																	: '',
-		os=jQuery.browser.linux?'linux':jQuery.browser.mac?'mac':jQuery.browser.win?'win':'';
-		jQuery('html').addClass(b).addClass(os).addClass('js');
+    
+    jQuery.browser = Public;
+    // Browser selectors
+    if(!add_selectors){return;}
+    var b = jQuery.browser.msie // IE
+                        ? 'ie ie'+jQuery.browser.version.string('round')
+                        : (jQuery.browser.firefox || jQuery.browser.camino || jQuery.browser.flock || jQuery.browser.mozilla || jQuery.browser.netscape) // Gecko
+                            ? 'gecko '+jQuery.browser.browser.toLowerCase()+jQuery.browser.version.string('round')
+                                : (jQuery.browser.opera) // Opera
+                                    ? 'opera opera'+jQuery.browser.version.string()
+                                        : (jQuery.browser.safari) // Safari
+                                            ? 'safari'
+                                                : jQuery.browser.konqueror // Konqueror
+                                                    ? 'konqueror'
+                                                        : jQuery.browser.icab // iCab
+                                                            ? 'icab'
+                                                                : jQuery.browser.aol // AOL
+                                                                     ? 'aol'
+                                                                    : '',
+        os=jQuery.browser.linux?'linux':jQuery.browser.mac?'mac':jQuery.browser.win?'win':'';
+        jQuery('html').addClass(b).addClass(os).addClass('js');
 }();
