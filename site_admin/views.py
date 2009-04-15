@@ -16,6 +16,7 @@ from django.contrib.auth.models import User
 from django.utils import simplejson as json
 
 from ieeetags import settings
+from ieeetags import permissions
 from ieeetags.util import *
 from ieeetags.models import Node, NodeType, Permission, Resource, ResourceType, Society, Filter, Profile, get_user_from_username, get_user_from_email
 from ieeetags.logger import log
@@ -84,6 +85,8 @@ def _random_slice_list(list, min, max):
     count = random.randrange(min, max+1)
     random.shuffle(list1)
     return list1[:count]
+
+# ------------------------------------------------------------------------------
 
 def login(request):
     next = request.GET.get('next', '')
@@ -285,6 +288,8 @@ def home(request):
 
 @login_required
 def home_societies_list(request):
+    permissions.require_superuser(request)
+    
     societies = Society.objects.getForUser(request.user)
     return render(request, 'site_admin/home_societies_list.html', {
         'societies': societies,
@@ -293,6 +298,8 @@ def home_societies_list(request):
 
 @login_required
 def update_tag_counts(request):
+    permissions.require_superuser(request)
+    
     start = time.time()
     numTags = Node.objects.updateTagCounts()
     return render(request, 'site_admin/update_tag_counts.html', {
@@ -301,7 +308,7 @@ def update_tag_counts(request):
     })
 
 
-def split_no_empty(string, char):
+def _split_no_empty(string, char):
     "Just like string.split(), except that an empty string results in an empty list []."
     if string.strip() == '':
         return []
@@ -326,6 +333,8 @@ def _check_tags_in_same_sector(tag1, tag2):
 
 @login_required
 def import_tags(request):
+    permissions.require_superuser(request)
+    
     log('import_tags()')
     start = time.time()
     
@@ -347,8 +356,8 @@ def import_tags(request):
         # Tag,Sectors,Filters,Related Tags
         tag_name, sector_names, filter_names, related_tag_names = row
         tag_name = tag_name.strip()
-        sector_names = [sector_name.strip() for sector_name in split_no_empty(sector_names, ',')]
-        filter_names = [filter_name.strip() for filter_name in split_no_empty(filter_names, ',')]
+        sector_names = [sector_name.strip() for sector_name in _split_no_empty(sector_names, ',')]
+        filter_names = [filter_name.strip() for filter_name in _split_no_empty(filter_names, ',')]
         
         sectors = [Node.objects.getSectorByName(sector_name) for sector_name in sector_names]
         filters = [Filter.objects.getFromName(filter_name) for filter_name in filter_names]
@@ -389,8 +398,8 @@ def import_tags(request):
         # Tag,Sectors,Filters,Related Tags
         tag_name, sector_names, filter_names, related_tag_names = row
         tag_name = string.capwords(tag_name.strip())
-        sector_names = [sector_name.strip() for sector_name in split_no_empty(sector_names, ',')]
-        related_tag_names = [related_tag_name.strip() for related_tag_name in split_no_empty(related_tag_names, ',')]
+        sector_names = [sector_name.strip() for sector_name in _split_no_empty(sector_names, ',')]
+        related_tag_names = [related_tag_name.strip() for related_tag_name in _split_no_empty(related_tag_names, ',')]
         
         tag = Node.objects.get_tag_by_name(tag_name)
         
@@ -431,6 +440,8 @@ def _remove_society_acronym(society_name):
 
 @login_required
 def import_societies(request):
+    permissions.require_superuser(request)
+    
     log('import_societies()')
     start = time.time()
     
@@ -450,7 +461,7 @@ def import_societies(request):
     for row in reader:
         # Name, Abbreviation, URL, Tags
         society_name, abbreviation, url, tag_names = row
-        tag_names = [tag.strip() for tag in split_no_empty(tag_names, ',')]
+        tag_names = [tag.strip() for tag in _split_no_empty(tag_names, ',')]
         
         # Formatting
         society_name = _remove_society_acronym(society_name.strip())
@@ -486,6 +497,8 @@ def import_societies(request):
     
 @login_required
 def import_societies_and_tags(request):
+    permissions.require_superuser(request)
+    
     log('import_societies_and_tags()')
     start = time.time()
     
@@ -709,6 +722,8 @@ def _import_resources(filename):
 
 @login_required
 def import_conferences(request, source):
+    permissions.require_superuser(request)
+    
     start = time.time()
     
     if source not in _IMPORT_SOURCES:
@@ -732,6 +747,8 @@ def import_conferences(request, source):
 
 @login_required
 def import_periodicals(request, source):
+    permissions.require_superuser(request)
+    
     start = time.time()
     
     if source not in _IMPORT_SOURCES:
@@ -755,6 +772,8 @@ def import_periodicals(request, source):
 
 @login_required
 def import_standards(request):
+    permissions.require_superuser(request)
+    
     start = time.time()
     #print 'import_standards()'
     
@@ -872,6 +891,8 @@ def import_standards(request):
 
 @login_required
 def assign_filters(request):
+    permissions.require_superuser(request)
+    
     start = time.time()
     
     tagsAssignedTo = 0
@@ -897,6 +918,8 @@ def assign_filters(request):
 
 @login_required
 def assign_related_tags(request):
+    permissions.require_superuser(request)
+    
     start = time.time()
     
     tag_count = 0
@@ -944,6 +967,8 @@ def _get_random_from_sequence(seq, num):
 
 @login_required
 def assign_resources(request):
+    permissions.require_superuser(request)
+    
     start = time.time()
     
     print 'assign_resources()'
@@ -999,6 +1024,8 @@ def assign_resources(request):
 
 @login_required
 def list_sectors(request):
+    permissions.require_superuser(request)
+    
     sectors = Node.objects.getSectors()
     return render(request, 'site_admin/list_sectors.html', {
         'sectors': sectors,
@@ -1006,6 +1033,8 @@ def list_sectors(request):
 
 @login_required
 def view_sector(request, sectorId):
+    permissions.require_superuser(request)
+    
     sector = Node.objects.get(id=sectorId)
     
     for i in dir(sector):
@@ -1022,6 +1051,8 @@ def view_sector(request, sectorId):
 
 @login_required
 def list_tags(request):
+    permissions.require_superuser(request)
+    
     tags = Node.objects.getTags()
     return render(request, 'site_admin/list_tags.html', {
         'tags': tags,
@@ -1029,6 +1060,8 @@ def list_tags(request):
 
 @login_required
 def view_tag(request, tagId):
+    permissions.require_superuser(request)
+    
     tag = Node.objects.get(id=tagId)
     return render(request, 'site_admin/view_tag.html', {
         'tag': tag,
@@ -1205,6 +1238,8 @@ def save_tag(request):
         
 @login_required
 def search_tags(request):
+    permissions.require_superuser(request)
+    
     tag_results = None
     if request.method == 'GET':
         form = SearchTagsForm()
@@ -1221,6 +1256,8 @@ def search_tags(request):
 
 @login_required
 def users(request):
+    permissions.require_superuser(request)
+    
     users = User.objects.all()
     return render(request, 'site_admin/users.html', {
         'users': users,
@@ -1228,6 +1265,8 @@ def users(request):
 
 @login_required
 def view_user(request, user_id):
+    permissions.require_superuser(request)
+    
     user = User.objects.get(id=user_id)
     return render(request, 'site_admin/view_user.html', {
         'user': user,
@@ -1235,6 +1274,8 @@ def view_user(request, user_id):
     
 @login_required
 def edit_user(request, user_id=None):
+    permissions.require_superuser(request)
+    
     if user_id is None:
         # creating a new user
         form = UserForm()
@@ -1259,6 +1300,8 @@ def edit_user(request, user_id=None):
         
 @login_required
 def save_user(request):
+    permissions.require_superuser(request)
+    
     form = UserForm(request.POST)
     if not form.is_valid():
         return render(request, 'site_admin/edit_user.html', {
@@ -1286,11 +1329,15 @@ def save_user(request):
 
 @login_required
 def delete_user(request, user_id):
+    permissions.require_superuser(request)
+    
     User.objects.get(id=user_id).delete()
     return HttpResponsePermanentRedirect(reverse('admin_users'))
 
 @login_required
 def societies(request):
+    permissions.require_superuser(request)
+    
     societies = Society.objects.getForUser(request.user)
     return render(request, 'site_admin/societies.html', {
         'societies': societies,
@@ -1298,6 +1345,8 @@ def societies(request):
 
 @login_required
 def view_society(request, society_id):
+    permissions.require_superuser(request)
+    
     society = Society.objects.get(id=society_id)
     return render(request, 'site_admin/view_society.html', {
         'society': society,
@@ -1390,6 +1439,7 @@ def _get_paged_tags(society, tag_sort, tag_page):
 
 @login_required
 def manage_society(request, society_id):
+    permissions.require_society_user(request, society_id)
     
     _RESOURCES_PER_PAGE = 50
     
@@ -1528,6 +1578,8 @@ def manage_society_tags_table(request, society_id, tag_sort, tag_page):
 
 @login_required
 def edit_society(request, society_id=None):
+    permissions.require_superuser(request)
+    
     return_url = request.GET.get('return_url', '')
     if society_id is None:
         # creating a new society
@@ -1563,6 +1615,8 @@ def edit_society(request, society_id=None):
         
 @login_required
 def save_society(request):
+    permissions.require_superuser(request)
+    
     return_url = request.GET.get('return_url', '')
     form = SocietyForm(request.POST)
     if not form.is_valid():
@@ -1609,11 +1663,15 @@ def save_society(request):
 
 @login_required
 def delete_society(request, society_id):
+    permissions.require_superuser(request)
+    
     Society.objects.get(id=society_id).delete()
     return HttpResponsePermanentRedirect(reverse('admin_societies'))
 
 @login_required
 def search_societies(request):
+    permissions.require_superuser(request)
+    
     society_results = None
     if request.method == 'GET':
         form = SearchSocietiesForm()
@@ -1630,6 +1688,8 @@ def search_societies(request):
 
 @login_required
 def list_resources(request, type1):
+    permissions.require_superuser(request)
+    
     if type1 == 'conferences':
         type1 = 'conference'
     elif type1 == 'standards':
@@ -1781,6 +1841,8 @@ def save_resource(request):
 
 @login_required
 def delete_resource(request, resource_id):
+    permissions.require_superuser(request)
+    
     old_nodes = resource.nodes
     Resource.objects.get(id=resource_id).delete()
     _update_node_totals(old_nodes)
@@ -1788,6 +1850,8 @@ def delete_resource(request, resource_id):
 
 @login_required
 def search_resources(request):
+    permissions.require_superuser(request)
+    
     resource_results = None
     if request.method == 'GET':
         form = SearchResourcesForm()

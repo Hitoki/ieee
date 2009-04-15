@@ -5,7 +5,7 @@ import os
 
 from util import relpath
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
