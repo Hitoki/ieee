@@ -314,13 +314,17 @@ ul.checkbox-select-multiple-columns-3 {
 
 /* */
 
-.resource_page {
+.resource_page,
+.tag_page
+{
     background:#eee;
     padding:.1em .3em;
     margin:0em .1em;
 }
 
-.active_resource_page {
+.active_resource_page,
+.active_tag_page
+{
     background:navy;
     background:#f0f4f4;
     background:#016699;

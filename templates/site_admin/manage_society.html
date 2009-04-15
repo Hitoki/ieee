@@ -61,7 +61,7 @@
         function refreshTagsTable() {
             //log('refreshTagsTable()');
             CreateOverShadow($('#tags-table-content'), '<div class="tags-table-loading">Loading...</div>');
-            $('#tags-table-content').load("{% url admin_manage_society_tags_table society.id "up" 12 %}", refreshTagsTable2);
+            $('#tags-table-content').load("{% url admin_manage_society_tags_table society.id tag_sort tag_page %}", refreshTagsTable2);
         }
         
         function refreshTagsTable2() {

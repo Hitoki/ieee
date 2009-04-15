@@ -1,7 +1,7 @@
 Page: 
 {% for page in tag_pages %}
     <a
-        href="{% url admin_manage_society society.id %}?tag_page={{ page }}&amp;tag_sort={{ tag_sort }}"
+        href="{% url admin_manage_society society.id %}?tag_page={{ page }}&amp;tag_sort={{ tag_sort }}#tab-tags-tab"
         {% ifequal page tag_page %}
             class="tag_page active_tag_page"
         {% else %}
@@ -174,7 +174,7 @@ Page:
                 {% endif %}
             </td>
             <td>
-                <a href="javascript:if (window.notify) notify('removed_multisearch_option', {option:{value:{{ tag.id }} }} );">[x]</a>
+                <a href="javascript:$('#multisearch_tags').data('multisearch').removeSelectedOptionByValue({{ tag.id }});">[x]</a>
             </td>
         </tr>
     {% endfor %}
