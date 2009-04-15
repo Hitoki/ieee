@@ -221,6 +221,7 @@ def ajax_nodes_json(request):
     return HttpResponse(json, mimetype='text/plain')
 
 def ajax_nodes_xml(request):
+    "Creates an XML list of nodes & connections for Asterisq Constellation Roamer"
     #logging.debug('ajax_nodes_xml()')
     #logging.debug('  request:')
     
@@ -236,15 +237,21 @@ def ajax_nodes_xml(request):
     node = Node.objects.get(id=nodeId)
     childNodes = node.child_nodes.all()
     
+    # Enable filtering out nodes w/o societies:
+    if True:
+        # If parent node is a sector, filter the child tags
+        if node.node_type == NodeType.objects.getFromName(NodeType.SECTOR):
+            # Filter out any tags that don't have any societies
+            childNodes1 = []
+            for child_node in childNodes:
+                if child_node.societies.count() > 0:
+                    childNodes1.append(child_node)
+            childNodes = childNodes1
+    
     nodes = [node]
     nodes.extend(childNodes)
     for parent in node.parents.all():
         nodes.append(parent)
-    
-    #print '  node:', node
-    #print '  len(childNodes):', len(childNodes)
-    #print '  len(nodes):', len(nodes)
-    
     
     edges = []
     for childNode in childNodes:
@@ -284,9 +291,16 @@ def ajax_nodes_xml(request):
         nodeElem.setAttribute('graphic_type', 'shape')
         nodeElem.setAttribute('graphic_shape', 'circle')
         
-        filters = []
-        for filter in node1.filters.all():
-            filters.append(filter.value)
+        if True:
+            # DEBUG:
+            # Fake that this node is in all filters, for debugging
+            filters = []
+            for filter in Filter.objects.all():
+                filters.append(filter.value)
+        else:
+            filters = []
+            for filter in node1.filters.all():
+                filters.append(filter.value)
         
         #print 'node1.name:', node1.name
         #print 'len(node1.filters.all()):', len(node1.filters.all())

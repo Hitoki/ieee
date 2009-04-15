@@ -19,6 +19,9 @@
             <th>
                 Filters
             </th>
+            <th>
+                Societies
+            </th>
         </tr>
         {% for tag in tags %}
             <tr>
@@ -33,6 +36,9 @@
                 </td>
                 <td>
                     {{ tag.filters.all|join:", " }}
+                </td>
+                <td>
+                    {{ tag.societies.all|join:", " }}
                 </td>
             </tr>
         {% endfor %}

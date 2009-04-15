@@ -12,8 +12,8 @@ class MultiSearchWidget(widgets.Widget):
     model = None
     
     def __init__(self, attrs=None):
-        print '__init__()'
-        print '  attrs:', attrs
+        #print '__init__()'
+        #print '  attrs:', attrs
         
         if attrs is not None and 'class' in attrs:
             self.className = attrs['class']
@@ -48,11 +48,11 @@ class MultiSearchWidget(widgets.Widget):
         self.society_id = society_id
 
     def render(self, name, value, attrs=None):
-        print 'render()'
-        print '  name:', name
-        print '  value:', value
-        print '  attrs:', attrs
-        print '  self.className:', self.className
+        #print 'render()'
+        #print '  name:', name
+        #print '  value:', value
+        #print '  attrs:', attrs
+        #print '  self.className:', self.className
         #print '  type(value):', type(value)
         
         if type(value) is str or type(value) is unicode:
@@ -157,7 +157,7 @@ class DisplayOnlyWidget(widgets.HiddenInput):
             if type(value) is QuerySet:
                 # Got queryset, create a list of the names
                 if self.is_multi_search:
-                    print 'Making JSON list'
+                    #print 'Making JSON list'
                     # Make a JSON list
                     result = ''
                     display = []
@@ -247,7 +247,7 @@ class CheckboxSelectMultipleColumns(widgets.CheckboxSelectMultiple):
         from django.utils.encoding import force_unicode
         from django.utils.html import conditional_escape
         
-        print 'render()'
+        #print 'render()'
         if value is None: value = []
         has_id = attrs and 'id' in attrs
         final_attrs = self.build_attrs(attrs, name=name)
