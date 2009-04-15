@@ -182,7 +182,7 @@ def ajax_nodes_json(request):
     if filterValues != '':
         for filterValue in filterValues.split(','):
             filterIds.append(Filter.objects.getFromValue(filterValue).id)
-    
+            
     # Build node list
     sector = Node.objects.get(id=sectorId)
     if sort == 'num_sectors':
@@ -207,7 +207,8 @@ def ajax_nodes_json(request):
         # TODO:
         relatedTagLevel = 'level1'
         
-        if len(tag.filters.filter(id__in=filterIds)):
+        # Only show tags that have one of the selected filters, and also are associated with a society
+        if (settings.DEBUG_TAGS_HAVE_ALL_FILTERS or len(tag.filters.filter(id__in=filterIds))) and tag.societies.count() > 0:
             data.append({
                 'id': tag.id,
                 'label': tag.name,
