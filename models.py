@@ -1,5 +1,5 @@
 from django.db.models import Q
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, UserManager
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.db import connection
@@ -431,6 +431,18 @@ class Profile(models.Model):
     user = models.ForeignKey(User, unique=True)
     role = models.CharField(choices=ROLES, max_length=1000)
     reset_key = models.CharField(max_length=1000, null=True)
+
+# ------------------------------------------------------------------------------
+
+class UserManager2():
+    def __init__(self):
+        self.objects = User.objects
+        
+    def get_admins(self):
+        return self.objects.filter(profile__role=Profile.ROLE_ADMIN)
+    
+    def get_society_managers(self):
+        return self.objects.filter(profile__role=Profile.ROLE_SOCIETY_MANAGER)
 
 # ------------------------------------------------------------------------------
 

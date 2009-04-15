@@ -46,6 +46,7 @@ urlpatterns = patterns('',
     url(r'^user/(?P<user_id>\d+)/edit$', views.edit_user, name='admin_edit_user'),
     url(r'^user/save$', views.save_user, name='admin_save_user'),
     url(r'^user/(?P<user_id>\d+)/delete$', views.delete_user, name='admin_delete_user'),
+    url(r'^users/import$', views.import_users, name='admin_import_users'),
     
     # Societies
     url(r'^societies$', views.societies, name='admin_societies'),
