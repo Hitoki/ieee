@@ -119,6 +119,9 @@ DEBUG_IMPORT_ASSIGN_ALL_TAGS_TO_COMSOC = False
 # If true, all tags will show up for all filters in Roamer
 DEBUG_TAGS_HAVE_ALL_FILTERS = False
 
+# If true, all frontend pages will require login (useful before frontend is publicly launched)
+DEBUG_REQUIRE_LOGIN_FRONTEND = True
+
 LOG_FILENAME = relpath(__file__, 'log.txt')
 LOG_CONSOLE = True
 

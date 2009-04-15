@@ -86,12 +86,14 @@ def _random_slice_list(list, min, max):
     return list1[:count]
 
 def login(request):
+    next = request.GET.get('next', '')
     if request.method == 'POST':
         form = LoginForm(request.POST)
     else:
         form = LoginForm()
     if not form.is_valid():
         return render(request, 'site_admin/login.html', {
+            'next': next,
             'form': form,
         })
     else:
@@ -99,16 +101,21 @@ def login(request):
         if user is None:
             return render(request, 'site_admin/login.html', {
                 'error': 'Invalid login, please try again.',
+                'next': next,
                 'form': form,
             })
         elif user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER and len(user.societies.all()) == 0:
             return render(request, 'site_admin/login.html', {
                 'error': 'Your account has not been assigned to a society yet.  Please contact the administrator to fix this.',
+                'next': next,
                 'form': form,
             })
         else:
             auth.login(request, user)
-            return HttpResponsePermanentRedirect(reverse('admin_home'))
+            if next != '':
+                return HttpResponseRedirect(next)
+            else:
+                return HttpResponseRedirect(reverse('admin_home'))
 
 def logout(request):
     auth.logout(request)

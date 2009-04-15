@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
@@ -14,15 +15,24 @@ from ieeetags.forms import *
 import settings
 import util
 
-# Using this instead of 'render_to_response' adds our context processors, which add things like MEDIA_URL to the page automatically.
 def render(request, template, dictionary=None):
+    "Use this instead of 'render_to_response' to enable custom context processors, which add things like MEDIA_URL to the page automatically."
     return render_to_response(template, dictionary=dictionary, context_instance=RequestContext(request))
+
+def protect_frontend(func):
+    "Used as a decorator.  If settings.DEBUG_REQUIRE_LOGIN_FRONTEND is true, requires a login for the given request."
+    if settings.DEBUG_REQUIRE_LOGIN_FRONTEND:
+        return login_required(func)
+    else:
+        return func
 
 # ------------------------------------------------------------------------------
 
+@protect_frontend
 def index(request):
     return render(request, 'index.html')
 
+@protect_frontend
 def roamer(request):
     nodeId = request.GET.get('nodeId', Node.objects.getRoot().id)
     sectors = Node.objects.getSectors()
@@ -33,6 +43,7 @@ def roamer(request):
         'filters':filters,
     })
 
+@protect_frontend
 def textui(request):
     sectorId = request.GET.get('nodeId', Node.objects.getFirstSector().id)
     node = Node.objects.get(id=sectorId)
@@ -52,6 +63,7 @@ def textui(request):
         'filters':filters,
     })
 
+@protect_frontend
 def feedback(request):
     if request.method == 'GET':
         form = FeedbackForm()
@@ -92,6 +104,7 @@ def feedback(request):
 def browser_warning(request):
     return render(request, 'browser_warning.html')
 
+@protect_frontend
 def ajax_tag_content(request):
     tagId = request.GET['tagId']
     tag = Node.objects.get(id=tagId)
@@ -122,6 +135,7 @@ def ajax_tag_content(request):
         'standards': standards,
     })
 
+@protect_frontend
 def ajax_node(request):
     nodeId = request.GET['nodeId']
     node = Node.objects.get(id=nodeId)
@@ -164,6 +178,7 @@ def _get_popularity_level(min, max, count):
     level = int(round((count-min) / float(max-min) * float(len(_POPULARITY_LEVELS)-1))) + 1
     return 'level' + str(level)
 
+@protect_frontend
 def ajax_nodes_json(request):
     sectorId = request.GET['sectorId']
     sort = request.GET.get('sort')
@@ -221,6 +236,7 @@ def ajax_nodes_json(request):
     json = simplejson.dumps(data, sort_keys=True, indent=4)
     return HttpResponse(json, mimetype='text/plain')
 
+@protect_frontend
 def ajax_nodes_xml(request):
     "Creates an XML list of nodes & connections for Asterisq Constellation Roamer"
     #logging.debug('ajax_nodes_xml()')
@@ -330,6 +346,7 @@ def ajax_nodes_xml(request):
     #return HttpResponse(doc.toprettyxml(), 'text/plain')
     return HttpResponse(doc.toprettyxml(), 'text/xml')
 
+@protect_frontend
 def tooltip(request):
     tag_id = request.GET['tag_id']
     sector_id = request.GET['sector_id']

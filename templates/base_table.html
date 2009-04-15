@@ -13,7 +13,7 @@
                 
                 <div id="header">
                     <img class="leftCorner" src="{{MEDIA_URL}}images/mainTopLeftCorner.gif" />
-                    <a href="/admin/" class="home"><img class="banner" src="{{MEDIA_URL}}images/ieee_banner.jpg" /></a>
+                    <a href="{% url index %}" class="home"><img class="banner" src="{{MEDIA_URL}}images/ieee_banner.jpg" /></a>
                     <img class="rightCorner" src="{{MEDIA_URL}}images/mainTopRightCorner.gif" />
                     {% block extra_header %}{% endblock %}
                 </div>
