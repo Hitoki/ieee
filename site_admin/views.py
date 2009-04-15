@@ -1561,6 +1561,7 @@ def manage_society(request, society_id):
         'tag_page': tag_page,
         'tag_pages': tag_pages,
         
+        'DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB': settings.DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB,
     })
 
 @login_required

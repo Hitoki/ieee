@@ -122,6 +122,9 @@ DEBUG_TAGS_HAVE_ALL_FILTERS = False
 # If true, all frontend pages will require login (useful before frontend is publicly launched)
 DEBUG_REQUIRE_LOGIN_FRONTEND = True
 
+# Enable the Help tab on the Manage Society page
+DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB = False
+
 LOG_FILENAME = relpath(__file__, 'log.txt')
 LOG_CONSOLE = True
 
