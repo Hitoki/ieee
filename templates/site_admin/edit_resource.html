@@ -54,7 +54,7 @@
         <h1>Create Resource</h1>
     {% endif %}
     
-    <form action="{% url admin_save_resource %}?return_url={{ return_url }}" method="post">
+    <form action="{% url admin_save_resource %}?return_url={{ return_url|urlencode }}" method="post">
         <table class="full-grid edit-create">
             {{ form.id }}
             <tr>
