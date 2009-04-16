@@ -434,15 +434,15 @@ class Profile(models.Model):
 
 # ------------------------------------------------------------------------------
 
-class UserManager2():
-    def __init__(self):
-        self.objects = User.objects
-        
-    def get_admins(self):
-        return self.objects.filter(profile__role=Profile.ROLE_ADMIN)
-    
-    def get_society_managers(self):
-        return self.objects.filter(profile__role=Profile.ROLE_SOCIETY_MANAGER)
+#class UserManager2():
+#    def __init__(self):
+#        self.objects = User.objects
+#        
+#    def get_admins(self):
+#        return self.objects.filter(profile__role=Profile.ROLE_ADMIN)
+#    
+#    def get_society_managers(self):
+#        return self.objects.filter(profile__role=Profile.ROLE_SOCIETY_MANAGER)
 
 # ------------------------------------------------------------------------------
 

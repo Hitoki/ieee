@@ -18,7 +18,8 @@ from django.utils import simplejson as json
 from ieeetags import settings
 from ieeetags import permissions
 from ieeetags.util import *
-from ieeetags.models import Node, NodeType, Permission, Resource, ResourceType, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager2
+from ieeetags.models import Node, NodeType, Permission, Resource, ResourceType, Society, Filter, Profile, get_user_from_username, get_user_from_email
+#, UserManager2
 from ieeetags.logger import log
 from ieeetags.views import render
 from ieeetags.widgets import DisplayOnlyWidget
@@ -1340,22 +1341,23 @@ def import_users(request):
     
     filename = 'data/v.7/users.csv'
     
-    user_manager = UserManager2()
+    #user_manager = UserManager2()
+    #
+    #if False:
+    #    # Delete all existing society managers
+    #    user_manager.get_society_managers().delete()
+    #    
+    #    # Delete all admins
+    #    #admins = user_manager.get_admins()
+    #    ## DEBUG: skip the default testing users
+    #    #admins = admins.exclude(username='admin')
+    #    ## Delete all existing admins
+    #    #admins.delete()
+    #    
+    #else:
     
-    if False:
-        # Delete all existing society managers
-        user_manager.get_society_managers().delete()
-        
-        # Delete all admins
-        #admins = user_manager.get_admins()
-        ## DEBUG: skip the default testing users
-        #admins = admins.exclude(username='admin')
-        ## Delete all existing admins
-        #admins.delete()
-        
-    else:
-        # DEBUG: delete all users except the debug ones
-        User.objects.exclude(username__in=['soc', 'multisoc', 'admin']).delete()
+    # DEBUG: delete all users except the debug ones
+    User.objects.exclude(username__in=['soc', 'multisoc', 'admin']).delete()
     
     row_count = 0
     users_created = 0
@@ -1873,7 +1875,7 @@ def edit_resource(request, resource_id=None):
 @login_required
 def save_resource(request):
     if 'return_url' not in request.GET:
-        raise Exception('query variable "return_url" not found')
+        raise Exception('Query variable "return_url" not found')
     return_url = request.GET['return_url']
     
     if 'id' not in request.POST:
