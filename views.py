@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect  
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils import simplejson
@@ -22,21 +22,30 @@ def render(request, template, dictionary=None):
 def protect_frontend(func):
     "Used as a decorator.  If settings.DEBUG_REQUIRE_LOGIN_FRONTEND is true, requires a login for the given request."
     
-    if settings.DEBUG_DISABLE_FRONTEND:
-        raise Exception('This page has been disabled, please check that the URL you used is correct URL.')
+    #if settings.DEBUG_DISABLE_FRONTEND:
+    #    raise Exception('This page has been disabled, please check that the URL you used is correct URL.')
     if settings.DEBUG_REQUIRE_LOGIN_FRONTEND:
         return login_required(func)
     else:
         return func
 
+def disable_frontend():
+    if settings.DEBUG_DISABLE_FRONTEND:
+        raise Exception('This page has been disabled, please check that the URL you used is correct URL.')
+
 # ------------------------------------------------------------------------------
 
 @protect_frontend
 def index(request):
+    if settings.DEBUG_DISABLE_FRONTEND:
+        return HttpResponseRedirect(reverse('admin_home'))
+    
     return render(request, 'index.html')
 
 @protect_frontend
 def roamer(request):
+    disable_frontend()
+    
     nodeId = request.GET.get('nodeId', Node.objects.getRoot().id)
     sectors = Node.objects.getSectors()
     filters = Filter.objects.all()
@@ -48,6 +57,8 @@ def roamer(request):
 
 @protect_frontend
 def textui(request):
+    disable_frontend()
+    
     sectorId = request.GET.get('nodeId', Node.objects.getFirstSector().id)
     node = Node.objects.get(id=sectorId)
     
@@ -68,6 +79,8 @@ def textui(request):
 
 @protect_frontend
 def feedback(request):
+    disable_frontend()
+    
     if request.method == 'GET':
         if request.user.is_authenticated:
             initial = {
@@ -111,10 +124,14 @@ def feedback(request):
             })
 
 def browser_warning(request):
+    disable_frontend()
+    
     return render(request, 'browser_warning.html')
 
 @protect_frontend
 def ajax_tag_content(request):
+    disable_frontend()
+    
     tagId = request.GET['tagId']
     tag = Node.objects.get(id=tagId)
     
@@ -146,6 +163,8 @@ def ajax_tag_content(request):
 
 @protect_frontend
 def ajax_node(request):
+    disable_frontend()
+    
     nodeId = request.GET['nodeId']
     node = Node.objects.get(id=nodeId)
     if len(node.parents.all()) == 0:
@@ -189,6 +208,8 @@ def _get_popularity_level(min, max, count):
 
 @protect_frontend
 def ajax_nodes_json(request):
+    disable_frontend()
+    
     sectorId = request.GET['sectorId']
     sort = request.GET.get('sort')
     filterValues = request.GET.get('filterValues')
@@ -247,6 +268,8 @@ def ajax_nodes_json(request):
 
 @protect_frontend
 def ajax_nodes_xml(request):
+    disable_frontend()
+    
     "Creates an XML list of nodes & connections for Asterisq Constellation Roamer"
     #logging.debug('ajax_nodes_xml()')
     #logging.debug('  request:')
@@ -357,6 +380,8 @@ def ajax_nodes_xml(request):
 
 @protect_frontend
 def tooltip(request):
+    disable_frontend()
+    
     tag_id = request.GET['tag_id']
     sector_id = request.GET['sector_id']
     
