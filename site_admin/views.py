@@ -1569,9 +1569,19 @@ def manage_society(request, society_id):
         resources1 = society.resources.order_by('-name')
     
     elif resource_sort == 'ieee_id_ascending':
-        resources1 = society.resources.order_by('ieee_id', 'name')
+        resources1 = society.resources.extra(select={
+            'ieee_id_num': 'SELECT CAST(ieee_id AS SIGNED INTEGER)',
+        }, order_by=[
+            'ieee_id_num',
+            'ieee_id',
+        ])
     elif resource_sort == 'ieee_id_descending':
-        resources1 = society.resources.order_by('-ieee_id', '-name')
+        resources1 = society.resources.extra(select={
+            'ieee_id_num': 'SELECT CAST(ieee_id AS SIGNED INTEGER)',
+        }, order_by=[
+            '-ieee_id_num',
+            '-ieee_id',
+        ])
     
     elif resource_sort == 'resource_type_ascending':
         resources1 = society.resources.order_by('resource_type', 'name')
@@ -1914,6 +1924,7 @@ def save_resource(request):
         old_nodes = resource.nodes.all()
         
         resource.name = form.cleaned_data['name']
+        resource.ieee_id = form.cleaned_data['ieee_id']
         resource.description = form.cleaned_data['description']
         resource.url = form.cleaned_data['url']
         resource.nodes = form.cleaned_data['nodes']

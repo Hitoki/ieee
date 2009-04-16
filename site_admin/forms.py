@@ -68,7 +68,7 @@ class EditResourceForm(Form):
     id = IntegerField(widget=HiddenInput(), required=False)
     name = CharField(max_length=500, label='Resource Name')
     resource_type = ModelChoiceField(queryset=ResourceType.objects.all(), widget=DisplayOnlyWidget(field_type=type(ModelChoiceField), use_capwords=True), label='Resource Type')
-    ieee_id = IntegerField(required=False, label='ID')
+    ieee_id = CharField(required=False, label='ID')
     description = CharField(widget=Textarea, max_length=1000, required=False)
     url = CharField(max_length=1000, required=False, label='URL')
     nodes = MultiSearchField(label='Tags', model=Node, search_url='/admin/ajax/search_tags', widget_label='Associate Tags with this Resource', show_create_tag_link=True)
