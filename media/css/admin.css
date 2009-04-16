@@ -343,3 +343,8 @@ ul.checkbox-select-multiple-columns-3 {
     margin:1em 0em;
     padding:.5em;
 }
+
+ul.errorlist li {
+    font-weight:bold;
+    color:maroon;
+}
