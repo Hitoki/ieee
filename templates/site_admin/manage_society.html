@@ -387,7 +387,7 @@
                                             {{ resource.resource_type.name|capfirst }}
                                         </td>
                                         <td>
-                                            {% if resource.url %}<a href="{{ resource.url }}" target="_blank"><span class="flyover {position:'bottom'}" title="{{ resource.url }}"><img src="{{ MEDIA_URL }}/images/popup_active.png"/></span></a>{% endif %}
+                                            {% if resource.url %}<a href="{{ resource.url }}" target="_blank"><span class="flyover {position:'bottom'}" title="{{ resource.url }}"><img src="{{ MEDIA_URL }}/images/popup.png"/></span></a>{% endif %}
                                         </td>
                                         <td>
                                             {% if resource.nodes.all %}{{ resource.nodes.all|length }}{% endif %}
