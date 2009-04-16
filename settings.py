@@ -137,7 +137,7 @@ LOG_FILENAME = relpath(__file__, 'log.txt')
 LOG_CONSOLE = True
 
 DMIGRATIONS_DIR = relpath(__file__, 'migrations')
-#DISABLE_SYNCDB = True
+DISABLE_SYNCDB = True
 
 logging.basicConfig(
     level = logging.DEBUG,

@@ -1,159 +1,6 @@
 from dmigrations.mysql import migrations as m
 import datetime
-
-migration001 = m.Migration(sql_up=["""
-    CREATE TABLE `django_content_type` (
-        `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-        `name` varchar(100) NOT NULL,
-        `app_label` varchar(100) NOT NULL,
-        `model` varchar(100) NOT NULL,
-        UNIQUE (`app_label`, `model`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-    ;
-"""], sql_down=["""
-    DROP TABLE `django_content_type`;
-"""])
-
-migration002 = m.Migration(sql_up=["""
-    CREATE TABLE `auth_permission` (
-        `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-        `name` varchar(50) NOT NULL,
-        `content_type_id` integer NOT NULL,
-        `codename` varchar(100) NOT NULL,
-        UNIQUE (`content_type_id`, `codename`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-    ;
-""", """
-    CREATE TABLE `auth_group` (
-        `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-        `name` varchar(80) NOT NULL UNIQUE
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-    ;
-""", """
-    CREATE TABLE `auth_user` (
-        `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-        `username` varchar(30) NOT NULL UNIQUE,
-        `first_name` varchar(30) NOT NULL,
-        `last_name` varchar(30) NOT NULL,
-        `email` varchar(75) NOT NULL,
-        `password` varchar(128) NOT NULL,
-        `is_staff` bool NOT NULL,
-        `is_active` bool NOT NULL,
-        `is_superuser` bool NOT NULL,
-        `last_login` datetime NOT NULL,
-        `date_joined` datetime NOT NULL
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-    ;
-""", """
-    CREATE TABLE `auth_message` (
-        `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-        `user_id` integer NOT NULL,
-        `message` longtext NOT NULL
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-    ;
-""", """
-    ALTER TABLE `auth_message` ADD CONSTRAINT user_id_refs_id_650f49a6 FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
-""", """
-    CREATE TABLE `auth_group_permissions` (
-        `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-        `group_id` integer NOT NULL,
-        `permission_id` integer NOT NULL,
-        UNIQUE (`group_id`, `permission_id`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-    ;
-""", """
-    ALTER TABLE `auth_group_permissions` ADD CONSTRAINT group_id_refs_id_3cea63fe FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`);
-""", """
-    ALTER TABLE `auth_group_permissions` ADD CONSTRAINT permission_id_refs_id_5886d21f FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`);
-""", """
-    CREATE TABLE `auth_user_groups` (
-        `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-        `user_id` integer NOT NULL,
-        `group_id` integer NOT NULL,
-        UNIQUE (`user_id`, `group_id`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-    ;
-""", """
-    ALTER TABLE `auth_user_groups` ADD CONSTRAINT user_id_refs_id_7ceef80f FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
-""", """
-    ALTER TABLE `auth_user_groups` ADD CONSTRAINT group_id_refs_id_f116770 FOREIGN KEY (`group_id`) REFERENCES `auth_group` (`id`);
-""", """
-    CREATE TABLE `auth_user_user_permissions` (
-        `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-        `user_id` integer NOT NULL,
-        `permission_id` integer NOT NULL,
-        UNIQUE (`user_id`, `permission_id`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-    ;
-""", """
-    ALTER TABLE `auth_user_user_permissions` ADD CONSTRAINT user_id_refs_id_dfbab7d FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
-""", """
-    ALTER TABLE `auth_user_user_permissions` ADD CONSTRAINT permission_id_refs_id_67e79cb FOREIGN KEY (`permission_id`) REFERENCES `auth_permission` (`id`);
-""", """
-    -- The following references should be added but depend on non-existent tables:
-""", """
-    -- ALTER TABLE `auth_permission` ADD CONSTRAINT content_type_id_refs_id_728de91f FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`);
-"""], sql_down=["""
-    DROP TABLE `auth_user_user_permissions`;
-""", """
-    DROP TABLE `auth_user_groups`;
-""", """
-    DROP TABLE `auth_group_permissions`;
-""", """
-    DROP TABLE `auth_message`;
-""", """
-    DROP TABLE `auth_user`;
-""", """
-    DROP TABLE `auth_group`;
-""", """
-    DROP TABLE `auth_permission`;
-"""])
-
-migration003 = m.Migration(sql_up=["""
-    CREATE TABLE `django_session` (
-        `session_key` varchar(40) NOT NULL PRIMARY KEY,
-        `session_data` longtext NOT NULL,
-        `expire_date` datetime NOT NULL
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-    ;
-"""], sql_down=["""
-    DROP TABLE `django_session`;
-"""])
-
-migration004 = m.Migration(sql_up=["""
-    CREATE TABLE `django_admin_log` (
-        `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-        `action_time` datetime NOT NULL,
-        `user_id` integer NOT NULL,
-        `content_type_id` integer NULL,
-        `object_id` longtext NULL,
-        `object_repr` varchar(200) NOT NULL,
-        `action_flag` smallint UNSIGNED NOT NULL,
-        `change_message` longtext NOT NULL
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-    ;
-""", """
-    -- The following references should be added but depend on non-existent tables:
-""", """
-    -- ALTER TABLE `django_admin_log` ADD CONSTRAINT user_id_refs_id_c8665aa FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`);
-""", """
-    -- ALTER TABLE `django_admin_log` ADD CONSTRAINT content_type_id_refs_id_288599e6 FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`);
-"""], sql_down=["""
-    DROP TABLE `django_admin_log`;
-"""])
-
-migration005 = m.Migration(sql_up=["""
-    CREATE TABLE `django_site` (
-        `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-        `domain` varchar(100) NOT NULL,
-        `name` varchar(50) NOT NULL
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-    ;
-"""], sql_down=["""
-    DROP TABLE `django_site`;
-"""])
-
-migration006 = m.Migration(sql_up=["""
+migration = m.Migration(sql_up=["""
     CREATE TABLE `ieeetags_nodetype` (
         `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
         `name` varchar(50) NOT NULL
@@ -163,17 +10,13 @@ migration006 = m.Migration(sql_up=["""
     CREATE TABLE `ieeetags_node` (
         `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
         `name` varchar(500) NOT NULL,
-        `parent_id` integer NULL,
         `node_type_id` integer NOT NULL,
         `num_related_tags` integer NULL,
-        `num_resources` integer NULL,
-        `num_related_sectors` integer NULL
+        `num_resources` integer NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8
     ;
 """, """
     ALTER TABLE `ieeetags_node` ADD CONSTRAINT node_type_id_refs_id_652d089 FOREIGN KEY (`node_type_id`) REFERENCES `ieeetags_nodetype` (`id`);
-""", """
-    ALTER TABLE `ieeetags_node` ADD CONSTRAINT parent_id_refs_id_aadfc7d FOREIGN KEY (`parent_id`) REFERENCES `ieeetags_node` (`id`);
 """, """
     CREATE TABLE `ieeetags_society` (
         `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
@@ -194,9 +37,11 @@ migration006 = m.Migration(sql_up=["""
         `resource_type_id` integer NOT NULL,
         `ieee_id` varchar(500) NULL,
         `name` varchar(500) NOT NULL,
-        `description` varchar(1000) NOT NULL,
+        `description` varchar(5000) NOT NULL,
         `url` varchar(1000) NOT NULL,
-        `year` integer NULL
+        `year` integer NULL,
+        `standard_status` varchar(100) NOT NULL,
+        `priority_to_tag` bool NOT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8
     ;
 """, """
@@ -225,6 +70,18 @@ migration006 = m.Migration(sql_up=["""
         `reset_key` varchar(1000) NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8
     ;
+""", """
+    CREATE TABLE `ieeetags_node_parents` (
+        `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+        `from_node_id` integer NOT NULL,
+        `to_node_id` integer NOT NULL,
+        UNIQUE (`from_node_id`, `to_node_id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8
+    ;
+""", """
+    ALTER TABLE `ieeetags_node_parents` ADD CONSTRAINT from_node_id_refs_id_304469d3 FOREIGN KEY (`from_node_id`) REFERENCES `ieeetags_node` (`id`);
+""", """
+    ALTER TABLE `ieeetags_node_parents` ADD CONSTRAINT to_node_id_refs_id_304469d3 FOREIGN KEY (`to_node_id`) REFERENCES `ieeetags_node` (`id`);
 """, """
     CREATE TABLE `ieeetags_node_societies` (
         `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
@@ -261,18 +118,6 @@ migration006 = m.Migration(sql_up=["""
     ALTER TABLE `ieeetags_node_related_tags` ADD CONSTRAINT from_node_id_refs_id_3cec9c56 FOREIGN KEY (`from_node_id`) REFERENCES `ieeetags_node` (`id`);
 """, """
     ALTER TABLE `ieeetags_node_related_tags` ADD CONSTRAINT to_node_id_refs_id_3cec9c56 FOREIGN KEY (`to_node_id`) REFERENCES `ieeetags_node` (`id`);
-""", """
-    CREATE TABLE `ieeetags_node_related_sectors` (
-        `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-        `from_node_id` integer NOT NULL,
-        `to_node_id` integer NOT NULL,
-        UNIQUE (`from_node_id`, `to_node_id`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8
-    ;
-""", """
-    ALTER TABLE `ieeetags_node_related_sectors` ADD CONSTRAINT from_node_id_refs_id_747bba37 FOREIGN KEY (`from_node_id`) REFERENCES `ieeetags_node` (`id`);
-""", """
-    ALTER TABLE `ieeetags_node_related_sectors` ADD CONSTRAINT to_node_id_refs_id_747bba37 FOREIGN KEY (`to_node_id`) REFERENCES `ieeetags_node` (`id`);
 """, """
     CREATE TABLE `ieeetags_society_users` (
         `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
@@ -324,13 +169,13 @@ migration006 = m.Migration(sql_up=["""
 """, """
     DROP TABLE `ieeetags_society_users`;
 """, """
-    DROP TABLE `ieeetags_node_related_sectors`;
-""", """
     DROP TABLE `ieeetags_node_related_tags`;
 """, """
     DROP TABLE `ieeetags_node_filters`;
 """, """
     DROP TABLE `ieeetags_node_societies`;
+""", """
+    DROP TABLE `ieeetags_node_parents`;
 """, """
     DROP TABLE `ieeetags_profile`;
 """, """
@@ -344,18 +189,7 @@ migration006 = m.Migration(sql_up=["""
 """, """
     DROP TABLE `ieeetags_society`;
 """, """
-    ALTER TABLE `ieeetags_node` DROP FOREIGN KEY parent_id_refs_id_aadfc7d;
-""", """
     DROP TABLE `ieeetags_node`;
 """, """
     DROP TABLE `ieeetags_nodetype`;
 """])
-
-migration = m.Compound([
-    migration001,
-    migration002,
-    migration003,
-    migration004,
-    migration005,
-    migration006,
-])
