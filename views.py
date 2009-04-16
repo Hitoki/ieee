@@ -21,6 +21,9 @@ def render(request, template, dictionary=None):
 
 def protect_frontend(func):
     "Used as a decorator.  If settings.DEBUG_REQUIRE_LOGIN_FRONTEND is true, requires a login for the given request."
+    
+    if settings.DEBUG_DISABLE_FRONTEND:
+        raise Exception('This page has been disabled, please check that the URL you used is correct URL.')
     if settings.DEBUG_REQUIRE_LOGIN_FRONTEND:
         return login_required(func)
     else:
