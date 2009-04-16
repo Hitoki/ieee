@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.core.mail import mail_admins
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect  
 from django.shortcuts import render_to_response
@@ -8,6 +9,8 @@ from xml.dom import minidom
 import logging
 import os.path
 import string
+import sys
+import traceback
 from urllib import quote
 
 from ieeetags.models import single_row, Filter, Node, NodeType, Resource, ResourceType, Society
@@ -31,9 +34,33 @@ def protect_frontend(func):
 
 def disable_frontend():
     if settings.DEBUG_DISABLE_FRONTEND:
-        raise Exception('This page has been disabled, please check that the URL you used is correct URL.')
+        #raise Exception('This page has been disabled, please check that the URL you used is correct URL.')
+        raise util.EndUserException('Page Disabled', 'This page has been disabled, please check that the URL you used is correct URL.')
 
 # ------------------------------------------------------------------------------
+
+def error_view(request):
+    "Custom error view for production servers."
+    
+    # Get the latest exception from Python system service 
+    (type, value, traceback1) = sys.exc_info()
+    traceback1 = '.'.join(traceback.format_exception(type, value, traceback1))
+    
+    # Send email to admins
+    subject = 'Error in ieeetags: %s, %s' % (str(type), value)
+    message = traceback1
+    mail_admins(subject, message, True)
+    
+    title = None
+    message = None
+    
+    if type is util.EndUserException:
+        title, message = value
+    
+    return render(request, '500.html', {
+        'title': title,
+        'message': message,
+    })
 
 @protect_frontend
 def index(request):

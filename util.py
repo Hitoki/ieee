@@ -32,3 +32,6 @@ def current_server_url(request):
     print 'current_server_url()'
     for name, value in request.META.items():
         print '  %sm: %s' % (name, value)
+
+class EndUserException(Exception):
+    pass

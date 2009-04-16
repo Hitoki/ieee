@@ -8,6 +8,10 @@ import views
 
 django.contrib.admin.autodiscover()
 
+if not settings.DEBUG:
+    # Set the custom error handler for production servers
+    handler500 = 'ieeetags.views.error_view'
+
 urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
     url(r'^roamer$', views.roamer, name='roamer'),
