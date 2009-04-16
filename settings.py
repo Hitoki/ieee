@@ -113,6 +113,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'ieeetags.context_processors.is_ajax',
 )
 
+# Application Settings
+
+SHOW_SOCIETY_LOGIN_BANNER = False
+
+# Debug Settings
+
 # Used for the COMSOC demo to assign all tags to comsoc by default
 DEBUG_IMPORT_ASSIGN_ALL_TAGS_TO_COMSOC = False
 

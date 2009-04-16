@@ -335,3 +335,11 @@ ul.checkbox-select-multiple-columns-3 {
 #feedback-bar {
     margin-top:2em;
 }
+
+.society-login-banner {
+    border:1px solid silver;
+    background:#eee;
+    font-size:110%;
+    margin:1em 0em;
+    padding:.5em;
+}

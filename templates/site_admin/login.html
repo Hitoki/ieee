@@ -1,6 +1,6 @@
-{% extends 'base_table.html' %}
+{% extends 'site_admin/admin_base.html' %}
 
-{% block extra_head %}
+{% block extra_head2 %}
     <script>
         $(function() {
             $('#id_username').focus();
@@ -11,6 +11,12 @@
 {% block main_table_content %}
     
     <h1>Admin Login</h1>
+    
+    {% if show_society_login_banner %}
+        <p class="society-login-banner">
+            Welcome, IEEE Society & Council Leaders. You will be receiving via email a username and password shortly.
+        </p>
+    {% endif %}
     
     <form action="{% url admin_login %}?next={{ next|urlencode }}" method="post">
         {% if error %}

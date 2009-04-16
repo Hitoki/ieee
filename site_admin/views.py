@@ -98,6 +98,7 @@ def login(request):
     if not form.is_valid():
         return render(request, 'site_admin/login.html', {
             'next': next,
+            'show_society_login_banner': settings.SHOW_SOCIETY_LOGIN_BANNER,
             'form': form,
         })
     else:
@@ -106,12 +107,14 @@ def login(request):
             return render(request, 'site_admin/login.html', {
                 'error': 'Invalid login, please try again.',
                 'next': next,
+                'show_society_login_banner': settings.SHOW_SOCIETY_LOGIN_BANNER,
                 'form': form,
             })
         elif user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER and len(user.societies.all()) == 0:
             return render(request, 'site_admin/login.html', {
                 'error': 'Your account has not been assigned to a society yet.  Please contact the administrator to fix this.',
                 'next': next,
+                'show_society_login_banner': settings.SHOW_SOCIETY_LOGIN_BANNER,
                 'form': form,
             })
         else:
