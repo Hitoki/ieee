@@ -1205,6 +1205,8 @@ def edit_tag(request, tag_id):
         'num_resources': tag.num_resources,
     })
     
+    form.fields['related_tags'].widget.set_exclude_tag_id(tag.id)
+    
     if request.user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER:
         # Disable certain fields for the society managers
         make_display_only(form.fields['parents'], model=Node)
@@ -2025,9 +2027,10 @@ def ajax_search_tags(request):
     else:
         sector_ids = None
     
+    exclude_tag_id = request.GET.get('exclude_tag_id', None)
+    
     search_for = request.GET['search_for']
-    #tags = Node.objects.searchTagsByNameSubstring(search_for)[:MAX_RESULTS+1]
-    tags = Node.objects.searchTagsByNameSubstring(search_for, sector_ids)
+    tags = Node.objects.searchTagsByNameSubstring(search_for, sector_ids, exclude_tag_id)
     
     #if len(tags) > MAX_RESULTS:
     #    tags = tags[:MAX_RESULTS]

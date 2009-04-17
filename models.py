@@ -181,7 +181,7 @@ class NodeManager(models.Manager):
             tag.save()
         return len(tags)
     
-    def searchTagsByNameSubstring(self, substring, sector_ids=None):
+    def searchTagsByNameSubstring(self, substring, sector_ids=None, exclude_tag_id=None):
         """
         Search for tags matching the given substring.  Optionally limit to only the list of sectors given.
         @param substring name substring to search for.
@@ -201,7 +201,10 @@ class NodeManager(models.Manager):
                 else:
                     q = Q(parents=sector_id)
             results = results.filter(q).distinct()
-            
+        
+        if exclude_tag_id is not None:
+            results = results.exclude(id=exclude_tag_id)
+        
         return results
     
     def get_sector_by_name(self, name):

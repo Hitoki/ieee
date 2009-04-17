@@ -9,7 +9,12 @@ from urllib import quote
 class MultiSearchWidget(widgets.Widget):
     "Renders a widget that allows users to search for and select multiple options.  Uses AJAX to load search options."
     search_url = None
+    format = None
+    widget_label = None
     model = None
+    show_create_tag_link = None
+    society_id = None
+    exclude_tag_id = None
     
     def __init__(self, attrs=None):
         #print '__init__()'
@@ -46,6 +51,9 @@ class MultiSearchWidget(widgets.Widget):
 
     def set_society_id(self, society_id):
         self.society_id = society_id
+
+    def set_exclude_tag_id(self, exclude_tag_id):
+        self.exclude_tag_id = exclude_tag_id
 
     def render(self, name, value, attrs=None):
         #print 'render()'
@@ -104,6 +112,9 @@ class MultiSearchWidget(widgets.Widget):
         classString = 'searchUrl:\'%s\', format:\'%s\', showCreateTagLink:%s' % (self.search_url, self.format, js_true_or_false(self.show_create_tag_link))
         if self.society_id is not None:
             classString += ', society_id:%s' % self.society_id
+        
+        if self.exclude_tag_id is not None:
+            classString += ', excludeTagId:%s' % self.exclude_tag_id
         
         if self.classMetadata is not None:
             classString += ', ' + self.classMetadata

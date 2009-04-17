@@ -152,7 +152,8 @@ function MultiSearch(container, options) {
             showCreateTagLink: false,
             society_id: null,
             society_tags_first: false,
-            showSelectedOptions: true
+            showSelectedOptions: true,
+            excludeTagId: null
         },
         this.container.metadata(),
         options
@@ -372,6 +373,9 @@ MultiSearch.prototype.getOptions = function(value) {
     if ($.trim(value).length >= 2) {
         var data = {
             search_for: value
+        }
+        if (this.options.excludeTagId != null) {
+            data.exclude_tag_id = this.options.excludeTagId;
         }
         $.getJSON(this.options.searchUrl, url_encode(data), function(data) { multiSearch.onGetOptions(data); });
         this.showPopupLoading();
