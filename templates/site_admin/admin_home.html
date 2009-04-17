@@ -13,6 +13,16 @@
     <ul class="section-list">
         {% if user.is_superuser %}
         <li>
+            Stats:
+            <ul>
+                <li>{{ num_societies }} societies</li>
+                <li>{{ num_society_managers }} society managers</li>
+                <li>{{ num_sectors }} sectors</li>
+                <li>{{ num_tags }} tags</li>
+                <li>{{ num_resources }} resources</li>
+            </ul>
+        </li>
+        <li>
             Django:
             <ul>
                 <li><a href="/djangoadmin">Django Admin</a></li>

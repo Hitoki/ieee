@@ -18,7 +18,7 @@ from django.utils import simplejson as json
 from ieeetags import settings
 from ieeetags import permissions
 from ieeetags.util import *
-from ieeetags.models import Node, NodeType, Permission, Resource, ResourceType, Society, Filter, Profile, get_user_from_username, get_user_from_email
+from ieeetags.models import Node, NodeType, Permission, Resource, ResourceType, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager
 #, UserManager2
 from ieeetags.logger import log
 from ieeetags.views import render
@@ -266,13 +266,27 @@ def home(request):
     role = request.user.get_profile().role
     
     if role == Profile.ROLE_ADMIN:
+        # Show the admin home page
         version, date = _get_version()
+        
+        num_societies = Society.objects.count()
+        num_society_managers = UserManager.get_society_managers().count()
+        num_sectors = Node.objects.getSectors().count()
+        num_tags = Node.objects.getTags().count()
+        num_resources = Resource.objects.count()
+        
         return render(request, 'site_admin/admin_home.html', {
             'version': version,
             'date': date,
+            'num_societies': num_societies,
+            'num_society_managers': num_society_managers,
+            'num_sectors': num_sectors,
+            'num_tags': num_tags,
+            'num_resources': num_resources,
         })
         
     elif role == Profile.ROLE_SOCIETY_MANAGER:
+        # Redirect to the society manager home page
         hash = request.GET.get('hash', '')
         
         # Only one society, just redirect to that view page
@@ -1385,8 +1399,8 @@ def import_users(request):
             raise Exception('Unknown role "%s"' % role)
         if username == '':
             raise Exception('Username is blank')
-        if email == '':
-            raise Exception('Email is blank')
+        #if email == '':
+        #    raise Exception('Email is blank')
         
         society_names = [society_name.strip() for society_name in _split_no_empty(society_names, ',')]
         
