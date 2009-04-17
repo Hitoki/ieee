@@ -434,7 +434,7 @@ class Profile(models.Model):
 
 # ------------------------------------------------------------------------------
 
-class UserManager():
+class UserManager:
     @staticmethod
     def get_admins():
         return User.objects.filter(profile__role=Profile.ROLE_ADMIN)
