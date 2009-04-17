@@ -342,9 +342,9 @@ var Flyover = {
             var arrowHeight;
             
             if (this.options.width != null)
-                this._flyover.css('width', this.options.width + 'px');
+                this._flyover.css('width', this.options.width);
             if (this.options.height != null)
-                this._flyover.css('height', this.options.height + 'px');
+                this._flyover.css('height', this.options.height);
             
             var elemWidth = this._elem[0].offsetWidth;
             var elemHeight = this._elem[0].offsetHeight;
