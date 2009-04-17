@@ -21,7 +21,7 @@
                     <a href="{% url admin_view_sector sector.id %}">{{sector.name}}</a>
                 </td>
                 <td>
-                    {{ sector.child_nodes.all|length }}
+                    {{ sector.child_nodes.all.count }}
                 </td>
             </tr>
         {% endfor %}

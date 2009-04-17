@@ -348,3 +348,7 @@ ul.errorlist li {
     font-weight:bold;
     color:maroon;
 }
+
+tr.priority-to-tag-resource {
+    background:#fffce3;
+}

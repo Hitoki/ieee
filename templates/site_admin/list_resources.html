@@ -16,7 +16,7 @@
     <table class="grid">
         <tr>
             <th>
-                Resource ({{ resources|length }})
+                Resource ({{ resources.count }})
             </th>
             <th>
                 Type
@@ -37,10 +37,10 @@
                     {{ resource.resource_type.name }}
                 </td>
                 <td>
-                    {{ resource.nodes.all|length }}
+                    {{ resource.nodes.all.count }}
                 </td>
                 <td>
-                    {{ resource.societies.all|length }}
+                    {{ resource.societies.all.count }}
                 </td>
             </tr>
         {% endfor %}

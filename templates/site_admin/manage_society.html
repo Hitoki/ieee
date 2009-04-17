@@ -371,7 +371,13 @@
                                     </th>
                                 </tr>
                                 {% for resource in resources %}
-                                    <tr>
+                                    
+                                    {% if resource.priority_to_tag %}
+                                        <tr class="priority-to-tag-resource">
+                                    {% else %}
+                                        <tr>
+                                    {% endif %}
+                                    
                                         {% comment %}
                                             <td class="count">
                                                 {{ resource.count }}
@@ -390,7 +396,7 @@
                                             {% if resource.url %}<a href="{{ resource.url }}" target="_blank"><span class="flyover {position:'bottom'}" title="{{ resource.url }}"><img src="{{ MEDIA_URL }}/images/popup.png"/></span></a>{% endif %}
                                         </td>
                                         <td>
-                                            {% if resource.nodes.all %}{{ resource.nodes.all|length }}{% endif %}
+                                            {% if resource.nodes.all %}{{ resource.nodes.all.count }}{% endif %}
                                         </td>
                                         <td>
                                             {% if resource.societies.all %}

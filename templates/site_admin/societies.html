@@ -30,7 +30,7 @@
                     {{ society.url }}
                 </td>
                 <td>
-                    {{ society.tags.all|length }}
+                    {{ society.tags.all.count }}
                     {% comment %}
                         {% for tag in society.tags.all %}
                             <a href="{% url admin_view_tag tag.id %}">{{ tag.name_with_sector }}</a>, 
@@ -41,7 +41,7 @@
                     {% endcomment %}
                 </td>
                 <td>
-                    {{ society.resources.all|length }}
+                    {{ society.resources.all.count }}
                 </td>
             </tr>
         {% endfor %}
