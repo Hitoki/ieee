@@ -63,6 +63,7 @@ class CreateResourceForm(Form):
     url = CharField(max_length=1000, required=False)
     nodes = MultiSearchField(label='Tags', model=Node, search_url='/admin/ajax/search_tags')
     societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies')
+    priority_to_tag = BooleanField(required=False)
 
 class EditResourceForm(Form):
     id = IntegerField(widget=HiddenInput(), required=False)
