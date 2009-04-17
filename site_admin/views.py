@@ -7,6 +7,7 @@ import re
 import string
 import time
 from urllib import quote
+import warnings
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
@@ -1561,7 +1562,7 @@ def manage_society(request, society_id):
     _RESOURCES_PER_PAGE = 50
     
     # Default to name/ascending resource_sort
-    resource_sort = request.GET.get('resource_sort', 'name_ascending')
+    resource_sort = request.GET.get('resource_sort', 'priority_ascending')
     resource_page = int(request.GET.get('resource_page', 1))
     
     # Default to name/ascending tag_sort
@@ -1583,18 +1584,29 @@ def manage_society(request, society_id):
         resources1 = society.resources.order_by('-name')
     
     elif resource_sort == 'ieee_id_ascending':
+        
+        # Ignore warning about turning non-numeric value into an integer ("Truncated incorrect INTEGER value: 'xxxx'")
+        warnings.filterwarnings('ignore', '^Truncated incorrect INTEGER value:.+')
+        
         resources1 = society.resources.extra(select={
             'ieee_id_num': 'SELECT CAST(ieee_id AS SIGNED INTEGER)',
         }, order_by=[
             'ieee_id_num',
             'ieee_id',
+            'name',
         ])
+        
     elif resource_sort == 'ieee_id_descending':
+        
+        # Ignore warning about turning non-numeric value into an integer ("Truncated incorrect INTEGER value: 'xxxx'")
+        warnings.filterwarnings('ignore', '^Truncated incorrect INTEGER value:.+')
+        
         resources1 = society.resources.extra(select={
             'ieee_id_num': 'SELECT CAST(ieee_id AS SIGNED INTEGER)',
         }, order_by=[
             '-ieee_id_num',
             '-ieee_id',
+            '-name',
         ])
     
     elif resource_sort == 'resource_type_ascending':
@@ -1633,10 +1645,11 @@ def manage_society(request, society_id):
             '-num_societies',
         ])
     
+    # NOTE: These are reversed, since that seems more intutive
     elif resource_sort == 'priority_ascending':
-        resources1 = society.resources.order_by('priority_to_tag', 'name')
+        resources1 = society.resources.order_by('-priority_to_tag', 'name')
     elif resource_sort == 'priority_descending':
-        resources1 = society.resources.order_by('-priority_to_tag', '-name')
+        resources1 = society.resources.order_by('priority_to_tag', '-name')
     
     elif resource_sort == 'description_ascending':
         resources1 = society.resources.order_by('description', 'name')
