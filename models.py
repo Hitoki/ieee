@@ -355,6 +355,7 @@ class Resource(models.Model):
     year = models.IntegerField(blank=True, null=True)
     standard_status = models.CharField(blank=True, max_length=100)
     priority_to_tag = models.BooleanField()
+    keywords = models.CharField(max_length=1000, blank=True)
     
     nodes = models.ManyToManyField(Node, related_name='resources')
     societies = models.ManyToManyField(Society, related_name='resources')
