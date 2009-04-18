@@ -777,7 +777,9 @@ def import_periodicals(request, source):
     if source == 'comsoc':
         raise Exception('There is no periodicals file for COMSOC')
     elif source == 'v.7':
-        filename = relpath(__file__, '../data/v.7/2009-04-10 - periodicals - mod.csv')
+        #filename = relpath(__file__, '../data/v.7/2009-04-10 - periodicals - mod.csv')
+        #filename = relpath(__file__, '../data/v.7/2009-04-18 - publiciations.csv')
+        filename = relpath(__file__, '../data/v.7/2009-04-18 - publiciations - mod.csv')
 
     # Delete all periodicals
     Resource.objects.get_periodicals().delete()
