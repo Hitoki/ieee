@@ -16,20 +16,26 @@
     <table class="grid">
         <tr>
             <th>
+                ID
+            </th>
+            <th>
                 Resource ({{ resources.count }})
             </th>
             <th>
                 Type
             </th>
             <th>
-                # Tags
+                Tags
             </th>
             <th>
-                # Societies
+                Societies
             </th>
         </tr>
         {% for resource in resources %}
             <tr>
+                <td style="white-space:nowrap;">
+                    {{ resource.ieee_id }}
+                </td>
                 <td>
                     <a href="{% url admin_view_resource resource.id %}?return_url={{ current_url|urlencode }}">{{resource.name}}</a>
                 </td>

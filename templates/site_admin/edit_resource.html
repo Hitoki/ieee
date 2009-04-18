@@ -129,6 +129,15 @@
                     {{ form.priority_to_tag }}
                 </td>
             </tr>
+            <tr>
+                <th>
+                    <label for="id_keywords">{{ form.keywords.label }}  <span class="help_icon flyover {position:'top'}" title="Keywords">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.keywords.errors }}
+                    {{ form.keywords }}
+                </td>
+            </tr>
         </table>
         <input type="submit" value="Ok" class="button" />
         {% if user.is_superuser and resource %}

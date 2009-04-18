@@ -694,6 +694,7 @@ def _import_resources(filename):
                         description=description,
                         url=url,
                         year=year,
+                        keywords=keywords,
                     )
                     resource.societies = societies
                     resource.save()
@@ -790,13 +791,16 @@ def import_periodicals(request, source):
     })
 
 @login_required
-def import_standards(request):
+def import_standards(request, source):
     permissions.require_superuser(request)
     
     start = time.time()
-    #print 'import_standards()'
     
-    filename = relpath(__file__, '../data/comsoc/standards.csv')
+    #filename = relpath(__file__, '../data/comsoc/standards.csv')
+    if source == 'sample':
+        filename = relpath(__file__, '../data/sample standards.csv')
+    else:
+        assert False, 'Function import_standards() only supports v.7 data.'
     
     # Delete all standards
     Resource.objects.get_standards().delete()
@@ -1895,6 +1899,7 @@ def edit_resource(request, resource_id=None):
             'nodes': resource.nodes.all(),
             'societies': resource.societies.all(),
             'priority_to_tag': resource.priority_to_tag,
+            'keywords': resource.keywords,
         })
         
         if society_id != '':
@@ -1906,6 +1911,7 @@ def edit_resource(request, resource_id=None):
             make_display_only(form.fields['name'])
             make_display_only(form.fields['societies'], is_multi_search=True)
             make_display_only(form.fields['ieee_id'])
+            make_display_only(form.fields['keywords'])
         
     return render(request, 'site_admin/edit_resource.html', {
         'return_url': return_url,
@@ -1960,6 +1966,7 @@ def save_resource(request):
         if form.cleaned_data['societies'] is not None:
             resource.societies = form.cleaned_data['societies']
         resource.priority_to_tag = form.cleaned_data['priority_to_tag']
+        resource.keywords = form.cleaned_data['keywords']
         resource.save()
         
         # Add all resource tags to the owning societies

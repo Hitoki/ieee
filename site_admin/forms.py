@@ -75,6 +75,7 @@ class EditResourceForm(Form):
     nodes = MultiSearchField(label='Tags', model=Node, search_url='/admin/ajax/search_tags', widget_label='Associate Tags with this Resource', show_create_tag_link=True)
     societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies', label='Societies')
     priority_to_tag = BooleanField(required=False)
+    keywords = CharField(max_length=1000, required=False)
 
 class SocietyForm(ModifiedFormBase):
     id = IntegerField(widget=HiddenInput(), required=False)
