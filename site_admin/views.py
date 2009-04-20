@@ -88,6 +88,29 @@ def _random_slice_list(list, min, max):
     random.shuffle(list1)
     return list1[:count]
 
+def _split_no_empty(string, char):
+    "Just like string.split(), except that an empty string results in an empty list []."
+    if string.strip() == '':
+        return []
+    else:
+        return string.split(char)
+
+def _open_unicode_csv(filename):
+    "Opens a file as a unicode CSV.  Returns a (file, reader) tuple."
+    file = codecs.open(filename, 'r', 'utf8')
+    # Skip the UTF-8 BOM
+    strip_bom(file)
+    # Use a unicode csv reader:
+    reader = _unicode_csv_reader(file)
+    reader.next()
+    return (file, reader)
+
+def _check_tags_in_same_sector(tag1, tag2):
+    for sector in tag1.parents.all():
+        if sector in tag2.parents.all():
+            return True
+    return False
+
 # ------------------------------------------------------------------------------
 
 def login(request):
@@ -325,30 +348,6 @@ def update_tag_counts(request):
         'pageTime': time.time()-start,
         'numTags': numTags,
     })
-
-
-def _split_no_empty(string, char):
-    "Just like string.split(), except that an empty string results in an empty list []."
-    if string.strip() == '':
-        return []
-    else:
-        return string.split(char)
-
-def _open_unicode_csv(filename):
-    "Opens a file as a unicode CSV.  Returns a (file, reader) tuple."
-    file = codecs.open(filename, 'r', 'utf8')
-    # Skip the UTF-8 BOM
-    strip_bom(file)
-    # Use a unicode csv reader:
-    reader = _unicode_csv_reader(file)
-    reader.next()
-    return (file, reader)
-
-def _check_tags_in_same_sector(tag1, tag2):
-    for sector in tag1.parents.all():
-        if sector in tag2.parents.all():
-            return True
-    return False
 
 @login_required
 def import_tags(request):
