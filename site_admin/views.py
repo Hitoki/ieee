@@ -660,7 +660,7 @@ def _import_resources(filename, batch_commits=False):
     
     for row in reader:
         
-        #Type, ID, Name, Description, URL, Tags, Society Abbreviations, Year, Standard Status, Technical Committees, Keywords
+        #Type, ID, Name, Description, URL, Tags, Society Abbreviations, Year, Standard Status, Technical Committees, Keywords, Priority
         type1, ieee_id, name, description, url, tag_names, society_abbreviations, year, standard_status, technical_committees, keywords, priority_to_tag = row
         
         #logging.debug('    name: %s' % name)
