@@ -96,6 +96,11 @@ function browserIsIe7() {
     return $.browser.msie && $.browser.version.string().substr(0, 1) == "7";
 }
 
+// Check if browser is IE7
+function browserIsIe8() {
+    return $.browser.msie && $.browser.version.string().substr(0, 1) == "8";
+}
+
 // Check if browser is Firefox 3.0
 function browserIsFirefox30() {
     /*log('browserIsFirefox30()');
@@ -120,7 +125,7 @@ function isCompatibleBrowser() {
     //return browserIsFirefox30() || browserIsIe7() || browserIsSafari3();
     
     // TODO: Add safari back in later...
-    return browserIsFirefox30() || browserIsIe7();
+    return browserIsFirefox30() || browserIsIe7() || browserIsIe8();
 }
 
 $(function() {
