@@ -69,7 +69,7 @@ def _get_version():
 
 def _update_node_totals(nodes):
     for node in nodes:
-        node.num_resources = len(node.resources.all())
+        node.num_resources = node.resources.count()
         node.save()
     
 def _unicode_csv_reader(unicode_csv_data, dialect=csv.excel, **kwargs):
@@ -144,7 +144,7 @@ def login(request):
                 'show_society_login_banner': settings.SHOW_SOCIETY_LOGIN_BANNER,
                 'form': form,
             })
-        elif user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER and len(user.societies.all()) == 0:
+        elif user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER and user.societies.count() == 0:
             return render(request, 'site_admin/login.html', {
                 'error': 'Your account has not been assigned to a society yet.  Please contact the administrator to fix this.',
                 'next': next,
@@ -324,11 +324,11 @@ def home(request):
         hash = request.GET.get('hash', '')
         
         # Only one society, just redirect to that view page
-        if len(request.user.societies.all()) == 1:
+        if request.user.societies.count() == 1:
             return HttpResponseRedirect(reverse('admin_manage_society', args=[request.user.societies.all()[0].id]) + hash)
         
         # Has more than one society, show list of societies
-        elif len(request.user.societies.all()) > 1:
+        elif request.user.societies.count() > 1:
             #return HttpResponseRedirect(reverse('admin_societies'))
             return HttpResponseRedirect(reverse('admin_home_societies_list') + hash)
         
@@ -639,108 +639,17 @@ def fix_societies_import(request):
         'page_time': time.time()-start,
     })
     
-#@login_required
-#def import_societies_and_tags(request):
-#    permissions.require_superuser(request)
-#    
-#    logging.debug('import_societies_and_tags()')
-#    start = time.time()
-#    
-#    filename = relpath(__file__, '../data/v.7/2009-04-09 societies and tags.csv')
-#    logging.debug('  filename: %s' % filename)
-#    
-#    # Delete all existing societies
-#    Society.objects.all().delete()
-#    
-#    # Delete all existing tags
-#    Node.objects.getTags().delete()
-#    
-#    # Get a unicode CSV reader
-#    (file, reader) = _open_unicode_csv_reader(filename)
-#    
-#    row_count = 0
-#    societies_created = 0
-#    tags_created = 0
-#        
-#    reader.next()
-#    
-#    tag_type = NodeType.objects.getFromName('tag')
-#    
-#    for row in reader:
-#        society_name, abbreviation, url, sector_names, tags1, tags2, tags3 = row
-#        
-#        society_name = society_name.strip()
-#        
-#        # Make sure the society name field does not contain a redundant acronym (there is already have an acronym field)
-#        matches = re.match(r'^(.+) \((.+)\)$', society_name)
-#        if matches is not None:
-#            society_name = matches.group(1)
-#        #logging.debug('society name: %s' % society_name)
-#        
-#        (society, created) = Society.objects.get_or_create(
-#            name=society_name,
-#        )
-#        society.abbreviation = abbreviation
-#        society.url = url
-#        society.save()
-#        
-#        if created:
-#            societies_created += 1
-#            
-#        # DEBUG:
-#        if True:
-#            sector_names = [sector_name.strip() for sector_name in sector_names.split(',')]
-#            sectors = [Node.objects.get_sector_by_name(sector_name) for sector_name in sector_names]
-#            
-#            # Combine all the lists of tags
-#            tag_names = []
-#            if tags1.split(', ') is not None:
-#                tag_names.extend(tags1.split(','))
-#            if tags2.split(', ') is not None:
-#                tag_names.extend(tags2.split(','))
-#            if tags3.split(', ') is not None:
-#                tag_names.extend(tags3.split(','))
-#            
-#            for tag_name in tag_names:
-#                tag_name = string.capwords(tag_name).strip()
-#                if tag_name != '':
-#                    
-#                    (tag, created) = Node.objects.get_or_create(
-#                        name=tag_name,
-#                        node_type=tag_type,
-#                    )
-#                    tag.parents = sectors
-#                    
-#                    # Associate tag with society
-#                    tag.societies.add(society)
-#                    if created:
-#                        #logging.debug('Created tag "%s"' % tag_name)
-#                        #tag.filters = []
-#                        tag.num_resources = 0
-#                        tags_created += 1
-#                    tag.save()
-#                
-#        row_count += 1
-#        if not row_count % 10:
-#            print '  Parsing row %d' % row_count
-#        
-#    file.close()
-#    
-#    return render(request, 'site_admin/import_societies_and_tags.html', {
-#        'row_count': row_count,
-#        'societies_created': societies_created,
-#        'tags_created': tags_created,
-#        'page_time': time.time()-start,
-#    })
-
-def _import_resources(filename):
+def _import_resources(filename, batch_commits=False):
     #logging.debug('import_resources()')
+    
+    start = time.time()
     
     row_count = 0
     duplicate_resources = 0
     resources_added = 0
     societies_assigned = 0
     num_invalid_societies = 0
+    resources_skipped = 0
     
     (file, reader) = _open_unicode_csv_reader(filename)
     
@@ -751,9 +660,10 @@ def _import_resources(filename):
     
     for row in reader:
         
-        #Type, ID, Name, Description, URL, Tags, Societies, Year, Standard Status, Technical Committees, Keywords
-        type1, ieee_id, name, description, url, tag_names, society_names, year, standard_status, technical_committees, keywords = row
-        #print 'name:', name
+        #Type, ID, Name, Description, URL, Tags, Society Abbreviations, Year, Standard Status, Technical Committees, Keywords
+        type1, ieee_id, name, description, url, tag_names, society_abbreviations, year, standard_status, technical_committees, keywords, priority_to_tag = row
+        
+        #logging.debug('    name: %s' % name)
         
         # Fix formatting
         if year == '':
@@ -762,9 +672,19 @@ def _import_resources(filename):
             year = int(year)
         name = name.strip()
         url = url.strip()
-        society_names = [society_name.strip() for society_name in society_names.split(',')]
+        society_abbreviations = [society_abbreviations.strip() for society_abbreviations in society_abbreviations.split(',')]
         
         resource_type = ResourceType.objects.getFromName(type1)
+        
+        # Truncate keywords to 1000 chars
+        keywords = keywords[:1000]
+        
+        if priority_to_tag.lower() == 'yes':
+            priority_to_tag = True
+        elif priority_to_tag.lower() == 'no':
+            priority_to_tag = False
+        else:
+            raise Exception('Unknown priority "%s"' % priority_to_tag)
         
         # Validate input
         if name.strip() == '':
@@ -772,46 +692,40 @@ def _import_resources(filename):
         
         societies = []
         
-        #print 'society_names:'
-        for society_name in society_names:
-            if society_name != '':
-                parts = society_name.strip().split(' - ')
-                temp_name = parts[0]
-                # Remove the ' Society' part from the temp_name
-                if temp_name[-8:] == ' Society':
-                    temp_name = temp_name[:-8]
-                
-                society = Society.objects.getFromName(temp_name)
+        # Search by society abbreviation only
+        for society_abbreviation in society_abbreviations:
+            if society_abbreviation != '':
+                society = Society.objects.getFromAbbreviation(society_abbreviation)
                 if society is None:
-                    society = Society.objects.getFromAbbreviation(temp_name)
-                    
-                if society is None:
-                    if temp_name not in invalid_societies:
-                        invalid_societies[temp_name] = 1
+                    if society_abbreviation not in invalid_societies:
+                        invalid_societies[society_abbreviation] = 1
                     else:
-                        invalid_societies[temp_name] += 1
+                        invalid_societies[society_abbreviation] += 1
                     num_invalid_societies += 1
+                    #logging.error('    Invalid society abbreviation "%s".' % society_abbreviation)
                 else:
-                    if temp_name not in valid_societies:
-                        valid_societies[temp_name] = 1
+                    if society_abbreviation not in valid_societies:
+                        valid_societies[society_abbreviation] = 1
                     else:
-                        valid_societies[temp_name] += 1
+                        valid_societies[society_abbreviation] += 1
                     societies_assigned += 1
                     societies.append(society)
         
-        if True:
-            num_existing = len(Resource.objects.filter(resource_type=resource_type, ieee_id=ieee_id).all())
-            if num_existing > 0:
-                #logging.debug('  DUPLICATE: resource "%s" already exists.' % name)
-                duplicate_resources += 1
-            else:
-                ##logging.debug('  Adding resource "%s"' % name)
-                #print 'name:', name
-                #print 'ieee_id:', ieee_id
-                #print 'description:', description
-                #print 'society_names:', society_names
+        if len(societies) == 0:
+            # No valid societies, skip this resource
+            resources_skipped += 1
+            
+        else:
+            # Resource has valid societies, insert it
+            
+            if True:
+                num_existing = Resource.objects.filter(resource_type=resource_type, ieee_id=ieee_id).count()
+                if num_existing > 0:
+                    #logging.debug('  DUPLICATE: resource "%s" already exists.' % name)
+                    duplicate_resources += 1
                 
-                try:
+                else:
+                    #logging.debug('  Adding resource "%s"' % name)
                     resource = Resource.objects.create(
                         resource_type=resource_type,
                         ieee_id=ieee_id,
@@ -820,25 +734,35 @@ def _import_resources(filename):
                         url=url,
                         year=year,
                         keywords=keywords,
+                        priority_to_tag=priority_to_tag,
                     )
                     resource.societies = societies
                     resource.save()
                     resources_added += 1
                     
-                except Exception, e:
-                    print 'e:', e
-                    print 'ieee_id:', ieee_id
-                    print 'description:', description
-                    print 'len(description):', len(description)
-                    raise
-                    
-        if not row_count % 10:
-            print '  Reading row %d' % row_count
+        if not row_count % 50:
+            #print '  Reading row %d' % row_count
+            try:
+                logging.debug('    Parsing row %d, row/sec %f' % (row_count, row_count/(time.time()-start) ))
+            except Exception:
+                pass
             
         row_count += 1
+        
+        if batch_commits and not row_count % 300:
+            #logging.debug('    committing transaction.')
+            transaction.commit()
             
+        
+        #if row_count > 100:
+        #    break
+
     file.close()
     
+    if batch_commits:
+        logging.debug('    committing last transaction.')
+        transaction.commit()
+            
     results = '<table>\n'
     items = valid_societies.items()
     items.sort()
@@ -863,9 +787,11 @@ def _import_resources(filename):
         'num_invalid_societies': num_invalid_societies,
         'valid_societies': valid_societies,
         'invalid_societies': invalid_societies,
+        'resources_skipped': resources_skipped,
     }
 
 @login_required
+@transaction.commit_manually
 def import_conferences(request, source):
     permissions.require_superuser(request)
     
@@ -877,20 +803,23 @@ def import_conferences(request, source):
     if source == 'comsoc':
         filename = relpath(__file__, '../data/comsoc/conferences.csv')
     elif source == 'v.7':
-        filename = relpath(__file__, '../data/v.7/2009-03-13 - conference_list.csv')
+        filename = relpath(__file__, '../data/v.7/2009-04-21 - conferences.csv')
 
     # Delete all conferences
     Resource.objects.get_conferences().delete()
     
     # Import conferences
-    results = _import_resources(filename)
+    results = _import_resources(filename, batch_commits=True)
     
-    return render(request, 'site_admin/import_resources.html', {
-        'page_time': time.time()-start,
+    results['page_time'] = time.time()-start
+    
+    return render(request, 'site_admin/import_results.html', {
+        'page_title': 'Import Conferences',
         'results': results,
     })
 
 @login_required
+@transaction.commit_on_success
 def import_periodicals(request, source):
     permissions.require_superuser(request)
     
@@ -918,6 +847,7 @@ def import_periodicals(request, source):
     })
 
 @login_required
+@transaction.commit_on_success
 def import_standards(request, source):
     permissions.require_superuser(request)
     
@@ -926,8 +856,10 @@ def import_standards(request, source):
     #filename = relpath(__file__, '../data/comsoc/standards.csv')
     if source == 'sample':
         filename = relpath(__file__, '../data/sample standards.csv')
+    elif source == 'v.7':
+        filename = relpath(__file__, '../data/v.7/2009-04-21 - standards.csv')
     else:
-        assert False, 'Function import_standards() only supports v.7 data.'
+        raise Exception('Unknown source "%s".' % source)
     
     # Delete all standards
     Resource.objects.get_standards().delete()
@@ -939,105 +871,6 @@ def import_standards(request, source):
         'page_time': time.time()-start,
         'results': results,
     })
-
-#def _import_resources(type'], filename):
-#    logging.debug('_import_resources()')
-#    logging.debug('  filename: %s' % filename)
-#    file = open(filename)
-#    reader = csv.reader(file)
-#    reader.next()
-#    
-#    rowCount = 0
-#    resourcesAdded = 0
-#    
-#    resourceType = ResourceType.objects.getFromName(type)
-#    for row in reader:
-#        (resourceName, sectorNames, tagNames, societyNames, description, url) = row
-#        resourceName = string.capwords(resourceName)
-#        logging.debug('  Resource name "%s"' % resourceName)
-#        
-#        resource = Resource.objects.create(
-#            resource_type=resourceType,
-#            name=resourceName,
-#            description=description,
-#            url=url,
-#        )
-#        
-#        # TODO: randomly assigning tag here
-#        #resource.nodes.add(Node.objects.getRandomTag())
-#        
-#        if societyNames != '':
-#            for societyName in societyNames.split(', '):
-#                society = Society.objects.getFromName(societyName)
-#                if society is None:
-#                    logging.debug('  Error: bad society name "%s"' % societyName)
-#                else:
-#                    logging.debug('  Associating resource with society "%s"' % societyName)
-#                    resource.societies.add(society)
-#        
-#        #logging.debug('  Number of societies: %d' % len(resource.societies.all()))
-#        
-#        # DEBUG: Make sure this resource has at least one randomly-chosen society
-#        if len(resource.societies.all()) == 0:
-#            society = Society.objects.getRandom()
-#            logging.debug('  Assigning resource to random society "%s"' % society.name)
-#            resource.societies.add(society)
-#        
-#        resource.save()
-#        resourcesAdded += 1
-#        
-#        rowCount += 1
-#        
-#    file.close()
-#    
-#    return (rowCount, resourcesAdded)
-
-#@login_required
-#def import_resources(request):
-#    logging.debug('admin_import_resources()')
-#    
-#    start = time.time()
-#    
-#    # Delete all existing resources
-#    Resource.objects.all().delete()
-#    
-#    # DEBUG: use a small import file for testing
-#    if False:
-#        filename = relpath(__file__, '../data/conferences.short.csv')
-#        #filename = relpath(__file__, '../data/conferences.csv')
-#        (conferenceRowCount, conferenceCount) = _import_resources('conference', filename)
-#        
-#        return render(request, 'site_admin/import_resources.html', {
-#            'conferenceRowCount': conferenceRowCount,
-#            'conferenceCount': conferenceCount,
-#            'pageTime': time.time()-start,
-#        })
-#    else:
-#
-#        # Replaced by newer conferences import files
-#        #filename = relpath(__file__, '../data/conferences.csv')
-#        #(conferenceRowCount, conferenceCount) = _import_resources('conference', filename)
-#        
-#        filename = relpath(__file__, '../data/experts.csv')
-#        (expertRowCount, expertCount) = _import_resources('expert', filename)
-#        
-#        filename = relpath(__file__, '../data/periodicals.csv')
-#        (periodicalRowCount, periodicalCount) = _import_resources('periodical', filename)
-#        
-#        filename = relpath(__file__, '../data/standards.csv')
-#        (standardRowCount, standardCount) = _import_resources('standard', filename)
-#
-#        return render(request, 'site_admin/import_resources.html', {
-#            'conferenceRowCount': conferenceRowCount,
-#            'conferenceCount': conferenceCount,
-#            'expertRowCount': expertRowCount,
-#            'expertCount': expertCount,
-#            'periodicalRowCount': periodicalRowCount,
-#            'periodicalCount': periodicalCount,
-#            'standardRowCount': standardRowCount,
-#            'standardCount': standardCount,
-#            'pageTime': time.time()-start,
-#        })
 
 @login_required
 def assign_filters(request):
@@ -1096,7 +929,7 @@ def assign_related_tags(request):
     # Now update the tag counts
     tags = Node.objects.getTags()
     for tag in tags:
-        tag.num_related_tags = len(tag.related_tags.all())
+        tag.num_related_tags = tag.related_tags.count()
         tag.save()
             
     return render(request, 'site_admin/assign_related_tags.html', {
@@ -1152,8 +985,8 @@ def assign_resources(request):
         #print '    tag.resources = _get_random_from_sequence(resources, count)'
         tag.resources = _get_random_from_sequence(resources, count)
         
-        #print '    tag.num_resources = len(tag.resources.all())'
-        tag.num_resources = len(tag.resources.all())
+        #print '    tag.num_resources = tag.resources.count()'
+        tag.num_resources = tag.resources.count()
         #print '    tag.save()'
         tag.save()
         #print '    resources_assigned += count'
@@ -1255,13 +1088,13 @@ def create_tag(request):
             tag.filters = form.cleaned_data['filters']
             tag.related_tags = form.cleaned_data['related_tags']
             
-            tag.num_related_tags = len(tag.related_tags.all())
+            tag.num_related_tags = tag.related_tags.count()
             tag.num_resources = 0
             tag.save()
             
             # Update the related tags counts
             for related_tag in tag.related_tags.all():
-                related_tag.num_related_tags = len(related_tag.related_tags.all())
+                related_tag.num_related_tags = related_tag.related_tags.count()
                 related_tag.save()
             
             if return_url != '':
@@ -1277,10 +1110,10 @@ def create_tag(request):
                             'value': tag.id,
                             'tag_name': tag.name,
                             'sector_names': tag.parent_names(),
-                            'num_societies': len(tag.societies.all()),
-                            'num_related_tags': len(tag.related_tags.all()),
-                            'num_filters': len(tag.filters.all()),
-                            'num_resources': len(tag.resources.all()),
+                            'num_societies': tag.societies.count(),
+                            'num_related_tags': tag.related_tags.count(),
+                            'num_filters': tag.filters.count(),
+                            'num_resources': tag.resources.count(),
                         },
                     },
                 }))
@@ -1375,12 +1208,12 @@ def save_tag(request):
         tag.filters = form.cleaned_data['filters']
         #tag.num_resources = form.cleaned_data['num_resources']
         tag.related_tags = form.cleaned_data['related_tags']
-        tag.num_related_tags = len(tag.related_tags.all())
+        tag.num_related_tags = tag.related_tags.count()
         tag.save()
         
         # Updated the related tags counts
         for related_tag in tag.related_tags.all():
-            related_tag.num_related_tags = len(related_tag.related_tags.all())
+            related_tag.num_related_tags = related_tag.related_tags.count()
             related_tag.save()
         
         if return_url != '':
@@ -2192,10 +2025,10 @@ def ajax_search_tags(request):
                 'value': tag.id,
                 'tag_name': tag.name,
                 'sector_names': tag.parent_names(),
-                'num_societies': len(tag.societies.all()),
-                'num_related_tags': len(tag.related_tags.all()),
-                'num_filters': len(tag.filters.all()),
-                'num_resources': len(tag.resources.all()),
+                'num_societies': tag.societies.count(),
+                'num_related_tags': tag.related_tags.count(),
+                'num_filters': tag.filters.count(),
+                'num_resources': tag.resources.count(),
                 'societies': societies,
             })
     
