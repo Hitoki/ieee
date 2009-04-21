@@ -1,0 +1,20 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>{{ page_title }}</h1>
+    <table class="grid">
+        {% for name, value in results.items %}
+            <tr>
+                <td>
+                    {{ name }}
+                </td>
+                <td>
+                    {{ value }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <p><a href="{% url admin_home %}">home</a></p>
+    
+{% endblock %}

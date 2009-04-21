@@ -139,13 +139,44 @@ LOG_CONSOLE = True
 DMIGRATIONS_DIR = relpath(__file__, 'migrations')
 DISABLE_SYNCDB = True
 
+try:
+    from local_settings import *
+except ImportError, e:
+    print 'ERROR: "local_settings.py" file not found'
+
 logging.basicConfig(
     level = logging.DEBUG,
     #format = '%(asctime)s %(levelname)s %(message)s',
     format = '%(levelname)s %(message)s',
 )
 
-try:
-    from local_settings import *
-except ImportError, e:
-    print 'ERROR: "local_settings.py" file not found'
+# Check if the logger has been setup yet, otherwise we create a new handler everytime settings.py is loaded
+if not hasattr(logging, "is_setup"):
+    
+    #print 'setting up logger'
+    
+    # Add the file handler
+    file_logger = logging.FileHandler(LOG_FILENAME)
+    file_logger.setLevel(logging.DEBUG)
+    file_logger.setFormatter(logging.Formatter('%(asctime)s: %(levelname)s: %(message)s'))
+    logging.getLogger().addHandler(file_logger)
+    
+    #if not hasattr(logging, 'console'):
+    #    print 'setting up console logger'
+    #    logging.console = logging.getLogger('console')
+    #    handler = logging.StreamHandler()
+    #    handler.setLevel(logging.DEBUG)
+    #    handler.setFormatter(logging.Formatter('%(levelname)s %(message)s'))
+    #    logging.console.addHandler(handler)
+    
+    logging.is_setup = True
+    
+    #logging.debug('setup logger')
+
+logging.debug('---------------------------------------------------------------------')
+logging.debug('settings.py')
+
+if DEBUG:
+    MIDDLEWARE_CLASSES = list(MIDDLEWARE_CLASSES)
+    MIDDLEWARE_CLASSES.append('ieeetags.middleware.ProfilingMiddleware.ProfileMiddleware')
+    MIDDLEWARE_CLASSES = tuple(MIDDLEWARE_CLASSES)

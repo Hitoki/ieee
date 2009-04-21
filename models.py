@@ -102,7 +102,15 @@ class NodeManager(models.Manager):
     
     def getSectorByName(self, name):
         sectorType = NodeType.objects.getFromName('sector')
-        return single_row(self.filter(name=name, node_type=sectorType))
+        return single_row(self.filter(name=name, node_type=sectorType), 'Can\'t find sector "%s"' % name)
+    
+    def get_sectors_from_list(self, names):
+        'Returns a list of sectors whose names match the given list of names.'
+        sectorType = NodeType.objects.getFromName('sector')
+        results = self.filter(name__in=names, node_type=sectorType)
+        if len(results) != len(names):
+            raise Exception('Did not find matches for all sectors:\nnames: %s\nresults: %s' % (names, results))
+        return results
     
     def getFirstSector(self):
         return self.getSectors()[0]
@@ -375,6 +383,13 @@ class Resource(models.Model):
 class FilterManager(NamedValueTypeManager):
     def getRandom(self):
         return single_row_or_none(self.order_by('?')[:1])
+    
+    def get_from_name_list(self, names):
+        'Returns a list of filters whose names match the given list of names.'
+        results = self.filter(name__in=names)
+        if len(results) != len(names):
+            raise Exception('Did not find matches for all filters:\nnames: %s\nresults: %s' % (names, results))
+        return results
 
 class Filter(NamedValueType):
     EMERGING_TECHNOLOGIES = 'Emerging Technologies'
