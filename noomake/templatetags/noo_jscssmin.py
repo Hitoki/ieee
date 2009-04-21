@@ -69,7 +69,7 @@ from noomake import (jsmin, get_media_roots, expand_css_variables,
     # TODO: Get rid of above import. It introduces a dependency
     # on nooprofile to noomake.
 
-from ieeetags.logger import log
+#from ieeetags.logger import log
     
 register = template.Library()
 

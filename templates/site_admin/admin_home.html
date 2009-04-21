@@ -50,7 +50,9 @@
         <li>
             Import Data for v.7:
             <ul>
-                <li><a href="{% url admin_import_societies_and_tags %}">Import Societies &amp; Tags</a></li>
+                <li><a href="{% url admin_fix_societies_import %}">Fix Societies Import</a></li>
+                <li><a href="{% url admin_import_societies "v.7" %}">Import Societies</a></li>
+                {# <li><a href="{% url admin_import_societies_and_tags %}">Import Societies &amp; Tags</a></li> #}
                 <li><a href="{% url admin_import_conferences "v.7" %}">Import Conferences</a></li>
                 <li><a href="{% url admin_import_periodicals "v.7" %}">Import Periodicals</a></li>
                 <li><a href="{% url admin_import_users %}">Import Society Users</a></li>
@@ -60,7 +62,7 @@
             Import Data for COMSOC:
             <ul>
                 <li><a href="{% url admin_import_tags %}">Import Tags</a></li>
-                <li><a href="{% url admin_import_societies %}">Import Societies</a></li>
+                <li><a href="{% url admin_import_societies "comsoc" %}">Import Societies</a></li>
                 <li><a href="{% url admin_import_conferences "comsoc" %}">Import Conferences</a></li>
             </ul>
         </li>

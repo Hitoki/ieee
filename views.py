@@ -151,8 +151,6 @@ def feedback(request):
             })
 
 def browser_warning(request):
-    disable_frontend()
-    
     return render(request, 'browser_warning.html')
 
 @protect_frontend

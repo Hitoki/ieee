@@ -184,7 +184,7 @@ def is_js_aggregation_on():
     return not settings.DEBUG or getattr(settings, 'FORCE_AGGREGATE_JS', False)
 
 def is_css_aggregation_on():
-    from ieeetags.logger import log
+    #from ieeetags.logger import log
     #log('is_css_aggregation_on()')
     from django.conf import settings
     #log("  settings.DEBUG: %s" % str(settings.DEBUG))
