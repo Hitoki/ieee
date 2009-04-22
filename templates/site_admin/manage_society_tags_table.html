@@ -1,17 +1,9 @@
-Page: 
-{% for page in tag_pages %}
-    <a
-        href="{% url admin_manage_society society.id %}?tag_page={{ page }}&amp;tag_sort={{ tag_sort }}#tab-tags-tab"
-        {% ifequal page tag_page %}
-            class="tag_page active_tag_page"
-        {% else %}
-            class="tag_page"
-        {% endifequal %}
-    >
-        {{ page }}
-    </a>
-{% endfor %}
-<br/>
+{% load pagination %}
+
+Pages:
+<ul class="pages">
+    {% pages tag_page num_tag_pages tag_page_url %}
+</ul>
 <br/>
 
 <table class="tags">

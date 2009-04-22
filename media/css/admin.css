@@ -352,3 +352,33 @@ ul.errorlist li {
 tr.priority-to-tag-resource {
     background:#fffce3;
 }
+
+/* */
+
+ul.pages {
+    list-style:none;
+    /* Enable enclosing the LI floats in Fx3/IE7 */
+    overflow:auto;
+}
+
+ul.pages li {
+    float:left;
+    margin:0em .2em;
+    display:block;
+    width:1.5em;
+    text-align:center;
+}
+
+ul.pages li a {
+    display:block;
+    background:#eee;
+    color:#555;
+}
+
+ul.pages li a:hover,
+ul.pages li a.selected
+{
+    background:#016699;
+    color:white;
+}
+

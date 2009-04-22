@@ -1,6 +1,6 @@
 {% extends 'site_admin/admin_base.html' %}
 
-{% load eval includes permissions %}
+{% load eval includes pagination permissions %}
 
 {% block main_table_content %}
     
@@ -193,20 +193,10 @@
                         <!-- Resources Tab -->
                         <div id="resources-tab">
                             
-                            Page: 
-                            {% for page in resource_pages %}
-                                <a
-                                    href="{% url admin_manage_society society.id %}?resource_page={{ page }}&amp;resource_sort={{ resource_sort }}"
-                                    {% ifequal page resource_page %}
-                                        class="resource_page active_resource_page"
-                                    {% else %}
-                                        class="resource_page"
-                                    {% endifequal %}
-                                >
-                                    {{ page }}
-                                </a>
-                            {% endfor %}
-                            <br/>
+                            Pages:
+                            <ul class="pages">
+                                {% pages resource_page num_resource_pages resource_page_url %}
+                            </ul>
                             <br/>
                             
                             <table class="resources">

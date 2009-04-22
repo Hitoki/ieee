@@ -1486,7 +1486,7 @@ def view_society(request, society_id):
     })
 
 def _get_paged_tags(society, tag_sort, tag_page):
-    _TAGS_PER_PAGE = 10
+    _TAGS_PER_PAGE = 20
     
     if tag_sort == 'name_ascending':
         tags = society.tags.order_by('name')
@@ -1562,13 +1562,12 @@ def _get_paged_tags(society, tag_sort, tag_page):
     
     num_tags = tags.count()
     num_tag_pages = int(math.ceil(num_tags / float(_TAGS_PER_PAGE)))
-    tag_pages = range(1, num_tag_pages+1)
     
     tag_start_count = (tag_page-1) * _TAGS_PER_PAGE
     tag_end_count = (tag_page) * _TAGS_PER_PAGE
     tags = tags[tag_start_count:tag_end_count]
     
-    return (tags, tag_pages)
+    return (tags, num_tag_pages)
 
 @login_required
 def manage_society(request, society_id):
@@ -1677,14 +1676,15 @@ def manage_society(request, society_id):
     # Limit search results to one page
     num_resources = resources1.count()
     num_resource_pages = int(math.ceil(num_resources / float(_RESOURCES_PER_PAGE)))
-    resource_pages = range(1, num_resource_pages+1)
     
     # NOTE: resource_page starts at 1, not 0
     resource_start_count = (resource_page-1) * _RESOURCES_PER_PAGE
     resource_end_count = (resource_page) * _RESOURCES_PER_PAGE
     resources1 = resources1[resource_start_count:resource_end_count]
+    resource_page_url = reverse('admin_manage_society', args=[society.id]) + '?resource_sort=' + quote(resource_sort) + '&amp;resource_page={{ page }}#tab-resources-tab'
     
-    (tags, tag_pages) = _get_paged_tags(society, tag_sort, tag_page)
+    (tags, num_tag_pages) = _get_paged_tags(society, tag_sort, tag_page)
+    tag_page_url = reverse('admin_manage_society', args=[society.id]) + '?tag_sort=' + quote(tag_sort) + '&amp;tag_page={{ page }}#tab-tags-tab'
     
     # Add the resource row count to the resource object
     #count = resource_start_count
@@ -1707,14 +1707,16 @@ def manage_society(request, society_id):
         'resources': resources,
         'resource_sort': resource_sort,
         'resource_page': resource_page,
-        'resource_pages': resource_pages,
         'num_resources': num_resources,
+        'resource_page_url': resource_page_url,
+        'num_resource_pages': num_resource_pages,
         
         'tags': tags,
         'tags_tab_url': tags_tab_url,
         'tag_sort': tag_sort,
         'tag_page': tag_page,
-        'tag_pages': tag_pages,
+        'num_tag_pages': num_tag_pages,
+        'tag_page_url': tag_page_url,
         
         'DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB': settings.DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB,
     })
@@ -1723,13 +1725,16 @@ def manage_society(request, society_id):
 def manage_society_tags_table(request, society_id, tag_sort, tag_page):
     society = Society.objects.get(id=society_id)
     tag_page = int(tag_page)
-    (tags, tag_pages) = _get_paged_tags(society, tag_sort, tag_page)
+    (tags, num_tag_pages) = _get_paged_tags(society, tag_sort, tag_page)
+    tag_page_url = reverse('admin_manage_society', args=[society.id]) + '?tag_sort=' + quote(tag_sort) + '&amp;tag_page={{ page }}#tab-tags-tab'
+    
     return render(request, 'site_admin/manage_society_tags_table.html', {
         'tag_sort': tag_sort,
         'tag_page': tag_page,
-        'tag_pages': tag_pages,
+        'num_tag_pages': num_tag_pages,
         'society': society,
         'tags': tags,
+        'tag_page_url': tag_page_url,
     })
 
 @login_required
