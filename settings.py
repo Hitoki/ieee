@@ -70,6 +70,9 @@ EMAIL_PORT = 25
 #EMAIL_HOST_PASSWORD
 #EMAIL_USE_TLS
 
+#SERVER_EMAIL = ''
+#DEFAULT_FROM_EMAIL = ''
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.load_template_source',

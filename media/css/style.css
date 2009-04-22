@@ -818,3 +818,10 @@ table#login-table td {
 .over-shadow-content {
     position:absolute;
 }
+
+/* */
+
+form.block-labels label {
+    display:block;
+    font-weight:bold;
+}

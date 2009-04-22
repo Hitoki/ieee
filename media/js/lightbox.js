@@ -38,12 +38,12 @@ var Lightbox = {
             
             // Close the lightbox if user clicks outside the content area
             this.lightbox.click(function() {
-                console.log('lightbox.click()');
+                //console.log('lightbox.click()');
                 if (lightbox.options.closeOnClickOutside)
                     lightbox.hide();
             });
             this.lightboxContent.click(function(e) {
-                console.log('lightboxContent.click()');
+                //console.log('lightboxContent.click()');
                 e.stopPropagation();
             });
             

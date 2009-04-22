@@ -110,3 +110,10 @@ class ManageSocietyForm(Form):
     # No longer used, page is live-edit (resources are just links)
     #resources = MultiSearchField(model=Resource, search_url='/admin/ajax/search_resources')
     tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget_label='Associate Tags with this Society', show_create_tag_link=True, widget=MultiSearchWidget(attrs={'classMetadata':'showSelectedOptions:false' }))
+
+class MissingResourceForm(Form):
+    society = ModelChoiceField(queryset=Society.objects.all(), widget=HiddenInput())
+    name = CharField(max_length=1000, widget=DisplayOnlyWidget(field_type=CharField))
+    email = CharField(max_length=1000, widget=DisplayOnlyWidget(field_type=CharField))
+    resource_type = ModelChoiceField(queryset=ResourceType.objects.all())
+    description = CharField(label='Description of the missing resource', widget=Textarea, max_length=5000)

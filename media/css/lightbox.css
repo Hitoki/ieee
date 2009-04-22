@@ -37,24 +37,7 @@
     border-bottom:1px solid silver;
 }
 
-table#feedback tr td {
-    width:100%;
-    /*border:1px solid black;*/
-}
-
-table#feedback tr td.left-column {
-    width:1%;
-}
-
-table#feedback tr td.right-column {
-    width:99%;
-}
-
-table#feedback tr td {
-    padding-top:.5em;
-    padding-right:.5em;
-}
-
+/*
 input.text, textarea {
     border:1px inset gray;
 }
@@ -63,10 +46,7 @@ input.text {
     width:50%;
 }
 
-textarea {
-    width:99%;
-    height:100px;
-}
+*/
 
 /* */
 
@@ -78,22 +58,47 @@ textarea {
     padding:1em;
 }
 
-.feedback-lightbox {
+.email-lightbox tr td {
+    width:100%;
+    /*border:1px solid black;*/
+}
+
+.email-lightbox tr td.left-column {
+    width:1%;
+}
+
+.email-lightbox tr td.right-column {
+    width:99%;
+}
+
+.email-lightbox tr td {
+    padding-top:.5em;
+    padding-right:.5em;
+}
+
+.email-lightbox {
     background:white;
     width:80%;
     margin:0px auto;
 }
 
-.feedback-lightbox input,
-.feedback-lightbox input#id_name
+.email-lightbox input,
+.email-lightbox input#id_name
 {
     border:1px inset gray;
     width:50%;
 }
 
-.feedback-lightbox input[type=button],
-.feedback-lightbox input[type=submit]
+.email-lightbox input[type=button],
+.email-lightbox input[type=submit]
 {
     border: 1px outset #53595F;
     width:auto;
 }
+
+.email-lightbox textarea {
+    border:1px inset gray;
+    width:99%;
+    height:100px;
+}
+

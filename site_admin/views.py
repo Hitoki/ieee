@@ -347,6 +347,55 @@ def home_societies_list(request):
         'societies': societies,
     })
 
+@login_required
+def missing_resource(request, society_id):
+    if request.method == 'GET':
+        form = MissingResourceForm(initial={
+            'society': society_id,
+            'name': request.user.username,
+            'email': request.user.email,
+        })
+        
+    else:
+        form = MissingResourceForm(request.POST)
+        if form.is_valid():
+            society = Society.objects.get(id=society_id)
+            
+            # Make sure that user belongs to the specified society
+            assert(request.user.societies.filter(id=society.id).count() > 0)
+            
+            # Send email
+            subject = 'Missing resource for "%s" society.' % request.user.username
+            message = 'Sent on %s:\n' % time.strftime('%Y-%m-%d %H:%M:%S') \
+                + 'From: %s (%s)\n' % (request.user.username, request.user.email) \
+                + 'Type of resource: %s\n\n' % form.cleaned_data['resource_type'] \
+                + 'Description:\n' \
+                + '%s\n\n' % form.cleaned_data['description']
+            send_from = 'ieeeadmin@demo.systemicist.com'
+            send_to = settings.ADMIN_EMAILS
+            
+            logging.debug('send_to: %s' % send_to)
+            logging.debug('send_from: %s' % send_from)
+            logging.debug('subject: %s' % subject)
+            logging.debug('message: %s' % message)
+            
+            try:
+                send_mail(subject, message, send_from, send_to)
+            except Exception, e:
+                logging.error('Error sending missing resource email: %s' % e)
+                email_error = True
+            else:
+                email_error = False
+            
+            return render(request, 'site_admin/missing_resource_confirmation.html', {
+                'email_error': email_error,
+            })
+        
+    return render(request, 'site_admin/missing_resource.html', {
+        'form': form,
+        'society_id': society_id,
+    })
+
 
 @login_required
 def update_tag_counts(request):

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="lightbox-pad">
+        <h3>Missing Resource Form</h3>
+        {% if email_error %}
+            <p style="margin-bottom:4em;">
+                There was an error sending your email.  Please contact the administrator, or wait a while and try later.  We apologize for the inconvenience.
+            </p>
+        {% else %}
+            <p style="margin-bottom:4em;">
+                Thank you for your feedback.  Your email has been sent.
+            </p>
+        {% endif %}
+        <div style="text-align:right;">
+            <input type="button" value="Close" class="lightbox-close button" />
+        </div>
+        
+    </div>
+{% endblock %}
+
