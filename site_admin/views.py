@@ -689,7 +689,7 @@ def fix_societies_import(request):
     })
     
 def _import_resources(filename, batch_commits=False):
-    #logging.debug('import_resources()')
+    #logging.debug('_import_resources()')
     
     start = time.time()
     
@@ -790,7 +790,6 @@ def _import_resources(filename, batch_commits=False):
                     resources_added += 1
                     
         if not row_count % 50:
-            #print '  Reading row %d' % row_count
             try:
                 logging.debug('    Parsing row %d, row/sec %f' % (row_count, row_count/(time.time()-start) ))
             except Exception:
@@ -802,7 +801,7 @@ def _import_resources(filename, batch_commits=False):
             #logging.debug('    committing transaction.')
             transaction.commit()
             
-        
+        # DEBUG:
         #if row_count > 100:
         #    break
 
@@ -811,7 +810,7 @@ def _import_resources(filename, batch_commits=False):
     if batch_commits:
         logging.debug('    committing last transaction.')
         transaction.commit()
-            
+    
     results = '<table>\n'
     items = valid_societies.items()
     items.sort()
@@ -827,6 +826,8 @@ def _import_resources(filename, batch_commits=False):
         results += '<tr><td>%s</td><td>%s</td></tr>\n' % (name, value)
     results += '</table>\n'
     invalid_societies = results
+    
+    #logging.debug('~_import_resources()')
     
     return {
         'row_count': row_count,
@@ -856,6 +857,7 @@ def import_conferences(request, source):
 
     # Delete all conferences
     Resource.objects.get_conferences().delete()
+    transaction.commit()
     
     # Import conferences
     results = _import_resources(filename, batch_commits=True)
