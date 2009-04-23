@@ -16,14 +16,14 @@ Pages:
             <span class="header-with-note">Tag Name <span class="help_icon flyover" title="Keyword or phrase for related concept or technology area.">[?]</span></span>
             
             &nbsp;
-            <a href="{% url admin_manage_society society.id %}?tag_sort=name_ascending" class="live-url {hashOnly:true}">
+            <a href="{% url admin_manage_society society.id %}?tag_sort=name_ascending#tab-tags-tab">
                 {% ifequal tag_sort "name_ascending" %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                 {% else %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                 {% endifequal %}
             </a>
-            <a href="{% url admin_manage_society society.id %}?tag_sort=name_descending" class="live-url {hashOnly:true}">
+            <a href="{% url admin_manage_society society.id %}?tag_sort=name_descending#tab-tags-tab">
                 {% ifequal tag_sort "name_descending" %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                 {% else %}
@@ -37,14 +37,14 @@ Pages:
             Sectors <span class="help_icon flyover" title="Industry Sector for which the Tag is relevant, from the domain perspective of the S/C.">[?]</span>
             
             &nbsp;
-            <a href="{% url admin_manage_society society.id %}?tag_sort=sector_list_ascending" class="live-url {hashOnly:true}">
+            <a href="{% url admin_manage_society society.id %}?tag_sort=sector_list_ascending#tab-tags-tab">
                 {% ifequal tag_sort "sector_list_ascending" %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                 {% else %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                 {% endifequal %}
             </a>
-            <a href="{% url admin_manage_society society.id %}?tag_sort=sector_list_descending" class="live-url {hashOnly:true}">
+            <a href="{% url admin_manage_society society.id %}?tag_sort=sector_list_descending#tab-tags-tab">
                 {% ifequal tag_sort "sector_list_descending" %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                 {% else %}
@@ -56,14 +56,14 @@ Pages:
             Societies <span class="help_icon flyover" title="IEEE organizations that have associated Tag with their domain.">[?]</span>
             
             &nbsp;
-            <a href="{% url admin_manage_society society.id %}?tag_sort=num_societies_ascending" class="live-url {hashOnly:true}">
+            <a href="{% url admin_manage_society society.id %}?tag_sort=num_societies_ascending#tab-tags-tab">
                 {% ifequal tag_sort "num_societies_ascending" %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                 {% else %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                 {% endifequal %}
             </a>
-            <a href="{% url admin_manage_society society.id %}?tag_sort=num_societies_descending" class="live-url {hashOnly:true}">
+            <a href="{% url admin_manage_society society.id %}?tag_sort=num_societies_descending#tab-tags-tab">
                 {% ifequal tag_sort "num_societies_descending" %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                 {% else %}
@@ -75,14 +75,14 @@ Pages:
             Filters <span class="help_icon flyover" title="Categories that detail the concept or technology area.">[?]</span>
             
             &nbsp;
-            <a href="{% url admin_manage_society society.id %}?tag_sort=num_filters_ascending" class="live-url {hashOnly:true}">
+            <a href="{% url admin_manage_society society.id %}?tag_sort=num_filters_ascending#tab-tags-tab">
                 {% ifequal tag_sort "num_filters_ascending" %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                 {% else %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                 {% endifequal %}
             </a>
-            <a href="{% url admin_manage_society society.id %}?tag_sort=num_filters_descending" class="live-url {hashOnly:true}">
+            <a href="{% url admin_manage_society society.id %}?tag_sort=num_filters_descending#tab-tags-tab">
                 {% ifequal tag_sort "num_filters_descending" %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                 {% else %}
@@ -94,14 +94,14 @@ Pages:
             Resources <span class="help_icon flyover" title="IEEE Products or Services mapped to this Tag.">[?]</span>
             
             &nbsp;
-            <a href="{% url admin_manage_society society.id %}?tag_sort=num_resources_ascending" class="live-url {hashOnly:true}">
+            <a href="{% url admin_manage_society society.id %}?tag_sort=num_resources_ascending#tab-tags-tab">
                 {% ifequal tag_sort "num_resources_ascending" %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                 {% else %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                 {% endifequal %}
             </a>
-            <a href="{% url admin_manage_society society.id %}?tag_sort=num_resources_descending" class="live-url {hashOnly:true}">
+            <a href="{% url admin_manage_society society.id %}?tag_sort=num_resources_descending#tab-tags-tab">
                 {% ifequal tag_sort "num_resources_descending" %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                 {% else %}
@@ -113,14 +113,14 @@ Pages:
             Related Tags <span class="help_icon flyover" title="Tags that are related concepts or technology areas.">[?]</span>
             
             &nbsp;
-            <a href="{% url admin_manage_society society.id %}?tag_sort=num_related_tags_ascending" class="live-url {hashOnly:true}">
+            <a href="{% url admin_manage_society society.id %}?tag_sort=num_related_tags_ascending#tab-tags-tab">
                 {% ifequal tag_sort "num_related_tags_ascending" %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                 {% else %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                 {% endifequal %}
             </a>
-            <a href="{% url admin_manage_society society.id %}?tag_sort=num_related_tags_descending" class="live-url {hashOnly:true}">
+            <a href="{% url admin_manage_society society.id %}?tag_sort=num_related_tags_descending#tab-tags-tab">
                 {% ifequal tag_sort "num_related_tags_descending" %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                 {% else %}
