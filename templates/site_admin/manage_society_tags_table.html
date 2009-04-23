@@ -13,7 +13,7 @@ Pages:
             </th>
         {% endcomment %}
         <th class="first-item">
-            <span class="header-with-note">Tag Name <span class="help_icon flyover" title="Tag">[?]</span></span>
+            <span class="header-with-note">Tag Name <span class="help_icon flyover" title="Keyword or phrase for related concept or technology area.">[?]</span></span>
             
             &nbsp;
             <a href="{% url admin_manage_society society.id %}?tag_sort=name_ascending" class="live-url {hashOnly:true}">
@@ -34,7 +34,7 @@ Pages:
             <span class="header-note">Click tag to edit</span>
         </th>
         <th>
-            Sectors <span class="help_icon flyover" title="SECTORS">[?]</span>
+            Sectors <span class="help_icon flyover" title="Industry Sector for which the Tag is relevant, from the domain perspective of the S/C.">[?]</span>
             
             &nbsp;
             <a href="{% url admin_manage_society society.id %}?tag_sort=sector_list_ascending" class="live-url {hashOnly:true}">
@@ -53,7 +53,7 @@ Pages:
             </a>
         </th>
         <th>
-            Societies <span class="help_icon flyover" title="SECTORS">[?]</span>
+            Societies <span class="help_icon flyover" title="IEEE organizations that have associated Tag with their domain.">[?]</span>
             
             &nbsp;
             <a href="{% url admin_manage_society society.id %}?tag_sort=num_societies_ascending" class="live-url {hashOnly:true}">
@@ -72,7 +72,7 @@ Pages:
             </a>
         </th>
         <th>
-            Filters <span class="help_icon flyover" title="SECTORS">[?]</span>
+            Filters <span class="help_icon flyover" title="Categories that detail the concept or technology area.">[?]</span>
             
             &nbsp;
             <a href="{% url admin_manage_society society.id %}?tag_sort=num_filters_ascending" class="live-url {hashOnly:true}">
@@ -91,7 +91,7 @@ Pages:
             </a>
         </th>
         <th>
-            Resources <span class="help_icon flyover" title="SECTORS">[?]</span>
+            Resources <span class="help_icon flyover" title="IEEE Products or Services mapped to this Tag.">[?]</span>
             
             &nbsp;
             <a href="{% url admin_manage_society society.id %}?tag_sort=num_resources_ascending" class="live-url {hashOnly:true}">
@@ -110,7 +110,7 @@ Pages:
             </a>
         </th>
         <th>
-            Related Tags <span class="help_icon flyover" title="SECTORS">[?]</span>
+            Related Tags <span class="help_icon flyover" title="Tags that are related concepts or technology areas.">[?]</span>
             
             &nbsp;
             <a href="{% url admin_manage_society society.id %}?tag_sort=num_related_tags_ascending" class="live-url {hashOnly:true}">
@@ -129,7 +129,7 @@ Pages:
             </a>
         </th>
         <th>
-            Remove <span class="help_icon flyover" title="SECTORS">[?]</span>
+            Remove <span class="help_icon flyover" title="Remove this tag from this society.">[?]</span>
         </th>
     </tr>
     {% for tag in tags %}
