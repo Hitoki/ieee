@@ -920,7 +920,7 @@ def import_periodicals(request, source):
     if source == 'comsoc':
         raise Exception('There is no periodicals file for COMSOC')
     elif source == 'v.7':
-        filename = relpath(__file__, '../data/v.7/2009-04-23 - publications - mod.csv')
+        filename = relpath(__file__, '../data/v.7/2009-04-23c - publications.csv')
 
     # Delete all periodicals
     Resource.objects.get_periodicals().delete()
@@ -944,7 +944,7 @@ def import_standards(request, source):
     if source == 'sample':
         filename = relpath(__file__, '../data/sample standards.csv')
     elif source == 'v.7':
-        filename = relpath(__file__, '../data/v.7/2009-04-23 - standards.csv')
+        filename = relpath(__file__, '../data/v.7/2009-04-23b - standards.csv')
     else:
         raise Exception('Unknown source "%s".' % source)
     
