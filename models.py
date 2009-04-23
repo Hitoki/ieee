@@ -356,7 +356,14 @@ class ResourceManager(models.Manager):
 
 class Resource(models.Model):
     STANDARD_STATUS_PROJECT = 'project'
-    STANDARD_STATUS_STANDARD = 'standard'
+    STANDARD_STATUS_PUBLISHED = 'published'
+    STANDARD_STATUS_WITHDRAWN = 'withdrawn'
+    
+    STANDARD_STATUSES = [
+        STANDARD_STATUS_PROJECT,
+        STANDARD_STATUS_PUBLISHED,
+        STANDARD_STATUS_WITHDRAWN,
+    ]
     
     resource_type = models.ForeignKey(ResourceType)
     ieee_id = models.CharField(max_length=500,blank=True, null=True)

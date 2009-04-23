@@ -6,6 +6,9 @@ from ieeetags.models import Filter, Node, NodeType, Society, Resource, ResourceT
 from ieeetags.fields import MultiSearchField
 from ieeetags.widgets import MultiSearchWidget, DisplayOnlyWidget, CheckboxSelectMultipleColumns
 
+def _make_choices(list1):
+    for item in list1:
+        yield item, item
 
 class ModifiedFormBase(Form):
     """
@@ -75,6 +78,7 @@ class EditResourceForm(Form):
     nodes = MultiSearchField(label='Tags', model=Node, search_url='/admin/ajax/search_tags', widget_label='Associate Tags with this Resource', show_create_tag_link=True)
     societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies', label='Societies')
     priority_to_tag = BooleanField(required=False)
+    standard_status = ChoiceField(choices=_make_choices(Resource.STANDARD_STATUSES), required=False)
     keywords = CharField(max_length=1000, required=False)
 
 class SocietyForm(ModifiedFormBase):

@@ -773,8 +773,16 @@ def _import_resources(filename, batch_commits=False):
         name = name.strip()
         url = url.strip()
         society_abbreviations = [society_abbreviations.strip() for society_abbreviations in society_abbreviations.split(',')]
+        standard_status = standard_status.strip()
         
         resource_type = ResourceType.objects.getFromName(type1)
+        
+        if standard_status == '':
+            standard_status = None
+        elif standard_status.lower() in Resource.STANDARD_STATUSES:
+            standard_status = standard_status.lower()
+        else:
+            raise Exception('Unknown standard status "%s"' % standard_status)
         
         # Truncate keywords to 1000 chars
         keywords = keywords[:1000]
@@ -838,6 +846,7 @@ def _import_resources(filename, batch_commits=False):
                             year=year,
                             keywords=keywords,
                             priority_to_tag=priority_to_tag,
+                            standard_status=standard_status,
                         )
                         resource.societies = societies
                         resource.save()
@@ -1027,9 +1036,6 @@ def assign_related_tags(request):
         if not tag_count % 10:
             print '  Tag %d' % tag_count
         
-        if tag_count > 100:
-            break
-    
     # Now update the tag counts
     tags = Node.objects.getTags()
     for tag in tags:
@@ -2054,6 +2060,7 @@ def edit_resource(request, resource_id=None):
             'societies': resource.societies.all(),
             'priority_to_tag': resource.priority_to_tag,
             'keywords': resource.keywords,
+            'standard_status': resource.standard_status,
         })
         
         if society_id != '':
@@ -2066,6 +2073,7 @@ def edit_resource(request, resource_id=None):
             make_display_only(form.fields['societies'], is_multi_search=True)
             make_display_only(form.fields['ieee_id'])
             make_display_only(form.fields['keywords'])
+            make_display_only(form.fields['standard_status'])
         
     return render(request, 'site_admin/edit_resource.html', {
         'return_url': return_url,
@@ -2121,6 +2129,7 @@ def save_resource(request):
             resource.societies = form.cleaned_data['societies']
         resource.priority_to_tag = form.cleaned_data['priority_to_tag']
         resource.keywords = form.cleaned_data['keywords']
+        resource.standard_status = form.cleaned_data['standard_status']
         resource.save()
         
         # Add all resource tags to the owning societies
