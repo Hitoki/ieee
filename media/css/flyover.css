@@ -125,3 +125,7 @@ The content is just the contents of the flyover.
     position: fixed;
 }
 
+.editForm-flyover-container {
+    max-width: 200px;
+}
+
