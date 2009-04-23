@@ -433,11 +433,11 @@ def import_tags(request, source):
     DEBUG_MAX_ROWS = None
     #DEBUG_MAX_ROWS = 50
     
-    results = {}
-    results['row_count'] = 0
-    results['tags_created'] = 0
-    results['duplicate_tags'] = 0
-    results['related_tags_assigned'] = 0
+    row_count = 0
+    tags_created = 0
+    num_duplicate_tags = 0
+    related_tags_assigned = 0
+    duplicate_tags = ''
     
     # Import all tags
     if True:
@@ -457,10 +457,11 @@ def import_tags(request, source):
             
             #logging.debug('    tag_name: %s' % tag_name)
             
-            if Node.objects.filter(name=tag_name).count() > 0:
+            if Node.objects.get_tag_by_name(tag_name) is not None:
                 # Found duplicate tag, don't insert
                 logging.error('    Duplicate tag "%s" found.' % tag_name)
-                results['duplicate_tags'] += 1
+                duplicate_tags += '%s<br/>\n' % tag_name
+                num_duplicate_tags += 1
             
             else:
                 # Tag is unique, insert it
@@ -477,13 +478,13 @@ def import_tags(request, source):
                     tag.societies.add(comsoc)
                 
                 tag.save()
-                results['tags_created'] += 1
+                tags_created += 1
                 
-            results['row_count'] += 1
-            if not results['row_count'] % 50:
-                logging.debug('    Parsing row %d, row/sec %f' % (results['row_count'], results['row_count']/(time.time()-start) ))
+            row_count += 1
+            if not row_count % 50:
+                logging.debug('    Parsing row %d, row/sec %f' % (row_count, row_count/(time.time()-start) ))
             
-            if DEBUG_MAX_ROWS is not None and results['row_count'] > DEBUG_MAX_ROWS:
+            if DEBUG_MAX_ROWS is not None and row_count > DEBUG_MAX_ROWS:
                 logging.debug('  reached max row count of %d, breaking out of loop' % DEBUG_MAX_ROWS)
                 break
             
@@ -496,7 +497,7 @@ def import_tags(request, source):
         # Now reopen the file to parse for related tags
         (file, reader) = _open_unicode_csv_reader(filename)
         
-        results['row_count'] = 0
+        row_count = 0
         related_tags_start = time.time()
         
         for row in reader:
@@ -523,27 +524,34 @@ def import_tags(request, source):
                     related_tags.append(related_tag)
                 
                 tag.related_tags = related_tags
-                results['related_tags_assigned'] += len(related_tags)
+                related_tags_assigned += len(related_tags)
                 tag.save()
                 
-            results['row_count'] += 1
-            if not results['row_count'] % 50:
+            row_count += 1
+            if not row_count % 50:
                 try:
-                    logging.debug('    Parsing row %d, row/sec %f' % (results['row_count'], results['row_count']/(time.time()-start) ))
+                    logging.debug('    Parsing row %d, row/sec %f' % (row_count, row_count/(time.time()-start) ))
                 except:
                     pass
             
-            if DEBUG_MAX_ROWS is not None and results['row_count'] > DEBUG_MAX_ROWS:
+            if DEBUG_MAX_ROWS is not None and row_count > DEBUG_MAX_ROWS:
                 logging.debug('  reached max row count of %d, breaking out of loop' % DEBUG_MAX_ROWS)
                 break
                 
         file.close()
     
-    results['page_time'] = time.time()-start
+    page_time = time.time()-start
     
     return render(request, 'site_admin/import_results.html', {
         'page_title': 'Import Tags',
-        'results': results,
+        'results': {
+            'page_time': page_time,
+            'row_count': row_count,
+            'tags_created': tags_created,
+            'num_duplicate_tags': num_duplicate_tags,
+            'related_tags_assigned': related_tags_assigned,
+            'duplicate_tags': duplicate_tags,
+        },
     })
 
 def _remove_society_acronym(society_name):
@@ -579,6 +587,7 @@ def import_societies(request, source):
     row_count = 0
     societies_created = 0
     tags_created = 0
+    bad_tags = []
     
     for row in reader:
         #print 'row:', row
@@ -597,6 +606,8 @@ def import_societies(request, source):
             if tag is None:
                 #raise Exception('Can\'t find matching tag "%s"' % tag_name)
                 logging.error('    Can\'t find matching tag "%s"' % tag_name)
+                if tag_name not in bad_tags:
+                    bad_tags.append(tag_name)
             else:
                 tags.append(tag)
         
@@ -616,10 +627,16 @@ def import_societies(request, source):
         
     file.close()
     
-    return render(request, 'site_admin/import_societies.html', {
-        'row_count': row_count,
-        'societies_created': societies_created,
-        'page_time': time.time()-start,
+    bad_tags = '<br/>\n'.join(sorted(bad_tags))
+    
+    return render(request, 'site_admin/import_results.html', {
+        'page_title': 'Import Societies',
+        'results': {
+            'page_time': time.time()-start,
+            'row_count': row_count,
+            'societies_created': societies_created,
+            'bad_tags': bad_tags,
+        }
     })
 
 @login_required
@@ -760,34 +777,37 @@ def _import_resources(filename, batch_commits=False):
                     societies_assigned += 1
                     societies.append(society)
         
-        if len(societies) == 0:
-            # No valid societies, skip this resource
-            resources_skipped += 1
+        # DEBUG: skip adding resource (for checking data)
+        if True:
             
-        else:
-            # Resource has valid societies, insert it
-            
-            if True:
-                num_existing = Resource.objects.filter(resource_type=resource_type, ieee_id=ieee_id).count()
-                if num_existing > 0:
-                    #logging.debug('  DUPLICATE: resource "%s" already exists.' % name)
-                    duplicate_resources += 1
+            if len(societies) == 0:
+                # No valid societies, skip this resource
+                resources_skipped += 1
                 
-                else:
-                    #logging.debug('  Adding resource "%s"' % name)
-                    resource = Resource.objects.create(
-                        resource_type=resource_type,
-                        ieee_id=ieee_id,
-                        name=name,
-                        description=description,
-                        url=url,
-                        year=year,
-                        keywords=keywords,
-                        priority_to_tag=priority_to_tag,
-                    )
-                    resource.societies = societies
-                    resource.save()
-                    resources_added += 1
+            else:
+                # Resource has valid societies, insert it
+                
+                if True:
+                    num_existing = Resource.objects.filter(resource_type=resource_type, ieee_id=ieee_id).count()
+                    if num_existing > 0:
+                        #logging.debug('  DUPLICATE: resource "%s" already exists.' % name)
+                        duplicate_resources += 1
+                    
+                    else:
+                        #logging.debug('  Adding resource "%s"' % name)
+                        resource = Resource.objects.create(
+                            resource_type=resource_type,
+                            ieee_id=ieee_id,
+                            name=name,
+                            description=description,
+                            url=url,
+                            year=year,
+                            keywords=keywords,
+                            priority_to_tag=priority_to_tag,
+                        )
+                        resource.societies = societies
+                        resource.save()
+                        resources_added += 1
                     
         if not row_count % 50:
             try:
@@ -800,9 +820,10 @@ def _import_resources(filename, batch_commits=False):
         if batch_commits and not row_count % 300:
             #logging.debug('    committing transaction.')
             transaction.commit()
-            
+        
         # DEBUG:
-        #if row_count > 100:
+        #if row_count > 50:
+        #    transaction.commit()
         #    break
 
     file.close()
