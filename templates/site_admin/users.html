@@ -58,7 +58,7 @@
                 </td>
                 <td>
                     {% for society in user.societies.all %}
-                        <a href="{% url admin_view_society society.id %}">{{ society.name }}</a>, 
+                        <a href="{% url admin_view_society society.id %}">{{ society.name }}</a>{% if not forloop.last %},{% endif %}
                     {% endfor %}
                 </td>
             </tr>

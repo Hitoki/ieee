@@ -1427,7 +1427,7 @@ def delete_user(request, user_id):
 def import_users(request):
     permissions.require_superuser(request)
     
-    filename = 'data/v.7/users.csv'
+    filename = relpath(__file__, '../data/v.7/users.csv')
     
     #user_manager = UserManager2()
     #
@@ -1456,7 +1456,8 @@ def import_users(request):
     
     for row in reader:
         
-        username, password, first_name, last_name, email, role, society_names = row
+        #Username,Password,First Name,Last Name,Email,Role,Society Abbreviations
+        username, password, first_name, last_name, email, role, society_abbreviations = row
 
         username = username.strip()
         password = password.strip()
@@ -1464,7 +1465,10 @@ def import_users(request):
         last_name = last_name.strip()
         email = email.strip()
         role = role.strip()
-        society_names = society_names.strip()
+        society_abbreviations = society_abbreviations.strip()
+        
+        # DEBUG:
+        first_name = first_name[:30]
         
         if role != Profile.ROLE_ADMIN and role != Profile.ROLE_SOCIETY_MANAGER:
             raise Exception('Unknown role "%s"' % role)
@@ -1473,15 +1477,13 @@ def import_users(request):
         #if email == '':
         #    raise Exception('Email is blank')
         
-        society_names = [society_name.strip() for society_name in _split_no_empty(society_names, ',')]
+        society_abbreviations = [society_abbreviation.strip() for society_abbreviation in _split_no_empty(society_abbreviations, ',')]
         
         societies = []
-        for society_name in society_names:
-            society = Society.objects.getFromName(society_name)
+        for society_abbreviation in society_abbreviations:
+            society = Society.objects.getFromAbbreviation(society_abbreviation)
             if society is None:
-                society = Society.objects.getFromAbbreviation(society_name)
-                if society is None:
-                    raise Exception('Unknown society "%s"' % society_name)
+                raise Exception('Unknown society "%s"' % society_abbreviation)
             societies.append(society)
         
         user = User.objects.create_user(
