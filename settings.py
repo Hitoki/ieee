@@ -71,7 +71,7 @@ EMAIL_PORT = 25
 #EMAIL_USE_TLS
 
 #SERVER_EMAIL = ''
-#DEFAULT_FROM_EMAIL = ''
+#DEFAULT_FROM_EMAIL = 'Name <email>'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (

@@ -121,6 +121,49 @@ def _check_tags_in_same_sector(tag1, tag2):
             return True
     return False
 
+def _send_password_reset_email(request, user):
+    if user.get_profile().reset_key is None:
+        profile = user.get_profile()
+        
+        hash = hashlib.md5()
+        hash.update(str(random.random()))
+        hash = hash.hexdigest()
+        
+        profile.reset_key = hash
+        profile.save()
+    
+    abs_reset_url = request.build_absolute_uri(reverse('password_reset', args=[user.id, user.get_profile().reset_key]))
+    
+    subject = 'Password reset confirmation'
+    message = """You have requested to reset your password for the IEEE Technology Navigator.
+    
+To complete this request and reset your password, please click on the link below:
+%s
+
+If you did not request this password reset, simple ignore this email.
+""" % (abs_reset_url)
+    
+    logging.debug('settings.DEFAULT_FROM_EMAIL: %s' % settings.DEFAULT_FROM_EMAIL)
+    logging.debug('user.email: %s' % user.email)
+    logging.debug('subject: %s' % subject)
+    logging.debug('message: %s' % message)
+    logging.debug('Sending email...')
+
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
+
+def _send_password_change_notification(user):
+    subject = 'Your password has been changed'
+    message = """The password on your account has been changed.  Please use the new password to login to your account.
+"""
+    
+    logging.debug('settings.DEFAULT_FROM_EMAIL: %s' % settings.DEFAULT_FROM_EMAIL)
+    logging.debug('user.email: %s' % user.email)
+    logging.debug('subject: %s' % subject)
+    logging.debug('message: %s' % message)
+    logging.debug('Sending email...')
+
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
+
 # ------------------------------------------------------------------------------
 
 def login(request):
@@ -161,37 +204,6 @@ def login(request):
 def logout(request):
     auth.logout(request)
     return HttpResponsePermanentRedirect(reverse('admin_home'))
-
-def _send_password_reset_email(request, user):
-    if user.get_profile().reset_key is None:
-        profile = user.get_profile()
-        
-        hash = hashlib.md5()
-        hash.update(str(random.random()))
-        hash = hash.hexdigest()
-        
-        profile.reset_key = hash
-        profile.save()
-    
-    abs_reset_url = request.build_absolute_uri(reverse('password_reset', args=[user.id, user.get_profile().reset_key]))
-    
-    subject = 'IEEE Technology Navigator: password reset confirmation'
-    message = """You have requested to reset your password for the IEEE Technology Navigator.
-    
-To complete this request and reset your password, please click on the link below:
-%s
-
-If you did not request this password reset, simple ignore this email.
-""" % (abs_reset_url)
-    
-    print 'settings.DEFAULT_FROM_EMAIL:', settings.DEFAULT_FROM_EMAIL
-    print 'user.email:', user.email
-    print 'subject:', subject
-    print 'message:', message
-    print 'Sending email...'
-    print ''
-
-    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
 
 def forgot_password(request):
     error = ''
@@ -282,8 +294,13 @@ def change_password(request):
             elif form.cleaned_data['password1'] != form.cleaned_data['password2']:
                 error = '<ul class="error"><li>The passwords did not match.</li></ul>'
             else:
+                # Successfully changed password
                 request.user.set_password(form.cleaned_data['password1'])
                 request.user.save()
+                
+                # Send the password change email
+                _send_password_change_notification(request.user)
+                
                 return HttpResponseRedirect(reverse('change_password_success'))
                 
     return render(request, 'site_admin/change_password.html', {

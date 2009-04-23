@@ -35,3 +35,18 @@ def current_server_url(request):
 
 class EndUserException(Exception):
     pass
+
+def default_date_format(date1=None):
+    import datetime
+    if date1 is None:
+        date1 = datetime.date.today()
+    return date1.strftime('%a %b %d, %Y')
+
+def default_time_format(time1=None):
+    import time
+    if time1 is None:
+        time1 = time.localtime()
+    return time.strftime('%I:%M %p', time1)
+
+def default_datetime_format(datetime1=None):
+    return default_date_format(datetime1) + ' ' + default_time_format(datetime1)
