@@ -135,7 +135,7 @@ DEBUG_REQUIRE_LOGIN_FRONTEND = True
 DEBUG_DISABLE_FRONTEND = True
 
 # Enable the Help tab on the Manage Society page
-DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB = False
+DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB = True
 
 LOG_FILENAME = relpath(__file__, 'log.txt')
 LOG_CONSOLE = True
