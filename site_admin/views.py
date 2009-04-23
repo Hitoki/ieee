@@ -396,7 +396,6 @@ def missing_resource(request, society_id):
         'society_id': society_id,
     })
 
-
 @login_required
 def update_tag_counts(request):
     permissions.require_superuser(request)
@@ -457,11 +456,31 @@ def import_tags(request, source):
             
             #logging.debug('    tag_name: %s' % tag_name)
             
-            if Node.objects.get_tag_by_name(tag_name) is not None:
-                # Found duplicate tag, don't insert
-                logging.error('    Duplicate tag "%s" found.' % tag_name)
+            tag = Node.objects.get_tag_by_name(tag_name)
+            
+            if tag is not None:
+                ## Found duplicate tag, don't insert
+                #logging.error('    Duplicate tag "%s" found.' % tag_name)
+                #duplicate_tags += '%s<br/>\n' % tag_name
+                #num_duplicate_tags += 1
+            
+                # Tag already exists, add any sectors for the duplicate to the existing tag
+                logging.debug('    Duplicate tag "%s" found.' % tag_name)
                 duplicate_tags += '%s<br/>\n' % tag_name
                 num_duplicate_tags += 1
+                
+                #logging.debug('      tag.parents.all(): %s' % tag.parents.all())
+                #logging.debug('      sectors: %s' % sectors)
+                
+                for sector in sectors:
+                    #if tag.parents.filter(id=sector.id).count() == 0:
+                    #logging.debug('      adding sector: %s' % sector)
+                    tag.parents.add(sector)
+                
+                #logging.debug('      tag.parents.all(): %s' % tag.parents.all())
+                tag.save()
+                
+                #assert False
             
             else:
                 # Tag is unique, insert it
@@ -642,8 +661,6 @@ def import_societies(request, source):
 @login_required
 def fix_societies_import(request):
     permissions.require_superuser(request)
-    
-    DEBUG_FIX_IMPORT_FILE = True
     
     start = time.time()
     
@@ -903,9 +920,7 @@ def import_periodicals(request, source):
     if source == 'comsoc':
         raise Exception('There is no periodicals file for COMSOC')
     elif source == 'v.7':
-        #filename = relpath(__file__, '../data/v.7/2009-04-10 - periodicals - mod.csv')
-        #filename = relpath(__file__, '../data/v.7/2009-04-18 - publiciations.csv')
-        filename = relpath(__file__, '../data/v.7/2009-04-18 - publiciations - mod.csv')
+        filename = relpath(__file__, '../data/v.7/2009-04-23 - publications - mod.csv')
 
     # Delete all periodicals
     Resource.objects.get_periodicals().delete()
@@ -929,7 +944,7 @@ def import_standards(request, source):
     if source == 'sample':
         filename = relpath(__file__, '../data/sample standards.csv')
     elif source == 'v.7':
-        filename = relpath(__file__, '../data/v.7/2009-04-21 - standards.csv')
+        filename = relpath(__file__, '../data/v.7/2009-04-23 - standards.csv')
     else:
         raise Exception('Unknown source "%s".' % source)
     
