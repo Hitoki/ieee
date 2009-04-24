@@ -381,6 +381,9 @@
                                         </td>
                                         <td>
                                             {{ resource.resource_type.name|capfirst }}
+                                            {% ifequal resource.resource_type.name "standard" %}
+                                                <br/>({{ resource.standard_status }})
+                                            {% endifequal %}
                                         </td>
                                         <td>
                                             {% if resource.url %}<a href="{{ resource.url }}" target="_blank"><span class="flyover {position:'bottom'}" title="{{ resource.url }}"><img src="{{ MEDIA_URL }}/images/popup.png"/></span></a>{% endif %}

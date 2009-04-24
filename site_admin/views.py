@@ -1770,9 +1770,9 @@ def manage_society(request, society_id):
         ])
     
     elif resource_sort == 'resource_type_ascending':
-        resources1 = society.resources.order_by('resource_type', 'name')
+        resources1 = society.resources.order_by('resource_type', 'standard_status', 'name')
     elif resource_sort == 'resource_type_descending':
-        resources1 = society.resources.order_by('-resource_type', '-name')
+        resources1 = society.resources.order_by('-resource_type', '-standard_status', '-name')
     
     elif resource_sort == 'url_ascending':
         resources1 = society.resources.order_by('url', 'name')
