@@ -51,8 +51,8 @@ class LoginForm(Form):
     password = CharField(widget=PasswordInput(), max_length=1000, label='Password:')
 
 class ForgotPasswordForm(Form):
-    username = CharField(max_length=30, label='Enter either your User Name:', required=False)
-    email = CharField(label='Or your Email:', required=False)
+    username = CharField(max_length=30, label='Please enter your username:', required=False)
+    email = CharField(label='Or the email associated with the account:', required=False)
 
 class ChangePasswordForm(Form):
     password1 = CharField(widget=PasswordInput(), label='Please enter your new password:')
