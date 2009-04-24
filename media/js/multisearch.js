@@ -153,7 +153,8 @@ function MultiSearch(container, options) {
             society_id: null,
             society_tags_first: false,
             showSelectedOptions: true,
-            excludeTagId: null
+            excludeTagId: null,
+            removeLinkFlyoverText: null
         },
         this.container.metadata(),
         options
@@ -773,6 +774,11 @@ MultiSearch.prototype.addSelectedOption = function(option, preload) {
                 multiSearch.removeSelectedOptionByValue($(this).data('value'));
                 return false;
             });
+            if (this.options.removeLinkFlyoverText != null) {
+                // Attach a flyover to the remove element
+                Flyover.attach(option.removeElem, {content:this.options.removeLinkFlyoverText});
+            }
+            
         } else {
             // Create a cloud item
             option.elem = $('<div class="multi-search-selected-option"></div>');

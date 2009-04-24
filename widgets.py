@@ -16,7 +16,7 @@ class MultiSearchWidget(widgets.Widget):
     society_id = None
     exclude_tag_id = None
     
-    def __init__(self, attrs=None):
+    def __init__(self, remove_link_flyover_text=None, attrs=None):
         #print '__init__()'
         #print '  attrs:', attrs
         
@@ -29,6 +29,8 @@ class MultiSearchWidget(widgets.Widget):
             self.classMetadata = attrs['classMetadata']
         else:
             self.classMetadata = None
+        
+        self.remove_link_flyover_text = remove_link_flyover_text
         
         super(MultiSearchWidget, self).__init__(attrs)
         
@@ -115,6 +117,9 @@ class MultiSearchWidget(widgets.Widget):
         
         if self.exclude_tag_id is not None:
             classString += ', excludeTagId:%s' % self.exclude_tag_id
+        
+        if self.remove_link_flyover_text is not None:
+            classString += ', removeLinkFlyoverText:\'%s\'' % self.remove_link_flyover_text
         
         if self.classMetadata is not None:
             classString += ', ' + self.classMetadata

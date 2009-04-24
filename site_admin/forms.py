@@ -75,7 +75,7 @@ class EditResourceForm(Form):
     ieee_id = CharField(required=False, label='ID')
     description = CharField(widget=Textarea, max_length=1000, required=False)
     url = CharField(max_length=1000, required=False, label='URL')
-    nodes = MultiSearchField(label='Tags', model=Node, search_url='/admin/ajax/search_tags', widget_label='Associate Tags with this Resource', show_create_tag_link=True)
+    nodes = MultiSearchField(label='Tags', model=Node, search_url='/admin/ajax/search_tags', widget_label='Associate Tags with this Resource', show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from Resource'))
     societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies', label='Societies')
     priority_to_tag = BooleanField(required=False)
     standard_status = ChoiceField(choices=_make_choices(Resource.STANDARD_STATUSES), required=False)
