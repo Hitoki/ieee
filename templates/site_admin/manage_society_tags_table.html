@@ -1,7 +1,7 @@
 {% load pagination %}
 
-Pages:
 <ul class="pages">
+    <li class="paginationTitle">Pages:</li>
     {% pages tag_page num_tag_pages tag_page_url %}
 </ul>
 <br/>
@@ -171,3 +171,10 @@ Pages:
         </tr>
     {% endfor %}
 </table>
+<br/>
+<ul class="pages" style="float:left;">
+    <li class="paginationTitle">Pages:</li>
+    {% pages tag_page num_tag_pages tag_page_url %}
+</ul>
+                            <input type="button" id="create-tag" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ tags_tab_url|urlencode }}';" value="Create New Tag" />
+                            <br style="clear:both;"/>

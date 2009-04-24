@@ -193,8 +193,8 @@
                         <!-- Resources Tab -->
                         <div id="resources-tab">
                             
-                            Pages:
                             <ul class="pages">
+                                <li class="paginationTitle">Pages:</li>
                                 {% pages resource_page num_resource_pages resource_page_url %}
                             </ul>
                             <br/>
@@ -411,6 +411,11 @@
                                     </tr>
                                 {% endfor %}
                             </table>
+                            <br/>
+                            <ul class="pages">
+                                <li class="paginationTitle">Pages:</li>
+                                {% pages resource_page num_resource_pages resource_page_url %}
+                            </ul>
                         </div>
                         
                         <!-- Tags Tab -->
@@ -422,7 +427,6 @@
                                 {% manage_society_tags_table %}
                             </div>
                             
-                            <input type="button" id="create-tag" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ tags_tab_url|urlencode }}';" value="Create New Tag" />
                         </div>
                         
                         {% if DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB %}

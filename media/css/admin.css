@@ -285,7 +285,7 @@ a.edit {
     cursor: default;
 }
 
-#create-tag-float {
+#create-tag-float, #create-tag {
     float:right;
 }
 
@@ -363,6 +363,10 @@ ul.pages {
     list-style:none;
     /* Enable enclosing the LI floats in Fx3/IE7 */
     overflow:auto;
+}
+
+ul.pages li.paginationTitle {
+    width: auto;
 }
 
 ul.pages li {
