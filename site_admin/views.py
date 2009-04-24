@@ -1,3 +1,4 @@
+from datetime import datetime
 import codecs
 import csv
 import hashlib
@@ -56,7 +57,6 @@ def _get_version():
                 matches = re.match(r'Last Changed Date: (\S+ \S+)', line)
                 if matches:
                     date = matches.group(1)
-                    from datetime import datetime
                     date = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
         except Exception:
             version = 'UNKNOWN'
@@ -195,13 +195,23 @@ def login(request):
                 'form': form,
             })
         else:
+            # Successful login
             auth.login(request, user)
+            
+            profile = user.get_profile()
+            profile.last_login_time = datetime.now()
+            profile.save()
+            
             if next != '':
                 return HttpResponseRedirect(next)
             else:
                 return HttpResponseRedirect(reverse('admin_home'))
 
 def logout(request):
+    if request.user.is_authenticated:
+        profile = request.user.get_profile()
+        profile.last_logout_time = datetime.now()
+        profile.save()
     auth.logout(request)
     return HttpResponsePermanentRedirect(reverse('admin_home'))
 

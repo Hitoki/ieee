@@ -177,8 +177,8 @@ if not hasattr(logging, "is_setup"):
     
     #logging.debug('setup logger')
 
-logging.debug('---------------------------------------------------------------------')
-logging.debug('settings.py')
+#logging.debug('---------------------------------------------------------------------')
+#logging.debug('settings.py')
 
 if DEBUG:
     MIDDLEWARE_CLASSES = list(MIDDLEWARE_CLASSES)

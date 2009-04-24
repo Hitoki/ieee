@@ -60,6 +60,7 @@
                 <li><a href="{% url admin_import_users %}">Import Society Users</a></li>
             </ul>
         </li>
+        {% comment %}
         <li>
             Import Data for COMSOC:
             <ul>
@@ -78,9 +79,9 @@
                 <li><a href="{% url admin_assign_resources %}">Assign random resources</a></li>
             </ul>
         </li>
+        {% endcomment %}
         {% endif %}
         
-        <li><a href="{% url admin_logout %}">Logout</a></li>
     </ul>
     
 {% endblock %}
