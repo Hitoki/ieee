@@ -132,7 +132,7 @@ ul.section-list li li {
 .header-note {
     display: block;
     margin-top: 4px;
-    float: right;
+    float: left;
     font-size: 7pt;
 }
 
@@ -207,10 +207,7 @@ table.edit-create td {
 
 table.resources, table.tags {
     width: 100%;
-}
-
-table.tags {
-    margin: 10px 0 10px 0;
+    margin: 1em 0;
 }
 
 table.resources th, table.tags th {
@@ -248,6 +245,10 @@ table.tags th.left-text {
 table.resources td.count {
     color:gray;
     font-size:80%;
+}
+
+.table-sort {
+    text-align: center;
 }
 
 /* */
@@ -388,6 +389,10 @@ ul.pages li a.selected
 {
     background:#016699;
     color:white;
+}
+
+#pages-tags-top {
+    margin-top: 1em;
 }
 
 #adminLogin {

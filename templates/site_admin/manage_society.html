@@ -192,12 +192,10 @@
                         
                         <!-- Resources Tab -->
                         <div id="resources-tab">
-                            
                             <ul class="pages">
                                 <li class="paginationTitle">Pages:</li>
                                 {% pages resource_page num_resource_pages resource_page_url %}
                             </ul>
-                            <br/>
                             
                             <table class="resources">
                                 <tr>
@@ -205,10 +203,10 @@
                                         <th>
                                         </th>
                                     {% endcomment %}
-                                    <th class="first-item">
-                                        <span class="header-with-note">Resource Name <span class="help_icon flyover" title="Name of the Product or Service.">[?]</span></span>
+                                    <th>
+                                        Resource Name <span class="help_icon flyover" title="Name of the Product or Service. Click resource to edit.">[?]</span>
                                         
-                                        &nbsp;
+                                        <div class="table-sort">
                                         <a href="{% url admin_manage_society society.id %}?resource_sort=name_ascending" class="live-url {hashOnly:true}">
                                             {% ifequal resource_sort "name_ascending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
@@ -223,13 +221,13 @@
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
                                             {% endifequal %}
                                         </a>
+                                        </div>
                                         
-                                        <span class="header-note">Click resource to edit</span>
                                     </th>
                                     <th>
                                         ID <span class="help_icon flyover" title="IEEE unique identifier.">[?]</span>
                                         
-                                        &nbsp;
+                                        <div class="table-sort">
                                         <a href="{% url admin_manage_society society.id %}?resource_sort=ieee_id_ascending" class="live-url {hashOnly:true}">
                                             {% ifequal resource_sort "ieee_id_ascending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
@@ -244,11 +242,12 @@
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
                                             {% endifequal %}
                                         </a>
+                                        </div>
                                     </th>
                                     <th>
                                         Resource Type <span class="help_icon flyover" title="Publication, Conference, or Standard.">[?]</span>
                                         
-                                        &nbsp;
+                                        <div class="table-sort">
                                         <a href="{% url admin_manage_society society.id %}?resource_sort=resource_type_ascending" class="live-url {hashOnly:true}">
                                             {% ifequal resource_sort "resource_type_ascending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
@@ -263,11 +262,12 @@
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
                                             {% endifequal %}
                                         </a>
+                                        </div>
                                     </th>
                                     <th>
                                         URL <span class="help_icon flyover" title="Web link for the Resource.">[?]</span>
                                         
-                                        &nbsp;
+                                        <div class="table-sort">
                                         <a href="{% url admin_manage_society society.id %}?resource_sort=url_ascending" class="live-url {hashOnly:true}">
                                             {% ifequal resource_sort "url_ascending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
@@ -282,11 +282,12 @@
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
                                             {% endifequal %}
                                         </a>
+                                        </div>
                                     </th>
                                     <th>
                                         Tags <span class="help_icon flyover" title="List of key words or phrases for related concepts and technology areas.">[?]</span>
                                         
-                                        &nbsp;
+                                        <div class="table-sort">
                                         <a href="{% url admin_manage_society society.id %}?resource_sort=num_tags_ascending" class="live-num_tags {hashOnly:true}">
                                             {% ifequal resource_sort "num_tags_ascending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
@@ -301,11 +302,12 @@
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
                                             {% endifequal %}
                                         </a>
+                                        </div>
                                     </th>
                                     <th>
                                         Societies <span class="help_icon flyover" title="IEEE organizations that sponsor this resource.">[?]</span>
                                         
-                                        &nbsp;
+                                        <div class="table-sort">
                                         <a href="{% url admin_manage_society society.id %}?resource_sort=num_societies_ascending" class="live-num_societies {hashOnly:true}">
                                             {% ifequal resource_sort "num_societies_ascending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
@@ -320,11 +322,12 @@
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
                                             {% endifequal %}
                                         </a>
+                                        </div>
                                     </th>
                                     <th>
                                         Priority <span class="help_icon flyover" title='If "yes", this resource should be as complete as possible. Tags, Description, and URL.'>[?]</span>
                                         
-                                        &nbsp;
+                                        <div class="table-sort">
                                         <a href="{% url admin_manage_society society.id %}?resource_sort=priority_ascending" class="live-priority {hashOnly:true}">
                                             {% ifequal resource_sort "priority_ascending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
@@ -339,11 +342,12 @@
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
                                             {% endifequal %}
                                         </a>
+                                        </div>
                                     </th>
                                     <th>
                                         Description <span class="help_icon flyover" title="Short description of the Resource. 1-3 short sentences recommended.">[?]</span>
                                         
-                                        &nbsp;
+                                        <div class="table-sort">
                                         <a href="{% url admin_manage_society society.id %}?resource_sort=description_ascending" class="live-description {hashOnly:true}">
                                             {% ifequal resource_sort "description_ascending" %}
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
@@ -358,6 +362,7 @@
                                                 <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
                                             {% endifequal %}
                                         </a>
+                                        </div>
                                     </th>
                                 </tr>
                                 {% for resource in resources %}
@@ -411,7 +416,6 @@
                                     </tr>
                                 {% endfor %}
                             </table>
-                            <br/>
                             <ul class="pages">
                                 <li class="paginationTitle">Pages:</li>
                                 {% pages resource_page num_resource_pages resource_page_url %}

@@ -1,10 +1,8 @@
 {% load pagination %}
-
-<ul class="pages">
+<ul class="pages" id="pages-tags-top">
     <li class="paginationTitle">Pages:</li>
     {% pages tag_page num_tag_pages tag_page_url %}
 </ul>
-<br/>
 
 <table class="tags">
     <tr>
@@ -12,10 +10,9 @@
             <th>
             </th>
         {% endcomment %}
-        <th class="first-item">
-            <span class="header-with-note">Tag Name <span class="help_icon flyover" title="Keyword or phrase for related concept or technology area.">[?]</span></span>
-            
-            &nbsp;
+        <th>
+            Tag Name <span class="help_icon flyover" title="Keyword or phrase for related concept or technology area. Click tag to edit.">[?]</span>
+            <div class="table-sort">
             <a href="{% url admin_manage_society society.id %}?tag_sort=name_ascending#tab-tags-tab">
                 {% ifequal tag_sort "name_ascending" %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
@@ -30,13 +27,13 @@
                     <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
                 {% endifequal %}
             </a>
-            
-            <span class="header-note">Click tag to edit</span>
+            </div>
+
         </th>
         <th>
             Sectors <span class="help_icon flyover" title="Industry Sector for which the Tag is relevant, from the domain perspective of the S/C.">[?]</span>
             
-            &nbsp;
+            <div class="table-sort">
             <a href="{% url admin_manage_society society.id %}?tag_sort=sector_list_ascending#tab-tags-tab">
                 {% ifequal tag_sort "sector_list_ascending" %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
@@ -51,11 +48,12 @@
                     <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
                 {% endifequal %}
             </a>
+            </div>
         </th>
         <th>
             Societies <span class="help_icon flyover" title="IEEE organizations that have associated Tag with their domain.">[?]</span>
             
-            &nbsp;
+            <div class="table-sort">
             <a href="{% url admin_manage_society society.id %}?tag_sort=num_societies_ascending#tab-tags-tab">
                 {% ifequal tag_sort "num_societies_ascending" %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
@@ -70,11 +68,12 @@
                     <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
                 {% endifequal %}
             </a>
+            </div>
         </th>
         <th>
             Filters <span class="help_icon flyover" title="Categories that detail the concept or technology area.">[?]</span>
             
-            &nbsp;
+            <div class="table-sort">
             <a href="{% url admin_manage_society society.id %}?tag_sort=num_filters_ascending#tab-tags-tab">
                 {% ifequal tag_sort "num_filters_ascending" %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
@@ -89,11 +88,12 @@
                     <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
                 {% endifequal %}
             </a>
+            </div>
         </th>
         <th>
             Resources <span class="help_icon flyover" title="IEEE Products or Services mapped to this Tag.">[?]</span>
             
-            &nbsp;
+            <div class="table-sort">
             <a href="{% url admin_manage_society society.id %}?tag_sort=num_resources_ascending#tab-tags-tab">
                 {% ifequal tag_sort "num_resources_ascending" %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
@@ -108,11 +108,12 @@
                     <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
                 {% endifequal %}
             </a>
+            </div>
         </th>
         <th>
             Related Tags <span class="help_icon flyover" title="Tags that are related concepts or technology areas.">[?]</span>
             
-            &nbsp;
+            <div class="table-sort">
             <a href="{% url admin_manage_society society.id %}?tag_sort=num_related_tags_ascending#tab-tags-tab">
                 {% ifequal tag_sort "num_related_tags_ascending" %}
                     <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
@@ -127,6 +128,7 @@
                     <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
                 {% endifequal %}
             </a>
+            </div>
         </th>
         <th>
             Remove <span class="help_icon flyover" title="Remove this tag from this society.">[?]</span>
@@ -171,10 +173,12 @@
         </tr>
     {% endfor %}
 </table>
-<br/>
+<div>
 <ul class="pages" style="float:left;">
     <li class="paginationTitle">Pages:</li>
     {% pages tag_page num_tag_pages tag_page_url %}
 </ul>
-                            <input type="button" id="create-tag" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ tags_tab_url|urlencode }}';" value="Create New Tag" />
+<input type="button" id="create-tag" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ tags_tab_url|urlencode }}';" value="Create New Tag" />
+</div>
+
 
