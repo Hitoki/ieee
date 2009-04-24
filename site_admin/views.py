@@ -217,6 +217,7 @@ def logout(request):
     return HttpResponsePermanentRedirect(reverse('admin_home'))
 
 def forgot_password(request):
+    cancel_page = request.GET.get('cancel_page', '')
     error = ''
     if request.method == 'GET':
         form = ForgotPasswordForm()
@@ -263,6 +264,7 @@ def forgot_password(request):
     return render(request, 'site_admin/forgot_password.html', {
         'error': error,
         'form': form,
+        'cancel_page': cancel_page,
     })
 
 def forgot_password_confirmation(request):
