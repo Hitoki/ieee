@@ -740,8 +740,8 @@ table.vert-center td {
     top:0px;
     left:0px;
     background:gray;
-    opacity:.95;
-    filter:alpha(opacity=95);
+    opacity:.75;
+    filter:alpha(opacity=75);
     z-index:1;
 }
 
@@ -752,13 +752,14 @@ table.vert-center td {
     top:0px;
     left:0px;
     z-index:2;
+    text-align: center;
 }
 
 .browser-warning-content2 {
     margin:0px auto;
     width:75%;
     height:400px;
-    margin-top:25%;
+    margin-top:15%;
     font-size:130%;
 }
 
