@@ -6,6 +6,7 @@ import logging
 import math
 import random
 import re
+import smtplib
 import string
 import time
 from urllib import quote
@@ -148,7 +149,7 @@ If you did not request this password reset, simple ignore this email.
     logging.debug('subject: %s' % subject)
     logging.debug('message: %s' % message)
     logging.debug('Sending email...')
-
+    
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
 
 def _send_password_change_notification(user):
@@ -232,8 +233,20 @@ def forgot_password(request):
                 elif user.email is None or user.email.strip() == '':
                     error = '<ul class="error"><li>The account with username "%s" does not have a valid email.</li></ul>' % username
                 else:
-                    _send_password_reset_email(request, user)
-                    return HttpResponseRedirect(reverse('forgot_password_confirmation'))
+                    try:
+                        _send_password_reset_email(request, user)
+                    except smtplib.SMTPRecipientsRefused, e:
+                        error = 'Recipients refused'
+                    except smtplib.SMTPException, e:
+                        error = str(type(e))
+                        #error = str(type(e)) + ': ' + str(e)
+                    else:
+                        error = None
+                    url = reverse('forgot_password_confirmation')
+                    if error is not None:
+                        logging.error('Error sending reset email: %s: %s' % (type(e), e))
+                        url += '?error=' + quote(error)
+                    return HttpResponseRedirect(url)
                     
             elif form.cleaned_data['email'].strip() != '':
                 email = form.cleaned_data['email']
@@ -253,7 +266,10 @@ def forgot_password(request):
     })
 
 def forgot_password_confirmation(request):
-    return render(request, 'site_admin/forgot_password_confirmation.html')
+    error = request.GET.get('error', None)
+    return render(request, 'site_admin/forgot_password_confirmation.html', {
+        'error': error,
+    })
 
 def password_reset(request, user_id, reset_key):
     user = User.objects.get(id=user_id)
