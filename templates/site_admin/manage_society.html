@@ -403,7 +403,7 @@
                                         </td>
                                         <td>
                                             {% if resource.priority_to_tag %}
-                                                {{ resource.priority_to_tag|yesno }}
+                                                {{ resource.priority_to_tag|yesno|capfirst }}
                                             {% endif %}
                                         </td>
                                         <td>
