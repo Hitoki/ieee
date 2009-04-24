@@ -7,7 +7,7 @@
 
 {% block extra_header %}
     {% if user.is_authenticated %}
-        <span class="floating">Logged in as {{ user.username }} |<a href="{% url admin_logout %}" class="logout">Log Out</a></span>
+        <span class="floating">Logged in as {{ user.username }} |<a href="{% url change_password %}" class="changePassword">Change Password</a> |<a href="{% url admin_logout %}" class="logout">Log Out</a></span>
     {% endif %}
 {% endblock %}
 
@@ -18,9 +18,6 @@
         <ul class="nav">
             <li class="{% block nav_home %}{% endblock %}">
                 <a href="{% url admin_home %}">Home</a>
-            </li>
-            <li class="{% block nav_change_password %}{% endblock %}">
-                <a href="{% url change_password %}">Change Password</a>
             </li>
             {% if user.is_superuser %}
             <li class="{% block nav_sectors %}{% endblock %}">

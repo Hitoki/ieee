@@ -47,11 +47,11 @@ strong {
 
 /* */
 
-#header a.logout {
+#header a.logout, #header a.changePassword {
     margin:.5em;
 }
 
-#header a.logout span {
+#header a.logout span, #header a.changePassword span {
     color:black;
 }
 
