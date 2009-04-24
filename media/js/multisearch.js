@@ -767,7 +767,7 @@ MultiSearch.prototype.addSelectedOption = function(option, preload) {
                 
             }
             
-            option.removeElem = $('<td><a href="#remove_' + option.value + '" class="remove-link"><span class="flyover" title="Remove Tag from Resource">[x]</span></a></td>').appendTo(option.elem);
+            option.removeElem = $('<td><a href="#remove_' + option.value + '" class="remove-link">[x]</a></td>').appendTo(option.elem);
             option.removeElem.find('a').data('value', option.value);
             option.removeElem.find('a').click(function(e) {
                 // Remove the option when clicked

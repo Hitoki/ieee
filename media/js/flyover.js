@@ -288,11 +288,12 @@ var Flyover = {
             var _closeCallback = this.options.closeCallback;
             this.options = {};
             
-            
-            // Restore the title
-            this._elem.attr('title', this._elemTitle);
-            this._elem = null;
-            this._elemTitle = null;
+            if (this.options.url == null && this.options.content == null) {
+                // Restore the title (only if not using the URL or content options)
+                this._elem.attr('title', this._elemTitle);
+                this._elem = null;
+                this._elemTitle = null;
+            }
             
             // TODO: This should be an option
             //if (immediate) {
