@@ -1500,14 +1500,15 @@ def import_users(request):
         society_abbreviations = society_abbreviations.strip()
         
         # DEBUG:
+        logging.warning('Imported user first_name is too long (>30 chars), "%s" truncated to "%s"' % (first_name, first_name[:30]))
         first_name = first_name[:30]
         
         if role != Profile.ROLE_ADMIN and role != Profile.ROLE_SOCIETY_MANAGER:
             raise Exception('Unknown role "%s"' % role)
         if username == '':
             raise Exception('Username is blank')
-        #if email == '':
-        #    raise Exception('Email is blank')
+        if email == '':
+            raise Exception('Email is blank')
         
         society_abbreviations = [society_abbreviation.strip() for society_abbreviation in _split_no_empty(society_abbreviations, ',')]
         

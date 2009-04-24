@@ -434,7 +434,7 @@
     {
         "fields": {
             "date_joined": "2009-03-11 14:39:39", 
-            "email": "admin@systemicist.com", 
+            "email": "technavadmin@systemicist.com", 
             "first_name": "Admin", 
             "groups": [], 
             "is_active": 1, 
@@ -452,7 +452,7 @@
     {
         "fields": {
             "date_joined": "2009-03-11 14:41:06", 
-            "email": "", 
+            "email": "technavuser@systemicist.com", 
             "first_name": "Society", 
             "groups": [], 
             "is_active": 1, 
@@ -466,24 +466,6 @@
         }, 
         "model": "auth.user", 
         "pk": 2
-    }, 
-    {
-        "fields": {
-            "date_joined": "2009-03-17 15:37:12", 
-            "email": "", 
-            "first_name": "Society", 
-            "groups": [], 
-            "is_active": 1, 
-            "is_staff": 1, 
-            "is_superuser": 0, 
-            "last_login": "2009-03-17 15:37:12", 
-            "last_name": "(Multiple)", 
-            "password": "sha1$5333e$0cf657779a783225185a94099d2086de360518a0", 
-            "user_permissions": [], 
-            "username": "multisoc"
-        }, 
-        "model": "auth.user", 
-        "pk": 3
     }, 
     {
         "fields": {

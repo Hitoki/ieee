@@ -104,7 +104,7 @@ class UserForm(Form):
     username = CharField(max_length=30)
     first_name = CharField(max_length=500, required=False)
     last_name = CharField(max_length=500, required=False)
-    email = CharField(max_length=1000, required=False)
+    email = CharField(max_length=1000)
     is_staff = BooleanField(required=False)
     is_superuser = BooleanField(required=False)
     role = ChoiceField(choices=Profile.ROLES)
