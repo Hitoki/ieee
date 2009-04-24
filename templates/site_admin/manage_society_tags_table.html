@@ -166,7 +166,7 @@
                 {% endif %}
             </td>
             <td>
-                <a href="javascript:$('#multisearch_tags').data('multisearch').removeSelectedOptionByValue({{ tag.id }});">[x]</a>
+                <a href="javascript:$('#multisearch_tags').data('multisearch').removeSelectedOptionByValue({{ tag.id }});"><span class="flyover" title="Remove Tag from Resource">[x]</span></a>
             </td>
         </tr>
     {% endfor %}
