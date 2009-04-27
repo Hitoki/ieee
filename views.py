@@ -106,8 +106,6 @@ def textui(request):
 
 @protect_frontend
 def feedback(request):
-    disable_frontend()
-    
     if request.method == 'GET':
         if request.user.is_authenticated:
             initial = {
