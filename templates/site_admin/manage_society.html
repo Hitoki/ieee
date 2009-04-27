@@ -420,6 +420,9 @@
                                 <li class="paginationTitle">Pages:</li>
                                 {% pages resource_page num_resource_pages resource_page_url %}
                             </ul>
+                            <div style="margin-top: 1em;">
+                                <a href="{% url missing_resource society.id %}" class="lightbox">Don't see the resource you need? Request it be added.</a>
+                            </div>
                         </div>
                         
                         <!-- Tags Tab -->
@@ -488,9 +491,6 @@
                     
                 {# </form> #}
                 
-                <div>
-                    <a href="{% url missing_resource society.id %}" class="lightbox">Missing any resources?</a>
-                </div>
                 
                 <div id="feedback-bar">
                     Comments, Suggestions? <a href="{% url feedback %}" class="lightbox">Send Feedback</a>
