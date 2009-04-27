@@ -399,3 +399,9 @@ ul.pages li a.selected
     margin-left: 10px;
 }
 
+/* */
+
+.results ul {
+    list-style:disc;
+}
+

@@ -44,9 +44,14 @@ function log(name, value, print, indent, first) {
 }
 */
 
+var logStartTime = null;
+
 function log(msg) {
     if (window.console) {
-        console.log(msg);
+        if (logStartTime == null)
+            logStartTime = new Date() / 1000;
+        var seconds = (new Date() / 1000) - logStartTime;
+        console.log(seconds.toFixed(1) + ': ' + msg);
     }
 }
 

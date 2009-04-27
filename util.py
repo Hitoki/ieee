@@ -27,11 +27,10 @@ def begins_with(str1, prefix):
 def ends_with(str1, prefix):
     return str1[-len(prefix):] == prefix
 
-def current_server_url(request):
-    #url = 
-    print 'current_server_url()'
-    for name, value in request.META.items():
-        print '  %sm: %s' % (name, value)
+#def current_server_url(request):
+#    print 'current_server_url()'
+#    for name, value in request.META.items():
+#        print '  %sm: %s' % (name, value)
 
 class EndUserException(Exception):
     pass

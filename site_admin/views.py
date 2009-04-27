@@ -618,6 +618,44 @@ def import_tags(request, source):
         },
     })
 
+@login_required
+@transaction.commit_on_success
+def unassigned_tags(request):
+    permissions.require_superuser(request)
+    
+    logging.debug('unassigned_tags()')
+    start = time.time()
+    
+    row_count = 0
+    num_orphan_tags = 0
+    orphan_tags = []
+    
+    tab_society = Society.objects.getFromAbbreviation('TAB')
+    if tab_society is None:
+        raise Exception('Can\'t find TAB society')
+    
+    tags = Node.objects.get_tags()
+    for tag in tags:
+        if tag.societies.count() == 0:
+            # Found orphan tag, assign to TAB
+            #print 'got emtpy one, %s' % tag.name
+            orphan_tags.append(u'<li>%s</li>' % tag.name)
+            tab_society.tags.add(tag)
+            tab_society.save()
+            num_orphan_tags += 1
+
+    orphan_tags = u'<ul>\n' + u'\n'.join(orphan_tags) + u'</ul>\n'
+    page_time = time.time()-start
+    
+    return render(request, 'site_admin/results.html', {
+        'page_title': 'Unassigned Tags',
+        'results': {
+            'page_time': page_time,
+            'orphan_tags': orphan_tags,
+            'num_orphan_tags': num_orphan_tags,
+        },
+    })
+
 def _remove_society_acronym(society_name):
     # Make sure the society name field does not contain a redundant acronym (there is already have an acronym field)
     matches = re.match(r'^(.+) \((.+)\)$', society_name)
@@ -756,8 +794,8 @@ def fix_societies_import(request):
         out_file.write(out_row)
         
         row_count += 1
-        if not row_count % 10:
-            print '  Parsing row %d' % row_count
+        #if not row_count % 10:
+        #    print '  Parsing row %d' % row_count
         
     in_file.close()
     out_file.close()
@@ -1061,8 +1099,8 @@ def assign_related_tags(request):
         tag.save()
         
         tag_count += 1
-        if not tag_count % 10:
-            print '  Tag %d' % tag_count
+        #if not tag_count % 10:
+        #    print '  Tag %d' % tag_count
         
     # Now update the tag counts
     tags = Node.objects.getTags()
@@ -1092,23 +1130,23 @@ def assign_resources(request):
     
     start = time.time()
     
-    print 'assign_resources()'
+    #print 'assign_resources()'
     
     if True:
         # First, disassociate any resources
-        print '  removing resources'
+        #print '  removing resources'
         tags = Node.objects.getTags()
         tag_count = 0
         for tag in tags:
             tag.resources = []
             tag.save()
             tag_count += 1
-            if not tag_count % 50:
-                print '  Tag %d' % tag_count
+            #if not tag_count % 50:
+            #    print '  Tag %d' % tag_count
     
     resources = Resource.objects.all()
     
-    print '  assigning resources'
+    #print '  assigning resources'
     # Now assign resources
     tags = Node.objects.getTags()
     tag_count = 0
@@ -1131,8 +1169,8 @@ def assign_resources(request):
         resources_assigned += count
         
         tag_count += 1
-        if not tag_count % 10:
-            print '  Tag %d' % tag_count
+        #if not tag_count % 10:
+        #    print '  Tag %d' % tag_count
     
     avg_resources_per_tag = resources_assigned / tag_count
     
@@ -1158,8 +1196,8 @@ def view_sector(request, sectorId):
     
     sector = Node.objects.get(id=sectorId)
     
-    for i in dir(sector):
-        print 'sector.%s' % i
+    #for i in dir(sector):
+    #    print 'sector.%s' % i
     #print 'dir(sector):', dir(sector)
     
     tags = sector.child_nodes.all()
@@ -1543,8 +1581,8 @@ def import_users(request):
         elif role == Profile.ROLE_SOCIETY_MANAGER:
             society_managers_created += 1
         
-        if not row_count % 10:
-            print '  Reading row %d' % row_count
+        #if not row_count % 10:
+        #    print '  Reading row %d' % row_count
             
         row_count += 1
             
@@ -1984,12 +2022,12 @@ def save_society(request):
             society.resources = form.cleaned_data['resources']
         society.save()
         
-        print 'return_url:', return_url
-        print 'society:', society
-        print 'society.id:', society.id
+        #print 'return_url:', return_url
+        #print 'society:', society
+        #print 'society.id:', society.id
         #print "reverse('admin_view_society', args=[society.id]):", reverse('admin_view_society', args=[society.id])
         url = reverse('admin_view_society', args=[society.id])
-        print 'url:', url
+        #print 'url:', url
         
         if return_url != '':
             return HttpResponseRedirect(return_url)

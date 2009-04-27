@@ -115,7 +115,11 @@ class NodeManager(models.Manager):
     def getFirstSector(self):
         return self.getSectors()[0]
     
+    # DEPRECATED: use get_tags()
     def getTags(self):
+        return self.get_tags()
+    
+    def get_tags(self):
         tag_type = NodeType.objects.getFromName('tag')
         return self.filter(node_type=tag_type)
     

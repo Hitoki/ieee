@@ -37,8 +37,8 @@ def pages(current_page, num_pages, url, max_pages=20):
             end_page = num_pages
             start_page = end_page - max_pages + 1 
         
-    print 'start_page:', start_page
-    print 'end_page:', end_page
+    #print 'start_page:', start_page
+    #print 'end_page:', end_page
     
     url_template = template.Template(url)
     page_template = u'<li><a href="%s" %s>%s</a></li>'

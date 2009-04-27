@@ -1,3 +1,4 @@
+import logging
 from django.db.models import Model
 from django.core.urlresolvers import reverse
 from django.forms import widgets
@@ -80,8 +81,8 @@ class MultiSearchWidget(widgets.Widget):
             for object in objects:
                 if self.format == 'simple':
                     results.append({
-                        'name': str(object),
-                        'value': str(object.id),
+                        'name': unicode(object),
+                        'value': unicode(object.id),
                     })
                 elif self.format == 'full_tags_table':
                     results.append({

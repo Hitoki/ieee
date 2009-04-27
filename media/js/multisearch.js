@@ -264,7 +264,6 @@ function MultiSearch(container, options) {
     
     // Load any pre-selected options (from the hidden input)
     var initialData = JSON.parse(this.dataElem.attr('value'));
-    this.dataElem.attr('value', '[]')
     
     // Now add the preselected options
     for (var i=0; i<initialData.length; i++) {
@@ -799,28 +798,31 @@ MultiSearch.prototype.addSelectedOption = function(option, preload) {
             this.sort(this.options.sortCol, this.options.sortOrder);
         }
         
-        // Add the value to the output element
-        var data = JSON.parse(this.dataElem.attr('value'));
-        if (this.options.format == 'full_tags_table') {
-            data.push({
-                name: option.name,
-                name_link: option.name_link,
-                value: option.value,
-                tag_name: option.tag_name,
-                sector_names: option.sector_names,
-                num_societies: option.num_societies.toString(),
-                num_related_tags: option.num_related_tags.toString(),
-                num_filters: option.num_filters.toString(),
-                num_resources: option.num_resources.toString(),
-                societies: option.societies
-            });
-        } else {
-            data.push({
-                name: option.name,
-                value: option.value
-            });
+        // Avoid rewriting the output element when we're just preloading the options (for performance)
+        if (!preload) {
+            // Add the value to the output element
+            var data = JSON.parse(this.dataElem.attr('value'));
+            if (this.options.format == 'full_tags_table') {
+                data.push({
+                    name: option.name,
+                    name_link: option.name_link,
+                    value: option.value,
+                    tag_name: option.tag_name,
+                    sector_names: option.sector_names,
+                    num_societies: option.num_societies.toString(),
+                    num_related_tags: option.num_related_tags.toString(),
+                    num_filters: option.num_filters.toString(),
+                    num_resources: option.num_resources.toString(),
+                    societies: option.societies
+                });
+            } else {
+                data.push({
+                    name: option.name,
+                    value: option.value
+                });
+            }
+            this.dataElem.attr('value', JSON.stringify(data));
         }
-        this.dataElem.attr('value', JSON.stringify(data));
     }
     
     // Notify the parent window if applicable

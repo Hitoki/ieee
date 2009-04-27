@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     
     url(r'^update_tag_counts$', views.update_tag_counts, name='admin_update_tag_counts'),
     url(r'^import_tags/(?P<source>.+)$', views.import_tags, name='admin_import_tags'),
+    url(r'^unassigned_tags$', views.unassigned_tags, name='admin_unassigned_tags'),
     url(r'^fix_societies_import$', views.fix_societies_import, name='admin_fix_societies_import'),
     url(r'^import_societies/(?P<source>.+)$', views.import_societies, name='admin_import_societies'),
     #url(r'^import_societies_and_tags$', views.import_societies_and_tags, name='admin_import_societies_and_tags'),
