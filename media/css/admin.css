@@ -267,6 +267,18 @@ table.resources td.count {
     margin:.4em;
 }
 
+#help-tab p {
+    margin: 1.5em 0;
+}
+
+#help-tab p.last-paragraph {
+    margin-bottom: .5em;
+}
+
+a.help-doc {
+    margin-right: 1em;
+}
+
 .nootabs-tab {
     padding:1em;
 }
