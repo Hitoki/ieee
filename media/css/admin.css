@@ -148,6 +148,11 @@ table.edit-create {
 table.edit-create th {
     background: white;
     color: black;
+    width: 20%;
+}
+
+table.edit-create td {
+    width: 80%;
 }
 
 table.edit-create th, 
