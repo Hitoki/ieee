@@ -29,6 +29,7 @@
 
 #lightbox .lightbox-content .lightbox-pad {
     padding:1em;
+    width: 500px;
 }
 
 #lightbox .lightbox-content h3 {
