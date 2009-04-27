@@ -36,6 +36,10 @@
     margin-top: 0;
 }
 
+#lightbox .lightbox-content .create-tag-lightbox #create-tag-buttons  {
+    text-align: center;
+}
+
 #lightbox .lightbox-content .create-tag-lightbox th  {
     padding-left: 0;
 }

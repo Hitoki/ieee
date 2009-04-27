@@ -54,6 +54,7 @@
                 </td>
             </tr>
         </table>
+        <div id="create-tag-buttons">
         <input type="submit" value="Ok" class="button" />
         {% if is_ajax %}
             <input type="button" value="Cancel" class="lightbox-close" />
@@ -65,6 +66,7 @@
                 <input type="button" value="Cancel" onclick="window.location='{% url admin_view_sector sector.id %}';" />
             {% endif %}
         {% endif %}
+        </div>
     </form>
 
 {% if is_ajax %}
