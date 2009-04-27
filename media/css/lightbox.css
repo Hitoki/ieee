@@ -27,9 +27,17 @@
 #lightbox .lightbox-content {
 }
 
-#lightbox .lightbox-content .lightbox-pad {
+#lightbox .lightbox-content .lightbox-pad, #lightbox .lightbox-content .create-tag-lightbox {
     padding:1em;
-    width: 500px;
+    width: 600px;
+}
+
+#lightbox .lightbox-content .create-tag-lightbox h1  {
+    margin-top: 0;
+}
+
+#lightbox .lightbox-content .create-tag-lightbox th  {
+    padding-left: 0;
 }
 
 #lightbox .lightbox-content h3 {
