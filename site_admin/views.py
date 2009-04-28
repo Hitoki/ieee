@@ -2266,7 +2266,8 @@ def save_resource(request):
             resource.societies = form.cleaned_data['societies']
         resource.priority_to_tag = form.cleaned_data['priority_to_tag']
         resource.keywords = form.cleaned_data['keywords']
-        resource.standard_status = form.cleaned_data['standard_status']
+        if 'standard_status' in request.POST:
+            resource.standard_status = form.cleaned_data['standard_status']
         resource.save()
         
         # Add all resource tags to the owning societies
