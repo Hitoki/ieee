@@ -18,7 +18,11 @@ def strip_bom(file):
         return True
     else:
         # First char was not BOM, seek back 1 char
-        file.seek(-1, os.SEEK_CUR)
+        #file.seek(-1, os.SEEK_CUR)
+        
+        # NOTE: This is for Python 2.4 compatability
+        SEEK_CUR = 1
+        file.seek(-1, SEEK_CUR)
         return False
 
 def begins_with(str1, prefix):
