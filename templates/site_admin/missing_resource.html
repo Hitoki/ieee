@@ -6,14 +6,10 @@
         
         <form action="{% url missing_resource society_id %}" method="post" class="block-labels">
             {{ form.as_p }}
-            <table>
-                <tr>
-                    <td colspan="2" style="text-align:center;">
-                        <input type="submit" value="Send" class="button" />
-                        <input type="button" value="Cancel" class="lightbox-close button" />
-                    </td>
-                </tr>
-            </table>
+        <div class="submit">
+            <input type="submit" value="Send" class="button" />
+            <input type="button" value="Cancel" class="lightbox-close button" />
+        </div>
         </form>
         
 </div>
