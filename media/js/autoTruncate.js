@@ -75,8 +75,12 @@ function autoTruncate(elems, options) {
                 flyoverOptions[flyoverName] = options[name];
             }
         }
-
-        var text = original_text = elem.text();
+        
+        // NOTE: This crashes on Chrome:
+        //var text = original_text = elem.text();
+        var text = elem.text();
+        var original_text = text;
+        
         
         // Check if the text is too long
         if (text.length > options.length) {
@@ -85,10 +89,19 @@ function autoTruncate(elems, options) {
             if (options.word_boundary) {
                 // Split on a word boundary (ie. remove any leftover word part)
                 shortText = '';
-                [word, text] = text.popWord();
+                // NOTE: This crashes chrome:
+                //[word, text] = text.popWord();
+                var temp = text.popWord();
+                word = temp[0];
+                text = temp[1];
+                
                 while ($.trim(shortText + word).length <= options.length) {
                     shortText += word;
-                    [word, text] = text.popWord();
+                    // NOTE: This crashes chrome:
+                    //[word, text] = text.popWord();
+                    var temp = text.popWord();
+                    word = temp[0];
+                    text = temp[1];
                 }
             } else {
                 shortText = text.substr(0, options.length);
