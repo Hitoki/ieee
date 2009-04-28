@@ -165,6 +165,24 @@ def _send_password_change_notification(user):
 
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
 
+def _escape_csv_field(value, add_quotes=True):
+    value = value.replace(u'"', u'""')
+    if add_quotes:
+        return '"%s"' % value
+    else:
+        return '%s' % value
+
+def _escape_csv_list(list1, add_quotes=True):
+    results = []
+    for item in list1:
+        if u',' in item:
+            raise Exception('Found a comma in a CSV list value: %s' % item)
+        results.append(_escape_csv_field(item, False))
+    if add_quotes:
+        return '"%s"' % ','.join(results)
+    else:
+        return '%s' % ','.join(results)
+
 # ------------------------------------------------------------------------------
 
 def login(request):
@@ -769,6 +787,7 @@ def fix_societies_import(request):
     
     for row in reader:
         
+        
         society_name, abbreviation, url, tag_names1, tag_names2, tag_names3 = row
         tag_names1 = [tag.strip() for tag in _split_no_empty(tag_names1, ',')]
         tag_names2 = [tag.strip() for tag in _split_no_empty(tag_names2, ',')]
@@ -1181,11 +1200,75 @@ def assign_resources(request):
         'avg_resources_per_tag': avg_resources_per_tag,
     })
 
+
+@login_required
+def fix_user_import(request):
+    permissions.require_superuser(request)
+    
+    in_filename = relpath(__file__, '../data/v.7/2009-04-27 - users.csv')
+    out_filename = relpath(__file__, '../data/v.7/2009-04-27 - users - fixed.csv')
+    
+    row_count = 0
+    
+    (in_file, reader) = _open_unicode_csv_reader(in_filename)
+    out_file = codecs.open(out_filename, 'w', encoding='utf-8')
+
+    # Write the header row
+    out_row = '"%s","%s","%s","%s","%s","%s","%s"\r\n' % (
+        'Username',
+        'Password',
+        'First Name',
+        'Last Name',
+        'Email',
+        'Role',
+        'Society Abbreviations',
+    )
+    out_file.write(out_row)
+    
+    row_count = 0
+    generated_passwords = 0
+    
+    for row in reader:
+        
+        # Username,Password,First Name,Last Name,Email,Role,Society Abbreviations
+        username, password, first_name, last_name, email, role, society_abbreviations = row
+        
+        print 'password:', password
+        print 'password == '':', password == ''
+        
+        # Generate a password if necessary
+        if password.strip() == '':
+            password = generate_password(chars='loweralphanumeric')
+            generated_passwords += 1
+        
+        out_row = '%s,%s,%s,%s,%s,%s,%s\r\n' % (
+            _escape_csv_field(username),
+            _escape_csv_field(password),
+            _escape_csv_field(first_name),
+            _escape_csv_field(last_name),
+            _escape_csv_field(email),
+            _escape_csv_field(role),
+            _escape_csv_field(society_abbreviations),
+        )
+        out_file.write(out_row)
+
+        row_count += 1
+            
+    in_file.close()
+    out_file.close()
+    
+    return render(request, 'site_admin/results.html', {
+        'results': {
+            'row_count': row_count,
+            'generated_passwords': generated_passwords,
+        }
+    })
+    
 @login_required
 def import_users(request):
     permissions.require_superuser(request)
     
-    filename = relpath(__file__, '../data/v.7/users.csv')
+    filename = relpath(__file__, '../data/v.7/2009-04-27 - users - fixed.csv')
     
     #user_manager = UserManager2()
     #
@@ -1203,7 +1286,7 @@ def import_users(request):
     #else:
     
     # DEBUG: delete all users except the debug ones
-    User.objects.exclude(username__in=['soc', 'multisoc', 'admin']).delete()
+    User.objects.exclude(username__in=['soc', 'soc1', 'admin']).delete()
     
     row_count = 0
     users_created = 0
@@ -1604,88 +1687,68 @@ def delete_user(request, user_id):
     User.objects.get(id=user_id).delete()
     return HttpResponsePermanentRedirect(reverse('admin_users'))
     
-@login_required
-def create_society_users_export(request):
-    'Create an export file with one user for each society.  Use society abbreviation as the username, generate a random password.'
-    
-    def _escape_csv_field(value, add_quotes=True):
-        value = value.replace(u'"', u'""')
-        if add_quotes:
-            return '"%s"' % value
-        else:
-            return '%s' % value
-    
-    def _escape_csv_list(list1, add_quotes=True):
-        results = []
-        for item in list1:
-            if u',' in item:
-                raise Exception('Found a comma in a CSV list value: %s' % item)
-            results.append(_escape_csv_field(item, False))
-        if add_quotes:
-            return '"%s"' % ','.join(results)
-        else:
-            return '%s' % ','.join(results)
-    
-    out_filename = relpath(__file__, '../data/v.7/society_users_export.csv')
-    out_file = codecs.open(out_filename, 'w', encoding='utf-8')
-    
-    # Write the header row
-    out_row = '"%s","%s","%s","%s","%s","%s","%s"\r\n' % (
-        'Username',
-        'Password',
-        'First Name',
-        'Last Name',
-        'Email',
-        'Role',
-        'Society Abbreviations',
-    )
-    out_file.write(out_row)
-    #username, password, first_name, last_name, email, role, society_names = row
-
-    users_created = 0
-    societies = Society.objects.all()
-    for society in societies:
-        usernane = _escape_csv_field(society.abbreviation)
-        #password = _escape_csv_field(nicepass())
-        password = _escape_csv_field(generate_password(chars='loweralphanumeric'))
-        first_name = _escape_csv_field(society.name)
-        last_name = _escape_csv_field('User')
-        email = _escape_csv_field('')
-        role = _escape_csv_field(Profile.ROLE_SOCIETY_MANAGER)
-        society_abbrevations = _escape_csv_list([society.abbreviation])
-        
-        out_row = '%s,%s,%s,%s,%s,%s,%s\r\n' % (
-            usernane,
-            password,
-            first_name,
-            last_name,
-            email,
-            role,
-            society_abbrevations,
-        )
-        out_file.write(out_row)
-        users_created += 1
-    
-    out_file.close()
-    
-    def htmlentities(value):
-        value = value.replace('&', '&amp;')
-        value = value.replace('<', '&lt;')
-        value = value.replace('>', '&gt;')
-        return value
-    
-    out_file_contents = codecs.open(out_filename, 'r', encoding='utf-8').read()
-    out_file_contents = '<pre>%s</pre>' % htmlentities(out_file_contents)
-    
-    return render(request, 'site_admin/results.html', {
-        'page_title': 'Create Society Users Export',
-        'results': {
-            'users_created': users_created,
-            'out_file_contents': out_file_contents,
-        }
-    })
-    
-    
+#@login_required
+#def create_society_users_export(request):
+#    'Create an export file with one user for each society.  Use society abbreviation as the username, generate a random password.'
+#    
+#    out_filename = relpath(__file__, '../data/v.7/society_users_export.csv')
+#    out_file = codecs.open(out_filename, 'w', encoding='utf-8')
+#    
+#    # Write the header row
+#    out_row = '"%s","%s","%s","%s","%s","%s","%s"\r\n' % (
+#        'Username',
+#        'Password',
+#        'First Name',
+#        'Last Name',
+#        'Email',
+#        'Role',
+#        'Society Abbreviations',
+#    )
+#    out_file.write(out_row)
+#    #username, password, first_name, last_name, email, role, society_names = row
+#
+#    users_created = 0
+#    societies = Society.objects.all()
+#    for society in societies:
+#        usernane = _escape_csv_field(society.abbreviation)
+#        #password = _escape_csv_field(nicepass())
+#        password = _escape_csv_field(generate_password(chars='loweralphanumeric'))
+#        first_name = _escape_csv_field(society.name)
+#        last_name = _escape_csv_field('User')
+#        email = _escape_csv_field('')
+#        role = _escape_csv_field(Profile.ROLE_SOCIETY_MANAGER)
+#        society_abbrevations = _escape_csv_list([society.abbreviation])
+#        
+#        out_row = '%s,%s,%s,%s,%s,%s,%s\r\n' % (
+#            usernane,
+#            password,
+#            first_name,
+#            last_name,
+#            email,
+#            role,
+#            society_abbrevations,
+#        )
+#        out_file.write(out_row)
+#        users_created += 1
+#    
+#    out_file.close()
+#    
+#    def htmlentities(value):
+#        value = value.replace('&', '&amp;')
+#        value = value.replace('<', '&lt;')
+#        value = value.replace('>', '&gt;')
+#        return value
+#    
+#    out_file_contents = codecs.open(out_filename, 'r', encoding='utf-8').read()
+#    out_file_contents = '<pre>%s</pre>' % htmlentities(out_file_contents)
+#    
+#    return render(request, 'site_admin/results.html', {
+#        'page_title': 'Create Society Users Export',
+#        'results': {
+#            'users_created': users_created,
+#            'out_file_contents': out_file_contents,
+#        }
+#    })
 
 @login_required
 def societies(request):

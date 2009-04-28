@@ -30,6 +30,8 @@ urlpatterns = patterns('',
     url(r'^assign_filters$', views.assign_filters, name='admin_assign_filters'),
     url(r'^assign_related_tags$', views.assign_related_tags, name='admin_assign_related_tags'),
     url(r'^assign_resources$', views.assign_resources, name='admin_assign_resources'),
+    url(r'^fix_user_import$', views.fix_user_import, name='admin_fix_user_import'),
+    url(r'^users/import$', views.import_users, name='admin_import_users'),
     
     url(r'^sectors$', views.list_sectors, name='admin_list_sectors'),
     url(r'^sector/(\d+)$', views.view_sector, name='admin_view_sector'),
@@ -49,8 +51,7 @@ urlpatterns = patterns('',
     url(r'^user/(?P<user_id>\d+)/edit$', views.edit_user, name='admin_edit_user'),
     url(r'^user/save$', views.save_user, name='admin_save_user'),
     url(r'^user/(?P<user_id>\d+)/delete$', views.delete_user, name='admin_delete_user'),
-    url(r'^users/import$', views.import_users, name='admin_import_users'),
-    url(r'^users/create_export$', views.create_society_users_export, name='admin_create_society_users_export'),
+    #url(r'^users/create_export$', views.create_society_users_export, name='admin_create_society_users_export'),
     
     # Societies
     url(r'^societies$', views.societies, name='admin_societies'),
