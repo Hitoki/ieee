@@ -4,6 +4,9 @@ var Lightbox = {
     init: function() {
         this.visible = false;
         this.url = null;
+        this.subscribers = {
+            'clickOnLightbox': []
+        }
     },
 
     // Clicked on a link, show the URL in the lightbox
@@ -45,6 +48,7 @@ var Lightbox = {
             this.lightboxContent.click(function(e) {
                 //console.log('lightboxContent.click()');
                 e.stopPropagation();
+                lightbox._notify('clickOnLightbox');
             });
             
             this.visible = true;
@@ -132,8 +136,33 @@ var Lightbox = {
             this.lightbox.css('top', scrollTop);
             this.lightbox.css('left', scrollLeft);
         }
+    },
+    
+    // Allows another object to subscribe to this object's events.
+    // @param event - the name of the event.
+    // @param func - the callback function.  Will be called like:
+    //   func([source_object], [event_name], [optional_event_data]);
+    // 
+    subscribe: function(event, func) {
+        if (!event in this.subscribers) {
+            alert('Lightbox.subscribe(): Unknown event "' + event + '"');
+            return;
+        }
+        this.subscribers[event].push(func);
+    },
+    
+    // Notify all subscribers of an event.
+    _notify: function(event, data) {
+        if (!event in this.subscribers) {
+            alert('Lightbox.notify(): Unknown event "' + event + '"');
+            return;
+        }
+        for (var i=0; i<this.subscribers[event].length; i++) {
+            var func = this.subscribers[event][i];
+            func(this, event, data);
+        }
     }
-
+    
 }
 
 $(function() {
