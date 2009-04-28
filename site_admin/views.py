@@ -863,7 +863,7 @@ def _import_resources(filename, batch_commits=False):
         resource_type = ResourceType.objects.getFromName(type1)
         
         if standard_status == '':
-            standard_status = None
+            standard_status = ''
         elif standard_status.lower() in Resource.STANDARD_STATUSES:
             standard_status = standard_status.lower()
         else:
@@ -1040,6 +1040,7 @@ def import_periodicals(request, source):
     results = _import_resources(filename)
     
     return render(request, 'site_admin/import_resources.html', {
+        'page_title': 'Import Periodicals',
         'page_time': time.time()-start,
         'results': results,
     })
@@ -1066,6 +1067,7 @@ def import_standards(request, source):
     results = _import_resources(filename)
     
     return render(request, 'site_admin/import_resources.html', {
+        'page_title': 'Import Standards',
         'page_time': time.time()-start,
         'results': results,
     })
@@ -1233,9 +1235,6 @@ def fix_user_import(request):
         # Username,Password,First Name,Last Name,Email,Role,Society Abbreviations
         username, password, first_name, last_name, email, role, society_abbreviations = row
         
-        print 'password:', password
-        print 'password == '':', password == ''
-        
         # Generate a password if necessary
         if password.strip() == '':
             password = generate_password(chars='loweralphanumeric')
@@ -1309,8 +1308,9 @@ def import_users(request):
         society_abbreviations = society_abbreviations.strip()
         
         # DEBUG:
-        logging.warning('Imported user first_name is too long (>30 chars), "%s" truncated to "%s"' % (first_name, first_name[:30]))
-        first_name = first_name[:30]
+        if len(first_name) > 30:
+            logging.warning('Imported user first_name is too long (>30 chars), "%s" truncated to "%s"' % (first_name, first_name[:30]))
+            first_name = first_name[:30]
         
         if role != Profile.ROLE_ADMIN and role != Profile.ROLE_SOCIETY_MANAGER:
             raise Exception('Unknown role "%s"' % role)
