@@ -1182,6 +1182,108 @@ def assign_resources(request):
     })
 
 @login_required
+def import_users(request):
+    permissions.require_superuser(request)
+    
+    filename = relpath(__file__, '../data/v.7/users.csv')
+    
+    #user_manager = UserManager2()
+    #
+    #if False:
+    #    # Delete all existing society managers
+    #    user_manager.get_society_managers().delete()
+    #    
+    #    # Delete all admins
+    #    #admins = user_manager.get_admins()
+    #    ## DEBUG: skip the default testing users
+    #    #admins = admins.exclude(username='admin')
+    #    ## Delete all existing admins
+    #    #admins.delete()
+    #    
+    #else:
+    
+    # DEBUG: delete all users except the debug ones
+    User.objects.exclude(username__in=['soc', 'multisoc', 'admin']).delete()
+    
+    row_count = 0
+    users_created = 0
+    society_managers_created = 0
+    admins_created = 0
+    
+    (file, reader) = _open_unicode_csv_reader(filename)
+    
+    for row in reader:
+        
+        #Username,Password,First Name,Last Name,Email,Role,Society Abbreviations
+        username, password, first_name, last_name, email, role, society_abbreviations = row
+
+        username = username.strip()
+        password = password.strip()
+        first_name = first_name.strip()
+        last_name = last_name.strip()
+        email = email.strip()
+        role = role.strip()
+        society_abbreviations = society_abbreviations.strip()
+        
+        # DEBUG:
+        logging.warning('Imported user first_name is too long (>30 chars), "%s" truncated to "%s"' % (first_name, first_name[:30]))
+        first_name = first_name[:30]
+        
+        if role != Profile.ROLE_ADMIN and role != Profile.ROLE_SOCIETY_MANAGER:
+            raise Exception('Unknown role "%s"' % role)
+        if username == '':
+            raise Exception('Username is blank')
+        if email == '':
+            raise Exception('Email is blank')
+        
+        society_abbreviations = [society_abbreviation.strip() for society_abbreviation in _split_no_empty(society_abbreviations, ',')]
+        
+        societies = []
+        for society_abbreviation in society_abbreviations:
+            society = Society.objects.getFromAbbreviation(society_abbreviation)
+            if society is None:
+                raise Exception('Unknown society "%s"' % society_abbreviation)
+            societies.append(society)
+        
+        user = User.objects.create_user(
+            username=username,
+            email=email,
+            password=password,
+        )
+        user.first_name = first_name
+        user.last_name = last_name
+        user.is_superuser = (role == Profile.ROLE_ADMIN)
+        user.is_staff = True
+        user.societies = societies
+        user.save()
+        
+        profile = user.get_profile()
+        profile.role = role
+        profile.save()
+        
+        users_created += 1
+        if role == Profile.ROLE_ADMIN:
+            admins_created += 1
+        elif role == Profile.ROLE_SOCIETY_MANAGER:
+            society_managers_created += 1
+        
+        #if not row_count % 10:
+        #    print '  Reading row %d' % row_count
+            
+        row_count += 1
+            
+    file.close()
+    
+    return render(request, 'site_admin/import_users.html', {
+        'results': {
+            'row_count': row_count,
+            'users_created': users_created,
+            'admins_created': admins_created,
+            'society_managers_created': society_managers_created,
+        }
+    })
+    
+@login_required
 def list_sectors(request):
     permissions.require_superuser(request)
     
@@ -1502,108 +1604,6 @@ def delete_user(request, user_id):
     User.objects.get(id=user_id).delete()
     return HttpResponsePermanentRedirect(reverse('admin_users'))
     
-@login_required
-def import_users(request):
-    permissions.require_superuser(request)
-    
-    filename = relpath(__file__, '../data/v.7/users.csv')
-    
-    #user_manager = UserManager2()
-    #
-    #if False:
-    #    # Delete all existing society managers
-    #    user_manager.get_society_managers().delete()
-    #    
-    #    # Delete all admins
-    #    #admins = user_manager.get_admins()
-    #    ## DEBUG: skip the default testing users
-    #    #admins = admins.exclude(username='admin')
-    #    ## Delete all existing admins
-    #    #admins.delete()
-    #    
-    #else:
-    
-    # DEBUG: delete all users except the debug ones
-    User.objects.exclude(username__in=['soc', 'multisoc', 'admin']).delete()
-    
-    row_count = 0
-    users_created = 0
-    society_managers_created = 0
-    admins_created = 0
-    
-    (file, reader) = _open_unicode_csv_reader(filename)
-    
-    for row in reader:
-        
-        #Username,Password,First Name,Last Name,Email,Role,Society Abbreviations
-        username, password, first_name, last_name, email, role, society_abbreviations = row
-
-        username = username.strip()
-        password = password.strip()
-        first_name = first_name.strip()
-        last_name = last_name.strip()
-        email = email.strip()
-        role = role.strip()
-        society_abbreviations = society_abbreviations.strip()
-        
-        # DEBUG:
-        logging.warning('Imported user first_name is too long (>30 chars), "%s" truncated to "%s"' % (first_name, first_name[:30]))
-        first_name = first_name[:30]
-        
-        if role != Profile.ROLE_ADMIN and role != Profile.ROLE_SOCIETY_MANAGER:
-            raise Exception('Unknown role "%s"' % role)
-        if username == '':
-            raise Exception('Username is blank')
-        if email == '':
-            raise Exception('Email is blank')
-        
-        society_abbreviations = [society_abbreviation.strip() for society_abbreviation in _split_no_empty(society_abbreviations, ',')]
-        
-        societies = []
-        for society_abbreviation in society_abbreviations:
-            society = Society.objects.getFromAbbreviation(society_abbreviation)
-            if society is None:
-                raise Exception('Unknown society "%s"' % society_abbreviation)
-            societies.append(society)
-        
-        user = User.objects.create_user(
-            username=username,
-            email=email,
-            password=password,
-        )
-        user.first_name = first_name
-        user.last_name = last_name
-        user.is_superuser = (role == Profile.ROLE_ADMIN)
-        user.is_staff = True
-        user.societies = societies
-        user.save()
-        
-        profile = user.get_profile()
-        profile.role = role
-        profile.save()
-        
-        users_created += 1
-        if role == Profile.ROLE_ADMIN:
-            admins_created += 1
-        elif role == Profile.ROLE_SOCIETY_MANAGER:
-            society_managers_created += 1
-        
-        #if not row_count % 10:
-        #    print '  Reading row %d' % row_count
-            
-        row_count += 1
-            
-    file.close()
-    
-    return render(request, 'site_admin/import_users.html', {
-        'results': {
-            'row_count': row_count,
-            'users_created': users_created,
-            'admins_created': admins_created,
-            'society_managers_created': society_managers_created,
-        }
-    })
-
 @login_required
 def create_society_users_export(request):
     'Create an export file with one user for each society.  Use society abbreviation as the username, generate a random password.'
