@@ -766,16 +766,18 @@ MultiSearch.prototype.addSelectedOption = function(option, preload) {
                 
             }
             
-            option.removeElem = $('<td><a href="#remove_' + option.value + '" class="remove-link">[x]</a></td>').appendTo(option.elem);
-            option.removeElem.find('a').data('value', option.value);
-            option.removeElem.find('a').click(function(e) {
+            option.removeCellElem = $('<td><a href="#remove_' + option.value + '" class="remove-link">[x]</a></td>').appendTo(option.elem);
+            option.removeLinkElem = option.removeCellElem.find('a');
+            
+            option.removeLinkElem.data('value', option.value);
+            option.removeLinkElem.click(function(e) {
                 // Remove the option when clicked
                 multiSearch.removeSelectedOptionByValue($(this).data('value'));
                 return false;
             });
             if (this.options.removeLinkFlyoverText != null) {
                 // Attach a flyover to the remove element
-                Flyover.attach(option.removeElem, {content:this.options.removeLinkFlyoverText});
+                Flyover.attach(option.removeLinkElem, {content:this.options.removeLinkFlyoverText});
             }
             
         } else {
