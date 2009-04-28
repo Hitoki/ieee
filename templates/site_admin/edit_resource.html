@@ -27,7 +27,8 @@
                 // Do nothing
                 
             } else if (action == 'removed_multisearch_option') {
-                // Do nothing
+                // Hide any leftover flyovers
+                Flyover.hide();
                 
             } else if (action == 'multisearch_create_new_tag') {
                 {% if society_id %}
