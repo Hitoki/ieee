@@ -87,9 +87,14 @@ var Lightbox = {
                 // Received plain HTML, just render
                 this.lightboxContent.html(data);
                 
-                // Attach any multsearch objects
+                // Attach any multisearch objects
                 if (attachMultiSearches) {
                     attachMultiSearches(this.lightboxContent);
+                }
+                
+                // Attach any flyover objects
+                if (attachFlyovers) {
+                    attachFlyovers(this.lightboxContent);
                 }
                 
                 // Hook into any forms

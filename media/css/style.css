@@ -686,44 +686,6 @@ table.vert-center td {
 
 /* */
 
-/*
-#ie-warning {
-    width:100%;
-    height:100%;
-    position:absolute;
-    top:0px;
-    left:0px;
-    z-index:100;
-    bborder:1px solid green;
-}
-
-#ie-warning .ie-warning-background {
-    width:100%;
-    height:100%;
-    background:gray;
-    position:absolute;
-    top:0px;
-    left:0px;
-    filter:alpha(opacity=90);
-    bborder:1px solid red;
-}
-
-#ie-warning .ie-warning-content {
-    width:60%;
-    height:60%;
-    margin:10% 20%;
-    background:white;
-    z-index:2;
-    position:absolute;
-    top:0px;
-    left:0px;
-    border:2px outset gray;
-}
-
-#ie-warning .ie-warning-pad {
-    padding:1em 2em;
-}
-*/
 
 .browser-warning {
     width:100%;
