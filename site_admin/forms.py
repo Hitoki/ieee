@@ -43,7 +43,7 @@ class CreateTagForm(Form):
     name = CharField(max_length=100, label='Tag Name')
     sectors = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), label='Sector', widget=SelectMultiple(attrs={'size':3}))
     filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultipleColumns(columns=2), required=False, label='Filters')
-    related_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags')
+    related_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags', widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from Tag'))
 
 CreateTagForm = autostrip(CreateTagForm)
 
