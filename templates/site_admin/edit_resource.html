@@ -124,7 +124,7 @@
             {% ifequal resource.resource_type.name "standard" %}
                 <tr>
                     <th>
-                        <label for="id_standard_status">{{ form.standard_status.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title='Standard Status'>[?]</span>:</label>
+                        <label for="id_standard_status">{{ form.standard_status.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title='IEEE-provided status of the Standard: Published, Withdrawn or Project (active PAR)'>[?]</span>:</label>
                     </th>
                     <td>
                         {{ form.standard_status.errors }}
@@ -143,7 +143,7 @@
             </tr>
             <tr>
                 <th>
-                    <label for="id_keywords">{{ form.keywords.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title="Keywords">[?]</span>:</label>
+                    <label for="id_keywords">{{ form.keywords.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title="IEEE-provided keywords in the resource libraries. These may serve as Tag suggestions.">[?]</span>:</label>
                 </th>
                 <td>
                     {{ form.keywords.errors }}
