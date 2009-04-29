@@ -5,7 +5,6 @@
     <script type="text/javascript">
         
         window.notify = function(action, data) {
-            
             if (action == 'created_tag') {
                 // Just created a tag, add it to the field
                 var multisearch = $('#multisearch_nodes').data('multisearch');
@@ -20,16 +19,6 @@
                 // Trigger a refresh of the popup
                 multisearch.updatePopup();
                 
-            } else if (action == 'added_multisearch_option') {
-                // Do nothing
-                
-            } else if (action == 'preloaded_multisearch_option') {
-                // Do nothing
-                
-            } else if (action == 'removed_multisearch_option') {
-                // Hide any leftover flyovers
-                Flyover.hide();
-                
             } else if (action == 'multisearch_create_new_tag') {
                 {% if society_id %}
                     Lightbox.show('{% url admin_create_tag %}?default_tag_name=' + escape(data.tag_name) + '&society_id=' + {{ society_id }} + '&add_to_society=0', {
@@ -40,11 +29,7 @@
                         closeOnClickOutside: false
                     });
                 {% endif %}
-                
-            } else {
-                alert('notify(): unknown action "' + action + '"');
             }
-        
         }
 
     </script>

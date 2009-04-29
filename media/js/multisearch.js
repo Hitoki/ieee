@@ -784,6 +784,9 @@ MultiSearch.prototype.addSelectedOption = function(option, preload) {
             option.removeLinkElem.click(function(e) {
                 // Remove the option when clicked
                 multiSearch.removeSelectedOptionByValue($(this).data('value'));
+                if (multiSearch.options.removeLinkFlyoverText != null) {
+                    Flyover.hide();
+                }
                 return false;
             });
             if (this.options.removeLinkFlyoverText != null) {
