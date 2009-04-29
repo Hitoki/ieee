@@ -43,7 +43,7 @@ class CreateTagForm(Form):
     name = CharField(max_length=100, label='Tag Name')
     sectors = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), label='Sector', widget=SelectMultiple(attrs={'size':3}))
     filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultipleColumns(columns=2), required=False, label='Filters')
-    related_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags', widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from Tag'))
+    related_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags', widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from Tag', blur_text='Type a few characters to bring up matching tags'))
 
 CreateTagForm = autostrip(CreateTagForm)
 
@@ -54,7 +54,7 @@ class EditTagForm(Form):
     societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies', label='Societies')
     filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultipleColumns(columns=2), required=False, label='Filters')
     #num_resources = models.IntegerField(required=False, label='Resources')
-    related_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags with this Tag' ,widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from Tag'))
+    related_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags with this Tag' ,widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from Tag', blur_text='Type a few characters to bring up matching tags'))
 
 EditTagForm = autostrip(EditTagForm)
 
@@ -93,7 +93,7 @@ class EditResourceForm(Form):
     ieee_id = CharField(required=False, label='ID')
     description = CharField(widget=Textarea, max_length=1000, required=False)
     url = CharField(max_length=1000, required=False, label='URL')
-    nodes = MultiSearchField(label='Tags', model=Node, search_url='/admin/ajax/search_tags', widget_label='Associate Tags with this Resource', show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from Resource'))
+    nodes = MultiSearchField(label='Tags', model=Node, search_url='/admin/ajax/search_tags', widget_label='Associate Tags with this Resource', show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from Resource', blur_text='Type a few characters to bring up matching tags'))
     societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies', label='Societies')
     priority_to_tag = BooleanField(required=False)
     standard_status = ChoiceField(choices=_make_choices(Resource.STANDARD_STATUSES), required=False)

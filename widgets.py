@@ -17,7 +17,7 @@ class MultiSearchWidget(widgets.Widget):
     society_id = None
     exclude_tag_id = None
     
-    def __init__(self, remove_link_flyover_text=None, attrs=None):
+    def __init__(self, remove_link_flyover_text=None, blur_text=None, attrs=None):
         #print '__init__()'
         #print '  attrs:', attrs
         
@@ -32,6 +32,7 @@ class MultiSearchWidget(widgets.Widget):
             self.classMetadata = None
         
         self.remove_link_flyover_text = remove_link_flyover_text
+        self.blur_text = blur_text
         
         super(MultiSearchWidget, self).__init__(attrs)
         
@@ -122,12 +123,18 @@ class MultiSearchWidget(widgets.Widget):
         if self.remove_link_flyover_text is not None:
             classString += ', removeLinkFlyoverText:\'%s\'' % self.remove_link_flyover_text
         
+        if self.blur_text is not None:
+            blur_text = self.blur_text
+        else:
+            blur_text = 'Type a few characters to bring up matching %s' % name
+            
+        
         if self.classMetadata is not None:
             classString += ', ' + self.classMetadata
         
         output.append('<div id="%s" class="multi-search { %s } %s">' % ('multisearch_'+name, classString, self.className ))
         output.append('    <input type="hidden" name="%s" value="%s" class="multi-search-data" />' % (name, escape(initial_data)))
-        output.append('    %s: <input class="multi-search-input blur-text {text:\'(Type a few characters to bring up matching %s)\', blurClass:\'multi-search-input-blur\' }" />' % (widget_label, name))
+        output.append('    %s: <input class="multi-search-input blur-text {text:\'(%s)\', blurClass:\'multi-search-input-blur\' }" />' % (widget_label, blur_text))
         output.append('    <div class="multi-search-selected-options">')
         output.append('    </div>')
         output.append('</div>')
