@@ -81,7 +81,12 @@ table.main td.center .center-pad {
     left:19px;
 }
 
-#header a.home img{
+#header a.home {
+    float:left;
+    display:block;
+}
+
+#header a.home img {
     border: none;
 }
 
@@ -96,14 +101,14 @@ table.main td.center .center-pad {
 }
 
 #header .floating {
-    display:block;
-    position:absolute;
-    right:5px;
-    z-index:2;
-    top:15px;
+    float:right;
     font-size:75%;
     color:gray;
     text-decoration:none;
+    margin-top:15px;
+    margin-right:15px;
+    text-align:right;
+    line-height:1.8em;
 }
 
 #header .floating a {
@@ -324,12 +329,12 @@ ul#view-header li {
     margin:1em 0em;
 }
 
-#feedback-bar {
+.feedback-bar {
     font-size:80%;
     color:gray;
 }
 
-#feedback-bar a {
+.feedback-bar a {
     /*color:#666;*/
     color:gray;
     font-weight:bold;

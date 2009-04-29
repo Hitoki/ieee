@@ -156,9 +156,6 @@ logging.basicConfig(
 
 # Check if the logger has been setup yet, otherwise we create a new handler everytime settings.py is loaded
 if not hasattr(logging, "is_setup"):
-    
-    #print 'setting up logger'
-    
     # Add the file handler
     file_logger = logging.FileHandler(LOG_FILENAME)
     file_logger.setLevel(logging.DEBUG)

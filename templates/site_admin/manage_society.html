@@ -517,6 +517,26 @@
                                     Questions still not answered? Email us at <a href="mailto:technav@ieee.org">technav@ieee.org</a>.
                                 </p>
                                 
+                                <br/>
+                                
+                                <h2>Survey</h2>
+                                <p>
+                                    Click here to <a href="#" onclick="window.open('http://rneville.wufoo.com/forms/q7x3z9/',  null, 'height=970, width=680, toolbar=0, location=0, status=1, scrollbars=1'); return false" title="IEEE Technology Navigator Survey">fill out a survey</a> about the IEEE Technology Navigator.
+                                </p>
+                                {% comment %}
+                                    <!-- Embedded version of the survey -->
+                                    <script type="text/javascript">var host = (("https:" == document.location.protocol) ? "https://secure." : "http://");document.write(unescape("%3Cscript src='" + host + "wufoo.com/scripts/embed/form.js' type='text/javascript'%3E%3C/script%3E"));</script>
+                                    <script type="text/javascript">
+                                    var q7x3z9 = new WufooForm();
+                                    q7x3z9.initialize({
+                                    'userName':'rneville',
+                                    'formHash':'q7x3z9',
+                                    'autoResize':true,
+                                    'height':'970'});
+                                    q7x3z9.display();
+                                    </script>
+                                {% endcomment %}
+                                
                             </div>
                         {% endif %}
                         
@@ -529,8 +549,8 @@
                 {# </form> #}
                 
                 
-                <div id="feedback-bar">
-                    Comments, Suggestions? <a href="{% url feedback %}" class="lightbox">Send Feedback</a>
+                <div class="feedback-bar">
+                    Comments, Suggestions? <a href="{% url feedback %}" class="lightbox">Send Feedback</a> or <a href="#" onclick="window.open('http://rneville.wufoo.com/forms/q7x3z9/',  null, 'height=970, width=680, toolbar=0, location=0, status=1, scrollbars=1'); return false" title="IEEE Technology Navigator Survey">Complete a Survey</a>
                 </div>
                 
             </td>

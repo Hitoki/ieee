@@ -354,8 +354,12 @@ ul.checkbox-select-multiple-columns-3 {
     color:white;
 }
 
-#feedback-bar {
+.feedback-bar {
     margin-top:2em;
+}
+
+.header-feedback-bar {
+    float:right;
 }
 
 .society-login-banner {
