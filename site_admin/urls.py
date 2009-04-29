@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     url(r'^$', views.home, name='admin_home'),
     url(r'^home_societies_list$', views.home_societies_list, name='admin_home_societies_list'),
     url(r'^missing_resource/(?P<society_id>\d+)$', views.missing_resource, name='missing_resource'),
+    url(r'^permission_denied$', views.permission_denied, name='permission_denied'),
     
     url(r'^update_tag_counts$', views.update_tag_counts, name='admin_update_tag_counts'),
     url(r'^import_tags/(?P<source>.+)$', views.import_tags, name='admin_import_tags'),

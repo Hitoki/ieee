@@ -1,0 +1,11 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>Permission Denied</h1>
+    
+    <p>
+        You do not have permission to access that page.  You can try going <a href="javascript:history.back();">back</a> and trying again, or you can go to the <a href="{% url admin_home %}">home page</a>.
+    </p>
+    
+{% endblock %}

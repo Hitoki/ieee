@@ -460,6 +460,10 @@ def missing_resource(request, society_id):
     })
 
 @login_required
+def permission_denied(request):
+    return render(request, 'site_admin/permission_denied.html')
+
+@login_required
 def update_tag_counts(request):
     permissions.require_superuser(request)
     
@@ -1854,7 +1858,12 @@ def _get_paged_tags(society, tag_sort, tag_page):
 
 @login_required
 def manage_society(request, society_id):
-    permissions.require_society_user(request, society_id)
+    try:
+        permissions.require_society_user(request, society_id)
+    except Exception, e:
+        # Give a friendly error page with a link to the correct home page
+        # TODO: Better fix for this later
+        return HttpResponseRedirect(reverse('permission_denied'))
     
     _RESOURCES_PER_PAGE = 50
     
