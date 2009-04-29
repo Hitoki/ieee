@@ -178,6 +178,14 @@ function MultiSearch(container, options) {
     });
     */
     
+    // Events
+    this.subscribers = {
+        'preloaded_option': [],
+        'added_option': [],
+        'removed_option': [],
+        'click_create_new_tag': []
+    };
+   
     this.container.data('multisearch', this);
     
     $(document).click(function(e) {
@@ -450,6 +458,9 @@ MultiSearch.prototype.onGetOptions = function(data) {
                         tag_name: data.search_for
                     });
                 }
+                multiSearch._notify('click_create_new_tag', {
+                    tag_name: data.search_for
+                });
                 return false;
             });
         }
@@ -828,18 +839,26 @@ MultiSearch.prototype.addSelectedOption = function(option, preload) {
     }
     
     // Notify the parent window if applicable
-    if (window.notify != undefined) {
-        if (preload) {
+    if (preload) {
+        if (window.notify != undefined) {
             window.notify('preloaded_multisearch_option', {
                 multisearch: this,
                 option: option
             });
-        } else {
+        }
+        this._notify('preloaded_option', {
+            option: option
+        });
+    } else {
+        if (window.notify != undefined) {
             window.notify('added_multisearch_option', {
                 multisearch: this,
                 option: option
             });
         }
+        this._notify('added_option', {
+            option: option
+        });
     }
 }
 
@@ -869,6 +888,9 @@ MultiSearch.prototype.removeSelectedOptionByValue = function(value) {
             option: option
         });
     }
+    this._notify('removed_option', {
+        option: option
+    });
 }
 
 MultiSearch.prototype.onKeyEscape = function(e) {
@@ -910,6 +932,34 @@ MultiSearch.prototype.closePopup = function() {
 MultiSearch.prototype.getNumSelectedOptions = function() {
     return this.selectedOptions.length;
 }
+
+
+// Allows another object to subscribe to this object's events.
+// @param event - the name of the event.
+// @param func - the callback function.  Will be called like:
+//   func([source_object], [event_name], [optional_event_data]);
+// 
+MultiSearch.prototype.subscribe = function(event, func) {
+    if (!event in this.subscribers) {
+        alert('MultiSearch.subscribe(): Unknown event "' + event + '"');
+        return;
+    }
+    this.subscribers[event].push(func);
+},
+
+// Notify all subscribers of an event.
+MultiSearch.prototype._notify = function(event, data) {
+    if (!event in this.subscribers) {
+        alert('MultiSearch.notify(): Unknown event "' + event + '"');
+        return;
+    }
+    for (var i=0; i<this.subscribers[event].length; i++) {
+        var func = this.subscribers[event][i];
+        func(this, event, data);
+    }
+}
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 

@@ -95,40 +95,79 @@
                 refreshTagsTable();
                 
             } else if (action == 'added_multisearch_option') {
-                $.post('{% url ajax_update_society %}', {
-                    action: 'add_tag',
-                    society_id: {{ society.id }},
-                    tag_id: data.option.value
-                });
-                updateTagCount()
-                
-                // Update the tags table
-                refreshTagsTable();
+                // Ignore this event
+                //log('event added_multisearch_option ignored');
                 
             } else if (action == 'preloaded_multisearch_option') {
-                updateTagCount()
+                // Ignore this event
+                //log('event preloaded_multisearch_option ignored');
                 
             } else if (action == 'removed_multisearch_option') {
-                $.post('{% url ajax_update_society %}', {
-                    action: 'remove_tag',
-                    society_id: {{ society.id }},
-                    tag_id: data.option.value
-                });
-                updateTagCount()
-                
-                // Update the tags table
-                refreshTagsTable();
+                // Ignore this event
+                //log('event removed_multisearch_option ignored');
                 
             } else if (action == 'multisearch_create_new_tag') {
                 Lightbox.show('{% url admin_create_tag %}?default_tag_name=' + escape(data.tag_name) + '&society_id=' + {{ society.id }}, {
                     closeOnClickOutside: false
                 });
                 
+                
             } else {
                 alert('notify(): unknown action "' + action + '"');
             }
         
         }
+        
+        
+        function attachMultisearch() {
+            // Find the tag multisearch
+            var multisearch_tags = $('#multisearch_tags').data('multisearch');
+            
+            if (multisearch_tags != undefined)  {
+                // Multisearch is ready, attach events
+                
+                multisearch_tags.subscribe('added_option', function(multisearch, event, data) {
+                    //log('event added_option');
+                    $.post('{% url ajax_update_society %}', {
+                        action: 'add_tag',
+                        society_id: {{ society.id }},
+                        tag_id: data.option.value
+                    });
+                    updateTagCount()
+                    
+                    // Update the tags table
+                    refreshTagsTable();
+                });
+                
+                multisearch_tags.subscribe('preloaded_option', function(multisearch, event, data) {
+                    //log('event preloaded_option');
+                    updateTagCount()
+                });
+                
+                multisearch_tags.subscribe('removed_option', function(multisearch, event, data) {
+                    //log('event removed_option');
+                    $.post('{% url ajax_update_society %}', {
+                        action: 'remove_tag',
+                        society_id: {{ society.id }},
+                        tag_id: data.option.value
+                    });
+                    updateTagCount()
+                    
+                    // Update the tags table
+                    refreshTagsTable();
+                });
+                
+            } else {
+                // Multisearch is not ready yet, wait and try again
+                setTimeout(attachMultisearch, 50);
+            }
+        }
+        
+        $(function() {
+            attachMultisearch();
+        });
+
+
 
     </script>
 
