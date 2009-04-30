@@ -1057,9 +1057,7 @@ def import_standards(request, source):
     start = time.time()
     
     #filename = relpath(__file__, '../data/comsoc/standards.csv')
-    if source == 'sample':
-        filename = relpath(__file__, '../data/sample standards.csv')
-    elif source == 'v.7':
+    if source == 'v.7':
         filename = relpath(__file__, '../data/v.7/2009-04-23b - standards.csv')
     else:
         raise Exception('Unknown source "%s".' % source)
@@ -1076,68 +1074,6 @@ def import_standards(request, source):
         'results': results,
     })
 
-@login_required
-def assign_filters(request):
-    permissions.require_superuser(request)
-    
-    start = time.time()
-    
-    tagsAssignedTo = 0
-    filtersAssigned = 0
-    
-    filters = [filter for filter in Filter.objects.all()]
-    
-    tags = Node.objects.getTags()
-    #print 'len(tags):', len(tags)
-    
-    for tag in tags:
-        filters1 = _random_slice_list(filters, 1, 4)
-        for filter in filters1:
-            tag.filters.add(filter)
-            filtersAssigned += 1
-        tagsAssignedTo += 1
-            
-    return render(request, 'site_admin/assign_filters.html', {
-        'pageTime': time.time()-start,
-        'tagsAssignedTo': tagsAssignedTo,
-        'filtersAssigned': filtersAssigned,
-    })
-
-@login_required
-def assign_related_tags(request):
-    permissions.require_superuser(request)
-    
-    start = time.time()
-    
-    tag_count = 0
-    
-    # First, delete all related tags
-    tags = Node.objects.getTags()
-    for tag in tags:
-        tag.related_tags = []
-        tag.save()
-    
-    # Now assign related tags
-    tags = Node.objects.getTags()
-    for tag in tags:
-        tag.related_tags = Node.objects.get_random_related_tags(tag, 3)
-        tag.save()
-        
-        tag_count += 1
-        #if not tag_count % 10:
-        #    print '  Tag %d' % tag_count
-        
-    # Now update the tag counts
-    tags = Node.objects.getTags()
-    for tag in tags:
-        tag.num_related_tags = tag.related_tags.count()
-        tag.save()
-            
-    return render(request, 'site_admin/assign_related_tags.html', {
-        'page_time': time.time()-start,
-        'tag_count': tag_count,
-    })
-
 def _get_random_from_sequence(seq, num):
     results = []
     used_indexes = []
@@ -1148,64 +1084,6 @@ def _get_random_from_sequence(seq, num):
             results.append(seq[i])
             used_indexes.append(i)
     return results
-
-@login_required
-def assign_resources(request):
-    permissions.require_superuser(request)
-    
-    start = time.time()
-    
-    #print 'assign_resources()'
-    
-    if True:
-        # First, disassociate any resources
-        #print '  removing resources'
-        tags = Node.objects.getTags()
-        tag_count = 0
-        for tag in tags:
-            tag.resources = []
-            tag.save()
-            tag_count += 1
-            #if not tag_count % 50:
-            #    print '  Tag %d' % tag_count
-    
-    resources = Resource.objects.all()
-    
-    #print '  assigning resources'
-    # Now assign resources
-    tags = Node.objects.getTags()
-    tag_count = 0
-    resources_assigned = 0
-    for tag in tags:
-        #print '    tag.name:', tag.name
-        #print '    count = random.randint(1, 5)'
-        count = random.randint(1, 12)
-        #print '    tag.resources = Resource.objects.get_random(count)'
-        #tag.resources = Resource.objects.get_random(count)
-        
-        #print '    tag.resources = _get_random_from_sequence(resources, count)'
-        tag.resources = _get_random_from_sequence(resources, count)
-        
-        #print '    tag.num_resources = tag.resources.count()'
-        tag.num_resources = tag.resources.count()
-        #print '    tag.save()'
-        tag.save()
-        #print '    resources_assigned += count'
-        resources_assigned += count
-        
-        tag_count += 1
-        #if not tag_count % 10:
-        #    print '  Tag %d' % tag_count
-    
-    avg_resources_per_tag = resources_assigned / tag_count
-    
-    return render(request, 'site_admin/assign_resources.html', {
-        'page_time': time.time()-start,
-        'tag_count': tag_count,
-        'resources_assigned': resources_assigned,
-        'avg_resources_per_tag': avg_resources_per_tag,
-    })
-
 
 @login_required
 def fix_user_import(request):
@@ -1746,69 +1624,6 @@ def delete_user(request, user_id):
     User.objects.get(id=user_id).delete()
     return HttpResponsePermanentRedirect(reverse('admin_users'))
     
-#@login_required
-#def create_society_users_export(request):
-#    'Create an export file with one user for each society.  Use society abbreviation as the username, generate a random password.'
-#    
-#    out_filename = relpath(__file__, '../data/v.7/society_users_export.csv')
-#    out_file = codecs.open(out_filename, 'w', encoding='utf-8')
-#    
-#    # Write the header row
-#    out_row = '"%s","%s","%s","%s","%s","%s","%s"\r\n' % (
-#        'Username',
-#        'Password',
-#        'First Name',
-#        'Last Name',
-#        'Email',
-#        'Role',
-#        'Society Abbreviations',
-#    )
-#    out_file.write(out_row)
-#    #username, password, first_name, last_name, email, role, society_names = row
-#
-#    users_created = 0
-#    societies = Society.objects.all()
-#    for society in societies:
-#        usernane = _escape_csv_field(society.abbreviation)
-#        #password = _escape_csv_field(nicepass())
-#        password = _escape_csv_field(generate_password(chars='loweralphanumeric'))
-#        first_name = _escape_csv_field(society.name)
-#        last_name = _escape_csv_field('User')
-#        email = _escape_csv_field('')
-#        role = _escape_csv_field(Profile.ROLE_SOCIETY_MANAGER)
-#        society_abbrevations = _escape_csv_list([society.abbreviation])
-#        
-#        out_row = '%s,%s,%s,%s,%s,%s,%s\r\n' % (
-#            usernane,
-#            password,
-#            first_name,
-#            last_name,
-#            email,
-#            role,
-#            society_abbrevations,
-#        )
-#        out_file.write(out_row)
-#        users_created += 1
-#    
-#    out_file.close()
-#    
-#    def htmlentities(value):
-#        value = value.replace('&', '&amp;')
-#        value = value.replace('<', '&lt;')
-#        value = value.replace('>', '&gt;')
-#        return value
-#    
-#    out_file_contents = codecs.open(out_filename, 'r', encoding='utf-8').read()
-#    out_file_contents = '<pre>%s</pre>' % htmlentities(out_file_contents)
-#    
-#    return render(request, 'site_admin/results.html', {
-#        'page_title': 'Create Society Users Export',
-#        'results': {
-#            'users_created': users_created,
-#            'out_file_contents': out_file_contents,
-#        }
-#    })
-
 @login_required
 def societies(request):
     permissions.require_superuser(request)
