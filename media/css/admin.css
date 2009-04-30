@@ -426,3 +426,8 @@ ul.pages li a.selected
     list-style:disc;
 }
 
+/* */
+
+.resource-description-flyover-container {
+    max-width:25%;
+}
