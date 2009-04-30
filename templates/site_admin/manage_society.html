@@ -233,7 +233,7 @@
                         </ul>
                         
                         <!-- Resources Tab -->
-                        <div id="resources-tab">
+                        <div id="resources-tab" class="nootabs-tab">
                             <ul class="pages">
                                 <li class="paginationTitle">Pages:</li>
                                 {% pages resource_page num_resource_pages resource_page_url %}
@@ -468,7 +468,7 @@
                         </div>
                         
                         <!-- Tags Tab -->
-                        <div id="tags-tab">
+                        <div id="tags-tab" class="nootabs-tab">
                             <input type="button" id="create-tag-float" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ tags_tab_url|urlencode }}';" value="Create New Tag" />
                             {% eval form['tags'] %}
                             
@@ -481,25 +481,20 @@
                         
                         {% if DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB %}
                             <!-- Help Tab -->
-                            <div id="help-tab">
+                            <div id="help-tab" class="nootabs-tab">
                                 <h2>Help</h2>
                                 
                                 <p>
                                     Need a quick orientation to the Administrative Interface for Technology Navigator? Watch this short video.
                                 </p>
                                 
-                                <object id='stU09QREBIR1pXQVhfW1JbX1BU' width='425' height='344' type='application/x-shockwave-flash' data='http://www.screentoaster.com/swf/STPlayer.swf'  codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0'>
-                                    <param name='movie' value='http://www.screentoaster.com/swf/STPlayer.swf'/>
-                                    <param name='allowFullScreen' value='true'/>
-                                    <param name='allowScriptAccess' value='always'/>
-                                    <param name='flashvars' value='video=stU09QREBIR1pXQVhfW1JbX1BU'/>
-                                    <param name='wmode' value='opaque'/>
+                                <object id='stU09QREBIR11eQFtbUlNYUlJV' width='425' height='344' type='application/x-shockwave-flash' data='http://www.screentoaster.com/swf/STPlayer.swf' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0'>
+                                        <param name='movie' value='http://www.screentoaster.com/swf/STPlayer.swf'/>
+                                        <param name='allowFullScreen' value='true'/>
+                                        <param name='allowScriptAccess' value='always'/>
+                                        <param name='flashvars' value='video=stU09QREBIR11eQFtbUlNYUlJV'/>
+                                        <param name='wmode' value='opaque'/>
                                 </object>
-                                <!--
-                                <div style='width: 425px; text-align: right;'>
-                                    <a href='http://www.screentoaster.com/'>Screencasts and videos online</a>
-                                </div>
-                                -->
                                 
                                 <p>
                                     If you'd like more context, or the video isn't working for you, please read through our Overview and Walkthrough documents.

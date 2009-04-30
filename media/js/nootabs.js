@@ -331,7 +331,6 @@ function convertTabs() {
 }
 
 $(function() {
-    //console.log('loading tabs');
     $('.nootabs').each(function() {
         new Nootab(this);
     });

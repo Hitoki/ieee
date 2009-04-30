@@ -431,3 +431,8 @@ ul.pages li a.selected
 .resource-description-flyover-container {
     max-width:25%;
 }
+
+.login-help-video {
+    margin-top:2em;
+    text-align:center;
+}
