@@ -3,6 +3,10 @@
 {% block main_table_content %}
     
     <h1>Edit User</h1>
+    {% if errors %}
+        {{ errors|safe }}
+    {% endif %}
+    
     <form action="{% url admin_save_user %}" method="post">
         <table class="grid">
             {{ form }}

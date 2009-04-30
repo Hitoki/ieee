@@ -1323,6 +1323,10 @@ def import_users(request):
         if email == '':
             raise Exception('Email is blank')
         
+        # Prevent duplicate emails
+        if User.objects.filter(email=email).count() > 0:
+            raise Exception('User email "%s" already exists in the system.' % email)
+        
         society_abbreviations = [society_abbreviation.strip() for society_abbreviation in _split_no_empty(society_abbreviations, ',')]
         
         societies = []
@@ -1654,35 +1658,63 @@ def edit_user(request, user_id=None):
         'user_id': user_id,
         'form': form,
     })
-        
+
+def _errors_to_list(errors):
+    if len(errors) == 0:
+        return None
+    else:
+        result = '<ul class="error">\n'
+        for error in errors:
+            result += '<li>%s</li>\n' % error
+        result += '</ul>\n'
+        return result
+
 @login_required
 def save_user(request):
     permissions.require_superuser(request)
-    
+    user_id = request.POST.get('id', None)
     form = UserForm(request.POST)
-    if not form.is_valid():
-        return render(request, 'site_admin/edit_user.html', {
-            'form': form,
-        })
-    else:
+    errors = []
+    
+    if form.is_valid():
+        
+        # Prevent duplicate emails
         if form.cleaned_data['id'] is None:
-            user = User.objects.create()
+            # New user
+            print 'new user'
+            if User.objects.filter(email=form.cleaned_data['email']).count() > 0:
+                errors.append('The email "%s" already exists in the system.' % form.cleaned_data['email'])
         else:
-            user = User.objects.get(id=form.cleaned_data['id'])
-        user.username = form.cleaned_data['username']
-        user.first_name = form.cleaned_data['first_name']
-        user.last_name = form.cleaned_data['last_name']
-        user.email = form.cleaned_data['email']
-        user.is_staff = form.cleaned_data['is_staff']
-        user.is_superuser = form.cleaned_data['is_superuser']
-        user.societies = form.cleaned_data['societies']
-        user.save()
+            # Existing user, check against *other* users
+            if User.objects.filter(email=form.cleaned_data['email']).exclude(id=form.cleaned_data['id']).count() > 0:
+                errors.append('The email "%s" already exists in the system.' % form.cleaned_data['email'])
         
-        profile = user.get_profile()
-        profile.role = form.cleaned_data['role']
-        profile.save()
+        if len(errors) == 0:
+            # Form is valid
+            if form.cleaned_data['id'] is None:
+                user = User.objects.create()
+            else:
+                user = User.objects.get(id=form.cleaned_data['id'])
+            user.username = form.cleaned_data['username']
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            user.email = form.cleaned_data['email']
+            user.is_staff = form.cleaned_data['is_staff']
+            user.is_superuser = form.cleaned_data['is_superuser']
+            user.societies = form.cleaned_data['societies']
+            user.save()
+            
+            profile = user.get_profile()
+            profile.role = form.cleaned_data['role']
+            profile.save()
+            
+            return HttpResponsePermanentRedirect(reverse('admin_users'))
         
-        return HttpResponsePermanentRedirect(reverse('admin_users'))
+    return render(request, 'site_admin/edit_user.html', {
+        'user_id': user_id,
+        'errors': _errors_to_list(errors),
+        'form': form,
+    })
 
 @login_required
 def delete_user(request, user_id):
