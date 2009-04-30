@@ -1678,10 +1678,19 @@ def save_user(request):
     
     if form.is_valid():
         
+        # Prevent duplicate usernames
+        if form.cleaned_data['id'] is None:
+            # New user
+            if User.objects.filter(username=form.cleaned_data['username']).count() > 0:
+                errors.append('The username "%s" already exists in the system.' % form.cleaned_data['username'])
+        else:
+            # Existing user, check against *other* users
+            if User.objects.filter(username=form.cleaned_data['username']).exclude(id=form.cleaned_data['id']).count() > 0:
+                errors.append('The username "%s" already exists in the system.' % form.cleaned_data['username'])
+        
         # Prevent duplicate emails
         if form.cleaned_data['id'] is None:
             # New user
-            print 'new user'
             if User.objects.filter(email=form.cleaned_data['email']).count() > 0:
                 errors.append('The email "%s" already exists in the system.' % form.cleaned_data['email'])
         else:
@@ -1689,16 +1698,30 @@ def save_user(request):
             if User.objects.filter(email=form.cleaned_data['email']).exclude(id=form.cleaned_data['id']).count() > 0:
                 errors.append('The email "%s" already exists in the system.' % form.cleaned_data['email'])
         
+        # Validate password
+        if form.cleaned_data['id'] is None and form.cleaned_data['password1'] == '' and form.cleaned_data['password2'] == '':
+                errors.append('Please enter a password.')
+        elif form.cleaned_data['password1'] != form.cleaned_data['password2']:
+            errors.append('The passwords did not match.')
+            
         if len(errors) == 0:
             # Form is valid
             if form.cleaned_data['id'] is None:
-                user = User.objects.create()
+                user = User.objects.create(
+                    username = form.cleaned_data['username'],
+                    email = form.cleaned_data['email'],
+                    password = form.cleaned_data['password1'],
+                )
             else:
                 user = User.objects.get(id=form.cleaned_data['id'])
-            user.username = form.cleaned_data['username']
+                user.username = form.cleaned_data['username']
+                user.email = form.cleaned_data['email']
+                
+                if form.cleaned_data['password1'] != '':
+                    user.set_password(form.cleaned_data['password1'])
+                
             user.first_name = form.cleaned_data['first_name']
             user.last_name = form.cleaned_data['last_name']
-            user.email = form.cleaned_data['email']
             user.is_staff = form.cleaned_data['is_staff']
             user.is_superuser = form.cleaned_data['is_superuser']
             user.societies = form.cleaned_data['societies']

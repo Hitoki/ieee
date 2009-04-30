@@ -127,6 +127,8 @@ class UserForm(Form):
     first_name = CharField(max_length=500, required=False)
     last_name = CharField(max_length=500, required=False)
     email = CharField(max_length=1000)
+    password1 = CharField(label='Enter a password:', max_length=100, widget=PasswordInput(), required=False)
+    password2 = CharField(label='Enter the password again:', max_length=100, widget=PasswordInput(), required=False)
     is_staff = BooleanField(required=False)
     is_superuser = BooleanField(required=False)
     role = ChoiceField(choices=Profile.ROLES)
