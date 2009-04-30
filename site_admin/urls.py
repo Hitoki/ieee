@@ -34,6 +34,8 @@ urlpatterns = patterns('',
     url(r'^sectors$', views.list_sectors, name='admin_list_sectors'),
     url(r'^sector/(\d+)$', views.view_sector, name='admin_view_sector'),
     
+    url(r'^list_orphan_tags$', views.list_orphan_tags, name='admin_list_orphan_tags'),
+    
     # Tags
     url(r'^tags$', views.list_tags, name='admin_list_tags'),
     url(r'^tag/(\d+)$', views.view_tag, name='admin_view_tag'),

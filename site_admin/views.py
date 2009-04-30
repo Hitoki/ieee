@@ -1280,11 +1280,21 @@ def view_sector(request, sectorId):
     })
 
 @login_required
+def list_orphan_tags(request):
+    # TODO: check for manager here
+    #permissions.require_superuser(request)
+    tags = Node.objects.get_orphan_tags()
+    return render(request, 'site_admin/list_orphan_tags.html', {
+        'tags': tags,
+    })
+
+@login_required
 def list_tags(request):
     permissions.require_superuser(request)
     
     tags = Node.objects.getTags()
     return render(request, 'site_admin/list_tags.html', {
+        'page_title': 'List Tags',
         'tags': tags,
     })
 

@@ -1,0 +1,41 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block nav_tags %}highlight{% endblock %}
+
+{% block main_table_content %}
+    
+    <h1>Orphan Tags</h1>
+    
+    <p>
+        Found {{ tags|length }} tags.
+    </p>
+    
+    <table class="grid">
+        <tr>
+            <th width="66%">
+                Tag (Sectors)
+            </th>
+            <th width="34%">
+                Societies
+            </th>
+        </tr>
+        {% for tag in tags %}
+            <tr>
+                <td>
+                    <a href="{% url admin_view_tag tag.id %}">{{tag.name}}</a>
+                    (
+                        {% for sector in tag.parents.all %}
+                            <a href="{% url admin_view_sector sector.id %}">{{ sector.name }}</a>{% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                    )
+                </td>
+                <td>
+                    {{ tag.societies.all|join:", " }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+    <a href="{% url admin_create_tag %}?return_url={{ current_url|urlencode }}">Create a new Tag</a>
+    
+{% endblock %}

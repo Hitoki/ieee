@@ -11,7 +11,6 @@
     <h1>Admin Home</h1>
     
     <ul class="section-list">
-        {% if user.is_superuser %}
         <li>
             Stats:
             <ul>
@@ -22,19 +21,21 @@
                 <li>{{ num_resources }} resources</li>
             </ul>
         </li>
-        <li>
-            Django:
-            <ul>
-                <li><a href="/djangoadmin">Django Admin</a></li>
-            </ul>
-        </li>
+            
+        {% if user.is_superuser %}
+            <li>
+                Django:
+                <ul>
+                    <li><a href="/djangoadmin">Django Admin</a></li>
+                </ul>
+            </li>
         {% endif %}
         
         <li>
             Manage:
             <ul>
                 {% if user.is_superuser %}
-                <li><a href="{% url admin_users %}">List Users</a></li>
+                    <li><a href="{% url admin_users %}">List Users</a></li>
                 {% endif %}
                 <li><a href="{% url admin_societies %}">List Societies</a></li>
                 <li><a href="{% url admin_list_sectors %}">List Sectors</a></li>
@@ -45,6 +46,7 @@
                 <li><a href="{% url admin_search_tags %}">Search Tags</a></li>
                 <li><a href="{% url admin_search_societies %}">Search Societies</a></li>
                 <li><a href="{% url admin_search_resources %}">Search Resources</a></li>
+                <li><a href="{% url admin_list_orphan_tags %}">List Orphan Tags</a></li>
             </ul>
         </li>
         

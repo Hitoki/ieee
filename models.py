@@ -227,6 +227,35 @@ class NodeManager(models.Manager):
     #    for node1 in self.filter(name=node.name):
     #        yield node1.parent
     
+    def get_orphan_tags(self):
+        "Find all tags that are not associated with any societies."
+        
+        # Get orphan tags
+        tag_type = NodeType.objects.getFromName(NodeType.TAG)
+        tags = self.extra(
+            where=[
+                """
+                (SELECT COUNT(ieeetags_node_societies.id) AS num_societies
+                    FROM ieeetags_node_societies
+                    WHERE ieeetags_node_societies.node_id = ieeetags_node.id) = 0
+                """
+            ],
+        ).filter(node_type=tag_type)
+        
+        # Get the TAB society's tags
+        tab_society = Society.objects.getFromAbbreviation('TAB')
+        if tab_society is None:
+            raise Exception('Can\'t find TAB society')
+        
+        # Filter out tags with other societies
+        tab_society_tags = [tag for tag in tab_society.tags.all() if tag.societies.count() == 1]
+        
+        # Combine both
+        from itertools import chain
+        tags = list(chain(tags, tab_society_tags))
+        
+        return tags
+    
 class Node(models.Model):
     name = models.CharField(max_length=500)
     #parent = models.ForeignKey('Node', related_name='child_nodes', null=True, blank=True)
