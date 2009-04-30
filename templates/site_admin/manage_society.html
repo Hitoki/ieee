@@ -123,6 +123,9 @@
             // Find the tag multisearch
             var multisearch_tags = $('#multisearch_tags').data('multisearch');
             
+            // Preloading might already be done, update the tag count now
+            updateTagCount();
+            
             if (multisearch_tags != undefined)  {
                 // Multisearch is ready, attach events
                 
@@ -139,9 +142,9 @@
                     refreshTagsTable();
                 });
                 
+                // NOTE: By the time this gets fired, preloading will probably already be done.
                 multisearch_tags.subscribe('preloaded_option', function(multisearch, event, data) {
-                    //log('event preloaded_option');
-                    updateTagCount()
+                    updateTagCount();
                 });
                 
                 multisearch_tags.subscribe('removed_option', function(multisearch, event, data) {
