@@ -434,7 +434,7 @@ def missing_resource(request, society_id):
                 + 'Type of resource: %s\n\n' % form.cleaned_data['resource_type'] \
                 + 'Description:\n' \
                 + '%s\n\n' % form.cleaned_data['description']
-            send_from = 'ieeeadmin@demo.systemicist.com'
+            send_from = settings.DEFAULT_FROM_EMAIL
             send_to = settings.ADMIN_EMAILS
             
             logging.debug('send_to: %s' % send_to)
@@ -1089,8 +1089,8 @@ def _get_random_from_sequence(seq, num):
 def fix_user_import(request):
     permissions.require_superuser(request)
     
-    in_filename = relpath(__file__, '../data/v.7/2009-04-27 - users.csv')
-    out_filename = relpath(__file__, '../data/v.7/2009-04-27 - users - fixed.csv')
+    in_filename = relpath(__file__, '../data/v.7/2009-04-30 - users - append.csv')
+    out_filename = relpath(__file__, '../data/v.7/2009-04-30 - users - append - fixed.csv')
     
     row_count = 0
     
@@ -1147,9 +1147,13 @@ def fix_user_import(request):
     
 @login_required
 def import_users(request):
+    append_users = bool(int(request.GET.get('append_users', 0)))
     permissions.require_superuser(request)
     
-    filename = relpath(__file__, '../data/v.7/2009-04-27 - users - fixed.csv')
+    if append_users:
+        filename = relpath(__file__, '../data/v.7/2009-04-30 - users - append - fixed.csv')
+    else:
+        filename = relpath(__file__, '../data/v.7/2009-04-27 - users - fixed.csv')
     
     #user_manager = UserManager2()
     #
@@ -1166,8 +1170,9 @@ def import_users(request):
     #    
     #else:
     
-    # DEBUG: delete all users except the debug ones
-    User.objects.exclude(username__in=['soc', 'soc1', 'admin']).delete()
+    if not append_users:
+        # DEBUG: delete all users except the debug ones
+        User.objects.exclude(username__in=['soc', 'soc1', 'admin']).delete()
     
     row_count = 0
     users_created = 0

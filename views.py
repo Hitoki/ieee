@@ -127,12 +127,8 @@ def feedback(request):
             
             subject = 'IEEE Comments from %s' % form.cleaned_data['email']
             message = 'Sent on %s:\n%s\n\n' % (time.strftime('%Y-%m-%d %H:%M:%S'), form.cleaned_data['comments'])
-            send_from = 'admin@demo.systemicist.com'
-            send_to = [
-                'jamesyoneda@thoughtcap.com',
-                'atear@aptuscollaborative.com',
-                'jacktemplin@noospheremedia.com',
-            ]
+            send_from = settings.DEFAULT_FROM_EMAIL
+            send_to = settings.ADMIN_EMAILS
             try:
                 send_mail(subject, message, send_from, send_to)
             except Exception, e:
