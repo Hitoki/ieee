@@ -1649,16 +1649,16 @@ def save_user(request):
                 if form.cleaned_data['password1'] != '':
                     user.set_password(form.cleaned_data['password1'])
                 
-        user.first_name = form.cleaned_data['first_name']
-        user.last_name = form.cleaned_data['last_name']
-        user.is_staff = form.cleaned_data['is_staff']
-        user.is_superuser = form.cleaned_data['is_superuser']
-        user.societies = form.cleaned_data['societies']
-        user.save()
-        
-        profile = user.get_profile()
-        profile.role = form.cleaned_data['role']
-        profile.save()
+                user.first_name = form.cleaned_data['first_name']
+                user.last_name = form.cleaned_data['last_name']
+                user.is_staff = form.cleaned_data['is_staff']
+                user.is_superuser = form.cleaned_data['is_superuser']
+                user.societies = form.cleaned_data['societies']
+                user.save()
+                
+                profile = user.get_profile()
+                profile.role = form.cleaned_data['role']
+                profile.save()
         
         return HttpResponsePermanentRedirect(reverse('admin_users'))
         
