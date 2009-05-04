@@ -22,6 +22,13 @@ def single_row_or_none(results):
         return None
     return results[0]
 
+def list_to_choices(list):
+    "Takes a list and returns a list of 2-tuples, useful for the 'choices' form field attribute."
+    result = []
+    for item in list:
+        result.append((item, item))
+    return result
+
 # ------------------------------------------------------------------------------
 
 class NamedTypeManager(models.Manager):
@@ -483,12 +490,12 @@ class Profile(models.Model):
     ROLE_SOCIETY_MANAGER = 'society_manager'
     
     ROLES = [
-        (ROLE_ADMIN, ROLE_ADMIN),
-        (ROLE_SOCIETY_MANAGER, ROLE_SOCIETY_MANAGER),
+        ROLE_ADMIN,
+        ROLE_SOCIETY_MANAGER,
     ]
     
     user = models.ForeignKey(User, unique=True)
-    role = models.CharField(choices=ROLES, max_length=1000)
+    role = models.CharField(choices=list_to_choices(ROLES), max_length=1000)
     reset_key = models.CharField(max_length=1000, null=True)
     last_login_time = models.DateTimeField(blank=True, null=True)
     last_logout_time = models.DateTimeField(blank=True, null=True)

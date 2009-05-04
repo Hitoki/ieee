@@ -11,6 +11,7 @@ import string
 import time
 from urllib import quote
 import warnings
+from django.db import IntegrityError
 from django.db import transaction
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
@@ -108,6 +109,16 @@ def _open_unicode_csv_reader(filename):
     reader.next()
     return (file, reader)
 
+def _open_unicode_csv_reader_for_file(file):
+    "Opens a unicode CSV reader for the given file."
+    #file = codecs.open(filename, 'r', 'utf8')
+    # Skip the UTF-8 BOM
+    strip_bom(file)
+    # Use a unicode csv reader:
+    reader = _unicode_csv_reader(file)
+    reader.next()
+    return reader
+
 def _open_unicode_csv_writer(filename):
     "Opens a file as a unicode CSV.  Returns a (file, writer) tuple."
     file = codecs.open(filename, 'w', 'utf8')
@@ -183,6 +194,17 @@ def _escape_csv_list(list1, add_quotes=True):
     else:
         return '%s' % ','.join(results)
 
+def list_to_html_list(list, className=''):
+    "Convert a python list to an HTML UL list."
+    list = ['<li>%s</li>' % item for item in list]
+    if len(list) > 0:
+        if className != '':
+            className = ' class="%s"' % className
+        list = '<ul%s>' % className + '\n'.join(list) + '</ul>'
+    else:
+        list = ''
+    return list
+    
 # ------------------------------------------------------------------------------
 
 def login(request):
@@ -1146,116 +1168,130 @@ def fix_user_import(request):
     })
     
 @login_required
+@transaction.commit_manually
 def import_users(request):
-    append_users = bool(int(request.GET.get('append_users', 0)))
     permissions.require_superuser(request)
     
-    if append_users:
-        filename = relpath(__file__, '../data/v.7/2009-04-30 - users - append - fixed.csv')
+    if request.method == 'GET':
+        # Display form
+        form = ImportUsersForm()
+        return render(request, 'site_admin/import_users.html', {
+            'form': form,
+        })
+        
     else:
-        filename = relpath(__file__, '../data/v.7/2009-04-27 - users - fixed.csv')
-    
-    #user_manager = UserManager2()
-    #
-    #if False:
-    #    # Delete all existing society managers
-    #    user_manager.get_society_managers().delete()
-    #    
-    #    # Delete all admins
-    #    #admins = user_manager.get_admins()
-    #    ## DEBUG: skip the default testing users
-    #    #admins = admins.exclude(username='admin')
-    #    ## Delete all existing admins
-    #    #admins.delete()
-    #    
-    #else:
-    
-    if not append_users:
-        # DEBUG: delete all users except the debug ones
-        User.objects.exclude(username__in=['soc', 'soc1', 'admin']).delete()
-    
-    row_count = 0
-    users_created = 0
-    society_managers_created = 0
-    admins_created = 0
-    
-    (file, reader) = _open_unicode_csv_reader(filename)
-    
-    for row in reader:
-        
-        #Username,Password,First Name,Last Name,Email,Role,Society Abbreviations
-        username, password, first_name, last_name, email, role, society_abbreviations = row
+        # Import users from uploaded file
+        logging.debug('import_users()')
 
-        username = username.strip()
-        password = password.strip()
-        first_name = first_name.strip()
-        last_name = last_name.strip()
-        email = email.strip()
-        role = role.strip()
-        society_abbreviations = society_abbreviations.strip()
         
-        # DEBUG:
-        if len(first_name) > 30:
-            logging.warning('Imported user first_name is too long (>30 chars), "%s" truncated to "%s"' % (first_name, first_name[:30]))
-            first_name = first_name[:30]
+        file = request.FILES['file']
         
-        if role != Profile.ROLE_ADMIN and role != Profile.ROLE_SOCIETY_MANAGER:
-            raise Exception('Unknown role "%s"' % role)
-        if username == '':
-            raise Exception('Username is blank')
-        if email == '':
-            raise Exception('Email is blank')
+        row_count = 0
+        users_created = 0
+        society_managers_created = 0
+        admins_created = 0
+        errors = []
+        imported_users = []
+        users = []
         
-        # Prevent duplicate emails
-        if User.objects.filter(email=email).count() > 0:
-            raise Exception('User email "%s" already exists in the system.' % email)
+        reader = _open_unicode_csv_reader_for_file(file)
         
-        society_abbreviations = [society_abbreviation.strip() for society_abbreviation in _split_no_empty(society_abbreviations, ',')]
-        
-        societies = []
-        for society_abbreviation in society_abbreviations:
-            society = Society.objects.getFromAbbreviation(society_abbreviation)
-            if society is None:
-                raise Exception('Unknown society "%s"' % society_abbreviation)
-            societies.append(society)
-        
-        user = User.objects.create_user(
-            username=username,
-            email=email,
-            password=password,
-        )
-        user.first_name = first_name
-        user.last_name = last_name
-        user.is_superuser = (role == Profile.ROLE_ADMIN)
-        user.is_staff = True
-        user.societies = societies
-        user.save()
-        
-        profile = user.get_profile()
-        profile.role = role
-        profile.save()
-        
-        users_created += 1
-        if role == Profile.ROLE_ADMIN:
-            admins_created += 1
-        elif role == Profile.ROLE_SOCIETY_MANAGER:
-            society_managers_created += 1
-        
-        #if not row_count % 10:
-        #    print '  Reading row %d' % row_count
+        for row in reader:
             
-        row_count += 1
+            #Username,Password,First Name,Last Name,Email,Role,Society Abbreviations
+            username, password, first_name, last_name, email, role, society_abbreviations = row
             
-    file.close()
+            username = username.strip()
+            password = password.strip()
+            first_name = first_name.strip()
+            last_name = last_name.strip()
+            email = email.strip()
+            role = role.strip()
+            society_abbreviations = society_abbreviations.strip()
+            
+            # DEBUG:
+            if len(first_name) > 30:
+                logging.warning('Imported user first_name is too long (>30 chars), "%s" truncated to "%s"' % (first_name, first_name[:30]))
+                first_name = first_name[:30]
+            
+            if role not in Profile.ROLES:
+                raise Exception('Unknown role "%s"' % role)
+            
+            if username == '':
+                raise Exception('Username is blank')
+            
+            if email == '':
+                raise Exception('Email is blank')
+            
+            society_abbreviations = [society_abbreviation.strip() for society_abbreviation in _split_no_empty(society_abbreviations, ',')]
+            
+            societies = []
+            for society_abbreviation in society_abbreviations:
+                society = Society.objects.getFromAbbreviation(society_abbreviation)
+                if society is None:
+                    raise Exception('Unknown society "%s"' % society_abbreviation)
+                societies.append(society)
+            
+            try:
+                user = User.objects.create_user(
+                    username=username,
+                    email=email,
+                    password=password,
+                )
+            except IntegrityError, e:
+                # Duplicate user error
+                errors.append('Failed to save user "%s", %s' % (username, e))
+            else:
+                user.first_name = first_name
+                user.last_name = last_name
+                user.is_superuser = (role == Profile.ROLE_ADMIN)
+                user.is_staff = True
+                user.societies = societies
+                user.save()
+                
+                profile = user.get_profile()
+                profile.role = role
+                profile.save()
+                
+                # For sending login info later
+                user.plaintext_password = password
+                users.append(user)
+                
+                imported_users.append('"%s"' % username)
+                users_created += 1
+                if role == Profile.ROLE_ADMIN:
+                    admins_created += 1
+                elif role == Profile.ROLE_SOCIETY_MANAGER:
+                    society_managers_created += 1
+            
+            if not row_count % 10:
+                logging.debug('  Reading row %d' % row_count)
+                
+            row_count += 1
+                
+        file.close()
+        
+        logging.debug('~import_users()')
+        
+        if len(errors) > 0:
+            # Errors, rollback all changes & reset stats
+            transaction.rollback()
+        else:
+            # Success, commit transaction
+            transaction.commit()
+        
+        return render(request, 'site_admin/import_users.html', {
+            'errors': list_to_html_list(errors, 'errors'),
+            'users': users,
+            'results': {
+                'row_count': row_count,
+                'users_created': users_created,
+                'admins_created': admins_created,
+                'society_managers_created': society_managers_created,
+                'imported_users': list_to_html_list(imported_users),
+            }
+        })
     
-    return render(request, 'site_admin/import_users.html', {
-        'results': {
-            'row_count': row_count,
-            'users_created': users_created,
-            'admins_created': admins_created,
-            'society_managers_created': society_managers_created,
-        }
-    })
     
 @login_required
 def list_sectors(request):
@@ -1613,18 +1649,18 @@ def save_user(request):
                 if form.cleaned_data['password1'] != '':
                     user.set_password(form.cleaned_data['password1'])
                 
-            user.first_name = form.cleaned_data['first_name']
-            user.last_name = form.cleaned_data['last_name']
-            user.is_staff = form.cleaned_data['is_staff']
-            user.is_superuser = form.cleaned_data['is_superuser']
-            user.societies = form.cleaned_data['societies']
-            user.save()
-            
-            profile = user.get_profile()
-            profile.role = form.cleaned_data['role']
-            profile.save()
-            
-            return HttpResponsePermanentRedirect(reverse('admin_users'))
+        user.first_name = form.cleaned_data['first_name']
+        user.last_name = form.cleaned_data['last_name']
+        user.is_staff = form.cleaned_data['is_staff']
+        user.is_superuser = form.cleaned_data['is_superuser']
+        user.societies = form.cleaned_data['societies']
+        user.save()
+        
+        profile = user.get_profile()
+        profile.role = form.cleaned_data['role']
+        profile.save()
+        
+        return HttpResponsePermanentRedirect(reverse('admin_users'))
         
     return render(request, 'site_admin/edit_user.html', {
         'user_id': user_id,
@@ -1634,11 +1670,65 @@ def save_user(request):
 
 @login_required
 def delete_user(request, user_id):
+    "Deletes a user."
     permissions.require_superuser(request)
     
     User.objects.get(id=user_id).delete()
     return HttpResponsePermanentRedirect(reverse('admin_users'))
+
+@login_required
+def delete_users(request):
+    """Delete a list of users.
+Takes as input a list of user id's in the POST list 'user_ids' (use checkboxes with name="user_ids").
+"""
+    permissions.require_superuser(request)
     
+    user_ids = request.POST.getlist('user_ids')
+    for user_id in user_ids:
+        User.objects.get(id=user_id).delete()
+        
+    return HttpResponsePermanentRedirect(reverse('admin_users'))
+
+def _send_user_login_info_email(request, user, plaintext_password):
+    #abs_reset_url = request.build_absolute_uri(reverse('password_reset', args=[user.id, user.get_profile().reset_key]))
+    abs_index_url = request.build_absolute_uri(reverse('index'))
+    abs_login_url = request.build_absolute_uri(reverse('admin_login'))
+    
+    subject = 'Your login information for %s' % abs_index_url
+    message = """Your account has been created on %s.  Included below is your login information:
+
+Username: %s
+Password: %s
+
+To login to your account, click click on this link and enter your login information from above:
+%s
+""" % (
+        abs_index_url,
+        user.username,
+        plaintext_password,
+        abs_login_url,
+    )
+    
+    logging.debug('Sending login info email to %s:\nsubject: %s\nmessage: %s\n' % (
+        user.email,
+        subject,
+        message,
+    ))
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
+    
+@login_required
+def send_login_info(request):
+    permissions.require_superuser(request)
+    
+    user_ids = request.POST.getlist('user_ids')
+    plaintext_passwords = request.POST.getlist('plaintext_passwords')
+    
+    for user_id, plaintext_password in zip(user_ids, plaintext_passwords):
+        user = User.objects.get(id=user_id)
+        _send_user_login_info_email(request, user, plaintext_password)
+    
+    return HttpResponseRedirect(reverse('admin_users'))
+
 @login_required
 def societies(request):
     permissions.require_superuser(request)

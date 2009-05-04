@@ -3,67 +3,87 @@
 {% block nav_users %}highlight{% endblock %}
 
 {% block main_table_content %}
+	<script>
+        
+        // Delete all the selected users
+		function delete_users() {
+            var form = $('form#user-list');
+            form.attr('action', '{% url admin_delete_users %}');
+            form.submit();
+		};
+        
+	</script>
     
     <h1>Manage Users</h1>
     
-    <table class="grid">
-        <tr>
-            <th>
-                Username
-            </th>
-            <th>
-                First name
-            </th>
-            <th>
-                Last name
-            </th>
-            <th>
-                Email
-            </th>
-            <th>
-                Is Staff
-            </th>
-            <th>
-                Is Superuser
-            </th>
-            <th>
-                Role
-            </th>
-            <th>
-                Societies
-            </th>
-        </tr>
-        {% for user in users %}
+	<a href="javascript:delete_users();" onclick="return confirm('Are you sure you want to delete these users?\nYou cannot undo this action.');">Delete selected users</a>
+	<br/>
+	<br/>
+    <form id="user-list" action="" method="post">
+        <table class="grid">
             <tr>
-                <td>
-                    <a href="{% url admin_view_user user.id %}">{{ user.username }}</a>
-                </td>
-                <td>
-                    {{ user.first_name }}
-                </td>
-                <td>
-                    {{ user.last_name }}
-                </td>
-                <td>
-                    {{ user.email }}
-                </td>
-                <td>
-                    {{ user.is_staff|yesno }}
-                </td>
-                <td>
-                    {{ user.is_superuser|yesno }}
-                </td>
-                <td>
-                    {{ user.get_profile.role }}
-                </td>
-                <td>
-                    {% for society in user.societies.all %}
-                        <a href="{% url admin_view_society society.id %}">{{ society.name }}</a>{% if not forloop.last %},{% endif %}
-                    {% endfor %}
-                </td>
+                <th>
+                </th>
+                <th>
+                    Username
+                </th>
+                <th>
+                    First name
+                </th>
+                <th>
+                    Last name
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Is Staff
+                </th>
+                <th>
+                    Is Superuser
+                </th>
+                <th>
+                    Role
+                </th>
+                <th>
+                    Societies
+                </th>
             </tr>
-        {% endfor %}
-    </table>
+            {% for user1 in users %}
+                <tr>
+                    <td>
+                        <input type="checkbox" name="user_ids" value="{{ user1.id }}" />
+                    </td>
+                    <td>
+                        <a href="{% url admin_view_user user1.id %}">{{ user1.username }}</a>
+                    </td>
+                    <td>
+                        {{ user1.first_name }}
+                    </td>
+                    <td>
+                        {{ user1.last_name }}
+                    </td>
+                    <td>
+                        {{ user1.email }}
+                    </td>
+                    <td>
+                        {{ user1.is_staff|yesno }}
+                    </td>
+                    <td>
+                        {{ user1.is_superuser|yesno }}
+                    </td>
+                    <td>
+                        {{ user1.get_profile.role }}
+                    </td>
+                    <td>
+                        {% for society in user1.societies.all %}
+                            <a href="{% url admin_view_society society.id %}">{{ society.name }}</a>{% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </form>
     
     <p>
         <a href="{% url admin_create_user %}">Create a new user</a>

@@ -23,19 +23,19 @@
         </li>
             
         {% if user.is_superuser %}
-            <li>
-                Django:
-                <ul>
-                    <li><a href="/djangoadmin">Django Admin</a></li>
-                </ul>
-            </li>
+        <li>
+            Django:
+            <ul>
+                <li><a href="/djangoadmin">Django Admin</a></li>
+            </ul>
+        </li>
         {% endif %}
         
         <li>
             Manage:
             <ul>
                 {% if user.is_superuser %}
-                    <li><a href="{% url admin_users %}">List Users</a></li>
+                <li><a href="{% url admin_users %}">List Users</a></li>
                 {% endif %}
                 <li><a href="{% url admin_societies %}">List Societies</a></li>
                 <li><a href="{% url admin_list_sectors %}">List Sectors</a></li>
@@ -52,6 +52,13 @@
         
         {% if user.is_superuser %}
             <li>
+                Import Data:
+                <ul>
+                    <li><a href="{% url admin_import_users %}">Import Users</a></li>
+                </ul>
+            </li>
+        
+            <li>
                 Import Data for v.7:
                 <ul>
                     <li><a href="{% url admin_import_tags "v.7" %}">Import Tags</a></li>
@@ -62,11 +69,10 @@
                     <li><a href="{% url admin_import_conferences "v.7" %}">Import Conferences</a></li>
                     <li><a href="{% url admin_import_periodicals "v.7" %}">Import Periodicals</a></li>
                     <li><a href="{% url admin_fix_user_import %}">Fix User Import</a></li>
-                    <li><a href="{% url admin_import_users %}">Import Society Users</a></li>
-                <li><a href="{% url admin_import_users %}?append_users=1">Import Society Users (additional)</a></li>
+                    {# <li><a href="{% url admin_import_users %}">Import Society Users</a></li> #}
                 </ul>
             </li>
-            
+        
             {% comment %}
             #    <li>
             #        Import Data for COMSOC:

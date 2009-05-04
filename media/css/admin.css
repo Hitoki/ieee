@@ -29,6 +29,10 @@ ul li {
     margin-left:1em;
 }
 
+ul {
+    list-style: disc;
+}
+
 td, th {
     vertical-align:top;
 }
@@ -435,4 +439,30 @@ ul.pages li a.selected
 .login-help-video {
     margin-top:2em;
     text-align:center;
+}
+
+tr.buttons td {
+    text-align:center;
+}
+
+div.errors {
+    background:maroon;
+    color:white;
+    margin:1em 0em;
+    padding:.01em .5em .5em .5em;
+}
+
+div.errors p.note {
+    font-weight:bold;
+}
+
+ul.errors {
+    list-style:disc;
+}
+
+p.results-status {
+    display:block;
+    background:#eee;
+    border:1px solid #ccc;
+    font-style:italic;
 }

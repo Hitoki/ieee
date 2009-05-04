@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.forms import *
 
-from ieeetags.models import Filter, Node, NodeType, Society, Resource, ResourceType, Profile
+from ieeetags.models import Filter, Node, NodeType, Society, Resource, ResourceType, Profile, list_to_choices
 from ieeetags.fields import MultiSearchField
 from ieeetags.widgets import MultiSearchWidget, DisplayOnlyWidget, CheckboxSelectMultipleColumns
 
@@ -131,7 +131,7 @@ class UserForm(Form):
     password2 = CharField(label='Enter the password again:', max_length=100, widget=PasswordInput(), required=False)
     is_staff = BooleanField(required=False)
     is_superuser = BooleanField(required=False)
-    role = ChoiceField(choices=Profile.ROLES)
+    role = ChoiceField(choices=list_to_choices(Profile.ROLES))
     societies = ModelMultipleChoiceField(queryset=Society.objects.all(), required=False)
 
 UserForm = autostrip(UserForm)
@@ -149,3 +149,6 @@ class MissingResourceForm(Form):
     description = CharField(label='Description of the missing resource', widget=Textarea, max_length=5000)
 
 MissingResourceForm = autostrip(MissingResourceForm)
+
+class ImportUsersForm(Form):
+    file = FileField()
