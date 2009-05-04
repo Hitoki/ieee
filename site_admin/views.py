@@ -1606,7 +1606,6 @@ def save_user(request):
     errors = []
     
     if form.is_valid():
-        
         # Prevent duplicate usernames
         if form.cleaned_data['id'] is None:
             # New user
@@ -1636,6 +1635,7 @@ def save_user(request):
         if len(errors) == 0:
             # Form is valid
             if form.cleaned_data['id'] is None:
+                # Creating user
                 user = User.objects.create(
                     username = form.cleaned_data['username'],
                     email = form.cleaned_data['email'],
@@ -1645,22 +1645,31 @@ def save_user(request):
                 user = User.objects.get(id=form.cleaned_data['id'])
                 user.username = form.cleaned_data['username']
                 user.email = form.cleaned_data['email']
+            
+            if form.cleaned_data['password1'] != '':
+                user.set_password(form.cleaned_data['password1'])
+                ask_send_login_info = True
+            else:
+                ask_send_login_info = False
+            
+            user.first_name = form.cleaned_data['first_name']
+            user.last_name = form.cleaned_data['last_name']
+            user.is_staff = form.cleaned_data['is_staff']
+            user.is_superuser = form.cleaned_data['is_superuser']
+            user.societies = form.cleaned_data['societies']
+            user.save()
+            
+            profile = user.get_profile()
+            profile.role = form.cleaned_data['role']
+            profile.save()
+            
+            if ask_send_login_info:
+                return render(request, 'site_admin/ask_send_login_info.html', {
+                    'user': user,
+                    'plaintext_password': form.cleaned_data['password1'],
+                })
                 
-                if form.cleaned_data['password1'] != '':
-                    user.set_password(form.cleaned_data['password1'])
-                
-                user.first_name = form.cleaned_data['first_name']
-                user.last_name = form.cleaned_data['last_name']
-                user.is_staff = form.cleaned_data['is_staff']
-                user.is_superuser = form.cleaned_data['is_superuser']
-                user.societies = form.cleaned_data['societies']
-                user.save()
-                
-                profile = user.get_profile()
-                profile.role = form.cleaned_data['role']
-                profile.save()
-        
-        return HttpResponsePermanentRedirect(reverse('admin_users'))
+            return HttpResponsePermanentRedirect(reverse('admin_users'))
         
     return render(request, 'site_admin/edit_user.html', {
         'user_id': user_id,
@@ -1689,13 +1698,20 @@ Takes as input a list of user id's in the POST list 'user_ids' (use checkboxes w
         
     return HttpResponsePermanentRedirect(reverse('admin_users'))
 
-def _send_user_login_info_email(request, user, plaintext_password):
-    #abs_reset_url = request.build_absolute_uri(reverse('password_reset', args=[user.id, user.get_profile().reset_key]))
+def _send_user_login_info_email(request, user, plaintext_password, reason):
+    
+    if reason == 'created':
+        text1 = 'Your account has been created'
+    elif reason == 'password_changed':
+        text1 = 'Your account\'s password has been changed'
+    else:
+        raise Exception('Unknown reason "%s"' % reason)
+    
     abs_index_url = request.build_absolute_uri(reverse('index'))
     abs_login_url = request.build_absolute_uri(reverse('admin_login'))
     
     subject = 'Your login information for %s' % abs_index_url
-    message = """Your account has been created on %s.  Included below is your login information:
+    message = """%s on %s.  Here is your login information:
 
 Username: %s
 Password: %s
@@ -1703,6 +1719,7 @@ Password: %s
 To login to your account, click click on this link and enter your login information from above:
 %s
 """ % (
+        text1,
         abs_index_url,
         user.username,
         plaintext_password,
@@ -1717,7 +1734,7 @@ To login to your account, click click on this link and enter your login informat
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
     
 @login_required
-def send_login_info(request):
+def send_login_info(request, reason):
     permissions.require_superuser(request)
     
     user_ids = request.POST.getlist('user_ids')
@@ -1725,7 +1742,7 @@ def send_login_info(request):
     
     for user_id, plaintext_password in zip(user_ids, plaintext_passwords):
         user = User.objects.get(id=user_id)
-        _send_user_login_info_email(request, user, plaintext_password)
+        _send_user_login_info_email(request, user, plaintext_password, reason)
     
     return HttpResponseRedirect(reverse('admin_users'))
 
