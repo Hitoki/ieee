@@ -1,0 +1,32 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>Login Report</h1>
+    <table class="grid">
+        <tr>
+            <th>
+                Username
+            </th>
+            <th colspan="2" style="text-align:center;">
+                Last Login Time
+            </th>
+        </tr>
+        {% for user1 in users %}
+            <tr>
+                <td>
+                    {{ user1.username }}
+                </td>
+                <td>
+                    {{ user1.get_profile.last_login_time|date }} {{ user1.get_profile.last_login_time|time }}
+                </td>
+                <td>
+                    {{ user1.get_profile.last_login_time|timesince }} ago
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+    <p><a href="{% url admin_home %}">home</a></p>
+
+{% endblock %}

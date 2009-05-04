@@ -80,4 +80,8 @@ urlpatterns = patterns('',
     url(r'^ajax/search_societies$', views.ajax_search_societies, name='ajax_search_societies'),
     url(r'^ajax/update_society$', views.ajax_update_society, name='ajax_update_society'),
     
+    # Reports
+    url(r'^report/login$', views.login_report, name='admin_login_report'),
+    
+    
 )

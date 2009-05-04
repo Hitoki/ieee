@@ -2452,3 +2452,13 @@ def ajax_update_society(request):
     
     else:
         raise Exception('Unknown action "%s"' % action)
+
+@login_required
+def login_report(request):
+    permissions.require_superuser(request)
+    
+    users = UserManager.get_users_by_login_date() 
+    return render(request, 'site_admin/login_report.html', {
+        'users': users,
+    })
+    

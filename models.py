@@ -510,6 +510,11 @@ class UserManager:
     @staticmethod
     def get_society_managers():
         return User.objects.filter(profile__role=Profile.ROLE_SOCIETY_MANAGER)
+    
+    @staticmethod
+    def get_users_by_login_date():
+        "Return users ordered by their last login time."
+        return User.objects.filter(profile__last_login_time__isnull=False).order_by('-profile__last_login_time')
 
 # ------------------------------------------------------------------------------
 
