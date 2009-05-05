@@ -42,11 +42,11 @@ def _get_version():
     #print 'path:', path
     file = open(path, 'r')
     version = file.readline().strip()
+    revision = file.readline().strip()
     date = file.readline().strip()
     file.close()
-    #print 'version:', version
-    if version == '$WCREV$':
-        version = 'SVN'
+    if revision == '$WCREV$':
+        revision = 'SVN'
         
         from subprocess import Popen, PIPE
         try:
@@ -55,19 +55,16 @@ def _get_version():
             for line in proc.stdout:
                 matches = re.match(r'Last Changed Rev: (\d+)', line)
                 if matches:
-                    version = matches.group(1) + '-svn'
+                    revision = matches.group(1) + '-svn'
                 matches = re.match(r'Last Changed Date: (\S+ \S+)', line)
                 if matches:
                     date = matches.group(1)
                     date = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
         except Exception:
-            version = 'UNKNOWN'
+            revision = 'UNKNOWN'
             date = ''
             
-        #print 'version:', version
-        #print 'date:', date
-    
-    return version, date
+    return version, revision, date
 
 def _update_node_totals(nodes):
     for node in nodes:
@@ -386,7 +383,7 @@ def home(request):
     
     if role == Profile.ROLE_ADMIN:
         # Show the admin home page
-        version, date = _get_version()
+        version, revision, date = _get_version()
         
         num_societies = Society.objects.count()
         num_society_managers = UserManager.get_society_managers().count()
@@ -396,6 +393,7 @@ def home(request):
         
         return render(request, 'site_admin/admin_home.html', {
             'version': version,
+            'revision': revision,
             'date': date,
             'num_societies': num_societies,
             'num_society_managers': num_society_managers,
