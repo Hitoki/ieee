@@ -174,7 +174,16 @@ def _send_password_change_notification(user):
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
 
 def _escape_csv_field(value, add_quotes=True):
-    value = value.replace(u'"', u'""')
+    if value is None:
+        value = ''
+    elif type(value) is bool:
+        if value == True:
+            value = 'yes'
+        elif value == False:
+            value = 'no'
+        else:
+            raise Exception('Unknown boolean value "%s"' % value)
+    value = unicode(value).replace(u'"', u'""')
     if add_quotes:
         return '"%s"' % value
     else:
@@ -2459,4 +2468,81 @@ def login_report(request):
     return render(request, 'site_admin/login_report.html', {
         'users': users,
     })
+
+#def create_admin_login(request):
+#    "Create a test admin account."
+#    username = 'test'
+#    password = 'test'
+#    email = 'test'
+#    User.objects.filter(username=username).delete()
+#    user = User.objects.create_user(
+#        username=username,
+#        password=password,
+#        email=email,
+#    )
+#    user.is_active = True
+#    user.is_staff = True
+#    user.is_superuser = True
+#    user.save()
+#    
+#    profile = user.get_profile()
+#    profile.role = Profile.ROLE_ADMIN
+#    profile.save()
+#    
+#    print 'user:', user
+#    print 'user.username:', user.username
+#    print 'user.password:', user.password
+#    
+#    assert False, 'User has been created'
     
+def export_tab_resources(request):
+    "Export all resources for the TAB society in CSV format."
+    print 'export_tab_resources()'
+    filename = os.path.realpath('../tab_resources.csv')
+    print 'filename:', filename
+    file = codecs.open(filename, 'w', encoding='utf-8')
+    
+    tab_society = Society.objects.getFromAbbreviation('TAB')
+    assert tab_society is not None
+    
+    # Write the header row
+    row = '"%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s","%s"\r\n' % (
+        'Type',
+        'ID',
+        'Name',
+        'Description',
+        'URL',
+        'Tags',
+        'Society Abbreviations',
+        'Conference Year',
+        'Standard Status',
+        'Standard Technical Committees',
+        'Keywords',
+        'Priority',
+    )
+    file.write(row)
+    
+    for resource in tab_society.resources.all():
+        row = '%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\r\n' % (
+            _escape_csv_field(resource.resource_type.name),
+            _escape_csv_field(resource.id),
+            _escape_csv_field(resource.name),
+            _escape_csv_field(resource.description),
+            _escape_csv_field(resource.url),
+            _escape_csv_field(','.join([node.name for node in resource.nodes.all()])),
+            _escape_csv_field(','.join([society.abbreviation for society in resource.societies.all()])),
+            _escape_csv_field(resource.year),
+            _escape_csv_field(resource.standard_status),
+            _escape_csv_field(''),
+            _escape_csv_field(resource.keywords),
+            _escape_csv_field(bool(resource.priority_to_tag)),
+        )
+        file.write(row)
+    
+    file.close()
+    
+    file = codecs.open(filename, 'r', encoding='utf-8')
+    contents = file.read()
+    file.close()
+    
+    return HttpResponse(contents, 'text/plain')
