@@ -1456,6 +1456,7 @@ def create_tag(request):
 @login_required
 def edit_tag(request, tag_id):
     return_url = request.GET.get('return_url', '')
+    society_id = request.GET.get('society_id', '')
     #if tag_id is None:
     #    # creating a new tag
     #    form = EditTagForm()
@@ -1475,6 +1476,8 @@ def edit_tag(request, tag_id):
     })
     
     form.fields['related_tags'].widget.set_exclude_tag_id(tag.id)
+    if society_id != '':
+        form.fields['related_tags'].widget.set_society_id(int(society_id))
     
     if request.user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER:
         # Disable certain fields for the society managers
@@ -1484,15 +1487,25 @@ def edit_tag(request, tag_id):
         form.fields['related_tags'].widget.set_search_url(reverse('ajax_search_tags') + '?filter_sector_ids=' + ','.join(sector_ids))
         
     return render(request, 'site_admin/edit_tag.html', {
+        'tag': tag,
         'form': form,
         'return_url': return_url,
+        'society_id': society_id,
     })
         
 @login_required
-def save_tag(request):
+def save_tag(request, tag_id):
     return_url = request.GET.get('return_url', '')
+    society_id = request.GET.get('society_id', '')
+    tag = Node.objects.get(id=tag_id)
+    
     form = EditTagForm(request.POST)
     if not form.is_valid():
+        
+        form.fields['related_tags'].widget.set_exclude_tag_id(tag.id)
+        if society_id != '':
+            form.fields['related_tags'].widget.set_society_id(int(society_id))
+            
         if request.user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER:
             # Disable certain fields for the society managers
             make_display_only(form.fields['parents'], model=Node)
@@ -1503,8 +1516,10 @@ def save_tag(request):
             form.fields['related_tags'].widget.set_search_url(reverse('ajax_search_tags') + '?filter_sector_ids=' + ','.join(sector_ids))
             
         return render(request, 'site_admin/edit_tag.html', {
+            'tag': tag,
             'form': form,
             'return_url': return_url,
+            'society_id': society_id,
         })
     else:
         if form.cleaned_data['id'] is None:
@@ -2346,7 +2361,11 @@ def ajax_search_tags(request):
     exclude_tag_id = request.GET.get('exclude_tag_id', None)
     
     search_for = request.GET['search_for']
-    tags = Node.objects.searchTagsByNameSubstring(search_for, sector_ids, exclude_tag_id)
+    if society_id != '':
+        temp_society_id = int(society_id)
+    else:
+        temp_society_id = None
+    tags = Node.objects.searchTagsByNameSubstring(search_for, sector_ids, exclude_tag_id, temp_society_id)
     
     #if len(tags) > MAX_RESULTS:
     #    tags = tags[:MAX_RESULTS]

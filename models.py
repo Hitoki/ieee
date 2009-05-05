@@ -200,16 +200,23 @@ class NodeManager(models.Manager):
             tag.save()
         return len(tags)
     
-    def searchTagsByNameSubstring(self, substring, sector_ids=None, exclude_tag_id=None):
+    def searchTagsByNameSubstring(self, substring, sector_ids=None, exclude_tag_id=None, society_id=None):
         """
         Search for tags matching the given substring.  Optionally limit to only the list of sectors given.
-        @param substring name substring to search for.
+        @param substring name substring to search for.  Can also be * to show all tags.
         @param sector_ids optional, a list of sector ids to limit the search within.
         """
         if substring.strip() == '':
             return None
         tag_type = NodeType.objects.getFromName(NodeType.TAG)
-        results = self.filter(name__icontains=substring, node_type=tag_type)
+        
+        if substring == '*':
+            if society_id is None:
+                raise Exception('If substring is "*", then society_id must be specified')
+            # Find all tags for this society
+            results = self.filter(societies=society_id, node_type=tag_type)
+        else:
+            results = self.filter(name__icontains=substring, node_type=tag_type)
         
         if sector_ids is not None:
             # Filter to only the given sectors

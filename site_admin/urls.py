@@ -42,7 +42,7 @@ urlpatterns = patterns('',
     url(r'^tag/create$', views.create_tag, name='admin_create_tag'),
     url(r'^tag/(?P<tag_id>\d+)/edit$', views.edit_tag, name='admin_edit_tag'),
     url(r'^tags/search$', views.search_tags, name='admin_search_tags'),
-    url(r'^tag/save$', views.save_tag, name='admin_save_tag'),
+    url(r'^tag/(?P<tag_id>\d+)/save$', views.save_tag, name='admin_save_tag'),
     
     # Users
     url(r'^users$', views.users, name='admin_users'),

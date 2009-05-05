@@ -3,7 +3,7 @@
 {% block main_table_content %}
 
     <h1>Edit Tag</h1>
-    <form action="{% url admin_save_tag %}?return_url={{ return_url|urlencode }}" method="post">
+    <form action="{% url admin_save_tag tag.id %}?return_url={{ return_url|urlencode }}&amp;society_id={{ society_id }}" method="post">
         <table class="grid edit-create">
             {{ form.id }}
             <tr>

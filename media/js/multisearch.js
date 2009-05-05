@@ -378,12 +378,16 @@ MultiSearch.prototype.updatePopup = function() {
 // Initiate getting searchOptions for the given value
 MultiSearch.prototype.getOptions = function(value) {
     var multiSearch = this;
-    if ($.trim(value).length >= 2) {
+    if ($.trim(value).length >= 2 || $.trim(value) == '*') {
         var data = {
             search_for: value
         }
         if (this.options.excludeTagId != null) {
             data.exclude_tag_id = this.options.excludeTagId;
+        }
+        if (value == '*') {
+            // Searching for all this society's tags
+            data.society_id = this.options.society_id;
         }
         $.getJSON(this.options.searchUrl, url_encode(data), function(data) { multiSearch.onGetOptions(data); });
         this.showPopupLoading();
@@ -448,7 +452,7 @@ MultiSearch.prototype.onGetOptions = function(data) {
         //console.log('foundExactMatch: ' + foundExactMatch);
         
         // Add "Create tag" link at bottom
-        if (this.options.showCreateTagLink && !foundExactMatch) {
+        if (this.options.showCreateTagLink && !foundExactMatch && data.search_for != '*') {
             var createTag = $('<div class=""><a href="#create_new_tag" class="">Create a new tag "' + data.search_for + '"</a></div>').appendTo(this.popupElem);
             createTag.click(function() {
                 // Notify the parent window of the "Create new tag" event
