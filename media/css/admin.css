@@ -452,6 +452,12 @@ div.errors {
     padding:.01em .5em .5em .5em;
 }
 
+.select-checkbox-on-click,
+.select-checkbox-on-click input[type="checkbox"]
+{
+    cursor:pointer;
+}
+
 div.errors p.note {
     font-weight:bold;
 }

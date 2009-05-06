@@ -1,0 +1,66 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% load eval includes pagination permissions %}
+
+{% block main_table_content %}
+    
+    <h1>Edit Resources</h1>
+    
+    <form action="{% url admin_edit_resources %}" method="post">
+        
+        <table class="grid">
+            {{ form }}
+            <tr>
+                <th>
+                    Remove Tags:
+                </th>
+                <td>
+                    <ul>
+                        {% for tag in common_tags %}
+                            <li>
+                                <input type="checkbox" id="remove_tag_{{ tag.id }}" name="remove_tag_ids" value="{{ tag.id }}" />
+                                <label for="remove_tag_{{ tag.id }}">{{ tag.name }}</label>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            <tr class="buttons">
+                <td colspan="2">
+                    <input type="submit" value="Apply Changes" />
+                    <input type="button" value="Cancel" onclick="alert('todo');" />
+                </td>
+            </tr>
+        </table>
+        <br/>
+        
+        <table class="grid">
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Tags
+                </th>
+                <th>
+                    Priority
+                </th>
+            </tr>
+            {% for resource in resources %}
+                <tr>
+                    <td>
+                        <input type="hidden" name="resource_ids" value="{{ resource.id }}" />
+                        <a href="{% url admin_edit_resource resource.id %}">{{ resource.name }}</a>
+                    </td>
+                    <td>
+                        {{ resource.nodes.all|join:", " }}
+                    </td>
+                    <td>
+                        {{ resource.priority_to_tag|yesno }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </form>
+        
+{% endblock %}

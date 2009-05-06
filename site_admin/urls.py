@@ -66,6 +66,7 @@ urlpatterns = patterns('',
     url(r'^societies/search$', views.search_societies, name='admin_search_societies'),
     
     # Resources
+    url(r'^resources/edit$', views.edit_resources, name='admin_edit_resources'),
     url(r'^resources/(?P<type1>.+)$', views.list_resources, name='admin_list_resources'),
     url(r'^resource/(?P<resource_id>\d+)$', views.view_resource, name='admin_view_resource'),
     url(r'^resource/(?P<resource_id>\d+)/edit$', views.edit_resource, name='admin_edit_resource'),

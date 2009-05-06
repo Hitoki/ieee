@@ -233,3 +233,15 @@ $(function () {
         liveUrl.add(this);
     });
 });
+
+//
+
+$(function() {
+    $('.select-checkbox-on-click').click(function() {
+        $(this).find('input[type="checkbox"]').click();
+    });
+    $('.select-checkbox-on-click input[type="checkbox"]').click(function(e) {
+        // Stop propagation to above function, otherwise checkbox is clicked twice & doesn't change
+        e.stopPropagation();
+    });
+});

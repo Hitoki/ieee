@@ -2,6 +2,59 @@
 
 {% block main_table_content %}
 
+{% if not is_ajax %}
+    
+    {# Enable the "Create a new tag X" link when not using an AJAX page. #}
+
+    <script>
+        
+        function attachMultisearchEvents() {
+            var multisearch = $('#multisearch_related_tags').data('multisearch');
+            if (!multisearch) {
+                // Wait till multisearch is available
+                setTimeout(attachMultisearchEvents, 50);
+            } else {
+                // Got multisearch, attach events
+                multisearch.subscribe('click_create_new_tag', function(multisearch, event, data) {
+                    // User clicked on "create new tag" link, show page in lightbox
+                    Lightbox.show('{% url admin_create_tag %}?default_tag_name=' + escape(data.tag_name) + '&society_id=' + {{ society_id }}, {
+                        closeOnClickOutside: false
+                    });
+                });
+            }
+        }
+        
+        window.notify = function(action, data) {
+            if (action == 'created_tag') {
+                // Just created a tag, add it to the field
+                var multisearch = $('#multisearch_related_tags').data('multisearch');
+                
+                // Add the newly created tag to the list of options
+                multisearch.addSelectedOption({
+                    name: data.tag.name,
+                    name_link: data.tag.name_link,
+                    value: data.tag.value,
+                    tag_name: data.tag.tag_name,
+                    sector_names: data.tag.sector_names,
+                    num_societies: data.tag.num_societies.toString(),
+                    num_related_tags: data.tag.num_related_tags.toString(),
+                    num_filters: data.tag.num_filters.toString(),
+                    num_resources: data.tag.num_resources.toString()
+                });
+                
+                // Trigger a refresh of the popup
+                multisearch.updatePopup();
+            }
+        }
+                
+        $(function() {
+            attachMultisearchEvents();
+        });
+        
+    </script>
+
+{% endif %}
+
 {% if is_ajax %}
 
 <script>

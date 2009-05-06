@@ -11,9 +11,7 @@ def _make_choices(list1):
         yield item, item
 
 class ModifiedFormBase(Form):
-    """
-    Adds support for outputting one field/table row at a time.
-    """
+    "Adds support for outputting one field/table row at a time."
     def as_table(self, field_name=None):
         "Just like Form.as_table(), except can render a single field (row) at a time."
         if field_name is None:
@@ -43,7 +41,7 @@ class CreateTagForm(Form):
     name = CharField(max_length=100, label='Tag Name')
     sectors = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), label='Sector', widget=SelectMultiple(attrs={'size':3}))
     filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultipleColumns(columns=2), required=False, label='Filters')
-    related_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags', widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from Tag', blur_text='Type a few characters to bring up matching tags'))
+    related_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags', show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from Tag', blur_text='Type a few characters to bring up matching tags'))
 
 CreateTagForm = autostrip(CreateTagForm)
 
@@ -54,7 +52,7 @@ class EditTagForm(Form):
     societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies', label='Societies')
     filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultipleColumns(columns=2), required=False, label='Filters')
     #num_resources = models.IntegerField(required=False, label='Resources')
-    related_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags with this Tag' ,widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from Tag', blur_text='Type a few characters to bring up matching tags'))
+    related_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags with this Tag',show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from Tag', blur_text='Type a few characters to bring up matching tags'))
 
 EditTagForm = autostrip(EditTagForm)
 
@@ -152,3 +150,13 @@ MissingResourceForm = autostrip(MissingResourceForm)
 
 class ImportUsersForm(Form):
     file = FileField()
+
+class EditResourcesForm(Form):
+    assign_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Assign Tags', widget_label='Assign Tags', show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag', blur_text='Type a few characters to bring up matching tags'))
+    PRIORITIES = [
+        'no change',
+        'yes',
+        'no',
+    ]
+    priority = ChoiceField(choices=_make_choices(PRIORITIES))
+

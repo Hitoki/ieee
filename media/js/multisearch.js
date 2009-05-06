@@ -190,7 +190,7 @@ function MultiSearch(container, options) {
     
     $(document).click(function(e) {
         // This only receives clicks that happened outside the MultiSearch... close the popup
-        multiSearch.closePopup();
+        multiSearch.closePopup(true);
     });
     $(document).keydown(function(e) {
         // This only receives clicks that happened outside the MultiSearch... close the popup
@@ -304,7 +304,7 @@ MultiSearch.prototype.keydown = function(e) {
     }
     else if (e.keyCode == KEYS.tab) {
         // User is tabbing out of the widget
-        this.closePopup();
+        this.closePopup(true);
     }
     else {
         //log('  e.which: ' + e.which);
@@ -904,6 +904,8 @@ MultiSearch.prototype.onKeyEscape = function(e) {
     if (this.popupVisible) {
         // Close the popup & reset options
         e.preventDefault();
+        // TODO: This doesn't work correctly, maybe due to conflict with blurText...
+        //this.closePopup(true);
         this.closePopup();
     }
 }
@@ -918,10 +920,16 @@ MultiSearch.prototype.showPopup = function() {
 }
 
 // Hides & clears the popup element, and resets all popup data
-MultiSearch.prototype.closePopup = function() {
+MultiSearch.prototype.closePopup = function(clear_value) {
+    if (clear_value == undefined)
+        clear_value = false;
+    
     // Close the popup & reset options
     this.popupVisible = false;
     this.popupElem.html('');
+    if (clear_value) {
+        this.input.attr('value', '');
+    }
     if (this.options.society_tags_first) {
         this.popupFirstElem = $('<div><div class="multi-search-popup-first">Society Tags:</div></div>').appendTo(this.popupElem);
         this.popupSecondElem = $('<div><div class="multi-search-popup-second">Other Tags:</div></div>').appendTo(this.popupElem);

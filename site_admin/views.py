@@ -1375,9 +1375,16 @@ def create_tag(request):
             'name': default_tag_name,
         })
         
+        if request.is_ajax:
+            form.fields['related_tags'].widget.set_show_create_tag_link(False)
+        
     else:
         # Process the form
         form = CreateTagForm(request.POST)
+        
+        if request.is_ajax:
+            form.fields['related_tags'].widget.set_show_create_tag_link(False)
+            
         if form.is_valid():
             tag = Node.objects.create(
                 name=form.cleaned_data['name'],
@@ -1457,11 +1464,6 @@ def create_tag(request):
 def edit_tag(request, tag_id):
     return_url = request.GET.get('return_url', '')
     society_id = request.GET.get('society_id', '')
-    #if tag_id is None:
-    #    # creating a new tag
-    #    form = EditTagForm()
-    #else:
-    # editing an existing tag
     tag = Node.objects.get(id=tag_id)
     
     form = EditTagForm(initial={
@@ -1845,6 +1847,19 @@ def _get_paged_tags(society, tag_sort, tag_page):
             '-num_filters',
         ])
     
+    elif tag_sort == 'num_resources_ascending':
+        tags = society.tags.extra(select={
+            'num_resources': 'SELECT COUNT(ieeetags_resource_nodes.id) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id',
+        }, order_by=[
+            'num_resources',
+        ])
+    elif tag_sort == 'num_resources_descending':
+        tags = society.tags.extra(select={
+            'num_resources': 'SELECT COUNT(ieeetags_resource_nodes.id) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id',
+        }, order_by=[
+            '-num_resources',
+        ])
+    
     elif tag_sort == 'num_related_tags_ascending':
         tags = society.tags.extra(select={
             'num_related_tags': 'SELECT COUNT(ieeetags_node_related_tags.id) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id',
@@ -1881,6 +1896,8 @@ def manage_society(request, society_id):
     
     _RESOURCES_PER_PAGE = 50
     
+    resource_filter = request.GET.get('resource_filter', '').strip()
+    
     # Default to name/ascending resource_sort
     resource_sort = request.GET.get('resource_sort', 'priority_ascending')
     resource_page = int(request.GET.get('resource_page', 1))
@@ -1891,24 +1908,29 @@ def manage_society(request, society_id):
     
     society = Society.objects.get(id=society_id)
     
+    resources1 = society.resources
+    if resource_filter != '':
+        keywords = resource_filter.split(' ')
+        for keyword in keywords:
+            resources1 = resources1.filter(name__icontains=keyword)
+    
     form = ManageSocietyForm(initial={
         'tags': society.tags.all(),
-        #'resources': society.resources.all(),
     })
     
     form.fields['tags'].widget.set_society_id(society_id)
     
     if resource_sort == 'name_ascending':
-        resources1 = society.resources.order_by('name')
+        resources1 = resources1.order_by('name')
     elif resource_sort == 'name_descending':
-        resources1 = society.resources.order_by('-name')
+        resources1 = resources1.order_by('-name')
     
     elif resource_sort == 'ieee_id_ascending':
         
         # Ignore warning about turning non-numeric value into an integer ("Truncated incorrect INTEGER value: 'xxxx'")
         warnings.filterwarnings('ignore', '^Truncated incorrect INTEGER value:.+')
         
-        resources1 = society.resources.extra(select={
+        resources1 = resources1.extra(select={
             'ieee_id_num': 'SELECT CAST(ieee_id AS SIGNED INTEGER)',
         }, order_by=[
             'ieee_id_num',
@@ -1921,7 +1943,7 @@ def manage_society(request, society_id):
         # Ignore warning about turning non-numeric value into an integer ("Truncated incorrect INTEGER value: 'xxxx'")
         warnings.filterwarnings('ignore', '^Truncated incorrect INTEGER value:.+')
         
-        resources1 = society.resources.extra(select={
+        resources1 = resources1.extra(select={
             'ieee_id_num': 'SELECT CAST(ieee_id AS SIGNED INTEGER)',
         }, order_by=[
             '-ieee_id_num',
@@ -1930,36 +1952,36 @@ def manage_society(request, society_id):
         ])
     
     elif resource_sort == 'resource_type_ascending':
-        resources1 = society.resources.order_by('resource_type', 'standard_status', 'name')
+        resources1 = resources1.order_by('resource_type', 'standard_status', 'name')
     elif resource_sort == 'resource_type_descending':
-        resources1 = society.resources.order_by('-resource_type', '-standard_status', '-name')
+        resources1 = resources1.order_by('-resource_type', '-standard_status', '-name')
     
     elif resource_sort == 'url_ascending':
-        resources1 = society.resources.order_by('url', 'name')
+        resources1 = resources1.order_by('url', 'name')
     elif resource_sort == 'url_descending':
-        resources1 = society.resources.order_by('-url', '-name')
+        resources1 = resources1.order_by('-url', '-name')
     
     elif resource_sort == 'num_tags_ascending':
-        resources1 = society.resources.extra(select={
+        resources1 = resources1.extra(select={
             'num_tags': 'SELECT COUNT(ieeetags_resource_nodes.id) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.resource_id = ieeetags_resource.id',
         }, order_by=[
             'num_tags',
         ])
     elif resource_sort == 'num_tags_descending':
-        resources1 = society.resources.extra(select={
+        resources1 = resources1.extra(select={
             'num_tags': 'SELECT COUNT(ieeetags_resource_nodes.id) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.resource_id = ieeetags_resource.id',
         }, order_by=[
             '-num_tags',
         ])
     
     elif resource_sort == 'num_societies_ascending':
-        resources1 = society.resources.extra(select={
+        resources1 = resources1.extra(select={
             'num_societies': 'SELECT COUNT(ieeetags_resource_societies.id) FROM ieeetags_resource_societies WHERE ieeetags_resource_societies.resource_id = ieeetags_resource.id',
         }, order_by=[
             'num_societies',
         ])
     elif resource_sort == 'num_societies_descending':
-        resources1 = society.resources.extra(select={
+        resources1 = resources1.extra(select={
             'num_societies': 'SELECT COUNT(ieeetags_resource_societies.id) FROM ieeetags_resource_societies WHERE ieeetags_resource_societies.resource_id = ieeetags_resource.id',
         }, order_by=[
             '-num_societies',
@@ -1967,14 +1989,14 @@ def manage_society(request, society_id):
     
     # NOTE: These are reversed, since that seems more intutive
     elif resource_sort == 'priority_ascending':
-        resources1 = society.resources.order_by('-priority_to_tag', 'name')
+        resources1 = resources1.order_by('-priority_to_tag', 'name')
     elif resource_sort == 'priority_descending':
-        resources1 = society.resources.order_by('priority_to_tag', '-name')
+        resources1 = resources1.order_by('priority_to_tag', '-name')
     
     elif resource_sort == 'description_ascending':
-        resources1 = society.resources.order_by('description', 'name')
+        resources1 = resources1.order_by('description', 'name')
     elif resource_sort == 'description_descending':
-        resources1 = society.resources.order_by('-description', '-name')
+        resources1 = resources1.order_by('-description', '-name')
     
     else:
         raise Exception('Unknown resource_sort "%s"' % resource_sort)
@@ -1987,7 +2009,7 @@ def manage_society(request, society_id):
     resource_start_count = (resource_page-1) * _RESOURCES_PER_PAGE
     resource_end_count = (resource_page) * _RESOURCES_PER_PAGE
     resources1 = resources1[resource_start_count:resource_end_count]
-    resource_page_url = reverse('admin_manage_society', args=[society.id]) + '?resource_sort=' + quote(resource_sort) + '&amp;resource_page={{ page }}#tab-resources-tab'
+    resource_page_url = reverse('admin_manage_society', args=[society.id]) + '?resource_sort=' + quote(resource_sort) + '&amp;resource_filter=' + quote(resource_filter) + '&amp;resource_page={{ page }}#tab-resources-tab'
     
     (tags, num_tag_pages) = _get_paged_tags(society, tag_sort, tag_page)
     tag_page_url = reverse('admin_manage_society', args=[society.id]) + '?tag_sort=' + quote(tag_sort) + '&amp;tag_page={{ page }}#tab-tags-tab'
@@ -2009,6 +2031,7 @@ def manage_society(request, society_id):
     return render(request, 'site_admin/manage_society.html', {
         'society': society,
         'form': form,
+        'resource_filter': resource_filter,
         
         'resources': resources,
         'resource_sort': resource_sort,
@@ -2154,6 +2177,68 @@ def search_societies(request):
     })
 
 @login_required
+def edit_resources(request):
+    # TODO: Check permissions on each resource
+    assert request.method == 'POST'
+    
+    resource_ids = request.POST.getlist('resource_ids')
+    resources = [Resource.objects.get(id=resource_id) for resource_id in resource_ids]
+    
+    # Parse form
+    form = EditResourcesForm(request.POST)
+    if form.is_valid():
+        
+        # Assign tags to all resources
+        assign_tags = form.cleaned_data['assign_tags']
+        for resource in resources:
+            for tag in assign_tags:
+                resource.nodes.add(tag)
+            resource.save()
+        
+        # Assign priorities
+        if form.cleaned_data['priority'] == 'yes':
+            for resource in resources:
+                resource.priority_to_tag = True
+                resource.save()
+            
+        elif form.cleaned_data['priority'] == 'no':
+            for resource in resources:
+                resource.priority_to_tag = False
+                resource.save()
+        
+    # Reset the form
+    form = EditResourcesForm(initial={
+        'priority': 'no change',
+    })
+    
+    # Remove selected tags
+    remove_tag_ids = request.POST.getlist('remove_tag_ids')
+    remove_tags = [Node.objects.get(id=remove_tag_id) for remove_tag_id in remove_tag_ids]
+    for resource in resources:
+        for tag in remove_tags:
+            resource.nodes.remove(tag)
+        resource.save()
+    
+    # Find the common tags
+    common_tags = None
+    for resource in resources:
+        if common_tags is None:
+            common_tags = list(resource.nodes.all())
+            print 'first resource, common_tags:', common_tags
+        else:
+            for tag in common_tags:
+                if tag not in resource.nodes.all():
+                    common_tags.remove(tag)
+                    print 'removing resource: %s, common_tags: %s' % (tag, common_tags)
+    print 'done, common_tags:', common_tags
+    
+    return render(request, 'site_admin/edit_resources.html', {
+        'form': form,
+        'resources': resources,
+        'common_tags': common_tags,
+    })
+
+@login_required
 def list_resources(request, type1):
     permissions.require_superuser(request)
     
@@ -2173,10 +2258,7 @@ def list_resources(request, type1):
 
 @login_required
 def view_resource(request, resource_id):
-    if 'return_url' not in request.GET:
-        raise Exception('query variable "return_url" not found')
-        
-    return_url = request.GET['return_url']
+    return_url = request.GET.get('return_url', '')
     resource = Resource.objects.get(id=resource_id)
     return render(request, 'site_admin/view_resource.html', {
         'return_url': return_url,
@@ -2185,10 +2267,7 @@ def view_resource(request, resource_id):
 
 @login_required
 def edit_resource(request, resource_id=None):
-    if 'return_url' not in request.GET:
-        raise Exception('query variable "return_url" not found')
-    
-    return_url = request.GET['return_url']
+    return_url = request.GET.get('return_url', '')
     society_id = request.GET.get('society_id', '')
     
     if resource_id is None:
@@ -2311,6 +2390,9 @@ def save_resource(request):
                 </script>
                 <a href="javascript:window.close();">Close window</a>
             """)
+        elif return_url == '':
+            return HttpResponsePermanentRedirect(reverse('admin_view_resource', args=[resource.id]))
+            
         else:
             return HttpResponsePermanentRedirect(return_url)
 
