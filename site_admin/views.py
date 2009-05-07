@@ -1375,14 +1375,14 @@ def create_tag(request):
             'name': default_tag_name,
         })
         
-        if request.is_ajax:
+        if request.is_ajax():
             form.fields['related_tags'].widget.set_show_create_tag_link(False)
         
     else:
         # Process the form
         form = CreateTagForm(request.POST)
         
-        if request.is_ajax:
+        if request.is_ajax():
             form.fields['related_tags'].widget.set_show_create_tag_link(False)
             
         if form.is_valid():
