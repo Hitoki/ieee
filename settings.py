@@ -84,7 +84,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'ieeetags.middleware.ConsoleException.ConsoleExceptionMiddleware',
+    'ieeetags.middleware.ExceptionMiddleware.ExceptionMiddleware',
     #'ieeetags.djangologging.middleware.LoggingMiddleware',
 )
 
@@ -116,11 +116,11 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'ieeetags.context_processors.is_ajax',
 )
 
-# Application Settings
+# Application Settings ---------------------------------------------------------
 
 SHOW_SOCIETY_LOGIN_BANNER = False
 
-# Debug Settings
+# Debug Settings ---------------------------------------------------------------
 
 # Used for the COMSOC demo to assign all tags to comsoc by default
 DEBUG_IMPORT_ASSIGN_ALL_TAGS_TO_COMSOC = False
@@ -142,6 +142,14 @@ LOG_CONSOLE = True
 
 DMIGRATIONS_DIR = relpath(__file__, 'migrations')
 DISABLE_SYNCDB = True
+
+# Print exceptions to the console
+DEBUG_PRINT_EXCEPTIONS = False
+
+# Email exceptions to admins
+DEBUG_EMAIL_EXCEPTIONS = False
+
+# ------------------------------------------------------------------------------
 
 try:
     from local_settings import *
