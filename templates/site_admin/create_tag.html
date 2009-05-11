@@ -94,7 +94,7 @@
             {{ form.id }}
             <tr>
                 <th>
-                    <label for="id_name">{{ form.name.label }} <span class="help_icon flyover {position:'top'}" title="Tag Name">[?]</span>:</label>
+                    <label for="id_name">{{ form.name.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="1 - 3 word description of the key concept or technology area.">[?]</span>:</label>
                 </th>
                 <td>
                     {{ form.name.errors }}
@@ -103,7 +103,7 @@
             </tr>
             <tr>
                 <th>
-                    <label for="id_sector">{{ form.sectors.label }} <span class="help_icon flyover {position:'top'}" title="Sector">[?]</span>:</label>
+                    <label for="id_sector">{{ form.sectors.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="Industry Sector for which the Tag is relevant, from the domain perspective of the S/C.">[?]</span>:</label>
                 </th>
                 <td>
                     {{ form.sectors.errors }}
@@ -112,7 +112,7 @@
             </tr>
             <tr>
                 <th>
-                    <label for="id_filters">{{ form.filters.label }} <span class="help_icon flyover {position:'top'}" title="Filters">[?]</span>:</label>
+                    <label for="id_filters">{{ form.filters.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="Choose one or multiple categories that describe the Tag. If none are chosen, this Tag will not be displayed.">[?]</span>:</label>
                 </th>
                 <td>
                     {{ form.filters.errors }}
@@ -121,7 +121,7 @@
             </tr>
             <tr>
                 <th>
-                    <label for="id_related_tags">{{ form.related_tags.label }} <span class="help_icon flyover {position:'top'}" title="Related Tags">[?]</span>:</label>
+                    <label for="id_related_tags">{{ form.related_tags.label }} <span class="help_icon flyover {position:'top', customClass:'editForm'}" title='Typing a portion of a word or phrase will bring up a list of all matching tags. Choose "Create a new tag" if a matching tag does not exist.'>[?]</span>:</label>
                 </th>
                 <td>
                     {{ form.related_tags.errors }}
