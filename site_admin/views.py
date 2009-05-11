@@ -1486,7 +1486,7 @@ def edit_tag(request, tag_id):
         make_display_only(form.fields['parents'], model=Node)
         make_display_only(form.fields['societies'], model=Society, is_multi_search=True)
         sector_ids = [str(sector.id) for sector in tag.parents.all()]
-        form.fields['related_tags'].widget.set_search_url(reverse('ajax_search_tags') + '?filter_sector_ids=' + ','.join(sector_ids))
+        #form.fields['related_tags'].widget.set_search_url(reverse('ajax_search_tags') + '?filter_sector_ids=' + ','.join(sector_ids))
         
     return render(request, 'site_admin/edit_tag.html', {
         'tag': tag,
@@ -1515,7 +1515,7 @@ def save_tag(request, tag_id):
             tag_id = int(request.POST['id'])
             tag = Node.objects.get(id=tag_id)
             sector_ids = [str(sector.id) for sector in tag.parents.all()]
-            form.fields['related_tags'].widget.set_search_url(reverse('ajax_search_tags') + '?filter_sector_ids=' + ','.join(sector_ids))
+            #form.fields['related_tags'].widget.set_search_url(reverse('ajax_search_tags') + '?filter_sector_ids=' + ','.join(sector_ids))
             
         return render(request, 'site_admin/edit_tag.html', {
             'tag': tag,
