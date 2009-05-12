@@ -22,15 +22,17 @@
                 <li><a href="{% url admin_login_report %}">Show login report</a></li>
             </ul>
         </li>
-            
-        {% if user.is_superuser %}
-        <li>
-            Django:
-            <ul>
-                <li><a href="/djangoadmin">Django Admin</a></li>
-            </ul>
-        </li>
-        {% endif %}
+        
+        {% comment %}
+            {% if user.is_superuser %}
+                <li>
+                    Django:
+                    <ul>
+                        <li><a href="/djangoadmin">Django Admin</a></li>
+                    </ul>
+                </li>
+            {% endif %}
+        {% endcomment %}
         
         <li>
             Manage:
@@ -56,23 +58,26 @@
                 Import Data:
                 <ul>
                     <li><a href="{% url admin_import_users %}">Import Users</a></li>
+                    <li><a href="{% url admin_update_tag_counts %}">Update tag counts</a></li>
                 </ul>
             </li>
         
-            <li>
-                Import Data for v.7:
-                <ul>
-                    <li><a href="{% url admin_import_tags "v.7" %}">Import Tags</a></li>
-                    <li><a href="{% url admin_fix_societies_import %}">Fix Societies Import</a></li>
-                    <li><a href="{% url admin_import_societies "v.7" %}">Import Societies</a></li>
-                    <li><a href="{% url admin_unassigned_tags %}">Assign unassigned tags to TAB</a></li>
-                    <li><a href="{% url admin_import_standards "v.7" %}">Import Standards</a></li>
-                    <li><a href="{% url admin_import_conferences "v.7" %}">Import Conferences</a></li>
-                    <li><a href="{% url admin_import_periodicals "v.7" %}">Import Periodicals</a></li>
-                    <li><a href="{% url admin_fix_user_import %}">Fix User Import</a></li>
-                    {# <li><a href="{% url admin_import_users %}">Import Society Users</a></li> #}
-                </ul>
-            </li>
+            {% comment %}
+                <li>
+                    Import Data for v.7:
+                    <ul>
+                        <li><a href="{% url admin_import_tags "v.7" %}">Import Tags</a></li>
+                        <li><a href="{% url admin_fix_societies_import %}">Fix Societies Import</a></li>
+                        <li><a href="{% url admin_import_societies "v.7" %}">Import Societies</a></li>
+                        <li><a href="{% url admin_unassigned_tags %}">Assign unassigned tags to TAB</a></li>
+                        <li><a href="{% url admin_import_standards "v.7" %}">Import Standards</a></li>
+                        <li><a href="{% url admin_import_conferences "v.7" %}">Import Conferences</a></li>
+                        <li><a href="{% url admin_import_periodicals "v.7" %}">Import Periodicals</a></li>
+                        <li><a href="{% url admin_fix_user_import %}">Fix User Import</a></li>
+                        {# <li><a href="{% url admin_import_users %}">Import Society Users</a></li> #}
+                    </ul>
+                </li>
+            {% endcomment %}
         
             {% comment %}
             #<li>
@@ -94,12 +99,6 @@
             #    </li>
             {% endcomment %}
         
-            <li>
-                Import Data:
-                <ul>
-                    <li><a href="{% url admin_update_tag_counts %}">Update tag counts</a></li>
-                </ul>
-            </li>
         {% endif %}
         
     </ul>
