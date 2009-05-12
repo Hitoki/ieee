@@ -130,15 +130,15 @@
             </tr>
         </table>
         <div class="submit">
-        <input type="submit" value="Ok" class="button" />
+        <input type="submit" value="Save" class="button" />
         {% if is_ajax %}
-            <input type="button" value="Cancel" class="lightbox-close" />
+            <a href="javascript:Lightbox.hide();" class="cancel-link">Cancel</a>
         {% else %}
             {% if return_url %}
-                <input type="button" value="Cancel" onclick="window.location='{{ return_url }}';" />
+                <a href="{{ return_url }}" class="cancel-link">Cancel</a>
             {% endif %}
             {% if sector %}
-                <input type="button" value="Cancel" onclick="window.location='{% url admin_view_sector sector.id %}';" />
+                <a href="{% url admin_view_sector sector.id %}" class="cancel-link">Cancel</a>
             {% endif %}
         {% endif %}
         </div>

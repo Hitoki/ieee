@@ -793,3 +793,11 @@ form.block-labels label {
     display:block;
     font-weight:bold;
 }
+
+.cancel-link {
+    margin-left: 5px;
+}
+
+a.cancel-link:visited {
+    color: blue;
+}
