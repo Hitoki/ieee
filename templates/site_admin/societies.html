@@ -24,7 +24,7 @@
         {% for society in societies %}
             <tr>
                 <td>
-                    <a href="{% url admin_view_society society.id %}">{{ society.name }}</a> ({{ society.abbreviation }})
+                    <a href="{% url admin_manage_society society.id %}">{{ society.name }}</a> ({{ society.abbreviation }})
                 </td>
                 <td>
                     {{ society.url }}
