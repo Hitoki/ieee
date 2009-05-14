@@ -795,9 +795,13 @@ form.block-labels label {
 }
 
 .cancel-link {
-    margin-left: 5px;
+    margin-right: 5px;
 }
 
 a.cancel-link:visited {
     color: blue;
+}
+
+div.submit {
+    text-align: right;
 }

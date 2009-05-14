@@ -317,6 +317,10 @@ table.forgot-password th {
     text-align:right;
 }
 
+table.forgot-password td, th {
+    padding: 5px 0 5px 0;
+}
+
 ul.error {
     margin-bottom:.5em;
     font-weight:bold;

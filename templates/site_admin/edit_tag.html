@@ -110,8 +110,10 @@
                 </td>
             </tr>
         </table>
-        <input type="submit" value="Save" class="submit-button" />
-        <a href="{{ return_url }}" class="cancel-link">Cancel</a>
+        <div class="submit">
+            <a href="{{ return_url }}" class="cancel-link">Cancel</a>
+            <input type="submit" value="Save" class="submit-button" />
+        </div>
     </form>
 
 {% endblock %}
