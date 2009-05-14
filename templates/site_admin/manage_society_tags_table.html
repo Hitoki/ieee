@@ -145,7 +145,7 @@
                 <a href="{% url admin_edit_tag tag.id %}?return_url={{ current_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}&amp;society_id={{ society.id }}">{{ tag.name }}</a>
             </td>
             <td>
-                {{ tag.sectors_list }}
+                {{ tag.parents.all|join:", " }}
             </td>
             <td>
                 {% if tag.societies.all.count %}
