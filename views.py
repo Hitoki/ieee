@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.core.mail import mail_admins
+from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect  
 from django.shortcuts import render_to_response
@@ -428,4 +429,24 @@ def tooltip(request):
 def debug_error(request):
     # This causes an error
     test = 0/0
-    
+
+def debug_send_email(request):
+    logging.debug('debug_send_email()')
+    if not settings.DEBUG_ENABLE_EMAIL_TEST:
+        raise Exception('DEBUG_ENABLE_EMAIL_TEST is not enabled')
+        
+    if request.method == 'GET':
+        form = DebugSendEmailForm()
+    else:
+        form = DebugSendEmailForm(request.POST)
+        if form.is_valid():
+            logging.debug('sending email to "%s"' % form.cleaned_data['email'])
+            subject = 'debug_send_email() to "%s"' % form.cleaned_data['email']
+            message = 'debug_send_email() to "%s"' % form.cleaned_data['email']
+            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [form.cleaned_data['email']])
+            logging.debug('email sent.')
+            return HttpResponse('Email sent to "%s"' % form.cleaned_data['email'])
+        
+    return render(request, 'debug_send_email.html', {
+        'form': form,
+    })

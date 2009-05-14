@@ -38,5 +38,6 @@ urlpatterns = patterns('',
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     
     url(r'^debug/error$', views.debug_error, name='debug_error'),
+    url(r'^debug/send_email$', views.debug_send_email, name='debug_send_email'),
     
 )

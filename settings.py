@@ -149,6 +149,9 @@ DEBUG_PRINT_EXCEPTIONS = False
 # Email exceptions to admins
 DEBUG_EMAIL_EXCEPTIONS = False
 
+# Enable the /debug/email test
+DEBUG_ENABLE_EMAIL_TEST = False
+
 # ------------------------------------------------------------------------------
 
 try:
