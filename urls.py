@@ -25,7 +25,6 @@ urlpatterns = patterns('',
     url(r'^ajax/nodes_xml$', views.ajax_nodes_xml, name='ajax_nodes_xml'),
     url(r'^ajax/nodes_json$', views.ajax_nodes_json, name='ajax_nodes_json'),
     url(r'^ajax/tooltip$', views.tooltip, name='tooltip'),
-    
     # Site Admin
     (r'^admin/', include('ieeetags.site_admin.urls')),
     
@@ -37,5 +36,7 @@ urlpatterns = patterns('',
     
     # Media
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-     
+    
+    url(r'^debug/error$', views.debug_error, name='debug_error'),
+    
 )

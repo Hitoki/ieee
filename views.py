@@ -425,3 +425,7 @@ def tooltip(request):
         'relatedTagLevel': relatedTagLevel,
     })
 
+def debug_error(request):
+    # This causes an error
+    test = 0/0
+    
