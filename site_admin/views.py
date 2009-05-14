@@ -422,7 +422,8 @@ def home(request):
         # Has more than one society, show list of societies
         elif request.user.societies.count() > 1:
             #return HttpResponseRedirect(reverse('admin_societies'))
-            return HttpResponseRedirect(reverse('admin_home_societies_list') + hash)
+            #return HttpResponseRedirect(reverse('admin_home_societies_list') + hash)
+            raise Exception('User is assigned to multiple societies.')
         
         else:
             raise Exception('User is a society manager but is not assigned to any societies.')
@@ -430,14 +431,14 @@ def home(request):
     else:
         raise Exception('Unknown role %s' % role)
 
-@login_required
-def home_societies_list(request):
-    permissions.require_superuser(request)
-    
-    societies = Society.objects.getForUser(request.user)
-    return render(request, 'site_admin/home_societies_list.html', {
-        'societies': societies,
-    })
+#@login_required
+#def home_societies_list(request):
+#    permissions.require_superuser(request)
+#    
+#    societies = Society.objects.getForUser(request.user)
+#    return render(request, 'site_admin/home_societies_list.html', {
+#        'societies': societies,
+#    })
 
 @login_required
 def missing_resource(request, society_id):
@@ -1652,10 +1653,14 @@ def save_user(request):
         
         # Validate password
         if form.cleaned_data['id'] is None and form.cleaned_data['password1'] == '' and form.cleaned_data['password2'] == '':
-                errors.append('Please enter a password.')
+            errors.append('Please enter a password.')
         elif form.cleaned_data['password1'] != form.cleaned_data['password2']:
             errors.append('The passwords did not match.')
-            
+        
+        # TODO: Later on, will re-enable multiple societies per user
+        if len(form.cleaned_data['societies']) > 1:
+            errors.append('Currently, a user can only be assigned to a single society.')
+        
         if len(errors) == 0:
             # Form is valid
             if form.cleaned_data['id'] is None:

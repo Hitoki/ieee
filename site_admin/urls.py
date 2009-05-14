@@ -14,7 +14,7 @@ urlpatterns = patterns('',
     url(r'^change_password_success$', views.change_password_success, name='change_password_success'),
     
     url(r'^$', views.home, name='admin_home'),
-    url(r'^home_societies_list$', views.home_societies_list, name='admin_home_societies_list'),
+    #url(r'^home_societies_list$', views.home_societies_list, name='admin_home_societies_list'),
     url(r'^missing_resource/(?P<society_id>\d+)$', views.missing_resource, name='missing_resource'),
     url(r'^permission_denied$', views.permission_denied, name='permission_denied'),
     
