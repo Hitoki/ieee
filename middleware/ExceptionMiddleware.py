@@ -16,9 +16,10 @@ class ExceptionMiddleware:
     
     def process_exception(self, request, exception):
         "Print or email exception info, depending on settings."
+        message = getattr(exception, 'message', '')
         content = []
         content.append('---------------------------------- EXCEPTION ----------------------------------')
-        content.append('%s: %s' % (type(exception).__name__, exception.message))
+        content.append('%s: %s' % (type(exception).__name__, message))
         content.append('%s' % get_current_url(request))
         content.append('')
         content.append('%s' % traceback.format_exc())
@@ -38,7 +39,7 @@ class ExceptionMiddleware:
         
         if settings.DEBUG_EMAIL_EXCEPTIONS:
             # Email the exception to the admins
-            subject = 'EXCEPTION: %s: %s at %s' % (type(exception).__name__, exception.message, get_current_url(request))
+            subject = 'EXCEPTION: %s: %s at %s' % (type(exception).__name__, message, get_current_url(request))
             mail_admins(subject, content)
         
         return None
