@@ -6,7 +6,9 @@
     
     <p class="version">
         user: {{ user.username }} ({{ user.get_profile.role }})<br/>
-        ver {{ version }}, rev {{ revision }}, {{ date }}
+        ver {{ version }}<br/>
+        rev {{ revision }}<br/>
+        date {{ date|date }}
     </p>
     <h1>Admin Home</h1>
     
