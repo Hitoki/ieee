@@ -928,7 +928,12 @@ MultiSearch.prototype.closePopup = function(clear_value) {
     this.popupVisible = false;
     this.popupElem.html('');
     if (clear_value) {
-        this.input.attr('value', '');
+        var blurtext = this.input.data('blurText');
+        if (!blurtext || blurtext.hasText())
+            this.input.attr('value', '');
+        // Check if there's a blurText: if so, 
+        if (blurtext)
+            blurtext.onBlur();
     }
     if (this.options.society_tags_first) {
         this.popupFirstElem = $('<div><div class="multi-search-popup-first">This Society&#39;s Tags:</div></div>').appendTo(this.popupElem);
