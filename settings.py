@@ -137,8 +137,8 @@ DEBUG_DISABLE_FRONTEND = True
 # Enable the Help tab on the Manage Society page
 DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB = True
 
-LOG_FILENAME = relpath(__file__, 'log.txt')
-LOG_CONSOLE = True
+LOG_FILENAME = None
+#LOG_CONSOLE = False
 
 DMIGRATIONS_DIR = relpath(__file__, 'migrations')
 DISABLE_SYNCDB = True
@@ -167,28 +167,20 @@ logging.basicConfig(
 
 # Check if the logger has been setup yet, otherwise we create a new handler everytime settings.py is loaded
 if not hasattr(logging, "is_setup"):
-    # Add the file handler
-    file_logger = logging.FileHandler(LOG_FILENAME)
-    file_logger.setLevel(logging.DEBUG)
-    file_logger.setFormatter(logging.Formatter('%(asctime)s: %(levelname)s: %(message)s'))
-    logging.getLogger().addHandler(file_logger)
-    
-    #if not hasattr(logging, 'console'):
-    #    print 'setting up console logger'
-    #    logging.console = logging.getLogger('console')
-    #    handler = logging.StreamHandler()
-    #    handler.setLevel(logging.DEBUG)
-    #    handler.setFormatter(logging.Formatter('%(levelname)s %(message)s'))
-    #    logging.console.addHandler(handler)
+    if LOG_FILENAME is not None:
+        # Add the file handler
+        file_logger = logging.FileHandler(LOG_FILENAME)
+        file_logger.setLevel(logging.DEBUG)
+        file_logger.setFormatter(logging.Formatter('%(asctime)s: %(levelname)s: %(message)s'))
+        logging.getLogger().addHandler(file_logger)
     
     logging.is_setup = True
-    
-    #logging.debug('setup logger')
 
 #logging.debug('---------------------------------------------------------------------')
 #logging.debug('settings.py')
 
 if DEBUG:
+    # Add the profiling middleware
     MIDDLEWARE_CLASSES = list(MIDDLEWARE_CLASSES)
     MIDDLEWARE_CLASSES.append('ieeetags.middleware.ProfilingMiddleware.ProfileMiddleware')
     MIDDLEWARE_CLASSES = tuple(MIDDLEWARE_CLASSES)

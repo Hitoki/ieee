@@ -38,8 +38,8 @@ _IMPORT_SOURCES = [
 ]
 
 def _get_version():
+    logging.debug('_get_version()')
     path = relpath(__file__, '../version.txt')
-    #print 'path:', path
     file = open(path, 'r')
     version = file.readline().strip()
     revision = file.readline().strip()
@@ -53,6 +53,7 @@ def _get_version():
             proc = Popen('svn info "%s"' % path, stdout=PIPE)
             proc.wait()
             for line in proc.stdout:
+                logging.debug('  line: %s' % line)
                 matches = re.match(r'Last Changed Rev: (\d+)', line)
                 if matches:
                     revision = matches.group(1) + '-svn'
@@ -60,6 +61,8 @@ def _get_version():
                 if matches:
                     date = matches.group(1)
                     date = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+            logging.debug('  revision: %s' % revision)
+            logging.debug('  date: %s' % date)
         except Exception:
             revision = 'UNKNOWN'
             date = ''
