@@ -1,1 +1,1 @@
-@util.py %*
+@python util.py %*
