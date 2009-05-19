@@ -137,11 +137,11 @@
             </tr>
         </table>
         <div class="submit">
-            <a href="{{ return_url }}" class="cancel-link">Cancel</a>
+            <input type="submit" value="Save" class="button submit-button" />
             {% if user.is_superuser and resource %}
                 <input type="button" value="Delete" onclick="if (confirm('Delete this resource?')) window.location='{% url admin_delete_resource resource.id %}';" />
             {% endif %}
-            <input type="submit" value="Save" class="button submit-button" />
+            <a href="{{ return_url }}" class="cancel-link">Cancel</a>
         </div>
     </form>
     

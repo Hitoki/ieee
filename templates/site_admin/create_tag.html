@@ -130,6 +130,7 @@
             </tr>
         </table>
         <div class="submit">
+            <input type="submit" value="Save" class="button submit-button" />
             {% if is_ajax %}
                 <a href="javascript:Lightbox.hide();" class="cancel-link">Cancel</a>
             {% else %}
@@ -140,7 +141,6 @@
                     <a href="{% url admin_view_sector sector.id %}" class="cancel-link">Cancel</a>
                 {% endif %}
             {% endif %}
-            <input type="submit" value="Save" class="button submit-button" />
         </div>
     </form>
 

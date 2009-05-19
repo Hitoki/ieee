@@ -796,7 +796,7 @@ form.block-labels label {
 }
 
 .cancel-link {
-    margin-right: 5px;
+    margin-left: 5px;
 }
 
 a.cancel-link:visited {
