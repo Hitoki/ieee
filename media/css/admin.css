@@ -144,6 +144,14 @@ ul.section-list li li {
     width: 200px;
 }
 
+table.edit-create ul {
+    list-style-type: none;
+}
+
+table.edit-create li {
+    margin-left: 0;
+}
+
 table.edit-create {
     /*width: 900px;*/
     width:100%;
