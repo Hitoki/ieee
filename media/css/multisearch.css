@@ -42,6 +42,7 @@
 
 .multi-search-popup-anchor {
     position:relative;
+    z-index: 2
 }
 
 .multi-search-popup {
@@ -53,7 +54,7 @@
     height:200px;
     border:1px solid silver;
     background:white;
-    z-index:1;
+    z-index:3;
     overflow:auto;
 }
 

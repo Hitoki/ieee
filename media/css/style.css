@@ -127,6 +127,7 @@ table.main td.center .center-pad {
     background-position:top;
     height:40px;
     position:relative;
+    z-index: 1;
 }
 
 #footer .leftCorner {
