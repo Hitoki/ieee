@@ -97,6 +97,11 @@ var Lightbox = {
                     attachFlyovers(this.lightboxContent);
                 }
                 
+                // Attach any flyover objects
+                if (attachBlurTexts) {
+                    attachBlurTexts(this.lightboxContent);
+                }
+                
                 // Hook into any forms
                 var forms = this.lightboxContent.find('form');
                 for (var i=0; i<forms.length; i++) {

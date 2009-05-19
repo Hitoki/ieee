@@ -51,6 +51,13 @@ var blurTexts = []
 
 ////////////////////////////////////////////////////////////////////////////////
 
+function attachBlurTexts(elem) {
+    elem = $(elem);
+    elem.find('.blur-text').each(function() {
+        blurTexts.push(new BlurText(this));
+    });
+}
+
 $(function() {
     $('.blur-text').each(function() {
         blurTexts.push(new BlurText(this));
