@@ -27,11 +27,18 @@
 #lightbox .lightbox-content {
 }
 
-#lightbox .lightbox-content .lightbox-pad, #lightbox .lightbox-content .create-tag-lightbox {
-    padding:1em;
+#lightbox .lightbox-content,
+#lightbox .lightbox-content .create-tag-lightbox
+{
     width: 600px;
     margin: 0 auto;
     background: white;
+}
+
+#lightbox .lightbox-content .lightbox-pad,
+#lightbox .lightbox-content .create-tag-lightbox
+{
+    padding:1em;
 }
 
 #lightbox .lightbox-content .create-tag-lightbox h1  {
