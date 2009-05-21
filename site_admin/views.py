@@ -2422,10 +2422,13 @@ def save_resource(request):
 def delete_resource(request, resource_id):
     permissions.require_superuser(request)
     
-    old_nodes = resource.nodes
+    next = request.GET.get('next')
+    
+    resource = Resource.objects.get(id=resource_id)
+    old_nodes = resource.nodes.all()
     Resource.objects.get(id=resource_id).delete()
     _update_node_totals(old_nodes)
-    return HttpResponsePermanentRedirect(reverse('admin_list_resources'))
+    return HttpResponsePermanentRedirect(next)
 
 @login_required
 def search_resources(request):
