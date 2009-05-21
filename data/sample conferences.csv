@@ -1,0 +1,5 @@
+"Type","ID","Name","Description","URL","Tags","Sponsors > Abbreviation","Year","Standard Status","Technical Committees","Keywords","Priority","Completed"
+"Conference",10000,"Test Conference - no, no","Some description","http://www.something.com/1",,"CEDA, CAS",2006,,,"Keyword1","No","No"
+"Conference",10001,"Test Conference - no, yes","Another description","http://www.something.com/2",,"CEDA, CAS",2006,,,"Keyword2","No","Yes"
+"Conference",10002,"Test Conference - yes, no","Some description","http://www.something.com/1",,"CEDA, CAS",2006,,,"Keyword3","Yes","No"
+"Conference",10003,"Test Conference - yes, yes","Another description","http://www.something.com/2",,"CEDA, CAS",2006,,,"Keyword4","Yes","Yes"

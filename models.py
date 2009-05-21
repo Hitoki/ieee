@@ -420,6 +420,7 @@ class Resource(models.Model):
     year = models.IntegerField(blank=True, null=True)
     standard_status = models.CharField(blank=True, max_length=100)
     priority_to_tag = models.BooleanField()
+    completed = models.BooleanField()
     keywords = models.CharField(max_length=5000, blank=True)
     
     nodes = models.ManyToManyField(Node, related_name='resources')

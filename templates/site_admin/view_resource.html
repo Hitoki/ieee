@@ -77,6 +77,22 @@
                 {{ resource.keywords }}
             </td>
         </tr>
+        <tr>
+            <th>
+                Priority
+            </th>
+            <td>
+                {{ resource.priority_to_tag|yesno|capfirst }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Completed
+            </th>
+            <td>
+                {{ resource.completed|yesno|capfirst }}
+            </td>
+        </tr>
 
     </table>
     

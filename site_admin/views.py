@@ -875,29 +875,28 @@ def fix_societies_import(request):
         'page_time': time.time()-start,
     })
     
-def _import_resources(filename, batch_commits=False):
+def _import_resources(file, batch_commits=False):
     #logging.debug('_import_resources()')
     
     start = time.time()
     
     row_count = 0
     duplicate_resources = 0
-    resources_added = 0
+    resources_created = 0
     societies_assigned = 0
     num_invalid_societies = 0
     resources_skipped = 0
     
-    (file, reader) = _open_unicode_csv_reader(filename)
-    
-    #print 'filename:', filename
+    #(file, reader) = _open_unicode_csv_reader(filename)
+    reader = _open_unicode_csv_reader_for_file(file)
     
     valid_societies = {}
     invalid_societies = {}
     
     for row in reader:
         
-        #Type, ID, Name, Description, URL, Tags, Society Abbreviations, Year, Standard Status, Technical Committees, Keywords, Priority
-        type1, ieee_id, name, description, url, tag_names, society_abbreviations, year, standard_status, technical_committees, keywords, priority_to_tag = row
+        #Type, ID, Name, Description, URL, Tags, Society Abbreviations, Year, Standard Status, Technical Committees, Keywords, Priority, Completed
+        type1, ieee_id, name, description, url, tag_names, society_abbreviations, year, standard_status, technical_committees, keywords, priority_to_tag, completed = row
         
         #logging.debug('    name: %s' % name)
         
@@ -929,6 +928,13 @@ def _import_resources(filename, batch_commits=False):
             priority_to_tag = False
         else:
             raise Exception('Unknown priority "%s"' % priority_to_tag)
+        
+        if completed.lower() == 'yes':
+            completed = True
+        elif completed.lower() == 'no':
+            completed = False
+        else:
+            raise Exception('Unknown priority "%s"' % completed)
         
         # Validate input
         if name.strip() == '':
@@ -983,10 +989,11 @@ def _import_resources(filename, batch_commits=False):
                             keywords=keywords,
                             priority_to_tag=priority_to_tag,
                             standard_status=standard_status,
+                            completed=completed,
                         )
                         resource.societies = societies
                         resource.save()
-                        resources_added += 1
+                        resources_created += 1
                     
         if not row_count % 50:
             try:
@@ -999,11 +1006,6 @@ def _import_resources(filename, batch_commits=False):
         if batch_commits and not row_count % 300:
             #logging.debug('    committing transaction.')
             transaction.commit()
-        
-        # DEBUG:
-        #if row_count > 50:
-        #    transaction.commit()
-        #    break
 
     file.close()
     
@@ -1032,7 +1034,7 @@ def _import_resources(filename, batch_commits=False):
     return {
         'row_count': row_count,
         'duplicate_resources': duplicate_resources,
-        'resources_added': resources_added,
+        'resources_created': resources_created,
         'societies_assigned': societies_assigned,
         'num_invalid_societies': num_invalid_societies,
         'valid_societies': valid_societies,
@@ -1040,86 +1042,86 @@ def _import_resources(filename, batch_commits=False):
         'resources_skipped': resources_skipped,
     }
 
-@login_required
-@transaction.commit_manually
-def import_conferences(request, source):
-    permissions.require_superuser(request)
-    
-    start = time.time()
-    
-    if source not in _IMPORT_SOURCES:
-        raise Exception('Unknown import source "%s"' % source)
-    
-    if source == 'comsoc':
-        filename = relpath(__file__, '../data/comsoc/conferences.csv')
-    elif source == 'v.7':
-        filename = relpath(__file__, '../data/v.7/2009-04-21 - conferences.csv')
+#@login_required
+#@transaction.commit_manually
+#def import_conferences(request, source):
+#    permissions.require_superuser(request)
+#    
+#    start = time.time()
+#    
+#    if source not in _IMPORT_SOURCES:
+#        raise Exception('Unknown import source "%s"' % source)
+#    
+#    if source == 'comsoc':
+#        filename = relpath(__file__, '../data/comsoc/conferences.csv')
+#    elif source == 'v.7':
+#        filename = relpath(__file__, '../data/v.7/2009-04-21 - conferences.csv')
+#
+#    # Delete all conferences
+#    Resource.objects.get_conferences().delete()
+#    transaction.commit()
+#    
+#    # Import conferences
+#    results = _import_resources(filename, batch_commits=True)
+#    
+#    results['page_time'] = time.time()-start
+#    
+#    return render(request, 'site_admin/import_results.html', {
+#        'page_title': 'Import Conferences',
+#        'results': results,
+#    })
 
-    # Delete all conferences
-    Resource.objects.get_conferences().delete()
-    transaction.commit()
-    
-    # Import conferences
-    results = _import_resources(filename, batch_commits=True)
-    
-    results['page_time'] = time.time()-start
-    
-    return render(request, 'site_admin/import_results.html', {
-        'page_title': 'Import Conferences',
-        'results': results,
-    })
+#@login_required
+#@transaction.commit_on_success
+#def import_periodicals(request, source):
+#    permissions.require_superuser(request)
+#    
+#    start = time.time()
+#    
+#    if source not in _IMPORT_SOURCES:
+#        raise Exception('Unknown import source "%s"' % source)
+#    
+#    if source == 'comsoc':
+#        raise Exception('There is no periodicals file for COMSOC')
+#    elif source == 'v.7':
+#        filename = relpath(__file__, '../data/v.7/2009-04-23c - publications.csv')
+#
+#    # Delete all periodicals
+#    Resource.objects.get_periodicals().delete()
+#    
+#    # Import periodicals
+#    results = _import_resources(filename)
+#    
+#    return render(request, 'site_admin/import_resources.html', {
+#        'page_title': 'Import Periodicals',
+#        'page_time': time.time()-start,
+#        'results': results,
+#    })
 
-@login_required
-@transaction.commit_on_success
-def import_periodicals(request, source):
-    permissions.require_superuser(request)
-    
-    start = time.time()
-    
-    if source not in _IMPORT_SOURCES:
-        raise Exception('Unknown import source "%s"' % source)
-    
-    if source == 'comsoc':
-        raise Exception('There is no periodicals file for COMSOC')
-    elif source == 'v.7':
-        filename = relpath(__file__, '../data/v.7/2009-04-23c - publications.csv')
-
-    # Delete all periodicals
-    Resource.objects.get_periodicals().delete()
-    
-    # Import periodicals
-    results = _import_resources(filename)
-    
-    return render(request, 'site_admin/import_resources.html', {
-        'page_title': 'Import Periodicals',
-        'page_time': time.time()-start,
-        'results': results,
-    })
-
-@login_required
-@transaction.commit_on_success
-def import_standards(request, source):
-    permissions.require_superuser(request)
-    
-    start = time.time()
-    
-    #filename = relpath(__file__, '../data/comsoc/standards.csv')
-    if source == 'v.7':
-        filename = relpath(__file__, '../data/v.7/2009-04-23b - standards.csv')
-    else:
-        raise Exception('Unknown source "%s".' % source)
-    
-    # Delete all standards
-    Resource.objects.get_standards().delete()
-    
-    # Import standards
-    results = _import_resources(filename)
-    
-    return render(request, 'site_admin/import_resources.html', {
-        'page_title': 'Import Standards',
-        'page_time': time.time()-start,
-        'results': results,
-    })
+#@login_required
+#@transaction.commit_on_success
+#def import_standards(request, source):
+#    permissions.require_superuser(request)
+#    
+#    start = time.time()
+#    
+#    #filename = relpath(__file__, '../data/comsoc/standards.csv')
+#    if source == 'v.7':
+#        filename = relpath(__file__, '../data/v.7/2009-04-23b - standards.csv')
+#    else:
+#        raise Exception('Unknown source "%s".' % source)
+#    
+#    # Delete all standards
+#    Resource.objects.get_standards().delete()
+#    
+#    # Import standards
+#    results = _import_resources(filename)
+#    
+#    return render(request, 'site_admin/import_resources.html', {
+#        'page_title': 'Import Standards',
+#        'page_time': time.time()-start,
+#        'results': results,
+#    })
 
 def _get_random_from_sequence(seq, num):
     results = []
@@ -1199,15 +1201,14 @@ def import_users(request):
     
     if request.method == 'GET':
         # Display form
-        form = ImportUsersForm()
-        return render(request, 'site_admin/import_users.html', {
+        form = ImportFileForm()
+        return render(request, 'site_admin/import_resources.html', {
             'form': form,
         })
         
     else:
         # Import users from uploaded file
         logging.debug('import_users()')
-
         
         file = request.FILES['file']
         
@@ -1317,6 +1318,29 @@ def import_users(request):
             }
         })
     
+@login_required
+#@transaction.commit_manually
+#@transaction.commit_on_success
+def import_resources(request):
+    permissions.require_superuser(request)
+    if request.method == 'GET':
+        # DEBUG: Delete all resources first...
+        Resource.objects.all().delete()
+        
+        # Display form
+        form = ImportFileForm()
+        return render(request, 'site_admin/import_resources_file.html', {
+            'form': form,
+        })
+        
+    else:
+        # Import resources from the uploaded file
+        file = request.FILES['file']
+        results = _import_resources(file)
+        return render(request, 'site_admin/import_resources_file.html', {
+            #'errors': list_to_html_list(errors, 'errors'),
+            'results': results,
+        })
     
 @login_required
 def list_sectors(request):
@@ -2011,9 +2035,14 @@ def manage_society(request, society_id):
     
     # NOTE: These are reversed, since that seems more intutive
     elif resource_sort == 'priority_ascending':
-        resources1 = resources1.order_by('-priority_to_tag', 'name')
+        resources1 = resources1.order_by('-priority_to_tag', 'completed', 'name')
     elif resource_sort == 'priority_descending':
-        resources1 = resources1.order_by('priority_to_tag', '-name')
+        resources1 = resources1.order_by('priority_to_tag', '-completed', '-name')
+    
+    elif resource_sort == 'completed_ascending':
+        resources1 = resources1.order_by('-completed', '-priority_to_tag', 'name')
+    elif resource_sort == 'completed_descending':
+        resources1 = resources1.order_by('completed', 'priority_to_tag', '-name')
     
     elif resource_sort == 'description_ascending':
         resources1 = resources1.order_by('description', 'name')
@@ -2320,6 +2349,7 @@ def edit_resource(request, resource_id=None):
             'nodes': resource.nodes.all(),
             'societies': resource.societies.all(),
             'priority_to_tag': resource.priority_to_tag,
+            'completed': resource.completed,
             'keywords': resource.keywords,
             'standard_status': resource.standard_status,
         })
@@ -2389,6 +2419,7 @@ def save_resource(request):
         if form.cleaned_data['societies'] is not None:
             resource.societies = form.cleaned_data['societies']
         resource.priority_to_tag = form.cleaned_data['priority_to_tag']
+        resource.completed = form.cleaned_data['completed']
         resource.keywords = form.cleaned_data['keywords']
         if 'standard_status' in request.POST:
             resource.standard_status = form.cleaned_data['standard_status']

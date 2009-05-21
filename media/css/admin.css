@@ -391,8 +391,16 @@ ul.errorlist li {
     color:maroon;
 }
 
-tr.priority-to-tag-resource {
+tr.resource-priority {
     background:#ffb3b3;
+}
+
+tr.resource-completed-priority {
+    background:silver;
+}
+
+tr.resource-completed {
+    background:silver;
 }
 
 /* */

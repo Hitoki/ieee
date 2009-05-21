@@ -74,13 +74,16 @@ class ChangePasswordForm(Form):
 
 class CreateResourceForm(Form):
     resource_type = ModelChoiceField(queryset=ResourceType.objects.all())
-    ieee_id = IntegerField(required=False)
+    ieee_id = CharField(required=False, label='ID')
     name = CharField(max_length=500)
     description = CharField(widget=Textarea, max_length=1000, required=False)
     url = CharField(max_length=1000, required=False)
     nodes = MultiSearchField(label='Tags', model=Node, search_url='/admin/ajax/search_tags')
     societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies')
     priority_to_tag = BooleanField(required=False)
+    completed = BooleanField(required=False)
+    standard_status = ChoiceField(choices=_make_choices(Resource.STANDARD_STATUSES), required=False)
+    keywords = CharField(max_length=1000, required=False)
 
 CreateResourceForm = autostrip(CreateResourceForm)
 
@@ -94,6 +97,7 @@ class EditResourceForm(Form):
     nodes = MultiSearchField(label='Tags', model=Node, search_url='/admin/ajax/search_tags', widget_label='Associate Tags with this Resource', show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from Resource', blur_text='Type a few characters to bring up matching tags'))
     societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies', label='Societies', widget=MultiSearchWidget(remove_link_flyover_text='Remove Society from Resource'))
     priority_to_tag = BooleanField(required=False)
+    completed = BooleanField(required=False)
     standard_status = ChoiceField(choices=_make_choices(Resource.STANDARD_STATUSES), required=False)
     keywords = CharField(max_length=1000, required=False)
 
@@ -148,7 +152,7 @@ class MissingResourceForm(Form):
 
 MissingResourceForm = autostrip(MissingResourceForm)
 
-class ImportUsersForm(Form):
+class ImportFileForm(Form):
     file = FileField()
 
 class EditResourcesForm(Form):

@@ -401,6 +401,26 @@
                                             </div>
                                         </th>
                                         <th>
+                                            Completed <span class="help_icon flyover" title='If "yes", this resource should be as complete as possible. Tags, Description, and URL.'>[?]</span>
+                                            
+                                            <div class="table-sort">
+                                            <a href="{% url admin_manage_society society.id %}?resource_sort=completed_ascending" class="live-completed {hashOnly:true}">
+                                                {% ifequal resource_sort "completed_ascending" %}
+                                                    <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
+                                                {% else %}
+                                                    <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+                                                {% endifequal %}
+                                            </a>
+                                            <a href="{% url admin_manage_society society.id %}?resource_sort=completed_descending" class="live-completed {hashOnly:true}">
+                                                {% ifequal resource_sort "completed_descending" %}
+                                                    <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
+                                                {% else %}
+                                                    <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+                                                {% endifequal %}
+                                            </a>
+                                            </div>
+                                        </th>
+                                        <th>
                                             Description <span class="help_icon flyover" title="Short description of the Resource. 1-3 short sentences recommended.">[?]</span>
                                             
                                             <div class="table-sort">
@@ -423,11 +443,23 @@
                                     </tr>
                                     {% for resource in resources %}
                                         
-                                        {% if resource.priority_to_tag %}
-                                            <tr class="priority-to-tag-resource">
+                                        {% if resource.priority_to_tag and resource.completed %}
+                                            <tr class="resource-completed-priority">
                                         {% else %}
-                                            <tr>
+                                            {% if resource.priority_to_tag %}
+                                                <tr class="resource-priority">
+                                            {% else %}
+                                                {% if resource.completed %}
+                                                    <tr class="resource-completed">
+                                                {% else %}
+                                                    <tr>
+                                                {% endif %}
+                                            {% endif %}
                                         {% endif %}
+                                        
+                                        {% comment %}
+                                        #    <tr class="priority-to-tag-resource">
+                                        {% endcomment %}
                                         
                                             <td class="select-checkbox-on-click">
                                                 <input type="checkbox" name="resource_ids" class="select-resources" value="{{ resource.id }}" />
@@ -458,6 +490,11 @@
                                             <td>
                                                 {% if resource.priority_to_tag %}
                                                     {{ resource.priority_to_tag|yesno|capfirst }}
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if resource.completed %}
+                                                    {{ resource.completed|yesno|capfirst }}
                                                 {% endif %}
                                             </td>
                                             <td>
