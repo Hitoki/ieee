@@ -61,7 +61,6 @@ def error_view(request):
     return render(request, '500.html', {
         'title': title,
         'message': message,
-        'request': request,
     })
 
 @protect_frontend
