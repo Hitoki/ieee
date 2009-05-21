@@ -26,11 +26,18 @@
         {% endif %}
         <table id="login-table">
             {{ form }}
+            <tr>
+                <td colspan="2">
+                    <div class="submit">
+                        <p>
+                            <a href="{% url forgot_password %}?cancel_page={% url admin_login %}">Forget your password?</a>
+                        </p>
+                        <input type="submit" value="Ok" />
+                    </div>
+                 </td>
+            </tr>
         </table>
-        <p>
-            <a href="{% url forgot_password %}?cancel_page={% url admin_login %}">Forget your password?</a>
-        </p>
-        <input type="submit" value="Ok" />
+
     </form>
     
     <div class="login-help-video">
