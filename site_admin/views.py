@@ -471,8 +471,8 @@ def missing_resource(request, society_id):
         if form.is_valid():
             society = Society.objects.get(id=society_id)
             
-            # Make sure that user belongs to the specified society
-            assert(request.user.societies.filter(id=society.id).count() > 0)
+            # Make sure that user has permissions for the specified society
+            assert(request.user.is_superuser or request.user.societies.filter(id=society.id).count() > 0)
             
             # Send email
             subject = 'Missing resource for "%s" society.' % request.user.username
