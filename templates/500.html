@@ -1,6 +1,10 @@
 {% extends 'base_table.html' %}
 
 {% block main_table_content %}
+
+{% if request.is_ajax %}
+    <div class="lightbox-pad">
+{% endif %}
     
     {% if title %}
         <h1>{{ title }}</h1>
@@ -21,5 +25,8 @@
         You can use the back button to go back to the page you were previously viewing, or go back to the <a href="{% url index %}">home page</a>.
     </p>
     
+{% if request.is_ajax %}
+    </div>
+{% endif %}
         
 {% endblock %}
