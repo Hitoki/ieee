@@ -2628,6 +2628,102 @@ def login_report(request):
         'users': users,
     })
 
+@login_required
+def tagged_resources_report(request):
+    permissions.require_superuser(request)
+    
+    resources = Resource.objects.all()
+    
+    # Calc the overeall totals
+    
+    all_tagged_resources = 0
+    all_total_resources = resources.count()
+    
+    for resource in resources:
+        if resource.nodes.count() > 0:
+            all_tagged_resources += 1
+    
+    all_percent_resources = all_tagged_resources / float(all_total_resources)
+    
+    # Calc per-society totals
+    
+    societies = Society.objects.all()
+    
+    result_societies = []
+    
+    for society in societies:
+        total_resources = society.resources.count()
+        num_tagged_resources = 0
+        for resource in society.resources.all():
+            if resource.nodes.count() > 0:
+                num_tagged_resources += 1
+        if total_resources == 0:
+            percent_resources = 0
+        else:
+            percent_resources = num_tagged_resources / float(total_resources)
+        result_societies.append({
+            'name': society.name,
+            'total_resources': total_resources,
+            'num_tagged_resources': num_tagged_resources,
+            'percent_resources': percent_resources,
+        })
+    
+    return render(request, 'site_admin/tagged_resources_report.html', {
+        'all_tagged_resources': all_tagged_resources,
+        'all_total_resources': all_total_resources,
+        'all_percent_resources': all_percent_resources,
+        'societies': result_societies,
+    })
+
+@login_required
+def tags_filters_report(request):
+    permissions.require_superuser(request)
+    
+    # Calc the overeall totals
+    
+    tags = Node.objects.get_tags()
+    all_total_tags = tags.count()
+    all_filtered_tags = 0
+    for tag in tags:
+        if tag.filters.count() > 0:
+            all_filtered_tags += 1
+    
+    all_percent_filtered = all_filtered_tags / float(all_total_tags)
+    
+    # Calc per-society totals
+    
+    societies = Society.objects.all()
+    
+    result_societies = []
+    
+    for society in societies:
+        total_tags = society.tags.count()
+        filtered_tags = 0
+        for tag in society.tags.all():
+            if tag.filters.count() > 0:
+                filtered_tags += 1
+        if total_tags == 0:
+            percent_filtered = 0
+        else:
+            percent_filtered = filtered_tags / float(total_tags)
+        result_societies.append({
+            'name': society.name,
+            'filtered_tags': filtered_tags,
+            'total_tags': total_tags,
+            'percent_filtered': percent_filtered,
+        })
+    
+    print 'all_filtered_tags:', all_filtered_tags
+    print 'all_total_tags:', all_total_tags
+    print 'all_percent_filtered:', all_percent_filtered
+
+    return render(request, 'site_admin/tags_filters_report.html', {
+        'all_filtered_tags': all_filtered_tags,
+        'all_total_tags': all_total_tags,
+        'all_percent_filtered': all_percent_filtered,
+        'societies': result_societies,
+    })
+
 #def create_admin_login(request):
 #    "Create a test admin account."
 #    username = 'test'

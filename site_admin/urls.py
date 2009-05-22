@@ -83,6 +83,8 @@ urlpatterns = patterns('',
     
     # Reports
     url(r'^report/login$', views.login_report, name='admin_login_report'),
+    url(r'^report/tagged_resources$', views.tagged_resources_report, name='admin_tagged_resources_report'),
+    url(r'^report/tags_filters_report$', views.tags_filters_report, name='admin_tags_filters_report'),
     
     # Exports
     url(r'^export/tab_resources$', views.export_tab_resources, name='admin_export_tab_resources'),

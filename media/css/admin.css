@@ -492,3 +492,11 @@ p.results-status {
     border:1px solid #ccc;
     font-style:italic;
 }
+
+table.tagged_resources_report .num {
+    text-align:right;
+}
+
+table.tagged_resources_report tr.all-resources td {
+    font-weight:bold;
+}

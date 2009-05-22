@@ -1,0 +1,55 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>Tagged Resources Report</h1>
+    <table class="tagged_resources_report grid">
+        <tr>
+            <th>
+                Name:
+            </th>
+            <th>
+                Tagged
+            </th>
+            <th>
+                Total
+            </th>
+            <th>
+                Percent
+            </th>
+        </tr>
+        <tr class="all-resources">
+            <td>
+                All Resources
+            </td>
+            <td class="num">
+                {{ all_tagged_resources }}
+            </td>
+            <td class="num">
+                {{ all_total_resources }}
+            </td>
+            <td class="num">
+                {{ all_percent_resources|floatformat:2 }}%
+            </td>
+        </tr>
+        {% for society in societies %}
+            <tr>
+                <td>
+                    {{ society.name }}
+                </td>
+                <td class="num">
+                    {{ society.num_tagged_resources }}
+                </td>
+                <td class="num">
+                    {{ society.total_resources }}
+                </td>
+                <td class="num">
+                    {{ society.percent_resources|floatformat:2 }}%
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+    <p><a href="{% url admin_home %}">home</a></p>
+
+{% endblock %}
