@@ -65,8 +65,9 @@
         if (multisearch_related_tags != undefined)  {
             // Multisearch is ready, attach event
             Lightbox.subscribe('clickOnLightbox', function() {
-                multisearch_related_tags.closePopup()
-            } );
+                // Make sure the multisearch dropdown closes when the user clicks on the lightbox (instead of the document)
+                multisearch_related_tags.closePopup(true);
+            });
         } else {
             // Multisearch is not ready yet, wait and try again
             setTimeout(attachMultisearchLightbox, 50);
