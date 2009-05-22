@@ -1202,7 +1202,7 @@ def import_users(request):
     if request.method == 'GET':
         # Display form
         form = ImportFileForm()
-        return render(request, 'site_admin/import_resources.html', {
+        return render(request, 'site_admin/import_users.html', {
             'form': form,
         })
         
@@ -1241,13 +1241,13 @@ def import_users(request):
                 first_name = first_name[:30]
             
             if role not in Profile.ROLES:
-                raise Exception('Unknown role "%s"' % role)
+                error.append('Unknown role "%s" for user "%s"' % (role, username))
             
             if username == '':
-                raise Exception('Username is blank')
+                errors.append('Username is blank.')
             
             if email == '':
-                raise Exception('Email is blank')
+                errors.append('Email is blank for user "%s"' % username)
             
             society_abbreviations = [society_abbreviation.strip() for society_abbreviation in _split_no_empty(society_abbreviations, ',')]
             
@@ -1255,40 +1255,42 @@ def import_users(request):
             for society_abbreviation in society_abbreviations:
                 society = Society.objects.getFromAbbreviation(society_abbreviation)
                 if society is None:
-                    raise Exception('Unknown society "%s"' % society_abbreviation)
-                societies.append(society)
+                    errors.append('Unknown society "%s" for user "%s"' % (society_abbreviation, username))
+                else:
+                    societies.append(society)
             
-            try:
-                user = User.objects.create_user(
-                    username=username,
-                    email=email,
-                    password=password,
-                )
-            except IntegrityError, e:
-                # Duplicate user error
-                errors.append('Failed to save user "%s", %s' % (username, e))
-            else:
-                user.first_name = first_name
-                user.last_name = last_name
-                user.is_superuser = (role == Profile.ROLE_ADMIN)
-                user.is_staff = True
-                user.societies = societies
-                user.save()
-                
-                profile = user.get_profile()
-                profile.role = role
-                profile.save()
-                
-                # For sending login info later
-                user.plaintext_password = password
-                users.append(user)
-                
-                imported_users.append('"%s"' % username)
-                users_created += 1
-                if role == Profile.ROLE_ADMIN:
-                    admins_created += 1
-                elif role == Profile.ROLE_SOCIETY_MANAGER:
-                    society_managers_created += 1
+            if len(errors) == 0:
+                try:
+                    user = User.objects.create_user(
+                        username=username,
+                        email=email,
+                        password=password,
+                    )
+                except IntegrityError, e:
+                    # Duplicate user error
+                    errors.append('Failed to save user "%s", %s' % (username, e))
+                else:
+                    user.first_name = first_name
+                    user.last_name = last_name
+                    user.is_superuser = (role == Profile.ROLE_ADMIN)
+                    user.is_staff = True
+                    user.societies = societies
+                    user.save()
+                    
+                    profile = user.get_profile()
+                    profile.role = role
+                    profile.save()
+                    
+                    # For sending login info later
+                    user.plaintext_password = password
+                    users.append(user)
+                    
+                    imported_users.append('"%s"' % username)
+                    users_created += 1
+                    if role == Profile.ROLE_ADMIN:
+                        admins_created += 1
+                    elif role == Profile.ROLE_SOCIETY_MANAGER:
+                        society_managers_created += 1
             
             if not row_count % 10:
                 logging.debug('  Reading row %d' % row_count)
@@ -1297,14 +1299,14 @@ def import_users(request):
                 
         file.close()
         
-        logging.debug('~import_users()')
-        
         if len(errors) > 0:
             # Errors, rollback all changes & reset stats
             transaction.rollback()
         else:
             # Success, commit transaction
             transaction.commit()
+        
+        logging.debug('~import_users()')
         
         return render(request, 'site_admin/import_users.html', {
             'errors': list_to_html_list(errors, 'errors'),

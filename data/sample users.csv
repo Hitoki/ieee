@@ -1,0 +1,4 @@
+"Username","Password","First Name","Last Name","Email","Role","Societies"
+"comsoc","comsoc","Test","User","comsoc@localhost","society_manager","COM"
+"admin2","admin2","Second","Admin","admin2@localhost","admin",
+"test2","test2","TEST2","USER","test@localhost","society_manager","COM"
