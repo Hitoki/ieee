@@ -2629,12 +2629,17 @@ def login_report(request):
     })
 
 @login_required
-def tagged_resources_report(request):
+def tagged_resources_report(request, filter):
     permissions.require_superuser(request)
     
-    resources = Resource.objects.all()
+    if filter == 'priority':
+        resources = Resource.objects.filter(priority_to_tag=True)
+    elif filter == 'all':
+        resources = Resource.objects.all()
+    else:
+        raise Exception('Unknown filter "%s"' % filter)
     
-    # Calc the overeall totals
+    # Calc the overall totals
     
     all_tagged_resources = 0
     all_total_resources = resources.count()
@@ -2652,9 +2657,13 @@ def tagged_resources_report(request):
     result_societies = []
     
     for society in societies:
-        total_resources = society.resources.count()
+        if filter == 'priority':
+            society_resources = society.resources.filter(priority_to_tag=True)
+        elif filter == 'all':
+            society_resources = society.resources.all()
+        total_resources = society_resources.count()
         num_tagged_resources = 0
-        for resource in society.resources.all():
+        for resource in society_resources:
             if resource.nodes.count() > 0:
                 num_tagged_resources += 1
         if total_resources == 0:
@@ -2669,6 +2678,7 @@ def tagged_resources_report(request):
         })
     
     return render(request, 'site_admin/tagged_resources_report.html', {
+        'filter': filter,
         'all_tagged_resources': all_tagged_resources,
         'all_total_resources': all_total_resources,
         'all_percent_resources': all_percent_resources,

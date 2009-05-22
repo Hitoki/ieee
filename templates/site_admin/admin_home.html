@@ -22,7 +22,8 @@
                 <li>{{ num_tags }} tags</li>
                 <li>{{ num_resources }} resources</li>
                 <li><a href="{% url admin_login_report %}">Show login report</a></li>
-                <li><a href="{% url admin_tagged_resources_report %}">Tagged resources report</a></li>
+                <li><a href="{% url admin_tagged_resources_report "all" %}">Tagged resources report</a></li>
+                <li><a href="{% url admin_tagged_resources_report "priority" %}">Tagged resources report (priority-only)</a></li>
                 <li><a href="{% url admin_tags_filters_report %}">Tags &amp; Filters report</a></li>
             </ul>
         </li>

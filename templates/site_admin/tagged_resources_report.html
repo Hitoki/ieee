@@ -2,7 +2,11 @@
 
 {% block main_table_content %}
     
-    <h1>Tagged Resources Report</h1>
+    {% ifequal filter "priority" %}
+        <h1>Tagged Resources Report (priority-only)</h1>
+    {% else %}
+        <h1>Tagged Resources Report</h1>
+    {% endifequal %}
     <table class="tagged_resources_report grid">
         <tr>
             <th>
