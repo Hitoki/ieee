@@ -68,6 +68,8 @@
             //log('refreshTagsTable2()');
             if ($('#tags-table-content').length && $('#tags-table-content').data('overShadow'))
                 $('#tags-table-content').data('overShadow').hide();
+            // Reattach any JS to the new content
+            attachScripts($('#tags-table-content'));
         }
         
         window.notify = function(action, data) {

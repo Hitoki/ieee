@@ -245,3 +245,14 @@ $(function() {
         e.stopPropagation();
     });
 });
+
+// Call this whenever new content is created dynamically to attach any scripts
+function attachScripts(elem) {
+    elem = $(elem);
+    attachBlurTexts(elem);
+    attachAutoTruncates(elem);
+    attachFlyovers(elem);
+    attachLightboxes(elem);
+    attachMultiSearches(elem);
+    attachNootabs(elem);
+}

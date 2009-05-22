@@ -123,6 +123,16 @@ function autoTruncate(elems, options) {
     });
 }
     
+function attachAutoTruncates(elem) {
+    elem = $(elem);
+    elem.find('.auto-truncate').each(function() {
+        autoTruncate(this);
+    });
+    elem.find('.auto-truncate-words').each(function() {
+        autoTruncate(this, {word_boundary:true} );
+    });
+}
+
 $(function() {
     autoTruncate($('.auto-truncate'));
     autoTruncate($('.auto-truncate-words'), {word_boundary:true} );

@@ -172,7 +172,16 @@ var Lightbox = {
             func(this, event, data);
         }
     }
-    
+}
+
+function attachLightboxes(elem) {
+    elem = $(elem);
+    elem.find('.lightbox').each(function() {
+        $(this).click(function(e) {
+            e.preventDefault();
+            Lightbox.click(this);
+        });
+    });
 }
 
 $(function() {

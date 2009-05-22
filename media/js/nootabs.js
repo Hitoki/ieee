@@ -330,6 +330,13 @@ function convertTabs() {
     });
 }
 
+function attachNootabs(elem) {
+    elem = $(elem);
+    elem.find('.nootabs').each(function() {
+        new Nootab(this);
+    });
+}
+
 $(function() {
     $('.nootabs').each(function() {
         new Nootab(this);
