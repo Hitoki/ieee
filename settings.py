@@ -14,10 +14,12 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+# Database Settings
+
 DATABASE_ENGINE = 'mysql'
-DATABASE_NAME = ''			 # Or path to database file if using sqlite3.
-DATABASE_USER = ''			 # Not used with sqlite3.
-DATABASE_PASSWORD = ''		 # Not used with sqlite3.
+DATABASE_NAME = None			 # Or path to database file if using sqlite3.
+DATABASE_USER = None			 # Not used with sqlite3.
+DATABASE_PASSWORD = None		 # Not used with sqlite3.
 DATABASE_HOST = ''			 # Set to empty string for localhost. Not used with sqlite3.
 DATABASE_PORT = ''			 # Set to empty string for default. Not used with sqlite3.
 
@@ -64,14 +66,16 @@ AUTH_PROFILE_MODULE = 'ieeetags.profile'
 
 DEFAULT_CHARSET = 'utf-8'
 
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 25
-#EMAIL_HOST_USER
-#EMAIL_HOST_PASSWORD
-#EMAIL_USE_TLS
+# Outgoing Email Settings
 
-#SERVER_EMAIL = ''
-#DEFAULT_FROM_EMAIL = 'Name <email>'
+EMAIL_HOST = None
+EMAIL_PORT = None
+EMAIL_HOST_USER = None
+EMAIL_HOST_PASSWORD = None
+EMAIL_USE_TLS = None
+
+SERVER_EMAIL = None
+DEFAULT_FROM_EMAIL = None
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -152,12 +156,30 @@ DEBUG_EMAIL_EXCEPTIONS = False
 # Enable the /debug/email test
 DEBUG_ENABLE_EMAIL_TEST = False
 
-# ------------------------------------------------------------------------------
+# Local Settings ---------------------------------------------------------------
 
 try:
     from local_settings import *
 except ImportError, e:
     print 'ERROR: "local_settings.py" file not found'
+
+# Check for mandatory settings -------------------------------------------------
+
+MANDATORY_VARS = [
+    'DATABASE_NAME',
+    'DATABASE_USER',
+    'DATABASE_PASSWORD',
+    'EMAIL_HOST',
+    'SERVER_EMAIL',
+    'DEFAULT_FROM_EMAIL',
+]
+
+for varname in MANDATORY_VARS:
+    if varname not in globals() or globals()[varname] is None:
+        logging.error('local_settings.py variable "%s" is not set' % varname)
+        raise Exception('local_settings.py variable "%s" is not set' % varname)
+
+# Logging setup
 
 logging.basicConfig(
     level = logging.DEBUG,
@@ -175,9 +197,6 @@ if not hasattr(logging, "is_setup"):
         logging.getLogger().addHandler(file_logger)
     
     logging.is_setup = True
-
-#logging.debug('---------------------------------------------------------------------')
-#logging.debug('settings.py')
 
 if DEBUG:
     # Add the profiling middleware
