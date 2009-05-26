@@ -4,6 +4,26 @@
     
     <h1>"{{ sector.name }}" Sector</h1>
     
+    {% if sector.get_child_clusters %}
+        <h2>Clusters</h2>
+        <table class="grid">
+            <tr>
+                <th>
+                    Cluster Name
+                </th>
+            </tr>
+            {% for cluster in sector.get_child_clusters %}
+                <tr>
+                    <td>
+                        <a href="{% url admin_view_cluster cluster.id %}">{{ cluster.name }}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        
+        <h2>Tags</h2>
+    {% endif %}
+    
     <table class="grid">
         <tr>
             <th>
@@ -23,7 +43,7 @@
                 Societies
             </th>
         </tr>
-        {% for tag in tags %}
+        {% for tag in sector.get_tags %}
             <tr>
                 <td>
                     <a href="{% url admin_view_tag tag.id %}">{{ tag.name }}</a>

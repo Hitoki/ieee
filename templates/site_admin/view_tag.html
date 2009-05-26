@@ -22,8 +22,18 @@
                 Sectors
             </th>
             <td>
-                {% for sector in tag.parents.all %}
+                {% for sector in tag.get_sectors.all %}
                     <a href="{% url admin_view_sector sector.id %}">{{ sector.name }}</a>{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Clusters
+            </th>
+            <td>
+                {% for cluster in tag.get_parent_clusters.all %}
+                    <a href="{% url admin_view_cluster cluster.id %}">{{ cluster.name }}</a>{% if not forloop.last %},{% endif %}
                 {% endfor %}
             </td>
         </tr>

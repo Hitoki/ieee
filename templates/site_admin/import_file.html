@@ -1,0 +1,51 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>{{ page_title }}</h1>
+    
+    {% if not results %}
+        
+        <form action="{{ submit_url }}" method="post" enctype="multipart/form-data">
+            <table class="grid">
+                {{ form }}
+                <tr class="buttons">
+                    <td colspan="2">
+                        <input type="submit" value="Import" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+        
+    {% else %}
+        
+        {% if errors %}
+            <div class="errors">
+                <p class="note">NOTE: No changes will be made to the database until all errors are corrected.</p>
+                {{ errors|safe }}
+            </div>
+        {% else %}
+            <p class="results-status">
+            </p>
+        {% endif %}
+
+        <h2>Results</h2>
+        
+        <table class="grid">
+            {% for name, value in results.items %}
+                <tr class="results-{{name}}">
+                    <td>
+                        {{ name }}
+                    </td>
+                    <td>
+                        {{ value|safe }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        
+    {% endif %}
+    
+    <p><a href="{% url admin_home %}">home</a></p>
+    
+{% endblock %}

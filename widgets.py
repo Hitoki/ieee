@@ -91,7 +91,7 @@ class MultiSearchWidget(widgets.Widget):
                         'name_link': reverse('admin_edit_tag', args=[object.id]) + '?return_url=%s' % quote('/admin/?hash=' + quote('#tab-tags-tab')),
                         'value': object.id,
                         'tag_name': object.name,
-                        'sector_names': object.parent_names(),
+                        'sector_names': object.sector_names(),
                         'num_societies': len(object.societies.all()),
                         'num_related_tags': len(object.related_tags.all()),
                         'num_filters': len(object.filters.all()),

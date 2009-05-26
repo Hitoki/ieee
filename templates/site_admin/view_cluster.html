@@ -1,0 +1,48 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>{{ cluster.name_with_sector }} Cluster</h1>
+    
+    {% comment %}
+    <p><a href="{% url admin_edit_cluster cluster.id %}">Edit cluster</a></p>
+    {% endcomment %}
+    
+    <table class="grid">
+        <tr>
+            <th>
+                Sectors
+            </th>
+            <td>
+                {% for sector in cluster.get_sectors.all %}
+                    <a href="{% url admin_view_sector sector.id %}">{{ sector.name }}</a>{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Tags
+            </th>
+            <td>
+                {% for tag in cluster.get_tags %}
+                    <a href="{% url admin_view_tag tag.id %}">{{ tag.name }}</a>{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        {% comment %}
+            <tr>
+                <th>
+                    Filters
+                </th>
+                <td>
+                    {% for filter in cluster.filters.all %}
+                        {{ filter.name }}{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endcomment %}
+    </table>
+    
+    <p><a href="{% url admin_home %}">home</a></p>
+    
+{% endblock %}

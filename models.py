@@ -92,6 +92,16 @@ class NodeManager(models.Manager):
         kwargs['node_type'] = NodeType.objects.getFromName(NodeType.TAG)
         return models.Manager.create(self, **kwargs)
         
+    def create_cluster(self, **kwargs):
+        if 'name' in kwargs:
+            kwargs['name'] = string.capwords(kwargs['name'])
+        if 'num_related_tags' not in kwargs:
+            kwargs['num_related_tags'] = 0
+        if 'num_resources' not in kwargs:
+            kwargs['num_resources'] = 0
+        kwargs['node_type'] = NodeType.objects.getFromName(NodeType.TAG_CLUSTER)
+        return models.Manager.create(self, **kwargs)
+        
     def getNodesForType(self, node_type):
         if type(node_type) is str:
             node_type = NodeType.objects.getFromName(node_type)
@@ -270,6 +280,18 @@ class NodeManager(models.Manager):
         
         return tags
     
+    def get_clusters(self):
+        return self.filter(node_type=NodeType.objects.getFromName(NodeType.TAG_CLUSTER)).all()
+    
+    def get_cluster_by_name(self, name):
+        return single_row_or_none(self.filter(node_type=NodeType.objects.getFromName(NodeType.TAG_CLUSTER), name=name))
+    
+    def add_tag_to_cluster(self, cluster, tag):
+        cluster.child_nodes.add(tag)
+        for sector in tag.get_sectors():
+            cluster.parents.add(sector)
+        cluster.save()
+    
 class Node(models.Model):
     name = models.CharField(max_length=500)
     #parent = models.ForeignKey('Node', related_name='child_nodes', null=True, blank=True)
@@ -287,24 +309,30 @@ class Node(models.Model):
     def __str__(self):
         return self.name
     
-    #def full_name(self):
-    #    if self.node_type.name == NodeType.TAG:
-    #        return '%s > %s' % (self.parent.name, self.name)
-    #    else:
-    #        return self.name
+    def sector_names(self):
+        return ', '.join([sector.name for sector in self.get_sectors()])
     
-    def parent_names(self):
-        return ', '.join([parent.name for parent in self.parents.all()])
-
+    def parent_cluster_names(self):
+        return ', '.join([cluster.name for cluster in self.get_parent_clusters()])
+    
     def name_with_sector(self):
         if self.node_type.name == NodeType.TAG:
-            return '%s (%s)' % (self.name, self.parent_names())
+            return '%s (%s)' % (self.name, self.sector_names())
         else:
             return self.name
         
-    #def get_parents(self):
-    #    return self.objects.get_sectors_for_tag(self)
-        
+    def get_sectors(self):
+        return self.parents.filter(node_type__name=NodeType.SECTOR)
+    
+    def get_parent_clusters(self):
+        return self.parents.filter(node_type__name=NodeType.TAG_CLUSTER)
+    
+    def get_child_clusters(self):
+        return self.child_nodes.filter(node_type__name=NodeType.TAG_CLUSTER)
+    
+    def get_tags(self):
+        return self.child_nodes.filter(node_type__name=NodeType.TAG)
+    
     class Meta:
         ordering = ['name']
 

@@ -30,6 +30,7 @@ urlpatterns = patterns('',
     #url(r'^fix_user_import$', views.fix_user_import, name='admin_fix_user_import'),
     url(r'^users/import$', views.import_users, name='admin_import_users'),
     url(r'^import_resources$', views.import_resources, name='admin_import_resources'),
+    url(r'^import/clusters$', views.import_clusters, name='admin_import_clusters'),
     
     url(r'^sectors$', views.list_sectors, name='admin_list_sectors'),
     url(r'^sector/(\d+)$', views.view_sector, name='admin_view_sector'),
@@ -43,6 +44,9 @@ urlpatterns = patterns('',
     url(r'^tag/(?P<tag_id>\d+)/edit$', views.edit_tag, name='admin_edit_tag'),
     url(r'^tags/search$', views.search_tags, name='admin_search_tags'),
     url(r'^tag/(?P<tag_id>\d+)/save$', views.save_tag, name='admin_save_tag'),
+    
+    # Clusters
+    url(r'^cluster/(?P<cluster_id>\d+)$', views.view_cluster, name='admin_view_cluster'),
     
     # Users
     url(r'^users$', views.users, name='admin_users'),
@@ -85,6 +89,7 @@ urlpatterns = patterns('',
     url(r'^report/login$', views.login_report, name='admin_login_report'),
     url(r'^report/tagged_resources/(?P<filter>.+)$', views.tagged_resources_report, name='admin_tagged_resources_report'),
     url(r'^report/tags_filters_report$', views.tags_filters_report, name='admin_tags_filters_report'),
+    url(r'^report/clusters$', views.clusters_report, name='admin_clusters_report'),
     
     # Exports
     url(r'^export/tab_resources$', views.export_tab_resources, name='admin_export_tab_resources'),
