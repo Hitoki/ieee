@@ -42,7 +42,8 @@
 
 .multi-search-popup-anchor {
     position:relative;
-    z-index: 2
+    z-index: 2;
+    display:inline;
 }
 
 .multi-search-popup {
