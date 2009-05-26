@@ -475,7 +475,7 @@
                                             <td>
                                                 {{ resource.resource_type.name|capfirst }}
                                                 {% ifequal resource.resource_type.name "standard" %}
-                                                    <br/>({{ resource.standard_status }})
+                                                    <br/>({{ resource.standard_status|capfirst }})
                                                 {% endifequal %}
                                             </td>
                                             <td>
