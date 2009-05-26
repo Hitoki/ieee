@@ -1327,7 +1327,7 @@ def import_resources(request):
     permissions.require_superuser(request)
     if request.method == 'GET':
         # DEBUG: Delete all resources first...
-        Resource.objects.all().delete()
+        #Resource.objects.all().delete()
         
         # Display form
         form = ImportFileForm()
