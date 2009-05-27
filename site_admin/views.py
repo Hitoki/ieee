@@ -9,7 +9,7 @@ import re
 import smtplib
 import string
 import time
-from urllib import quote
+from urllib import quote, urlencode
 import warnings
 from django.db import IntegrityError
 from django.db import transaction
@@ -373,7 +373,10 @@ def password_reset_success(request):
 
 @login_required
 def change_password(request):
-    # Got the right reset key
+    return_url = request.GET.get('return_url')
+    if return_url is None:
+        return_url = reverse('admin_home')
+    
     error = ''
     if request.method == 'GET':
         form = ChangePasswordForm()
@@ -392,16 +395,20 @@ def change_password(request):
                 # Send the password change email
                 _send_password_change_notification(request.user)
                 
-                return HttpResponseRedirect(reverse('change_password_success'))
+                return HttpResponseRedirect(reverse('change_password_success') + '?' + urlencode({'return_url': return_url}))
                 
     return render(request, 'site_admin/change_password.html', {
         'error': error,
+        'return_url': return_url,
         'form': form,
     })
 
 @login_required
 def change_password_success(request):
-    return render(request, 'site_admin/change_password_success.html')
+    return_url = request.GET.get('return_url')
+    return render(request, 'site_admin/change_password_success.html', {
+        'return_url': return_url,
+    })
 
 @login_required
 def home(request):

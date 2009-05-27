@@ -190,50 +190,6 @@ function urlRemoveHash(url) {
     return url.replace(/#.+/, '');
 }
 
-function LiveUrl() {
-    this.elems = [];
-    this.timer = null;
-    this.href = null;
-}
-
-LiveUrl.prototype.add = function(elem) {
-    var liveUrl = this;
-    elem = $(elem);
-    if (elem.attr('nodeName') != 'A')
-        return error('LiveUrl.add(): elem is not an A element.');
-    this.elems.push(elem);
-    
-    if (!this.timer) {
-        this.timer = setTimeout(function() { liveUrl.update(); }, 500);
-    }
-}
-
-LiveUrl.prototype.update = function() {
-    var liveUrl = this;
-    clearTimeout(this.timer);
-    // Check if the URL has changed
-    if (this.href != window.location.href) {
-        for (var i=0; i<this.elems.length; i++) {
-            var href = window.location.href;
-            // Replace the hash with the current one
-            if (this.elems[i].metadata().hashOnly != undefined) {
-                href = urlRemoveHash(this.elems[i].attr('href')) + urlGetHash(window.location.href);
-                this.elems[i].attr('href', href);
-            }
-        }
-        this.href = window.location.href;
-    }
-    this.timer = setTimeout(function() { liveUrl.update(); }, 500);
-}
-
-var liveUrl = new LiveUrl();
-
-$(function () {
-    $('.live-url').each(function() {
-        liveUrl.add(this);
-    });
-});
-
 //
 
 $(function() {
