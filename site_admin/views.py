@@ -2198,6 +2198,8 @@ def manage_society(request, society_id):
         'num_tag_pages': num_tag_pages,
         'tag_page_url': tag_page_url,
         
+        'return_url': request.get_full_path(),
+        
         'DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB': settings.DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB,
     })
 
@@ -2207,6 +2209,10 @@ def manage_society_tags_table(request, society_id, tag_sort, tag_page):
     tag_page = int(tag_page)
     (tags, num_tag_pages) = _get_paged_tags(society, tag_sort, tag_page)
     tag_page_url = reverse('admin_manage_society', args=[society.id]) + '?tag_sort=' + quote(tag_sort) + '&amp;tag_page={{ page }}#tab-tags-tab'
+    return_url = reverse('admin_manage_society', args=[society.id]) + '?' + urlencode({
+        'tag_sort':tag_sort,
+        'tag_page':tag_page,
+    })
     
     return render(request, 'site_admin/manage_society_tags_table.html', {
         'tag_sort': tag_sort,
@@ -2215,6 +2221,7 @@ def manage_society_tags_table(request, society_id, tag_sort, tag_page):
         'society': society,
         'tags': tags,
         'tag_page_url': tag_page_url,
+        'return_url': return_url,
     })
 
 @login_required
