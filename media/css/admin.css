@@ -177,8 +177,12 @@ table.edit-create td {
     border: none;
 }
 
-#id_ieee_id {
-    width: 50px;
+#id_ieee_id, #id_standard_status {
+    width: 25%;
+}
+
+#id_keywords {
+    width: 50%;
 }
 
 .grid-name {
