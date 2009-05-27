@@ -65,7 +65,7 @@ def _get_version():
             logging.debug('  done wait')
             for line in proc.stdout:
                 #logging.debug('  line: %s' % line)
-                matches = re.match(r'Last Changed Rev: (\d+)', line)
+                matches = re.match(r'Revision: (\d+)', line)
                 if matches:
                     revision = matches.group(1) + '-svn'
                 matches = re.match(r'Last Changed Date: (\S+ \S+)', line)
