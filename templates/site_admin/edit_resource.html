@@ -148,7 +148,7 @@
         <div class="submit">
             <input type="submit" value="Save" class="button submit-button" />
             {% if user.is_superuser and resource %}
-                <input type="button" value="Delete" onclick="if (confirm('Delete this resource?')) window.location='{% url admin_delete_resource resource.id %}?next={{ return_url|urlencode }}';" />
+                <input type="button" value="Delete" class="submit-button" onclick="if (confirm('Delete this resource?')) window.location='{% url admin_delete_resource resource.id %}?next={{ return_url|urlencode }}';" />
             {% endif %}
             <a href="{{ return_url }}" class="cancel-link">Cancel</a>
         </div>
