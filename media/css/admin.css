@@ -117,6 +117,10 @@ ul.section-list li {
     font-weight:bold;
 }
 
+ul.section-list li span.admin-note {
+    font-weight: normal;
+}
+
 ul.section-list li li {
     margin-bottom:0px;
     font-weight:normal;
