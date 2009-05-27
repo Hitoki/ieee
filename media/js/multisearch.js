@@ -254,8 +254,7 @@ function MultiSearch(container, options) {
     this.getOptionsValue = null;
     this.selectedOptions = [];
     
-    this.popupAnchorElem = $('<div class="multi-search-popup-anchor"></div>');
-    this.input.before(this.popupAnchorElem);
+    this.popupAnchorElem = this.container.find('.multi-search-popup-anchor');
     this.popupElem = $('<div class="multi-search-popup"></div>').appendTo(this.popupAnchorElem);
     this.popupElem.click(function(e) {
         // Prevent clicks in the popup from propagating to the document.click() and closing the popup
@@ -918,6 +917,8 @@ MultiSearch.prototype.showPopup = function() {
         this.popupElem.show();
         var height = this.input.attr('offsetHeight') - 3;
         this.popupElem.css('top', height + 'px');
+        var width = this.input.attr('offsetWidth') - 3;
+        this.popupElem.css('width', width + 'px');
     }
 }
 

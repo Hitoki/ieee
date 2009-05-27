@@ -134,7 +134,7 @@ class MultiSearchWidget(widgets.Widget):
         
         output.append('<div id="%s" class="multi-search { %s } %s">' % ('multisearch_'+name, classString, self.className ))
         output.append('    <input type="hidden" name="%s" value="%s" class="multi-search-data" />' % (name, escape(initial_data)))
-        output.append('    %s: <input class="multi-search-input blur-text {text:\'(%s)\', blurClass:\'multi-search-input-blur\' }" />' % (widget_label, blur_text))
+        output.append('    %s: <div class="multi-search-popup-anchor"><input class="multi-search-input blur-text {text:\'(%s)\', blurClass:\'multi-search-input-blur\' }" /></div>' % (widget_label, blur_text))
         output.append('    <div class="multi-search-selected-options">')
         output.append('    </div>')
         output.append('</div>')
