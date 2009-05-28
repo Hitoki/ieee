@@ -38,6 +38,7 @@ urlpatterns = patterns('',
     url(r'^list_orphan_tags$', views.list_orphan_tags, name='admin_list_orphan_tags'),
     
     # Tags
+    url(r'^tags/edit$', views.edit_tags, name='admin_edit_tags'),
     url(r'^tags$', views.list_tags, name='admin_list_tags'),
     url(r'^tag/(\d+)$', views.view_tag, name='admin_view_tag'),
     url(r'^tag/create$', views.create_tag, name='admin_create_tag'),

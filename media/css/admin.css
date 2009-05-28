@@ -347,6 +347,7 @@ ul.error {
 ul.checkbox-select-multiple-columns {
     float:left;
     padding-right:2em;
+    list-style:none;
 }
 
 /*

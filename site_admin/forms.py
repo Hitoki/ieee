@@ -164,3 +164,6 @@ class EditResourcesForm(Form):
     ]
     priority = ChoiceField(choices=_make_choices(PRIORITIES))
 
+class EditTagsForm(Form):
+    filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultipleColumns(columns=2), required=False, label='Filters')
+

@@ -1,0 +1,53 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% load eval includes pagination permissions %}
+
+{% block main_table_content %}
+    
+    <h1>Edit Tags</h1>
+    
+    <form action="{% url admin_edit_tags %}?process_form=1" method="post">
+        
+        {% comment %}
+        <label for="test1">Tristate checkbox test:</label>
+        <input id="test1" type="checkbox" name="test1name" value="something" class="tristate" />
+        <br/>
+        <br/>
+        {% endcomment %}
+        
+        <table class="grid">
+            {{ form }}
+            <tr class="buttons">
+                <td colspan="2">
+                    <input type="submit" value="Apply Changes" />
+                    <input type="button" value="Cancel" onclick="alert('todo');" />
+                </td>
+            </tr>
+        </table>
+        <br/>
+        
+        <h2>Selected Tags</h2>
+        <table class="grid">
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Filters
+                </th>
+            </tr>
+            {% for tag in tags %}
+                <tr>
+                    <td>
+                        <input type="hidden" name="tag_ids" value="{{ tag.id }}" />
+                        <a href="{% url admin_edit_tag tag.id %}">{{ tag.name }}</a>
+                    </td>
+                    <td>
+                        {{ tag.filters.all|join:", " }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </form>
+        
+{% endblock %}

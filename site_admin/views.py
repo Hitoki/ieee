@@ -1470,6 +1470,41 @@ def list_orphan_tags(request):
     })
 
 @login_required
+def edit_tags(request):
+    # TODO: Check permissions on each tag
+    assert request.method == 'POST'
+    
+    process_form = request.GET.get('process_form', None)
+    
+    tag_ids = request.POST.getlist('tag_ids')
+    tags = [Node.objects.get(id=tag_id) for tag_id in tag_ids]
+    
+    # Parse form
+    form = EditTagsForm(request.POST)
+    if process_form and form.is_valid():
+        
+        filters = form.cleaned_data['filters']
+        
+        # Assign filters to all tags
+        for tag in tags:
+            tag.filters.clear()
+            for filter in filters:
+                tag.filters.add(filter)
+            tag.save()
+    else:
+        filters = None
+        
+    # Reset the form
+    form = EditTagsForm(initial={
+        'filters': [filter.id for filter in filters],
+    })
+    
+    return render(request, 'site_admin/edit_tags.html', {
+        'form': form,
+        'tags': tags,
+    })
+
+@login_required
 def list_tags(request):
     permissions.require_superuser(request)
     
