@@ -508,3 +508,17 @@ table.tagged_resources_report .num {
 table.tagged_resources_report tr.all-resources td {
     font-weight:bold;
 }
+
+tr.form-row-highlight td {
+    background:#ffffe1;
+    border:1px solid #d6be92;
+    padding:.7em;
+}
+
+tr.form-row-highlight p.form-warning {
+    font-weight:bold;
+    margin-top:0px;
+    color:#333;
+    font-size:80%;
+}
+
