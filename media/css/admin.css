@@ -519,7 +519,9 @@ tr.form-row-highlight td {
 tr.form-row-highlight p.form-warning {
     font-weight:bold;
     margin-top:0px;
-    color:#333;
+    color:orange;
     font-size:80%;
+    width: 150px;
+    float: left;
 }
 

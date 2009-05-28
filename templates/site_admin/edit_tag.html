@@ -85,14 +85,13 @@
                     <label for="id_filters">{{ form.filters.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="Choose one or multiple categories that describe the Tag. If none are chosen, this Tag will not be displayed.">[?]</span>:</label>
                 </th>
                 <td>
+                    {{ form.filters.errors }}
+                    {{ form.filters }}
                     {% if not num_filters %}
                         <p class="form-warning">
                             Please assign one or more filters to this tag.
                         </p>
                     {% endif %}
-                    
-                    {{ form.filters.errors }}
-                    {{ form.filters }}
                 </td>
             </tr>
             <!--
