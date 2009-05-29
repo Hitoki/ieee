@@ -231,17 +231,17 @@ table.edit-create td {
     padding:2px;
 }
 
-table.resources, table.tags, table.selected-tags {
+table.resources, table.tags, table.selected-tags, table.selected-resources {
     width: 100%;
     margin: 1em 0;
 }
 
-table.resources th, table.tags th, table.selected-tags th {
+table.resources th, table.tags th, table.selected-tags th, table.selected-resources th {
     white-space: nowrap;
     text-align: center;
 }
 
-table.resources td, table.tags td, table.selected-tags td {
+table.resources td, table.tags td, table.selected-tags td, table.selected-resources td {
     padding: 10px;
     text-align: center;
     vertical-align: middle;
@@ -264,9 +264,18 @@ table.tags th.first-item {
     width: 20%;
 }
 
-table.selected-tags td.first-item {
+table.selected-tags td.first-item,
+table.selected-resources td.first-item {
     width: 300px;
     text-align: left;
+}
+
+table.selected-resources td.last-item {
+    width: 150px;
+}
+
+select#id_priority {
+    width: 100px;
 }
 
 table.resources td.left-text, 
