@@ -8,13 +8,6 @@
     
     <form action="{% url admin_edit_tags %}?process_form=1&amp;return_url={{ return_url|urlencode }}#tab-tags-tab" method="post">
         
-        {% comment %}
-        <label for="test1">Tristate checkbox test:</label>
-        <input id="test1" type="checkbox" name="test1name" value="something" class="tristate" />
-        <br/>
-        <br/>
-        {% endcomment %}
-        
         <table class="grid edit-create">
             <tr>
                 <th>
@@ -25,16 +18,6 @@
                     {{ form.filters }}
                 </td>
             </tr>
-            
-            
-            {% comment %}
-            <tr class="buttons">
-                <td colspan="2">
-                    <input type="submit" value="Save Changes" />
-                    <input type="button" value="Cancel" onclick="window.location='{{ return_url }}';" />
-                </td>
-            </tr>
-            {% endcomment %}
         </table>
         <div class="submit">
             <input type="submit" value="Save" class="submit-button" />

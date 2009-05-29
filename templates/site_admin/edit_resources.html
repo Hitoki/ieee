@@ -25,13 +25,11 @@
                     </ul>
                 </td>
             </tr>
-            <tr class="buttons">
-                <td colspan="2">
-                    <input type="submit" value="Save Changes" />
-                    <input type="button" value="Cancel" onclick="window.location='{{ return_url }}';" />
-                </td>
-            </tr>
         </table>
+        <div class="submit">
+            <input type="submit" value="Save" class="submit-button" />
+            <a href="{{ return_url }}" class="cancel-link">Cancel</a>
+        </div>
         <br/>
         
         <table class="grid">
