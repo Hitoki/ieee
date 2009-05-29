@@ -24,7 +24,7 @@ from django.utils import simplejson as json
 from ieeetags import settings
 from ieeetags import permissions
 from ieeetags.util import *
-from ieeetags.models import Node, NodeType, Permission, Resource, ResourceType, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager
+from ieeetags.models import Node, NodeType, Permission, Resource, ResourceType, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager, FailedLoginLog
 #, UserManager2
 #from ieeetags.logger import log
 from ieeetags.views import render
@@ -228,48 +228,83 @@ def list_to_html_list(list, className=''):
         list = ''
     return list
     
+def _failed_logins(request):
+    """
+    Shows the failed login page.
+    NOTE: This page does not have its own URL.  Instead, it is rendered directly from a view like this:
+        return _failed_logins(request)
+    That way the browser's URL is preserved.  If a user reloads the page after the timeout, they reload the original URL and not the failed logins page.
+    """
+    next = request.GET.get('next', reverse('admin_home'))
+    return render(request, 'site_admin/failed_logins.html', {
+        'next': next,
+        'FAILED_LOGINS_TIME_MINUTES': FailedLoginLog.FAILED_LOGINS_TIME / 60,
+    })
+
 # ------------------------------------------------------------------------------
 
 def login(request):
     next = request.GET.get('next', '')
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-    else:
+    remote_addr = request.META['REMOTE_ADDR']
+    
+    # Check for too many bad logins from this IP
+    if FailedLoginLog.objects.check_if_disabled(None, remote_addr):
+        return _failed_logins(request)
+    
+    error = ''
+    
+    if request.method == 'GET':
         form = LoginForm()
-    if not form.is_valid():
-        return render(request, 'site_admin/login.html', {
-            'next': next,
-            'show_society_login_banner': settings.SHOW_SOCIETY_LOGIN_BANNER,
-            'form': form,
-        })
     else:
-        user = auth.authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
-        if user is None:
-            return render(request, 'site_admin/login.html', {
-                'error': 'Invalid login, please try again.',
-                'next': next,
-                'show_society_login_banner': settings.SHOW_SOCIETY_LOGIN_BANNER,
-                'form': form,
-            })
-        elif user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER and user.societies.count() == 0:
-            return render(request, 'site_admin/login.html', {
-                'error': 'Your account has not been assigned to a society yet.  Please contact the administrator to fix this.',
-                'next': next,
-                'show_society_login_banner': settings.SHOW_SOCIETY_LOGIN_BANNER,
-                'form': form,
-            })
-        else:
-            # Successful login
-            auth.login(request, user)
+        form = LoginForm(request.POST)
+        
+        if form.is_valid():
+            user = auth.authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             
-            profile = user.get_profile()
-            profile.last_login_time = datetime.now()
-            profile.save()
+            username = form.cleaned_data['username']
+            print 'remote_addr:', remote_addr
             
-            if next != '':
-                return HttpResponseRedirect(next)
+            # If account is disabled, prevent from logging in
+            if FailedLoginLog.objects.check_if_disabled(username, remote_addr):
+                return _failed_logins(request)
+            
+            elif user is None:
+                # Bad login
+                
+                # If too many bad logins, redirect to bad login page
+                if FailedLoginLog.objects.add_and_check_if_disabled(username, remote_addr):
+                    return _failed_logins(request)
+                
+                error = 'Invalid login, please try again.'
+                
+            elif user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER and user.societies.count() == 0:
+                # Society Manage doesn't have an assigned society
+                
+                # If too many bad logins, redirect to bad login page
+                if FailedLoginLog.objects.add_and_check_if_disabled(username, remote_addr):
+                    return _failed_logins(request)
+                
+                error = 'Your account has not been assigned to a society yet.  Please contact the administrator to fix this.'
+                
             else:
-                return HttpResponseRedirect(reverse('admin_home'))
+                # Successful login
+                auth.login(request, user)
+                
+                profile = user.get_profile()
+                profile.last_login_time = datetime.now()
+                profile.save()
+                
+                if next != '':
+                    return HttpResponseRedirect(next)
+                else:
+                    return HttpResponseRedirect(reverse('admin_home'))
+    
+    return render(request, 'site_admin/login.html', {
+        'error': error,
+        'next': next,
+        'show_society_login_banner': settings.SHOW_SOCIETY_LOGIN_BANNER,
+        'form': form,
+    })
 
 def logout(request):
     if request.user.is_authenticated():

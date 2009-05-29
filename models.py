@@ -1,10 +1,14 @@
-from django.db.models import Q
 from django.contrib.auth.models import User, UserManager
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.db import connection
 from django.db import models
+from django.db.models import Q
+from django.db.models import Q
 from django.db.models.signals import post_save
+from datetime import datetime
+import logging
+import time
 import string
 
 def single_row(results, message=None):
@@ -568,4 +572,86 @@ def get_user_from_username(username):
 def get_user_from_email(email):
     return single_row_or_none(User.objects.filter(email=email))
 
+# ------------------------------------------------------------------------------
 
+class FailedLoginLogManager(models.Manager):
+    
+    def check_if_disabled(self, username, ip):
+        "Return True if a given username or ip has been disabled."
+        #logging.debug('check_if_disabled()')
+        #logging.debug('  username: %s' % username)
+        #logging.debug('  ip: %s' % ip)
+        ##logging.debug('  FailedLoginLog.DISABLE_ACCOUNT_TIME: %s' % FailedLoginLog.DISABLE_ACCOUNT_TIME)
+        before = datetime.fromtimestamp(time.time() - FailedLoginLog.DISABLE_ACCOUNT_TIME)
+        #logging.debug('  before: %s' % before)
+        ##logging.debug('  datetime.now(): %s' % datetime.now())
+        if username is not None:
+            num = self.filter(
+                Q(username=username) | Q(ip=ip),
+                disabled=True,
+                date_created__gt=before,
+            ).count()
+            #logging.debug('  num: %s' % num)
+            return num > 0
+        else:
+            num = self.filter(
+                ip=ip,
+                disabled=True,
+                date_created__gt=before,
+            ).count()
+            #logging.debug('  num: %s' % num)
+            return num > 0
+    
+    def add_and_check_if_disabled(self, username, ip):
+        "Records a bad login and checks if the max has been reached.  Returns True if user is under the limit, and False if user is over the limit."
+        self._add_failed_login(username, ip)
+        return self.check_if_disabled(username, ip)
+    
+    def _add_failed_login(self, username, ip):
+        "Adds a bad login entry and disables an account if necessary."
+        
+        #logging.debug('_add_failed_login()')
+        #logging.debug('  username: %s' % username)
+        #logging.debug('  ip: %s' % ip)
+        
+        # Check if there have been too many bad logins (including this one)
+        before = datetime.fromtimestamp(time.time() - FailedLoginLog.FAILED_LOGINS_TIME)
+        num_failed_logins = self.filter(
+            Q(username=username) | Q(ip=ip),
+            date_created__gt = before,
+        ).count()
+        #logging.debug('  num_failed_logins: %s' % num_failed_logins)
+        
+        if num_failed_logins >= FailedLoginLog.FAILED_LOGINS_MAX - 1:
+            disabled = True
+        else:
+            disabled = False
+            
+        #logging.debug('  disabled: %s' % disabled)
+        
+        # Add a log entry for this failed entry
+        log = self.create(
+            username = username,
+            ip = ip,
+            disabled = disabled,
+        )
+        log.save()
+        
+        return disabled
+        
+class FailedLoginLog(models.Model):
+    # This is the number of seconds in the past to check for bad logins
+    FAILED_LOGINS_TIME = 10 * 60
+    # The number of minutes to disable an account for
+    DISABLE_ACCOUNT_TIME = 10 * 60
+    # Max number of bad logins within the FAILED_LOGIN_TIME above
+    FAILED_LOGINS_MAX = 3
+    
+    username = models.CharField(max_length=30)
+    ip = models.CharField(max_length=16)
+    disabled = models.BooleanField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    
+    objects = FailedLoginLogManager()
+
+# ------------------------------------------------------------------------------
