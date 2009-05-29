@@ -6,7 +6,7 @@
     
     <h1>Edit Resources</h1>
     
-    <form action="{% url admin_edit_resources %}" method="post">
+    <form action="{% url admin_edit_resources %}?return_url={{ return_url|urlencode }}" method="post">
         
         <table class="grid">
             {{ form }}
@@ -28,7 +28,7 @@
             <tr class="buttons">
                 <td colspan="2">
                     <input type="submit" value="Apply Changes" />
-                    <input type="button" value="Cancel" onclick="alert('todo');" />
+                    <input type="button" value="Cancel" onclick="window.location='{{ return_url }}';" />
                 </td>
             </tr>
         </table>

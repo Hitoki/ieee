@@ -2385,6 +2385,9 @@ def edit_resources(request):
     # TODO: Check permissions on each resource
     assert request.method == 'POST'
     
+    return_url = request.GET.get('return_url')
+    assert(return_url is not None)
+    
     resource_ids = request.POST.getlist('resource_ids')
     resources = [Resource.objects.get(id=resource_id) for resource_id in resource_ids]
     
@@ -2440,6 +2443,7 @@ def edit_resources(request):
         'form': form,
         'resources': resources,
         'common_tags': common_tags,
+        'return_url': return_url,
     })
 
 @login_required

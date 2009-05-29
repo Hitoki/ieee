@@ -251,7 +251,7 @@
                                 {% pages resource_page num_resource_pages resource_page_url %}
                             </ul>
                             
-                            <form action="{% url admin_edit_resources %}" method="post">
+                            <form action="{% url admin_edit_resources %}?return_url={{ current_url|urlencode }}" method="post">
                                 
                                 <p>
                                     <input type="submit" value="Edit Resources" />
