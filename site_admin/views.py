@@ -272,7 +272,7 @@ def login(request):
                 return HttpResponseRedirect(reverse('admin_home'))
 
 def logout(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated():
         profile = request.user.get_profile()
         profile.last_logout_time = datetime.now()
         profile.save()
