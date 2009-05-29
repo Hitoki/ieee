@@ -645,7 +645,7 @@ class FailedLoginLog(models.Model):
     # The number of minutes to disable an account for
     DISABLE_ACCOUNT_TIME = 10 * 60
     # Max number of bad logins within the FAILED_LOGIN_TIME above
-    FAILED_LOGINS_MAX = 3
+    FAILED_LOGINS_MAX = 10
     
     username = models.CharField(max_length=30)
     ip = models.CharField(max_length=16)
