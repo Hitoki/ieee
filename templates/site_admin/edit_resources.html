@@ -9,10 +9,30 @@
     <form action="{% url admin_edit_resources %}?process_form=1&amp;return_url={{ return_url|urlencode }}" method="post">
         
         <table class="grid edit-create">
+            {% comment %}
             {{ form }}
+            {% endcomment %}
             <tr>
                 <th>
-                    Remove Tags:
+                    <label for="id_assign_tags">{{ form.assign_tags.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title='Typing a portion of a word or phrase will bring up a list of all matching tags. Choose "Create a new tag" if a matching tag does not exist.'>[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.assign_tags.errors }}
+                    {{ form.assign_tags }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_priority">{{ form.priority.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title='If "yes", these resources should be as complete as possible. Tags, Description, and URL.'>[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.priority.errors }}
+                    {{ form.priority }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Remove Tags <span class="help_icon flyover {position: 'top', customeClass:'editForm'}" title="Remove these tags">[?]</span>:
                 </th>
                 <td>
                     <ul>
