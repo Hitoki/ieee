@@ -23,6 +23,7 @@ h1 {
 
 h2 {
     font-size:110%;
+    color: black;
 }
 
 ul li {
@@ -230,20 +231,23 @@ table.edit-create td {
     padding:2px;
 }
 
-table.resources, table.tags {
+table.resources, table.tags, table.selected-tags {
     width: 100%;
     margin: 1em 0;
 }
 
-table.resources th, table.tags th {
+table.resources th, table.tags th, table.selected-tags th {
     white-space: nowrap;
     text-align: center;
 }
 
-table.resources td, table.tags td {
+table.resources td, table.tags td, table.selected-tags td {
     padding: 10px;
     text-align: center;
     vertical-align: middle;
+}
+
+table.resources td, table.tags td {
     width: 10%;
 }
 
@@ -258,6 +262,11 @@ table.tags th.first-item {
     padding-left: 10px;
     text-align: left;
     width: 20%;
+}
+
+table.selected-tags td.first-item {
+    width: 300px;
+    text-align: left;
 }
 
 table.resources td.left-text, 
