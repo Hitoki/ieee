@@ -1516,30 +1516,24 @@ def edit_tags(request):
     tag_ids = request.POST.getlist('tag_ids')
     tags = [Node.objects.get(id=tag_id) for tag_id in tag_ids]
     
-    # Parse form
-    form = EditTagsForm(request.POST)
-    if process_form and form.is_valid():
+    if process_form:
+        # Process the form
+        form = EditTagsForm(request.POST)
         
-        filters = form.cleaned_data['filters']
-        
-        # Assign filters to all tags
-        for tag in tags:
-            tag.filters.clear()
-            for filter in filters:
-                tag.filters.add(filter)
-            tag.save()
+        if form.is_valid():
+            filters = form.cleaned_data['filters']
+            # Assign filters to all tags
+            for tag in tags:
+                tag.filters.clear()
+                for filter in filters:
+                    tag.filters.add(filter)
+                tag.save()
+            
+            # Form saved successfully, redirect to previous page
+            return HttpResponseRedirect(return_url)
     else:
-        filters = None
-    
-    if filters is not None:
-        filter_ids = [filter.id for filter in filters]
-    else:
-        filter_ids = []
-    
-    # Reset the form
-    form = EditTagsForm(initial={
-        'filters': filter_ids,
-    })
+        # Show the initial form
+        form = EditTagsForm()
     
     return render(request, 'site_admin/edit_tags.html', {
         'return_url': return_url,
@@ -2420,46 +2414,52 @@ def edit_resources(request):
     # TODO: Check permissions on each resource
     assert request.method == 'POST'
     
+    process_form = request.GET.get('process_form', None)
     return_url = request.GET.get('return_url')
     assert(return_url is not None)
     
     resource_ids = request.POST.getlist('resource_ids')
     resources = [Resource.objects.get(id=resource_id) for resource_id in resource_ids]
     
-    # Parse form
-    form = EditResourcesForm(request.POST)
-    if form.is_valid():
-        
-        # Assign tags to all resources
-        assign_tags = form.cleaned_data['assign_tags']
-        for resource in resources:
-            for tag in assign_tags:
-                resource.nodes.add(tag)
-            resource.save()
-        
-        # Assign priorities
-        if form.cleaned_data['priority'] == 'yes':
+    if process_form is not None:
+        # Parse form
+        form = EditResourcesForm(request.POST)
+        if form.is_valid():
+            
+            # Assign tags to all resources
+            assign_tags = form.cleaned_data['assign_tags']
             for resource in resources:
-                resource.priority_to_tag = True
+                for tag in assign_tags:
+                    resource.nodes.add(tag)
                 resource.save()
             
-        elif form.cleaned_data['priority'] == 'no':
+            # Assign priorities
+            if form.cleaned_data['priority'] == 'yes':
+                for resource in resources:
+                    resource.priority_to_tag = True
+                    resource.save()
+                
+            elif form.cleaned_data['priority'] == 'no':
+                for resource in resources:
+                    resource.priority_to_tag = False
+                    resource.save()
+            
+            # Remove selected tags
+            remove_tag_ids = request.POST.getlist('remove_tag_ids')
+            remove_tags = [Node.objects.get(id=remove_tag_id) for remove_tag_id in remove_tag_ids]
             for resource in resources:
-                resource.priority_to_tag = False
+                for tag in remove_tags:
+                    resource.nodes.remove(tag)
                 resource.save()
-        
-    # Reset the form
-    form = EditResourcesForm(initial={
-        'priority': 'no change',
-    })
+            
+            return HttpResponseRedirect(return_url)
+            
+    else:
+        # Show the intial form
+        form = EditResourcesForm(initial={
+            'priority': 'no change',
+        })
     
-    # Remove selected tags
-    remove_tag_ids = request.POST.getlist('remove_tag_ids')
-    remove_tags = [Node.objects.get(id=remove_tag_id) for remove_tag_id in remove_tag_ids]
-    for resource in resources:
-        for tag in remove_tags:
-            resource.nodes.remove(tag)
-        resource.save()
     
     # Find the common tags
     common_tags = None

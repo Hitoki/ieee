@@ -6,7 +6,7 @@
     
     <h1>Edit Resources</h1>
     
-    <form action="{% url admin_edit_resources %}?return_url={{ return_url|urlencode }}" method="post">
+    <form action="{% url admin_edit_resources %}?process_form=1&amp;return_url={{ return_url|urlencode }}" method="post">
         
         <table class="grid">
             {{ form }}
