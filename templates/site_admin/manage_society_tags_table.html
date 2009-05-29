@@ -4,7 +4,7 @@
     {% pages tag_page num_tag_pages tag_page_url %}
 </ul>
 
-<form action="{% url admin_edit_tags %}" method="post">
+<form action="{% url admin_edit_tags %}?return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}" method="post">
     <p>
         <input type="submit" value="Edit Tags" />
     </p>
@@ -139,7 +139,7 @@
         </tr>
         {% for tag in tags %}
             <tr>
-                <td>
+                <td class="select-checkbox-on-click">
                     <input type="checkbox" name="tag_ids" value="{{ tag.id }}" />
                 </td>
                 <td class="first-item">

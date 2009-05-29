@@ -1475,6 +1475,8 @@ def edit_tags(request):
     assert request.method == 'POST'
     
     process_form = request.GET.get('process_form', None)
+    return_url = request.GET.get('return_url')
+    assert(return_url is not None)
     
     tag_ids = request.POST.getlist('tag_ids')
     tags = [Node.objects.get(id=tag_id) for tag_id in tag_ids]
@@ -1493,13 +1495,19 @@ def edit_tags(request):
             tag.save()
     else:
         filters = None
-        
+    
+    if filters is not None:
+        filter_ids = [filter.id for filter in filters]
+    else:
+        filter_ids = []
+    
     # Reset the form
     form = EditTagsForm(initial={
-        'filters': [filter.id for filter in filters],
+        'filters': filter_ids,
     })
     
     return render(request, 'site_admin/edit_tags.html', {
+        'return_url': return_url,
         'form': form,
         'tags': tags,
     })
