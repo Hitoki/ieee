@@ -302,9 +302,8 @@ def ajax_nodes_xml(request):
     
     # TODO: the depth param is ignored, doesn't seem to affect anything now
     
-    # Build node list
     node = Node.objects.get(id=nodeId)
-    childNodes = node.child_nodes.all()
+    child_nodes = node.child_nodes.all()
     
     # Enable filtering out nodes w/o societies:
     if True:
@@ -312,22 +311,33 @@ def ajax_nodes_xml(request):
         if node.node_type == NodeType.objects.getFromName(NodeType.SECTOR):
             # Filter out any tags that don't have any societies
             childNodes1 = []
-            for child_node in childNodes:
+            for child_node in child_nodes:
                 if child_node.societies.count() > 0:
                     childNodes1.append(child_node)
-            childNodes = childNodes1
+            child_nodes = childNodes1
     
+    # Build node list
     nodes = [node]
-    nodes.extend(childNodes)
+    nodes.extend(child_nodes)
     for parent in node.parents.all():
         nodes.append(parent)
     
+    # Get related tags for this tag
+    if node.node_type.name == NodeType.TAG:
+        for related_tag in node.related_tags.all():
+            nodes.append(related_tag)
+    
     edges = []
-    for childNode in childNodes:
+    for childNode in child_nodes:
         edges.append((node.id, childNode.id))
     for parent in node.parents.all():
         edges.append((parent.id, node.id))
         
+    # Edges for related tags
+    if node.node_type.name == NodeType.TAG:
+        for related_tag in node.related_tags.all():
+            edges.append((node.id, related_tag.id))
+            
     #print '  len(edges):', len(edges)
 
     # XML Output
