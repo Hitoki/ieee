@@ -2498,6 +2498,17 @@ def edit_resources(request):
                     resource.priority_to_tag = False
                     resource.save()
             
+            # Assign completed
+            if form.cleaned_data['completed'] == 'yes':
+                for resource in resources:
+                    resource.completed = True
+                    resource.save()
+                
+            elif form.cleaned_data['completed'] == 'no':
+                for resource in resources:
+                    resource.completed = False
+                    resource.save()
+            
             # Remove selected tags
             remove_tag_ids = request.POST.getlist('remove_tag_ids')
             remove_tags = [Node.objects.get(id=remove_tag_id) for remove_tag_id in remove_tag_ids]

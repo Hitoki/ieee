@@ -274,7 +274,9 @@ table.selected-resources td.last-item {
     width: 150px;
 }
 
-select#id_priority {
+select#id_priority,
+select#id_completed
+{
     width: 100px;
 }
 

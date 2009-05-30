@@ -32,6 +32,15 @@
             </tr>
             <tr>
                 <th>
+                    <label for="id_completed">{{ form.completed.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title='If "yes", these resources should be as complete as possible. Tags, Description, and URL.'>[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.completed.errors }}
+                    {{ form.completed }}
+                </td>
+            </tr>
+            <tr>
+                <th>
                     Remove Tags <span class="help_icon flyover {position: 'top', customeClass:'editForm'}" title="Remove these tags">[?]</span>:
                 </th>
                 <td>
@@ -64,6 +73,9 @@
                 <th>
                     Priority
                 </th>
+                <th>
+                    Completed
+                </th>
             </tr>
             {% for resource in resources %}
                 <tr>
@@ -74,8 +86,11 @@
                     <td>
                         {{ resource.nodes.all|join:", " }}
                     </td>
-                    <td class="last-item">
+                    <td>
                         {{ resource.priority_to_tag|yesno }}
+                    </td>
+                    <td class="last-item">
+                        {{ resource.completed|yesno }}
                     </td>
                 </tr>
             {% endfor %}

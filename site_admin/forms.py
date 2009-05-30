@@ -170,6 +170,12 @@ class EditResourcesForm(Form):
         'no',
     ]
     priority = ChoiceField(choices=_make_choices(PRIORITIES))
+    COMPLETED_CHOICES = [
+        'no change',
+        'yes',
+        'no',
+    ]
+    completed = ChoiceField(choices=_make_choices(COMPLETED_CHOICES))
 
 class EditTagsForm(Form):
     filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultipleColumns(columns=2), required=False, label='Filters')
