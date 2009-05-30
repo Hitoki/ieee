@@ -40,6 +40,10 @@
         <h1>Create Resource</h1>
     {% endif %}
     
+    {% if errors %}
+        {{ errors|safe }}
+    {% endif %}
+    
     <form action="{% url admin_save_resource %}?return_url={{ return_url|urlencode }}" method="post">
         <table class="full-grid edit-create">
             {{ form.id }}
@@ -106,17 +110,15 @@
                     {{ form.societies }}
                 </td>
             </tr>
-            {% ifequal resource.resource_type.name "standard" %}
-                <tr>
-                    <th>
-                        <label for="id_standard_status">{{ form.standard_status.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title='IEEE-provided status of the Standard: Published, Withdrawn or Project (active PAR)'>[?]</span>:</label>
-                    </th>
-                    <td>
-                        {{ form.standard_status.errors }}
-                        {{ form.standard_status }}
-                    </td>
-                </tr>
-            {% endifequal %}
+            <tr>
+                <th>
+                    <label for="id_standard_status">{{ form.standard_status.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title='IEEE-provided status of the Standard: Published, Withdrawn or Project (active PAR)'>[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.standard_status.errors }}
+                    {{ form.standard_status }}
+                </td>
+            </tr>
             <tr>
                 <th>
                     <label for="id_priority_to_tag">{{ form.priority_to_tag.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title='If "yes", this resource should be as complete as possible. Tags, Description, and URL.'>[?]</span>:</label>

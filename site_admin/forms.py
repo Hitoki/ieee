@@ -6,9 +6,14 @@ from ieeetags.models import Filter, Node, NodeType, Society, Resource, ResourceT
 from ieeetags.fields import MultiSearchField
 from ieeetags.widgets import MultiSearchWidget, DisplayOnlyWidget, CheckboxSelectMultipleColumns
 
-def _make_choices(list1):
+def _make_choices(list1, add_blank=False):
+    if add_blank:
+        yield '', '(none)'
     for item in list1:
         yield item, item
+
+def _make_choices_with_blank(list1):
+    return _make_choices(list1, True)
 
 class ModifiedFormBase(Form):
     "Adds support for outputting one field/table row at a time."
@@ -82,7 +87,7 @@ class CreateResourceForm(Form):
     societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies')
     priority_to_tag = BooleanField(required=False)
     completed = BooleanField(required=False)
-    standard_status = ChoiceField(choices=_make_choices(Resource.STANDARD_STATUSES), required=False)
+    standard_status = ChoiceField(choices=_make_choices_with_blank(Resource.STANDARD_STATUSES), required=False)
     keywords = CharField(max_length=1000, required=False)
 
 CreateResourceForm = autostrip(CreateResourceForm)

@@ -2630,70 +2630,82 @@ def save_resource(request):
     else:
         form = EditResourceForm(request.POST)
     
-    if not form.is_valid():
-        if 'id' in request.POST:
-            resource = Resource.objects.get(id=int(request.POST['id']))
-        else:
-            resource = None
+    errors = []
+    
+    if form.is_valid():
         
-        # Disable edit resource form fields for societies
-        if not request.user.is_superuser:
-            make_display_only(form.fields['societies'], is_multi_search=True)
-            make_display_only(form.fields['ieee_id'])
+        # Validate form
+        if form.cleaned_data['resource_type'].name == ResourceType.STANDARD and form.cleaned_data['standard_status'] == '':
+            errors.append('A Status is required for Standards')
+        
+        if len(errors) == 0:
+            # Passed validation
+            if 'id' in form.cleaned_data:
+                resource = Resource.objects.get(id=form.cleaned_data['id'])
+            else:
+                resource = Resource.objects.create(
+                    resource_type=form.cleaned_data['resource_type']
+                )
             
-        return render(request, 'site_admin/edit_resource.html', {
-            'return_url': return_url,
-            'resource': resource,
-            'form': form,
-        })
+            # Need to update these node totals later (in case the user has removed one from this resource)
+            old_nodes = resource.nodes.all()
+            
+            resource.name = form.cleaned_data['name']
+            resource.ieee_id = form.cleaned_data['ieee_id']
+            resource.description = form.cleaned_data['description']
+            resource.url = form.cleaned_data['url']
+            resource.nodes = form.cleaned_data['nodes']
+            if form.cleaned_data['societies'] is not None:
+                resource.societies = form.cleaned_data['societies']
+            resource.priority_to_tag = form.cleaned_data['priority_to_tag']
+            resource.completed = form.cleaned_data['completed']
+            resource.keywords = form.cleaned_data['keywords']
+            if 'standard_status' in request.POST:
+                resource.standard_status = form.cleaned_data['standard_status']
+            resource.save()
+            
+            # Add all resource tags to the owning societies
+            for society in resource.societies.all():
+                for node in resource.nodes.all():
+                    society.tags.add(node)
+                society.save()
+            
+            # Update the node totals
+            _update_node_totals(old_nodes)
+            _update_node_totals(resource.nodes.all())
+            
+            # Return to the society the user was editing
+            if begins_with(return_url, 'close_window'):
+                return HttpResponse("""
+                    <script>
+                        window.close();
+                    </script>
+                    <a href="javascript:window.close();">Close window</a>
+                """)
+            elif return_url == '':
+                return HttpResponsePermanentRedirect(reverse('admin_view_resource', args=[resource.id]))
+                
+            else:
+                return HttpResponsePermanentRedirect(return_url)
+    
+    # Re-render the form
+    if 'id' in request.POST:
+        resource = Resource.objects.get(id=int(request.POST['id']))
     else:
-        if 'id' in form.cleaned_data:
-            resource = Resource.objects.get(id=form.cleaned_data['id'])
-        else:
-            resource = Resource.objects.create(
-                resource_type=form.cleaned_data['resource_type']
-            )
+        resource = None
+    
+    # Disable edit resource form fields for societies
+    if not request.user.is_superuser:
+        make_display_only(form.fields['societies'], is_multi_search=True)
+        make_display_only(form.fields['ieee_id'])
         
-        # Need to update these node totals later (in case the user has removed one from this resource)
-        old_nodes = resource.nodes.all()
-        
-        resource.name = form.cleaned_data['name']
-        resource.ieee_id = form.cleaned_data['ieee_id']
-        resource.description = form.cleaned_data['description']
-        resource.url = form.cleaned_data['url']
-        resource.nodes = form.cleaned_data['nodes']
-        if form.cleaned_data['societies'] is not None:
-            resource.societies = form.cleaned_data['societies']
-        resource.priority_to_tag = form.cleaned_data['priority_to_tag']
-        resource.completed = form.cleaned_data['completed']
-        resource.keywords = form.cleaned_data['keywords']
-        if 'standard_status' in request.POST:
-            resource.standard_status = form.cleaned_data['standard_status']
-        resource.save()
-        
-        # Add all resource tags to the owning societies
-        for society in resource.societies.all():
-            for node in resource.nodes.all():
-                society.tags.add(node)
-            society.save()
-        
-        # Update the node totals
-        _update_node_totals(old_nodes)
-        _update_node_totals(resource.nodes.all())
-        
-        # Return to the society the user was editing
-        if begins_with(return_url, 'close_window'):
-            return HttpResponse("""
-                <script>
-                    window.close();
-                </script>
-                <a href="javascript:window.close();">Close window</a>
-            """)
-        elif return_url == '':
-            return HttpResponsePermanentRedirect(reverse('admin_view_resource', args=[resource.id]))
-            
-        else:
-            return HttpResponsePermanentRedirect(return_url)
+    return render(request, 'site_admin/edit_resource.html', {
+        'return_url': return_url,
+        'resource': resource,
+        'form': form,
+        'errors': list_to_html_list(errors),
+    })
+    
 
 @login_required
 def delete_resource(request, resource_id):

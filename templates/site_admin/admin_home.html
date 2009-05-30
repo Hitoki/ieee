@@ -47,20 +47,29 @@
         <li>
             Manage:
             <ul>
-                {% if user.is_superuser %}
                 <li><a href="{% url admin_users %}">List Users</a></li>
-                {% endif %}
-                <li><a href="{% url admin_societies %}">List Societies</a></li>
                 <li><a href="{% url admin_list_sectors %}">List Sectors</a></li>
+                <li><a href="{% url admin_societies %}">List Societies</a></li>
+                <li><a href="{% url admin_search_societies %}">Search Societies</a></li>
+            </ul>
+        </li>
+        <li>
+            <strong>Tags:</strong>
+            <ul>
                 <li><a href="{% url admin_list_tags %}">List Tags</a></li>
                 <li><a href="{% url admin_create_tag %}?return_url={{ current_url|urlencode }}">Create a new Tag</a></li>
+                <li><a href="{% url admin_search_tags %}">Search Tags</a></li>
+                <li><a href="{% url admin_list_orphan_tags %}">List Orphan Tags</a></li>
+            </ul>
+        </li>
+        <li>
+            <strong>Resources:</strong>
+            <ul>
                 <li><a href="{% url admin_list_resources "conferences" %}">List Conferences</a></li>
                 <li><a href="{% url admin_list_resources "standards" %}">List Standards</a></li>
                 <li><a href="{% url admin_list_resources "periodicals" %}">List Periodicals</a></li>
-                <li><a href="{% url admin_search_tags %}">Search Tags</a></li>
-                <li><a href="{% url admin_search_societies %}">Search Societies</a></li>
                 <li><a href="{% url admin_search_resources %}">Search Resources</a></li>
-                <li><a href="{% url admin_list_orphan_tags %}">List Orphan Tags</a></li>
+                <li><a href="{% url admin_create_resource %}?return_url={{ current_url|urlencode }}">Create a resource</a></li>
             </ul>
         </li>
         
