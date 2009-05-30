@@ -53,6 +53,7 @@
                 <li><a href="{% url admin_societies %}">List Societies</a></li>
                 <li><a href="{% url admin_list_sectors %}">List Sectors</a></li>
                 <li><a href="{% url admin_list_tags %}">List Tags</a></li>
+                <li><a href="{% url admin_create_tag %}?return_url={{ current_url|urlencode }}">Create a new Tag</a></li>
                 <li><a href="{% url admin_list_resources "conferences" %}">List Conferences</a></li>
                 <li><a href="{% url admin_list_resources "standards" %}">List Standards</a></li>
                 <li><a href="{% url admin_list_resources "periodicals" %}">List Periodicals</a></li>
