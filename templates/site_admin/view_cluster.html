@@ -4,9 +4,11 @@
     
     <h1>{{ cluster.name_with_sector }} Cluster</h1>
     
-    {% comment %}
-    <p><a href="{% url admin_edit_cluster cluster.id %}">Edit cluster</a></p>
-    {% endcomment %}
+    <p>
+        <a href="{% url admin_edit_cluster cluster.id %}">Edit cluster</a>
+        | <a href="{% url admin_delete_cluster cluster.id %}" onclick="return confirm('Delete this cluster?');">Delete cluster</a>
+        | <a href="{% url admin_clusters_report %}">Back to All Clusters</a>
+    </p>
     
     <table class="grid">
         <tr>
@@ -14,9 +16,11 @@
                 Sectors
             </th>
             <td>
-                {% for sector in cluster.get_sectors.all %}
-                    <a href="{% url admin_view_sector sector.id %}">{{ sector.name }}</a>{% if not forloop.last %},{% endif %}
-                {% endfor %}
+                <ul>
+                    {% for sector in cluster.get_sectors.all %}
+                        <li><a href="{% url admin_view_sector sector.id %}">{{ sector.name }}</a></li>
+                    {% endfor %}
+                </ul>
             </td>
         </tr>
         <tr>
@@ -24,9 +28,11 @@
                 Tags
             </th>
             <td>
-                {% for tag in cluster.get_tags %}
-                    <a href="{% url admin_view_tag tag.id %}">{{ tag.name }}</a>{% if not forloop.last %},{% endif %}
-                {% endfor %}
+                <ul>
+                    {% for tag in cluster.get_tags %}
+                        <li><a href="{% url admin_view_tag tag.id %}">{{ tag.name }}</a></li>
+                    {% endfor %}
+                </ul>
             </td>
         </tr>
         {% comment %}
@@ -42,7 +48,5 @@
             </tr>
         {% endcomment %}
     </table>
-    
-    <p><a href="{% url admin_home %}">home</a></p>
     
 {% endblock %}

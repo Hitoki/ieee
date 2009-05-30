@@ -3,6 +3,11 @@
 {% block main_table_content %}
     
     <h1>Tag Clusters Report</h1>
+    
+    <p>
+        <a href="{% url admin_create_cluster %}">Create a Cluster</a>
+    </p>
+    
     <table class="grid">
         <tr>
             <th>
@@ -18,7 +23,7 @@
         {% for cluster in clusters %}
             <tr>
                 <td>
-                    {{ cluster.name }}
+                    <a href="{% url admin_view_cluster cluster.id %}">{{ cluster.name }}</a>
                 </td>
                 <td>
                     {% for sector in cluster.get_sectors %}

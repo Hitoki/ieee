@@ -1766,7 +1766,61 @@ def view_cluster(request, cluster_id):
         'cluster': cluster,
     })
 
+@login_required
+def edit_cluster(request, cluster_id=None):
+    permissions.require_superuser(request)
+    if cluster_id is not None:
+        cluster = Node.objects.get(id=cluster_id)
+    else:
+        cluster = None
+    
+    if request.method == 'GET':
+        # Show the form
+        if cluster is not None:
+            tags = cluster.get_tags()
+            form = EditClusterForm(instance=cluster, initial={
+                'tags': tags,
+            })
+        else:
+            form = EditClusterForm()
+    else:
+        # Process the form
+        form = EditClusterForm(request.POST, instance=cluster)
+        if form.is_valid():
+            if cluster is not None:
+                form.save()
+            else:
+                cluster = form.save(commit=False)
+                cluster.node_type = NodeType.objects.getFromName(NodeType.TAG_CLUSTER)
+                cluster.save()
+            
+            tags = form.cleaned_data['tags']
+            print '  tags: %s' % tags
+            
+            # Remove tags
+            for tag in cluster.get_tags():
+                if tag not in tags:
+                    Node.objects.remove_tag_from_cluster(cluster, tag)
+            # Add tags
+            for tag in tags:
+                if tag not in cluster.get_tags():
+                    Node.objects.add_tag_to_cluster(cluster, tag)
+            return HttpResponseRedirect(reverse('admin_view_cluster', args=[cluster.id]))
+    
+    return render(request, 'site_admin/edit_cluster.html', {
+        'cluster': cluster,
+        'form': form,
+    })
 
+@login_required
+def delete_cluster(request, cluster_id):
+    permissions.require_superuser(request)
+    #return_to = request.GET.get('return_to')
+    cluster = Node.objects.get(id=cluster_id)
+    cluster.delete()
+    #return HttpResponseRedirect(return_to)
+    return HttpResponseRedirect(reverse('admin_clusters_report'))
+    
 @login_required
 def search_tags(request):
     permissions.require_superuser(request)

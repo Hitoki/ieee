@@ -167,3 +167,9 @@ class EditResourcesForm(Form):
 class EditTagsForm(Form):
     filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultipleColumns(columns=2), required=False, label='Filters')
 
+class EditClusterForm(ModelForm):
+    tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from this Cluster', blur_text='Type a few characters to bring up matching tags'))
+    class Meta:
+        model = Node
+        fields = ['name', 'child_nodes']
+

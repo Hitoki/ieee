@@ -1,0 +1,20 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>Edit Cluster</h1>
+    {% if cluster %}
+        <form action="{% url admin_edit_cluster cluster.id %}" method="post">
+    {% else %}
+        <form action="{% url admin_create_cluster %}" method="post">
+    {% endif %}
+        <table class="grid edit-create">
+            {{ form }}
+        </table>
+        <div class="submit">
+            <input type="submit" value="Save" class="submit-button" />
+            <a href="{{ return_url }}" class="cancel-link">Cancel</a>
+        </div>
+    </form>
+
+{% endblock %}

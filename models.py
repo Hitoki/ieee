@@ -296,6 +296,15 @@ class NodeManager(models.Manager):
             cluster.parents.add(sector)
         cluster.save()
     
+    def remove_tag_from_cluster(self, cluster, tag):
+        cluster.child_nodes.remove(tag)
+        # Update the list of sectors for this cluster
+        cluster.parents.clear()
+        for tag in cluster.get_tags():
+            for sector in tag.get_sectors():
+                cluster.parents.add(sector)
+        cluster.save()
+    
 class Node(models.Model):
     name = models.CharField(max_length=500)
     #parent = models.ForeignKey('Node', related_name='child_nodes', null=True, blank=True)
