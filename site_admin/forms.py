@@ -6,11 +6,13 @@ from ieeetags.models import Filter, Node, NodeType, Society, Resource, ResourceT
 from ieeetags.fields import MultiSearchField
 from ieeetags.widgets import MultiSearchWidget, DisplayOnlyWidget, CheckboxSelectMultipleColumns
 
-def _make_choices(list1, add_blank=False):
+def _make_choices(list1, add_blank=False, nice_format=True):
     if add_blank:
         yield '', '(none)'
     for item in list1:
-        yield item, item
+        if nice_format:
+            value = str(item).capitalize()
+        yield item, value
 
 def _make_choices_with_blank(list1):
     return _make_choices(list1, True)
