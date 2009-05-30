@@ -251,13 +251,17 @@ def ajax_nodes_json(request):
     # Build node list
     sector = Node.objects.get(id=sectorId)
     if sort == 'num_sectors':
+        # TODO: Handle clusters here
         tags = sector.child_nodes.extra(
             select={ 'num_parents': 'SELECT COUNT(*) FROM ieeetags_node_parents WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id' },
             order_by=['-num_parents'],
         )        
         
     else:
-        tags = sector.child_nodes.order_by(orderBy)
+        #tags = sector.child_nodes.order_by(orderBy)
+        # Get only tags (no clusters)
+        # TODO: Handle clusters here
+        tags = sector.get_tags().order_by(orderBy)
     
     (minResources, maxResources) = Node.objects.get_resource_range(sector)
     (min_sectors, max_sectors) = Node.objects.get_sector_range(sector)
@@ -265,7 +269,10 @@ def ajax_nodes_json(request):
     # JSON Output
     data = []
     for tag in tags:
-        #print 'tag.name:', tag.name
+        #print 'tag.name: %s' % tag.name
+        #print 'tag.num_resources: %s' % tag.num_resources
+        #print 'tag.parents.count(): %s' % tag.parents.count()
+        
         resourceLevel = _get_popularity_level(minResources, maxResources, tag.num_resources)
         sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.parents.count())
         
