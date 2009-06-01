@@ -125,3 +125,21 @@ input.text {
     height:100px;
 }
 
+/* */
+
+#lightbox .resources-lightbox-content {
+    margin-top:5em;
+    overflow:auto;
+    height:80%;
+}
+
+#lightbox .resources-lightbox-content .resources-pad {
+    padding:.5em;
+}
+
+#lightbox .resources-lightbox-content h1 {
+    margin-top:0em;
+}
+
+
+

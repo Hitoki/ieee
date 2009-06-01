@@ -148,16 +148,11 @@ var Tags = {
         var tagBlock = $('#tag-' + id);
         tagBlock.addClass('activeTag');
         
-        // Load the content
-        var content = $('#content');
-        content.html("<h1 id='loading'>Loading...</h1>");
-        content.load('/ajax/tag_content?tagId=' + id, null, function() { convertTabs(); });
-        
-        // Change the content title
-        $('#content-title').html('Resource Results for ' + this.getTagById(id).label );
-        
-        // TODO: Need to scroll galaxy window so that this tag becomes visible (might be out of the viewable area).
-        $.scrollTo(content, {duration:300, offset:{left:0, top:-30} });
+        // Show resource results in a lightbox
+        Lightbox.show('/ajax/tag_content?tagId=' + id, {
+            verticalCenter: false,
+            customClass: 'resources'
+        });
     },
     
     getFilters: function() {

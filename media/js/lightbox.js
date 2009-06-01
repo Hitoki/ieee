@@ -24,20 +24,36 @@ var Lightbox = {
             // Options
             this.options = extendExisting(
                 {
-                    closeOnClickOutside: true
+                    closeOnClickOutside: true,
+                    verticalCenter: true,
+                    customClass: null
                 },
                 options
             );
             
             // Create the lightbox
             this.lightbox = $('<div id="lightbox"></div>').appendTo('body');
-            //<div class="lightbox-background"></div>
             this.lightboxBackground = $('<div class="lightbox-background"></div>').appendTo(this.lightbox);
             
-            //this.lightboxContent = $('<div class="lightbox-content"></div>').appendTo(this.lightbox);
-            this.lightboxContentOuterElem = $('<div class="vert-center-outer lightbox-content-outer"></div>').appendTo(this.lightbox);
-            this.lightboxContentMiddleElem = $('<div class="vert-center-middle"></div>').appendTo(this.lightboxContentOuterElem);
-            this.lightboxContent = $('<div class="vert-center-inner lightbox-content"></div>').appendTo(this.lightboxContentMiddleElem);
+            // Create custom classes
+            var customClassOuter;
+            var customClassContent;
+            if (this.options.customClass != null) {
+                customClassOuter = this.options.customClass + '-lightbox-outer';
+                customClassContent = this.options.customClass + '-lightbox-content';
+            } else {
+                customClassOuter = '';
+                customClassContent = '';
+            }
+            
+            if (this.options.verticalCenter) {
+                this.lightboxContentOuterElem = $('<div class="vert-center-outer lightbox-content-outer ' + customClassOuter + '"></div>').appendTo(this.lightbox);
+                this.lightboxContentMiddleElem = $('<div class="vert-center-middle"></div>').appendTo(this.lightboxContentOuterElem);
+                this.lightboxContent = $('<div class="vert-center-inner lightbox-content ' + customClassContent + '"></div>').appendTo(this.lightboxContentMiddleElem);
+            } else {
+                this.lightboxContentOuterElem = $('<div class="lightbox-content-outer ' + customClassOuter + '"></div>').appendTo(this.lightbox);
+                this.lightboxContent = $('<div class="lightbox-content ' + customClassContent + '"></div>').appendTo(this.lightboxContentOuterElem);
+            }
             
             // Close the lightbox if user clicks outside the content area
             this.lightbox.click(function() {
@@ -87,6 +103,7 @@ var Lightbox = {
                 // Received plain HTML, just render
                 this.lightboxContent.html(data);
                 
+                /*
                 // Attach any multisearch objects
                 if (attachMultiSearches) {
                     attachMultiSearches(this.lightboxContent);
@@ -101,6 +118,8 @@ var Lightbox = {
                 if (attachBlurTexts) {
                     attachBlurTexts(this.lightboxContent);
                 }
+                */
+                attachScripts(this.lightboxContent);
                 
                 // Hook into any forms
                 var forms = this.lightboxContent.find('form');
