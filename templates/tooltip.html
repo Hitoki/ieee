@@ -18,7 +18,7 @@
                         {% ifequal sector tag.parent %}
                             {{sector.name}}
                         {% else %}
-                            <a href="{% url textui %}?tagId={{sector.id}}">{{sector.name}}</a>
+                            <a href="{% url textui %}?nodeId={{sector.id}}">{{sector.name}}</a>
                         {% endifequal %}
                         {% if not forloop.last %}, {% endif %}
                     {% endfor %}
