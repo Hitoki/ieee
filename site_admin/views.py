@@ -2184,6 +2184,8 @@ def manage_society(request, society_id):
     society = Society.objects.get(id=society_id)
     
     resources1 = society.resources
+    num_unfiltered_resources = resources1.count()
+    
     if resource_filter != '':
         keywords = resource_filter.split(' ')
         for keyword in keywords:
@@ -2317,6 +2319,7 @@ def manage_society(request, society_id):
         'resource_sort': resource_sort,
         'resource_page': resource_page,
         'num_resources': num_resources,
+        'num_unfiltered_resources': num_unfiltered_resources,
         'resource_page_url': resource_page_url,
         'num_resource_pages': num_resource_pages,
         

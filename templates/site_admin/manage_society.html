@@ -227,7 +227,7 @@
                     
                     <div id="society-resource-tabs" class="nootabs {useCookies:false, useHash:true}">
                         <ul class="nootabs-menus">
-                            <li><a href="">Manage this Society's Resources ({{ num_resources }})</a></li>
+                            <li><a href="">Manage this Society's Resources ({{ num_unfiltered_resources }})</a></li>
                             <li><a href="">Manage this Society's Tags <span id="tag-count"></span></a></li>
                             {% if DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB %}
                                 <li><a href="">Help</a></li>
@@ -243,6 +243,9 @@
                                     <input name="resource_filter" value="{{ resource_filter }}" />
                                     <input type="submit" value="Filter" />
                                     <input type="button" value="Clear" onclick="window.location='{% url admin_manage_society society.id %}?resource_sort={{ resource_sort }}';" />
+                                    {% ifnotequal num_resources num_unfiltered_resources %}
+                                        {{ num_resources }} Matching Resources
+                                    {% endifnotequal %}
                                 </p>
                             </form>
                             
