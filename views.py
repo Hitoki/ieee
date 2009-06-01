@@ -94,7 +94,8 @@ def textui(request):
     if node.node_type.name == 'root':
         sectorId = Node.objects.getFirstSector().id
     elif node.node_type.name == 'tag':
-        sectorId = node.parent.id
+        # NOTE: For now, use the tag's first parent sector
+        sectorId = node.get_sectors()[0].id
     
     sectors = Node.objects.getSectors()
     filters = Filter.objects.all()
