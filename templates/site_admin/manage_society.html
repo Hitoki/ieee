@@ -256,7 +256,7 @@
                             
                             <form action="{% url admin_edit_resources %}?return_url={{ current_url|urlencode }}" method="post">
                                 
-                                <p>
+                                <p class="batch-editing-button">
                                     <input type="submit" value="Edit Resources" />
                                 </p>
                                 
@@ -512,6 +512,10 @@
                                         </tr>
                                     {% endfor %}
                                 </table>
+                                
+                                <p class="batch-editing-button">
+                                    <input type="submit" value="Edit Resources" />
+                                </p>
                             
                             </form>
                             

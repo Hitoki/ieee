@@ -233,7 +233,6 @@ table.edit-create td {
 
 table.resources, table.tags, table.selected-tags, table.selected-resources {
     width: 100%;
-    margin: 1em 0;
 }
 
 table.resources th, table.tags th, table.selected-tags th, table.selected-resources th {
@@ -471,6 +470,10 @@ ul.pages li a.selected
 
 #adminLogin {
     margin-left: 10px;
+}
+
+.batch-editing-button {
+    margin: 1em 0;
 }
 
 /* */
