@@ -476,6 +476,10 @@ ul.pages li a.selected
     margin: 1em 0;
 }
 
+#resource_filter {
+    width: 150px;
+}
+
 /* */
 
 .results ul {
