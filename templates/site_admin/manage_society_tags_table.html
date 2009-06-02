@@ -6,12 +6,13 @@
 
 <form action="{% url admin_edit_tags %}?return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}" method="post">
     <p class="batch-editing-button">
-        <input type="submit" value="Edit Tags" />
+        <input type="submit" value="Edit Selected Tags" /><span class="help_icon flyover" style="margin-left: 10px;" title="Select 2 or more tags below and click this button to batch edit their filters.">[?]</span>
     </p>
     
     <table class="tags">
         <tr>
             <th>
+                <img class="batch-edit-arrow" src="{{ MEDIA_URL }}images/arrow2-down-white.gif" />
             </th>
             <th>
                 Tag Name <span class="help_icon flyover" title="Keyword or phrase for related concept or technology area. Click tag to edit.">[?]</span>
@@ -175,7 +176,7 @@
         {% endfor %}
     </table>
     <p class="batch-editing-button">
-        <input type="submit" value="Edit Tags" />
+        <input type="submit" value="Edit Selected Tags" class="submit-button" /><span class="help_icon flyover" style="margin-left: 10px;" title="Select 2 or more tags above and click this button to batch edit their filters.">[?]</span>
     </p>
 </form>
 

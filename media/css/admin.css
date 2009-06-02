@@ -508,10 +508,19 @@ div.errors {
     padding:.01em .5em .5em .5em;
 }
 
+table.resources td.select-checkbox-on-click,
+table.tags td.select-checkbox-on-click {
+    width: 5%;
+}
+
 .select-checkbox-on-click,
 .select-checkbox-on-click input[type="checkbox"]
 {
     cursor:pointer;
+}
+
+.batch-edit-arrow {
+    margin-top: 5px;
 }
 
 div.errors p.note {
