@@ -23,24 +23,6 @@
             </tr>
             <tr>
                 <th>
-                    <label for="id_priority">{{ form.priority.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title='If "yes", these resources should be as complete as possible. Tags, Description, and URL.'>[?]</span>:</label>
-                </th>
-                <td>
-                    {{ form.priority.errors }}
-                    {{ form.priority }}
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="id_completed">{{ form.completed.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title='If "yes", these resources should be as complete as possible. Tags, Description, and URL.'>[?]</span>:</label>
-                </th>
-                <td>
-                    {{ form.completed.errors }}
-                    {{ form.completed }}
-                </td>
-            </tr>
-            <tr>
-                <th>
                     Remove Tags <span class="help_icon flyover {position: 'top', customeClass:'editForm'}" title="Remove selected tags">[?]</span>:
                 </th>
                 <td>
@@ -55,6 +37,24 @@
                             </li>
                         {% endfor %}
                     </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_priority">{{ form.priority.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title='If "yes", these resources should be as complete as possible. Tags, Description, and URL.'>[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.priority.errors }}
+                    {{ form.priority }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_completed">{{ form.completed.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title='If "yes", these resources should be as complete as possible. Tags, Description, and URL.'>[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.completed.errors }}
+                    {{ form.completed }}
                 </td>
             </tr>
         </table>
