@@ -44,6 +44,9 @@
                     Remove Tags <span class="help_icon flyover {position: 'top', customeClass:'editForm'}" title="Remove selected tags">[?]</span>:
                 </th>
                 <td>
+                    {% if not common_tags %}
+                        The selected resources don't have any tags in common.
+                    {% endif %}
                     <ul>
                         {% for tag in common_tags %}
                             <li>
