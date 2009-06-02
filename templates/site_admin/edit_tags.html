@@ -38,7 +38,7 @@
                 <tr>
                     <td class="first-item">
                         <input type="hidden" name="tag_ids" value="{{ tag.id }}" />
-                        <a href="{% url admin_edit_tag tag.id %}">{{ tag.name }}</a>
+                        {{ tag.name }}
                     </td>
                     <td>
                         {{ tag.filters.all|join:", " }}

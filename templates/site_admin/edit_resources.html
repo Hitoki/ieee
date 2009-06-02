@@ -83,7 +83,7 @@
                 <tr>
                     <td class="first-item">
                         <input type="hidden" name="resource_ids" value="{{ resource.id }}" />
-                        <a href="{% url admin_edit_resource resource.id %}">{{ resource.name }}</a>
+                        {{ resource.name }}
                     </td>
                     <td>
                         {{ resource.nodes.all|join:", " }}
