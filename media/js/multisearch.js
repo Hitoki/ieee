@@ -747,36 +747,36 @@ MultiSearch.prototype.addSelectedOption = function(option, preload) {
                 option.nameElem = $('<td class="first-item"></td>').appendTo(option.elem);
                 var link = $('<a href=""></a>').appendTo(option.nameElem);
                 link.attr('href', option.name_link);
-                link.html(option.tag_name);
+                link.html(htmlentities(option.tag_name));
                 
                 var cell;
                 cell = $('<td class="left-text"></td>').appendTo(option.elem);
-                cell.html(option.sector_names);
+                cell.html(htmlentities(option.sector_names));
                 autoTruncate(cell, { length:40, flyover:true });
                 
                 cell = $('<td></td>').appendTo(option.elem);
                 if(option.num_societies != 0){
-                    cell.html(option.num_societies.toString());
+                    cell.html(htmlentities(option.num_societies.toString()));
                 }
                 
                 cell = $('<td></td>').appendTo(option.elem);
                 if(option.num_filters != 0){
-                    cell.html(option.num_filters.toString());
+                    cell.html(htmlentities(option.num_filters.toString()));
                 }
                 
                 cell = $('<td></td>').appendTo(option.elem);
                 if(option.num_resources != 0){
-                    cell.html(option.num_resources.toString());
+                    cell.html(htmlentities(option.num_resources.toString()));
                 }
                 
                 cell = $('<td></td>').appendTo(option.elem);
                 if(option.num_related_tags != 0){
-                    cell.html(option.num_related_tags.toString());
+                    cell.html(htmlentities(option.num_related_tags.toString()));
                 }
                 
             } else {
                 option.nameElem = $('<td class="small-tab-table"></td>').appendTo(option.elem);
-                option.nameElem.html(option.name);
+                option.nameElem.html(htmlentities(option.name));
                 
             }
             
@@ -802,7 +802,7 @@ MultiSearch.prototype.addSelectedOption = function(option, preload) {
             option.elem = $('<div class="multi-search-selected-option"></div>');
             // Insert the option before the <br> clearing tag
             this.selectedOptionsElem.children('br').before(option.elem);
-            option.elem.html(option.name);
+            option.elem.html(htmlentities(option.name));
             option.elem.data('value', option.value);
             option.elem.click(function(e) {
                 // Remove the option when clicked
