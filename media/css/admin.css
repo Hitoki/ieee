@@ -480,6 +480,10 @@ ul.pages li a.selected
     width: 350px;
 }
 
+.matching-filter {
+    margin-left: 10px;
+}
+
 /* */
 
 .results ul {
