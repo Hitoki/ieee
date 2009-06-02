@@ -484,6 +484,13 @@ ul.pages li a.selected
     margin-left: 10px;
 }
 
+.batch-editing-note {
+    font-size: 10pt;
+    color: #AAA;
+    font-weight: normal;
+    margin-left: 5px;
+}
+
 /* */
 
 .results ul {

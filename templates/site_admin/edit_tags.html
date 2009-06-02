@@ -4,7 +4,7 @@
 
 {% block main_table_content %}
     
-    <h1>Edit {{ tags|length }} Tags</h1>
+    <h1>Edit {{ tags|length }} Tags <span class="batch-editing-note">(See list of tags in table below)</span></h1>
     
     <form action="{% url admin_edit_tags %}?process_form=1&amp;return_url={{ return_url|urlencode }}#tab-tags-tab" method="post">
         
@@ -25,7 +25,6 @@
         </div>
         <br/>
         
-        <h2>Selected Tags</h2>
         <table class="grid selected-tags">
             <tr>
                 <th>

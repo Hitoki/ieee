@@ -4,7 +4,7 @@
 
 {% block main_table_content %}
     
-    <h1>Edit {{ resources|length }} Resources</h1>
+    <h1>Edit {{ resources|length }} Resources <span class="batch-editing-note">(See list of resources in table below)</span></h1>
     
     <form action="{% url admin_edit_resources %}?process_form=1&amp;return_url={{ return_url|urlencode }}" method="post">
         
@@ -64,7 +64,6 @@
         </div>
         <br/>
         
-        <h2>Selected Resources</h2>
         <table class="grid selected-resources">
             <tr>
                 <th>
