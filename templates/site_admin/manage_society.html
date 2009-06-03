@@ -151,11 +151,17 @@
                 
                 multisearch_tags.subscribe('removed_option', function(multisearch, event, data) {
                     //log('event removed_option');
-                    $.post('{% url ajax_update_society %}', {
-                        action: 'remove_tag',
-                        society_id: {{ society.id }},
-                        tag_id: data.option.value
+                    // NOTE: This needs to be syncronous, otherwise the table gets refreshed before the deletion is complete.
+                    $.ajax({
+                        async: false,
+                        url: '{% url ajax_update_society %}',
+                        data: {
+                            action: 'remove_tag',
+                            society_id: {{ society.id }},
+                            tag_id: data.option.value
+                        },
                     });
+                    
                     updateTagCount()
                     
                     // Update the tags table
