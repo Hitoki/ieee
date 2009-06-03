@@ -29,7 +29,7 @@
                 {{ all_total_tags }}
             </td>
             <td class="num">
-                {{ all_percent_filtered|floatformat:2 }}%
+                {{ all_percent_filtered|floatformat:1 }}%
             </td>
         </tr>
         {% for society in societies %}
@@ -44,7 +44,7 @@
                     {{ society.total_tags }}
                 </td>
                 <td class="num">
-                    {{ society.percent_filtered|floatformat:2 }}%
+                    {{ society.percent_filtered|floatformat:0 }}%
                 </td>
             </tr>
         {% endfor %}

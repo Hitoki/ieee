@@ -2949,7 +2949,7 @@ def tagged_resources_report(request, filter):
         if resource.nodes.count() > 0:
             all_tagged_resources += 1
     
-    all_percent_resources = all_tagged_resources / float(all_total_resources)
+    all_percent_resources = all_tagged_resources / float(all_total_resources) * 100
     
     # Calc per-society totals
     
@@ -2970,7 +2970,7 @@ def tagged_resources_report(request, filter):
         if total_resources == 0:
             percent_resources = 0
         else:
-            percent_resources = num_tagged_resources / float(total_resources)
+            percent_resources = num_tagged_resources / float(total_resources) * 100
         result_societies.append({
             'name': society.name,
             'total_resources': total_resources,
@@ -2999,7 +2999,7 @@ def tags_filters_report(request):
         if tag.filters.count() > 0:
             all_filtered_tags += 1
     
-    all_percent_filtered = all_filtered_tags / float(all_total_tags)
+    all_percent_filtered = all_filtered_tags / float(all_total_tags) * 100
     
     # Calc per-society totals
     
@@ -3016,7 +3016,7 @@ def tags_filters_report(request):
         if total_tags == 0:
             percent_filtered = 0
         else:
-            percent_filtered = filtered_tags / float(total_tags)
+            percent_filtered = filtered_tags / float(total_tags) * 100
         result_societies.append({
             'name': society.name,
             'filtered_tags': filtered_tags,
