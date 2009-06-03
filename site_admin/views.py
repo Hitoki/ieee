@@ -2736,34 +2736,32 @@ def delete_resource(request, resource_id):
     _update_node_totals(old_nodes)
     return HttpResponsePermanentRedirect(next)
 
-#@login_required
-#@transaction.commit_on_success
-#def remove_priorities(request):
-#    """
-#    Removes priorities from resources according to the requirements.  Only the following should have priority = True:
-#    - 2009 Conferences
-#    - Published Standards
-#    - All publications
-#    """
-#    permissions.require_superuser(request)
-#    logging.debug('remove_priorities()')
-#    
-#    # Remove priority from all non-2009 conferences
-#    conferences = Resource.objects.get_conferences()
-#    logging.debug('  conferences.count(): %s' % conferences.count())
-#    conferences = conferences.exclude(year='2009')
-#    logging.debug('  non-2009 conferences.count(): %s' % conferences.count())
-#    conferences.update(priority_to_tag=False)
-#    
-#    standards = Resource.objects.get_standards()
-#    logging.debug('  standards.count(): %s' % standards.count())
-#    standards = standards.exclude(standard_status=Resource.STANDARD_STATUS_PUBLISHED)
-#    logging.debug('  non-published standards.count(): %s' % standards.count())
-#    standards.update(priority_to_tag=False)
-#    
-#    publications
-#    
-#    assert False
+@login_required
+@transaction.commit_on_success
+def remove_priorities(request):
+    """
+    Removes priorities from resources according to the requirements.  Only the following should have priority = True:
+    - 2009 Conferences
+    - Published Standards
+    - All publications
+    """
+    permissions.require_superuser(request)
+    logging.debug('remove_priorities()')
+    
+    # Remove priority from all non-2009 conferences
+    conferences = Resource.objects.get_conferences()
+    logging.debug('  conferences.count(): %s' % conferences.count())
+    conferences = conferences.exclude(year='2009')
+    logging.debug('  non-2009 conferences.count(): %s' % conferences.count())
+    conferences.update(priority_to_tag=False)
+    
+    standards = Resource.objects.get_standards()
+    logging.debug('  standards.count(): %s' % standards.count())
+    standards = standards.exclude(standard_status=Resource.STANDARD_STATUS_PUBLISHED)
+    logging.debug('  non-published standards.count(): %s' % standards.count())
+    standards.update(priority_to_tag=False)
+    
+    return HttpResponseRedirect(reverse('admin_priority_report'))
     
 
 @login_required

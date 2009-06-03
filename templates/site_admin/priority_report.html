@@ -4,6 +4,10 @@
     
     <h1>Priority Report</h1>
     
+    <p>
+        <a href="{% url admin_remove_priorities %}" onclick="return confirm('Are you sure you want to remove priorites?  This cannot be undone.');">Remove priorities</a>
+    </p>
+    
     <table class="grid">
         {% for name, value in results.items %}
             <tr>

@@ -81,7 +81,7 @@ urlpatterns = patterns('',
     url(r'^resource/create$', views.edit_resource, name='admin_create_resource'),
     url(r'^resource/save$', views.save_resource, name='admin_save_resource'),
     url(r'^resource/(?P<resource_id>\d+)/delete$', views.delete_resource, name='admin_delete_resource'),
-    #url(r'^resources/remove_priorities$', views.remove_priorities, name='admin_remove_priorities'),
+    url(r'^resources/remove_priorities$', views.remove_priorities, name='admin_remove_priorities'),
     url(r'^resources/(?P<type1>.+)$', views.list_resources, name='admin_list_resources'),
     
     # AJAX
