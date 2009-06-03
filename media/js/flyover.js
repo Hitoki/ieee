@@ -266,7 +266,7 @@ var Flyover = {
             
         } else if (this.options.content !== null) {
             // Use the given content
-            this.content.html(this.options.content);
+            this.content.html(htmlentities(this.options.content));
             this._reposition();
             
         } else {
@@ -281,7 +281,7 @@ var Flyover = {
             content = content.replace(/^([^|]+)\|/g, '<p class="flyover-heading">$1</p>');
             content = content.replace(/\|/g, '<br/>');
             
-            this.content.html(content);
+            this.content.html(htmlentities(content));
             this._reposition();
         }
         
