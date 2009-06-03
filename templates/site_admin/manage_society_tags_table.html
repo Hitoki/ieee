@@ -6,7 +6,7 @@
 
 <form action="{% url admin_edit_tags %}?return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}" method="post">
     <p class="batch-editing-button">
-        <input type="submit" value="Edit Selected Tags" class="submit-button" /><span class="help_icon flyover" style="margin-left: 10px;" title="Select 2 or more tags below and click this button to batch edit their filters.">[?]</span>
+        <input type="submit" value="Edit Selected Tags" class="submit-button" /><span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 10px;" title="Select 2 or more tags below and click this button to batch edit their filters.">[?]</span>
     </p>
     
     <table class="tags">

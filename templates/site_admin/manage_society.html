@@ -257,7 +257,7 @@
                             <form action="{% url admin_edit_resources %}?return_url={{ current_url|urlencode }}" method="post">
                                 
                                 <p class="batch-editing-button">
-                                    <input type="submit" class="submit-button" value="Edit Selected Resources" /><span class="help_icon flyover" style="margin-left: 10px;" title="Select 2 or more resources below and click this button to batch edit their tags, priority and whether or not they are completed.">[?]</span>
+                                    <input type="submit" class="submit-button" value="Edit Selected Resources" /><span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 10px;" title="Select 2 or more resources below and click this button to batch edit their tags, priority and whether or not they are completed.">[?]</span>
                                 </p>
                                 
                                 <table class="resources">

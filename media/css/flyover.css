@@ -129,3 +129,7 @@ The content is just the contents of the flyover.
     max-width: 200px;
 }
 
+.batch-editing-help-flyover-container {
+    width: 300px;
+}
+
