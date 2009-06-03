@@ -2534,13 +2534,14 @@ def edit_resources(request):
     for resource in resources:
         if common_tags is None:
             common_tags = list(resource.nodes.all())
-            print 'first resource, common_tags:', common_tags
         else:
-            for tag in common_tags:
+            i = 0
+            while i < len(common_tags):
+                tag = common_tags[i]
                 if tag not in resource.nodes.all():
                     common_tags.remove(tag)
-                    print 'removing resource: %s, common_tags: %s' % (tag, common_tags)
-    print 'done, common_tags:', common_tags
+                else:
+                    i += 1
     
     return render(request, 'site_admin/edit_resources.html', {
         'form': form,
