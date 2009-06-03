@@ -188,7 +188,7 @@
                     <input type="checkbox" name="tag_ids" value="{{ tag.id }}" class="select-tags" />
                 </td>
                 <td class="first-item">
-                    <a href="{% url admin_edit_tag tag.id %}?return_url={{ current_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}&amp;society_id={{ society.id }}">{{ tag.name }}</a>
+                    <a href="{% url admin_edit_tag tag.id %}?return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}&amp;society_id={{ society.id }}">{{ tag.name }}</a>
                 </td>
                 <td>
                     {{ tag.parents.all|join:", " }}
