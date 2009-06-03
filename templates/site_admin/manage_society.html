@@ -159,7 +159,8 @@
                             action: 'remove_tag',
                             society_id: {{ society.id }},
                             tag_id: data.option.value
-                        }
+                        },
+                        type: 'POST'
                     });
                     
                     updateTagCount()
