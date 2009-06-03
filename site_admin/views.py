@@ -2736,6 +2736,36 @@ def delete_resource(request, resource_id):
     _update_node_totals(old_nodes)
     return HttpResponsePermanentRedirect(next)
 
+#@login_required
+#@transaction.commit_on_success
+#def remove_priorities(request):
+#    """
+#    Removes priorities from resources according to the requirements.  Only the following should have priority = True:
+#    - 2009 Conferences
+#    - Published Standards
+#    - All publications
+#    """
+#    permissions.require_superuser(request)
+#    logging.debug('remove_priorities()')
+#    
+#    # Remove priority from all non-2009 conferences
+#    conferences = Resource.objects.get_conferences()
+#    logging.debug('  conferences.count(): %s' % conferences.count())
+#    conferences = conferences.exclude(year='2009')
+#    logging.debug('  non-2009 conferences.count(): %s' % conferences.count())
+#    conferences.update(priority_to_tag=False)
+#    
+#    standards = Resource.objects.get_standards()
+#    logging.debug('  standards.count(): %s' % standards.count())
+#    standards = standards.exclude(standard_status=Resource.STANDARD_STATUS_PUBLISHED)
+#    logging.debug('  non-published standards.count(): %s' % standards.count())
+#    standards.update(priority_to_tag=False)
+#    
+#    publications
+#    
+#    assert False
+    
+
 @login_required
 def search_resources(request):
     permissions.require_superuser(request)
@@ -3015,6 +3045,37 @@ def clusters_report(request):
         'clusters': clusters,
     })
 
+@login_required
+def priority_report(request):
+    "Show the priorities for resources."
+    
+    results = odict()
+    
+    conferences = Resource.objects.get_conferences()
+    results['All Conferences'] = conferences.count(), conferences.filter(priority_to_tag=True).count()
+    
+    conferences_2009 = conferences.filter(year='2009')
+    results['2009 Conferences'] = conferences_2009.count(), conferences_2009.filter(priority_to_tag=True).count()
+    
+    conferences_non_2009 = conferences.exclude(year='2009')
+    results['Non-2009 Conferences'] = conferences_non_2009.count(), conferences_non_2009.filter(priority_to_tag=True).count()
+    
+    standards = Resource.objects.get_standards()
+    results['All Standards'] = standards.count(), standards.filter(priority_to_tag=True).count()
+    
+    published_standards = standards.filter(standard_status=Resource.STANDARD_STATUS_PUBLISHED)
+    results['Published Standards'] = published_standards.count(), published_standards.filter(priority_to_tag=True).count()
+    
+    unpublished_standards = standards.exclude(standard_status=Resource.STANDARD_STATUS_PUBLISHED)
+    results['Unpublished Standards'] = unpublished_standards.count(), unpublished_standards.filter(priority_to_tag=True).count()
+    
+    periodicals = Resource.objects.get_periodicals()
+    results['All Periodicals'] = periodicals.count(), periodicals.filter(priority_to_tag=True).count()
+    
+    
+    return render(request, 'site_admin/priority_report.html', {
+        'results': results,
+    })
 
 #def create_admin_login(request):
 #    "Create a test admin account."

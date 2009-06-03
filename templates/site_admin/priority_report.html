@@ -1,0 +1,29 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>Priority Report</h1>
+    
+    <table class="grid">
+        {% for name, value in results.items %}
+            <tr>
+                <td>
+                    {{ name }}
+                </td>
+                {% if value.0 %}
+                    <td>
+                        {{ value.0|safe }}
+                    </td>
+                    <td>
+                        {{ value.1|safe }}
+                    </td>
+                {% else %}
+                    <td>
+                        {{ value|safe }}
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

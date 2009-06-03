@@ -76,12 +76,13 @@ urlpatterns = patterns('',
     # Resources
     url(r'^resources/edit$', views.edit_resources, name='admin_edit_resources'),
     url(r'^resources/search$', views.search_resources, name='admin_search_resources'),
-    url(r'^resources/(?P<type1>.+)$', views.list_resources, name='admin_list_resources'),
     url(r'^resource/(?P<resource_id>\d+)$', views.view_resource, name='admin_view_resource'),
     url(r'^resource/(?P<resource_id>\d+)/edit$', views.edit_resource, name='admin_edit_resource'),
     url(r'^resource/create$', views.edit_resource, name='admin_create_resource'),
     url(r'^resource/save$', views.save_resource, name='admin_save_resource'),
     url(r'^resource/(?P<resource_id>\d+)/delete$', views.delete_resource, name='admin_delete_resource'),
+    #url(r'^resources/remove_priorities$', views.remove_priorities, name='admin_remove_priorities'),
+    url(r'^resources/(?P<type1>.+)$', views.list_resources, name='admin_list_resources'),
     
     # AJAX
     url(r'^ajax/search_tags$', views.ajax_search_tags, name='ajax_search_tags'),
@@ -94,6 +95,7 @@ urlpatterns = patterns('',
     url(r'^report/tagged_resources/(?P<filter>.+)$', views.tagged_resources_report, name='admin_tagged_resources_report'),
     url(r'^report/tags_filters_report$', views.tags_filters_report, name='admin_tags_filters_report'),
     url(r'^report/clusters$', views.clusters_report, name='admin_clusters_report'),
+    url(r'^report/priority$', views.priority_report, name='admin_priority_report'),
     
     # Exports
     url(r'^export/tab_resources$', views.export_tab_resources, name='admin_export_tab_resources'),

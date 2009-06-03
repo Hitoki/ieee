@@ -31,6 +31,7 @@
                 <li><a href="{% url admin_tagged_resources_report "priority" %}">Tagged resources report (priority-only)</a></li>
                 <li><a href="{% url admin_tags_filters_report %}">Tags &amp; Filters report</a></li>
                 <li><a href="{% url admin_clusters_report %}">Clusters Report</a></li>
+                <li><a href="{% url admin_priority_report %}">Priority Report</a></li>
             </ul>
         </li>
         {% comment %}
@@ -70,6 +71,7 @@
                 <li><a href="{% url admin_list_resources "periodicals" %}">List Periodicals</a></li>
                 <li><a href="{% url admin_search_resources %}">Search Resources</a></li>
                 <li><a href="{% url admin_create_resource %}?return_url={{ current_url|urlencode }}">Create a resource</a></li>
+                {# <li><a href="{% url admin_remove_priorities %}">Remove resource priorities</a></li> #}
             </ul>
         </li>
         
