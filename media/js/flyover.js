@@ -42,32 +42,46 @@ var Flyover = {
     },
     
     // Attaches a flyover to the given element, using its 'title' attribute as content.
-    attach: function(elem, options) {
-        elem = $(elem)[0];
-        
-        // TODO: when attaching to flyover elements in lightboxes, the $(elem).click() functions do not work!!!  Only the direct HTML onclick() type handlers work...
-        elem.onmouseover = function() {
-            Flyover.show(this, options);
-        }
-        elem.onmouseout = function() {
-            Flyover.onMouseOut();
-        }
-        
-        if (('showInitial' in options && options.showInitial) || ('showInitial' in $(elem).metadata() && $(elem).metadata().showInitial)) {
-            Flyover.show(elem, options);
-        }
-        
-        /*
-        elem = $(elem);
-        elem.hover(
-            function() {
+    attach: function(elems, options) {
+        elems = $(elems);
+        for (var i=0; i<elems.length; i++) {
+            elem = elems[i];
+            
+            // TODO: when attaching to flyover elements in lightboxes, the $(elem).click() functions do not work!!!  Only the direct HTML onclick() type handlers work...
+            elem.onmouseover = function() {
                 Flyover.show(this, options);
-            },
-            function() {
+            }
+            elem.onmouseout = function() {
                 Flyover.onMouseOut();
             }
-        );
-        */
+            
+            if ((options && 'showInitial' in options && options.showInitial) || ('showInitial' in $(elem).metadata() && $(elem).metadata().showInitial)) {
+                Flyover.show(elem, options);
+            }
+            
+            /*
+            elem = $(elem);
+            elem.hover(
+                function() {
+                    Flyover.show(this, options);
+                },
+                function() {
+                    Flyover.onMouseOut();
+                }
+            );
+            */
+        }
+    },
+    
+    detach: function(elems) {
+        elems = $(elems);
+        for (var i=0; i<elems.length; i++) {
+            elem = elems[i];
+            elem.onmouseover = null;
+            elem.onmouseout = null;
+            if ($(elem) == this._elem)
+                this.hide();
+        }
     },
     
     // Attaches a flyover to the given element, using its 'title' attribute as content.
@@ -181,7 +195,7 @@ var Flyover = {
         }
         
         // NOTE: Special behavior for closeOnMouseOutLink
-        if (this.options.closeOnMouseOutLink && (!'hideDelay' in options && !'hideDelay' in elem.metadata())) {
+        if (this.options.closeOnMouseOutLink && (!'hideDelay' in this.options && !'hideDelay' in elem.metadata())) {
             // closeOnMouseOutLink is true and there is no manually-specificied hideDelay, so shorten the default hideDelay
             this.options.hideDelay = 10;
         }

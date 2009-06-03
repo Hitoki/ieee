@@ -753,6 +753,14 @@ input[type=submit]:focus, input[type=button]:focus {
     border: 1px inset #016797;
 }
 
+input.disabled {
+    background:#ccc;
+    color:gray;
+}
+input.disabled:focus {
+    border: 1px outset #53595F;
+}
+
 table#login-table th{
     text-align: left;
     padding: 5px;

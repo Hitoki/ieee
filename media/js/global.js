@@ -195,6 +195,7 @@ function urlRemoveHash(url) {
 $(function() {
     $('.select-checkbox-on-click').click(function() {
         $(this).find('input[type="checkbox"]').click();
+        $(this).find('input[type="checkbox"]').change();
     });
     $('.select-checkbox-on-click input[type="checkbox"]').click(function(e) {
         // Stop propagation to above function, otherwise checkbox is clicked twice & doesn't change

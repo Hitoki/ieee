@@ -168,12 +168,41 @@
             }
         }
         
+        // Only enable the batch edit button when 2 or more items are selected
+        function updateBatchEditResourcesButtons() {
+            var num_selected = 0;
+            $('input.select-resources').each(function() {
+                if (this.checked)
+                    num_selected++;
+            });
+            
+            if (num_selected > 1) {
+                // Enable the edit resources buttons
+                $('.edit-selected-resources').unbind('click');
+                $('.edit-selected-resources').removeClass('disabled');
+                Flyover.detach($('.edit-selected-resources-flyover'));
+                
+            } else {
+                // Disable the edit resources buttons
+                $('.edit-selected-resources').click(function() {
+                    return false;
+                });
+                $('.edit-selected-resources').addClass('disabled');
+                Flyover.attach($('.edit-selected-resources-flyover'), { content: 'Please select more than 2 or more resources, then click here to edit.' });
+            }
+            
+        }
+        
         $(function() {
             attachMultisearch();
+            
+            updateBatchEditResourcesButtons();
+            
+            $('input.select-resources').change(function() {
+                updateBatchEditResourcesButtons();
+            });
         });
-
-
-
+        
     </script>
 
     {% comment %}
@@ -257,7 +286,10 @@
                             <form action="{% url admin_edit_resources %}?return_url={{ current_url|urlencode }}" method="post">
                                 
                                 <p class="batch-editing-button">
-                                    <input type="submit" class="submit-button" value="Edit Selected Resources" /><span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 10px;" title="Select 2 or more resources below and click this button to batch edit their tags, priority and whether or not they are completed.">[?]</span>
+                                    <span class="edit-selected-resources-flyover">
+                                        <input type="submit" class="submit-button edit-selected-resources" value="Edit Selected Resources" />
+                                    </span>
+                                    <span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 10px;" title="Select 2 or more resources below and click this button to batch edit their tags, priority and whether or not they are completed.">[?]</span>
                                 </p>
                                 
                                 <table class="resources">
@@ -515,7 +547,10 @@
                                 </table>
                                 
                                 <p class="batch-editing-button">
-                                    <input type="submit" value="Edit Selected Resources" class="submit-button" /><span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 10px;" title="Select 2 or more resources above and click this button to batch edit their tags, priority and whether or not they are completed.">[?]</span>
+                                    <span class="edit-selected-resources-flyover">
+                                        <input type="submit" value="Edit Selected Resources" class="submit-button edit-selected-resources" />
+                                    </span>
+                                    <span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 10px;" title="Select 2 or more resources above and click this button to batch edit their tags, priority and whether or not they are completed.">[?]</span>
                                 </p>
                             
                             </form>

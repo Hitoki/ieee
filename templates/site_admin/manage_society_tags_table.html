@@ -1,4 +1,42 @@
 {% load pagination %}
+
+<script type="text/javascript">
+
+    // Only enable the batch edit button when 2 or more items are selected
+    function updateBatchEditTagsButtons() {
+        var num_selected = 0;
+        $('input.select-tags').each(function() {
+            if (this.checked)
+                num_selected++;
+        });
+        
+        if (num_selected > 1) {
+            // Enable the edit tags buttons
+            $('.edit-selected-tags').unbind('click');
+            $('.edit-selected-tags').removeClass('disabled');
+            Flyover.detach($('.edit-selected-tags-flyover'));
+            
+        } else {
+            // Disable the edit tags buttons
+            $('.edit-selected-tags').click(function() {
+                return false;
+            });
+            $('.edit-selected-tags').addClass('disabled');
+            Flyover.attach($('.edit-selected-tags-flyover'), { content: 'Please select more than 2 or more tags, then click here to edit.' });
+        }
+        
+    }
+    
+    $(function() {
+        updateBatchEditTagsButtons();
+        
+        $('input.select-tags').change(function() {
+            updateBatchEditTagsButtons();
+        });
+    });
+    
+</script>
+
 <ul class="pages" id="pages-tags-top">
     <li class="paginationTitle">Pages:</li>
     {% pages tag_page num_tag_pages tag_page_url %}
@@ -6,7 +44,10 @@
 
 <form action="{% url admin_edit_tags %}?return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}" method="post">
     <p class="batch-editing-button">
-        <input type="submit" value="Edit Selected Tags" class="submit-button" /><span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 10px;" title="Select 2 or more tags below and click this button to batch edit their filters.">[?]</span>
+        <span class="edit-selected-tags-flyover">
+            <input type="submit" value="Edit Selected Tags" class="submit-button edit-selected-tags" />
+        </span>
+        <span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 10px;" title="Select 2 or more tags below and click this button to batch edit their filters.">[?]</span>
     </p>
     
     <table class="tags">
@@ -141,7 +182,7 @@
         {% for tag in tags %}
             <tr>
                 <td class="select-checkbox-on-click">
-                    <input type="checkbox" name="tag_ids" value="{{ tag.id }}" />
+                    <input type="checkbox" name="tag_ids" value="{{ tag.id }}" class="select-tags" />
                 </td>
                 <td class="first-item">
                     <a href="{% url admin_edit_tag tag.id %}?return_url={{ current_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}&amp;society_id={{ society.id }}">{{ tag.name }}</a>
@@ -176,16 +217,17 @@
         {% endfor %}
     </table>
     <p class="batch-editing-button">
-        <input type="submit" value="Edit Selected Tags" class="submit-button" /><span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 10px;" title="Select 2 or more tags above and click this button to batch edit their filters.">[?]</span>
+        <span class="edit-selected-tags-flyover">
+            <input type="submit" value="Edit Selected Tags" class="submit-button edit-selected-tags" />
+        </span>
+        <span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 10px;" title="Select 2 or more tags above and click this button to batch edit their filters.">[?]</span>
     </p>
 </form>
 
 <div>
-<ul class="pages" style="float:left;">
-    <li class="paginationTitle">Pages:</li>
-    {% pages tag_page num_tag_pages tag_page_url %}
-</ul>
-<input type="button" id="create-tag" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ tags_tab_url|urlencode }}';" value="Create New Tag" />
+    <ul class="pages" style="float:left;">
+        <li class="paginationTitle">Pages:</li>
+        {% pages tag_page num_tag_pages tag_page_url %}
+    </ul>
+    <input type="button" id="create-tag" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ tags_tab_url|urlencode }}';" value="Create New Tag" />
 </div>
-
-
