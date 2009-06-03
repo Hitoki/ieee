@@ -2559,6 +2559,8 @@ def list_resources(request, type1):
         type1 = 'standard'
     elif type1 == 'periodicals':
         type1 = 'periodical'
+    else:
+        raise Exception('Unknown type "%s"' % type1)
         
     resource_type = ResourceType.objects.getFromName(type1)
     resources = Resource.objects.filter(resource_type=resource_type)
