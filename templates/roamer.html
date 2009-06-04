@@ -114,15 +114,18 @@
                                 </script>
                             </div>       
                         </div>
-                        <h2 id="content-title">Resource Results</h2> <div class="backtotop" style="float:right;"><a href="#toppage">Back to top     <img src="{{MEDIA_URL}}images/arrow2-up.gif" alt="back to top" /></a></div>
-                          <div class="alt-box">
-                              <div id="content" class="alt-box-pad">
-                                  <p>
-                                    Click a tag above to display associated resources.
-                                  </p>
-                              </div>
-                          </div>
-                        <div class="backtotop" style="float:right;"><a href="#toppage">Back to top     <img src="{{MEDIA_URL}}images/arrow2-up.gif" alt="back to top" /></a></div>
+                        <h2 id="content-title">Resource Results</h2> <div class="backtotop" style="float:right;"><a href="#toppage">Back to top <img src="{{MEDIA_URL}}images/arrow2-up.gif" alt="back to top" /></a></div>
+                            <div class="alt-box">
+                                <div id="content" class="alt-box-pad">
+                                    <p id="resources-explanation-text">
+                                        Click a tag above to display associated resources.
+                                    </p>
+                                    <a id="resources-link" href="javascript:Roamer.showResourceResultsLightbox();">
+                                        Click here to view resource results for the "<span id="resources-tag-name"></span>" tag.
+                                    </a>
+                                </div>
+                            </div>
+                        <div class="backtotop" style="float:right;"><a href="#toppage">Back to top <img src="{{MEDIA_URL}}images/arrow2-up.gif" alt="back to top" /></a></div>
                         
                         <div class="feedback-bar">
                             Comments, Suggestions? <a href="{% url feedback %}" class="lightbox">Send Feedback</a>

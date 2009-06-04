@@ -821,3 +821,14 @@ div.submit {
     float:left;
     margin:0px 1.2em;
 }
+
+#resources-link {
+    display:block;
+    padding:1em;
+    text-decoration:none;
+}
+
+#resources-link:hover {
+    background:#eee;
+}
+

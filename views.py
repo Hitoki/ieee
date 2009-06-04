@@ -209,7 +209,7 @@ def ajax_node(request):
     
     json = simplejson.dumps(data, sort_keys=True, indent=4)
     
-    return HttpResponse(json, mimetype="text/plain")
+    return HttpResponse(json, mimetype="application/json")
 
 
 _POPULARITY_LEVELS = [

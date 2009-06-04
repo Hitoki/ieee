@@ -64,10 +64,19 @@ function logobj(obj, indent) {
     if (indent == undefined)
         indent = '';
     for (name in obj) {
-        console.log(indent + name + ': ' + obj[name]);
-        if (typeof obj[name] == 'object') {
-            logobj(obj[name], indent + '  ');
+        try {
+            log(indent + name + ': ' + obj[name]);
+        } catch (e) {
+            log(indent + name + ': (Error getting value)');
         }
+        try {
+            if (typeof obj[name] == 'object') {
+                logobj(obj[name], indent + '  ');
+            }
+        } catch (e) {
+            // do nothing
+        }
+        
     }
 }
 

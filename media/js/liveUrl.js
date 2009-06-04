@@ -111,9 +111,7 @@ LiveUrl.prototype.update = function() {
 var liveUrl = new LiveUrl();
 
 $(function () {
-    log('finding live urls');
     $('.live-url').each(function() {
-        log('found');
         liveUrl.add(this);
     });
 });
