@@ -12,6 +12,12 @@ TRISTATE_CHOICES = [
     'no',
 ]
 
+TRISTATE_CHOICES_RESOURCES = [
+    ('no change', 'No change'),
+    ('yes', 'Yes for all resources'),
+    ('no', 'No for all resources'),
+]
+
 def _make_choices(list1, add_blank=False, nice_format=True):
     if add_blank:
         yield '', '(none)'
@@ -170,8 +176,8 @@ class ImportFileForm(Form):
 
 class EditResourcesForm(Form):
     assign_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Assign Tags', widget_label='Assign Tags', show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag', blur_text='Type a few characters to bring up matching tags'))
-    priority = ChoiceField(choices=_make_choices(TRISTATE_CHOICES), widget=RadioSelect())
-    completed = ChoiceField(choices=_make_choices(TRISTATE_CHOICES), widget=RadioSelect())
+    priority = ChoiceField(choices=TRISTATE_CHOICES_RESOURCES, widget=RadioSelect())
+    completed = ChoiceField(choices=TRISTATE_CHOICES_RESOURCES, widget=RadioSelect())
 
 class EditTagsForm(Form):
     emerging_technologies_filter = ChoiceField(choices=_make_choices(TRISTATE_CHOICES), widget=RadioSelect())
