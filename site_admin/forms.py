@@ -6,6 +6,12 @@ from ieeetags.models import Filter, Node, NodeType, Society, Resource, ResourceT
 from ieeetags.fields import MultiSearchField
 from ieeetags.widgets import MultiSearchWidget, DisplayOnlyWidget, CheckboxSelectMultipleColumns
 
+TRISTATE_CHOICES = [
+    'no change',
+    'yes',
+    'no',
+]
+
 def _make_choices(list1, add_blank=False, nice_format=True):
     if add_blank:
         yield '', '(none)'
@@ -164,21 +170,14 @@ class ImportFileForm(Form):
 
 class EditResourcesForm(Form):
     assign_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Assign Tags', widget_label='Assign Tags', show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag', blur_text='Type a few characters to bring up matching tags'))
-    PRIORITIES = [
-        'no change',
-        'yes',
-        'no',
-    ]
-    priority = ChoiceField(choices=_make_choices(PRIORITIES))
-    COMPLETED_CHOICES = [
-        'no change',
-        'yes',
-        'no',
-    ]
-    completed = ChoiceField(choices=_make_choices(COMPLETED_CHOICES))
+    priority = ChoiceField(choices=_make_choices(TRISTATE_CHOICES), widget=RadioSelect())
+    completed = ChoiceField(choices=_make_choices(TRISTATE_CHOICES), widget=RadioSelect())
 
 class EditTagsForm(Form):
-    filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultipleColumns(columns=2), required=False, label='Filters')
+    emerging_technologies_filter = ChoiceField(choices=_make_choices(TRISTATE_CHOICES), widget=RadioSelect())
+    foundation_technologies_filter = ChoiceField(choices=_make_choices(TRISTATE_CHOICES), widget=RadioSelect())
+    hot_topics_filter = ChoiceField(choices=_make_choices(TRISTATE_CHOICES), widget=RadioSelect())
+    market_areas_filter = ChoiceField(choices=_make_choices(TRISTATE_CHOICES), widget=RadioSelect())
 
 class EditClusterForm(ModelForm):
     tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from this Cluster', blur_text='Type a few characters to bring up matching tags'))

@@ -572,3 +572,6 @@ tr.form-row-highlight p.form-warning {
     float: left;
 }
 
+.nowrap-labels label {
+    white-space:nowrap;
+}

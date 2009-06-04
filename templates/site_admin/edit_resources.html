@@ -45,7 +45,9 @@
                 </th>
                 <td>
                     {{ form.priority.errors }}
-                    {{ form.priority }}
+                    <span class="horizontal-radios">
+                        {{ form.priority }}
+                    </span>
                 </td>
             </tr>
             <tr>
@@ -54,7 +56,9 @@
                 </th>
                 <td>
                     {{ form.completed.errors }}
-                    {{ form.completed }}
+                    <span class="horizontal-radios">
+                        {{ form.completed }}
+                    </span>
                 </td>
             </tr>
         </table>

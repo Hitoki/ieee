@@ -241,6 +241,18 @@ def _failed_logins(request):
         'FAILED_LOGINS_TIME_MINUTES': FailedLoginLog.FAILED_LOGINS_TIME / 60,
     })
 
+def _parse_tristate_value(value):
+    assert isinstance(value, basestring)
+    if value == 'no change':
+        return None
+    elif value == 'yes':
+        return True
+    elif value == 'no':
+        return False
+    else:
+        raise Exception('Unknown value "%r"' % value)
+
+
 # ------------------------------------------------------------------------------
 
 def login(request):
@@ -1505,6 +1517,7 @@ def list_orphan_tags(request):
     })
 
 @login_required
+@transaction.commit_on_success
 def edit_tags(request):
     # TODO: Check permissions on each tag
     assert request.method == 'POST'
@@ -1521,19 +1534,30 @@ def edit_tags(request):
         form = EditTagsForm(request.POST)
         
         if form.is_valid():
-            filters = form.cleaned_data['filters']
-            # Assign filters to all tags
-            for tag in tags:
-                tag.filters.clear()
-                for filter in filters:
-                    tag.filters.add(filter)
-                tag.save()
+            
+            for field_name in Filter.FILTERS:
+                field_value = _parse_tristate_value(form.cleaned_data['%s_filter' % field_name])
+                filter = Filter.objects.getFromValue(field_name)
+                
+                if field_value is True:
+                    for tag in tags:
+                        tag.filters.add(filter)
+                        tag.save()
+                elif field_value is False:
+                    for tag in tags:
+                        tag.filters.remove(filter)
+                        tag.save()
             
             # Form saved successfully, redirect to previous page
             return HttpResponseRedirect(return_url)
     else:
         # Show the initial form
-        form = EditTagsForm()
+        form = EditTagsForm(initial={
+            'emerging_technologies_filter': 'no change',
+            'foundation_technologies_filter': 'no change',
+            'hot_topics_filter': 'no change',
+            'market_areas_filter': 'no change',
+        })
     
     return render(request, 'site_admin/edit_tags.html', {
         'return_url': return_url,
@@ -2526,6 +2550,7 @@ def edit_resources(request):
         # Show the intial form
         form = EditResourcesForm(initial={
             'priority': 'no change',
+            'completed': 'no change',
         })
     
     

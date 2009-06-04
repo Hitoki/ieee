@@ -816,3 +816,8 @@ a.cancel-link:visited {
 div.submit {
     text-align: right;
 }
+
+.horizontal-radios ul li {
+    float:left;
+    margin:0px 1.2em;
+}

@@ -488,10 +488,17 @@ class FilterManager(NamedValueTypeManager):
         return results
 
 class Filter(NamedValueType):
-    EMERGING_TECHNOLOGIES = 'Emerging Technologies'
-    FOUNDATION_TECHNOLOGIES = 'Foundation Technologies'
-    HOT_TOPICS = 'Hot Topics'
-    MARKET_AREAS = 'Market Areas'
+    EMERGING_TECHNOLOGIES = 'emerging_technologies'
+    FOUNDATION_TECHNOLOGIES = 'foundation_technologies'
+    HOT_TOPICS = 'hot_topics'
+    MARKET_AREAS = 'market_areas'
+    
+    FILTERS = [
+        EMERGING_TECHNOLOGIES,
+        FOUNDATION_TECHNOLOGIES,
+        HOT_TOPICS,
+        MARKET_AREAS,
+    ]
     
     objects = FilterManager()
     

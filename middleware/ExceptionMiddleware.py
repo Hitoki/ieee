@@ -18,6 +18,7 @@ class ExceptionMiddleware:
         "Print or email exception info, depending on settings."
         message = getattr(exception, 'message', '')
         content = []
+        content.append('')
         content.append('---------------------------------- EXCEPTION ----------------------------------')
         content.append('%s: %s' % (type(exception).__name__, message))
         content.append('%s' % get_current_url(request))
