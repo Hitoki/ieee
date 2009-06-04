@@ -407,10 +407,7 @@ MultiSearch.prototype.onGetOptions = function(data) {
         var foundExactMatch = false;
         
         // Add the new searchOptions to the popup
-        if (data.options.length == 0) {
-            // No options found
-            $("<div class='multi-search-no-results'>No results found.</div>").appendTo(this.popupElem);
-        } else {
+        if (data.options.length != 0) {
             // Add the options to the popup
             for (var i in data.options) {
                 var checked = this.findSelectedOptionByValue(data.options[i].value) != null;
@@ -445,6 +442,20 @@ MultiSearch.prototype.onGetOptions = function(data) {
             
             if (data.more_results) {
                 $('<div class="multi-search-more-results">Enter more characters to view the rest of the results...</div>').appendTo(this.popupElem);
+            }
+        }
+        
+        if (!this.options.society_tags_first && data.options.length == 0) {
+            // No options found
+            $("<div class='multi-search-no-results'>No results found.</div>").appendTo(this.popupElem);
+            
+        } else if (this.options.society_tags_first) {
+            // Show "No options found" separately for society tags and other tags
+            if (this.searchOptionsFirst.length == 0) {
+                this.popupFirstElem.after($("<div class='multi-search-no-results'>No results found.</div>"));
+            }
+            if (this.searchOptionsSecond.length == 0) {
+                this.popupSecondElem.after($("<div class='multi-search-no-results'>No results found.</div>"));
             }
         }
         
