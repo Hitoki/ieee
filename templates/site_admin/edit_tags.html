@@ -11,7 +11,12 @@
         <table class="grid edit-create nowrap-labels">
             <tr>
                 <th>
-                    <label for="id_emerging_technologies_filter">{{ form.emerging_technologies_filter.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="Choose one or multiple categories that describe these Tags. If none are chosen, these Tags will not be displayed to end users.">[?]</span>:</label>
+                    <h2>Filters</h2>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_emerging_technologies_filter">{{ form.emerging_technologies_filter.label }}:</label>
                 </th>
                 <td>
                     {{ form.emerging_technologies_filter.errors }}
@@ -22,7 +27,7 @@
             </tr>
             <tr>
                 <th>
-                    <label for="id_foundation_technologies_filter">{{ form.foundation_technologies_filter.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="Choose one or multiple categories that describe these Tags. If none are chosen, these Tags will not be displayed to end users.">[?]</span>:</label>
+                    <label for="id_foundation_technologies_filter">{{ form.foundation_technologies_filter.label }}:</label>
                 </th>
                 <td>
                     {{ form.foundation_technologies_filter.errors }}
@@ -33,7 +38,7 @@
             </tr>
             <tr>
                 <th>
-                    <label for="id_hot_topics_filter">{{ form.hot_topics_filter.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="Choose one or multiple categories that describe these Tags. If none are chosen, these Tags will not be displayed to end users.">[?]</span>:</label>
+                    <label for="id_hot_topics_filter">{{ form.hot_topics_filter.label }}:</label>
                 </th>
                 <td>
                     {{ form.hot_topics_filter.errors }}
@@ -44,7 +49,7 @@
             </tr>
             <tr>
                 <th>
-                    <label for="id_market_areas_filter">{{ form.market_areas_filter.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="Choose one or multiple categories that describe these Tags. If none are chosen, these Tags will not be displayed to end users.">[?]</span>:</label>
+                    <label for="id_market_areas_filter">{{ form.market_areas_filter.label }}:</label>
                 </th>
                 <td>
                     {{ form.market_areas_filter.errors }}

@@ -18,6 +18,12 @@ TRISTATE_CHOICES_RESOURCES = [
     ('no', 'No for all resources'),
 ]
 
+TRISTATE_CHOICES_TAGS = [
+    ('no change', 'No change'),
+    ('yes', 'Apply to all tags'),
+    ('no', 'Remove from all tags'),
+]
+
 def _make_choices(list1, add_blank=False, nice_format=True):
     if add_blank:
         yield '', '(none)'
@@ -180,10 +186,10 @@ class EditResourcesForm(Form):
     completed = ChoiceField(choices=TRISTATE_CHOICES_RESOURCES, widget=RadioSelect())
 
 class EditTagsForm(Form):
-    emerging_technologies_filter = ChoiceField(choices=_make_choices(TRISTATE_CHOICES), widget=RadioSelect())
-    foundation_technologies_filter = ChoiceField(choices=_make_choices(TRISTATE_CHOICES), widget=RadioSelect())
-    hot_topics_filter = ChoiceField(choices=_make_choices(TRISTATE_CHOICES), widget=RadioSelect())
-    market_areas_filter = ChoiceField(choices=_make_choices(TRISTATE_CHOICES), widget=RadioSelect())
+    emerging_technologies_filter = ChoiceField(choices=TRISTATE_CHOICES_TAGS, widget=RadioSelect(), label='Emerging Technologies')
+    foundation_technologies_filter = ChoiceField(choices=TRISTATE_CHOICES_TAGS, widget=RadioSelect(), label='Foundation Technologies')
+    hot_topics_filter = ChoiceField(choices=TRISTATE_CHOICES_TAGS, widget=RadioSelect(), label='Hot Topics')
+    market_areas_filter = ChoiceField(choices=TRISTATE_CHOICES_TAGS, widget=RadioSelect(), label='Market Areas')
 
 class EditClusterForm(ModelForm):
     tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from this Cluster', blur_text='Type a few characters to bring up matching tags'))
