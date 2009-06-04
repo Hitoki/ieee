@@ -575,3 +575,7 @@ tr.form-row-highlight p.form-warning {
 .nowrap-labels label {
     white-space:nowrap;
 }
+
+h1.no-resources-message {
+    margin: 40px 0;
+}
