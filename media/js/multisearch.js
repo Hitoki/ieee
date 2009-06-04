@@ -492,7 +492,7 @@ MultiSearch.prototype.addSearchOption = function(searchOption) {
     var multiSearch = this;
     
     // Create searchOption element
-    searchOption.elem = $("<div class=\"multi-search-popup-item\"><img class='multi-search-popup-item-checkbox' src='/media/images/checkbox.png' />" + searchOption.name + "</div>");
+    searchOption.elem = $("<div class=\"multi-search-popup-item\"><img class='multi-search-popup-item-checkbox' src='/media/images/checkbox.png' />" + htmlentities(searchOption.name) + "</div>");
     
     if (this.options.society_tags_first) {
         var belongsToSociety = false;
@@ -518,7 +518,8 @@ MultiSearch.prototype.addSearchOption = function(searchOption) {
         this.searchOptions.push(searchOption);
     }
     
-    searchOption.elem.html(searchOption.elem.html());
+    // TODO: What is this here for??
+    //searchOption.elem.html(searchOption.elem.html());
     
     searchOption.elem.data('value', searchOption.value);
     // Toggle the search option when it's clicked
