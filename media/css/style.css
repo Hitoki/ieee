@@ -376,6 +376,9 @@ ul#view-header li {
 
 #alternate-page #right-column {
     width:77%;
+}
+
+.textui-page #right-column {
     height:440px;
 }
 
@@ -826,9 +829,11 @@ div.submit {
     display:block;
     padding:1em;
     text-decoration:none;
+    background:#006699;
+    color:white;
 }
 
 #resources-link:hover {
-    background:#eee;
+    /*background:#eee;*/
 }
 

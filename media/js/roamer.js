@@ -24,13 +24,16 @@ var Roamer = {
         this.onChange();
     },
     
+    /*
     updateSector: function() {
         //log("updateSector()");
         var roamer = this;
         this.id = this.flash.getSelectedNodeID();
+        this.nodeInfo = null;
         $.getJSON('/ajax/node', {nodeId:this.id}, function(data){roamer.updateSector2(data);} );
         //log("~updateSector()");
     },
+    */
     
     getSectorLink: function(id) {
         var sectors = $('#sectors a');
@@ -52,13 +55,14 @@ var Roamer = {
         //log('~highlightSector()');
     },
     
+    /*
     updateSector2: function(data) {
         //log("updateSector2()");
         //log('data', data);
         //log('data.type', data.type);
         //log('data.parent', data.parent);
         //if (data.parent)
-        //    log('data.parent.id', data.parent.id);
+        //    //log('data.parent.id', data.parent.id);
         if (data.type == 'sector') {
             this.highlightSector(data.id);
         } else if (data.type == 'tag') {
@@ -67,6 +71,7 @@ var Roamer = {
         }
         //log("~updateSector2()");
     },
+    */
     
     // Get the selected node from roamer
     getNode: function(id) {
@@ -81,8 +86,10 @@ var Roamer = {
         
         this.flash.setSelectedNodeID(id);
         this.id = id;
+        this.nodeInfo = null;
         this.loadContent();
-        this.updateSector();
+        // TODO:
+        //this.updateSector();
         this.updateSwitchLink();
     },
     
@@ -103,7 +110,15 @@ var Roamer = {
             type: 'GET',
             url: 'ajax/node'
         });
-        this.nodeInfo = results;
+        
+        //log('  this.id: ' + this.id);
+        //log('  results.id: ' + results.id);
+        // Check if another node was selected after making the above ajax request
+        if (this.id == results.id) {
+            this.nodeInfo = results;
+            //log('  this.nodeInfo: ' + this.nodeInfo);
+        }
+        
         //log('~getNodeInfo()');
     },
     
@@ -113,25 +128,42 @@ var Roamer = {
         var id = this.flash.getSelectedNodeID();
         if (id != this.id) {
             this.id = id;
+            this.nodeInfo = null;
             this.getNodeInfo();
             this.updateSwitchLink();
             this.loadContent();
-            this.updateSector();
+            // TODO:
+            //this.updateSector();
         }
+        //log("~onChange()");
     },
     
     loadContent: function() {
         //log("loadContent()");
-        //log("this.id: " + this.id);
-        //log("this.nodeInfo: " + this.nodeInfo);
-        //log("this.nodeInfo.type: " + this.nodeInfo.type);
-        if (this.nodeInfo.type == 'tag') {
-            // Tag
+        //log("  this.id: " + this.id);
+        //log("  this.nodeInfo: " + this.nodeInfo);
+        if (this.nodeinfo) {
+            //log("  this.nodeInfo.id: " + this.nodeInfo.id);
+            //log("  this.nodeInfo.name: " + this.nodeInfo.name);
+            //log("  this.nodeInfo.type: " + this.nodeInfo.type);
+        }
+        
+        if (this.nodeInfo && this.nodeInfo.type == 'tag') {
+            // Selected a tag, show the resources link bar (update name & count, flash green)
             $('#resources-explanation-text').hide();
             $('#resources-link').show();
             $('#resources-tag-name').html(htmlentities(this.nodeInfo.name));
+            $('#resources-count').html(htmlentities(this.nodeInfo.num_resources));
+            $('#resources-link').css('backgroundColor', 'green');
+            $('#resources-link').animate(
+                {
+                    'backgroundColor': '#006699'
+                },
+                1000
+            );
+            
         } else {
-            // Not a tag
+            // Not a tag, hide the resources link bar (show "clic
             $('#resources-explanation-text').show();
             $('#resources-link').hide();
         }

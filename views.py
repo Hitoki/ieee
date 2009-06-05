@@ -184,6 +184,7 @@ def ajax_tag_content(request):
 
 @protect_frontend
 def ajax_node(request):
+    "Returns JSON data for the given node, including its parents."
     disable_frontend()
     
     nodeId = request.GET['nodeId']
@@ -197,6 +198,7 @@ def ajax_node(request):
         'id': node.id,
         'name': node.name,
         'type': node.node_type.name,
+        'num_resources': node.resources.count(),
     }
     
     if len(node.parents.all()) > 0:
