@@ -1660,24 +1660,26 @@ def create_tag(request):
                 }))
                 
             else:
-                return HttpResponse("""
-                    <script>
-                        if (opener && opener.notify) {
-                            opener.notify('created_tag', %s);
-                        }
-                        window.close();
-                    </script>
-                    <a href="javascript:window.close();">Close window</a>
-                    """
-                    % json.dumps({
-                        'tag': {
-                            'id': tag.id,
-                            'name': tag.name,
-                            'sector_name': tag.parent.name,
-                            'name_with_sector': tag.name_with_sector(),
-                        }
-                    })
-                )
+                # TODO: This is out of date, remove it
+                assert False, 'This code path is obsolete.'
+                #return HttpResponse("""
+                #    <script>
+                #        if (opener && opener.notify) {
+                #            opener.notify('created_tag', %s);
+                #        }
+                #        window.close();
+                #    </script>
+                #    <a href="javascript:window.close();">Close window</a>
+                #    """
+                #    % json.dumps({
+                #        'tag': {
+                #            'id': tag.id,
+                #            'name': tag.name,
+                #            'sector_name': tag.parent.name,
+                #            'name_with_sector': tag.name_with_sector(),
+                #        }
+                #    })
+                #)
         #return HttpResponsePermanentRedirect(reverse('admin_view_tag', args=(tagId,)))
             
     return render(request, 'site_admin/create_tag.html', {
