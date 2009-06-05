@@ -413,11 +413,22 @@ ul#view-header li {
     /*padding: .05em 0em;*/
     font-size:80%;
     padding:0px;
+    cursor: pointer;
+}
+
+#alternate-page #left-column ul#views li:hover {
+    background-color: #006699;
+    color: white;
 }
 
 #alternate-page #left-column ul#views li input {
     margin:2px;
     vertical-align:middle;
+}
+
+#alternate-page #left-column ul#views li input,
+#alternate-page #left-column ul#views li label {
+    cursor: pointer;
 }
 
 #alternate-page #tags {
