@@ -45,7 +45,7 @@ class NamedTypeManager(models.Manager):
 class NamedType(models.Model):
     name = models.CharField(max_length=50)
     
-    def __str__(self):
+    def __unicode__(self):
         return self.name
     class Meta:
         abstract = True
@@ -60,7 +60,7 @@ class NamedValueTypeManager(NamedTypeManager):
 class NamedValueType(NamedType):
     value = models.CharField(max_length=500)
     
-    def __str__(self):
+    def __unicode__(self):
         return '%s (%s)' % (self.name, self.value)
     class Meta:
         abstract = True
@@ -319,7 +319,8 @@ class Node(models.Model):
     num_resources = models.IntegerField(null=True, blank=True)
     
     objects = NodeManager()
-    def __str__(self):
+    
+    def __unicode__(self):
         return self.name
     
     def sector_names(self):
@@ -380,7 +381,7 @@ class Society(models.Model):
     users = models.ManyToManyField(User, related_name='societies', blank=True)
     
     objects = SocietyManager()
-    def __str__(self):
+    def __unicode__(self):
         return self.name
     
     class Meta:
@@ -468,7 +469,7 @@ class Resource(models.Model):
     societies = models.ManyToManyField(Society, related_name='resources')
     
     objects = ResourceManager()
-    def __str__(self):
+    def __unicode__(self):
         return self.name
     
     class Meta:
@@ -502,7 +503,7 @@ class Filter(NamedValueType):
     
     objects = FilterManager()
     
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
 # ------------------------------------------------------------------------------

@@ -3051,9 +3051,9 @@ def tags_filters_report(request):
             'percent_filtered': percent_filtered,
         })
     
-    print 'all_filtered_tags:', all_filtered_tags
-    print 'all_total_tags:', all_total_tags
-    print 'all_percent_filtered:', all_percent_filtered
+    #print 'all_filtered_tags:', all_filtered_tags
+    #print 'all_total_tags:', all_total_tags
+    #print 'all_percent_filtered:', all_percent_filtered
 
     return render(request, 'site_admin/tags_filters_report.html', {
         'all_filtered_tags': all_filtered_tags,
@@ -3130,9 +3130,9 @@ def priority_report(request):
     
 def export_tab_resources(request):
     "Export all resources for the TAB society in CSV format."
-    print 'export_tab_resources()'
+    #print 'export_tab_resources()'
     filename = os.path.realpath('../tab_resources.csv')
-    print 'filename:', filename
+    #print 'filename:', filename
     file = codecs.open(filename, 'w', encoding='utf-8')
     
     tab_society = Society.objects.getFromAbbreviation('TAB')
