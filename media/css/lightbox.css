@@ -131,6 +131,7 @@ input.text {
     margin-top:5em;
     overflow:auto;
     height:80%;
+    width: 60%;
 }
 
 #lightbox .resources-lightbox-content .resources-pad {
