@@ -333,6 +333,7 @@ ul#view-header li {
 .feedback-bar {
     font-size:80%;
     color:gray;
+    clear: both;
 }
 
 .feedback-bar a {
