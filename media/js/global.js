@@ -201,6 +201,18 @@ function urlRemoveHash(url) {
 
 //
 
+function attachSelectCheckboxOnClick(elem) {
+	elem = $(elem);
+	elem.find('.select-checkbox-on-click').click(function() {
+        $(this).find('input[type="checkbox"]').click();
+        $(this).find('input[type="checkbox"]').change();
+    });
+    elem.find('.select-checkbox-on-click input[type="checkbox"]').click(function(e) {
+        // Stop propagation to above function, otherwise checkbox is clicked twice & doesn't change
+        e.stopPropagation();
+    });
+}
+
 $(function() {
     $('.select-checkbox-on-click').click(function() {
         $(this).find('input[type="checkbox"]').click();
@@ -221,4 +233,5 @@ function attachScripts(elem) {
     attachLightboxes(elem);
     attachMultiSearches(elem);
     attachNootabs(elem);
+	attachSelectCheckboxOnClick(elem);
 }
