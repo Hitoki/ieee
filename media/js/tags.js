@@ -142,11 +142,11 @@ var Tags = {
         // Update the switch interfaces link
         this.updateSwitchLink();
         
-        $('.tag').removeClass('activeTag');
+        //$('.tag').removeClass('activeTag');
         
         // Highlight the current tag
         var tagBlock = $('#tag-' + id);
-        tagBlock.addClass('activeTag');
+        //tagBlock.addClass('activeTag');
         
         // Show resource results in a lightbox
         Lightbox.show('/ajax/tag_content?tagId=' + id, {

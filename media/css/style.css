@@ -458,9 +458,12 @@ ul#view-header li {
     border-right: 1px solid #37607d;
 }
 
+/* disabled highlighting of selected tags */
+/*
 #alternate-page #tag-galaxy div.activeTag {
     background:#BAD4F9;
 }
+*/
 
 #alternate-page #tag-galaxy div.tag a {
     color:black;
