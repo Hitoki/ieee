@@ -398,7 +398,7 @@ ul#view-header li {
 }
 
 #alternate-page #left-column ul#sectors li a:hover {
-    background:#006699;
+    background:orange;
     color: white;
 }
 
@@ -417,7 +417,7 @@ ul#view-header li {
 }
 
 #alternate-page #left-column ul#views li:hover {
-    background-color: #006699;
+    background-color: orange;
     color: white;
 }
 
