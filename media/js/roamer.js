@@ -161,6 +161,14 @@ var Roamer = {
                 },
                 1000
             );
+            $('#resources-link').hover(
+                function(){
+                    $(this).css('background-color', 'orange');
+                },
+                function(){
+                    $(this).css('background-color', '#006699');
+                }
+            );
             
         } else {
             // Not a tag, hide the resources link bar (show "clic

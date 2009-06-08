@@ -348,7 +348,7 @@ ul#view-header li {
 
 #roamer-outline {
     border:1px solid #dadada;
-    margin:1.5em 0.2em 1em;
+    margin:1.5em 0.2em 0.5em;
     height: 100%;
     
 }
@@ -838,10 +838,24 @@ div.submit {
 
 #resources-link {
     display:block;
-    padding:1em;
+    padding:.5em;
     text-decoration:none;
     background:#006699;
     color:white;
+    font-weight:bold;
+    text-align: center;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+}
+
+#alternate-page div#resources-explanation {
+    border: 0;
+    text-align: center;
+    font-weight: bold;
+}
+
+#resources-explanation-text {
+    margin:0.5em;
 }
 
 #resources-link:hover {
