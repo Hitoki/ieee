@@ -202,8 +202,8 @@ function urlRemoveHash(url) {
 //
 
 function attachSelectCheckboxOnClick(elem) {
-	elem = $(elem);
-	elem.find('.select-checkbox-on-click').click(function() {
+    elem = $(elem);
+    elem.find('.select-checkbox-on-click').click(function() {
         $(this).find('input[type="checkbox"]').click();
         $(this).find('input[type="checkbox"]').change();
     });
@@ -233,5 +233,5 @@ function attachScripts(elem) {
     attachLightboxes(elem);
     attachMultiSearches(elem);
     attachNootabs(elem);
-	attachSelectCheckboxOnClick(elem);
+    attachSelectCheckboxOnClick(elem);
 }

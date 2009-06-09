@@ -121,6 +121,15 @@ table.main td.center .center-pad {
     border:none;
 }
 
+#header a.admin-link {
+    display:block;
+    float:right;
+    margin-top:15px;
+    margin-right:20px;
+    font-size:80%;
+    color:gray;
+}
+
 #footer {
     clear:both;
     background-image:url(../images/mainBottomBackground.png);
