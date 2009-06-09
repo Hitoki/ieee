@@ -5,6 +5,22 @@
         <table class="node-tooltip-grid">
             <tr>
                 <td>
+                    <table class="filter-block vert-center">
+                        <tr>
+                            <td>
+                                Filters
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    {% for filter in tag.filters.all %}
+                        {{ filter.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <td>
                     <table class="sector-block vert-center">
                         <tr>
                             <td class="{{sectorLevel}}">
