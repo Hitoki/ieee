@@ -10,46 +10,75 @@
 
 {% block main_table_content %}
 <div id="adminLogin">
-    <h1>Admin Login</h1>
+    <br/>
     
-    {% if show_society_login_banner %}
-        <p class="society-login-banner">
-            Welcome, IEEE Society & Council Leaders. You will be receiving via email a username and password shortly.
-        </p>
-    {% endif %}
-    
-    <form action="{% url admin_login %}?next={{ next|urlencode }}" method="post">
-        {% if error %}
-            <ul class="error">
-                <li>{{ error }}</li>
-            </div>
-        {% endif %}
-        <table id="login-table">
-            {{ form }}
-            <tr>
-                <td colspan="2">
-                    <div class="submit">
-                        <p>
-                            <a href="{% url forgot_password %}?cancel_page={% url admin_login %}">Forget your password?</a>
-                        </p>
-                        <input type="submit" value="Ok" />
+    <div id="society-resource-tabs" class="nootabs {useCookies:false, useHash:true}">
+        <ul class="nootabs-menus">
+            <li><a href="">Login</a></li>
+            <li><a href="">About the Project</a></li>
+            <li><a href="">About the Team</a></li>
+        </ul>
+        
+        <!-- Login tab -->
+        <div id="login-tab" class="nootabs-tab">
+            {% if show_society_login_banner %}
+                <p class="society-login-banner">
+                    Welcome, IEEE Society & Council Leaders. You will be receiving via email a username and password shortly.
+                </p>
+            {% endif %}
+            
+            <form action="{% url admin_login %}?next={{ next|urlencode }}" method="post">
+                {% if error %}
+                    <ul class="error">
+                        <li>{{ error }}</li>
                     </div>
-                 </td>
-            </tr>
-        </table>
+                {% endif %}
+                <table id="login-table">
+                    {{ form }}
+                    <tr>
+                        <td colspan="2">
+                            <div class="submit">
+                                <p>
+                                    <a href="{% url forgot_password %}?cancel_page={% url admin_login %}">Forget your password?</a>
+                                </p>
+                                <input type="submit" value="Ok" />
+                            </div>
+                         </td>
+                    </tr>
+                </table>
 
-    </form>
-    
-    <div class="login-help-video">
-        <h3>Video Overview of Administrative Interface</h3>
-        <object id='stU09QREBIR11eQFtbUlNYUlJV' width='425' height='344' type='application/x-shockwave-flash' data='http://www.screentoaster.com/swf/STPlayer.swf' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0'>
-                <param name='movie' value='http://www.screentoaster.com/swf/STPlayer.swf'/>
-                <param name='allowFullScreen' value='true'/>
-                <param name='allowScriptAccess' value='always'/>
-                <param name='flashvars' value='video=stU09QREBIR11eQFtbUlNYUlJV'/>
-                <param name='wmode' value='opaque'/>
-        </object>
+            </form>
+            
+            <div class="login-help-video">
+                <h3>Video Overview of Administrative Interface</h3>
+                <object id='stU09QREBIR11eQFtbUlNYUlJV' width='425' height='344' type='application/x-shockwave-flash' data='http://www.screentoaster.com/swf/STPlayer.swf' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0'>
+                        <param name='movie' value='http://www.screentoaster.com/swf/STPlayer.swf'/>
+                        <param name='allowFullScreen' value='true'/>
+                        <param name='allowScriptAccess' value='always'/>
+                        <param name='flashvars' value='video=stU09QREBIR11eQFtbUlNYUlJV'/>
+                        <param name='wmode' value='opaque'/>
+                </object>
+            </div>            
+        </div>
+        
+        <!-- About the Project tab -->
+        <div id="about-project-tab" class="nootabs-tab">
+            <h1>About the Project</h1>
+            <!-- TODO: need content here -->
+        </div>
+        
+        <!-- About the Team tab -->
+        <div id="about-team-tab" class="nootabs-tab">
+            <h1>About the Team</h1>
+            <!-- TODO: need content here -->
+        </div>
+        
     </div>
+    
+    
+    
+    
+
     
 </div>
 {% endblock %}
