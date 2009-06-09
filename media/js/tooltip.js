@@ -27,6 +27,10 @@ var Tooltip = {
     timer: null,
     
     init: function() {
+        if (typeof MEDIA_URL == 'undefined') {
+            alert('Tooltip.init(): global variable "MEDIA_URL" must be defined.');
+            return;
+        }
     },
     
     show: function(params) {
@@ -52,15 +56,15 @@ var Tooltip = {
         this.hide();
         
         var str = '<div id="tooltip">'
-            + '  <img src="images/tooltip_corner_top_left.png" class="tooltip-corner-top-left"/>'
-            + '  <img src="images/tooltip_corner_top_right.png" class="tooltip-corner-top-right"/>'
-            + '  <img src="images/tooltip_corner_bottom_left.png" class="tooltip-corner-bottom-left"/>'
-            + '  <img src="images/tooltip_corner_bottom_right.png" class="tooltip-corner-bottom-right"/>';
+            + '  <img src="' + MEDIA_URL + 'images/tooltip_corner_top_left.png" class="tooltip-corner-top-left"/>'
+            + '  <img src="' + MEDIA_URL + 'images/tooltip_corner_top_right.png" class="tooltip-corner-top-right"/>'
+            + '  <img src="' + MEDIA_URL + 'images/tooltip_corner_bottom_left.png" class="tooltip-corner-bottom-left"/>'
+            + '  <img src="' + MEDIA_URL + 'images/tooltip_corner_bottom_right.png" class="tooltip-corner-bottom-right"/>';
         
         if (this.options.arrow == 'left')
-            str += '  <img src="images/tooltip_arrow_left.png" class="tooltip-arrow-left"/>';
+            str += '  <img src="' + MEDIA_URL + 'images/tooltip_arrow_left.png" class="tooltip-arrow-left"/>';
         else if (this.options.arrow == 'right')
-            str += '  <img src="images/tooltip_arrow_right.png" class="tooltip-arrow-right"/>'
+            str += '  <img src="' + MEDIA_URL + 'images/tooltip_arrow_right.png" class="tooltip-arrow-right"/>'
         
         str += '  <div id="tooltip-content">'
             + '  </div>'
@@ -146,6 +150,4 @@ var Tooltip = {
 
 $(function() {
     Tooltip.init();
-    //Tooltip.show();
 });
-
