@@ -10,35 +10,37 @@
                 <div id="content" class="alt-box-pad">
     {% endif %}
 
-                    {% if iconSocieties or noIconSocieties %}
-                        <div class="group">
-                            <p class="item_head"><img src="{{MEDIA_URL}}images/content_icon_societies.png"/> Societies & Councils:</p>
-                            
-                            {% if iconSocieties %}
-                                <!-- Societies with icons -->
-                                <p class="{% cycle 'item_even' 'item_odd' %}">
-                                    {% for society in iconSocieties %}
-                                        <img src="{{MEDIA_URL}}images/sc_logos/{{society.abbreviation}}.jpg" />
-                                    {% endfor %}
-                                </p>
-                            {% endif %}
-                            
-                            <!-- Societies w/o icons -->
-                            {% for society in noIconSocieties %}
-                                <p class="{% cycle 'item_odd' 'item_even' %}">
-                                    {{society.name}} ({{society.abbreviation}})
-                                </p>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                    
-                    <div id="resource-tabs" class="nootabs {useCookies:false}">
+                    <div id="resource-tabs" class="nootabs tag-resources-tabs {useCookies:false}">
                         <ul class="nootabs-menus">
+                            <li><a href="">Societies <span>({{ num_societies }})</span></a></li>
                             <li><a href="">Periodicals <span>({{periodicals|length}})</span></a></li>
                             <li><a href="">Conferences <span>({{conferences|length}})</span></a></li>
                             <li><a href="">Standards <span>({{standards|length}})</span></a></li>
                             <li><a href="">Experts <span>({{experts|length}})</span></a></li>
                         </ul>
+                        
+                        <div>
+                            <!-- Societies -->
+                            {% if iconSocieties or noIconSocieties %}
+                                <div class="group">
+                                    {% if iconSocieties %}
+                                        <!-- Societies with icons -->
+                                        <p class="{% cycle 'item_even' 'item_odd' %}">
+                                            {% for society in iconSocieties %}
+                                                <img src="{{MEDIA_URL}}images/sc_logos/{{society.abbreviation}}.jpg" />
+                                            {% endfor %}
+                                        </p>
+                                    {% endif %}
+                                    
+                                    <!-- Societies w/o icons -->
+                                    {% for society in noIconSocieties %}
+                                        <p class="{% cycle 'item_odd' 'item_even' %}">
+                                            {{society.name}} ({{society.abbreviation}})
+                                        </p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
                         
                         <div>
                             <!-- Periodicals -->
