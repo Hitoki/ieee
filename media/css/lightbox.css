@@ -146,7 +146,11 @@ input.text {
 }
 
 #lightbox .resources-lightbox-content .resources-pad {
-        padding:.5em;
+    padding:.5em;
+}
+
+#lightbox .resources-lightbox-content .resources-pad h1 {
+    font-size:140%;
 }
 
 #lightbox .resources-lightbox-content h1 {

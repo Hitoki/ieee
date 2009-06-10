@@ -167,6 +167,8 @@ def ajax_tag_content(request):
         else:
             noIconSocieties.append(society)
     
+    num_resources = Resource.objects.getForNode(tag).count()
+    
     conferences = Resource.objects.getForNode(tag, resourceType=ResourceType.CONFERENCE)
     experts = Resource.objects.getForNode(tag, resourceType=ResourceType.EXPERT)
     periodicals = Resource.objects.getForNode(tag, resourceType=ResourceType.PERIODICAL)
@@ -181,6 +183,7 @@ def ajax_tag_content(request):
         'experts': experts,
         'periodicals': periodicals,
         'standards': standards,
+        'num_resources': num_resources,
     })
 
 @protect_frontend
