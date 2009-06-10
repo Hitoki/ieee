@@ -62,6 +62,7 @@ var Roamer = {
         //log('data.type', data.type);
         //log('data.parent', data.parent);
         //if (data.parent)
+        //// TODO: This is obsolete, must use "data.parents" instead of "data.parent"
         //    //log('data.parent.id', data.parent.id);
         if (data.type == 'sector') {
             this.highlightSector(data.id);
