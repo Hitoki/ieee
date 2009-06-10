@@ -13,7 +13,7 @@
                 // Got multisearch, attach events
                 multisearch.subscribe('click_create_new_tag', function(multisearch, event, data) {
                     // User clicked on "create new tag" link, show page in lightbox
-                    Lightbox.show('{% url admin_create_tag %}?default_tag_name=' + escape(data.tag_name) + '&society_id=' + {{ society_id }}, {
+                    Lightbox.show('{% url admin_create_tag %}?default_tag_name=' + escape(data.tag_name) + '&society_id={{ society_id }}', {
                         closeOnClickOutside: false
                     });
                 });
