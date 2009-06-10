@@ -207,6 +207,19 @@ class NodeManager(models.Manager):
         
         return (min_sectors, max_sectors)
     
+    def get_related_tag_range(self, sector):
+        "Returns the min/max amount of related_tags-per-tag for the given sector."
+        
+        related_tag_counts = [tag.related_tags.count() for tag in sector.child_nodes.all()]
+        if len(related_tag_counts) == 0:
+            min_related_tags = None
+            max_related_tags = None
+        else:
+            min_related_tags = min(related_tag_counts)
+            max_related_tags = max(related_tag_counts)
+        
+        return (min_related_tags, max_related_tags)
+    
     def updateTagCounts(self):
         tags = self.getTags()
         for tag in tags:

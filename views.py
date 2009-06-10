@@ -281,6 +281,7 @@ def ajax_nodes_json(request):
     
     (minResources, maxResources) = Node.objects.get_resource_range(sector)
     (min_sectors, max_sectors) = Node.objects.get_sector_range(sector)
+    (min_related_tags, max_related_tags) = Node.objects.get_related_tag_range(sector)
     
     # JSON Output
     data = []
@@ -291,9 +292,7 @@ def ajax_nodes_json(request):
         
         resourceLevel = _get_popularity_level(minResources, maxResources, tag.num_resources)
         sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.parents.count())
-        
-        # TODO:
-        relatedTagLevel = 'level1'
+        related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, tag.related_tags.count())
         
         # Only show tags that have one of the selected filters, and also are associated with a society
         if (settings.DEBUG_TAGS_HAVE_ALL_FILTERS or len(tag.filters.filter(id__in=filterIds))) and tag.societies.count() > 0:
@@ -303,7 +302,7 @@ def ajax_nodes_json(request):
                 'type': tag.node_type.name,
                 'level': resourceLevel,
                 'sectorLevel': sectorLevel,
-                'relatedTagLevel': relatedTagLevel,
+                'relatedTagLevel': related_tag_level,
                 'num_related_tags': tag.related_tags.count(),
             })
             
@@ -444,20 +443,17 @@ def tooltip(request):
 
     (min_resources, max_resources) = Node.objects.get_resource_range(sector)
     (min_sectors, max_sectors) = Node.objects.get_sector_range(sector)
+    (min_related_tags, max_related_tags) = Node.objects.get_related_tag_range(sector)
     
     resourceLevel = _get_popularity_level(min_resources, max_resources, tag.num_resources)
     sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.parents.count())
-    # TODO:
-    #relatedTags = ['test', 'test']
-    relatedTagLevel = 'level1'
+    related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, tag.related_tags.count())
     
     return render(request, 'tooltip.html', {
         'tag': tag,
         'tagLevel': resourceLevel,
         'sectorLevel': sectorLevel,
-        #'limits': limits,
-        #'relatedTags': relatedTags,
-        'relatedTagLevel': relatedTagLevel,
+        'relatedTagLevel': related_tag_level,
     })
 
 def debug_error(request):
