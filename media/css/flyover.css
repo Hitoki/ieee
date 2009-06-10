@@ -133,3 +133,7 @@ The content is just the contents of the flyover.
     width: 300px;
 }
 
+.textui-tag-flyover-container {
+    width:400px;
+}
+

@@ -138,7 +138,7 @@ var Flyover = {
         this._elem = elem;
         
         // Validate options
-        if ($.inArray(this.options.position, ['left', 'left-top', 'left-bottom', 'right', 'right-top', 'right-bottom', 'top', 'top-left', 'top-right', 'bottom', 'bottom-left', 'bottom-right']) == -1) {
+        if ($.inArray(this.options.position, ['left', 'left-top', 'left-bottom', 'right', 'right-top', 'right-bottom', 'top', 'top-left', 'top-right', 'bottom', 'bottom-left', 'bottom-right', 'auto-left-right-top']) == -1) {
             alert('Flyover: unrecognized position "' + this.options.position + '"');
             return;
         } else if (isNaN(parseInt(this.options.hideDelay))) {
@@ -233,16 +233,7 @@ var Flyover = {
         }
         
         if (this.options.arrow) {
-            // Add the arrow
-            if (this.options.position == 'right' || this.options.position == 'right-top' || this.options.position == 'right-bottom') {
-                this.arrow = $('<img src="/media/images/flyover_arrow_left.png" class="flyover-arrow"/>').appendTo(this._flyover);
-            } else if (this.options.position == 'left' || this.options.position == 'left-top' || this.options.position == 'left-bottom') {
-                this.arrow = $('<img src="/media/images/flyover_arrow_right.png" class="flyover-arrow"/>').appendTo(this._flyover);
-            } else if (this.options.position == 'top' || this.options.position == 'top-left' || this.options.position == 'top-right') {
-                this.arrow = $('<img src="/media/images/flyover_arrow_bottom.png" class="flyover-arrow"/>').appendTo(this._flyover);
-            } else if (this.options.position == 'bottom' || this.options.position == 'bottom-left' || this.options.position == 'bottom-right') {
-                this.arrow = $('<img src="/media/images/flyover_arrow_top.png" class="flyover-arrow"/>').appendTo(this._flyover);
-            }
+            this.showArrow(this.options.position);
         }
         
         // If sticky is on, we don't need this (since the flyover will be manually closed).
@@ -261,7 +252,7 @@ var Flyover = {
         var content;
         
         if (this.options.url != null) {
-            console.log('using URL');
+            //console.log('using URL');
             this.content.load(this.options.url, function() { Flyover._reposition(); } );
             
         } else if (this.options.content !== null) {
@@ -287,6 +278,25 @@ var Flyover = {
         
         if (this.options.showCallback) 
             this.options.showCallback();
+    },
+    
+    showArrow: function(position) {
+        if (this.arrow) {
+            // Remove the existing arrow
+            this.arrow.remove();
+            this.arrow = null;
+        }
+        
+        // Add the arrow
+        if (position == 'right' || position == 'right-top' || position == 'right-bottom') {
+            this.arrow = $('<img src="/media/images/flyover_arrow_left.png" class="flyover-arrow"/>').appendTo(this._flyover);
+        } else if (position == 'left' || position == 'left-top' || position == 'left-bottom') {
+            this.arrow = $('<img src="/media/images/flyover_arrow_right.png" class="flyover-arrow"/>').appendTo(this._flyover);
+        } else if (position == 'top' || position == 'top-left' || position == 'top-right') {
+            this.arrow = $('<img src="/media/images/flyover_arrow_bottom.png" class="flyover-arrow"/>').appendTo(this._flyover);
+        } else if (position == 'bottom' || position == 'bottom-left' || position == 'bottom-right') {
+            this.arrow = $('<img src="/media/images/flyover_arrow_top.png" class="flyover-arrow"/>').appendTo(this._flyover);
+        }
     },
     
     // Hide the flyover (either immediately, or with a fade effect)
@@ -356,6 +366,18 @@ var Flyover = {
             var arrowWidth;
             var arrowHeight;
             
+            var position = this.options.position;
+            
+            if (this.options.position == 'auto-left-right-top') {
+                if (pos.x > document.body.clientWidth/2) {
+                    position = 'left-top';
+                } else {
+                    position = 'right-top';
+                }
+            }
+            
+            this.showArrow(position);
+            
             if (this.options.width != null)
                 this._flyover.css('width', this.options.width);
             if (this.options.height != null)
@@ -375,73 +397,73 @@ var Flyover = {
             }
             
             // Calculate the flyover and arrow position depending on the overall size
-            if (this.options.position == 'right') {
+            if (position == 'right') {
                 left = pos.x + elemWidth + arrowWidth;
                 top = pos.y + elemHeight/2 - flyoverHeight/2;
                 arrowLeft = -arrowWidth;
                 arrowTop = -arrowHeight/2 + flyoverHeight/2 - 1;
                 
-            } else if (this.options.position == 'right-top') {
+            } else if (position == 'right-top') {
                 left = pos.x + elemWidth + arrowWidth;
                 top = pos.y + elemHeight/2 - arrowHeight/2 - 6;
                 arrowLeft = -arrowWidth;
                 arrowTop = 6;
                 
-            } else if (this.options.position == 'right-bottom') {
+            } else if (position == 'right-bottom') {
                 left = pos.x + elemWidth + arrowWidth;
                 top = pos.y + elemHeight/2 - flyoverHeight + arrowHeight/2 + 6;
                 arrowLeft = -arrowWidth;
                 arrowTop = flyoverHeight - arrowHeight - 6;
                 
-            } else if (this.options.position == 'left') {
+            } else if (position == 'left') {
                 left = pos.x - flyoverWidth - arrowWidth + 2;
                 top = pos.y + elemHeight/2 - flyoverHeight/2;
                 arrowLeft = flyoverWidth - 2;
                 arrowTop = -arrowHeight/2 + flyoverHeight/2 - 1;
                 
-            } else if (this.options.position == 'left-top') {
+            } else if (position == 'left-top') {
                 left = pos.x - flyoverWidth - arrowWidth + 2;
                 top = pos.y + elemHeight/2 - arrowHeight/2 - 6;
                 arrowLeft = flyoverWidth - 2;
                 arrowTop = 6;
                 
-            } else if (this.options.position == 'left-bottom') {
+            } else if (position == 'left-bottom') {
                 left = pos.x - flyoverWidth - arrowWidth + 2;
                 top = pos.y + elemHeight/2 - flyoverHeight + arrowHeight/2 + 6;
                 arrowLeft = flyoverWidth - 2;
                 arrowTop = flyoverHeight - arrowHeight - 6;
                 
-            } else if (this.options.position == 'top') {
+            } else if (position == 'top') {
                 left = pos.x + elemWidth/2 - flyoverWidth/2;
                 top = pos.y - flyoverHeight - arrowHeight;
                 arrowLeft = -arrowWidth/2 + flyoverWidth/2;
                 arrowTop = flyoverHeight - 2;
                 
-            } else if (this.options.position == 'top-left') {
+            } else if (position == 'top-left') {
                 left = pos.x + elemWidth/2 - arrowWidth/2 - 6;
                 top = pos.y - flyoverHeight - arrowHeight;
                 arrowLeft = 6;
                 arrowTop = flyoverHeight - 2;
                 
-            } else if (this.options.position == 'top-right') {
+            } else if (position == 'top-right') {
                 left = pos.x + elemWidth/2 - flyoverWidth + arrowWidth + 6;
                 top = pos.y - flyoverHeight - arrowHeight;
                 arrowLeft = flyoverWidth - arrowWidth - 6;
                 arrowTop = flyoverHeight - 2;
                 
-            } else if (this.options.position == 'bottom') {
+            } else if (position == 'bottom') {
                 left = pos.x + elemWidth/2 - flyoverWidth/2;
                 top = pos.y + elemHeight + arrowHeight;
                 arrowLeft = -arrowWidth/2 + flyoverWidth/2;
                 arrowTop = - arrowHeight;
                 
-            } else if (this.options.position == 'bottom-left') {
+            } else if (position == 'bottom-left') {
                 left = pos.x + elemWidth/2 - arrowWidth/2 - 6;
                 top = pos.y + elemHeight + arrowHeight;
                 arrowLeft = 6;
                 arrowTop = - arrowHeight;
                 
-            } else if (this.options.position == 'bottom-right') {
+            } else if (position == 'bottom-right') {
                 left = pos.x + elemWidth/2 - flyoverWidth + arrowWidth + 6;
                 top = pos.y + elemHeight + arrowHeight;
                 arrowLeft = flyoverWidth - arrowWidth - 6;

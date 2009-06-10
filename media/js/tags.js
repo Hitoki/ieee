@@ -112,10 +112,18 @@ var Tags = {
             
             div.hover(
                 function() {
-                    Tooltip.show({elem:this, url:'/ajax/tooltip?tag_id='+$(this).data('tagId')+'&sector_id='+$(this).data('sectorId'), loadBeforeShowing:true});
+                    Flyover.show(
+                        this,
+                        {
+                            url: '/ajax/tooltip?tag_id='+$(this).data('tagId')+'&sector_id='+$(this).data('sectorId'),
+                            position: 'auto-left-right-top',
+                            //position: 'left-top',
+                            customClass: 'textui-tag'
+                        }
+                    );
                 },
                 function() {
-                    Tooltip.onMouseOut();
+                    Flyover.hide();
                 }
             );
         }
