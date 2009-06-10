@@ -247,6 +247,8 @@ def ajax_nodes_json(request):
         orderBy = 'num_resources'
     elif sort == 'num_sectors':
         orderBy = None
+    elif sort == 'num_related_tags':
+        orderBy = None
     else:
         raise Exception('Unrecognized sort "%s"' % sort)
     
@@ -261,7 +263,14 @@ def ajax_nodes_json(request):
         # TODO: Handle clusters here
         tags = sector.child_nodes.extra(
             select={ 'num_parents': 'SELECT COUNT(*) FROM ieeetags_node_parents WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id' },
-            order_by=['-num_parents'],
+            order_by=['-num_parents', 'name'],
+        )        
+        
+    elif sort == 'num_related_tags':
+        # TODO: Handle clusters here
+        tags = sector.child_nodes.extra(
+            select={ 'num_related_tags': 'SELECT COUNT(*) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id' },
+            order_by=['-num_related_tags', 'name'],
         )        
         
     else:
@@ -295,6 +304,7 @@ def ajax_nodes_json(request):
                 'level': resourceLevel,
                 'sectorLevel': sectorLevel,
                 'relatedTagLevel': relatedTagLevel,
+                'num_related_tags': tag.related_tags.count(),
             })
             
     json = simplejson.dumps(data, sort_keys=True, indent=4)
