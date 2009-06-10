@@ -136,8 +136,12 @@ function swapRows(tableElem, row1, row2) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+var multiSearches = [];
+
 function MultiSearch(container, options) {
     var multiSearch = this;
+    
+    multiSearches.push(this);
     
     this.container = $(container);
     
@@ -216,6 +220,9 @@ function MultiSearch(container, options) {
         }
         e.stopPropagation();
     });
+    this.input.focus(function(e) {
+        multiSearch._hideOtherMultiSearches();
+    });
     
     this.dataElem = this.container.find('input.multi-search-data');
     if (this.dataElem.length == 0)
@@ -275,6 +282,15 @@ function MultiSearch(container, options) {
     // Now add the preselected options
     for (var i=0; i<initialData.length; i++) {
         this.addSelectedOption(initialData[i], true);
+    }
+}
+
+// Hide all other MultiSearches' dropdowns
+MultiSearch.prototype._hideOtherMultiSearches = function() {
+    for (var i=0; i<multiSearches.length; i++) {
+        if (multiSearches[i] != this) {
+            multiSearches[i].closePopup();
+        }
     }
 }
 
@@ -994,21 +1010,17 @@ MultiSearch.prototype._notify = function(event, data) {
     }
 }
 
-
-
 ////////////////////////////////////////////////////////////////////////////////
-
-var multiSearches = [];
 
 function attachMultiSearches(elem) {
     elem = $(elem);
     elem.find('.multi-search').each(function() {
-        multiSearches.push(new MultiSearch(this));
+        new MultiSearch(this);
     });
 }
 
 $(function() {
     $('.multi-search').each(function() {
-        multiSearches.push(new MultiSearch(this));
+        new MultiSearch(this);
     });
 });
