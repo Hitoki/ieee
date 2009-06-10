@@ -117,13 +117,13 @@ var Tags = {
                         {
                             url: '/ajax/tooltip?tag_id='+$(this).data('tagId')+'&sector_id='+$(this).data('sectorId'),
                             position: 'auto-left-right-top',
-                            //position: 'left-top',
-                            customClass: 'textui-tag'
+                            customClass: 'textui-tag',
+                            hideDelay: 100
                         }
                     );
                 },
                 function() {
-                    Flyover.hide();
+                    Flyover.onMouseOut();
                 }
             );
         }

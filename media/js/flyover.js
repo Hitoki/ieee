@@ -129,7 +129,7 @@ var Flyover = {
             clickOffClose: false,
             showCallback: null,
             closeCallback: null,
-            closeOnMouseOutLink: true,
+            closeOnMouseOutLink: false,
             url: null,
             showInitial: false
         };
