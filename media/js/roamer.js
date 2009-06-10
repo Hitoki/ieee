@@ -24,17 +24,6 @@ var Roamer = {
         this.onChange();
     },
     
-    /*
-    updateSector: function() {
-        //log("updateSector()");
-        var roamer = this;
-        this.id = this.flash.getSelectedNodeID();
-        this.nodeInfo = null;
-        $.getJSON('/ajax/node', {nodeId:this.id}, function(data){roamer.updateSector2(data);} );
-        //log("~updateSector()");
-    },
-    */
-    
     getSectorLink: function(id) {
         var sectors = $('#sectors a');
         for (var i=0; i<sectors.length; i++) {
@@ -47,32 +36,16 @@ var Roamer = {
         return null;
     },
     
-    highlightSector: function(id) {
-        //log('highlightSector()');
+    // Highlight the current sector (if there is one)
+    highlightSector: function() {
+        // Remove the old highlight (if any)
         $('#sectors a').removeClass('active-sector');
-        var link = this.getSectorLink(id);
-        link.addClass('active-sector');
-        //log('~highlightSector()');
-    },
-    
-    /*
-    updateSector2: function(data) {
-        //log("updateSector2()");
-        //log('data', data);
-        //log('data.type', data.type);
-        //log('data.parent', data.parent);
-        //if (data.parent)
-        //// TODO: This is obsolete, must use "data.parents" instead of "data.parent"
-        //    //log('data.parent.id', data.parent.id);
-        if (data.type == 'sector') {
-            this.highlightSector(data.id);
-        } else if (data.type == 'tag') {
-            // TODO: Fix this for "parents" instead of "parent":
-            //this.highlightSector(data.parent.id);
+        if (this.nodeInfo.type == 'sector') {
+            // Selected node is a sector, highlight it
+            var link = this.getSectorLink(this.nodeInfo.id);
+            link.addClass('active-sector');
         }
-        //log("~updateSector2()");
     },
-    */
     
     // Get the selected node from roamer
     getNode: function(id) {
@@ -125,7 +98,7 @@ var Roamer = {
     
     // Called by roamer whenever the selected node changes
     onChange: function() {
-        //log("onChange()");
+        log("onChange()");
         var id = this.flash.getSelectedNodeID();
         if (id != this.id) {
             this.id = id;
@@ -133,10 +106,9 @@ var Roamer = {
             this.getNodeInfo();
             this.updateSwitchLink();
             this.loadContent();
-            // TODO:
-            //this.updateSector();
+            this.highlightSector();
         }
-        //log("~onChange()");
+        log("~onChange()");
     },
     
     loadContent: function() {
