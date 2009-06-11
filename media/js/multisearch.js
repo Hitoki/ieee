@@ -134,6 +134,16 @@ function swapRows(tableElem, row1, row2) {
     placeholder2.remove();
 }
 
+var KEYS = {
+    tab: 9,
+    enter: 13,
+    escape: 27,
+    left: 37,
+    right: 39,
+    up: 38,
+    down: 40
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 var multiSearches = [];
@@ -292,16 +302,6 @@ MultiSearch.prototype._hideOtherMultiSearches = function() {
             multiSearches[i].closePopup();
         }
     }
-}
-
-var KEYS = {
-    tab: 9,
-    enter: 13,
-    escape: 27,
-    left: 37,
-    right: 39,
-    up: 38,
-    down: 40
 }
 
 MultiSearch.prototype.keydown = function(e) {
@@ -931,9 +931,7 @@ MultiSearch.prototype.onKeyEscape = function(e) {
     if (this.popupVisible) {
         // Close the popup & reset options
         e.preventDefault();
-        // TODO: This doesn't work correctly, maybe due to conflict with blurText...
-        //this.closePopup(true);
-        this.closePopup();
+        this.closePopup(true);
     }
 }
 
@@ -952,6 +950,7 @@ MultiSearch.prototype.showPopup = function() {
 
 // Hides & clears the popup element, and resets all popup data
 MultiSearch.prototype.closePopup = function(clear_value) {
+    var multisearch = this;
     if (clear_value == undefined)
         clear_value = false;
     
@@ -959,12 +958,10 @@ MultiSearch.prototype.closePopup = function(clear_value) {
     this.popupVisible = false;
     this.popupElem.html('');
     if (clear_value) {
-        var blurtext = this.input.data('blurText');
-        if (!blurtext || blurtext.hasText())
-            this.input.attr('value', '');
-        // Check if there's a blurText: if so, 
-        if (blurtext)
-            blurtext.onBlur();
+        // NOTE: Simply setting this.input.attr('value', '') here does not work (it's immediately overwritten with the original value).
+        setTimeout(function() {
+            multisearch.clearValue();
+        }, 10);
     }
     if (this.options.society_tags_first) {
         this.popupFirstElem = $('<div><div class="multi-search-popup-first">This Society&#39;s Tags:</div></div>').appendTo(this.popupElem);
@@ -977,6 +974,10 @@ MultiSearch.prototype.closePopup = function(clear_value) {
     
     this.highlightedSearchOptionValue = null;
     this.getOptionsValue = null;
+}
+
+MultiSearch.prototype.clearValue = function() {
+    this.input.attr('value', '');
 }
 
 // Gets the number of selected options
@@ -1023,4 +1024,4 @@ $(function() {
     $('.multi-search').each(function() {
         new MultiSearch(this);
     });
-});
+}); 
