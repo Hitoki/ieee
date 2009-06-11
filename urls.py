@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
     url(r'^roamer$', views.roamer, name='roamer'),
     url(r'^textui$', views.textui, name='textui'),
+    url(r'^textui_help$', views.textui_help, name='textui_help'),
     url(r'^feedback$', views.feedback, name='feedback'),
     url(r'^browser_warning$', views.browser_warning, name='browser_warning'),
     

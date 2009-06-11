@@ -107,6 +107,11 @@ def textui(request):
     })
 
 @protect_frontend
+def textui_help(request):
+    disable_frontend()
+    return render(request, 'textui_help.html')
+
+@protect_frontend
 def feedback(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
