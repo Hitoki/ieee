@@ -34,13 +34,15 @@ BlurText.prototype.onFocus = function() {
 }
 
 BlurText.prototype.onBlur = function() {
-    if ($.trim(this.elem.attr('value')) == '')
+    if ($.trim(this.elem.attr('value')) == '') {
         this.elem.attr('value', this.options.text);
+        
+        if (this.options.focusedClass != null)
+            this.elem.removeClass(this.options.focusedClass);
+        if (this.options.blurClass != null)
+            this.elem.addClass(this.options.blurClass);
+    }
     
-    if (this.options.focusedClass != null)
-        this.elem.removeClass(this.options.focusedClass);
-    if (this.options.blurClass != null)
-        this.elem.addClass(this.options.blurClass);
 }
 
 BlurText.prototype.hasText = function() {
