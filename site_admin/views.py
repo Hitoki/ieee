@@ -2868,7 +2868,7 @@ def ajax_search_tags(request):
                 'societies': societies,
             })
     
-    return HttpResponse(json.dumps(data, sort_keys=True, indent=4), mimetype="text/plain")
+    return HttpResponse(json.dumps(data, sort_keys=True, indent=4), mimetype="application/json")
 
 @login_required
 def ajax_search_resources(request):
@@ -2896,7 +2896,7 @@ def ajax_search_resources(request):
                 'value': resource.id,
             })
     
-    return HttpResponse(json.dumps(data, sort_keys=True, indent=4), mimetype="text/plain")
+    return HttpResponse(json.dumps(data, sort_keys=True, indent=4), mimetype="application/json")
 
 @login_required
 def ajax_search_societies(request):
@@ -2924,7 +2924,7 @@ def ajax_search_societies(request):
                 'value': society.id,
             })
     
-    return HttpResponse(json.dumps(data, sort_keys=True, indent=4), mimetype="text/plain")
+    return HttpResponse(json.dumps(data, sort_keys=True, indent=4), mimetype="application/json")
     
 @login_required
 def ajax_update_society(request):

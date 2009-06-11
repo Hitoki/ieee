@@ -312,7 +312,7 @@ def ajax_nodes_json(request):
             })
             
     json = simplejson.dumps(data, sort_keys=True, indent=4)
-    return HttpResponse(json, mimetype='text/plain')
+    return HttpResponse(json, mimetype='application/json')
 
 @protect_frontend
 def ajax_nodes_xml(request):
