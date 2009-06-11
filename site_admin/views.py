@@ -3014,19 +3014,36 @@ def tagged_resources_report(request, filter):
     })
 
 @login_required
-def tags_filters_report(request):
+def tags_report(request):
     permissions.require_superuser(request)
     
-    # Calc the overeall totals
+    start = time.time()
     
-    tags = Node.objects.get_tags()
+    # Calc the overall totals
+    
+    tags = Node.objects.get_tags().extra(
+        select={
+            'num_filters': 'SELECT COUNT(*) FROM ieeetags_node_filters WHERE ieeetags_node_filters.node_id = ieeetags_node.id',
+            'num_resources': 'SELECT COUNT(*) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id',
+            'num_societies': 'SELECT COUNT(*) FROM ieeetags_node_societies WHERE ieeetags_node_societies.node_id = ieeetags_node.id',
+        }
+    )
+    
     all_total_tags = tags.count()
     all_filtered_tags = 0
+    all_society_tags = 0
+    all_resource_tags = 0
     for tag in tags:
-        if tag.filters.count() > 0:
+        if tag.num_filters > 0:
             all_filtered_tags += 1
+        if tag.num_societies > 0:
+            all_society_tags += 1
+        if tag.num_resources > 0:
+            all_resource_tags += 1
     
     all_percent_filtered = all_filtered_tags / float(all_total_tags) * 100
+    all_percent_society = all_society_tags / float(all_total_tags) * 100
+    all_percent_resource = all_resource_tags / float(all_total_tags) * 100
     
     # Calc per-society totals
     
@@ -3035,31 +3052,60 @@ def tags_filters_report(request):
     result_societies = []
     
     for society in societies:
+        
+        society_tags = society.tags.extra(
+            select={
+                'num_filters': 'SELECT COUNT(*) FROM ieeetags_node_filters WHERE ieeetags_node_filters.node_id = ieeetags_node.id',
+                'num_resources': 'SELECT COUNT(*) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id',
+                'num_societies': 'SELECT COUNT(*) FROM ieeetags_node_societies WHERE ieeetags_node_societies.node_id = ieeetags_node.id',
+            }
+        )
+        
         total_tags = society.tags.count()
+        
         filtered_tags = 0
-        for tag in society.tags.all():
-            if tag.filters.count() > 0:
+        for tag in society_tags:
+            if tag.num_filters > 0:
                 filtered_tags += 1
         if total_tags == 0:
             percent_filtered = 0
         else:
             percent_filtered = filtered_tags / float(total_tags) * 100
+        
+        resource_tags = 0
+        for tag in society_tags:
+            if tag.num_resources > 0:
+                resource_tags += 1
+        if total_tags == 0:
+            percent_resource = 0
+        else:
+            percent_resource = resource_tags / float(total_tags) * 100
+        
         result_societies.append({
             'name': society.name,
-            'filtered_tags': filtered_tags,
             'total_tags': total_tags,
+            'filtered_tags': filtered_tags,
             'percent_filtered': percent_filtered,
+            'resource_tags': resource_tags,
+            'percent_resource': percent_resource,
         })
     
     #print 'all_filtered_tags:', all_filtered_tags
     #print 'all_total_tags:', all_total_tags
     #print 'all_percent_filtered:', all_percent_filtered
+    
+    end = time.time()
 
-    return render(request, 'site_admin/tags_filters_report.html', {
-        'all_filtered_tags': all_filtered_tags,
+    return render(request, 'site_admin/tags_report.html', {
         'all_total_tags': all_total_tags,
+        'all_filtered_tags': all_filtered_tags,
         'all_percent_filtered': all_percent_filtered,
+        'all_society_tags': all_society_tags,
+        'all_percent_society': all_percent_society,
+        'all_resource_tags': all_resource_tags,
+        'all_percent_resource': all_percent_resource,
         'societies': result_societies,
+        'page_time': end-start,
     })
 
 @login_required

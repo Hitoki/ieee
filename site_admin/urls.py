@@ -93,7 +93,7 @@ urlpatterns = patterns('',
     # Reports
     url(r'^report/login$', views.login_report, name='admin_login_report'),
     url(r'^report/tagged_resources/(?P<filter>.+)$', views.tagged_resources_report, name='admin_tagged_resources_report'),
-    url(r'^report/tags_filters_report$', views.tags_filters_report, name='admin_tags_filters_report'),
+    url(r'^report/tags_report$', views.tags_report, name='admin_tags_report'),
     url(r'^report/clusters$', views.clusters_report, name='admin_clusters_report'),
     url(r'^report/priority$', views.priority_report, name='admin_priority_report'),
     

@@ -549,6 +549,16 @@ p.results-status {
     font-style:italic;
 }
 
+table.tagged_resources_report {
+    width:100%;
+}
+
+table.tagged_resources_report .total {
+    background:#eee;
+    padding-left:2em;
+    padding-right:2em;
+}
+
 table.tagged_resources_report .num {
     text-align:right;
 }
