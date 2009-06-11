@@ -12,9 +12,9 @@
                 <!-- Begin center column -->
                 
                 <div id="header">
-                    <img class="leftCorner" src="{{MEDIA_URL}}images/mainTopLeftCorner.gif" />
-                    <a href="{% url index %}" class="home"><img class="banner" src="{{MEDIA_URL}}images/ieee_banner.jpg" /></a>
-                    <img class="rightCorner" src="{{MEDIA_URL}}images/mainTopRightCorner.gif" />
+                    <img class="leftCorner" src="{{MEDIA_URL}}images/mainTopLeftCorner.gif" width="26" height="67" />
+                    <a href="{% url index %}" class="home"><img class="banner" src="{{MEDIA_URL}}images/ieee_banner.jpg" width="563" height="42" /></a>
+                    <img class="rightCorner" src="{{MEDIA_URL}}images/mainTopRightCorner.gif" width="26" height="67" />
                     {% block extra_header %}{% endblock %}
                 </div>
                 
@@ -31,8 +31,8 @@
 {% if not is_ajax %}
                     
                 <div id="footer">
-                    <img class="leftCorner" src="{{MEDIA_URL}}images/mainBottomLeftCorner.png" />
-                    <img class="rightCorner" src="{{MEDIA_URL}}images/mainBottomRightCorner.png" />
+                    <img class="leftCorner" src="{{MEDIA_URL}}images/mainBottomLeftCorner.png" width="26" height="40" />
+                    <img class="rightCorner" src="{{MEDIA_URL}}images/mainBottomRightCorner.png" width="26" height="40" />
                 </div>
                 
                 <!-- End center column -->
