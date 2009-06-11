@@ -393,7 +393,7 @@ MultiSearch.prototype.updatePopup = function() {
 // Initiate getting searchOptions for the given value
 MultiSearch.prototype.getOptions = function(value) {
     var multiSearch = this;
-    if ($.trim(value).length >= 2 || $.trim(value) == '*') {
+    if ($.trim(value).length >= 2 || ($.trim(value) == '*' && this.options.society_id != null)) {
         var data = {
             search_for: value
         }

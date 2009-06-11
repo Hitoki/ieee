@@ -1607,12 +1607,18 @@ def create_tag(request):
         if request.is_ajax():
             form.fields['related_tags'].widget.set_show_create_tag_link(False)
         
+        if society_id != '':
+            form.fields['related_tags'].widget.set_society_id(society_id)
+        
     else:
         # Process the form
         form = CreateTagForm(request.POST)
         
         if request.is_ajax():
             form.fields['related_tags'].widget.set_show_create_tag_link(False)
+            
+        if society_id != '':
+            form.fields['related_tags'].widget.set_society_id(society_id)
             
         if form.is_valid():
             tag = Node.objects.create(
@@ -2499,6 +2505,7 @@ def edit_resources(request):
     
     process_form = request.GET.get('process_form', None)
     return_url = request.GET.get('return_url')
+    society_id = request.GET.get('society_id')
     assert(return_url is not None)
     
     resource_ids = request.POST.getlist('resource_ids')
@@ -2555,6 +2562,7 @@ def edit_resources(request):
             'completed': 'no change',
         })
     
+    form.fields['assign_tags'].widget.set_society_id(society_id)
     
     # Find the common tags
     common_tags = None
