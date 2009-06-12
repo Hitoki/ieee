@@ -45,9 +45,13 @@
                     </table>
                 </td>
                 <td>
-                    {% for related_tag in tag.related_tags.all %}
-                        <a href="javascript:Tags.selectTag({{ related_tag.id }});">{{ related_tag }}</a>{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
+                    {% if not tag.related_tags.all %}
+                        None
+                    {% else %}
+                        {% for related_tag in tag.related_tags.all %}
+                            <a href="javascript:Tags.selectTag({{ related_tag.id }});">{{ related_tag }}</a>{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    {% endif %}
                 </td>
             </tr>
         </table>
