@@ -129,11 +129,11 @@ input.text {
 
 #lightbox .resources-lightbox-content {
     margin-top:5em;
-    overflow:auto;
     height:80%;
     width: 60%;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
+    border: 1px solid black;
 }
 
 #lightbox .resources-lightbox-content a.lightbox-close {
@@ -149,6 +149,22 @@ input.text {
 
 #lightbox .resources-lightbox-content .resources-pad {
     padding:.5em;
+    height: 100%;
+}
+
+#lightbox .resources-lightbox-content .resources-pad .alt-box,
+#lightbox .resources-lightbox-content .resources-pad .alt-box #content,
+#lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs {
+    height: 100%;
+}
+
+#lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs {
+
+}
+
+#lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs .nootabs-selected-tab {
+    overflow: auto;
+    height: 75%;
 }
 
 #lightbox .resources-lightbox-content .resources-pad h1 {

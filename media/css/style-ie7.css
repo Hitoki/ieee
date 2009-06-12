@@ -1,3 +1,15 @@
 .submit-button {
     vertical-align: middle;
 }
+
+#lightbox .resources-lightbox-content .resources-pad {
+    padding:.5em;
+    height: 100%;
+    width: 98.5%;
+}
+
+#lightbox .resources-lightbox-content .resources-pad .alt-box,
+#lightbox .resources-lightbox-content .resources-pad .alt-box #content,
+#lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs {
+    height: 100%;
+}
