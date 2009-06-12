@@ -121,12 +121,16 @@ table.main td.center .center-pad {
     border:none;
 }
 
-#header a.admin-link {
+#header p.admin-links {
     display:block;
     float:right;
     margin-top:15px;
     margin-right:20px;
     font-size:80%;
+    color:gray;
+}
+
+#header p.admin-links a {
     color:gray;
 }
 
