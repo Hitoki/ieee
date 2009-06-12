@@ -2522,6 +2522,8 @@ def edit_resources(request):
                 for tag in assign_tags:
                     resource.nodes.add(tag)
                 resource.save()
+                for tag in assign_tags:
+                    tag.save()
             
             # Assign priorities
             if form.cleaned_data['priority'] == 'yes':
@@ -2552,6 +2554,8 @@ def edit_resources(request):
                 for tag in remove_tags:
                     resource.nodes.remove(tag)
                 resource.save()
+                for tag in remove_tags:
+                    tag.save()
             
             return HttpResponseRedirect(return_url)
             

@@ -327,8 +327,8 @@ class Node(models.Model):
     filters = models.ManyToManyField('Filter', related_name='nodes')
 
     related_tags = models.ManyToManyField('self', null=True, blank=True)
-    num_related_tags = models.IntegerField(null=True, blank=True)
     
+    num_related_tags = models.IntegerField(null=True, blank=True)
     num_resources = models.IntegerField(null=True, blank=True)
     
     objects = NodeManager()
@@ -359,6 +359,12 @@ class Node(models.Model):
     
     def get_tags(self):
         return self.child_nodes.filter(node_type__name=NodeType.TAG)
+    
+    def save(self, *args, **kwargs):
+        # Update node counts here...
+        self.num_related_tags = self.related_tags.count()
+        self.num_resources = self.resources.count()
+        super(Node, self).save(*args, **kwargs)
     
     class Meta:
         ordering = ['name']
