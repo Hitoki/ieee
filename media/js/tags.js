@@ -100,8 +100,8 @@ var Tags = {
             str += "<div id=\"tag-" + tag.id + "\" class=\"tag\">";
             str += "  <a href=\"javascript:Tags.selectTag(" + tag.id + ");\" class=\"" + tag.level + "\">" + tag.label + "</a> ";
             str += "  <div class=\"tag-block-container\">";
-            str += "    <div class=\"block-top " + tag.sectorLevel + "\">a</div>";
-            str += "    <div class=\"block-bottom " + tag.relatedTagLevel + "\">a</div>";
+            str += "    <div class=\"block-top " + tag.sectorLevel + "\">&nbsp;</div>";
+            str += "    <div class=\"block-bottom " + tag.relatedTagLevel + "\">&nbsp;</div>";
             str += "  </div>";
             str += "</div>";
             

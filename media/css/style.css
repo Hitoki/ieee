@@ -495,19 +495,23 @@ ul#view-header li {
 
 #alternate-page #tag-galaxy div.tag .tag-block-container {
     float:left;
-    margin-left:3px;
+    margin-left:7px;
 }
 
 #alternate-page #tag-galaxy div.block-top,
 #alternate-page #tag-galaxy div.block-bottom
 {
-    width:5px;
-    height:5px;
+    width:7px;
+    height:7px;
     overflow:hidden;
 }
 
 #alternate-page #tag-galaxy div.block-top {
-    margin-bottom:5px;
+    margin-bottom:2px;
+}
+
+#alternate-page #tag-galaxy div.block-bottom {
+    margin-bottom: 1px;
 }
 
 /* */
