@@ -144,14 +144,14 @@ function isCompatibleBrowser() {
 
 $(function() {
     // Show browser compatibility warning
-    if (!isCompatibleBrowser()) {
-        $('html').css('height', '100%');
-        $('body').css('height', '100%');
-        $('html').css('overflow', 'hidden');
-        showBrowserWarning();
-    }
-});
-
+    // TODO: Re-enable this after Jack is done with Firefox 3.5
+    //if (!isCompatibleBrowser()) {
+    //    $('html').css('height', '100%');
+    //    $('body').css('height', '100%');
+    //    $('html').css('overflow', 'hidden');
+    //    showBrowserWarning();
+    //}
+});
 
 function FormatUrl(elem) {
     var formatUrl = this;
