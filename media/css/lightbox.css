@@ -132,6 +132,8 @@ input.text {
     overflow:auto;
     height:80%;
     width: 60%;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
 }
 
 #lightbox .resources-lightbox-content a.lightbox-close {
