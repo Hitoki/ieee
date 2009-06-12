@@ -678,6 +678,8 @@ table.vert-center td {
 .helpbracket {
     vertical-align: text-bottom;
     display: inline-block;
+    cursor: pointer;
+    color: blue;
 }
 
 #frequencybar-tags {
