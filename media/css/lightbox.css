@@ -153,8 +153,13 @@ input.text {
 }
 
 #lightbox .resources-lightbox-content .resources-pad {
-    padding:.5em;
     height: 100%;
+}
+
+#lightbox .resources-lightbox-content .alt-box {
+    clear:both;
+    padding: 5px 10px 0 10px;
+    margin: 0 15px 0 15px;
 }
 
 #lightbox .resources-lightbox-content .resources-pad .alt-box,
@@ -163,20 +168,14 @@ input.text {
     height: 100%;
 }
 
-#lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs {
-
-}
-
 #lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs .nootabs-selected-tab {
     overflow: auto;
     height: 75%;
 }
 
-#lightbox .resources-lightbox-content .resources-pad h1 {
-    font-size:140%;
-}
-
 #lightbox .resources-lightbox-content h1 {
-    margin-top:0em;
+    font-size:140%;
+    float: left;
+    margin: 1em 1em 0 1em;
 }
 
