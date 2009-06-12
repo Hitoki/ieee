@@ -151,7 +151,8 @@ $(function() {
     //    $('html').css('overflow', 'hidden');
     //    showBrowserWarning();
     //}
-});
+});
+
 
 function FormatUrl(elem) {
     var formatUrl = this;
@@ -307,7 +308,7 @@ $(function() {
     
     attachHighlightCheckboxes();
     
-    $('#id_items_per_page').change(function() {
+    $('select.items-per-page').change(function() {
         this.form.submit();
     });
 });

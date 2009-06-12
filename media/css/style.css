@@ -928,10 +928,10 @@ div.submit {
     display:none;
 }
 
-#id_items_per_page {
-    width:auto;
-}
-
 p.items-per-page {
     float:right;
+}
+
+select.items-per-page {
+    width:auto !important;
 }

@@ -45,6 +45,16 @@
     {% pages tag_page num_tag_pages tag_page_url %}
 </ul>
 
+<form action="{% url admin_manage_society society.id %}#tab-tags-tab" method="get">
+    <input type="hidden" name="resource_sort" value="{{ resource_sort }}" />
+    <input type="hidden" name="resource_filter" value="{{ resource_filter }}" />
+    <p class="items-per-page">
+        Show
+        {{ items_per_page_form.items_per_page }}
+        items per page.
+    </p>
+</form>
+
 <form action="{% url admin_edit_tags %}?return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}" method="post">
     <p class="batch-editing-button">
         <span class="edit-selected-tags-flyover">
@@ -61,14 +71,14 @@
             <th>
                 Tag Name <span class="help_icon flyover" title="Keyword or phrase for related concept or technology area. Click tag to edit.">[?]</span>
                 <div class="table-sort">
-                <a href="{% url admin_manage_society society.id %}?tag_sort=name_ascending#tab-tags-tab">
+                <a href="{% url admin_manage_society society.id %}?tag_sort=name_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "name_ascending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                     {% else %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                     {% endifequal %}
                 </a>
-                <a href="{% url admin_manage_society society.id %}?tag_sort=name_descending#tab-tags-tab">
+                <a href="{% url admin_manage_society society.id %}?tag_sort=name_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "name_descending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                     {% else %}
@@ -82,14 +92,14 @@
                 Sectors <span class="help_icon flyover" title="Industry Sector for which the Tag is relevant, from the domain perspective of the S/C.">[?]</span>
                 
                 <div class="table-sort">
-                <a href="{% url admin_manage_society society.id %}?tag_sort=sector_list_ascending#tab-tags-tab">
+                <a href="{% url admin_manage_society society.id %}?tag_sort=sector_list_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "sector_list_ascending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                     {% else %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                     {% endifequal %}
                 </a>
-                <a href="{% url admin_manage_society society.id %}?tag_sort=sector_list_descending#tab-tags-tab">
+                <a href="{% url admin_manage_society society.id %}?tag_sort=sector_list_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "sector_list_descending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                     {% else %}
@@ -102,14 +112,14 @@
                 Societies <span class="help_icon flyover" title="IEEE organizations that have associated Tag with their domain.">[?]</span>
                 
                 <div class="table-sort">
-                <a href="{% url admin_manage_society society.id %}?tag_sort=num_societies_ascending#tab-tags-tab">
+                <a href="{% url admin_manage_society society.id %}?tag_sort=num_societies_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_societies_ascending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                     {% else %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                     {% endifequal %}
                 </a>
-                <a href="{% url admin_manage_society society.id %}?tag_sort=num_societies_descending#tab-tags-tab">
+                <a href="{% url admin_manage_society society.id %}?tag_sort=num_societies_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_societies_descending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                     {% else %}
@@ -122,14 +132,14 @@
                 Filters <span class="help_icon flyover" title="Categories that detail the concept or technology area.">[?]</span>
                 
                 <div class="table-sort">
-                <a href="{% url admin_manage_society society.id %}?tag_sort=num_filters_ascending#tab-tags-tab">
+                <a href="{% url admin_manage_society society.id %}?tag_sort=num_filters_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_filters_ascending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                     {% else %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                     {% endifequal %}
                 </a>
-                <a href="{% url admin_manage_society society.id %}?tag_sort=num_filters_descending#tab-tags-tab">
+                <a href="{% url admin_manage_society society.id %}?tag_sort=num_filters_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_filters_descending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                     {% else %}
@@ -142,14 +152,14 @@
                 Resources <span class="help_icon flyover" title="IEEE Products or Services mapped to this Tag.">[?]</span>
                 
                 <div class="table-sort">
-                <a href="{% url admin_manage_society society.id %}?tag_sort=num_resources_ascending#tab-tags-tab">
+                <a href="{% url admin_manage_society society.id %}?tag_sort=num_resources_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_resources_ascending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                     {% else %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                     {% endifequal %}
                 </a>
-                <a href="{% url admin_manage_society society.id %}?tag_sort=num_resources_descending#tab-tags-tab">
+                <a href="{% url admin_manage_society society.id %}?tag_sort=num_resources_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_resources_descending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                     {% else %}
@@ -162,14 +172,14 @@
                 Related Tags <span class="help_icon flyover" title="Tags that are related concepts or technology areas.">[?]</span>
                 
                 <div class="table-sort">
-                <a href="{% url admin_manage_society society.id %}?tag_sort=num_related_tags_ascending#tab-tags-tab">
+                <a href="{% url admin_manage_society society.id %}?tag_sort=num_related_tags_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_related_tags_ascending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                     {% else %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                     {% endifequal %}
                 </a>
-                <a href="{% url admin_manage_society society.id %}?tag_sort=num_related_tags_descending#tab-tags-tab">
+                <a href="{% url admin_manage_society society.id %}?tag_sort=num_related_tags_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_related_tags_descending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                     {% else %}

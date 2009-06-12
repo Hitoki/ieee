@@ -204,4 +204,4 @@ class ItemsPerPageForm(Form):
         (100, 100),
         (1000000, 'all'),
     ]
-    items_per_page = ChoiceField(choices=_ITEMS_PER_PAGE)
+    items_per_page = ChoiceField(choices=_ITEMS_PER_PAGE, widget=Select(attrs={ 'class': 'items-per-page'}))
