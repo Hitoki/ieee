@@ -278,16 +278,27 @@
                             {% if num_unfiltered_resources %}
                                 <form action="{% url admin_manage_society society.id %}" method="get">
                                     <input type="hidden" name="resource_sort" value="{{ resource_sort }}" />
+                                    <input type="hidden" name="items_per_page" value="{{ items_per_page }}" />
                                     <p>
                                         <input name="resource_filter" value="{{ resource_filter }}" class="blur-text {text: '(Enter whole or partial words)', blurClass:'multi-search-input-blur'}" id="resource_filter" />
                                         <input type="submit" value="Filter By Resource Name" class="submit-button" />
-                                        <input type="button" value="Remove Filter" class="submit-button" onclick="window.location='{% url admin_manage_society society.id %}?resource_sort={{ resource_sort }}';" />
+                                        <input type="button" value="Remove Filter" class="submit-button" onclick="window.location='{% url admin_manage_society society.id %}?resource_sort={{ resource_sort }}&amp;items_per_page={{ items_per_page }}';" />
                                         {% ifnotequal num_resources num_unfiltered_resources %}
                                             <span class="matching-filter">{{ num_resources }} Matching Resources</span>
                                         {% endifnotequal %}
                                     </p>
                                 </form>
                             {% endif %}
+                            
+                            <form action="{% url admin_manage_society society.id %}" method="get">
+                                <input type="hidden" name="resource_sort" value="{{ resource_sort }}" />
+                                <input type="hidden" name="resource_filter" value="{{ resource_filter }}" />
+                                <p class="items-per-page">
+                                    Show
+                                    {{ items_per_page_form.items_per_page }}
+                                    items per page.
+                                </p>
+                            </form>
                             
                             {% if not resources %}
                                 {% if  not num_unfiltered_resources %}
@@ -319,14 +330,14 @@
                                                 Resource Name <span class="help_icon flyover" title="Name of the Product or Service. Click resource to edit.">[?]</span>
                                             
                                                 <div class="table-sort">
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=name_ascending&amp;resource_filter={{ resource_filter }}#tab-resources-tab">
+                                                <a href="{% url admin_manage_society society.id %}?resource_sort=name_ascending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
                                                     {% ifequal resource_sort "name_ascending" %}
                                                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                                                     {% else %}
                                                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                                                     {% endifequal %}
                                                 </a>
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=name_descending&amp;resource_filter={{ resource_filter }}#tab-resources-tab">
+                                                <a href="{% url admin_manage_society society.id %}?resource_sort=name_descending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
                                                     {% ifequal resource_sort "name_descending" %}
                                                         <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                                                     {% else %}
@@ -340,14 +351,14 @@
                                                 ID <span class="help_icon flyover" title="IEEE unique identifier.">[?]</span>
                                             
                                                 <div class="table-sort">
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=ieee_id_ascending&amp;resource_filter={{ resource_filter }}#tab-resources-tab">
+                                                <a href="{% url admin_manage_society society.id %}?resource_sort=ieee_id_ascending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
                                                     {% ifequal resource_sort "ieee_id_ascending" %}
                                                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                                                     {% else %}
                                                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                                                     {% endifequal %}
                                                 </a>
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=ieee_id_descending&amp;resource_filter={{ resource_filter }}#tab-resources-tab">
+                                                <a href="{% url admin_manage_society society.id %}?resource_sort=ieee_id_descending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
                                                     {% ifequal resource_sort "ieee_id_descending" %}
                                                         <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                                                     {% else %}
@@ -360,14 +371,14 @@
                                                 Resource Type <span class="help_icon flyover" title="Publication, Conference, or Standard.">[?]</span>
                                             
                                                 <div class="table-sort">
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=resource_type_ascending&amp;resource_filter={{ resource_filter }}#tab-resources-tab">
+                                                <a href="{% url admin_manage_society society.id %}?resource_sort=resource_type_ascending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
                                                     {% ifequal resource_sort "resource_type_ascending" %}
                                                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                                                     {% else %}
                                                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                                                     {% endifequal %}
                                                 </a>
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=resource_type_descending&amp;resource_filter={{ resource_filter }}#tab-resources-tab">
+                                                <a href="{% url admin_manage_society society.id %}?resource_sort=resource_type_descending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
                                                     {% ifequal resource_sort "resource_type_descending" %}
                                                         <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                                                     {% else %}
@@ -380,14 +391,14 @@
                                                 URL <span class="help_icon flyover" title="Web link for the Resource.">[?]</span>
                                             
                                                 <div class="table-sort">
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=url_ascending&amp;resource_filter={{ resource_filter }}#tab-resources-tab">
+                                                <a href="{% url admin_manage_society society.id %}?resource_sort=url_ascending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
                                                     {% ifequal resource_sort "url_ascending" %}
                                                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                                                     {% else %}
                                                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                                                     {% endifequal %}
                                                 </a>
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=url_descending&amp;resource_filter={{ resource_filter }}#tab-resources-tab">
+                                                <a href="{% url admin_manage_society society.id %}?resource_sort=url_descending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
                                                     {% ifequal resource_sort "url_descending" %}
                                                         <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                                                     {% else %}

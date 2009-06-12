@@ -927,3 +927,11 @@ div.submit {
 .hide-initally {
     display:none;
 }
+
+#id_items_per_page {
+    width:auto;
+}
+
+p.items-per-page {
+    float:right;
+}

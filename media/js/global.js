@@ -282,19 +282,6 @@ function attachSelectCheckboxOnClick(elem) {
     });
 }
 
-$(function() {
-    $('.select-checkbox-on-click').click(function() {
-        $(this).find('input[type="checkbox"]').click();
-        $(this).find('input[type="checkbox"]').change();
-    });
-    $('.select-checkbox-on-click input[type="checkbox"]').click(function(e) {
-        // Stop propagation to above function, otherwise checkbox is clicked twice & doesn't change
-        e.stopPropagation();
-    });
-    
-    attachHighlightCheckboxes();
-});
-
 // Call this whenever new content is created dynamically to attach any scripts
 function attachScripts(elem) {
     elem = $(elem);
@@ -307,3 +294,21 @@ function attachScripts(elem) {
     attachSelectCheckboxOnClick(elem);
     attachSelectCheckboxOnClick(elem);
 }
+
+$(function() {
+    $('.select-checkbox-on-click').click(function() {
+        $(this).find('input[type="checkbox"]').click();
+        $(this).find('input[type="checkbox"]').change();
+    });
+    $('.select-checkbox-on-click input[type="checkbox"]').click(function(e) {
+        // Stop propagation to above function, otherwise checkbox is clicked twice & doesn't change
+        e.stopPropagation();
+    });
+    
+    attachHighlightCheckboxes();
+    
+    $('#id_items_per_page').change(function() {
+        this.form.submit();
+    });
+});
+

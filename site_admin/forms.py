@@ -197,3 +197,11 @@ class EditClusterForm(ModelForm):
         model = Node
         fields = ['name', 'child_nodes']
 
+class ItemsPerPageForm(Form):
+    _ITEMS_PER_PAGE = [
+        (20, 20),
+        (50, 50),
+        (100, 100),
+        (1000000, 'all'),
+    ]
+    items_per_page = ChoiceField(choices=_ITEMS_PER_PAGE)

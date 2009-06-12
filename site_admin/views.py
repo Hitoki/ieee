@@ -274,7 +274,6 @@ def login(request):
             user = auth.authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             
             username = form.cleaned_data['username']
-            print 'remote_addr:', remote_addr
             
             # If account is disabled, prevent from logging in
             if FailedLoginLog.objects.check_if_disabled(username, remote_addr):
@@ -1827,7 +1826,6 @@ def edit_cluster(request, cluster_id=None):
                 cluster.save()
             
             tags = form.cleaned_data['tags']
-            print '  tags: %s' % tags
             
             # Remove tags
             for tag in cluster.get_tags():
@@ -2201,7 +2199,11 @@ def manage_society(request, society_id):
         # TODO: Better fix for this later
         return HttpResponseRedirect(reverse('permission_denied'))
     
-    _RESOURCES_PER_PAGE = 50
+    items_per_page = int(request.GET.get('items_per_page', 50))
+    
+    items_per_page_form = ItemsPerPageForm(initial={
+        'items_per_page': items_per_page,
+    })
     
     resource_filter = request.GET.get('resource_filter', '').strip()
     
@@ -2317,13 +2319,14 @@ def manage_society(request, society_id):
     
     # Limit search results to one page
     num_resources = resources1.count()
-    num_resource_pages = int(math.ceil(num_resources / float(_RESOURCES_PER_PAGE)))
+    num_resource_pages = int(math.ceil(num_resources / float(items_per_page)))
     
     # NOTE: resource_page starts at 1, not 0
-    resource_start_count = (resource_page-1) * _RESOURCES_PER_PAGE
-    resource_end_count = (resource_page) * _RESOURCES_PER_PAGE
+    resource_start_count = (resource_page-1) * items_per_page
+    resource_end_count = (resource_page) * items_per_page
+    
     resources1 = resources1[resource_start_count:resource_end_count]
-    resource_page_url = reverse('admin_manage_society', args=[society.id]) + '?resource_sort=' + quote(resource_sort) + '&amp;resource_filter=' + quote(resource_filter) + '&amp;resource_page={{ page }}#tab-resources-tab'
+    resource_page_url = reverse('admin_manage_society', args=[society.id]) + '?resource_sort=' + quote(resource_sort) + '&amp;resource_filter=' + quote(resource_filter) + '&amp;resource_filter=' + quote(resource_filter) + '&amp;items_per_page=' + quote(str(items_per_page)) + '&amp;resource_page={{ page }}#tab-resources-tab'
     
     (tags, num_tag_pages) = _get_paged_tags(society, tag_sort, tag_page)
     tag_page_url = reverse('admin_manage_society', args=[society.id]) + '?tag_sort=' + quote(tag_sort) + '&amp;tag_page={{ page }}#tab-tags-tab'
@@ -2363,6 +2366,8 @@ def manage_society(request, society_id):
         'tag_page_url': tag_page_url,
         
         'return_url': request.get_full_path(),
+        'items_per_page': items_per_page,
+        'items_per_page_form': items_per_page_form,
         
         'DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB': settings.DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB,
     })
