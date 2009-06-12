@@ -121,30 +121,40 @@ var Roamer = {
         
         if (this.nodeInfo && this.nodeInfo.type == 'tag') {
             // Selected a tag, show the resources link bar (update name & count, flash green)
-            $('#resources-explanation-text').hide();
-            $('#resources-link').show();
-            $('#resources-tag-name').html(htmlentities(this.nodeInfo.name));
-            $('#resources-count').html(htmlentities(this.nodeInfo.num_resources));
-            $('#resources-link').css('backgroundColor', 'green');
-            $('#resources-link').animate(
-                {
-                    'backgroundColor': '#006699'
-                },
-                1000
-            );
-            $('#resources-link').hover(
-                function(){
-                    $(this).css('background-color', 'orange');
-                },
-                function(){
-                    $(this).css('background-color', '#006699');
-                }
-            );
+            if (this.nodeInfo.num_resources > 0) {
+                $('#no-resources').hide();
+                $('#resources-explanation-text').hide();
+                $('#resources-link').show();
+                $('.resources-tag-name').html(htmlentities(this.nodeInfo.name));
+                $('#resources-count').html(htmlentities(this.nodeInfo.num_resources));
+                $('#resources-link').css('backgroundColor', 'green');
+                $('#resources-link').animate(
+                    {
+                        'backgroundColor': '#006699'
+                    },
+                    1000
+                );
+                $('#resources-link').hover(
+                    function(){
+                        $(this).css('background-color', 'orange');
+                    },
+                    function(){
+                        $(this).css('background-color', '#006699');
+                    }
+                );
+            } else {
+                $('#no-resources').show();
+                $('#resources-explanation-text').hide();
+                $('#resources-link').hide();
+                $('.resources-tag-name').html(htmlentities(this.nodeInfo.name));
+            }
+            
             
         } else {
             // Not a tag, hide the resources link bar (show "clic
             $('#resources-explanation-text').show();
             $('#resources-link').hide();
+            $('#no-resources').hide();
         }
         //log("~loadContent()");
     },

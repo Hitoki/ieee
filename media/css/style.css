@@ -919,3 +919,7 @@ div.submit {
 .filter_background_highlight label {
     color:white;
 }
+
+.hide-initally {
+    display:none;
+}
