@@ -61,6 +61,7 @@ var Roamer = {
         this.flash.setSelectedNodeID(id);
         this.id = id;
         this.nodeInfo = null;
+        this.getNodeInfo();
         this.loadContent();
         // TODO:
         //this.updateSector();
@@ -91,13 +92,17 @@ var Roamer = {
         if (this.id == results.id) {
             this.nodeInfo = results;
             //log('  this.nodeInfo: ' + this.nodeInfo);
+            //for (var i in this.nodeInfo) {
+            //    log('    this.nodeInfo[' + i + ']: ' + this.nodeInfo[i]);
+            //}
+            this.highlightSector();
         }
-        
         //log('~getNodeInfo()');
     },
     
     // Called by roamer whenever the selected node changes
     onChange: function() {
+        //log('onChange()');
         var id = this.flash.getSelectedNodeID();
         if (id != this.id) {
             this.id = id;
@@ -105,7 +110,6 @@ var Roamer = {
             this.getNodeInfo();
             this.updateSwitchLink();
             this.loadContent();
-            this.highlightSector();
         }
     },
     
