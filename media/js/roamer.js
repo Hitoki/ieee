@@ -184,7 +184,16 @@ var Roamer = {
     updateSwitchLink: function() {
         //log('updateSwitchLink()');
         //log('this.id: ' + this.id);
-        $('#switch-link')[0].href = '/textui?nodeId=' + this.id;
+        if (this.nodeInfo.type == 'sector') {
+            // Enable the switch link for sectors
+            $('#switch-link').attr('href', '/textui?nodeId=' + this.id);
+            Flyover.detach($('#switch-link'));
+            
+        } else {
+            // Disable the switch link for sectors and enable the flyover
+            $('#switch-link').attr('href', 'javascript:void(0);');
+            Flyover.attach($('#switch-link'));
+        }
         //log('~updateSwitchLink()');
     },
     
