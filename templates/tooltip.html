@@ -51,7 +51,7 @@
                 </td>
             </tr>
         </table>
-        <div class="results-links"><a href="javascript:Tags.selectTag({{tag.id}});">{{tag.num_resources}} Resource Result{{tag.num_resources|pluralize}}</a></div>
+        <div class="results-links"><a href="javascript:Tags.selectTag({{tag.id}});">{{tag.num_resources}} Resource{{tag.num_resources|pluralize}} Tagged "{{ tag.name }}"</a></div>
         
     </div>
 {% endblock %}
