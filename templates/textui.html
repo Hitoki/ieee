@@ -58,8 +58,8 @@
                                 <div class="filters-vert-box alt-box">
                                     <ul id="views">
                                         {% for filter in filters %}
-                                            <li>
-                                                <input id="{{filter.value}}" value="{{filter.value}}" type="checkbox" onclick="Tags.selectSector();" class="filter" checked="checked" />
+                                            <li id="{{filter.value}}_highlight" class="filter_background">
+                                                <input id="{{filter.value}}" value="{{filter.value}}" type="checkbox" onclick="Tags.selectSector();" class="filter highlight-checkbox { highlightElem: '#{{filter.value}}_highlight' }" checked="checked" />
                                                 <label for="{{filter.value}}">{{filter.name}}</label>
                                             </li>
                                         {% endfor %}

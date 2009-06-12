@@ -98,7 +98,6 @@ var Roamer = {
     
     // Called by roamer whenever the selected node changes
     onChange: function() {
-        log("onChange()");
         var id = this.flash.getSelectedNodeID();
         if (id != this.id) {
             this.id = id;
@@ -108,7 +107,6 @@ var Roamer = {
             this.loadContent();
             this.highlightSector();
         }
-        log("~onChange()");
     },
     
     loadContent: function() {

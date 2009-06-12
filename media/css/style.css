@@ -908,3 +908,10 @@ div.submit {
     /*background:#eee;*/
 }
 
+.filter_background_highlight {
+    background:#006699;
+}
+
+.filter_background_highlight label {
+    color:white;
+}

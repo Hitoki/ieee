@@ -199,6 +199,75 @@ function urlRemoveHash(url) {
     return url.replace(/#.+/, '');
 }
 
+// 
+
+function HighlightCheckbox(elem, options) {
+    var highlightcheckbox = this;
+    this.elem = $(elem);
+    this.options = $.extend(
+        {
+            highlightElem: null
+        },
+        this.elem.metadata(),
+        options
+    );
+    
+    if (this.options.highlightElem == null) {
+        // Attempt to find the label
+        var id = this.elem.attr('id');
+        var label = null;
+        $('label').each(function() {
+            if ($(this).attr('for') == id)
+                label = $(this);
+        });
+        if (label != null)
+            this.options.highlightElem = label
+    } else {
+        this.options.highlightElem = $(this.options.highlightElem);
+    }
+    
+    if (this.options.highlightElem == null) {
+        alert('HighlightCheckbox(): Error, this.options.highlightElem must be specified.');
+        return;
+    }
+    
+    this.elem.change(function(e) {
+        highlightcheckbox.onChange(e);
+    });
+    
+    this.onChange();
+}
+
+HighlightCheckbox.prototype.onChange = function (e) {
+    if (this.elem.attr('checked')) {
+        var classes = this.options.highlightElem.attr('className').split(' ');
+        for (var i=0; i<classes.length; i++) {
+            if (classes[i].substr(classes[i].length-10, 10) != '_highlight') {
+                this.options.highlightElem.addClass(classes[i] + '_highlight');
+            }
+        }
+    } else {
+        var classes = this.options.highlightElem.attr('className').split(' ');
+        for (var i=0; i<classes.length; i++) {
+            if (classes[i].substr(classes[i].length-10) == '_highlight') {
+                this.options.highlightElem.removeClass(classes[i]);
+            }
+        }
+    }
+}
+
+function attachHighlightCheckboxes(elem) {
+    if (elem) {
+        elem.find('.highlight-checkbox').each(function() {
+            new HighlightCheckbox(this);
+        });
+    } else {
+        $('.highlight-checkbox').each(function() {
+            new HighlightCheckbox(this);
+        });
+    }
+}
+
 //
 
 function attachSelectCheckboxOnClick(elem) {
@@ -222,6 +291,8 @@ $(function() {
         // Stop propagation to above function, otherwise checkbox is clicked twice & doesn't change
         e.stopPropagation();
     });
+    
+    attachHighlightCheckboxes();
 });
 
 // Call this whenever new content is created dynamically to attach any scripts
@@ -233,5 +304,6 @@ function attachScripts(elem) {
     attachLightboxes(elem);
     attachMultiSearches(elem);
     attachNootabs(elem);
+    attachSelectCheckboxOnClick(elem);
     attachSelectCheckboxOnClick(elem);
 }
