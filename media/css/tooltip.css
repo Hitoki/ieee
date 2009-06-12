@@ -51,7 +51,8 @@
 
 .node-tooltip h3 {
     font-size:220%;
-    margin:0px 0px 15px 0px;
+    line-height:1em;
+    margin:0;
 }
 
 table.node-tooltip-grid td {
@@ -81,7 +82,15 @@ table.node-tooltip-grid td {
 }
 
 .filter-block {
-    background:silver;
+    /*background:silver;*/
+    color: black;
+    font-weight: bold;
+}
+
+.tooltip-filters, .filter-block {
+    vertical-align: top;
+    font-size: 8pt;
+    padding: 0;
 }
 
 .results-links { 
