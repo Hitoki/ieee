@@ -362,9 +362,11 @@ class Node(models.Model):
     
     def save(self, *args, **kwargs):
         # Update node counts here...
-        self.num_related_tags = self.related_tags.count()
-        self.num_resources = self.resources.count()
+        if self.id is not None:
+            self.num_related_tags = self.related_tags.count()
+            self.num_resources = self.resources.count()
         super(Node, self).save(*args, **kwargs)
+        # TODO: Do we need to update tag counts for newly-created tags?
     
     class Meta:
         ordering = ['name']
