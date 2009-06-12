@@ -796,6 +796,10 @@ table.vert-center td {
     text-decoration:underline;
 }
 
+.browser-warning-content2 ul {
+    list-style-type: none;
+}
+
 /* */
 
 input[type=submit], input[type=button] {
