@@ -69,53 +69,39 @@
                         </div>
                     
                         <div id="right-column">
-                            <div id="frequencybar">
+                            <div id="frequencybar-tags">
+                                <span id="key-label">Key:</span>
+                                <span id="frequency-indicator"><img src="/media/images/frequency-bar.png"/></span>
+                                <span><a class="helpbracket" style="height:18px; font-size:0.7em" href="#">[?]</a></span>
+                                <span id="tag-model-left">
+                                    # of Resources <a class="helpbracket" href="#">[?]</a><img src="/media/images/arrow-right.png"/>
+                                </span>
+                                <img style="margin-top:-4px;" src="/media/images/model-tag.png"/>
+                                <span id="tag-model-right">
+                                    <ul style="line-height:10px;">
+                                        <li><img class="tag-model-rightarrow" src="/media/images/arrow-left.png"/># of Sectors <a class="helpbracket" style="height:12px; font-size:1em;" href="#">[?]</a></li>
+                                        <li><img class="tag-model-rightarrow" src="/media/images/arrow-left.png"/># of Related Tags <a class="helpbracket" style="height:12px; font-size:1em;" href="#">[?]</a></li>
+                                    </ul>
+                                </span>
                                 <!-- TODO: Enable live tag count -->
                                 <!--
                                 <h2 style="float: left;">42 Tags</h2>  
                                 -->
-                                <div style="float: right; margin-top: -18px">
-                                     
-                                    <span class="frequency-key">None <-> Many</span>
-                                    <ul>
-                                        <li style="padding-right: 5px;">Frequency:</li>
-                                        <li><span class="level1"></span></li>
-                                        <li><span class="level2"></span></li>
-                                        <li><span class="level3"></span></li>
-                                        <li><span class="level4"></span></li>
-                                        <li><span class="level5"></span></li>
-                                        <li><span class="level6"></span></li>
-                                            
-                                        <li>
-                                            <span id="sortmenu" style="margin-left: 5em;">
-                                            Sort by: 
-                                                <select id="tag-sort" onchange="Tags.selectSector();">
-                                                    <option value="alphabetical">Alphabetical</option>
-                                                    <option value="frequency">Frequency</option>
-                                                    <!--
-                                                    <option value="last_tagged">Last Tagged</option>
-                                                    <option value="date_added">Date Added</option>
-                                                    -->
-                                                    <option value="num_sectors"># of Sectors</option>
-                                                    <option value="num_related_tags"># of Related Tags</option>
-                                                </select>
-                                            </span>
-                                        </li>
-                                    </ul>
+                                <div id="sortmenu">
+                                    Sort by:
+                                    <select id="tag-sort" onchange="Tags.selectSector();">
+                                        <option value="alphabetical">Alphabetical</option>
+                                        <option value="frequency">Frequency</option>
+                                        <!--
+                                            <option value="last_tagged">Last Tagged</option>
+                                            <option value="date_added">Date Added</option>
+                                        -->
+                                        <option value="num_sectors"># of Sectors</option>
+                                        <option value="num_related_tags"># of Related Tags</option>
+                                    </select>
                                 </div>
                            
                             </div>    
-                            
-                            <div id="sector_key-blocks">
-                                <div class="tag-block-container">
-                                    <div class="block-top level1">a</div>
-                                    <div class="block-bottom level3">a</div>
-                                </div>
-                            </div>
-                            <ul id="sector_key-text">
-                                <li># of Sectors:</li>
-                                <li># of Related Tags:</li>
-                            </ul>    
                             
                             <div id="tag-galaxy" class="alt-box" style="height: 100%;">
                                 <div id="tags" class="alt-box-pad">
