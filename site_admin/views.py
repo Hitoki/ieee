@@ -85,7 +85,6 @@ def _get_version():
 
 def _update_node_totals(nodes):
     for node in nodes:
-        node.num_resources = node.resources.count()
         node.save()
     
 def _unicode_csv_reader(unicode_csv_data, dialect=csv.excel, **kwargs):
@@ -2703,14 +2702,17 @@ def save_resource(request):
         if len(errors) == 0:
             # Passed validation
             if 'id' in form.cleaned_data:
+                # Existing resource
                 resource = Resource.objects.get(id=form.cleaned_data['id'])
             else:
+                # New resource
                 resource = Resource.objects.create(
                     resource_type=form.cleaned_data['resource_type']
                 )
             
             # Need to update these node totals later (in case the user has removed one from this resource)
-            old_nodes = resource.nodes.all()
+            # NOTE: without list(), this becomes a lazy reference and is evaluated after the resource.svae() later on... need to call list() here to make a current copy.
+            old_nodes = list(resource.nodes.all())
             
             resource.name = form.cleaned_data['name']
             resource.ieee_id = form.cleaned_data['ieee_id']
@@ -2732,7 +2734,7 @@ def save_resource(request):
                     society.tags.add(node)
                 society.save()
             
-            # Update the node totals
+            # Update the node totals (for both the old & current nodes)
             _update_node_totals(old_nodes)
             _update_node_totals(resource.nodes.all())
             
