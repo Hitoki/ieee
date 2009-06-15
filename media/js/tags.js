@@ -98,11 +98,20 @@ var Tags = {
             var tag = tags[i];
             str = "";
             str += "<div id=\"tag-" + tag.id + "\" class=\"tag\">";
-            str += "  <a href=\"javascript:Tags.selectTag(" + tag.id + ");\" class=\"" + tag.level + "\">" + tag.label + "</a> ";
-            str += "  <div class=\"tag-block-container\">";
-            str += "    <div class=\"block-top " + tag.sectorLevel + "\">&nbsp;</div>";
-            str += "    <div class=\"block-bottom " + tag.relatedTagLevel + "\">&nbsp;</div>";
-            str += "  </div>";
+            // NOTE: Table is here to prevent the label & color blocks from wrapping onto separate lines
+            str += "  <table>";
+            str += "    <tr>";
+            str += "      <td>";
+            str += "        <a href=\"javascript:Tags.selectTag(" + tag.id + ");\" class=\"" + tag.level + "\">" + tag.label + "</a> ";
+            str += "      </td>";
+            str += "      <td>";
+            str += "        <div class=\"tag-block-container\">";
+            str += "          <div class=\"block-top " + tag.sectorLevel + "\">&nbsp;</div>";
+            str += "          <div class=\"block-bottom " + tag.relatedTagLevel + "\">&nbsp;</div>";
+            str += "        </div>";
+            str += "      </td>";
+            str += "    </tr>";
+            str += "  </table>";
             str += "</div>";
             
             var div = $(str);

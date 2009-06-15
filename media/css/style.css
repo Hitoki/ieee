@@ -473,6 +473,15 @@ ul#view-header li {
     border-right: 1px solid #37607d;
 }
 
+#alternate-page #tag-galaxy div.tag table {
+    border-collapse:collapse;
+}
+
+#alternate-page #tag-galaxy div.tag table td {
+    margin:0px;
+    padding:0px;
+}
+
 /* disabled highlighting of selected tags */
 /*
 #alternate-page #tag-galaxy div.activeTag {
