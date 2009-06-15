@@ -43,6 +43,7 @@
 .multi-search-popup-anchor {
     position:relative;
     display:inline;
+    z-index: 2;
 }
 
 .multi-search-popup-anchor input {
