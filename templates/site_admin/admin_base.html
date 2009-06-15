@@ -23,16 +23,19 @@
                 <a href="{% url admin_home %}">Home</a>
             </li>
             {% if user.is_superuser %}
-            <li class="{% block nav_sectors %}{% endblock %}">
-                <a href="{% url admin_list_sectors %}">Sectors</a>
-            </li>
-            <li class="{% block nav_users %}{% endblock %}">
-                <a href="{% url admin_users %}">Users</a>
-            </li>
-            <li class="{% block nav_societies %}{% endblock %}">
-                <a href="{% url admin_societies %}">Societies</a>
-            </li>
+                <li class="{% block nav_sectors %}{% endblock %}">
+                    <a href="{% url admin_list_sectors %}">Sectors</a>
+                </li>
+                <li class="{% block nav_users %}{% endblock %}">
+                    <a href="{% url admin_users %}">Users</a>
+                </li>
+                <li class="{% block nav_societies %}{% endblock %}">
+                    <a href="{% url admin_societies %}">Societies</a>
+                </li>
             {% endif %}
+            <li class="end-user-view">
+                <a href="{% url index %}">Go to the End-user view</a>
+            </li>
         </ul>
     {% endif %}
 {% endif %}

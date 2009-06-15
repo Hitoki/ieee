@@ -111,6 +111,10 @@ ul.nav li.highlight a {
     font-weight:bold;
 }
 
+ul.nav li.end-user-view {
+    float:right;
+}
+
 /* */
 
 ul.section-list li {
