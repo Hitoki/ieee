@@ -144,13 +144,12 @@ function isCompatibleBrowser() {
 
 $(function() {
     // Show browser compatibility warning
-    // TODO: Re-enable this after Jack is done with Firefox 3.5
-    //if (!isCompatibleBrowser()) {
-    //    $('html').css('height', '100%');
-    //    $('body').css('height', '100%');
-    //    $('html').css('overflow', 'hidden');
-    //    showBrowserWarning();
-    //}
+    if (!isCompatibleBrowser()) {
+        $('html').css('height', '100%');
+        $('body').css('height', '100%');
+        $('html').css('overflow', 'hidden');
+        showBrowserWarning();
+    }
 });
 
 
