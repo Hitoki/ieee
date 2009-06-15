@@ -240,6 +240,7 @@ def _get_popularity_level(min, max, count):
 
 @protect_frontend
 def ajax_nodes_json(request):
+    #logging.debug('ajax_nodes_json()')
     disable_frontend()
     
     sectorId = request.GET['sectorId']
@@ -261,19 +262,29 @@ def ajax_nodes_json(request):
     if filterValues != '':
         for filterValue in filterValues.split(','):
             filterIds.append(Filter.objects.getFromValue(filterValue).id)
-            
+    
     # Build node list
     sector = Node.objects.get(id=sectorId)
+    
+    if settings.DEBUG_HIDE_TAGS_WITH_NO_RESOURCES:
+        # Filter out tags with no resources
+        tags = sector.get_tags().extra(
+            select={ 'num_resources': 'SELECT COUNT(*) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id' },
+        ).filter(num_resources__gt=0)
+    else:
+        # All tags
+        tags = sector.get_tags()
+    
     if sort == 'num_sectors':
         # TODO: Handle clusters here
-        tags = sector.child_nodes.extra(
+        tags = tags.extra(
             select={ 'num_parents': 'SELECT COUNT(*) FROM ieeetags_node_parents WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id' },
             order_by=['-num_parents', 'name'],
         )        
         
     elif sort == 'num_related_tags':
         # TODO: Handle clusters here
-        tags = sector.child_nodes.extra(
+        tags = tags.extra(
             select={ 'num_related_tags': 'SELECT COUNT(*) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id' },
             order_by=['-num_related_tags', 'name'],
         )        
@@ -282,8 +293,8 @@ def ajax_nodes_json(request):
         #tags = sector.child_nodes.order_by(orderBy)
         # Get only tags (no clusters)
         # TODO: Handle clusters here
-        tags = sector.get_tags().order_by(orderBy)
-    
+        tags = tags.order_by(orderBy)
+        
     (minResources, maxResources) = Node.objects.get_resource_range(sector)
     (min_sectors, max_sectors) = Node.objects.get_sector_range(sector)
     (min_related_tags, max_related_tags) = Node.objects.get_related_tag_range(sector)
@@ -310,8 +321,9 @@ def ajax_nodes_json(request):
                 'relatedTagLevel': related_tag_level,
                 'num_related_tags': tag.related_tags.count(),
             })
-            
+    
     json = simplejson.dumps(data, sort_keys=True, indent=4)
+    #logging.debug('~ajax_nodes_json()')
     return HttpResponse(json, mimetype='application/json')
 
 @protect_frontend
@@ -325,8 +337,7 @@ def ajax_nodes_xml(request):
     nodeId = request.GET['nodeId']
     #logging.debug('  nodeId: ' + nodeId)
     
-    #url = 'http://' + request.META['HTTP_HOST'] + request.META['PATH_INFO'] + '?' + request.META['QUERY_STRING']
-    #logging.debug('  url: ' + url)
+    #logging.debug('  url: ' + request.get_full_path())
     
     # TODO: the depth param is ignored, doesn't seem to affect anything now
     
@@ -339,9 +350,16 @@ def ajax_nodes_xml(request):
         if node.node_type == NodeType.objects.getFromName(NodeType.SECTOR):
             # Filter out any tags that don't have any societies
             childNodes1 = []
+            
             for child_node in child_nodes:
-                if child_node.societies.count() > 0:
-                    childNodes1.append(child_node)
+                if settings.DEBUG_HIDE_TAGS_WITH_NO_RESOURCES:
+                    if child_node.societies.count() > 0 and child_node.resources.count() > 0:
+                        # Hide all tags with no societies or no resources
+                        childNodes1.append(child_node)
+                else:
+                    if child_node.societies.count() > 0:
+                        # Hide all tags with no societies
+                        childNodes1.append(child_node)
             child_nodes = childNodes1
     
     # Build node list

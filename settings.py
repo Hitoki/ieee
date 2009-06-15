@@ -132,6 +132,9 @@ DEBUG_IMPORT_ASSIGN_ALL_TAGS_TO_COMSOC = False
 # If true, all tags will show up for all filters in Roamer
 DEBUG_TAGS_HAVE_ALL_FILTERS = False
 
+# If true, tags without resources will not show up in the Roamer/Tags views
+DEBUG_HIDE_TAGS_WITH_NO_RESOURCES = True
+
 # If true, all frontend pages will require login (useful before frontend is publicly launched)
 DEBUG_REQUIRE_LOGIN_FRONTEND = True
 
