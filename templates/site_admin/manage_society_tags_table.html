@@ -45,15 +45,19 @@
     {% pages tag_page num_tag_pages tag_page_url %}
 </ul>
 
-<form action="{% url admin_manage_society society.id %}#tab-tags-tab" method="get">
-    <input type="hidden" name="resource_sort" value="{{ resource_sort }}" />
-    <input type="hidden" name="resource_filter" value="{{ resource_filter }}" />
-    <p class="items-per-page">
-        Show
-        {{ items_per_page_form.items_per_page }}
-        items per page.
-    </p>
-</form>
+
+{% comment %}
+#    NOTE: This is disabled until post-v1
+#<form action="{% url admin_manage_society society.id %}#tab-tags-tab" method="get">
+#    <input type="hidden" name="resource_sort" value="{{ resource_sort }}" />
+#    <input type="hidden" name="resource_filter" value="{{ resource_filter }}" />
+#    <p class="items-per-page">
+#        Show
+#        {{ items_per_page_form.items_per_page }}
+#        items per page.
+#    </p>
+#</form>
+{% endcomment %}
 
 <form action="{% url admin_edit_tags %}?return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}" method="post">
     <p class="batch-editing-button">
