@@ -2372,7 +2372,7 @@ def manage_society(request, society_id):
     })
 
 @login_required
-def manage_society_tags_table(request, society_id, tag_sort, tag_page):
+def manage_society_tags_table(request, society_id, tag_sort, tag_page, items_per_page):
     society = Society.objects.get(id=society_id)
     tag_page = int(tag_page)
     (tags, num_tag_pages) = _get_paged_tags(society, tag_sort, tag_page)
