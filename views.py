@@ -466,10 +466,8 @@ def tooltip(request):
     
     tag = Node.objects.get(id=tag_id)
     sector = single_row(tag.parents.filter(id=sector_id))
-
-    (min_resources, max_resources) = Node.objects.get_resource_range(sector)
-    (min_sectors, max_sectors) = Node.objects.get_sector_range(sector)
-    (min_related_tags, max_related_tags) = Node.objects.get_related_tag_range(sector)
+    
+    (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = Node.objects.get_sector_ranges(sector)
     
     resourceLevel = _get_popularity_level(min_resources, max_resources, tag.num_resources)
     sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.parents.count())

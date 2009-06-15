@@ -10,6 +10,7 @@ from datetime import datetime
 import logging
 import time
 import string
+import settings
 
 def single_row(results, message=None):
     if len(results) != 1:
@@ -192,6 +193,57 @@ class NodeManager(models.Manager):
             max_resources = max(resource_counts)
         
         return (min_resources, max_resources)
+
+    def get_sector_ranges(self, sector):
+        """
+        Returns the min/max amount of resources/sectors/related-tags per tag for the given sector.
+        Ignores tags with no resources, no filters, or no societies.
+        Returns a tuple:
+            (min_resources,
+            max_resources,
+            min_sectors,
+            max_sectors,
+            min_related_tags,
+            max_related_tags)
+        """
+        tags = sector.child_nodes
+        
+        # Filter out tags with no resources
+        tags = tags.extra(
+            select={
+                'num_resources1': 'SELECT COUNT(*) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id',
+                'num_societies': 'SELECT COUNT(*) FROM ieeetags_node_societies WHERE ieeetags_node_societies.node_id = ieeetags_node.id',
+                'num_filters': 'SELECT COUNT(*) FROM ieeetags_node_filters WHERE ieeetags_node_filters.node_id = ieeetags_node.id',
+                'num_sectors': 'SELECT COUNT(*) FROM ieeetags_node_parents WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id',
+                'num_related_tags': 'SELECT COUNT(*) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id',
+            },
+        )
+        
+        min_resources = None
+        max_resources = None
+        min_sectors = None
+        max_sectors = None
+        min_related_tags = None
+        max_related_tags = None
+        
+        for tag in tags:
+            if (not settings.DEBUG_HIDE_TAGS_WITH_NO_RESOURCES or tag.num_resources1 > 0) and tag.num_societies > 0 and tag.num_filters > 0:
+                if min_resources is None or tag.num_resources1 < min_resources:
+                    min_resources = tag.num_resources1
+                if max_resources is None or tag.num_resources1 > max_resources:
+                    max_resources = tag.num_resources1
+
+                if min_sectors is None or tag.num_sectors < min_sectors:
+                    min_sectors = tag.num_sectors
+                if max_sectors is None or tag.num_sectors > max_sectors:
+                    max_sectors = tag.num_sectors
+
+                if min_related_tags is None or tag.num_related_tags < min_related_tags:
+                    min_related_tags = tag.num_related_tags
+                if max_related_tags is None or tag.num_related_tags > max_related_tags:
+                    max_related_tags = tag.num_related_tags
+
+        return (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags)
     
     def get_sector_range(self, sector):
         "Returns the min/max amount of sectors-per-tag for the given sector."
