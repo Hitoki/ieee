@@ -35,6 +35,10 @@
     background: white;
 }
 
+#lightbox .lightbox-content .create-tag-lightbox {
+    width: 750px;
+}
+
 #lightbox .lightbox-content .lightbox-pad,
 #lightbox .lightbox-content .create-tag-lightbox
 {

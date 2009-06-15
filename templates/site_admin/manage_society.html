@@ -600,7 +600,7 @@
                             <input type="button" id="create-tag-float" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ tags_tab_url|urlencode }}';" value="Create New Tag" />
                             
                             <!-- Show the "Associate Tags with this Society" input: -->
-                            {% eval form['tags'] %}
+                            {% eval form['tags'] %}<div class="multisearch-note">Type * to show all<br/>of this society's tags</div>
                             
                             <div id="tags-table-content">
                                 {% manage_society_tags_table %}

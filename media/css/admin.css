@@ -469,6 +469,7 @@ ul.pages li a.selected
 }
 
 #pages-tags-top {
+    clear:left;
     margin-top: 1em;
 }
 
