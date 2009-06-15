@@ -11,6 +11,7 @@ import logging
 import os.path
 import string
 import sys
+import time
 import traceback
 from urllib import quote
 
@@ -458,6 +459,8 @@ def ajax_nodes_xml(request):
 def tooltip(request):
     disable_frontend()
     
+    start = time.time()
+    
     tag_id = request.GET['tag_id']
     sector_id = request.GET['sector_id']
     
@@ -473,6 +476,7 @@ def tooltip(request):
     related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, tag.related_tags.count())
     
     return render(request, 'tooltip.html', {
+        'page_time': time.time() - start,
         'tag': tag,
         'tagLevel': resourceLevel,
         'sectorLevel': sectorLevel,
