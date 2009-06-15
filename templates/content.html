@@ -4,7 +4,7 @@
     {% if is_ajax %}
         
         <a class="lightbox-close"></a>
-        <h1>{{ num_resources }} Resources Tagged "{{ tag.name }}"</h1>
+        <h1>{{ num_resources }} Resource{{num_resources|pluralize}} Tagged "{{ tag.name }}"</h1>
         <div class="resources-pad">
         
             
