@@ -945,3 +945,52 @@ p.items-per-page {
 select.items-per-page {
     width:auto !important;
 }
+
+/* Tooltip Styles */
+
+.node-tooltip h3 {
+    font-size:220%;
+    margin:0px 0px 15px 0px;
+}
+
+table.node-tooltip-grid td {
+    padding-top:5px;
+    padding-right:5px; 
+}
+
+.sector-block,
+.related-tags-block {
+    height:50px;
+    width:50px;
+    text-align:center;
+    font-weight:bold;
+    color: white;
+    font-size:90%;
+    margin-right: 10px;
+}
+
+.sector-block {
+    /*background:#fff200;*/
+}
+
+.related-tags-block {
+    /*background:#f7941d;*/
+}
+
+.results-links { 
+    width:100%;
+    text-align:center;
+    padding-top: 1em;
+}
+
+.results-links a {     
+    text-decoration:none;
+    color:#006699;
+    font-size:110%;
+    font-weight:bold;
+    text-align: center;
+}
+
+.results-links a:hover {
+    text-decoration: underline;
+}
