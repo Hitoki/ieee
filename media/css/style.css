@@ -950,7 +950,8 @@ select.items-per-page {
 
 .node-tooltip h3 {
     font-size:220%;
-    margin:0px 0px 15px 0px;
+    line-height:1em;
+    margin:0;
 }
 
 table.node-tooltip-grid td {
@@ -959,7 +960,9 @@ table.node-tooltip-grid td {
 }
 
 .sector-block,
-.related-tags-block {
+.related-tags-block,
+.filter-block
+{
     height:50px;
     width:50px;
     text-align:center;
@@ -975,6 +978,18 @@ table.node-tooltip-grid td {
 
 .related-tags-block {
     /*background:#f7941d;*/
+}
+
+.filter-block {
+    /*background:silver;*/
+    color: black;
+    font-weight: bold;
+}
+
+.tooltip-filters, .filter-block {
+    vertical-align: top;
+    font-size: 8pt;
+    padding: 0;
 }
 
 .results-links { 
