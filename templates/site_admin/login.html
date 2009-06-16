@@ -10,17 +10,19 @@
 
 {% block main_table_content %}
 <div id="adminLogin">
+    <h1>Login</h1>
+    {% comment %}
     <br/>
-    
     <div id="society-resource-tabs" class="nootabs {useCookies:false, useHash:true}">
         <ul class="nootabs-menus">
             <li><a href="">Login</a></li>
             <li><a href="">About the Project</a></li>
             <li><a href="">About the Team</a></li>
         </ul>
-        
+    
         <!-- Login tab -->
         <div id="login-tab" class="nootabs-tab">
+    {% endcomment %}    
             {% if show_society_login_banner %}
                 <p class="society-login-banner">
                     Welcome, IEEE Society & Council Leaders. You will be receiving via email a username and password shortly.
@@ -61,7 +63,8 @@
                         <param name='flashvars' value='video=stU09QREBIR11eQFtbUlNYUlJV'/>
                         <param name='wmode' value='opaque'/>
                 </object>
-            </div>            
+            </div> 
+    {% comment %}            
         </div>
         
         <!-- About the Project tab -->
@@ -77,7 +80,7 @@
         </div>
         
     </div>
-    
+    {% endcomment %}
     
     
     
