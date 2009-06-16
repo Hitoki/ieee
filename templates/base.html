@@ -10,7 +10,7 @@
             IEEE Technology Navigator {% block server_title %}{% endblock %}
         </title>
         
-        {% cssmin css/style.css css/tooltip.css css/lightbox.css css/nootabs.css css/multisearch.css css/flyover.css css/vert-center.css %}
+        {% cssmin css/style.css css/lightbox.css css/nootabs.css css/multisearch.css css/flyover.css css/vert-center.css %}
         <!--[if IE 7]>
         <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/style-ie7.css" title="Style for IE7" />
         <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/vert-center-ie.css" title="Vert Center Style for IE" />
@@ -21,8 +21,7 @@
             var MEDIA_URL = "{{ MEDIA_URL }}";
         </script>
         
-        {% jsmin js/jquery-1.2.6.min.js js/jquery.scrollTo.js js/jquery.metadata.js js/global.js js/console.js js/roamer.js js/tags.js js/tooltip.js js/lightbox.js js/nootabs.js js/json2.js js/multisearch.js js/flyover.js js/blurText.js js/autoTruncate.js js/jqbrowser2.js js/liveUrl.js js/php.js js/jquery.color.js %}
-        
+        {% jsmin js/jquery-1.3.2.js js/jquery.scrollTo.js js/jquery.metadata.js js/global.js js/console.js js/roamer.js js/tags.js js/lightbox.js js/nootabs.js js/json2.js js/multisearch.js js/flyover.js js/blurText.js js/autoTruncate.js js/jqbrowser2.js js/liveUrl.js js/php.js js/jquery.color.js %}
         <!-- BEGIN IE ActiveX activation workaround for Constellation Roamer by Chris Benjaminsen -->
         <script type="text/javascript">function writeHTML(a){document.write(a)}</script>
         <!--

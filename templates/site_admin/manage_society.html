@@ -29,15 +29,17 @@
             elem.data('overShadow', this);
             
             var pos = getElemPos(elem);
+            var pos = this.elem.position();
+            
             this.shadowElem = $('<div class="over-shadow"></div>').appendTo('body');
-            this.shadowElem.css('left', pos.x + 'px');
-            this.shadowElem.css('top', pos.y + 'px');
+            this.shadowElem.css('left', pos.left + 'px');
+            this.shadowElem.css('top', pos.top + 'px');
             this.shadowElem.css('width', elem.attr('offsetWidth') + 'px');
             this.shadowElem.css('height', elem.attr('offsetHeight') + 'px');
             
             this.contentElem = $('<div class="over-shadow-content"></div>').appendTo('body');
-            this.contentElem.css('left', pos.x + 'px');
-            this.contentElem.css('top', pos.y + 'px');
+            this.contentElem.css('left', pos.left + 'px');
+            this.contentElem.css('top', pos.top + 'px');
             this.contentElem.css('width', elem.attr('offsetWidth') + 'px');
             this.contentElem.css('height', elem.attr('offsetHeight') + 'px');
             this.contentElem.html(html);

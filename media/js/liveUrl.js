@@ -86,11 +86,9 @@ LiveUrl.prototype.update = function() {
             
             //log('  options.varName: ' + options.varName);
             
-            
-            
-            log("  this.elems[i].attr('href'): " + this.elems[i].attr('href'));
+            //log("  this.elems[i].attr('href'): " + this.elems[i].attr('href'));
             var newHref = changeQueryVar(this.elems[i].attr('href'), options.varName, window.location.href);
-            log("  newHref: " + newHref);
+            //log("  newHref: " + newHref);
             this.elems[i].attr('href', newHref);
             
             

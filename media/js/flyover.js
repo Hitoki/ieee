@@ -10,14 +10,38 @@
 
 // Returns the element's position relative to the page.
 function getElemPos(elem) {
+    //log('getElemPos()');
+    
     elem = $(elem)[0];
     var x = y = 0;
     
     // Get the element relative to it's offset parents
     var originalElem = elem;
+    //log('  '
+    //    + ',elem.id'
+    //    + ',elem.className'
+    //    + ',x'
+    //    + ',y'
+    //    + ',elem.offsetLeft'
+    //    + ',elem.offsetTop'
+    //);
     do {
         x += elem.offsetLeft;
         y += elem.offsetTop;
+        //log('  elem.id: ' + elem.id);
+        //log('  elem.className: ' + elem.className);
+        //log('  x, y: ' + x + ', ' + y);
+        
+        //log('  '
+        //    + ',' + elem.id
+        //    + ',' + elem.className
+        //    + ',' + x
+        //    + ',' + y
+        //    + ',' + elem.offsetLeft
+        //    + ',' + elem.offsetTop
+        //);
+        
+        //createDot(x, y, 2000);
     } while (elem = elem.offsetParent);
     
     // Now take into account any scrolling elements (except for the page scrolling)
@@ -29,6 +53,9 @@ function getElemPos(elem) {
         }
     } while((elem = elem.parentNode) && elem != document.documentElement);
     
+    //log('  x, y: ' + x + ', ' + y);
+    
+    //log('~getElemPos()');
     return {x:x, y:y};
 }
 
