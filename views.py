@@ -473,7 +473,7 @@ def tooltip(request):
     # Filter out related tags without filters (to match roamer)
     related_tags = []
     for related_tag in tag.related_tags.all():
-        if related_tag.filters.count() > 0:
+        if related_tag.filters.count() > 0 and (not settings.DEBUG_HIDE_TAGS_WITH_NO_RESOURCES or related_tag.resources.count() > 0):
             related_tags.append(related_tag)
     
     return render(request, 'tooltip.html', {
