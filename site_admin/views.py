@@ -1709,7 +1709,6 @@ def edit_tag(request, tag_id):
         'societies': tag.societies.all(),
         'filters': [filter.id for filter in tag.filters.all()],
         'related_tags': tag.related_tags.all(),
-        'num_resources': tag.num_resources,
     })
     
     form.fields['related_tags'].widget.set_exclude_tag_id(tag.id)
@@ -2153,15 +2152,15 @@ def _get_paged_tags(society, tag_sort, tag_page):
     
     elif tag_sort == 'num_resources_ascending':
         tags = society.tags.extra(select={
-            'num_resources': 'SELECT COUNT(ieeetags_resource_nodes.id) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id',
+            'num_resources1': 'SELECT COUNT(ieeetags_resource_nodes.id) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id',
         }, order_by=[
-            'num_resources',
+            'num_resources1',
         ])
     elif tag_sort == 'num_resources_descending':
         tags = society.tags.extra(select={
-            'num_resources': 'SELECT COUNT(ieeetags_resource_nodes.id) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id',
+            'num_resources1': 'SELECT COUNT(ieeetags_resource_nodes.id) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id',
         }, order_by=[
-            '-num_resources',
+            '-num_resources1',
         ])
     
     elif tag_sort == 'num_related_tags_ascending':
@@ -3044,7 +3043,7 @@ def tags_report(request):
     tags = Node.objects.get_tags().extra(
         select={
             'num_filters': 'SELECT COUNT(*) FROM ieeetags_node_filters WHERE ieeetags_node_filters.node_id = ieeetags_node.id',
-            'num_resources': 'SELECT COUNT(*) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id',
+            'num_resources1': 'SELECT COUNT(*) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id',
             'num_societies': 'SELECT COUNT(*) FROM ieeetags_node_societies WHERE ieeetags_node_societies.node_id = ieeetags_node.id',
         }
     )
@@ -3058,7 +3057,7 @@ def tags_report(request):
             all_filtered_tags += 1
         if tag.num_societies > 0:
             all_society_tags += 1
-        if tag.num_resources > 0:
+        if tag.num_resources1 > 0:
             all_resource_tags += 1
     
     all_percent_filtered = all_filtered_tags / float(all_total_tags) * 100
@@ -3076,7 +3075,7 @@ def tags_report(request):
         society_tags = society.tags.extra(
             select={
                 'num_filters': 'SELECT COUNT(*) FROM ieeetags_node_filters WHERE ieeetags_node_filters.node_id = ieeetags_node.id',
-                'num_resources': 'SELECT COUNT(*) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id',
+                'num_resources1': 'SELECT COUNT(*) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id',
                 'num_societies': 'SELECT COUNT(*) FROM ieeetags_node_societies WHERE ieeetags_node_societies.node_id = ieeetags_node.id',
             }
         )
@@ -3094,7 +3093,7 @@ def tags_report(request):
         
         resource_tags = 0
         for tag in society_tags:
-            if tag.num_resources > 0:
+            if tag.num_resources1 > 0:
                 resource_tags += 1
         if total_tags == 0:
             percent_resource = 0

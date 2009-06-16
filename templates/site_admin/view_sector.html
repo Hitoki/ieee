@@ -49,10 +49,10 @@
                     <a href="{% url admin_view_tag tag.id %}">{{ tag.name }}</a>
                 </td>
                 <td>
-                    {{ tag.num_resources }}
+                    {{ tag.resources.count }}
                 </td>
                 <td>
-                    {{ tag.num_related_tags }}
+                    {{ tag.related_tags.count }}
                 </td>
                 <td>
                     {{ tag.filters.all|join:", " }}

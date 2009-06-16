@@ -298,10 +298,9 @@ def ajax_nodes_json(request):
     data = []
     for tag in tags:
         #print 'tag.name: %s' % tag.name
-        #print 'tag.num_resources: %s' % tag.num_resources
         #print 'tag.parents.count(): %s' % tag.parents.count()
         
-        resourceLevel = _get_popularity_level(minResources, maxResources, tag.num_resources)
+        resourceLevel = _get_popularity_level(minResources, maxResources, tag.resources.count())
         sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.parents.count())
         related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, tag.related_tags.count())
         
@@ -461,7 +460,7 @@ def tooltip(request):
     
     (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = Node.objects.get_sector_ranges(sector)
     
-    resourceLevel = _get_popularity_level(min_resources, max_resources, tag.num_resources)
+    resourceLevel = _get_popularity_level(min_resources, max_resources, tag.resources.count())
     sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.parents.count())
     related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, tag.related_tags.count())
     
