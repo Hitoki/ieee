@@ -250,7 +250,7 @@ def ajax_nodes_json(request):
     if sort is None or sort == 'alphabetical':
         orderBy = 'name'
     elif sort == 'frequency':
-        orderBy = 'num_resources'
+        orderBy = '-num_resources1'
     elif sort == 'num_sectors':
         orderBy = None
     elif sort == 'num_related_tags':
@@ -266,14 +266,9 @@ def ajax_nodes_json(request):
     # Build node list
     sector = Node.objects.get(id=sectorId)
     
-    if settings.DEBUG_HIDE_TAGS_WITH_NO_RESOURCES:
-        # Filter out tags with no resources
-        tags = sector.get_tags().extra(
-            select={ 'num_resources': 'SELECT COUNT(*) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id' },
-        ).filter(num_resources__gt=0)
-    else:
-        # All tags
-        tags = sector.get_tags()
+    tags = sector.get_tags().extra(
+        select={ 'num_resources1': 'SELECT COUNT(*) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id' },
+    )
     
     if sort == 'num_sectors':
         # TODO: Handle clusters here
@@ -311,7 +306,7 @@ def ajax_nodes_json(request):
         related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, tag.related_tags.count())
         
         # Only show tags that have one of the selected filters, and also are associated with a society
-        if (settings.DEBUG_TAGS_HAVE_ALL_FILTERS or len(tag.filters.filter(id__in=filterIds))) and tag.societies.count() > 0:
+        if (settings.DEBUG_TAGS_HAVE_ALL_FILTERS or len(tag.filters.filter(id__in=filterIds))) and tag.societies.count() > 0 and (not settings.DEBUG_HIDE_TAGS_WITH_NO_RESOURCES or tag.num_resources1 > 0):
             data.append({
                 'id': tag.id,
                 'label': tag.name,
