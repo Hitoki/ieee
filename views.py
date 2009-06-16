@@ -474,7 +474,7 @@ def tooltip(request):
     related_tags = []
     for related_tag in tag.related_tags.all():
         if related_tag.filters.count() > 0:
-            related_tags.push(related_tag)
+            related_tags.append(related_tag)
     
     return render(request, 'tooltip.html', {
         'tag': tag,
