@@ -134,11 +134,16 @@
                 // Multisearch is ready, attach events
                 
                 multisearch_tags.subscribe('added_option', function(multisearch, event, data) {
-                    //log('event added_option');
-                    $.post('{% url ajax_update_society %}', {
-                        action: 'add_tag',
-                        society_id: {{ society.id }},
-                        tag_id: data.option.value
+                    // NOTE: This needs to be syncronous, otherwise the table gets refreshed before the deletion is complete.
+                    $.ajax({
+                        async: false,
+                        url: '{% url ajax_update_society %}',
+                        data: {
+                            action: 'add_tag',
+                            society_id: {{ society.id }},
+                            tag_id: data.option.value
+                        },
+                        type: 'POST'
                     });
                     updateTagCount()
                     
