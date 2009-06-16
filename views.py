@@ -325,13 +325,10 @@ def ajax_nodes_xml(request):
     disable_frontend()
     
     "Creates an XML list of nodes & connections for Asterisq Constellation Roamer"
-    #logging.debug('ajax_nodes_xml()')
-    #logging.debug('  request:')
+    logging.debug('ajax_nodes_xml()')
     
     nodeId = request.GET['nodeId']
-    #logging.debug('  nodeId: ' + nodeId)
-    
-    #logging.debug('  url: ' + request.get_full_path())
+    logging.debug('  url: ' + request.get_full_path())
     
     # TODO: the depth param is ignored, doesn't seem to affect anything now
     
@@ -363,9 +360,18 @@ def ajax_nodes_xml(request):
         nodes.append(parent)
     
     # Get related tags for this tag
+    related_tags = []
     if node.node_type.name == NodeType.TAG:
         for related_tag in node.related_tags.all():
-            nodes.append(related_tag)
+            if settings.DEBUG_HIDE_TAGS_WITH_NO_RESOURCES:
+                if related_tag.societies.count() > 0 and related_tag.resources.count() > 0:
+                    # Hide all tags with no societies or no resources
+                    related_tags.append(related_tag)
+            else:
+                if related_tag.societies.count() > 0:
+                    # Hide all tags with no societies
+                    related_tags.append(related_tag)
+    nodes.extend(related_tags)
     
     edges = []
     for childNode in child_nodes:
@@ -375,7 +381,7 @@ def ajax_nodes_xml(request):
         
     # Edges for related tags
     if node.node_type.name == NodeType.TAG:
-        for related_tag in node.related_tags.all():
+        for related_tag in related_tags:
             edges.append((node.id, related_tag.id))
             
     #print '  len(edges):', len(edges)
