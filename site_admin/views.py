@@ -2165,15 +2165,15 @@ def _get_paged_tags(society, tag_sort, tag_page):
     
     elif tag_sort == 'num_related_tags_ascending':
         tags = society.tags.extra(select={
-            'num_related_tags': 'SELECT COUNT(ieeetags_node_related_tags.id) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id',
+            'num_related_tags1': 'SELECT COUNT(ieeetags_node_related_tags.id) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id',
         }, order_by=[
-            'num_related_tags',
+            'num_related_tags1',
         ])
     elif tag_sort == 'num_related_tags_descending':
         tags = society.tags.extra(select={
-            'num_related_tags': 'SELECT COUNT(ieeetags_node_related_tags.id) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id',
+            'num_related_tags1': 'SELECT COUNT(ieeetags_node_related_tags.id) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id',
         }, order_by=[
-            '-num_related_tags',
+            '-num_related_tags1',
         ])
     
     else:

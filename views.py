@@ -280,8 +280,8 @@ def ajax_nodes_json(request):
     elif sort == 'num_related_tags':
         # TODO: Handle clusters here
         tags = tags.extra(
-            select={ 'num_related_tags': 'SELECT COUNT(*) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id' },
-            order_by=['-num_related_tags', 'name'],
+            select={ 'num_related_tags1': 'SELECT COUNT(*) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id' },
+            order_by=['-num_related_tags1', 'name'],
         )        
         
     else:
