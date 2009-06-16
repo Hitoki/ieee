@@ -464,8 +464,15 @@ def tooltip(request):
     sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.parents.count())
     related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, tag.related_tags.count())
     
+    # Filter out related tags without filters (to match roamer)
+    related_tags = []
+    for related_tag in tag.related_tags.all():
+        if related_tag.filters.count() > 0:
+            related_tags.push(related_tag)
+    
     return render(request, 'tooltip.html', {
         'tag': tag,
+        'related_tags': related_tags,
         'tagLevel': resourceLevel,
         'sectorLevel': sectorLevel,
         'relatedTagLevel': related_tag_level,
