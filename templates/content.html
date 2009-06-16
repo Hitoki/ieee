@@ -48,9 +48,15 @@
                             <!-- Periodicals -->
                             <div class="group">
                                 {% if periodicals|length %}
-                                    {% for periodical in periodicals %}
-                                        <p class="{% cycle 'item_odd' 'item_even' %}">{{periodical.name}}</p>
-                                        <p class="{% cycle 'desc_odd' 'desc_even' %}">{{periodical.description}}</p>
+                                    {% for resource in periodicals %}
+                                        {% if resource.url %}
+                                            <a href="{{ resource.url }}" target="_blank">
+                                        {% endif %}
+                                        <p class="{% cycle 'item_odd' 'item_even' %}">{{resource.name}}</p>
+                                        {% if resource.url %}
+                                            </a>
+                                        {% endif %}
+                                        <p class="{% cycle 'desc_odd' 'desc_even' %}">{{resource.description}}</p>
                                     {% endfor %}
                                 {% else %}
                                     <p class="no-resources">(no periodicals)</p>
@@ -62,9 +68,15 @@
                             <!-- Conferences -->
                             <div class="group">
                                 {% if conferences|length %}
-                                    {% for periodical in conferences %}
-                                        <p class="{% cycle 'item_odd' 'item_even' %}">{{periodical.name}}</p>
-                                        <p class="{% cycle 'desc_odd' 'desc_even' %}">{{periodical.description}}</p>
+                                    {% for resource in conferences %}
+                                        {% if resource.url %}
+                                            <a href="{{ resource.url }}" target="_blank">
+                                        {% endif %}
+                                        <p class="{% cycle 'item_odd' 'item_even' %}">{{resource.name}}</p>
+                                        {% if resource.url %}
+                                            </a>
+                                        {% endif %}
+                                        <p class="{% cycle 'desc_odd' 'desc_even' %}">{{resource.description}}</p>
                                     {% endfor %}
                                 {% else %}
                                     <p class="no-resources">(no conferences)</p>
@@ -76,9 +88,15 @@
                             <!-- Standards -->
                             <div class="group">
                                 {% if standards|length %}
-                                    {% for periodical in standards %}
-                                        <p class="{% cycle 'item_odd' 'item_even' %}">{{periodical.name}}</p>
-                                        <p class="{% cycle 'desc_odd' 'desc_even' %}">{{periodical.description}}</p>
+                                    {% for resource in standards %}
+                                        {% if resource.url %}
+                                            <a href="{{ resource.url }}" target="_blank">
+                                        {% endif %}
+                                        <p class="{% cycle 'item_odd' 'item_even' %}">{{resource.name}}</p>
+                                        {% if resource.url %}
+                                            </a>
+                                        {% endif %}
+                                        <p class="{% cycle 'desc_odd' 'desc_even' %}">{{resource.description}}</p>
                                     {% endfor %}
                                 {% else %}
                                     <p class="no-resources">(no standards)</p>
@@ -90,9 +108,15 @@
                             <!-- Experts -->
                             <div class="group">
                                 {% if experts|length %}
-                                    {% for periodical in experts %}
-                                        <p class="{% cycle 'item_odd' 'item_even' %}">{{periodical.name}}</p>
-                                        <p class="{% cycle 'desc_odd' 'desc_even' %}">{{periodical.description}}</p>
+                                    {% for resource in experts %}
+                                        {% if resource.url %}
+                                            <a href="{{ resource.url }}" target="_blank">
+                                        {% endif %}
+                                        <p class="{% cycle 'item_odd' 'item_even' %}">{{resource.name}}</p>
+                                        {% if resource.url %}
+                                            </a>
+                                        {% endif %}
+                                        <p class="{% cycle 'desc_odd' 'desc_even' %}">{{resource.description}}</p>
                                     {% endfor %}
                                 {% else %}
                                     <p class="no-resources">(no experts)</p>

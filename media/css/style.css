@@ -278,6 +278,10 @@ ul#view-header li {
     text-align:left;
 }
 
+#content .group a {
+    color:#444444;
+}
+
 #content .item_head {
     background-color: #006599;
     color: #ffffff;
