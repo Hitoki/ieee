@@ -139,7 +139,7 @@ DEBUG_HIDE_TAGS_WITH_NO_RESOURCES = True
 DEBUG_REQUIRE_LOGIN_FRONTEND = True
 
 # Disable all frontend pages until they're finished
-DEBUG_DISABLE_FRONTEND = True
+DEBUG_DISABLE_FRONTEND = False
 
 # Enable the Help tab on the Manage Society page
 DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB = True
