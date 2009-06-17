@@ -38,11 +38,11 @@ _IMPORT_SOURCES = [
 ]
 
 def _get_version():
-    logging.debug('_get_version()')
+    #logging.debug('_get_version()')
     path = relpath(__file__, '..')
     version_path = relpath(__file__, '../version.txt')
-    logging.debug('  path: %s' % path)
-    logging.debug('  version_path: %s' % version_path)
+    #logging.debug('  path: %s' % path)
+    #logging.debug('  version_path: %s' % version_path)
     
     
     file = open(version_path, 'r')
@@ -50,19 +50,19 @@ def _get_version():
     revision = file.readline().strip()
     date = file.readline().strip()
     file.close()
-    logging.debug('  revision: %s' % revision)
+    #logging.debug('  revision: %s' % revision)
     if revision == '$WCREV$':
         revision = 'SVN'
-        logging.debug('  looking for svn revision')
+        #logging.debug('  looking for svn revision')
         
         from subprocess import Popen, PIPE
         try:
-            logging.debug('  running:')
-            logging.debug('svn info "%s"' % path)
+            #logging.debug('  running:')
+            #logging.debug('svn info "%s"' % path)
             proc = Popen('svn info "%s"' % path, shell=True, stdout=PIPE)
-            logging.debug('  wait')
+            #logging.debug('  wait')
             proc.wait()
-            logging.debug('  done wait')
+            #logging.debug('  done wait')
             for line in proc.stdout:
                 #logging.debug('  line: %s' % line)
                 matches = re.match(r'Revision: (\d+)', line)
@@ -75,11 +75,11 @@ def _get_version():
                     #date = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
                     date = datetime(*(time.strptime(date, '%Y-%m-%d %H:%M:%S')[0:6]))
         except Exception, e:
-            logging.debug('  got exception: %s' % e)
+            #logging.debug('  got exception: %s' % e)
             revision = 'UNKNOWN'
             date = ''
-        logging.debug('  revision: %s' % revision)
-        logging.debug('  date: %s' % date)
+        #logging.debug('  revision: %s' % revision)
+        #logging.debug('  date: %s' % date)
             
     return version, revision, date
 
