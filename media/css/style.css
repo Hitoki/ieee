@@ -121,7 +121,7 @@ table.main td.center .center-pad {
     border:none;
 }
 
-#header p.admin-links {
+.center-pad p.admin-links {
     display:block;
     float:right;
     margin-top:15px;
@@ -130,7 +130,7 @@ table.main td.center .center-pad {
     color:gray;
 }
 
-#header p.admin-links a {
+.center-pad p.admin-links a {
     color:gray;
 }
 

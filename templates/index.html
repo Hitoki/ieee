@@ -14,19 +14,7 @@
                         <img class="leftCorner" src="{{MEDIA_URL}}images/mainTopLeftCorner.gif" width="26" height="67" />
                         <a href="/" class="home"><img class="banner" src="{{MEDIA_URL}}images/ieee_banner.jpg" width="563" height="42" /></a>
                         <img class="rightCorner" src="{{MEDIA_URL}}images/mainTopRightCorner.gif" width="26" height="67" />
-                        
-                        {% if user %}
-                            <p class="admin-links">
-                                {% ifequal user.get_profile.role "admin" %}
-                                    <a href="{% url admin_home %}">Admin</a>
-                                {% endifequal %}
-                                {% ifequal user.get_profile.role "society_manager" %}
-                                    <a href="{% url admin_home %}">Society Manager Admin</a>
-                                {% endifequal %}
-                                | <a href="{% url admin_logout %}">Logout</a>
-                            </p>
-                        {% endif %}
-                        
+ 
                     </div>
                     
                     <div class="center-pad">
@@ -45,6 +33,19 @@
                                 <img src="{{MEDIA_URL}}images/galaxy_screenshot.png" width="300" height="229" />
                             </a>
                         </div>
+                        
+                        {% if user %}
+                            <p class="admin-links">
+                                {% ifequal user.get_profile.role "admin" %}
+                                    <a href="{% url admin_home %}">Admin</a>
+                                {% endifequal %}
+                                {% ifequal user.get_profile.role "society_manager" %}
+                                    <a href="{% url admin_home %}">Society Manager Admin</a>
+                                {% endifequal %}
+                                | <a href="{% url admin_logout %}">Logout</a>
+                            </p>
+                        {% endif %}
+                        
                     </div>
                         
                     <div id="footer">
