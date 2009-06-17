@@ -303,32 +303,28 @@ ul#view-header li {
 #content p.item_even {
     font-weight: bold;
     /* background-color: #BAD4F9; */
-    padding: 5px 5px 0 5px;
+    padding: 5px 5px 0 25px;
     margin: 0px;
-    text-indent: 20px;
     vertical-align: top;
 }
 
 #content p.item_odd {
     font-weight: bold;
     /* background-color: #CDE0FC; */
-    padding: 5px 5px 0 5px;
+    padding: 5px 5px 0 25px;
     margin: 0px;
-    text-indent: 20px;
 }
 
 #content p.desc_even {
     /* background-color: #BAD4F9; */
-    padding: 5px 5px 0 5px;
+    padding: 5px 5px 0 25px;
     margin: 0px;
-    padding-left:25px;
 }
 
 #content p.desc_odd {
     /* background-color: #CDE0FC; */
-    padding: 5px 5px 0 5px;
+    padding: 5px 5px 0 25px;
     margin: 0px;
-    padding-left:25px;
 }
 
 #content-title {
