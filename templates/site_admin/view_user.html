@@ -4,7 +4,7 @@
     
     <h1>View User</h1>
     
-    <p><a href="{% url admin_edit_user user.id %}">Edit user</a></p>
+    <p><a href="{% url admin_edit_user view_user.id %}">Edit User</a></p>
     
     <table class="grid">
         <tr>
@@ -12,7 +12,7 @@
                 Username:
             </th>
             <td>
-                {{ user.username }}
+                {{ view_user.username }}
             </td>
         </tr>
         <tr>
@@ -20,7 +20,7 @@
                 Name:
             </th>
             <td>
-                {{ user.first_name }} {{ user.last_name }}
+                {{ view_user.first_name }} {{ view_user.last_name }}
             </td>
         </tr>
         <tr>
@@ -28,7 +28,7 @@
                 Email:
             </th>
             <td>
-                {{ user.email }}
+                {{ view_user.email }}
             </td>
         </tr>
         <tr>
@@ -36,7 +36,7 @@
                 Is Staff:
             </th>
             <td>
-                {{ user.is_staff|yesno }}
+                {{ view_user.is_staff|yesno }}
             </td>
         </tr>
         <tr>
@@ -44,7 +44,7 @@
                 Is Superuser:
             </th>
             <td>
-                {{ user.is_superuser|yesno }}
+                {{ view_user.is_superuser|yesno }}
             </td>
         </tr>
         <tr>
@@ -52,7 +52,7 @@
                 Role:
             </th>
             <td>
-                {{ user.get_profile.role }}
+                {{ view_user.get_profile.role }}
             </td>
         </tr>
         <tr>
@@ -60,8 +60,8 @@
                 Societies:
             </th>
             <td>
-                {% for society in user.societies.all %}
-                    <a href="{% url admin_view_society society.id %}">{{ society.name }}</a>, 
+                {% for society in view_user.societies.all %}
+                    <a href="{% url admin_view_society society.id %}">{{ society.name }}</a>{% if not forloop.last %}, {% endif %}
                 {% endfor %}
             </td>
         </tr>

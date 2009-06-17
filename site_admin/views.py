@@ -1896,7 +1896,7 @@ def view_user(request, user_id):
     
     user = User.objects.get(id=user_id)
     return render(request, 'site_admin/view_user.html', {
-        'user': user,
+        'view_user': user,
     })
     
 @login_required
@@ -2006,7 +2006,7 @@ def save_user(request):
             
             if ask_send_login_info:
                 return render(request, 'site_admin/ask_send_login_info.html', {
-                    'user': user,
+                    'edited_user': user,
                     'plaintext_password': form.cleaned_data['password1'],
                 })
                 
