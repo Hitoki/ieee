@@ -165,6 +165,9 @@ var Tags = {
         var tagBlock = $('#tag-' + id);
         //tagBlock.addClass('activeTag');
         
+        // Hide the flyover so it doesn't overlap with the lightbox
+        Flyover.hide();
+        
         // Show resource results in a lightbox
         Lightbox.show('/ajax/tag_content?tagId=' + id, {
             verticalCenter: false,
