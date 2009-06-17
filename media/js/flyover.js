@@ -165,7 +165,7 @@ var Flyover = {
         this._elem = elem;
         
         // Validate options
-        if ($.inArray(this.options.position, ['left', 'left-top', 'left-bottom', 'right', 'right-top', 'right-bottom', 'top', 'top-left', 'top-right', 'bottom', 'bottom-left', 'bottom-right', 'auto-left-right-top']) == -1) {
+        if ($.inArray(this.options.position, ['left', 'left-top', 'left-bottom', 'right', 'right-top', 'right-bottom', 'top', 'top-left', 'top-right', 'bottom', 'bottom-left', 'bottom-right', 'auto-left-right-top', 'auto']) == -1) {
             alert('Flyover: unrecognized position "' + this.options.position + '"');
             return;
         } else if (isNaN(parseInt(this.options.hideDelay))) {
@@ -396,11 +396,30 @@ var Flyover = {
             var position = this.options.position;
             
             if (this.options.position == 'auto-left-right-top') {
+                // Automatically determine the horizontal position according to where the anchor point is
                 if (pos.x > document.body.clientWidth/2) {
                     position = 'left-top';
                 } else {
                     position = 'right-top';
                 }
+            } else if (this.options.position == 'auto') {
+                // Automatically determine the vertical & horizontal position according to where the anchor point is
+                var vertical = '';
+                var horizontal = '';
+                
+                if (pos.x > document.body.clientWidth/2) {
+                    horizontal = 'left';
+                } else {
+                    horizontal = 'right';
+                }
+                
+                if (pos.y > document.body.clientHeight/2) {
+                    vertical = 'bottom';
+                } else {
+                    vertical = 'top';
+                }
+                
+                position = horizontal + '-' + vertical;
             }
             
             this.showArrow(position);

@@ -125,7 +125,7 @@ var Tags = {
                         this,
                         {
                             url: '/ajax/tooltip?tag_id='+$(this).data('tagId')+'&sector_id='+$(this).data('sectorId'),
-                            position: 'auto-left-right-top',
+                            position: 'auto',
                             customClass: 'textui-tag',
                             hideDelay: 100
                         }
