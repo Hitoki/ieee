@@ -18,7 +18,9 @@
                             <li><a href="">Periodicals <span>({{periodicals|length}})</span></a></li>
                             <li><a href="">Conferences <span>({{conferences|length}})</span></a></li>
                             <li><a href="">Standards <span>({{standards|length}})</span></a></li>
-                            <li><a href="">Experts <span>({{experts|length}})</span></a></li>
+                            {% comment %}
+                            #    <li><a href="">Experts <span>({{experts|length}})</span></a></li>
+                            {% endcomment %}
                         </ul>
                         
                         <div>
@@ -104,26 +106,27 @@
                             </div>
                         </div>
                         
-                        <div>
-                            <!-- Experts -->
-                            <div class="group">
-                                {% if experts|length %}
-                                    {% for resource in experts %}
-                                        {% if resource.url %}
-                                            <a href="{{ resource.url }}" target="_blank">
-                                        {% endif %}
-                                        <p class="{% cycle 'item_odd' 'item_even' %}">{{resource.name}}</p>
-                                        {% if resource.url %}
-                                            </a>
-                                        {% endif %}
-                                        <p class="{% cycle 'desc_odd' 'desc_even' %}">{{resource.description}}</p>
-                                    {% endfor %}
-                                {% else %}
-                                    <p class="no-resources">(no experts)</p>
-                                {% endif %}
-                            </div>
-                        </div>
-                        
+                        {% comment %}
+                        #    <div>
+                        #        <!-- Experts -->
+                        #        <div class="group">
+                        #            {% if experts|length %}
+                        #                {% for resource in experts %}
+                        #                    {% if resource.url %}
+                        #                        <a href="{{ resource.url }}" target="_blank">
+                        #                    {% endif %}
+                        #                    <p class="{% cycle 'item_odd' 'item_even' %}">{{resource.name}}</p>
+                        #                    {% if resource.url %}
+                        #                        </a>
+                        #                    {% endif %}
+                        #                    <p class="{% cycle 'desc_odd' 'desc_even' %}">{{resource.description}}</p>
+                        #                {% endfor %}
+                        #            {% else %}
+                        #                <p class="no-resources">(no experts)</p>
+                        #            {% endif %}
+                        #        </div>
+                        #    </div>
+                        {% endcomment %}
 
                     </div>
     
