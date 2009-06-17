@@ -131,6 +131,13 @@ var Roamer = {
                 $('#resources-link').show();
                 $('.resources-tag-name').html(htmlentities(this.nodeInfo.name));
                 $('#resources-count').html(htmlentities(this.nodeInfo.num_resources));
+                
+                // Adapt the label to show "Resources" or "Resource" appropriately
+                if (this.nodeInfo.num_resources > 1)
+                    $('#resources-plural').html('s');
+                else
+                    $('#resources-plural').html('');
+                
                 $('#resources-link').css('backgroundColor', 'green');
                 $('#resources-link').animate(
                     {
