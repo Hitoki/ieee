@@ -278,8 +278,12 @@ ul#view-header li {
     text-align:left;
 }
 
-#content .group a {
-    color:#444444;
+#content .group a img {
+    border: none;
+}
+
+#content .group a p:hover {
+    text-decoration: underline;
 }
 
 #content .item_head {

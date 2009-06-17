@@ -54,7 +54,12 @@
                                         {% if resource.url %}
                                             <a href="{{ resource.url }}" target="_blank">
                                         {% endif %}
-                                        <p class="{% cycle 'item_odd' 'item_even' %}">{{resource.name}}</p>
+                                        <p class="{% cycle 'item_odd' 'item_even' %}">
+                                            {{resource.name}}
+                                            {% if resource.url %}
+                                                <img src="{{ MEDIA_URL }}images/popup.png" />
+                                            {% endif %}
+                                        </p>
                                         {% if resource.url %}
                                             </a>
                                         {% endif %}
@@ -74,7 +79,12 @@
                                         {% if resource.url %}
                                             <a href="{{ resource.url }}" target="_blank">
                                         {% endif %}
-                                        <p class="{% cycle 'item_odd' 'item_even' %}">{{resource.name}}</p>
+                                        <p class="{% cycle 'item_odd' 'item_even' %}">
+                                            {{resource.name}}
+                                            {% if resource.url %}
+                                                <img src="{{ MEDIA_URL }}images/popup.png" />
+                                            {% endif %}
+                                        </p>
                                         {% if resource.url %}
                                             </a>
                                         {% endif %}
@@ -94,7 +104,12 @@
                                         {% if resource.url %}
                                             <a href="{{ resource.url }}" target="_blank">
                                         {% endif %}
-                                        <p class="{% cycle 'item_odd' 'item_even' %}">{{resource.name}}</p>
+                                        <p class="{% cycle 'item_odd' 'item_even' %}">
+                                            {{resource.name}}
+                                            {% if resource.url %}
+                                                <img src="{{ MEDIA_URL }}images/popup.png" />
+                                            {% endif %}
+                                        </p>
                                         {% if resource.url %}
                                             </a>
                                         {% endif %}
