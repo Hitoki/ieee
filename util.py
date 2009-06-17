@@ -337,7 +337,7 @@ def main():
         print '  mig - shortcut to "dmigrate all"'
         print '  reset - drops tables & recreates'
         #print '  sync - shortcut to "syncdb"'
-        exit()
+        sys.exit()
     
     #FUNCTIONS = [
     #    'create_db',
@@ -369,7 +369,7 @@ def main():
         #    sync()
         else:
             print 'Unrecognized arg "%s"' % arg
-            exit()
+            sys.exit()
 
 if __name__ == '__main__':
     main()
