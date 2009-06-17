@@ -45,6 +45,7 @@ urlpatterns = patterns('',
     url(r'^tag/(?P<tag_id>\d+)/edit$', views.edit_tag, name='admin_edit_tag'),
     url(r'^tags/search$', views.search_tags, name='admin_search_tags'),
     url(r'^tag/(?P<tag_id>\d+)/save$', views.save_tag, name='admin_save_tag'),
+    url(r'^tag/(?P<tag_id>\d+)/delete$', views.delete_tag, name='admin_delete_tag'),
     
     # Clusters
     url(r'^cluster/(?P<cluster_id>\d+)$', views.view_cluster, name='admin_view_cluster'),

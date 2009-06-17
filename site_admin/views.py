@@ -1788,6 +1788,20 @@ def save_tag(request, tag_id):
             return HttpResponsePermanentRedirect(reverse('admin_view_tag', args=[tag.id]))
 
 @login_required
+def delete_tag(request, tag_id):
+    permissions.require_superuser(request)
+    return_to = request.GET.get('return_to')
+    
+    tag = Node.objects.get(id=tag_id)
+    assert tag.node_type.name == NodeType.TAG
+    tag.delete()
+    
+    if return_to is not None:
+        return HttpResponseRedirect(return_to)
+    else:
+        return HttpResponseRedirect(reverse('admin_home'))
+
+@login_required
 def view_cluster(request, cluster_id):
     permissions.require_superuser(request)
     cluster = Node.objects.get(id=cluster_id)

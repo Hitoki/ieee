@@ -594,3 +594,13 @@ tr.form-row-highlight p.form-warning {
 h1.no-resources-message {
     margin: 40px 0;
 }
+
+.admin-buttons {
+    float:left;
+}
+
+.admin-buttons a {
+    background:maroon;
+    color:white;
+    padding:2px;
+}
