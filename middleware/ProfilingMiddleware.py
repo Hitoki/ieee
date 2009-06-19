@@ -49,3 +49,78 @@ class ProfileMiddleware(object):
                 response.content = "<pre>" + stats_str + "</pre>"
 
         return response
+
+# From http://www.djangosnippets.org/snippets/727/
+
+import sys
+import cProfile
+from cStringIO import StringIO
+from django.conf import settings
+
+import os
+
+class CProfilerMiddleware(object):
+    def process_view(self, request, callback, callback_args, callback_kwargs):
+        if settings.DEBUG_WRITE_PROFILING or (settings.DEBUG and 'prof' in request.GET):
+            self.profiler = cProfile.Profile()
+            args = (request,) + callback_args
+            return self.profiler.runcall(callback, *args, **callback_kwargs)
+
+    def process_response(self, request, response):
+        if settings.DEBUG and 'prof' in request.GET:
+            self.profiler.create_stats()
+            out = StringIO()
+            old_stdout, sys.stdout = sys.stdout, out
+            self.profiler.print_stats(1)
+            sys.stdout = old_stdout
+            response.content = '<h1>cProfile Output</h1>' \
+                + '<pre>%s</pre>' % out.getvalue()
+            
+        elif settings.DEBUG_WRITE_PROFILING:
+            
+            url = request.get_full_path()
+            
+            if not url.startswith('/media'):
+                
+                self.profiler.create_stats()
+                out = StringIO()
+                old_stdout, sys.stdout = sys.stdout, out
+                self.profiler.print_stats(1)
+                sys.stdout = old_stdout
+                
+                import re
+                seconds = re.search('in ([\d.]+) CPU seconds', out.getvalue()).group(1)
+                
+                path = os.path.join(os.path.dirname(__file__), '..', 'logs')
+                if not os.path.exists(path):
+                    os.mkdir(path)
+                
+                i = 0
+                while True:
+                    filename = os.path.join(path, 'log_%d.txt' % i)
+                    if not os.path.exists(filename):
+                        break
+                    i += 1
+                    
+                file = open(filename, 'w')
+                file.write('url: %s\n' % url)
+                file.write(out.getvalue())
+                
+                from django.db import connection
+                qstr = '<table border="1">\n'
+                for query in connection.queries:
+                    qstr += '<tr><td>%s</td><td>%s</td></tr>\n' % (query['time'], query['sql'])
+                qstr += '</table>\n'
+                
+                file.write('SQL:\n')
+                file.write(qstr)
+                
+                file.close()
+                
+                log_filename = os.path.join(path, 'index.csv')
+                file = open(log_filename, 'a')
+                file.write('%s\t%s\t%s\n' % (os.path.basename(filename), request.get_full_path(), seconds))
+                file.close()
+
+        return response
+

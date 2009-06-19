@@ -90,6 +90,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'ieeetags.middleware.ExceptionMiddleware.ExceptionMiddleware',
     #'ieeetags.djangologging.middleware.LoggingMiddleware',
+    #'ieeetags.middleware.ProfilingMiddleware.ProfileMiddleware',
+    'ieeetags.middleware.ProfilingMiddleware.CProfilerMiddleware',
 )
 
 INTERNAL_IPS = ('127.0.0.1',)
@@ -156,6 +158,9 @@ DEBUG_EMAIL_EXCEPTIONS = False
 # Enable the /debug/email test
 DEBUG_ENABLE_EMAIL_TEST = False
 
+# If true, writes profiling logs for every request
+DEBUG_WRITE_PROFILING = False
+
 # Local Settings ---------------------------------------------------------------
 
 try:
@@ -197,9 +202,3 @@ if not hasattr(logging, "is_setup"):
         logging.getLogger().addHandler(file_logger)
     
     logging.is_setup = True
-
-if DEBUG:
-    # Add the profiling middleware
-    MIDDLEWARE_CLASSES = list(MIDDLEWARE_CLASSES)
-    MIDDLEWARE_CLASSES.append('ieeetags.middleware.ProfilingMiddleware.ProfileMiddleware')
-    MIDDLEWARE_CLASSES = tuple(MIDDLEWARE_CLASSES)
