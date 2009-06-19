@@ -604,7 +604,7 @@
                         
                         <!-- Tags Tab -->
                         <div id="tags-tab" class="nootabs-tab">
-                            <input type="button" id="create-tag-float" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ tags_tab_url|urlencode }}';" value="Create New Tag" />
+                            <input type="button" id="create-tag-float" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Tag" />
                             
                             <!-- Show the "Associate Tags with this Society" input: -->
                             {% eval form['tags'] %}<div class="multisearch-note">Type * to show all<br/>of this society's tags</div>

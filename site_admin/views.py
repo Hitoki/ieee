@@ -2105,9 +2105,7 @@ def view_society(request, society_id):
         'society': society,
     })
 
-def _get_paged_tags(society, tag_sort, tag_page):
-    _TAGS_PER_PAGE = 20
-    
+def _get_paged_tags(items_per_page, society, tag_sort, tag_page):
     if tag_sort == 'name_ascending':
         tags = society.tags.order_by('name')
     elif tag_sort == 'name_descending':
@@ -2194,10 +2192,10 @@ def _get_paged_tags(society, tag_sort, tag_page):
         raise Exception('Unknown tag_sort "%s"' % tag_sort)
     
     num_tags = tags.count()
-    num_tag_pages = int(math.ceil(num_tags / float(_TAGS_PER_PAGE)))
+    num_tag_pages = int(math.ceil(num_tags / float(items_per_page)))
     
-    tag_start_count = (tag_page-1) * _TAGS_PER_PAGE
-    tag_end_count = (tag_page) * _TAGS_PER_PAGE
+    tag_start_count = (tag_page-1) * items_per_page
+    tag_end_count = (tag_page) * items_per_page
     tags = tags[tag_start_count:tag_end_count]
     
     return (tags, num_tag_pages)
@@ -2340,7 +2338,7 @@ def manage_society(request, society_id):
     resources1 = resources1[resource_start_count:resource_end_count]
     resource_page_url = reverse('admin_manage_society', args=[society.id]) + '?resource_sort=' + quote(resource_sort) + '&amp;resource_filter=' + quote(resource_filter) + '&amp;resource_filter=' + quote(resource_filter) + '&amp;items_per_page=' + quote(str(items_per_page)) + '&amp;resource_page={{ page }}#tab-resources-tab'
     
-    (tags, num_tag_pages) = _get_paged_tags(society, tag_sort, tag_page)
+    (tags, num_tag_pages) = _get_paged_tags(items_per_page, society, tag_sort, tag_page)
     tag_page_url = reverse('admin_manage_society', args=[society.id]) + '?tag_sort=' + quote(tag_sort) + '&amp;items_per_page=' + quote(str(items_per_page)) + '&amp;tag_page={{ page }}#tab-tags-tab'
     
     # Add the resource row count to the resource object
@@ -2388,7 +2386,7 @@ def manage_society(request, society_id):
 def manage_society_tags_table(request, society_id, tag_sort, tag_page, items_per_page):
     society = Society.objects.get(id=society_id)
     tag_page = int(tag_page)
-    (tags, num_tag_pages) = _get_paged_tags(society, tag_sort, tag_page)
+    (tags, num_tag_pages) = _get_paged_tags(items_per_page, society, tag_sort, tag_page)
     tag_page_url = reverse('admin_manage_society', args=[society.id]) + '?tag_sort=' + quote(tag_sort) + '&amp;items_per_page=' + quote(str(items_per_page)) + '&amp;tag_page={{ page }}#tab-tags-tab'
 
     return_url = reverse('admin_manage_society', args=[society.id]) + '?' + urlencode({
