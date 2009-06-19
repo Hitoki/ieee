@@ -604,3 +604,7 @@ h1.no-resources-message {
     color:white;
     padding:2px;
 }
+
+#tag-count {
+    font-weight: bold;
+}
