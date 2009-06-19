@@ -1717,7 +1717,6 @@ def edit_tag(request, tag_id):
     
     if request.user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER:
         # Disable certain fields for the society managers
-        make_display_only(form.fields['parents'], model=Node)
         make_display_only(form.fields['societies'], model=Society, is_multi_search=True)
         sector_ids = [str(sector.id) for sector in tag.parents.all()]
         #form.fields['related_tags'].widget.set_search_url(reverse('ajax_search_tags') + '?filter_sector_ids=' + ','.join(sector_ids))
@@ -1747,7 +1746,6 @@ def save_tag(request, tag_id):
             
         if request.user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER:
             # Disable certain fields for the society managers
-            make_display_only(form.fields['parents'], model=Node)
             make_display_only(form.fields['societies'], model=Society, is_multi_search=True)
             tag_id = int(request.POST['id'])
             tag = Node.objects.get(id=tag_id)
