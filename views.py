@@ -11,6 +11,7 @@ import logging
 import os.path
 import string
 import sys
+import time
 import traceback
 from urllib import quote
 
@@ -266,9 +267,12 @@ def ajax_nodes_json(request):
     # Build node list
     sector = Node.objects.get(id=sectorId)
     
-    tags = sector.get_tags().extra(
-        select={ 'num_resources1': 'SELECT COUNT(*) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id' },
-    )
+    #tags = sector.get_tags().extra(
+    #    select={ 'num_resources1': 'SELECT COUNT(*) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id' },
+    #)
+    
+    tags = sector.get_tags()
+    tags = Node.objects.get_extra_info(tags)
     
     if sort == 'num_sectors':
         # TODO: Handle clusters here
@@ -290,9 +294,7 @@ def ajax_nodes_json(request):
         # TODO: Handle clusters here
         tags = tags.order_by(orderBy)
         
-    (minResources, maxResources) = Node.objects.get_resource_range(sector)
-    (min_sectors, max_sectors) = Node.objects.get_sector_range(sector)
-    (min_related_tags, max_related_tags) = Node.objects.get_related_tag_range(sector)
+    (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = Node.objects.get_sector_ranges(sector)
     
     # JSON Output
     data = []
@@ -300,12 +302,12 @@ def ajax_nodes_json(request):
         #print 'tag.name: %s' % tag.name
         #print 'tag.parents.count(): %s' % tag.parents.count()
         
-        resourceLevel = _get_popularity_level(minResources, maxResources, tag.resources.count())
-        sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.parents.count())
-        related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, tag.related_tags.count())
+        resourceLevel = _get_popularity_level(min_resources, max_resources, tag.num_resources1)
+        sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.num_parents1)
+        related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, tag.num_related_tags1)
         
         # Only show tags that have one of the selected filters, and also are associated with a society
-        if (settings.DEBUG_TAGS_HAVE_ALL_FILTERS or len(tag.filters.filter(id__in=filterIds))) and tag.societies.count() > 0 and (not settings.DEBUG_HIDE_TAGS_WITH_NO_RESOURCES or tag.num_resources1 > 0):
+        if (len(tag.filters.filter(id__in=filterIds))) and tag.societies.count() > 0 and (not settings.DEBUG_HIDE_TAGS_WITH_NO_RESOURCES or tag.num_resources1 > 0):
             data.append({
                 'id': tag.id,
                 'label': tag.name,
@@ -317,7 +319,9 @@ def ajax_nodes_json(request):
             })
     
     json = simplejson.dumps(data, sort_keys=True, indent=4)
+    
     #logging.debug('~ajax_nodes_json()')
+    
     return HttpResponse(json, mimetype='application/json')
 
 @protect_frontend
