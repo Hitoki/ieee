@@ -336,26 +336,27 @@ def ajax_nodes_xml(request):
     
     # TODO: the depth param is ignored, doesn't seem to affect anything now
     
-    node = Node.objects.get(id=nodeId)
-    child_nodes = node.child_nodes.all()
+    node = Node.objects.select_related('filters').get(id=nodeId)
     
-    # Enable filtering out nodes w/o societies:
-    if True:
-        # If parent node is a sector, filter the child tags
-        if node.node_type == NodeType.objects.getFromName(NodeType.SECTOR):
-            # Filter out any tags that don't have any societies
-            childNodes1 = []
-            
-            for child_node in child_nodes:
-                if settings.DEBUG_HIDE_TAGS_WITH_NO_RESOURCES:
-                    if child_node.societies.count() > 0 and child_node.resources.count() > 0:
-                        # Hide all tags with no societies or no resources
-                        childNodes1.append(child_node)
-                else:
-                    if child_node.societies.count() > 0:
-                        # Hide all tags with no societies
-                        childNodes1.append(child_node)
-            child_nodes = childNodes1
+    # NOTE: Can't use 'filters' in select_related() since it's a many-to-many field.
+    child_nodes = node.child_nodes.select_related('node_type').all()
+    child_nodes = Node.objects.get_extra_info(child_nodes)
+    
+    # If parent node is a sector, filter the child tags
+    if node.node_type == NodeType.objects.getFromName(NodeType.SECTOR):
+        # Filter out any tags that don't have any societies
+        childNodes1 = []
+        
+        for child_node in child_nodes:
+            if settings.DEBUG_HIDE_TAGS_WITH_NO_RESOURCES:
+                if child_node.num_societies1 > 0 and child_node.num_resources1 > 0:
+                    # Hide all tags with no societies or no resources
+                    childNodes1.append(child_node)
+            else:
+                if child_node.num_societies1 > 0:
+                    # Hide all tags with no societies
+                    childNodes1.append(child_node)
+        child_nodes = childNodes1
     
     # Build node list
     nodes = [node]
@@ -387,7 +388,7 @@ def ajax_nodes_xml(request):
     if node.node_type.name == NodeType.TAG:
         for related_tag in related_tags:
             edges.append((node.id, related_tag.id))
-            
+    
     #print '  len(edges):', len(edges)
 
     # XML Output
@@ -420,15 +421,10 @@ def ajax_nodes_xml(request):
         nodeElem.setAttribute('graphic_type', 'shape')
         nodeElem.setAttribute('graphic_shape', 'circle')
         
-        if settings.DEBUG_TAGS_HAVE_ALL_FILTERS:
-            # DEBUG: Fake that this node is in all filters
-            filters = []
-            for filter in Filter.objects.all():
-                filters.append(filter.value)
-        else:
-            filters = []
-            for filter in node1.filters.all():
-                filters.append(filter.value)
+        # This takes up 40% page time
+        filters = []
+        for filter in node1.filters.all():
+            filters.append(filter.value)
         
         #print 'node1.name:', node1.name
         #print 'len(node1.filters.all()):', len(node1.filters.all())
@@ -437,9 +433,8 @@ def ajax_nodes_xml(request):
         
         #nodeElem.setAttribute('filter_groups', 'emerging_technologies,foundation_technologies,hot_topics,market_areas')
         nodeElem.setAttribute('filter_groups', string.join(filters, ','))
-        
         nodesElem.appendChild(nodeElem)
-        
+    
     edgesElem = doc.createElement('edges')
     root.appendChild(edgesElem)
     
