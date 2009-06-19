@@ -299,6 +299,15 @@ ul#view-header li {
     margin:0px 15px;
 }
 
+#content table.society-images {
+    font-weight: bold;
+    margin: 5px 5px 0 25px;
+}
+
+#content table.society-images td.society-logo {
+    padding-right: 10px;
+}
+
 #content p.item_even {
     font-weight: bold;
     /* background-color: #BAD4F9; */

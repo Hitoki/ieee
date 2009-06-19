@@ -29,19 +29,36 @@
                                 <div class="group">
                                     {% if iconSocieties %}
                                         <!-- Societies with icons -->
-                                        <p class="{% cycle 'item_even' 'item_odd' %}">
-                                            {% for society in iconSocieties %}
-                                                <img src="{{MEDIA_URL}}images/sc_logos/{{society.abbreviation}}.jpg" />
-                                            {% endfor %}
-                                        </p>
+                                        <!--<p class="{% cycle 'item_even' 'item_odd' %}">-->
+                                            <table class="society-images">
+                                                {% for society in iconSocieties %}
+                                                    <tr>
+                                                        <td class="society-logo">
+                                                            <img src="{{MEDIA_URL}}images/sc_logos/{{society.abbreviation}}.jpg" />                                                    </td>
+                                                        <td>
+                                                            {{society.name}}
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </table>
+                                        <!--</p>-->
                                     {% endif %}
                                     
                                     <!-- Societies w/o icons -->
-                                    {% for society in noIconSocieties %}
-                                        <p class="{% cycle 'item_odd' 'item_even' %}">
-                                            {{society.name}} ({{society.abbreviation}})
-                                        </p>
-                                    {% endfor %}
+                                    <table class="society-images">
+                                        {% for society in noIconSocieties %}
+                                            <!--<p class="{% cycle 'item_odd' 'item_even' %}">-->
+                                            <tr>
+                                                <td class="society-logo">
+                                                    <img src="{{MEDIA_URL}}images/sc_logos/no_logo.jpg" />
+                                                </td>
+                                                <td>
+                                                    {{society.name}} ({{society.abbreviation}})
+                                                </td>
+                                            </tr>    
+                                            <!--</p>-->
+                                        {% endfor %}
+                                    </table>
                                 </div>
                             {% endif %}
                         </div>
