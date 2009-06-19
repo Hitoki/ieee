@@ -297,18 +297,15 @@
                                 </form>
                             {% endif %}
                             
-                            {% comment %}
-                            #    NOTE: This is disabled until post-v1
-                            #    <form action="{% url admin_manage_society society.id %}" method="get">
-                            #        <input type="hidden" name="resource_sort" value="{{ resource_sort }}" />
-                            #        <input type="hidden" name="resource_filter" value="{{ resource_filter }}" />
-                            #        <p class="items-per-page">
-                            #            Show
-                            #            {{ items_per_page_form.items_per_page }}
-                            #            items per page.
-                            #        </p>
-                            #    </form>
-                            {% endcomment %}
+                            <form action="{% url admin_manage_society society.id %}" method="get">
+                                <input type="hidden" name="resource_sort" value="{{ resource_sort }}" />
+                                <input type="hidden" name="resource_filter" value="{{ resource_filter }}" />
+                                <p class="items-per-page">
+                                    Show
+                                    {{ items_per_page_form.items_per_page }}
+                                    items per page.
+                                </p>
+                            </form>
                             
                             {% if not resources %}
                                 {% if  not num_unfiltered_resources %}
