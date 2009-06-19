@@ -2864,6 +2864,8 @@ def ajax_search_tags(request):
         temp_society_id = None
     tags = Node.objects.searchTagsByNameSubstring(search_for, sector_ids, exclude_tag_id, temp_society_id)
     
+    tags = Node.objects.get_extra_info(tags)
+    
     #if len(tags) > MAX_RESULTS:
     #    tags = tags[:MAX_RESULTS]
     #    more_results = True
@@ -2890,10 +2892,10 @@ def ajax_search_tags(request):
                 'value': tag.id,
                 'tag_name': tag.name,
                 'sector_names': tag.sector_names(),
-                'num_societies': tag.societies.count(),
-                'num_related_tags': tag.related_tags.count(),
-                'num_filters': tag.filters.count(),
-                'num_resources': tag.resources.count(),
+                'num_societies': tag.num_societies1,
+                'num_related_tags': tag.num_related_tags1,
+                'num_filters': tag.num_filters1,
+                'num_resources': tag.num_resources1,
                 'societies': societies,
             })
     
