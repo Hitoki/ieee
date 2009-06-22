@@ -97,14 +97,14 @@ class CProfilerMiddleware(object):
                 
                 i = 0
                 while True:
-                    filename = os.path.join(path, 'log_%d.txt' % i)
+                    filename = os.path.join(path, 'log_%d.html' % i)
                     if not os.path.exists(filename):
                         break
                     i += 1
                     
                 file = open(filename, 'w')
-                file.write('url: %s\n' % url)
-                file.write(out.getvalue())
+                file.write('url: %s<br/>\n' % url)
+                file.write('<pre>%s</pre>' % out.getvalue())
                 
                 from django.db import connection
                 qstr = '<table border="1">\n'
