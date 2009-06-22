@@ -91,7 +91,6 @@ MIDDLEWARE_CLASSES = (
     'ieeetags.middleware.ExceptionMiddleware.ExceptionMiddleware',
     #'ieeetags.djangologging.middleware.LoggingMiddleware',
     #'ieeetags.middleware.ProfilingMiddleware.ProfileMiddleware',
-    'ieeetags.middleware.ProfilingMiddleware.CProfilerMiddleware',
 )
 
 INTERNAL_IPS = ('127.0.0.1',)
@@ -158,6 +157,9 @@ DEBUG_EMAIL_EXCEPTIONS = False
 # Enable the /debug/email test
 DEBUG_ENABLE_EMAIL_TEST = False
 
+# If true, enables the profiling middleware (necessary for the DEBUG_WRITE_PROFILING option below)
+DEBUG_ENABLE_CPROFILE = False
+
 # If true, writes profiling logs for every request
 DEBUG_WRITE_PROFILING = False
 
@@ -183,6 +185,13 @@ for varname in MANDATORY_VARS:
     if varname not in globals() or globals()[varname] is None:
         logging.error('local_settings.py variable "%s" is not set' % varname)
         raise Exception('local_settings.py variable "%s" is not set' % varname)
+
+# Profiling setup
+
+if DEBUG_ENABLE_CPROFILE:
+    list1 = list(MIDDLEWARE_CLASSES)
+    list1.append('ieeetags.middleware.ProfilingMiddleware.CProfilerMiddleware')
+    MIDDLEWARE_CLASSES = tuple(list1)
 
 # Logging setup
 

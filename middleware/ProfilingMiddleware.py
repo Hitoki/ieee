@@ -53,20 +53,20 @@ class ProfileMiddleware(object):
 # From http://www.djangosnippets.org/snippets/727/
 
 import sys
-import cProfile
 from cStringIO import StringIO
 from django.conf import settings
-
 import os
 
 class CProfilerMiddleware(object):
     def process_view(self, request, callback, callback_args, callback_kwargs):
+        import cProfile
         if settings.DEBUG_WRITE_PROFILING or (settings.DEBUG and 'prof' in request.GET):
             self.profiler = cProfile.Profile()
             args = (request,) + callback_args
             return self.profiler.runcall(callback, *args, **callback_kwargs)
 
     def process_response(self, request, response):
+        import cProfile
         if settings.DEBUG and 'prof' in request.GET:
             self.profiler.create_stats()
             out = StringIO()
