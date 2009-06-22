@@ -17,3 +17,7 @@
 p.items-per-page {
     padding-top: .5em;
 }
+
+ul.pages {
+    padding-top: 10px !important;
+}

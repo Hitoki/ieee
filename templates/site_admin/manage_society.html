@@ -305,10 +305,7 @@
                                     <h1 class="no-resources-message">There were no matching resources, please try again or remove your filter</h1>
                                 {% endif %}
                             {% else %}
-                                <ul class="pages">
-                                    <li class="paginationTitle">Pages:</li>
-                                    {% pages resource_page num_resource_pages resource_page_url %}
-                                </ul>
+                                
                                 
                                 <form action="{% url admin_manage_society society.id %}" method="get">
                                     <input type="hidden" name="resource_sort" value="{{ resource_sort }}" />
@@ -319,7 +316,7 @@
                                         items per page.
                                     </p>
                                 </form>
-                            
+                                
                                 <form action="{% url admin_edit_resources %}?return_url={{ current_url|urlencode }}&amp;society_id={{ society.id }}" method="post">
                                 
                                     <p class="batch-editing-button">
@@ -328,6 +325,11 @@
                                         </span>
                                         <span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 10px;" title="Select 2 or more resources below and click this button to batch edit their tags, priority and whether or not they are completed.">[?]</span>
                                     </p>
+                                    
+                                    <ul class="pages">
+                                        <li class="paginationTitle">Pages:</li>
+                                        {% pages resource_page num_resource_pages resource_page_url 13 %}
+                                    </ul>
                                 
                                     <table class="resources">
                                         <tr>
@@ -594,11 +596,11 @@
                             
                                 <ul class="pages">
                                     <li class="paginationTitle">Pages:</li>
-                                    {% pages resource_page num_resource_pages resource_page_url %}
+                                    {% pages resource_page num_resource_pages resource_page_url 13 %}
                                 </ul>
                             {% endif %}
-                            
-                            <div style="margin-top: 1em;">
+
+                            <div style="margin-top: 1em; clear: both;">
                                 <a href="{% url missing_resource society.id %}" class="lightbox">Don't see the resource you need? Request it be added.</a>
                             </div>
                         </div>
@@ -613,7 +615,7 @@
                             <div id="tags-table-content">
                                 {% manage_society_tags_table %}
                             </div>
-                            <br style="clear:both;"/>
+                            <br style="clear:both;" />
                         </div>
                         
                         {% if DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB %}

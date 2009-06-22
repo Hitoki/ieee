@@ -351,6 +351,10 @@ a.edit {
     float:right;
 }
 
+#create-tag {
+    margin-top: 1em;
+}
+
 /* */
 
 table.forgot-password th {
@@ -442,6 +446,9 @@ ul.pages {
     list-style:none;
     /* Enable enclosing the LI floats in Fx3/IE7 */
     overflow:auto;
+    float: left;
+    margin: 1em 0 1em 1em;
+    padding-top: 5px;
 }
 
 ul.pages li.paginationTitle {
@@ -470,7 +477,6 @@ ul.pages li a.selected
 }
 
 #pages-tags-top {
-    clear:both;
     margin-top: 1em;
 }
 
@@ -480,6 +486,7 @@ ul.pages li a.selected
 
 .batch-editing-button {
     float: left;
+    clear: left;
     margin: 1em 0;
 }
 

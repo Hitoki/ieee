@@ -40,11 +40,6 @@
     
 </script>
 
-<ul class="pages" id="pages-tags-top">
-    <li class="paginationTitle">Pages:</li>
-    {% pages tag_page num_tag_pages tag_page_url %}
-</ul>
-
 <form action="{% url admin_manage_society society.id %}#tab-tags-tab" method="get">
     <input type="hidden" name="resource_sort" value="{{ resource_sort }}" />
     <input type="hidden" name="resource_filter" value="{{ resource_filter }}" />
@@ -63,6 +58,11 @@
         <span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 10px;" title="Select 2 or more tags below and click this button to batch edit their filters.">[?]</span>
     </p>
     
+    <ul class="pages" id="pages-tags-top">
+        <li class="paginationTitle">Pages:</li>
+        {% pages tag_page num_tag_pages tag_page_url 13 %}
+    </ul>
+
     <table class="tags">
         <tr>
             <th>
@@ -240,7 +240,8 @@
 <div>
     <ul class="pages" style="float:left;">
         <li class="paginationTitle">Pages:</li>
-        {% pages tag_page num_tag_pages tag_page_url %}
+        {% pages tag_page num_tag_pages tag_page_url 13 %}
     </ul>
     <input type="button" id="create-tag" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Tag" />
+        <span style="clear:both;">&nbsp;</span>
 </div>
