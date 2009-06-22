@@ -80,7 +80,7 @@
                                         {% if resource.url %}
                                             </a>
                                         {% endif %}
-                                        <p class="{% cycle 'desc_odd' 'desc_even' %}">{{resource.description}}</p>
+                                        <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:200, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
                                     {% endfor %}
                                 {% else %}
                                     <p class="no-resources">(no periodicals)</p>
@@ -105,7 +105,7 @@
                                         {% if resource.url %}
                                             </a>
                                         {% endif %}
-                                        <p class="{% cycle 'desc_odd' 'desc_even' %}">{{resource.description}}</p>
+                                        <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:200, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
                                     {% endfor %}
                                 {% else %}
                                     <p class="no-resources">(no conferences)</p>
@@ -130,7 +130,7 @@
                                         {% if resource.url %}
                                             </a>
                                         {% endif %}
-                                        <p class="{% cycle 'desc_odd' 'desc_even' %}">{{resource.description}}</p>
+                                        <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:200, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
                                     {% endfor %}
                                 {% else %}
                                     <p class="no-resources">(no standards)</p>

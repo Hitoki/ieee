@@ -137,3 +137,7 @@ The content is just the contents of the flyover.
     width:400px;
 }
 
+.resource-description-flyover-container {
+    width: 450px;
+}
+
