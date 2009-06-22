@@ -13,3 +13,7 @@
 #lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs {
     height: 100%;
 }
+
+p.items-per-page {
+    padding-top: .5em;
+}

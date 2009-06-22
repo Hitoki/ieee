@@ -236,6 +236,7 @@ table.edit-create td {
 }
 
 table.resources, table.tags, table.selected-tags, table.selected-resources {
+    clear: both;
     width: 100%;
 }
 
@@ -469,7 +470,7 @@ ul.pages li a.selected
 }
 
 #pages-tags-top {
-    clear:left;
+    clear:both;
     margin-top: 1em;
 }
 
@@ -478,6 +479,7 @@ ul.pages li a.selected
 }
 
 .batch-editing-button {
+    float: left;
     margin: 1em 0;
 }
 
