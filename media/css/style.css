@@ -722,13 +722,17 @@ table.vert-center td {
     list-style-type: none;
 }
 
+/* hidden for now, will note that it is a key on the galaxy help page
 #key-label {
     font-size: 1.3em;
-    padding: 0 10px 0 5px; 
+    padding: 0 0 0 5px;
+    display:none;
 }
+*/
 
 #frequency-indicator {
-    margin-top: -2px;   
+    margin-top: -2px;
+    padding: 0 0 0 5px;
 }
 
 #frequency-indicator img {
@@ -737,15 +741,22 @@ table.vert-center td {
 
 #tag-model-left {
     font-size: .7em; 
-    padding-left :20px; 
-    display: inline-block; 
+    padding-left:5px; 
+    display: inline; 
     vertical-align: text-bottom; 
     height: 18px;
 }
 
-#tag-model-left img {
-   padding-top: 3px; 
-   padding-left: 3px
+#tag-model-left td {
+    text-align: center;
+    padding-left: 5px;
+}
+
+#tag-model-left-img {
+    height: 18px;
+    font-size: .7em;
+    padding-top: 3px; 
+    padding-left: 3px
 }
 
 #tag-model-right {
@@ -768,6 +779,7 @@ table.vert-center td {
     border: none;
     padding-left: .2em;
     padding-bottom: 2.3px;
+    display:none;
     
 }
 
