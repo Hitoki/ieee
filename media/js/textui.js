@@ -105,7 +105,15 @@ var Tags = {
             str += "  <table>";
             str += "    <tr>";
             str += "      <td>";
-            str += "        <a href=\"javascript:Tags.selectTag(" + tag.id + ");\" class=\"" + tag.level + "\">" + tag.label + "</a> ";
+            
+            // Truncate long tag names.  The flyover will show the full tag name.
+            var label = tag.label;
+            var MAX_TAG_LENGTH = 30;
+            if (label.length > MAX_TAG_LENGTH) {
+                label = label.substr(0, MAX_TAG_LENGTH) + '...';
+            }
+            
+            str += "        <a href=\"javascript:Tags.selectTag(" + tag.id + ");\" class=\"" + tag.level + "\">" + htmlentities(label) + "</a> ";
             str += "      </td>";
             str += "      <td>";
             str += "        <div class=\"tag-block-container\">";
