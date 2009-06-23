@@ -64,20 +64,20 @@
             </tr>
             <tr>
                 <th>
-                    <label for="id_parents">{{ form.parents.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="Industry Sector for which the Tag is relevant, from the domain perspective of the S/C.">[?]</span>:</label>
-                </th>
-                <td>
-                    {{ form.parents.errors }}
-                    {{ form.parents }}
-                </td>
-            </tr>
-            <tr>
-                <th>
                     <label for="id_societies">{{ form.societies.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="IEEE organizations that have associated Tag with their domain.">[?]</span>:</label>
                 </th>
                 <td>
                     {{ form.societies.errors }}
                     {{ form.societies }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_parents">{{ form.parents.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="Industry Sector for which the Tag is relevant, from the domain perspective of the S/C.">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.parents.errors }}
+                    {{ form.parents }}
                 </td>
             </tr>
             <tr {% if not num_filters %}class="form-row-highlight"{% endif %} >
