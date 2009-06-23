@@ -1,62 +1,8 @@
-{% extends 'base.html' %}
 
-{% block content %}
-    <div id="alternate-page" class="textui-page">
-        <table class="main alternate-page">
-            <tr>
-                <td class="left">
-                </td>
-                <td class="center">
-                    
-                    <!-- Begin center column -->
-                    
-                    <div id="page-min-width"></div>
-                    
-                    <div id="header">
-                        <img class="leftCorner" src="{{MEDIA_URL}}images/mainTopLeftCorner.gif" width="26" height="67" />
-                        <a href="/" class="home"><img class="banner" src="{{MEDIA_URL}}images/ieee_banner.jpg" width="563" height="42" /></a>
-                        
-                        <a id="switch-link" class="floating" href="{% url roamer %}">
-                            <img src="{{MEDIA_URL}}images/roamer_icon.png"/>
-                            Switch to<br/>
-                            Visual Map Interface
-                        </a>
-                        
-                        <img class="rightCorner" src="{{MEDIA_URL}}images/mainTopRightCorner.gif" width="26" height="67" />
-                    </div>
-                    
-                    <div class="center-pad">
-                        
-                        <h1>Tags Interface Help Page</h1>
-                        
-                        <!-- TODO: Add content here -->
-                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean porta lorem eget felis. Nam quis eros. Donec et ligula et purus imperdiet aliquam. Donec tempor bibendum dui. Donec at velit. Donec ullamcorper, felis ac pulvinar aliquam, quam justo fermentum ante, eget porttitor nisl justo et felis. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse potenti. Nunc eget erat nec nibh posuere iaculis. Sed tincidunt elementum nulla. Cras congue. Donec dignissim dapibus massa. Suspendisse interdum, nibh vel tristique posuere, ante sapien aliquam quam, ac adipiscing dolor turpis commodo neque. Mauris id eros. Curabitur nunc. Vestibulum vestibulum ullamcorper nisl.
-                        <p>Vestibulum sit amet orci. Proin ac elit nec erat vestibulum accumsan. Vivamus nec sem vitae sapien volutpat fringilla. Aliquam malesuada elit sit amet wisi vulputate condimentum. Nullam sed metus. Sed hendrerit, purus sit amet egestas euismod, mauris wisi ornare eros, eu facilisis nibh est vel eros. Etiam erat nibh, condimentum id, accumsan at, ullamcorper a, risus. Pellentesque tellus purus, lobortis non, nonummy at, auctor sed, ipsum. Suspendisse sollicitudin wisi nonummy metus. Nam dignissim adipiscing eros. Sed convallis est vitae mauris. Maecenas adipiscing tincidunt nunc.</p>
-                        <p style="background:#006699; color:white; padding:.5em 1em; text-align:center; font-size:130%; font-weight:bold;">
-                            <a href="{% url textui %}" style="color:white;">Continue to the Tags Interface...</a>
-                        </p>
-                        
-                        
-                        <div class="feedback-bar">
-                            Comments, Suggestions? <a href="{% url feedback %}" class="lightbox">Send Feedback</a>
-                        </div>
-                    
-                    </div>
-                    
-                    <div id="footer">
-                        <img class="leftCorner" src="{{MEDIA_URL}}images/mainBottomLeftCorner.png" width="26" height="40" />
-                        <img class="rightCorner" src="{{MEDIA_URL}}images/mainBottomRightCorner.png" width="26" height="40" />
-                    </div>
-                    
-                    <!-- End center column -->
-                    
-                </td>
-                <td class="right" rowspan="2">
-                </td>
-            </tr>
-        </table>
-        
-    </div>
-    
-{% endblock %}
+{# This page is loaded into the textui tags DIV when the page is first loaded #}
+<br/>
+<h1>Textui Help Page</h1>
+<p>
+    This is the textui_help.html page.
+</p>
 

@@ -1026,3 +1026,8 @@ table.node-tooltip-grid td {
 .results-links a:hover {
     text-decoration: underline;
 }
+
+.textui-help {
+    width:100%;
+    height:100%;
+}

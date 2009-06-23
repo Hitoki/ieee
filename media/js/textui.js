@@ -12,6 +12,7 @@ var Tags = {
     
     sectorId: null,
     onLoadSector: null,
+    helpScreenElem: null,
     
     init: function() {
     },
@@ -37,6 +38,8 @@ var Tags = {
     selectSector: function(id, onload) {
         //console.log('selectSector()');
         //console.log('id: ' + id);
+        
+        this.hideHelp();
         
         if (id)
             this.sectorId = id;
@@ -197,6 +200,34 @@ var Tags = {
         console.log('updateSwitchLink()');
         console.log('this.sectorId: ' + this.sectorId);
         $('#switch-link')[0].href = '/roamer?nodeId=' + this.sectorId;
+    },
+    
+    showHelp: function() {
+        this.hideHelp();
+        
+        var tagsElem = $('#tags');
+        tagsElem.empty();
+        
+        this.helpOldPaddingLeft = $('.alt-box-pad').css('padding-left');
+        this.helpOldPaddingRight = $('.alt-box-pad').css('padding-right');
+        this.helpOldPaddingTop = $('.alt-box-pad').css('padding-top');
+        this.helpOldPaddingBottom = $('.alt-box-pad').css('padding-bottom');
+        $('.alt-box-pad').css('padding', '0px');
+        
+        this.helpScreenElem = $('<div class="textui-help"></div>').appendTo(tagsElem);
+        this.helpScreenElem.load(TEXTUI_HELP_URL);
+    },
+    
+    hideHelp: function() {
+        if (this.helpScreenElem) {
+            this.helpScreenElem.remove();
+            this.helpScreenElem = null;
+            
+            $('.alt-box-pad').css('padding-left', this.helpOldPaddingLeft);
+            $('.alt-box-pad').css('padding-right', this.helpOldPaddingRight);
+            $('.alt-box-pad').css('padding-top', this.helpOldPaddingTop);
+            $('.alt-box-pad').css('padding-bottom', this.helpOldPaddingBottom);
+        }
     }
     
 };

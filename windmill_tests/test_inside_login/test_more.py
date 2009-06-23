@@ -17,7 +17,7 @@ def test_roamer_page():
 def test_tags_page():
     client = WindmillTestClient('test_tags_page')
 
-    client.open(url='/textui_help')
+    client.open(url='/textui')
     client.waits.forPageLoad(timeout='8000')
     client.click(link='Continue to the Tags Interface...')
     client.waits.forPageLoad(timeout='20000')

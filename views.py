@@ -88,15 +88,22 @@ def roamer(request):
 def textui(request):
     disable_frontend()
     
-    sectorId = request.GET.get('nodeId', Node.objects.getFirstSector().id)
-    node = Node.objects.get(id=sectorId)
+    nodeId = request.GET.get('nodeId', None)
+    sectorId = None
     
-    # Double check to make sure we didn't get a root or tag node
-    if node.node_type.name == 'root':
-        sectorId = Node.objects.getFirstSector().id
-    elif node.node_type.name == 'tag':
-        # NOTE: For now, use the tag's first parent sector
-        sectorId = node.get_sectors()[0].id
+    if nodeId is not None:
+        node = Node.objects.get(id=nodeId)
+        # Double check to make sure we didn't get a root or tag node
+        if node.node_type.name == 'root':
+            sectorId = Node.objects.getFirstSector().id
+        elif node.node_type.name == 'tag':
+            # TODO: a node has many sectors, for now just use the first one.
+            sectorId = node.get_sectors()[0].id
+        elif node.node_type.name == 'sector':
+            sectorId = nodeId
+            
+    else:
+        node = None
     
     sectors = Node.objects.getSectors()
     filters = Filter.objects.all()
