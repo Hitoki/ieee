@@ -47,7 +47,7 @@
                                     {% endif %}
                                     
                                     <!-- Societies w/o icons -->
-                                    <table class="society-images" style="margin-top: 0">
+                                    <table class="society-images" {% if iconSocieties %}style="margin-top:0"{% endif%}>
                                         {% for society in noIconSocieties %}
                                             <!--<p class="{% cycle 'item_odd' 'item_even' %}">-->
                                             <tr>
