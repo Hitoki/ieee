@@ -74,7 +74,9 @@
                     
                         <div id="right-column">
                             <div id="frequencybar-tags">
+                            {% comment %}
                             <span id="homeico-tags"><a href="javascript:Tags.showHelp();"><img src="{{MEDIA_URL}}images/home_icon.png" alt="home" height="18" /></a></span>
+                            {% endcomment %}
                                 {% comment %} We are hiding the word Key for now, will appear in galaxy help page
                                 <span id="key-label">Key:</span>
                                 {% endcomment %}
@@ -83,7 +85,7 @@
                                     <table id="tag-model-left">
                                         <tr>
                                             <td>
-                                                # of <br />Resources 
+                                                # of Resources 
                                             </td>
                                             <td>
                                                 <span class="flyover helpbracket" title="The number of IEEE products or services mapped to this tag" style="margin-right: 3px;">[?]</span><img src="/media/images/arrow-right.png" class="tag-model-arrow" />
@@ -110,8 +112,8 @@
                                             <option value="last_tagged">Last Tagged</option>
                                             <option value="date_added">Date Added</option>
                                         -->
-                                        <option value="num_sectors"># of Sectors</option>
-                                        <option value="num_related_tags"># of Related Tags</option>
+                                        <option value="num_sectors"># Sectors</option>
+                                        <option value="num_related_tags"># Related Tags</option>
                                     </select>
                                 </div>
                            

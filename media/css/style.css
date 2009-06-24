@@ -742,13 +742,13 @@ table.vert-center td {
 #tag-model-left {
     font-size: .7em; 
     display: inline; 
-    vertical-align: text-bottom; 
+    vertical-align: text-top; 
     height: 18px;
 }
 
 #tag-model-left td {
     text-align: center;
-    padding-left: 3px;
+    padding-left: 6px;
 }
 
 #tag-model-left-img {
@@ -795,6 +795,12 @@ table.vert-center td {
     float: right; 
     margin-top: -22px; 
     padding-right: 2px;
+    font-size: 80%;
+    font-weight: bold;
+}
+
+#tag-sort {
+    font-size: 100%;
 }
 /* */
 
