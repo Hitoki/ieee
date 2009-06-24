@@ -80,7 +80,11 @@
                 <ul>
                     <li><a href="{% url admin_import_users %}">Import Users</a></li>
                     <li><a href="{% url admin_import_resources %}">Import Resources</a></li>
-                    <li><a href="{% url admin_import_clusters %}">Import Clusters</a></li>
+                    <li><a href="{% url admin_import_societies %}">Import Societies</a></li>
+                    {% comment %}
+                        # TODO: This should be re-enabled later
+                        #<li><a href="{% url admin_import_clusters %}">Import Clusters</a></li>
+                    {% endcommen %}
                 </ul>
             </li>
         
@@ -90,7 +94,6 @@
             #        <ul>
             #            <li><a href="{% url admin_import_tags "v.7" %}">Import Tags</a></li>
             #            <li><a href="{% url admin_fix_societies_import %}">Fix Societies Import</a></li>
-            #            <li><a href="{% url admin_import_societies "v.7" %}">Import Societies</a></li>
             #            <li><a href="{% url admin_unassigned_tags %}">Assign unassigned tags to TAB</a></li>
             #            <li><a href="{% url admin_import_standards "v.7" %}">Import Standards</a></li>
             #            <li><a href="{% url admin_import_conferences "v.7" %}">Import Conferences</a></li>
@@ -115,7 +118,6 @@
             #        Import Data for COMSOC:
             #        <ul>
             #            <li><a href="{% url admin_import_tags "comsoc" %}">Import Tags</a></li>
-            #            <li><a href="{% url admin_import_societies "comsoc" %}">Import Societies</a></li>
             #            <li><a href="{% url admin_import_conferences "comsoc" %}">Import Conferences</a></li>
             #        </ul>
             #    </li>

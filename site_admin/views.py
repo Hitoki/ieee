@@ -774,82 +774,106 @@ def _remove_society_acronym(society_name):
     #logging.debug('society name: %s' % society_name)
     return society_name
 
-@login_required
-def import_societies(request, source):
-    permissions.require_superuser(request)
-    
-    logging.debug('import_societies()')
-    start = time.time()
-    
-    if source == 'v.7':
-        filename = relpath(__file__, '../data/v.7/2009-04-20 - societies - fixed.csv')
-    elif source == 'comsoc':
-        filename = relpath(__file__, '../data/comsoc/societies.csv')
-    else:
-        raise Exception('Unknown source "%s"' % source)
-        
-    logging.debug('  filename: %s' % filename)
-    
-    # Delete all existing societies
-    Society.objects.all().delete()
-    
+def _import_societies(file1):
     # Get a unicode CSV reader
-    (file, reader) = _open_unicode_csv_reader(filename)
+    reader = _open_unicode_csv_reader_for_file(file1)
     
     row_count = 0
     societies_created = 0
-    tags_created = 0
-    bad_tags = []
+    societies_updated = 0
+    errors = []
     
     for row in reader:
-        #print 'row:', row
-        
         # Name, Abbreviation, URL, Tags
-        society_name, abbreviation, url, tag_names = row
-        tag_names = [tag.strip() for tag in _split_no_empty(tag_names, ',')]
+        society_name, abbreviation, url = row
+        society_name = society_name.strip()
+        abbreviation = abbreviation.strip()
+        url = url.strip()
         
-        # Formatting
-        society_name = _remove_society_acronym(society_name.strip())
-        
-        tags = []
-        for tag_name in tag_names:
-            #print '  tag_name:', tag_name
-            tag = Node.objects.get_tag_by_name(tag_name)
-            if tag is None:
-                #raise Exception('Can\'t find matching tag "%s"' % tag_name)
-                logging.error('    Can\'t find matching tag "%s"' % tag_name)
-                if tag_name not in bad_tags:
-                    bad_tags.append(tag_name)
+        society = Society.objects.filter(name=society_name, abbreviation=abbreviation)
+        assert society.count() >= 0 and society.count() <= 1
+        if society.count() == 1:
+            # Found matching society, update it
+            #logging.debug('  updating society "%s" with url "%s"' % (society_name, url))
+            society = society[0]
+            
+            society.url = url
+            society.save()
+            
+            #logging.debug('    society.id: %s' % society.id)
+            #logging.debug('    society.name: %s' % society.name)
+            #logging.debug('    society.abbreviation: %s' % society.abbreviation)
+            #logging.debug('    society.url: %s' % society.url)
+            
+            societies_updated += 1
+        else:
+            society_names = Society.objects.filter(name=society_name)
+            society_abbreviations = Society.objects.filter(abbreviation=abbreviation)
+            if society_names.count() > 0:
+                # Found a duplicate name
+                #logging.debug('Found a duplicate society name "%s", but the abbreviation "%s" did not match the file "%s"' % (society_name, society_names[0].abbreviation, abbreviation))
+                errors.append('Found a duplicate society name "%s", but the abbreviation "%s" did not match the file "%s"' % (society_name, society_names[0].abbreviation, abbreviation))
+            elif society_abbreviations.count() > 0:
+                # Found a duplicate abbreviation
+                #logging.debug('Found a duplicate society abbreviation "%s", but the name "%s" did not match the file "%s"' % (abbreviation, society_abbreviations[0].name, society_name))
+                errors.append('Found a duplicate society abbreviation "%s", but the name "%s" did not match the file "%s"' % (abbreviation, society_abbreviations[0].name, society_name))
             else:
-                tags.append(tag)
-        
-        society = Society.objects.create(
-            name=society_name,
-            abbreviation=abbreviation,
-            url=url,
-        )
-        society.tags = tags
-        society.save()
-        
-        societies_created += 1
-        
+                # No duplicates, so this is a new society
+                #logging.debug('Creating new society "%s", %s' % (society_name, abbreviation))
+                society = Society.objects.create(
+                    name=society_name,
+                    abbreviation=abbreviation,
+                    url=url,
+                )
+                societies_created += 1
+                
         row_count += 1
         if not row_count % 10:
-            logging.debug('  Parsing row %d' % row_count)
+            #logging.debug('  Parsing row %d' % row_count)
+    
+    return {
+        'row_count': row_count,
+        'societies_created': societies_created,
+        'societies_updated': societies_updated,
+        'errors': errors,
+    }
+    
+@login_required
+@transaction.commit_manually
+def import_societies(request):
+    permissions.require_superuser(request)
+    
+    #logging.debug('import_societies()')
+    
+    permissions.require_superuser(request)
+    if request.method == 'GET':
+        # Display form
+        form = ImportFileForm()
+        return render(request, 'site_admin/import_file.html', {
+            'page_title': 'Import Societies',
+            'form': form,
+            'submit_url': reverse('admin_import_societies'),
+        })
         
-    file.close()
-    
-    bad_tags = '<br/>\n'.join(sorted(bad_tags))
-    
-    return render(request, 'site_admin/import_results.html', {
-        'page_title': 'Import Societies',
-        'results': {
-            'page_time': time.time()-start,
-            'row_count': row_count,
-            'societies_created': societies_created,
-            'bad_tags': bad_tags,
-        }
-    })
+    else:
+        file1 = request.FILES['file']
+        results = _import_societies(file1)
+        
+        if len(results['errors']) > 0:
+            #logging.debug('Got errors, rolling back transaction')
+            transaction.rollback()
+        else:
+            #logging.debug('Committing transaction')
+            transaction.commit()
+        
+        errors = list_to_html_list(results['errors'], 'errors')
+        del results['errors']
+        
+        return render(request, 'site_admin/import_file.html', {
+            'page_title': 'Import Societies',
+            'errors': errors,
+            'results': results,
+        })
 
 @login_required
 def fix_societies_import(request):
