@@ -272,13 +272,6 @@ class NodeManager(models.Manager):
         
         return (min_related_tags, max_related_tags)
     
-    def updateTagCounts(self):
-        tags = self.getTags()
-        for tag in tags:
-            tag.num_resources = len(tag.resources.all())
-            tag.save()
-        return len(tags)
-    
     def searchTagsByNameSubstring(self, substring, sector_ids=None, exclude_tag_id=None, society_id=None):
         """
         Search for tags matching the given substring.  Optionally limit to only the list of sectors given.

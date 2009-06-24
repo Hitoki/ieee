@@ -76,7 +76,6 @@ class EditTagForm(Form):
     parents = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), label='Sectors', widget=CheckboxSelectMultipleColumns(columns=3))
     societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies', label='Societies', widget=MultiSearchWidget(remove_link_flyover_text='Remove Society from Tag'))
     filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultipleColumns(columns=2), required=False, label='Filters')
-    #num_resources = models.IntegerField(required=False, label='Resources')
     related_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags with this Tag',show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from Tag', blur_text='Type a few characters to bring up matching tags'))
 
 EditTagForm = autostrip(EditTagForm)

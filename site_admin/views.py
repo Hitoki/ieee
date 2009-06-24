@@ -563,17 +563,6 @@ def permission_denied(request):
     return render(request, 'site_admin/permission_denied.html')
 
 @login_required
-def update_tag_counts(request):
-    permissions.require_superuser(request)
-    
-    start = time.time()
-    numTags = Node.objects.updateTagCounts()
-    return render(request, 'site_admin/update_tag_counts.html', {
-        'pageTime': time.time()-start,
-        'numTags': numTags,
-    })
-
-@login_required
 @transaction.commit_on_success
 def import_tags(request, source):
     permissions.require_superuser(request)
