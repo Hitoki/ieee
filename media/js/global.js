@@ -308,7 +308,35 @@ $(function() {
     attachHighlightCheckboxes();
     
     $('select.items-per-page').change(function() {
-        this.form.submit();
+        // Can't use a simple this.form.submit() here, since IE7 removes the hash from the URL (!).
+        var urlbits = this.form.action.split('#');
+        if (urlbits.length > 1) {
+            var url = urlbits[0];
+            var hash = '#' + urlbits[1];
+        } else {
+            var url = urlbits[0];
+            var hash = '';
+        }
+        var queryvars = {};
+        for (var i=0; i<this.form.elements.length; i++) {
+            var element = this.form.elements[i];
+            queryvars[element.name] = element.value;
+        }
+        
+        var querystring = '';
+        for (var i in queryvars) {
+            if (querystring != '') {
+                querystring += '&';
+            }
+            querystring += i + '=' + escape(queryvars[i]);
+        }
+        if (querystring != '') {
+            querystring = '?' + querystring;
+        }
+        
+        var fullurl = url + querystring + hash
+        
+        window.location = fullurl;
     });
 });
 

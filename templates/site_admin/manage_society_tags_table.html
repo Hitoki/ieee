@@ -41,8 +41,7 @@
 </script>
 
 <form action="{% url admin_manage_society society.id %}#tab-tags-tab" method="get">
-    <input type="hidden" name="resource_sort" value="{{ resource_sort }}" />
-    <input type="hidden" name="resource_filter" value="{{ resource_filter }}" />
+    <input type="hidden" name="tag_sort" value="{{ tag_sort }}" />
     <p class="items-per-page">
         Show
         {{ items_per_page_form.items_per_page }}
