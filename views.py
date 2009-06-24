@@ -91,19 +91,20 @@ def textui(request):
     nodeId = request.GET.get('nodeId', None)
     sectorId = None
     
-    if nodeId is not None:
-        node = Node.objects.get(id=nodeId)
-        # Double check to make sure we didn't get a root or tag node
-        if node.node_type.name == 'root':
-            sectorId = Node.objects.getFirstSector().id
-        elif node.node_type.name == 'tag':
-            # TODO: a node has many sectors, for now just use the first one.
-            sectorId = node.get_sectors()[0].id
-        elif node.node_type.name == 'sector':
-            sectorId = nodeId
-            
-    else:
-        node = None
+    if nodeId is None:
+        # Default to the first sector (instead of the help page)
+        first_sector = Node.objects.getSectors()[0]
+        nodeId = first_sector.id
+    
+    node = Node.objects.get(id=nodeId)
+    # Double check to make sure we didn't get a root or tag node
+    if node.node_type.name == 'root':
+        sectorId = Node.objects.getFirstSector().id
+    elif node.node_type.name == 'tag':
+        # TODO: a node has many sectors, for now just use the first one.
+        sectorId = node.get_sectors()[0].id
+    elif node.node_type.name == 'sector':
+        sectorId = nodeId
     
     sectors = Node.objects.getSectors()
     filters = Filter.objects.all()
