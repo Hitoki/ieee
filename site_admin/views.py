@@ -827,9 +827,9 @@ def _import_societies(file1):
                 )
                 societies_created += 1
                 
-        row_count += 1
-        if not row_count % 10:
-            #logging.debug('  Parsing row %d' % row_count)
+        #row_count += 1
+        #if not row_count % 10:
+        #    logging.debug('  Parsing row %d' % row_count)
     
     return {
         'row_count': row_count,
