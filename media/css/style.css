@@ -763,9 +763,14 @@ table.vert-center td {
     display: inline-block
 }
 
-.tag-model-rightarrow {
+#frequencybar-tags img.tag-model-rightarrow {
     margin-left: -17px;
-    padding-top: 3px; 
+    padding-top: 3px;
+    vertical-align: top;
+}
+
+#frequencybar-tags img.tag-model-arrow {
+    vertical-align: middle;
 }
 
 #frequencybar #homeico,
