@@ -790,42 +790,47 @@ def _import_societies(file1):
         abbreviation = abbreviation.strip()
         url = url.strip()
         
-        society = Society.objects.filter(name=society_name, abbreviation=abbreviation)
-        assert society.count() >= 0 and society.count() <= 1
-        if society.count() == 1:
-            # Found matching society, update it
-            #logging.debug('  updating society "%s" with url "%s"' % (society_name, url))
-            society = society[0]
-            
-            society.url = url
-            society.save()
-            
-            #logging.debug('    society.id: %s' % society.id)
-            #logging.debug('    society.name: %s' % society.name)
-            #logging.debug('    society.abbreviation: %s' % society.abbreviation)
-            #logging.debug('    society.url: %s' % society.url)
-            
-            societies_updated += 1
+        # Validation
+        if url != '' and not url.startswith('http'):
+            # URL doesn't start with "http", throw error
+            errors.append('For "%s", url "%s" does not start with "http" or "https"' % (society_name, url))
         else:
-            society_names = Society.objects.filter(name=society_name)
-            society_abbreviations = Society.objects.filter(abbreviation=abbreviation)
-            if society_names.count() > 0:
-                # Found a duplicate name
-                #logging.debug('Found a duplicate society name "%s", but the abbreviation "%s" did not match the file "%s"' % (society_name, society_names[0].abbreviation, abbreviation))
-                errors.append('Found a duplicate society name "%s", but the abbreviation "%s" did not match the file "%s"' % (society_name, society_names[0].abbreviation, abbreviation))
-            elif society_abbreviations.count() > 0:
-                # Found a duplicate abbreviation
-                #logging.debug('Found a duplicate society abbreviation "%s", but the name "%s" did not match the file "%s"' % (abbreviation, society_abbreviations[0].name, society_name))
-                errors.append('Found a duplicate society abbreviation "%s", but the name "%s" did not match the file "%s"' % (abbreviation, society_abbreviations[0].name, society_name))
+            society = Society.objects.filter(name=society_name, abbreviation=abbreviation)
+            assert society.count() >= 0 and society.count() <= 1
+            if society.count() == 1:
+                # Found matching society, update it
+                #logging.debug('  updating society "%s" with url "%s"' % (society_name, url))
+                society = society[0]
+                
+                society.url = url
+                society.save()
+                
+                #logging.debug('    society.id: %s' % society.id)
+                #logging.debug('    society.name: %s' % society.name)
+                #logging.debug('    society.abbreviation: %s' % society.abbreviation)
+                #logging.debug('    society.url: %s' % society.url)
+                
+                societies_updated += 1
             else:
-                # No duplicates, so this is a new society
-                #logging.debug('Creating new society "%s", %s' % (society_name, abbreviation))
-                society = Society.objects.create(
-                    name=society_name,
-                    abbreviation=abbreviation,
-                    url=url,
-                )
-                societies_created += 1
+                society_names = Society.objects.filter(name=society_name)
+                society_abbreviations = Society.objects.filter(abbreviation=abbreviation)
+                if society_names.count() > 0:
+                    # Found a duplicate name
+                    #logging.debug('Found a duplicate society name "%s", but the abbreviation "%s" did not match the file "%s"' % (society_name, society_names[0].abbreviation, abbreviation))
+                    errors.append('Found a duplicate society name "%s", but the abbreviation "%s" did not match the file "%s"' % (society_name, society_names[0].abbreviation, abbreviation))
+                elif society_abbreviations.count() > 0:
+                    # Found a duplicate abbreviation
+                    #logging.debug('Found a duplicate society abbreviation "%s", but the name "%s" did not match the file "%s"' % (abbreviation, society_abbreviations[0].name, society_name))
+                    errors.append('Found a duplicate society abbreviation "%s", but the name "%s" did not match the file "%s"' % (abbreviation, society_abbreviations[0].name, society_name))
+                else:
+                    # No duplicates, so this is a new society
+                    #logging.debug('Creating new society "%s", %s' % (society_name, abbreviation))
+                    society = Society.objects.create(
+                        name=society_name,
+                        abbreviation=abbreviation,
+                        url=url,
+                    )
+                    societies_created += 1
                 
         #row_count += 1
         #if not row_count % 10:
