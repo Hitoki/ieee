@@ -282,32 +282,12 @@ function attachSelectCheckboxOnClick(elem) {
     });
 }
 
-// Call this whenever new content is created dynamically to attach any scripts
-function attachScripts(elem) {
-    elem = $(elem);
-    attachBlurTexts(elem);
-    attachAutoTruncates(elem);
-    attachFlyovers(elem);
-    attachLightboxes(elem);
-    attachMultiSearches(elem);
-    attachNootabs(elem);
-    attachSelectCheckboxOnClick(elem);
-    attachSelectCheckboxOnClick(elem);
-}
-
-$(function() {
-    $('.select-checkbox-on-click').click(function() {
-        $(this).find('input[type="checkbox"]').click();
-        $(this).find('input[type="checkbox"]').change();
-    });
-    $('.select-checkbox-on-click input[type="checkbox"]').click(function(e) {
-        // Stop propagation to above function, otherwise checkbox is clicked twice & doesn't change
-        e.stopPropagation();
-    });
+function attachItemsPerPage(elem) {
+    if (elem == undefined) {
+        elem = $('body');
+    }
     
-    attachHighlightCheckboxes();
-    
-    $('select.items-per-page').change(function() {
+    elem.find('select.items-per-page').change(function() {
         // Can't use a simple this.form.submit() here, since IE7 removes the hash from the URL (!).
         var urlbits = this.form.action.split('#');
         if (urlbits.length > 1) {
@@ -337,6 +317,34 @@ $(function() {
         var fullurl = url + querystring + hash
         
         window.location = fullurl;
+    });    
+}
+
+// Call this whenever new content is created dynamically to attach any scripts
+function attachScripts(elem) {
+    elem = $(elem);
+    attachBlurTexts(elem);
+    attachAutoTruncates(elem);
+    attachFlyovers(elem);
+    attachLightboxes(elem);
+    attachMultiSearches(elem);
+    attachNootabs(elem);
+    attachSelectCheckboxOnClick(elem);
+    attachItemsPerPage(elem);
+}
+
+$(function() {
+    $('.select-checkbox-on-click').click(function() {
+        $(this).find('input[type="checkbox"]').click();
+        $(this).find('input[type="checkbox"]').change();
     });
+    $('.select-checkbox-on-click input[type="checkbox"]').click(function(e) {
+        // Stop propagation to above function, otherwise checkbox is clicked twice & doesn't change
+        e.stopPropagation();
+    });
+    
+    attachHighlightCheckboxes();
+    attachItemsPerPage();
+
 });
 

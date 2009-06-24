@@ -2420,6 +2420,10 @@ def manage_society_tags_table(request, society_id, tag_sort, tag_page, items_per
         'tag_page':tag_page,
     })
     
+    items_per_page_form = ItemsPerPageForm(initial={
+        'items_per_page': items_per_page,
+    })
+    
     return render(request, 'site_admin/manage_society_tags_table.html', {
         'tag_sort': tag_sort,
         'tag_page': tag_page,
@@ -2428,6 +2432,8 @@ def manage_society_tags_table(request, society_id, tag_sort, tag_page, items_per
         'tags': tags,
         'tag_page_url': tag_page_url,
         'return_url': return_url,
+        'items_per_page': items_per_page,
+        'items_per_page_form': items_per_page_form,
     })
 
 @login_required
