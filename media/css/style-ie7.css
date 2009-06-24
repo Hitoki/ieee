@@ -21,3 +21,8 @@ p.items-per-page {
 ul.pages {
     padding-top: 10px !important;
 }
+
+#tag-model-left {
+    vertical-align: baseline !important;
+    margin-right: 5px;
+}
