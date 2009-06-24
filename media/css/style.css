@@ -964,7 +964,6 @@ p.items-per-page {
     float:right;
     margin: 1em 0;
     clear: both;
-    width: 181px;
 }
 
 select.items-per-page {
