@@ -710,11 +710,12 @@ table.vert-center td {
 }
 
 #frequencybar-tags {
-    margin-top: -9px;   
+    margin-top: -8px;   
 }
 
 #frequencybar-tags img {
     margin-right: 1px;
+    vertical-align:text-top;
 }
 
 #frequencybar-tags ul li {
@@ -768,7 +769,7 @@ table.vert-center td {
 }
 
 #frequencybar #homeico,
-#frequencybar-tags #homeicon-tags {
+#frequencybar-tags #homeico-tags {
     float: left;
 }
 
@@ -779,12 +780,16 @@ table.vert-center td {
     padding-bottom: 2.3px;
 }
 
+#frequencybar-tags #homeico-tags img {
+    margin-top: 8px;
+}
+
 /* */
 /* sort dropdown */
 #sortmenu {
     float: right; 
-    margin-top: -19px; 
-    padding-right: 2px   
+    margin-top: -22px; 
+    padding-right: 2px;
 }
 /* */
 
