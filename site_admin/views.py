@@ -2128,6 +2128,9 @@ def view_society(request, society_id):
     })
 
 def _get_paged_tags(items_per_page, society, tag_sort, tag_page):
+    assert type(items_per_page) is int
+    assert type(tag_page) is int
+    
     if tag_sort == 'name_ascending':
         tags = society.tags.order_by('name')
     elif tag_sort == 'name_descending':
@@ -2408,6 +2411,7 @@ def manage_society(request, society_id):
 def manage_society_tags_table(request, society_id, tag_sort, tag_page, items_per_page):
     society = Society.objects.get(id=society_id)
     tag_page = int(tag_page)
+    items_per_page = int(items_per_page)
     (tags, num_tag_pages) = _get_paged_tags(items_per_page, society, tag_sort, tag_page)
     tag_page_url = reverse('admin_manage_society', args=[society.id]) + '?tag_sort=' + quote(tag_sort) + '&amp;items_per_page=' + quote(str(items_per_page)) + '&amp;tag_page={{ page }}#tab-tags-tab'
 
