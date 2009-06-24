@@ -9,26 +9,7 @@
     
     <form action="{% url admin_save_user %}" method="post">
         <table class="grid">
-            {% for field in form %}
-                {% if field.is_hidden %}
-                    {{ field }}
-                {% else %}
-                    <tr>
-                        <th>
-                            {{ field.label_tag }}
-                        </th>
-                        <td>
-                            {% ifequal field.name "role" %}
-                                <em>
-                                    NOTE: If this user is an "Admin", they must also have the "Is superuser" field checked.
-                                </em>
-                            {% endifequal %}
-                            {{ field.errors }}
-                            {{ field }}
-                        </td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
+            {{ form }}
         </table>
         <input type="submit" value="Ok" />
         {% if user_id %}

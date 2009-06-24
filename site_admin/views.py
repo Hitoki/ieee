@@ -1926,8 +1926,6 @@ def edit_user(request, user_id=None):
             'first_name': user.first_name,
             'last_name': user.last_name,
             'email': user.email,
-            'is_staff': user.is_staff,
-            'is_superuser': user.is_superuser,
             'role': user.get_profile().role,
             'societies': [society.id for society in user.societies.all()],
         })
@@ -2006,8 +2004,16 @@ def save_user(request):
             
             user.first_name = form.cleaned_data['first_name']
             user.last_name = form.cleaned_data['last_name']
-            user.is_staff = form.cleaned_data['is_staff']
-            user.is_superuser = form.cleaned_data['is_superuser']
+            
+            if form.cleaned_data['role'] == Profile.ROLE_ADMIN:
+                user.is_superuser = True
+                user.is_staff = True
+            elif form.cleaned_data['role'] == Profile.ROLE_SOCIETY_MANAGER:
+                user.is_superuser = False
+                user.is_staff = True
+            else:
+                raise Exception('Unknown role "%s"' % form.cleaned_data['role'])
+            
             user.societies = form.cleaned_data['societies']
             user.save()
             
