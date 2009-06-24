@@ -41,7 +41,7 @@
                                                             {% if society.url %}
                                                                 <a href="{{ society.url }}" target="_blank">
                                                             {% endif %}
-                                                            {{ society.name }}
+                                                            {{ society.name }} ({{ society.abbreviation }})
                                                             {% if society.url %}
                                                                 </a>
                                                             {% endif %}
@@ -65,7 +65,13 @@
                                             #   </td>
                                             {% endcomment %}
                                                 <td>
-                                                    {{society.name}} ({{society.abbreviation}})
+                                                    {% if society.url %}
+                                                        <a href="{{ society.url }}" target="_blank">
+                                                    {% endif %}
+                                                    {{ society.name }} ({{ society.abbreviation }})
+                                                    {% if society.url %}
+                                                        </a>
+                                                    {% endif %}
                                                 </td>
                                             </tr>    
                                             <!--</p>-->
