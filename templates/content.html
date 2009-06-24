@@ -38,7 +38,13 @@
                                                     #        <img src="{{MEDIA_URL}}images/sc_logos/{{society.abbreviation}}.jpg" />                                                    #   </td>
                                                     {% endcomment %}
                                                         <td>
-                                                            {{society.name}}
+                                                            {% if society.url %}
+                                                                <a href="{{ society.url }}" target="_blank">
+                                                            {% endif %}
+                                                            {{ society.name }}
+                                                            {% if society.url %}
+                                                                </a>
+                                                            {% endif %}
                                                         </td>
                                                     </tr>
                                                 {% endfor %}
