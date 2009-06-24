@@ -33,8 +33,10 @@
                                             <table class="society-images">
                                                 {% for society in iconSocieties %}
                                                     <tr>
-                                                        <td class="society-logo">
-                                                            <img src="{{MEDIA_URL}}images/sc_logos/{{society.abbreviation}}.jpg" />                                                    </td>
+                                                    {% comment %}
+                                                    #    <td class="society-logo">
+                                                    #        <img src="{{MEDIA_URL}}images/sc_logos/{{society.abbreviation}}.jpg" />                                                    #   </td>
+                                                    {% endcomment %}
                                                         <td>
                                                             {{society.name}}
                                                         </td>
@@ -45,13 +47,17 @@
                                     {% endif %}
                                     
                                     <!-- Societies w/o icons -->
-                                    <table class="society-images">
+                                    <table class="society-images" style="margin-top: 0">
                                         {% for society in noIconSocieties %}
                                             <!--<p class="{% cycle 'item_odd' 'item_even' %}">-->
                                             <tr>
-                                                <td class="society-logo">
-                                                    <img src="{{MEDIA_URL}}images/sc_logos/no_logo.jpg" />
-                                                </td>
+                                            {% comment %}
+                                            # When uncommenting this block, be sure to remove the inline style on
+                                            # this table. (margin-top: 0)
+                                            #   <td class="society-logo">
+                                            #    <img src="{{MEDIA_URL}}images/sc_logos/no_logo.jpg" />
+                                            #   </td>
+                                            {% endcomment %}
                                                 <td>
                                                     {{society.name}} ({{society.abbreviation}})
                                                 </td>

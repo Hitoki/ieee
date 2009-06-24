@@ -304,6 +304,10 @@ ul#view-header li {
     margin: 5px 5px 0 25px;
 }
 
+#content table.society-images td {
+    padding-bottom: 10px;
+}
+
 #content table.society-images td.society-logo {
     padding-right: 10px;
 }
