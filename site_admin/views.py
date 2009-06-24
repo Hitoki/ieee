@@ -1806,14 +1806,14 @@ def save_tag(request, tag_id):
 @login_required
 def delete_tag(request, tag_id):
     permissions.require_superuser(request)
-    return_to = request.GET.get('return_to')
+    return_url = request.GET.get('return_url')
     
     tag = Node.objects.get(id=tag_id)
     assert tag.node_type.name == NodeType.TAG
     tag.delete()
     
-    if return_to is not None:
-        return HttpResponseRedirect(return_to)
+    if return_url is not None:
+        return HttpResponseRedirect(return_url)
     else:
         return HttpResponseRedirect(reverse('admin_home'))
 
