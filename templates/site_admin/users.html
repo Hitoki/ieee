@@ -38,12 +38,6 @@
                     Email
                 </th>
                 <th>
-                    Is Staff
-                </th>
-                <th>
-                    Is Superuser
-                </th>
-                <th>
                     Role
                 </th>
                 <th>
@@ -66,12 +60,6 @@
                     </td>
                     <td>
                         {{ user1.email }}
-                    </td>
-                    <td>
-                        {{ user1.is_staff|yesno }}
-                    </td>
-                    <td>
-                        {{ user1.is_superuser|yesno }}
                     </td>
                     <td>
                         {{ user1.get_profile.role }}
