@@ -24,7 +24,9 @@ function extendExisting() {
 //   The first element is the first word from the string
 //   The second element is the remainder of the string (or '' if none)
 String.prototype.popWord = function() {
-    var matches = this.match(/(\S+\s+)(.+)/);
+    // NOTE: Can't use .+ for the rest of the string, since that doesn't include newlines.  Use [\S\s]+ instead.
+    var matches = this.match(/(\S+\s+)([\S\s]+)/);
+    //var matches = this.match(/(\S+\s+)(.+)/);
     if (!matches)
         return [this, ''];
     else
@@ -97,6 +99,13 @@ function autoTruncate(elems, options) {
                 
                 while ($.trim(shortText + word).length <= options.length) {
                     shortText += word;
+                    
+                    if (text.length == 0) {
+                        // NOTE: This shouldn't be needed, but it might catch some infinite loops
+                        alert('Error: autoTruncate(): text was "", breaking');
+                        break;
+                    }
+                    
                     // NOTE: This crashes chrome:
                     //[word, text] = text.popWord();
                     var temp = text.popWord();
