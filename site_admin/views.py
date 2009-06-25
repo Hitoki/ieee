@@ -251,6 +251,33 @@ def _parse_tristate_value(value):
     else:
         raise Exception('Unknown value "%r"' % value)
 
+def society_manager_or_admin_required(fn):
+    """
+    This is used as a decorator.  The decorated view is restricted to users with the role of society manager or admin.  Other roles are send to the "permission denied" page.
+    This should be used in conjunction with the @login_required decorator.
+    """
+    def _decorator_society_manager_or_admin_required(request, *args, **kwargs):
+        if not request.user.is_anonymous() and (request.user.get_profile().role in [Profile.ROLE_ADMIN, Profile.ROLE_SOCIETY_MANAGER]):
+            # User is an admin or society manager, allow
+            return fn(request, *args, **kwargs)
+        else:
+            # Disallow
+            return permission_denied(request)
+    return _decorator_society_manager_or_admin_required
+
+def admin_required(fn):
+    """
+    This is used as a decorator.  The decorated view is restricted to users with the role of admin only.  Other roles are send to the "permission denied" page.
+    This should be used in conjunction with the @login_required decorator.
+    """
+    def _decorator_admin_required(request, *args, **kwargs):
+        if not request.user.is_anonymous() and (request.user.get_profile().role in [Profile.ROLE_ADMIN]):
+            # User is an admin, allow
+            return fn(request, *args, **kwargs)
+        else:
+            # Disallow
+            return permission_denied(request)
+    return _decorator_admin_required
 
 # ------------------------------------------------------------------------------
 
@@ -306,8 +333,12 @@ def login(request):
                 
                 if next != '':
                     return HttpResponseRedirect(next)
-                else:
+                elif user.get_profile().role is Profile.ROLE_ADMIN or user.get_profile().role is Profile.ROLE_SOCIETY_MANAGER:
                     return HttpResponseRedirect(reverse('admin_home'))
+                elif user.get_profile().role is Profile.ROLE_END_USER:
+                    return HttpResponseRedirect(reverse('index'))
+                else:
+                    raise Exception('Unknown user role "%s"' % user.get_profile().role)
     
     return render(request, 'site_admin/login.html', {
         'error': error,
@@ -322,7 +353,7 @@ def logout(request):
         profile.last_logout_time = datetime.now()
         profile.save()
     auth.logout(request)
-    return HttpResponsePermanentRedirect(reverse('admin_home'))
+    return HttpResponsePermanentRedirect(reverse('index'))
 
 def forgot_password(request):
     cancel_page = request.GET.get('cancel_page', '')
@@ -456,6 +487,7 @@ def change_password_success(request):
     })
 
 @login_required
+@society_manager_or_admin_required
 def home(request):
     role = request.user.get_profile().role
     
@@ -496,7 +528,7 @@ def home(request):
         
         else:
             raise Exception('User is a society manager but is not assigned to any societies.')
-        
+    
     else:
         raise Exception('Unknown role %s' % role)
 
@@ -510,6 +542,7 @@ def home(request):
 #    })
 
 @login_required
+@society_manager_or_admin_required
 def missing_resource(request, society_id):
     if request.method == 'GET':
         form = MissingResourceForm(initial={
@@ -563,6 +596,7 @@ def permission_denied(request):
     return render(request, 'site_admin/permission_denied.html')
 
 @login_required
+@society_manager_or_admin_required
 @transaction.commit_on_success
 def import_tags(request, source):
     permissions.require_superuser(request)
@@ -2016,6 +2050,9 @@ def save_user(request):
             elif form.cleaned_data['role'] == Profile.ROLE_SOCIETY_MANAGER:
                 user.is_superuser = False
                 user.is_staff = True
+            elif form.cleaned_data['role'] == Profile.ROLE_END_USER:
+                user.is_superuser = False
+                user.is_staff = False
             else:
                 raise Exception('Unknown role "%s"' % form.cleaned_data['role'])
             
@@ -2226,13 +2263,14 @@ def _get_paged_tags(items_per_page, society, tag_sort, tag_page):
     return (tags, num_tag_pages)
 
 @login_required
+@society_manager_or_admin_required
 def manage_society(request, society_id):
     try:
         permissions.require_society_user(request, society_id)
     except Exception, e:
         # Give a friendly error page with a link to the correct home page
         # TODO: Better fix for this later
-        return HttpResponseRedirect(reverse('permission_denied'))
+        return permission_denied(request)
     
     items_per_page = int(request.GET.get('items_per_page', 50))
     
@@ -2408,6 +2446,7 @@ def manage_society(request, society_id):
     })
 
 @login_required
+@society_manager_or_admin_required
 def manage_society_tags_table(request, society_id, tag_sort, tag_page, items_per_page):
     society = Society.objects.get(id=society_id)
     tag_page = int(tag_page)
@@ -2437,6 +2476,7 @@ def manage_society_tags_table(request, society_id, tag_sort, tag_page, items_per
     })
 
 @login_required
+@admin_required
 def edit_society(request, society_id=None):
     permissions.require_superuser(request)
     
@@ -2474,6 +2514,7 @@ def edit_society(request, society_id=None):
     })
         
 @login_required
+@admin_required
 def save_society(request):
     permissions.require_superuser(request)
     
@@ -2522,6 +2563,7 @@ def save_society(request):
             return HttpResponseRedirect(url)
 
 @login_required
+@admin_required
 def delete_society(request, society_id):
     permissions.require_superuser(request)
     
@@ -2529,6 +2571,7 @@ def delete_society(request, society_id):
     return HttpResponsePermanentRedirect(reverse('admin_societies'))
 
 @login_required
+@admin_required
 def search_societies(request):
     permissions.require_superuser(request)
     
@@ -2547,6 +2590,7 @@ def search_societies(request):
     })
 
 @login_required
+@society_manager_or_admin_required
 def edit_resources(request):
     # TODO: Check permissions on each resource
     assert request.method == 'POST'
@@ -2638,6 +2682,7 @@ def edit_resources(request):
     })
 
 @login_required
+@admin_required
 def list_resources(request, type1):
     permissions.require_superuser(request)
     
@@ -2658,6 +2703,7 @@ def list_resources(request, type1):
     })
 
 @login_required
+@society_manager_or_admin_required
 def view_resource(request, resource_id):
     return_url = request.GET.get('return_url', '')
     resource = Resource.objects.get(id=resource_id)
@@ -2667,6 +2713,7 @@ def view_resource(request, resource_id):
     })
 
 @login_required
+@society_manager_or_admin_required
 def edit_resource(request, resource_id=None):
     return_url = request.GET.get('return_url', '')
     society_id = request.GET.get('society_id', '')
@@ -2724,6 +2771,7 @@ def edit_resource(request, resource_id=None):
     })
 
 @login_required
+@society_manager_or_admin_required
 def save_resource(request):
     if 'return_url' not in request.GET:
         raise Exception('Query variable "return_url" not found')
@@ -2815,6 +2863,7 @@ def save_resource(request):
     
 
 @login_required
+@society_manager_or_admin_required
 def delete_resource(request, resource_id):
     permissions.require_superuser(request)
     
@@ -2826,35 +2875,37 @@ def delete_resource(request, resource_id):
     _update_node_totals(old_nodes)
     return HttpResponsePermanentRedirect(next)
 
-@login_required
-@transaction.commit_on_success
-def remove_priorities(request):
-    """
-    Removes priorities from resources according to the requirements.  Only the following should have priority = True:
-    - 2009 Conferences
-    - Published Standards
-    - All publications
-    """
-    permissions.require_superuser(request)
-    logging.debug('remove_priorities()')
-    
-    # Remove priority from all non-2009 conferences
-    conferences = Resource.objects.get_conferences()
-    logging.debug('  conferences.count(): %s' % conferences.count())
-    conferences = conferences.exclude(year='2009')
-    logging.debug('  non-2009 conferences.count(): %s' % conferences.count())
-    conferences.update(priority_to_tag=False)
-    
-    standards = Resource.objects.get_standards()
-    logging.debug('  standards.count(): %s' % standards.count())
-    standards = standards.exclude(standard_status=Resource.STANDARD_STATUS_PUBLISHED)
-    logging.debug('  non-published standards.count(): %s' % standards.count())
-    standards.update(priority_to_tag=False)
-    
-    return HttpResponseRedirect(reverse('admin_priority_report'))
+#@login_required
+#@society_manager_or_admin_required
+#@transaction.commit_on_success
+#def remove_priorities(request):
+#    """
+#    Removes priorities from resources according to the requirements.  Only the following should have priority = True:
+#    - 2009 Conferences
+#    - Published Standards
+#    - All publications
+#    """
+#    permissions.require_superuser(request)
+#    logging.debug('remove_priorities()')
+#    
+#    # Remove priority from all non-2009 conferences
+#    conferences = Resource.objects.get_conferences()
+#    logging.debug('  conferences.count(): %s' % conferences.count())
+#    conferences = conferences.exclude(year='2009')
+#    logging.debug('  non-2009 conferences.count(): %s' % conferences.count())
+#    conferences.update(priority_to_tag=False)
+#    
+#    standards = Resource.objects.get_standards()
+#    logging.debug('  standards.count(): %s' % standards.count())
+#    standards = standards.exclude(standard_status=Resource.STANDARD_STATUS_PUBLISHED)
+#    logging.debug('  non-published standards.count(): %s' % standards.count())
+#    standards.update(priority_to_tag=False)
+#    
+#    return HttpResponseRedirect(reverse('admin_priority_report'))
     
 
 @login_required
+@admin_required
 def search_resources(request):
     permissions.require_superuser(request)
     
@@ -2873,6 +2924,7 @@ def search_resources(request):
     })
 
 @login_required
+@society_manager_or_admin_required
 def ajax_search_tags(request):
     #MAX_RESULTS = 50
     
@@ -2936,6 +2988,7 @@ def ajax_search_tags(request):
     return HttpResponse(json.dumps(data, sort_keys=True, indent=4), mimetype="application/json")
 
 @login_required
+@society_manager_or_admin_required
 def ajax_search_resources(request):
     #MAX_RESULTS = 50
     
@@ -2964,6 +3017,7 @@ def ajax_search_resources(request):
     return HttpResponse(json.dumps(data, sort_keys=True, indent=4), mimetype="application/json")
 
 @login_required
+@society_manager_or_admin_required
 def ajax_search_societies(request):
     #MAX_RESULTS = 50
     
@@ -2992,6 +3046,7 @@ def ajax_search_societies(request):
     return HttpResponse(json.dumps(data, sort_keys=True, indent=4), mimetype="application/json")
     
 @login_required
+@society_manager_or_admin_required
 def ajax_update_society(request):
     action = request.POST.get('action')
     society_id = request.POST.get('society_id')
@@ -3013,6 +3068,7 @@ def ajax_update_society(request):
         raise Exception('Unknown action "%s"' % action)
 
 @login_required
+@admin_required
 def login_report(request):
     permissions.require_superuser(request)
     
@@ -3022,6 +3078,7 @@ def login_report(request):
     })
 
 @login_required
+@admin_required
 def tagged_resources_report(request, filter):
     permissions.require_superuser(request)
     
@@ -3079,6 +3136,7 @@ def tagged_resources_report(request, filter):
     })
 
 @login_required
+@admin_required
 def tags_report(request):
     permissions.require_superuser(request)
     
@@ -3174,6 +3232,7 @@ def tags_report(request):
     })
 
 @login_required
+@admin_required
 def clusters_report(request):
     permissions.require_superuser(request)
     clusters = Node.objects.get_clusters()
@@ -3182,6 +3241,7 @@ def clusters_report(request):
     })
 
 @login_required
+@society_manager_or_admin_required
 def priority_report(request):
     "Show the priorities for resources."
     
@@ -3239,6 +3299,7 @@ def priority_report(request):
 #    
 #    assert False, 'User has been created'
     
+@society_manager_or_admin_required
 def export_tab_resources(request):
     "Export all resources for the TAB society in CSV format."
     #print 'export_tab_resources()'

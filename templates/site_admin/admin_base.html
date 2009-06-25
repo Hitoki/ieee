@@ -1,4 +1,5 @@
 {% extends 'base_table.html' %}
+{% load smartif %}
 
 {% block extra_head %}
     <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/reset.css" />
@@ -19,10 +20,12 @@
 {% if not is_ajax %}    
     {% if user.is_authenticated %}
         <ul class="nav">
-            <li class="{% block nav_home %}{% endblock %}">
-                <a href="{% url admin_home %}">Home</a>
-            </li>
-            {% if user.is_superuser %}
+            {% if user.get_profile.role == "society_manager" or user.get_profile.role == "admin" %}
+                <li class="{% block nav_home %}{% endblock %}">
+                    <a href="{% url admin_home %}">Home</a>
+                </li>
+            {% endif %}
+            {% if user.get_profile.role == "admin" %}
                 <li class="{% block nav_sectors %}{% endblock %}">
                     <a href="{% url admin_list_sectors %}">Sectors</a>
                 </li>
@@ -33,9 +36,11 @@
                     <a href="{% url admin_societies %}">Societies</a>
                 </li>
             {% endif %}
-            <li class="end-user-view">
-                <a href="{% url index %}">Go to the End-user view</a>
-            </li>
+            {% if user.get_profile.role == "society_manager" or user.get_profile.role == "admin" %}
+                <li class="end-user-view">
+                    <a href="{% url index %}">Go to the End-user view</a>
+                </li>
+            {% endif %}
         </ul>
     {% endif %}
 {% endif %}

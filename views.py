@@ -24,21 +24,6 @@ def render(request, template, dictionary=None):
     "Use this instead of 'render_to_response' to enable custom context processors, which add things like MEDIA_URL to the page automatically."
     return render_to_response(template, dictionary=dictionary, context_instance=RequestContext(request))
 
-def protect_frontend(func):
-    "Used as a decorator.  If settings.DEBUG_REQUIRE_LOGIN_FRONTEND is true, requires a login for the given request."
-    
-    #if settings.DEBUG_DISABLE_FRONTEND:
-    #    raise Exception('This page has been disabled, please check that the URL you used is correct URL.')
-    if settings.DEBUG_REQUIRE_LOGIN_FRONTEND:
-        return login_required(func)
-    else:
-        return func
-
-def disable_frontend():
-    if settings.DEBUG_DISABLE_FRONTEND:
-        #raise Exception('This page has been disabled, please check that the URL you used is correct URL.')
-        raise util.EndUserException('Page Disabled', 'This page has been disabled, please check that the URL you used is correct URL.')
-
 # ------------------------------------------------------------------------------
 
 def error_view(request):
@@ -64,16 +49,12 @@ def error_view(request):
         'message': message,
     })
 
-@protect_frontend
+@login_required
 def index(request):
-    if settings.DEBUG_DISABLE_FRONTEND:
-        return HttpResponseRedirect(reverse('admin_home'))
-    
     return render(request, 'index.html')
 
-@protect_frontend
+@login_required
 def roamer(request):
-    disable_frontend()
     
     nodeId = request.GET.get('nodeId', Node.objects.getRoot().id)
     sectors = Node.objects.getSectors()
@@ -84,9 +65,8 @@ def roamer(request):
         'filters':filters,
     })
 
-@protect_frontend
+@login_required
 def textui(request):
-    disable_frontend()
     
     nodeId = request.GET.get('nodeId', None)
     sectorId = None
@@ -115,12 +95,11 @@ def textui(request):
         'filters':filters,
     })
 
-@protect_frontend
+@login_required
 def textui_help(request):
-    disable_frontend()
     return render(request, 'textui_help.html')
 
-@protect_frontend
+@login_required
 def feedback(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
@@ -163,9 +142,8 @@ def feedback(request):
 def browser_warning(request):
     return render(request, 'browser_warning.html')
 
-@protect_frontend
+@login_required
 def ajax_tag_content(request):
-    disable_frontend()
     
     tagId = request.GET['tagId']
     tag = Node.objects.get(id=tagId)
@@ -200,10 +178,9 @@ def ajax_tag_content(request):
         'num_resources': num_resources,
     })
 
-@protect_frontend
+@login_required
 def ajax_node(request):
     "Returns JSON data for the given node, including its parents."
-    disable_frontend()
     
     nodeId = request.GET['nodeId']
     node = Node.objects.get(id=nodeId)
@@ -247,10 +224,9 @@ def _get_popularity_level(min, max, count):
     level = int(round((count-min) / float(max-min) * float(len(_POPULARITY_LEVELS)-1))) + 1
     return 'level' + str(level)
 
-@protect_frontend
+@login_required
 def ajax_nodes_json(request):
     #logging.debug('ajax_nodes_json()')
-    disable_frontend()
     
     sectorId = request.GET['sectorId']
     sort = request.GET.get('sort')
@@ -332,9 +308,8 @@ def ajax_nodes_json(request):
     
     return HttpResponse(json, mimetype='application/json')
 
-@protect_frontend
+@login_required
 def ajax_nodes_xml(request):
-    disable_frontend()
     
     "Creates an XML list of nodes & connections for Asterisq Constellation Roamer"
     logging.debug('ajax_nodes_xml()')
@@ -461,9 +436,8 @@ def ajax_nodes_xml(request):
     #return HttpResponse(doc.toprettyxml(), 'text/plain')
     return HttpResponse(doc.toprettyxml(), 'text/xml')
 
-@protect_frontend
+@login_required
 def tooltip(request):
-    disable_frontend()
     
     tag_id = request.GET['tag_id']
     sector_id = request.GET['sector_id']

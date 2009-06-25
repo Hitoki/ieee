@@ -593,8 +593,9 @@ class Filter(NamedValueType):
         return self.name
 
 # ------------------------------------------------------------------------------
-
+  
 class PermissionManager(models.Manager):
+    
     def user_can_edit_society(self, user, society): 
         if user.is_superuser:
             return True
@@ -631,10 +632,12 @@ class Permission(models.Model):
 class Profile(models.Model):
     ROLE_ADMIN = 'admin'
     ROLE_SOCIETY_MANAGER = 'society_manager'
+    ROLE_END_USER = 'end_user'
     
     ROLES = [
         ROLE_ADMIN,
         ROLE_SOCIETY_MANAGER,
+        ROLE_END_USER,
     ]
     
     user = models.ForeignKey(User, unique=True)
@@ -653,6 +656,10 @@ class UserManager:
     @staticmethod
     def get_society_managers():
         return User.objects.filter(profile__role=Profile.ROLE_SOCIETY_MANAGER)
+    
+    @staticmethod
+    def get_end_users():
+        return User.objects.filter(profile__role=Profile.ROLE_END_USER)
     
     @staticmethod
     def get_users_by_login_date():

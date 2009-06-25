@@ -47,8 +47,10 @@
         {% endfor %}
     </table>
     
-    {% if user.is_superuser %}
-        <p><a href="{% url admin_create_society %}">Create a new society</a></p>
-    {% endif %}
+    {% comment %}
+    #    {% if user.is_superuser %}
+    #        <p><a href="{% url admin_create_society %}">Create a new society</a></p>
+    #    {% endif %}
+    {% endcomment %}
     
 {% endblock %}
