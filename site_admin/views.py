@@ -1851,6 +1851,123 @@ def delete_tag(request, tag_id):
     else:
         return HttpResponseRedirect(reverse('admin_home'))
 
+def _combine_tags(tag_id1, tag_id2):
+    """
+    Combines two tags into one, merging all tag data:
+        -parent sectors
+        -societies
+        -filters
+        -related tags
+        -resources
+    Deletes the tag with the higher ID, preserves the tag with the lower ID.
+    """
+    tag_id1 = int(tag_id1)
+    tag_id2 = int(tag_id2)
+    
+    #logging.debug('tag_id1: %s' % tag_id1)
+    #logging.debug('tag_id2: %s' % tag_id2)
+    
+    # Ensure that tag_id1 is the lower of the two.  This is the one we want to keep.
+    if tag_id1 > tag_id2:
+        tag_id1, tag_id2 = tag_id2, tag_id1
+    
+    #logging.debug('tag_id1: %s' % tag_id1)
+    #logging.debug('tag_id2: %s' % tag_id2)
+    
+    tag1 = Node.objects.get(id=tag_id1)
+    assert tag1.node_type.name == NodeType.TAG
+    
+    tag2 = Node.objects.get(id=tag_id2)
+    assert tag2.node_type.name == NodeType.TAG
+    
+    #logging.debug('tag1.name: %s' % tag1.name)
+    #logging.debug('tag1.id: %s' % tag1.id)
+    #logging.debug('tag2.name: %s' % tag2.name)
+    #logging.debug('tag2.id: %s' % tag2.id)
+    #logging.debug('')
+    
+    # Add all parents from tag2 to tag1
+    #logging.debug('tag1.parents: %r' % tag1.parents.all())
+    #logging.debug('tag2.parents: %r' % tag2.parents.all())
+    for parent in tag2.parents.all():
+        if tag1.parents.filter(id=parent.id).count() == 0:
+            tag1.parents.add(parent)
+    #logging.debug('----------')
+    #logging.debug('tag1.parents: %r' % tag1.parents.all())
+    #logging.debug('tag2.parents: %r' % tag2.parents.all())
+    #logging.debug('')
+    
+    # Add all societies from tag2 to tag1
+    #logging.debug('tag1.societies: %r' % tag1.societies.all())
+    #logging.debug('tag2.societies: %r' % tag2.societies.all())
+    for society in tag2.societies.all():
+        if tag1.societies.filter(id=society.id).count() == 0:
+            tag1.societies.add(society)
+    #logging.debug('----------')
+    #logging.debug('tag1.societies: %r' % tag1.societies.all())
+    #logging.debug('tag2.societies: %r' % tag2.societies.all())
+    #logging.debug('')
+    
+    # Add all filters from tag2 to tag1
+    #logging.debug('tag1.filters: %r' % tag1.filters.all())
+    #logging.debug('tag2.filters: %r' % tag2.filters.all())
+    for filter in tag2.filters.all():
+        if tag1.filters.filter(id=filter.id).count() == 0:
+            tag1.filters.add(filter)
+    #logging.debug('----------')
+    #logging.debug('tag1.filters: %r' % tag1.filters.all())
+    #logging.debug('tag2.filters: %r' % tag2.filters.all())
+    #logging.debug('')
+    
+    # Add all related_tags from tag2 to tag1
+    #logging.debug('tag1.related_tags: %r' % tag1.related_tags.all())
+    #logging.debug('tag2.related_tags: %r' % tag2.related_tags.all())
+    for related_tag in tag2.related_tags.all():
+        # NOTE: Make sure that tag1 doesn't end up with itself as a related tag
+        if tag1.related_tags.filter(id=related_tag.id).count() == 0 and tag1 != related_tag:
+            tag1.related_tags.add(related_tag)
+    #logging.debug('----------')
+    #logging.debug('tag1.related_tags: %r' % tag1.related_tags.all())
+    #logging.debug('tag2.related_tags: %r' % tag2.related_tags.all())
+    #logging.debug('')
+    
+    # Add all resources from tag2 to tag1
+    #logging.debug('tag1.resources: %r' % tag1.resources.all())
+    #logging.debug('tag2.resources: %r' % tag2.resources.all())
+    for resource in tag2.resources.all():
+        if tag1.resources.filter(id=resource.id).count() == 0:
+            tag1.resources.add(resource)
+    #logging.debug('----------')
+    #logging.debug('tag1.resources: %r' % tag1.resources.all())
+    #logging.debug('tag2.resources: %r' % tag2.resources.all())
+    #logging.debug('')
+    
+    # These fields are obsolete, mark them as NULL instead of updating the totals.
+    tag1.num_related_tags = None
+    tag1.num_resources = None
+    
+    tag1.save()
+    tag2.delete()
+    
+    return tag1
+    
+@login_required
+@admin_required
+@transaction.commit_on_success
+def combine_tags(request):
+    return_url = request.GET['return_url']
+    duplicate_tags_json = request.POST['duplicate_tags_json']
+    
+    duplicate_tags = json.loads(duplicate_tags_json)
+    
+    for duplicate_tag in duplicate_tags:
+        try:
+            _combine_tags(duplicate_tag[1], duplicate_tag[2])
+        except Node.DoesNotExist, e:
+            logging.debug('Tag does not exist: %s' % e)
+    
+    return HttpResponseRedirect(return_url)
+
 @login_required
 def view_cluster(request, cluster_id):
     permissions.require_superuser(request)
@@ -3271,6 +3388,38 @@ def priority_report(request):
     
     return render(request, 'site_admin/priority_report.html', {
         'results': results,
+    })
+
+def _get_duplicate_tags():
+    "Performs a raw SQL query to get any duplicate tags."
+    from django.db import connection, transaction
+    cursor = connection.cursor()
+    cursor.execute("""
+        SELECT tag1.name, tag1.id AS id1, tag2.id AS id2
+        FROM `ieeetags_node` tag1, ieeetags_node tag2
+        WHERE tag1.name = tag2.name AND tag1.id < tag2.id
+        AND tag1.node_type_id = 3 AND tag2.node_type_id = 3
+    """)
+    #    LIMIT 5
+    rows = cursor.fetchall()
+    return rows
+
+@login_required
+@admin_required
+def duplicate_tags_report(request):
+    "Show any duplicate tags."
+    start = time.time()
+    
+    duplicate_tags = _get_duplicate_tags()
+    duplicate_tags_json = json.dumps(duplicate_tags)
+    
+    page_time = time.time() - start
+    logging.debug('page_time: %s'  % page_time)
+    
+    return render(request, 'site_admin/duplicate_tags_report.html', {
+        'duplicate_tags': duplicate_tags,
+        'duplicate_tags_json': duplicate_tags_json,
+        'page_time': page_time,
     })
 
 #def create_admin_login(request):

@@ -45,6 +45,8 @@ urlpatterns = patterns('',
     url(r'^tags/search$', views.search_tags, name='admin_search_tags'),
     url(r'^tag/(?P<tag_id>\d+)/save$', views.save_tag, name='admin_save_tag'),
     url(r'^tag/(?P<tag_id>\d+)/delete$', views.delete_tag, name='admin_delete_tag'),
+    #url(r'^tags/combine/(?P<tag_id1>\d+)/(?P<tag_id2>\d+)$', views.combine_tags, name='admin_combine_tags'),
+    url(r'^tags/combine$', views.combine_tags, name='admin_combine_tags'),
     
     # Clusters
     url(r'^cluster/(?P<cluster_id>\d+)$', views.view_cluster, name='admin_view_cluster'),
@@ -96,6 +98,7 @@ urlpatterns = patterns('',
     url(r'^report/tags_report$', views.tags_report, name='admin_tags_report'),
     url(r'^report/clusters$', views.clusters_report, name='admin_clusters_report'),
     url(r'^report/priority$', views.priority_report, name='admin_priority_report'),
+    url(r'^report/duplicate_tags$', views.duplicate_tags_report, name='admin_duplicate_tags_report'),
     
     # Exports
     url(r'^export/tab_resources$', views.export_tab_resources, name='admin_export_tab_resources'),

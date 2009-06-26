@@ -1,0 +1,48 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>Duplicate Tags Report</h1>
+    
+    page_time: {{ page_time }}<br/>
+    
+    <p>
+        Found {{ duplicate_tags|length }} duplicate tags.
+    </p>
+    
+    <p>
+        <form action="{% url admin_combine_tags %}?return_url={{ current_url|urlencode }}" method="post">
+            <input type="hidden" name="duplicate_tags_json" value="{{ duplicate_tags_json }}" />
+            <input type="submit" value="Combine Tags" />
+        </form>
+    </p>
+    <br/>
+    
+    <table class="grid">
+        <tr>
+            <th>
+                Tag name
+            </th>
+            <th>
+                ID1
+            </th>
+            <th>
+                ID2
+            </th>
+        </tr>
+        {% for name, id1, id2 in duplicate_tags %}
+            <tr>
+                <td>
+                    {{ name }}
+                </td>
+                <td>
+                    <a href="{% url admin_view_tag id1 %}">{{ id1 }}</a>
+                </td>
+                <td>
+                    <a href="{% url admin_view_tag id2 %}">{{ id2 }}</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
