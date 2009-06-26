@@ -40,7 +40,7 @@
     
 </script>
 
-<form action="{% url admin_manage_society society.id %}#tab-tags-tab" method="get">
+<form action="{% url admin_manage_society society.id %}#tab-tags-tab" method="get" class="items-per-page">
     <input type="hidden" name="tag_sort" value="{{ tag_sort }}" />
     <p class="items-per-page">
         Show

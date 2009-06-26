@@ -538,6 +538,12 @@ table.tags td.select-checkbox-on-click {
     width: 5%;
 }
 
+table.tags th {
+    /* This is to force IE7 to maintain a certain minimum widget, to avoid wrapping other page elements */
+    padding-left:1em;
+    padding-right:1em;
+}
+
 .select-checkbox-on-click,
 .select-checkbox-on-click input[type="checkbox"]
 {

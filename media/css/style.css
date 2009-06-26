@@ -980,10 +980,10 @@ div.submit {
     display:none;
 }
 
-p.items-per-page {
+form.items-per-page {
     float:right;
-    margin: 1em 0;
-    clear: both;
+    padding-top:1.5em;
+    clear:right;
 }
 
 select.items-per-page {
