@@ -22,3 +22,7 @@ ul.pages {
     vertical-align: baseline !important;
     margin-right: 5px;
 }
+
+form.items-per-page {
+    padding-top: 1.5em !important;
+}

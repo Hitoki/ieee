@@ -980,9 +980,10 @@ div.submit {
     display:none;
 }
 
+#resources-tab p.items-per-page,
 form.items-per-page {
     float:right;
-    padding-top:1.5em;
+    padding-top:1em;
     clear:right;
 }
 
