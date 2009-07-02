@@ -123,9 +123,19 @@ function browserIsFirefox30() {
     return $.browser.firefox && $.browser.version.string().substr(0,3) == "3.0";
 }
 
+// Check if browser is Firefox 3.5
+function browserIsFirefox35() {
+    return $.browser.firefox && $.browser.version.string().substr(0,3) == "3.5";
+}
+
 // Check if browser is Safari 3
 function browserIsSafari3() {
     return $.browser.safari && $.browser.version.string().substr(0,1) == "3";
+}
+
+// Check if browser is Safari 4
+function browserIsSafari4() {
+    return $.browser.safari && $.browser.version.string().substr(0,1) == "4";
 }
 
 function isCompatibleBrowser() {
@@ -136,10 +146,7 @@ function isCompatibleBrowser() {
     //alert('$.browser.version.string(): ' + $.browser.version.string());
     //alert('$.browser.version.number(): ' + $.browser.version.number());
     
-    //return browserIsFirefox30() || browserIsIe7() || browserIsSafari3();
-    
-    // TODO: Add safari back in later...
-    return browserIsFirefox30() || browserIsIe7() || browserIsIe8();
+    return browserIsFirefox30() || browserIsFirefox35() || browserIsIe7() || browserIsIe8() || browserIsSafari4();
 }
 
 $(function() {
