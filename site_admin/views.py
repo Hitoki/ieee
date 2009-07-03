@@ -14,6 +14,7 @@ from urllib import quote, urlencode
 import warnings
 from django.db import IntegrityError
 from django.db import transaction
+from django.core.mail import EmailMessage
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
@@ -1566,6 +1567,57 @@ def list_orphan_tags(request):
     return render(request, 'site_admin/list_orphan_tags.html', {
         'tags': tags,
     })
+
+@login_required
+@admin_required
+def send_email_all_users(request):
+    if request.method == 'GET':
+        form = SendEmailAllUsersForm(initial={
+            'send_email': False,
+            'body': """
+
+IEEE Technology Navigator
+%s""" % request.build_absolute_uri(reverse('index'))
+        })
+    else:
+        form = SendEmailAllUsersForm(request.POST)
+        if form.is_valid():
+            if not form.cleaned_data['send_email']:
+                # Show preview of the email before sending
+                vars = {}
+                for name, value in request.POST.items():
+                    vars[name] = value
+                vars['send_email'] = u'on'
+                subject = form.cleaned_data['subject']
+                body = form.cleaned_data['body']
+                form = SendEmailAllUsersForm(vars)
+                form.fields['subject'].widget = HiddenInput()
+                form.fields['body'].widget = HiddenInput()
+                return render(request, 'site_admin/send_email_all_users_preview.html', {
+                    'form': form,
+                    'subject': subject,
+                    'body': body,
+                })
+            else:
+                # Send the email
+                user_emails = User.objects.all().values('email')
+                user_emails = [obj['email'] for obj in user_emails]
+                
+                subject = form.cleaned_data['subject']
+                body = form.cleaned_data['body']
+                msg = EmailMessage(subject, body, to=[settings.SERVER_EMAIL], bcc=user_emails)
+                msg.send()
+                
+                return HttpResponseRedirect(reverse('admin_send_email_all_users_confirmation'))
+            
+    return render(request, 'site_admin/send_email_all_users.html', {
+        'form': form,
+    })
+
+@login_required
+@admin_required
+def send_email_all_users_confirmation(request):
+    return render(request, 'site_admin/send_email_all_users_confirmation.html')
 
 @login_required
 @transaction.commit_on_success

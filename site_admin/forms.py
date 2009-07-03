@@ -202,3 +202,8 @@ class ItemsPerPageForm(Form):
         (1000000, 'all'),
     ]
     items_per_page = ChoiceField(choices=_ITEMS_PER_PAGE, widget=Select(attrs={ 'class': 'items-per-page'}))
+
+class SendEmailAllUsersForm(Form):
+    subject = CharField()
+    body = CharField(widget=Textarea())
+    send_email = BooleanField(widget=HiddenInput(), required=False)
