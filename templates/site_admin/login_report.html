@@ -3,6 +3,11 @@
 {% block main_table_content %}
     
     <h1>Login Report</h1>
+    
+    <p class="export">
+        <a href="{% url admin_login_report %}?export_csv=1">Export as CSV</a>
+    </p>
+    
     <table class="grid">
         <tr>
             <th>

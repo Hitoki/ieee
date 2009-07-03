@@ -8,6 +8,7 @@ import random
 import re
 import smtplib
 import string
+import StringIO
 import time
 from urllib import quote, urlencode
 import warnings
@@ -3184,20 +3185,42 @@ def ajax_update_society(request):
     else:
         raise Exception('Unknown action "%s"' % action)
 
+def _response_csv_attachment(rows, filename):
+    "Returns an HttpResponse() setup with the data in CSV format, saved as an attachment."
+    buffer = StringIO.StringIO()
+    writer = csv.writer(buffer)
+    writer.writerows(rows)
+    response = HttpResponse(buffer.getvalue(), 'text/csv')
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+    return response
+
 @login_required
 @admin_required
 def login_report(request):
-    permissions.require_superuser(request)
-    
+    export_csv = bool(request.GET.get('export_csv', False))
     users = UserManager.get_users_by_login_date() 
-    return render(request, 'site_admin/login_report.html', {
-        'users': users,
-    })
+    if export_csv:
+        # Export as a CSV file
+        data = []
+        data.append(['Username', 'Last Login Time'])
+        for user in users:
+            data.append([
+                user.username,
+                user.get_profile().last_login_time,
+            ])
+        filename = 'login_report_%s.csv' % datetime.today().strftime('%Y-%m-%d')
+        return _response_csv_attachment(data, filename)
+        
+    else:
+        # Render to browser
+        return render(request, 'site_admin/login_report.html', {
+            'users': users,
+        })
 
 @login_required
 @admin_required
 def tagged_resources_report(request, filter):
-    permissions.require_superuser(request)
+    export_csv = bool(request.GET.get('export_csv', False))
     
     if filter == 'priority':
         resources = Resource.objects.filter(priority_to_tag=True)
@@ -3244,18 +3267,41 @@ def tagged_resources_report(request, filter):
             'percent_resources': percent_resources,
         })
     
-    return render(request, 'site_admin/tagged_resources_report.html', {
-        'filter': filter,
-        'all_tagged_resources': all_tagged_resources,
-        'all_total_resources': all_total_resources,
-        'all_percent_resources': all_percent_resources,
-        'societies': result_societies,
-    })
+    if export_csv:
+        # Export as a CSV file
+        data = []
+        data.append(['Name', 'Tagged', 'Total', 'Percent'])
+        data.append([
+            'All Resources',
+            all_tagged_resources,
+            all_total_resources,
+            '%s%%' % all_percent_resources
+        ])
+        
+        for society in result_societies:
+            data.append([
+                society['name'],
+                society['num_tagged_resources'],
+                society['total_resources'],
+                '%s%%' % society['percent_resources']
+            ])
+        filename = 'login_report_%s.csv' % datetime.today().strftime('%Y-%m-%d')
+        return _response_csv_attachment(data, filename)
+        
+    else:
+        # Render to browser
+        return render(request, 'site_admin/tagged_resources_report.html', {
+            'filter': filter,
+            'all_tagged_resources': all_tagged_resources,
+            'all_total_resources': all_total_resources,
+            'all_percent_resources': all_percent_resources,
+            'societies': result_societies,
+        })
 
 @login_required
 @admin_required
 def tags_report(request):
-    permissions.require_superuser(request)
+    export_csv = bool(request.GET.get('export_csv', False))
     
     start = time.time()
     
@@ -3336,17 +3382,46 @@ def tags_report(request):
     
     end = time.time()
 
-    return render(request, 'site_admin/tags_report.html', {
-        'all_total_tags': all_total_tags,
-        'all_filtered_tags': all_filtered_tags,
-        'all_percent_filtered': all_percent_filtered,
-        'all_society_tags': all_society_tags,
-        'all_percent_society': all_percent_society,
-        'all_resource_tags': all_resource_tags,
-        'all_percent_resource': all_percent_resource,
-        'societies': result_societies,
-        'page_time': end-start,
-    })
+    if export_csv:
+        # Export as a CSV file
+        data = []
+        data.append(['Name', 'Total', '# Filtered', '% Filtered', '# Resources', '% Resources', '# Societies', '% Societies'])
+        data.append([
+            'All Tags',
+            all_total_tags,
+            all_filtered_tags,
+            '%s%%' % all_percent_filtered,
+            all_resource_tags,
+            '%s%%' % all_percent_resource,
+            all_society_tags,
+            '%s%%' % all_percent_society,
+        ])
+        
+        for society in result_societies:
+            data.append([
+                society['name'],
+                society['total_tags'],
+                society['filtered_tags'],
+                '%s%%' % society['percent_filtered'],
+                society['resource_tags'],
+                '%s%%' % society['percent_resource'],
+            ])
+        filename = 'tags_report_%s.csv' % datetime.today().strftime('%Y-%m-%d')
+        return _response_csv_attachment(data, filename)
+        
+    else:
+        # Render to browser
+        return render(request, 'site_admin/tags_report.html', {
+            'all_total_tags': all_total_tags,
+            'all_filtered_tags': all_filtered_tags,
+            'all_percent_filtered': all_percent_filtered,
+            'all_society_tags': all_society_tags,
+            'all_percent_society': all_percent_society,
+            'all_resource_tags': all_resource_tags,
+            'all_percent_resource': all_percent_resource,
+            'societies': result_societies,
+            'page_time': end-start,
+        })
 
 #@login_required
 #@admin_required
@@ -3358,9 +3433,10 @@ def tags_report(request):
 #    })
 
 @login_required
-@society_manager_or_admin_required
+@admin_required
 def priority_report(request):
     "Show the priorities for resources."
+    export_csv = bool(request.GET.get('export_csv', False))
     
     results = odict()
     
@@ -3385,10 +3461,23 @@ def priority_report(request):
     periodicals = Resource.objects.get_periodicals()
     results['All Periodicals'] = periodicals.count(), periodicals.filter(priority_to_tag=True).count()
     
-    
-    return render(request, 'site_admin/priority_report.html', {
-        'results': results,
-    })
+    if export_csv:
+        # Export as a CSV file
+        data = []
+        for name, values in results.items():
+            data.append([
+                name,
+                values[0],
+                values[1],
+            ])
+        filename = 'priority_report_%s.csv' % datetime.today().strftime('%Y-%m-%d')
+        return _response_csv_attachment(data, filename)
+        
+    else:
+        # Render to browser
+        return render(request, 'site_admin/priority_report.html', {
+            'results': results,
+        })
 
 def _get_duplicate_tags():
     "Performs a raw SQL query to get any duplicate tags."
@@ -3408,6 +3497,7 @@ def _get_duplicate_tags():
 @admin_required
 def duplicate_tags_report(request):
     "Show any duplicate tags."
+    export_csv = bool(request.GET.get('export_csv', False))
     start = time.time()
     
     duplicate_tags = _get_duplicate_tags()
@@ -3416,11 +3506,27 @@ def duplicate_tags_report(request):
     page_time = time.time() - start
     logging.debug('page_time: %s'  % page_time)
     
-    return render(request, 'site_admin/duplicate_tags_report.html', {
-        'duplicate_tags': duplicate_tags,
-        'duplicate_tags_json': duplicate_tags_json,
-        'page_time': page_time,
-    })
+    if export_csv:
+        # Export as a CSV file
+        data = []
+        data.append(['Tag name', 'ID1', 'ID2'])
+
+        for tag in duplicate_tags:
+            data.append([
+                tag[0],
+                tag[1],
+                tag[2],
+            ])
+        filename = 'duplicate_tags_report_%s.csv' % datetime.today().strftime('%Y-%m-%d')
+        return _response_csv_attachment(data, filename)
+        
+    else:
+        # Render to browser
+        return render(request, 'site_admin/duplicate_tags_report.html', {
+            'duplicate_tags': duplicate_tags,
+            'duplicate_tags_json': duplicate_tags_json,
+            'page_time': page_time,
+        })
 
 #def create_admin_login(request):
 #    "Create a test admin account."

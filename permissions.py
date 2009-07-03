@@ -5,6 +5,7 @@ def require_staff(request):
     if not request.user.is_staff and not request.user.is_superuser:
         raise Exception('You must be logged in as a staff member to access this page.')
 
+# TODO: This is deprecated, use @admin_required instead.
 def require_superuser(request):
     #logging.debug('request.user.is_superuser: %d' % request.user.is_superuser)
     if not request.user.is_superuser:

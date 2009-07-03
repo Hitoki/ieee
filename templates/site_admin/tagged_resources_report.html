@@ -7,6 +7,11 @@
     {% else %}
         <h1>Tagged Resources Report</h1>
     {% endifequal %}
+    
+    <p class="export">
+        <a href="{% url admin_tagged_resources_report filter %}?export_csv=1">Export as CSV</a>
+    </p>
+    
     <table class="tagged_resources_report grid">
         <tr>
             <th>

@@ -3,6 +3,9 @@
 {% block main_table_content %}
     
     <h1>Priority Report</h1>
+    <p class="export">
+        <a href="{% url admin_priority_report %}?export_csv=1">Export as CSV</a>
+    </p>
     
     <p>
         {# <a href="{% url admin_remove_priorities %}" onclick="return confirm('Are you sure you want to remove priorites?  This cannot be undone.');">Remove priorities</a> #}
