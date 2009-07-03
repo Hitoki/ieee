@@ -27,16 +27,18 @@
                 {% endfor %}
             </td>
         </tr>
-        <tr>
-            <th>
-                Clusters
-            </th>
-            <td>
-                {% for cluster in tag.get_parent_clusters.all %}
-                    <a href="{% url admin_view_cluster cluster.id %}">{{ cluster.name }}</a>{% if not forloop.last %},{% endif %}
-                {% endfor %}
-            </td>
-        </tr>
+        {% comment %}
+        #<tr>
+        #    <th>
+        #        Clusters
+        #    </th>
+        #    <td>
+        #        {% for cluster in tag.get_parent_clusters.all %}
+        #            <a href="{% url admin_view_cluster cluster.id %}">{{ cluster.name }}</a>{% if not forloop.last %},{% endif %}
+        #        {% endfor %}
+        #    </td>
+        #</tr>
+        {% endcomment %}
         <tr>
             <th>
                 Societies

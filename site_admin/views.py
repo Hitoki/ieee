@@ -3348,14 +3348,14 @@ def tags_report(request):
         'page_time': end-start,
     })
 
-@login_required
-@admin_required
-def clusters_report(request):
-    permissions.require_superuser(request)
-    clusters = Node.objects.get_clusters()
-    return render(request, 'site_admin/clusters_report.html', {
-        'clusters': clusters,
-    })
+#@login_required
+#@admin_required
+#def clusters_report(request):
+#    permissions.require_superuser(request)
+#    clusters = Node.objects.get_clusters()
+#    return render(request, 'site_admin/clusters_report.html', {
+#        'clusters': clusters,
+#    })
 
 @login_required
 @society_manager_or_admin_required
