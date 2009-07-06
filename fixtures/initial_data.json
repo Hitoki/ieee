@@ -701,8 +701,6 @@
             ], 
             "name": "IEEE", 
             "node_type": 1, 
-            "num_related_tags": null, 
-            "num_resources": null, 
             "parents": [], 
             "related_tags": [], 
             "societies": []
@@ -722,8 +720,6 @@
             ], 
             "name": "Agriculture", 
             "node_type": 2, 
-            "num_related_tags": null, 
-            "num_resources": null, 
             "parents": [1], 
             "related_tags": [], 
             "societies": []
@@ -741,8 +737,6 @@
             ], 
             "name": "Communications", 
             "node_type": 2, 
-            "num_related_tags": null, 
-            "num_resources": null, 
             "parents": [1], 
             "related_tags": [], 
             "societies": []
@@ -760,8 +754,6 @@
             ], 
             "name": "Computing & IT", 
             "node_type": 2, 
-            "num_related_tags": null, 
-            "num_resources": null, 
             "parents": [1], 
             "related_tags": [], 
             "societies": []
@@ -779,8 +771,6 @@
             ], 
             "name": "Critical Infrastructure", 
             "node_type": 2, 
-            "num_related_tags": null, 
-            "num_resources": null, 
             "parents": [1], 
             "related_tags": [], 
             "societies": []
@@ -798,8 +788,6 @@
             ], 
             "name": "Defense", 
             "node_type": 2, 
-            "num_related_tags": null, 
-            "num_resources": null, 
             "parents": [1], 
             "related_tags": [], 
             "societies": []
@@ -817,8 +805,6 @@
             ], 
             "name": "Education", 
             "node_type": 2, 
-            "num_related_tags": null, 
-            "num_resources": null, 
             "parents": [1], 
             "related_tags": [], 
             "societies": []
@@ -836,8 +822,6 @@
             ], 
             "name": "Energy", 
             "node_type": 2, 
-            "num_related_tags": null, 
-            "num_resources": null, 
             "parents": [1], 
             "related_tags": [], 
             "societies": []
@@ -855,8 +839,6 @@
             ], 
             "name": "Entertainment", 
             "node_type": 2, 
-            "num_related_tags": null, 
-            "num_resources": null, 
             "parents": [1], 
             "related_tags": [], 
             "societies": []
@@ -874,8 +856,6 @@
             ], 
             "name": "Environment", 
             "node_type": 2, 
-            "num_related_tags": null, 
-            "num_resources": null, 
             "parents": [1], 
             "related_tags": [], 
             "societies": []
@@ -893,8 +873,6 @@
             ], 
             "name": "Financial Services", 
             "node_type": 2, 
-            "num_related_tags": null, 
-            "num_resources": null, 
             "parents": [1], 
             "related_tags": [], 
             "societies": []
@@ -912,8 +890,6 @@
             ], 
             "name": "Healthcare", 
             "node_type": 2, 
-            "num_related_tags": null, 
-            "num_resources": null, 
             "parents": [1], 
             "related_tags": [], 
             "societies": []
@@ -933,8 +909,6 @@
             ], 
             "name": "Manufacturing & Devices", 
             "node_type": 2, 
-            "num_related_tags": null, 
-            "num_resources": null, 
             "parents": [1], 
             "related_tags": [], 
             "societies": []
@@ -952,8 +926,6 @@
             ], 
             "name": "Retail", 
             "node_type": 2, 
-            "num_related_tags": null, 
-            "num_resources": null, 
             "parents": [1], 
             "related_tags": [], 
             "societies": []
@@ -971,8 +943,6 @@
             ], 
             "name": "Transportation", 
             "node_type": 2, 
-            "num_related_tags": null, 
-            "num_resources": null, 
             "parents": [1], 
             "related_tags": [], 
             "societies": []

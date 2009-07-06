@@ -90,20 +90,12 @@ class NodeManager(models.Manager):
     def create_tag(self, **kwargs):
         if 'name' in kwargs:
             kwargs['name'] = string.capwords(kwargs['name'])
-        if 'num_related_tags' not in kwargs:
-            kwargs['num_related_tags'] = 0
-        if 'num_resources' not in kwargs:
-            kwargs['num_resources'] = 0
         kwargs['node_type'] = NodeType.objects.getFromName(NodeType.TAG)
         return models.Manager.create(self, **kwargs)
         
     def create_cluster(self, **kwargs):
         if 'name' in kwargs:
             kwargs['name'] = string.capwords(kwargs['name'])
-        if 'num_related_tags' not in kwargs:
-            kwargs['num_related_tags'] = 0
-        if 'num_resources' not in kwargs:
-            kwargs['num_resources'] = 0
         kwargs['node_type'] = NodeType.objects.getFromName(NodeType.TAG_CLUSTER)
         return models.Manager.create(self, **kwargs)
         
@@ -215,7 +207,7 @@ class NodeManager(models.Manager):
                 'num_societies': 'SELECT COUNT(*) FROM ieeetags_node_societies WHERE ieeetags_node_societies.node_id = ieeetags_node.id',
                 'num_filters': 'SELECT COUNT(*) FROM ieeetags_node_filters WHERE ieeetags_node_filters.node_id = ieeetags_node.id',
                 'num_sectors': 'SELECT COUNT(*) FROM ieeetags_node_parents WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id',
-                'num_related_tags': 'SELECT COUNT(*) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id',
+                'num_related_tags1': 'SELECT COUNT(*) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id',
             },
         )
         
@@ -238,10 +230,10 @@ class NodeManager(models.Manager):
                 if max_sectors is None or tag.num_sectors > max_sectors:
                     max_sectors = tag.num_sectors
 
-                if min_related_tags is None or tag.num_related_tags < min_related_tags:
-                    min_related_tags = tag.num_related_tags
-                if max_related_tags is None or tag.num_related_tags > max_related_tags:
-                    max_related_tags = tag.num_related_tags
+                if min_related_tags is None or tag.num_related_tags1 < min_related_tags:
+                    min_related_tags = tag.num_related_tags1
+                if max_related_tags is None or tag.num_related_tags1 > max_related_tags:
+                    max_related_tags = tag.num_related_tags1
 
         return (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags)
     
@@ -393,9 +385,6 @@ class Node(models.Model):
 
     related_tags = models.ManyToManyField('self', null=True, blank=True)
     
-    num_related_tags = models.IntegerField(null=True, blank=True)
-    num_resources = models.IntegerField(null=True, blank=True)
-    
     objects = NodeManager()
     
     def __unicode__(self):
@@ -424,14 +413,6 @@ class Node(models.Model):
     
     def get_tags(self):
         return self.child_nodes.filter(node_type__name=NodeType.TAG)
-    
-    def save(self, *args, **kwargs):
-        # Update node counts here...
-        if self.id is not None:
-            self.num_related_tags = self.related_tags.count()
-            self.num_resources = self.resources.count()
-        super(Node, self).save(*args, **kwargs)
-        # TODO: Do we need to update tag counts for newly-created tags?
     
     class Meta:
         ordering = ['name']

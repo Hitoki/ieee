@@ -1735,15 +1735,7 @@ def create_tag(request):
             
             tag.filters = form.cleaned_data['filters']
             tag.related_tags = form.cleaned_data['related_tags']
-            
-            tag.num_related_tags = tag.related_tags.count()
-            tag.num_resources = 0
             tag.save()
-            
-            # Update the related tags counts
-            for related_tag in tag.related_tags.all():
-                related_tag.num_related_tags = related_tag.related_tags.count()
-                related_tag.save()
             
             if return_url != '':
                 return HttpResponseRedirect(return_url)
@@ -1875,13 +1867,7 @@ def save_tag(request, tag_id):
         tag.filters = form.cleaned_data['filters']
         #tag.num_resources = form.cleaned_data['num_resources']
         tag.related_tags = form.cleaned_data['related_tags']
-        tag.num_related_tags = tag.related_tags.count()
         tag.save()
-        
-        # Updated the related tags counts
-        for related_tag in tag.related_tags.all():
-            related_tag.num_related_tags = related_tag.related_tags.count()
-            related_tag.save()
         
         if return_url != '':
             return HttpResponseRedirect(return_url)
@@ -1992,10 +1978,6 @@ def _combine_tags(tag_id1, tag_id2):
     #logging.debug('tag1.resources: %r' % tag1.resources.all())
     #logging.debug('tag2.resources: %r' % tag2.resources.all())
     #logging.debug('')
-    
-    # These fields are obsolete, mark them as NULL instead of updating the totals.
-    tag1.num_related_tags = None
-    tag1.num_resources = None
     
     tag1.save()
     tag2.delete()
