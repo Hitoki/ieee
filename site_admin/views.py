@@ -524,9 +524,7 @@ def home(request):
         
         # Has more than one society, show list of societies
         elif request.user.societies.count() > 1:
-            #return HttpResponseRedirect(reverse('admin_societies'))
-            #return HttpResponseRedirect(reverse('admin_home_societies_list') + hash)
-            raise Exception('User is assigned to multiple societies.')
+            return HttpResponseRedirect(reverse('admin_societies'))
         
         else:
             raise Exception('User is a society manager but is not assigned to any societies.')
@@ -2187,10 +2185,6 @@ def save_user(request):
         elif form.cleaned_data['password1'] != form.cleaned_data['password2']:
             errors.append('The passwords did not match.')
         
-        # TODO: Later on, will re-enable multiple societies per user
-        if len(form.cleaned_data['societies']) > 1:
-            errors.append('Currently, a user can only be assigned to a single society.')
-        
         if len(errors) == 0:
             # Form is valid
             if form.cleaned_data['id'] is None:
@@ -2317,9 +2311,8 @@ def send_login_info(request, reason):
     return HttpResponseRedirect(reverse('admin_users'))
 
 @login_required
+@society_manager_or_admin_required
 def societies(request):
-    permissions.require_superuser(request)
-    
     societies = Society.objects.getForUser(request.user)
     return render(request, 'site_admin/societies.html', {
         'societies': societies,
