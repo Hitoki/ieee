@@ -1865,7 +1865,6 @@ def save_tag(request, tag_id):
         if form.cleaned_data['societies'] is not None:
             tag.societies = form.cleaned_data['societies']
         tag.filters = form.cleaned_data['filters']
-        #tag.num_resources = form.cleaned_data['num_resources']
         tag.related_tags = form.cleaned_data['related_tags']
         tag.save()
         

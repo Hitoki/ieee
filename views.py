@@ -19,6 +19,7 @@ from ieeetags.models import single_row, Filter, Node, NodeType, Resource, Resour
 from ieeetags.forms import *
 import settings
 import util
+from widgets import make_display_only
 
 def render(request, template, dictionary=None):
     "Use this instead of 'render_to_response' to enable custom context processors, which add things like MEDIA_URL to the page automatically."
@@ -103,12 +104,18 @@ def textui_help(request):
 def feedback(request):
     if request.method == 'GET':
         if request.user.is_authenticated:
-            initial = {
-                'email': request.user.email,
-            }
+            form = FeedbackForm(
+                initial={
+                    'name': '%s %s' % (request.user.first_name, request.user.last_name),
+                    'email': request.user.email,
+                }
+            )
+            
+            make_display_only(form.fields['name'])
+            make_display_only(form.fields['email'])
+            
         else:
-            initial = {}
-        form = FeedbackForm(initial=initial)
+            form = FeedbackForm()
         return render(request, 'feedback.html', {
             'form': form,
         })
