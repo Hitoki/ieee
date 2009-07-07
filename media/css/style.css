@@ -714,7 +714,8 @@ table.vert-center td {
 }
 
 #frequencybar-tags {
-    margin-top: -8px;   
+    margin-top: -9px;
+    clear: right;
 }
 
 #frequencybar-tags img {
@@ -796,8 +797,9 @@ table.vert-center td {
 /* */
 /* sort dropdown */
 #sortmenu {
+    vertical-align: middle;
     float: right; 
-    margin-top: -22px; 
+    padding-top: 4px;
     padding-right: 2px;
     font-size: 80%;
     font-weight: bold;

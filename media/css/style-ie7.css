@@ -26,3 +26,11 @@ ul.pages {
 form.items-per-page {
     padding-top: 1.5em !important;
 }
+
+#frequencybar-tags {
+    margin-top: -7px !important;
+}
+
+#sortmenu {
+    padding-top: 0 !important;
+}
