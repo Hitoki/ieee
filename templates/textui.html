@@ -74,7 +74,7 @@
                     
                         <div id="right-column">
                             <div id="frequencybar-tags">
-                                <div style="float: left; padding-bottom: 2px;">
+                                <div id="galaxy-key">
                                     {% comment %}
                                     <span id="homeico-tags"><a href="javascript:Tags.showHelp();"><img src="{{MEDIA_URL}}images/home_icon.png" alt="home" height="18" /></a></span>
                                     {% endcomment %}
@@ -82,7 +82,13 @@
                                         <span id="key-label">Key:</span>
                                         {% endcomment %}
                                         <span id="frequency-indicator"><img src="/media/images/frequency-bar.png"/></span>
-                                        <span class="flyover helpbracket" style="height:18px; font-size:0.7em" title="Color coding reflecting the # of each of the 3 variables to the right">[?]</span>
+                                        <table id="tag-model-indicator">
+                                            <tr>
+                                                <td>
+                                                    <span class="flyover helpbracket" id="tag-model-indicator-helpico" title="Color coding reflecting the # of each of the 3 variables to the right">[?]</span>
+                                                </td>
+                                            </tr>
+                                        </table>
                                             <table id="tag-model-left">
                                                 <tr>
                                                     <td>
@@ -118,7 +124,7 @@
                                             <option value="num_related_tags"># Related Tags</option>
                                         </select>
                                     </div>
-                                <br style="clear:both;" />
+                                <br style="clear: both;" />
                             </div>    
                             
                             <div id="tag-galaxy" class="alt-box" style="height: 100%;">

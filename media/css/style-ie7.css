@@ -18,9 +18,11 @@ ul.pages {
     padding-top: 10px !important;
 }
 
-#tag-model-left {
+#tag-model-left,
+#tag-model-indicator {
     vertical-align: baseline !important;
     margin-right: 5px;
+    display: inline !important;
 }
 
 form.items-per-page {

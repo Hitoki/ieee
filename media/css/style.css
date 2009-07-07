@@ -714,8 +714,13 @@ table.vert-center td {
 }
 
 #frequencybar-tags {
-    margin-top: -9px;
+    margin-top: -10px;
     clear: right;
+}
+
+#galaxy-key {
+    float: left; 
+    padding-bottom: 2px;
 }
 
 #frequencybar-tags img {
@@ -744,14 +749,16 @@ table.vert-center td {
     margin-top: -4px;
 }
 
-#tag-model-left {
+#tag-model-left,
+#tag-model-indicator {
     font-size: .7em; 
-    display: inline; 
-    vertical-align: text-top;
+    display: inline-block; 
+    vertical-align: text-bottom;
     height: 18px;
 }
 
-#tag-model-left td {
+#tag-model-left td,
+#tag-model-indicator td {
     text-align: center;
     padding-left: 6px;
 }
