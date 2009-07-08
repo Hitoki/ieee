@@ -48,8 +48,20 @@ function getElemPos(elem) {
     elem = originalElem;
     do {
         if (elem.scrollLeft != undefined && elem.scrollTop != undefined) {
-            x -= elem.scrollLeft;
-            y -= elem.scrollTop;
+            if (!browserIsSafari4() || elem.nodeName != 'BODY') {
+                x -= elem.scrollLeft;
+                y -= elem.scrollTop;
+                //log('  '
+                //    + ',scrollOffset'
+                //    + ',' + elem.id
+                //    + ',' + elem.className
+                //    + ',' + elem.nodeName
+                //    + ',' + x
+                //    + ',' + y
+                //    + ',' + elem.scrollLeft
+                //    + ',' + elem.scrollTop
+                //);
+            }
         }
     } while((elem = elem.parentNode) && elem != document.documentElement);
     
