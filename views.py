@@ -52,7 +52,9 @@ def error_view(request):
 
 @login_required
 def index(request):
-    return render(request, 'index.html')
+    # TODO: Temporarily show the textui page first, since roamer has performance problems.
+    return HttpResponseRedirect(reverse('textui'))
+    #return render(request, 'index.html')
 
 @login_required
 def roamer(request):
