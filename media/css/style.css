@@ -989,6 +989,11 @@ div.submit {
     display:none;
 }
 
+/* NOTE: This is needed for the #resources-link link.  Otherwise it shows up briefly when the page loads. */
+#content .hide-initally {
+    display:none;
+}
+
 #resources-tab p.items-per-page,
 form.items-per-page {
     float:right;
