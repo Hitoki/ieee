@@ -129,6 +129,9 @@ var Roamer = {
                 $('#no-resources').hide();
                 $('#resources-explanation-text').hide();
                 $('#resources-link').show();
+                // NOTE: jQuery always makes this <a> into 'display:inline', but we want 'display:block'
+                $('#resources-link').css('display', 'block');
+                
                 $('.resources-tag-name').html(htmlentities(this.nodeInfo.name));
                 $('#resources-count').html(htmlentities(this.nodeInfo.num_resources));
                 
