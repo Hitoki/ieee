@@ -39,8 +39,11 @@
                                 {% ifequal user.get_profile.role "admin" %}
                                     <a href="{% url admin_home %}">Admin</a> |
                                 {% endifequal %}
+                                {% ifequal user.get_profile.role "society_admin" %}
+                                    <a href="{% url admin_home %}">Society Admin</a> |
+                                {% endifequal %}
                                 {% ifequal user.get_profile.role "society_manager" %}
-                                    <a href="{% url admin_home %}">Society Manager Admin</a> |
+                                    <a href="{% url admin_home %}">Society Manager</a> |
                                 {% endifequal %}
                                 <a href="{% url admin_logout %}">Logout</a>
                             </p>

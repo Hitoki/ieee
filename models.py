@@ -435,10 +435,14 @@ class SocietyManager(models.Manager):
         return self.filter(name__icontains=substring)
     
     def getForUser(self, user):
-        if user.is_superuser:
+        if user.get_profile().role == Profile.ROLE_ADMIN:
             return self.all()
-        else:
+        elif user.get_profile().role == Profile.ROLE_SOCIETY_ADMIN:
+            return self.all()
+        elif user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER:
             return self.filter(users=user)
+        else:
+            raise Exception('Unknown role "%s"' % user.get_profile().role)
     
 class Society(models.Model):
     name = models.CharField(max_length=500)
@@ -612,11 +616,13 @@ class Permission(models.Model):
 
 class Profile(models.Model):
     ROLE_ADMIN = 'admin'
+    ROLE_SOCIETY_ADMIN = 'society_admin'
     ROLE_SOCIETY_MANAGER = 'society_manager'
     ROLE_END_USER = 'end_user'
     
     ROLES = [
         ROLE_ADMIN,
+        ROLE_SOCIETY_ADMIN,
         ROLE_SOCIETY_MANAGER,
         ROLE_END_USER,
     ]

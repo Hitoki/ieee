@@ -255,17 +255,31 @@ def _parse_tristate_value(value):
 
 def society_manager_or_admin_required(fn):
     """
-    This is used as a decorator.  The decorated view is restricted to users with the role of society manager or admin.  Other roles are send to the "permission denied" page.
+    This is used as a decorator.  The decorated view is restricted to users with the role of society manager, society admin, or admin.  Other roles are sent to the "permission denied" page.
     This should be used in conjunction with the @login_required decorator.
     """
     def _decorator_society_manager_or_admin_required(request, *args, **kwargs):
-        if not request.user.is_anonymous() and (request.user.get_profile().role in [Profile.ROLE_ADMIN, Profile.ROLE_SOCIETY_MANAGER]):
+        if not request.user.is_anonymous() and (request.user.get_profile().role in [Profile.ROLE_ADMIN, Profile.ROLE_SOCIETY_ADMIN, Profile.ROLE_SOCIETY_MANAGER]):
             # User is an admin or society manager, allow
             return fn(request, *args, **kwargs)
         else:
             # Disallow
             return permission_denied(request)
     return _decorator_society_manager_or_admin_required
+
+def society_admin_or_admin_required(fn):
+    """
+    This is used as a decorator.  The decorated view is restricted to users with the role of society admin or admin.  Other roles are sent to the "permission denied" page.
+    This should be used in conjunction with the @login_required decorator.
+    """
+    def _decorator_society_admin_or_admin_required(request, *args, **kwargs):
+        if not request.user.is_anonymous() and (request.user.get_profile().role in [Profile.ROLE_ADMIN, Profile.ROLE_SOCIETY_ADMIN]):
+            # User is an admin or society manager, allow
+            return fn(request, *args, **kwargs)
+        else:
+            # Disallow
+            return permission_denied(request)
+    return _decorator_society_admin_or_admin_required
 
 def admin_required(fn):
     """
@@ -513,6 +527,10 @@ def home(request):
             'num_tags': num_tags,
             'num_resources': num_resources,
         })
+        
+    elif role == Profile.ROLE_SOCIETY_ADMIN:
+        # Show list of societies
+        return HttpResponseRedirect(reverse('admin_societies'))
         
     elif role == Profile.ROLE_SOCIETY_MANAGER:
         # Redirect to the society manager home page
@@ -2178,6 +2196,9 @@ def save_user(request):
             
             if form.cleaned_data['role'] == Profile.ROLE_ADMIN:
                 user.is_superuser = True
+                user.is_staff = True
+            elif form.cleaned_data['role'] == Profile.ROLE_SOCIETY_ADMIN:
+                user.is_superuser = False
                 user.is_staff = True
             elif form.cleaned_data['role'] == Profile.ROLE_SOCIETY_MANAGER:
                 user.is_superuser = False

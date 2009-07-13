@@ -20,7 +20,7 @@
 {% if not is_ajax %}    
     {% if user.is_authenticated %}
         <ul class="nav">
-            {% if user.get_profile.role == "society_manager" or user.get_profile.role == "admin" %}
+            {% if user.get_profile.role == "society_manager" or user.get_profile.role == "society_admin" or user.get_profile.role == "admin" %}
                 <li class="{% block nav_home %}{% endblock %}">
                     <a href="{% url admin_home %}">Home</a>
                 </li>

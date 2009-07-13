@@ -13,6 +13,9 @@ import logging
 
 def require_society_user(request, society_id):
     "Make sure the user is associated with the society."
+    from models import Profile
     #print 'request.user.is_superuser:', request.user.is_superuser
-    if not request.user.is_superuser and request.user.societies.filter(id=society_id).count() == 0:
+    if request.user.get_profile().role != Profile.ROLE_ADMIN \
+        and request.user.get_profile().role != Profile.ROLE_SOCIETY_ADMIN \
+        and request.user.societies.filter(id=society_id).count() == 0:
         raise Exception('Your account does not have permissions to access this society page.')
