@@ -599,8 +599,6 @@ def permission_denied(request):
 @society_manager_or_admin_required
 @transaction.commit_on_success
 def import_tags(request, source):
-    permissions.require_superuser(request)
-    
     logging.debug('import_tags()')
     start = time.time()
     
@@ -763,10 +761,9 @@ def import_tags(request, source):
     })
 
 @login_required
+@admin_required
 @transaction.commit_on_success
 def unassigned_tags(request):
-    permissions.require_superuser(request)
-    
     logging.debug('unassigned_tags()')
     start = time.time()
     
@@ -878,13 +875,10 @@ def _import_societies(file1):
     }
     
 @login_required
+@admin_required
 @transaction.commit_manually
 def import_societies(request):
-    permissions.require_superuser(request)
-    
     #logging.debug('import_societies()')
-    
-    permissions.require_superuser(request)
     if request.method == 'GET':
         # Display form
         form = ImportFileForm()
@@ -915,9 +909,8 @@ def import_societies(request):
         })
 
 @login_required
+@admin_required
 def fix_societies_import(request):
-    permissions.require_superuser(request)
-    
     start = time.time()
     
     in_filename = relpath(__file__, '../data/v.7/2009-04-20 - societies.csv')
@@ -1239,9 +1232,8 @@ def _get_random_from_sequence(seq, num):
     return results
 
 @login_required
+@admin_required
 def fix_user_import(request):
-    permissions.require_superuser(request)
-    
     in_filename = relpath(__file__, '../data/v.7/2009-04-30 - users - append.csv')
     out_filename = relpath(__file__, '../data/v.7/2009-04-30 - users - append - fixed.csv')
     
@@ -1299,10 +1291,9 @@ def fix_user_import(request):
     })
     
 @login_required
+@admin_required
 @transaction.commit_manually
 def import_users(request):
-    permissions.require_superuser(request)
-    
     if request.method == 'GET':
         # Display form
         form = ImportFileForm()
@@ -1425,10 +1416,10 @@ def import_users(request):
         })
     
 @login_required
+@admin_required
 #@transaction.commit_manually
 #@transaction.commit_on_success
 def import_resources(request):
-    permissions.require_superuser(request)
     if request.method == 'GET':
         # DEBUG: Delete all resources first...
         #Resource.objects.all().delete()
@@ -1449,10 +1440,10 @@ def import_resources(request):
         })
     
 @login_required
+@admin_required
 #@transaction.commit_manually
 #@transaction.commit_on_success
 def import_clusters(request):
-    permissions.require_superuser(request)
     if request.method == 'GET':
         # Display form
         form = ImportFileForm()
@@ -1541,26 +1532,24 @@ def _import_clusters(file):
     }
 
 @login_required
+@admin_required
 def list_sectors(request):
-    permissions.require_superuser(request)
-    
     sectors = Node.objects.getSectors()
     return render(request, 'site_admin/list_sectors.html', {
         'sectors': sectors,
     })
 
 @login_required
+@admin_required
 def view_sector(request, sectorId):
-    permissions.require_superuser(request)
     sector = Node.objects.get(id=sectorId)
     return render(request, 'site_admin/view_sector.html', {
         'sector': sector,
     })
 
 @login_required
+@admin_required
 def list_orphan_tags(request):
-    # TODO: check for manager here
-    #permissions.require_superuser(request)
     tags = Node.objects.get_orphan_tags()
     return render(request, 'site_admin/list_orphan_tags.html', {
         'tags': tags,
@@ -1618,6 +1607,7 @@ def send_email_all_users_confirmation(request):
     return render(request, 'site_admin/send_email_all_users_confirmation.html')
 
 @login_required
+@society_manager_or_admin_required
 @transaction.commit_on_success
 def edit_tags(request):
     # TODO: Check permissions on each tag
@@ -1667,9 +1657,8 @@ def edit_tags(request):
     })
 
 @login_required
+@admin_required
 def list_tags(request):
-    permissions.require_superuser(request)
-    
     tags = Node.objects.getTags()
     return render(request, 'site_admin/list_tags.html', {
         'page_title': 'List Tags',
@@ -1677,15 +1666,15 @@ def list_tags(request):
     })
 
 @login_required
+@admin_required
 def view_tag(request, tagId):
-    permissions.require_superuser(request)
-    
     tag = Node.objects.get(id=tagId)
     return render(request, 'site_admin/view_tag.html', {
         'tag': tag,
     })
 
 @login_required
+@society_manager_or_admin_required
 def create_tag(request):
     sector_id = request.GET.get('sector_id', None)
     done_action = request.GET.get('done_action', None)
@@ -1791,6 +1780,7 @@ def create_tag(request):
     })
 
 @login_required
+@society_manager_or_admin_required
 def edit_tag(request, tag_id):
     return_url = request.GET.get('return_url', '')
     society_id = request.GET.get('society_id', '')
@@ -1827,6 +1817,7 @@ def edit_tag(request, tag_id):
     })
         
 @login_required
+@society_manager_or_admin_required
 def save_tag(request, tag_id):
     return_url = request.GET.get('return_url', '')
     society_id = request.GET.get('society_id', '')
@@ -1874,8 +1865,8 @@ def save_tag(request, tag_id):
             return HttpResponsePermanentRedirect(reverse('admin_view_tag', args=[tag.id]))
 
 @login_required
+@admin_required
 def delete_tag(request, tag_id):
-    permissions.require_superuser(request)
     return_url = request.GET.get('return_url')
     
     tag = Node.objects.get(id=tag_id)
@@ -2001,16 +1992,16 @@ def combine_tags(request):
     return HttpResponseRedirect(return_url)
 
 @login_required
+@admin_required
 def view_cluster(request, cluster_id):
-    permissions.require_superuser(request)
     cluster = Node.objects.get(id=cluster_id)
     return render(request, 'site_admin/view_cluster.html', {
         'cluster': cluster,
     })
 
 @login_required
+@admin_required
 def edit_cluster(request, cluster_id=None):
-    permissions.require_superuser(request)
     if cluster_id is not None:
         cluster = Node.objects.get(id=cluster_id)
     else:
@@ -2054,8 +2045,8 @@ def edit_cluster(request, cluster_id=None):
     })
 
 @login_required
+@admin_required
 def delete_cluster(request, cluster_id):
-    permissions.require_superuser(request)
     #return_to = request.GET.get('return_to')
     cluster = Node.objects.get(id=cluster_id)
     cluster.delete()
@@ -2063,9 +2054,8 @@ def delete_cluster(request, cluster_id):
     return HttpResponseRedirect(reverse('admin_clusters_report'))
     
 @login_required
+@admin_required
 def search_tags(request):
-    permissions.require_superuser(request)
-    
     tag_results = None
     if request.method == 'GET':
         form = SearchTagsForm()
@@ -2081,27 +2071,24 @@ def search_tags(request):
     })
 
 @login_required
+@admin_required
 def users(request):
-    permissions.require_superuser(request)
-    
     users = User.objects.all()
     return render(request, 'site_admin/users.html', {
         'users': users,
     })
 
 @login_required
+@admin_required
 def view_user(request, user_id):
-    permissions.require_superuser(request)
-    
     user = User.objects.get(id=user_id)
     return render(request, 'site_admin/view_user.html', {
         'view_user': user,
     })
     
 @login_required
+@admin_required
 def edit_user(request, user_id=None):
-    permissions.require_superuser(request)
-    
     if user_id is None:
         # creating a new user
         form = UserForm()
@@ -2133,8 +2120,8 @@ def _errors_to_list(errors):
         return result
 
 @login_required
+@admin_required
 def save_user(request):
-    permissions.require_superuser(request)
     user_id = request.POST.get('id', None)
     form = UserForm(request.POST)
     errors = []
@@ -2223,20 +2210,18 @@ def save_user(request):
     })
 
 @login_required
+@admin_required
 def delete_user(request, user_id):
     "Deletes a user."
-    permissions.require_superuser(request)
-    
     User.objects.get(id=user_id).delete()
     return HttpResponsePermanentRedirect(reverse('admin_users'))
 
 @login_required
+@admin_required
 def delete_users(request):
     """Delete a list of users.
 Takes as input a list of user id's in the POST list 'user_ids' (use checkboxes with name="user_ids").
 """
-    permissions.require_superuser(request)
-    
     user_ids = request.POST.getlist('user_ids')
     for user_id in user_ids:
         User.objects.get(id=user_id).delete()
@@ -2279,9 +2264,8 @@ To login to your account, click click on this link and enter your login informat
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
     
 @login_required
+@admin_required
 def send_login_info(request, reason):
-    permissions.require_superuser(request)
-    
     user_ids = request.POST.getlist('user_ids')
     plaintext_passwords = request.POST.getlist('plaintext_passwords')
     
@@ -2300,9 +2284,8 @@ def societies(request):
     })
 
 @login_required
+@admin_required
 def view_society(request, society_id):
-    permissions.require_superuser(request)
-    
     society = Society.objects.get(id=society_id)
     return render(request, 'site_admin/view_society.html', {
         'society': society,
@@ -2622,8 +2605,6 @@ def manage_society_tags_table(request, society_id, tag_sort, tag_page, items_per
 @login_required
 @admin_required
 def edit_society(request, society_id=None):
-    permissions.require_superuser(request)
-    
     return_url = request.GET.get('return_url', '')
     if society_id is None:
         # creating a new society
@@ -2660,8 +2641,6 @@ def edit_society(request, society_id=None):
 @login_required
 @admin_required
 def save_society(request):
-    permissions.require_superuser(request)
-    
     return_url = request.GET.get('return_url', '')
     form = SocietyForm(request.POST)
     if not form.is_valid():
@@ -2709,16 +2688,12 @@ def save_society(request):
 @login_required
 @admin_required
 def delete_society(request, society_id):
-    permissions.require_superuser(request)
-    
     Society.objects.get(id=society_id).delete()
     return HttpResponsePermanentRedirect(reverse('admin_societies'))
 
 @login_required
 @admin_required
 def search_societies(request):
-    permissions.require_superuser(request)
-    
     society_results = None
     if request.method == 'GET':
         form = SearchSocietiesForm()
@@ -2828,8 +2803,6 @@ def edit_resources(request):
 @login_required
 @admin_required
 def list_resources(request, type1):
-    permissions.require_superuser(request)
-    
     if type1 == 'conferences':
         type1 = 'conference'
     elif type1 == 'standards':
@@ -3007,10 +2980,8 @@ def save_resource(request):
     
 
 @login_required
-@society_manager_or_admin_required
+@admin_required
 def delete_resource(request, resource_id):
-    permissions.require_superuser(request)
-    
     next = request.GET.get('next')
     
     resource = Resource.objects.get(id=resource_id)
@@ -3051,8 +3022,6 @@ def delete_resource(request, resource_id):
 @login_required
 @admin_required
 def search_resources(request):
-    permissions.require_superuser(request)
-    
     resource_results = None
     if request.method == 'GET':
         form = SearchResourcesForm()
