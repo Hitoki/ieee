@@ -36,7 +36,7 @@
             {% endif %}
             
         </table>
-        <input type="submit" value="Ok" />
+        <input type="submit" value="Save Changes" />
         
         {% if society and user.is_superuser %}
             <input type="button" value="Delete" onclick="if (confirm('Delete this society?')) window.location='{% url admin_delete_society society.id %}';" />
