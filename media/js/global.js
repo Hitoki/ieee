@@ -242,6 +242,10 @@ function HighlightCheckbox(elem, options) {
         highlightcheckbox.onChange(e);
     });
     
+    this.elem.click(function(e) {
+        highlightcheckbox.onChange(e);
+    });
+    
     this.onChange();
 }
 
