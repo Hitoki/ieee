@@ -299,7 +299,7 @@ function MultiSearch(container, options) {
 MultiSearch.prototype._hideOtherMultiSearches = function() {
     for (var i=0; i<multiSearches.length; i++) {
         if (multiSearches[i] != this) {
-            multiSearches[i].closePopup();
+            multiSearches[i].closePopup(true);
         }
     }
 }
