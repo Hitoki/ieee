@@ -21,6 +21,7 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanen
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 from django.utils import simplejson as json
 
 from ieeetags import settings
@@ -1686,7 +1687,7 @@ def list_tags(request):
 @login_required
 @admin_required
 def view_tag(request, tagId):
-    tag = Node.objects.get(id=tagId)
+    tag = get_object_or_404(Node, id=tagId)
     return render(request, 'site_admin/view_tag.html', {
         'tag': tag,
     })
@@ -1802,7 +1803,7 @@ def create_tag(request):
 def edit_tag(request, tag_id):
     return_url = request.GET.get('return_url', '')
     society_id = request.GET.get('society_id', '')
-    tag = Node.objects.get(id=tag_id)
+    tag = get_object_or_404(Node, id=tag_id)
     
     form = EditTagForm(initial={
         'id': tag.id,
