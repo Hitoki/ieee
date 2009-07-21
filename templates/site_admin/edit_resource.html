@@ -31,6 +31,24 @@
                 {% endif %}
             }
         }
+        
+        function updateStandardStatus() {
+            var resourceTypeElem = $('#id_resource_type');
+            if ($(resourceTypeElem[0].options[resourceTypeElem[0].selectedIndex]).text() == 'standard') {
+                $('#id_standard_status').attr('disabled', '');
+            }
+            else {
+                $('#id_standard_status')[0].selectedIndex = 0;
+                $('#id_standard_status').attr('disabled', 'disabled');
+            }
+        }
+        
+        $(function() {
+            updateStandardStatus();
+            $('#id_resource_type').change(function() {
+                updateStandardStatus();
+            });
+        });
 
     </script>
     
@@ -58,7 +76,7 @@
             </tr>
             <tr>
                 <th>
-                    <label for="id_type">{{ form.resource_type.label }} <span class="help_icon flyover {position:'top', customClass:'editForm'} " title="Publication, Conference, or Standard.">[?]</span>:</label>
+                    <label for="id_resource_type">{{ form.resource_type.label }} <span class="help_icon flyover {position:'top', customClass:'editForm'} " title="Publication, Conference, or Standard.">[?]</span>:</label>
                 </th>
                 <td>
                     {{ form.resource_type.errors }}
