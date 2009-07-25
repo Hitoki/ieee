@@ -1,0 +1,4 @@
+set :project_homes, ["~/subdomains/YOUR_SUBDOMAIN_HERE"]
+role :web, "systemicist@systemicist.com"
+set :site_features, ['project']
+load "deploy.rb"
