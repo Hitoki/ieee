@@ -313,6 +313,9 @@ def login(request):
     else:
         form = LoginForm(request.POST)
         
+        # Grab the full "next" URL from the hidden form field, including the #hash part
+        next = request.POST['next']
+        
         if form.is_valid():
             user = auth.authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             

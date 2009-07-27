@@ -5,23 +5,29 @@
         $(function() {
             $('#id_username').focus();
         });
+        
+        $(function() {
+            var url = $('#full_url').attr('value');
+            $('#full_url').attr('value', url + window.location.hash);
+        });
     </script>
+
 {% endblock %}
 
 {% block main_table_content %}
 <div id="adminLogin">
     <h1>Login</h1>
     {% comment %}
-    <br/>
-    <div id="society-resource-tabs" class="nootabs {useCookies:false, useHash:true}">
-        <ul class="nootabs-menus">
-            <li><a href="">Login</a></li>
-            <li><a href="">About the Project</a></li>
-            <li><a href="">About the Team</a></li>
-        </ul>
-    
-        <!-- Login tab -->
-        <div id="login-tab" class="nootabs-tab">
+    #<br/>
+    #<div id="society-resource-tabs" class="nootabs {useCookies:false, useHash:true}">
+    #    <ul class="nootabs-menus">
+    #        <li><a href="">Login</a></li>
+    #        <li><a href="">About the Project</a></li>
+    #        <li><a href="">About the Team</a></li>
+    #    </ul>
+    #
+    #    <!-- Login tab -->
+    #    <div id="login-tab" class="nootabs-tab">
     {% endcomment %}    
             {% if show_society_login_banner %}
                 <p class="society-login-banner">
@@ -29,7 +35,9 @@
                 </p>
             {% endif %}
             
-            <form action="{% url admin_login %}?next={{ next|urlencode }}" method="post">
+            <form action="{% url admin_login %}" method="post">
+                {# NOTE: We need to use a hidden field for "next" and use javascript to add the #hash, otherwise the #hash is lost by django. #}
+                <input type="hidden" id="full_url" name="next" value="{{ next }}" />
                 {% if error %}
                     <ul class="error">
                         <li>{{ error }}</li>
