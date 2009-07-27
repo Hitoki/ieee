@@ -350,9 +350,9 @@ def login(request):
                 
                 if next != '':
                     return HttpResponseRedirect(next)
-                elif user.get_profile().role is Profile.ROLE_ADMIN or user.get_profile().role is Profile.ROLE_SOCIETY_MANAGER:
+                elif user.get_profile().role == Profile.ROLE_ADMIN or user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER:
                     return HttpResponseRedirect(reverse('admin_home'))
-                elif user.get_profile().role is Profile.ROLE_END_USER:
+                elif user.get_profile().role == Profile.ROLE_END_USER:
                     return HttpResponseRedirect(reverse('index'))
                 else:
                     raise Exception('Unknown user role "%s"' % user.get_profile().role)
