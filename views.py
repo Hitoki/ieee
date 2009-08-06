@@ -50,6 +50,10 @@ def error_view(request):
         'message': message,
     })
 
+def site_disabled(request):
+    return render(request, 'site_disabled.html', {
+    })
+    
 @login_required
 def index(request):
     # TODO: Temporarily show the textui page first, since roamer has performance problems.

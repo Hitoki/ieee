@@ -159,6 +159,8 @@ DEBUG_WRITE_PROFILING = False
 
 DEBUG_ENABLE_CLUSTERS = False
 
+DISABLE_SITE = False
+
 # Local Settings ---------------------------------------------------------------
 
 try:
