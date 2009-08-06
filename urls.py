@@ -15,7 +15,7 @@ if not settings.DEBUG:
 if settings.DISABLE_SITE:
     # Disable the entire site!
     urlpatterns = patterns('',
-        url(r'^.+$', views.site_disabled, name='site_disabled'),
+        url(r'^.*$', views.site_disabled, name='site_disabled'),
     )
     
 else:
