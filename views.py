@@ -247,23 +247,28 @@ def _get_popularity_level(min, max, count):
 def ajax_nodes_json(request):
     log('ajax_nodes_json()')
     
-    clusterId = request.GET.get('clusterId')
-    sectorId = request.GET.get('sectorId')
+    node_id = request.GET['nodeId']
+    log('  node_id: %s' % node_id)
+    
     sort = request.GET.get('sort')
+    log('  sort: %s' % sort)
+    
     filterValues = request.GET.get('filterValues')
     
-    log('clusterId: %s' % clusterId)
-    log('sectorId: %s' % sectorId)
-    log('filterValues: %s' % filterValues)
+    
+    #log('filterValues: %s' % filterValues)
+    
+    order_by = None
+    extra_order_by = None
     
     if sort is None or sort == 'alphabetical':
-        orderBy = 'name'
+        order_by = 'name'
     elif sort == 'frequency':
-        orderBy = '-num_resources1'
+        order_by = '-num_resources1'
     elif sort == 'num_sectors':
-        orderBy = None
+        extra_order_by = ['-num_sectors1']
     elif sort == 'num_related_tags':
-        orderBy = None
+        extra_order_by = ['-num_related_tags1']
     else:
         raise Exception('Unrecognized sort "%s"' % sort)
     
@@ -272,139 +277,93 @@ def ajax_nodes_json(request):
         for filterValue in filterValues.split(','):
             filterIds.append(Filter.objects.getFromValue(filterValue).id)
     
-    if sectorId is not None and clusterId is not None:
-        raise Exception('Cannot specify both clusterId and sectorId')
+    node = Node.objects.get(id=node_id)
+    assert node.node_type.name in [NodeType.SECTOR, NodeType.TAG_CLUSTER], 'Node "%s" must be a sector or cluster' % node.name
     
-    elif sectorId is not None:
-        # Build node list for the given sector
-        sector = Node.objects.get(id=sectorId)
+    # Get child tags & clusters
+    
+    if node.node_type.name == NodeType.SECTOR:
+        child_nodes = Node.objects.get_extra_info(node.get_tags_and_clusters(), extra_order_by)
+    elif node.node_type.name == NodeType.TAG_CLUSTER:
+        child_nodes = Node.objects.get_extra_info(node.get_tags(), extra_order_by)
+    else:
+        raise Exception('Unrecognized node type "%s" for node "%s"' % (node.node_type.name, node.name))
+    
+    # Sort by one of the non-extra columns
+    if order_by is not None:
+        child_nodes = child_nodes.order_by(order_by)
         
-        # Clusters
-        clusters = sector.get_child_clusters()
-        #log('clusters.count(): %s' % clusters.count())
-        #clusters = Node.objects.get_extra_info(clusters)
-        
-        # Tags
-        tags = sector.get_tags_non_clustered()
-        tags = Node.objects.get_extra_info(tags)
-        
-        if sort == 'num_sectors':
-            # TODO: Handle clusters here
-            tags = tags.extra(
-                select={ 'num_parents': 'SELECT COUNT(*) FROM ieeetags_node_parents WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id' },
-                order_by=['-num_parents', 'name'],
-            )        
-            
-        elif sort == 'num_related_tags':
-            # TODO: Handle clusters here
-            tags = tags.extra(
-                select={ 'num_related_tags1': 'SELECT COUNT(*) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id' },
-                order_by=['-num_related_tags1', 'name'],
-            )        
-            
-        else:
-            # Get only tags (no clusters)
-            # TODO: Handle clusters here
-            tags = tags.order_by(orderBy)
-            
-        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = Node.objects.get_sector_ranges(sector)
-        
-        # JSON Output
-        data = {
-            'results_type': 'sector',
-            'sector': {
-                'id': sector.id,
-                'label': sector.name,
-            },
-            'clusters': [],
-            'tags': [],
+    (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = Node.objects.get_sector_ranges(node)
+    
+    # JSON Output
+    data = {
+        'node': {
+            'id': node.id,
+            'label': node.name,
+            'type': node.node_type.name,
+        },
+        'child_nodes': [],
+    }
+    
+    if node.node_type.name == NodeType.TAG_CLUSTER:
+        data['node']['sector'] = {
+            'id': node.get_sector().id,
+            'label': node.get_sector().name,
         }
+    
+    for child_node in child_nodes:
+        resourceLevel = _get_popularity_level(min_resources, max_resources, child_node.num_resources1)
+        sectorLevel = _get_popularity_level(min_sectors, max_sectors, child_node.num_sectors1)
+        related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, child_node.num_related_tags1)
         
-        for cluster in clusters:
-            # Only show clusters that have one of the selected filters
-            if cluster.filters.filter(id__in=filterIds).count():
-                child_tags = cluster.child_nodes
-                child_tags = Node.objects.get_extra_info(child_tags)
+
+        
+        if child_node.node_type.name == NodeType.TAG:
+            # Only show tags that have one of the selected filters, and also are associated with a society
+            if (len(child_node.filters.filter(id__in=filterIds))) and child_node.societies.count() > 0 and (not settings.DEBUG_HIDE_TAGS_WITH_NO_RESOURCES or child_node.num_resources1 > 0):
+                data['child_nodes'].append({
+                    'id': child_node.id,
+                    'label': child_node.name,
+                    'type': child_node.node_type.name,
+                    'level': resourceLevel,
+                    'sectorLevel': sectorLevel,
+                    'relatedTagLevel': related_tag_level,
+                    'num_related_tags': child_node.num_related_tags1,
+                    
+                    'num_sectors1': child_node.num_sectors1,
+                })
                 
+        elif child_node.node_type.name == NodeType.TAG_CLUSTER:
+            
+            # Only show clusters that have one of the selected filters
+            if child_node.filters.filter(id__in=filterIds).count():
+                cluster_child_tags = child_node.get_tags()
+                cluster_child_tags = Node.objects.get_extra_info(cluster_child_tags)
+                
+                # Find out how many of this cluster's child tags would show with the current filters
                 num_child_tags = 0
-                for tag in child_tags:
-                    if tag.num_resources1 > 0 and tag.num_societies1 > 0 and tag.num_filters1 > 0 and tag.filters.filter(id__in=filterIds).count() > 0:
+                for cluster_child_tag in cluster_child_tags:
+                    if cluster_child_tag.num_resources1 > 0 and cluster_child_tag.num_societies1 > 0 and cluster_child_tag.num_filters1 > 0 and cluster_child_tag.filters.filter(id__in=filterIds).count() > 0:
                         num_child_tags += 1
                 
                 if num_child_tags > 0:
-                    data['clusters'].append({
-                        'id': cluster.id,
-                        'label': cluster.name,
+                    data['child_nodes'].append({
+                        'id': child_node.id,
+                        'label': child_node.name,
+                        'type': child_node.node_type.name,
                         'num_child_tags': num_child_tags,
+                        
+                        'num_related_tags': child_node.num_related_tags1,
+                        'num_sectors1': child_node.num_sectors1,
                     })
         
-        for tag in tags:
-            resourceLevel = _get_popularity_level(min_resources, max_resources, tag.num_resources1)
-            sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.num_sectors1)
-            related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, tag.num_related_tags1)
+        else:
+            raise Exception('Unknown child node type "%s" for node "%s"' % (child_node.node_type.name, child_node.name))
             
-            # Only show tags that have one of the selected filters, and also are associated with a society
-            if (len(tag.filters.filter(id__in=filterIds))) and tag.societies.count() > 0 and (not settings.DEBUG_HIDE_TAGS_WITH_NO_RESOURCES or tag.num_resources1 > 0):
-                data['tags'].append({
-                    'id': tag.id,
-                    'label': tag.name,
-                    'level': resourceLevel,
-                    'sectorLevel': sectorLevel,
-                    'relatedTagLevel': related_tag_level,
-                    'num_related_tags': tag.related_tags.count(),
-                })
-    
-    elif clusterId is not None:
-        # Build node list for the given cluster
-        
-        cluster = Node.objects.get_cluster(clusterId)
-        assert cluster.parents.count() == 1, "Cluster has more than on parent"
-        
-        sector = cluster.parents.all()[0]
-        
-        tags = cluster.get_tags()
-        tags = Node.objects.get_extra_info(tags)
-        
-        data = {
-            'results_type': 'cluster',
-            'cluster': {
-                'id': cluster.id,
-                'label': cluster.name,
-            },
-            'sector': {
-                'id': sector.id,
-                'label': sector.name,
-            },
-            'tags': [],
-        }
-        
-        for tag in tags:
-            
-            (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = Node.objects.get_sector_ranges(cluster)
-            
-            resourceLevel = _get_popularity_level(min_resources, max_resources, tag.num_resources1)
-            sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.num_sectors1)
-            related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, tag.num_related_tags1)
-            
-            # Only show tags that have one of the selected filters, and also are associated with a society
-            if (len(tag.filters.filter(id__in=filterIds))) and tag.societies.count() > 0 and (not settings.DEBUG_HIDE_TAGS_WITH_NO_RESOURCES or tag.num_resources1 > 0):
-                data['tags'].append({
-                    'id': tag.id,
-                    'label': tag.name,
-                    'level': resourceLevel,
-                    'sectorLevel': sectorLevel,
-                    'relatedTagLevel': related_tag_level,
-                    'num_related_tags': tag.related_tags.count(),
-                })
-        
-    else:
-        raise Exception('Must specify either clusterId or sectorId')
-    
     json = simplejson.dumps(data, sort_keys=True, indent=4)
     
     #log('~ajax_nodes_json()')
     
-    #return HttpResponse(json, mimetype='application/json')
     return HttpResponse(json, mimetype='text/plain')
 
 @login_required

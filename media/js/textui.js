@@ -46,11 +46,11 @@ var Tags = {
         if (onload)
             this.onLoadSectorCallback = onload;
         
-        $.getJSON('/ajax/nodes_json', {sectorId:this.nodeId, filterValues:filterStr, sort:this.getSort()}, function(data) { Tags.onLoadSector(data); });
+        $.getJSON('/ajax/nodes_json', {nodeId:this.nodeId, filterValues:filterStr, sort:this.getSort()}, function(data) { Tags.onLoadSector(data); });
     },
     
     onLoadSector: function(data) {
-        this.node = data.sector;
+        this.node = data.node.sector;
         /*
         //console.log("onLoadSector()");
         var results = [];
@@ -83,7 +83,7 @@ var Tags = {
         }
         
         // If a cluster was just selected, show & highlight it
-        if (this.nodeType == 'cluster' && this.selectedClusterId == null) {
+        if (this.nodeType == 'tag_cluster' && this.selectedClusterId == null) {
             
             var sectorListItem = $('#sector-list-item-' + this.node.sectorId);
             
@@ -102,7 +102,7 @@ var Tags = {
         // Highlight the selected sector
         if (this.nodeType == 'sector') {
             $('#sector-list-item-' + this.nodeId + ' a').addClass('active-sector');
-        } else if (this.nodeType == 'cluster') {
+        } else if (this.nodeType == 'tag_cluster') {
             $('#cluster-list-item-' + this.nodeId + ' a').addClass('active-sector');
         } else {
             alert('ERROR: Unknown this.nodeType "' + this.nodeType + '"');
@@ -114,7 +114,7 @@ var Tags = {
         //log("  id: " + id);
         
         this.nodeId = id;
-        this.nodeType = 'cluster';
+        this.nodeType = 'tag_cluster';
         
         var tagWindow = $("#tags");
         tagWindow.empty();
@@ -128,7 +128,7 @@ var Tags = {
         $.getJSON(
             '/ajax/nodes_json',
             {
-                clusterId:id,
+                nodeId:id,
                 filterValues:filterStr,
                 sort:this.getSort()
             },
@@ -140,10 +140,10 @@ var Tags = {
     
     onLoadClusters: function(data) {
         //log('onLoadClusters()');
-        //log('  data.sector.id: ' + data.sector.id);
+        //log('  data.node.sector.id: ' + data.node.sector.id);
         
-        this.node = data.cluster;
-        this.node.sectorId = data.sector.id;
+        this.node = data.node;
+        this.node.sectorId = data.node.sector.id;
         
         this.updateHighlightedNode();
         
@@ -168,7 +168,7 @@ var Tags = {
         
         if (type == 'tag') {
             str += "        <a href=\"javascript:Tags.selectTag(" + node.id + ");\" class=\"" + node.level + "\">" + htmlentities(label) + "</a> ";
-        } else if (type == 'cluster') {
+        } else if (type == 'tag_cluster') {
             str += "        <img src=\"/media/images/icon_cluster_sm.png\" />";
             str += "        <a href=\"javascript:Tags.selectCluster(" + node.id + ");\" class=\"" + node.level + "\">" + htmlentities(label) + "</a> ";
         } else {
@@ -207,7 +207,7 @@ var Tags = {
                     Flyover.onMouseOut();
                 }
             );
-        } else if (type == 'cluster') {
+        } else if (type == 'tag_cluster') {
             div.hover(
                 function() {
                     Flyover.show(
@@ -241,31 +241,24 @@ var Tags = {
         
         //console.log("tags.length: " + tags.length);
         
-        if (data.results_type == 'sector') {
+        if (data.node.type == 'sector') {
             // Sector title
-            //var title = $('<h2>' + htmlentities(data.sector.label) + ' sector</h2>').appendTo(tagWindow);
+            //var title = $('<h2>' + htmlentities(data.node.sector.label) + ' sector</h2>').appendTo(tagWindow);
             
-        } else if (data.results_type == 'cluster') {
+        } else if (data.node.type == 'tag_cluster') {
             // Cluster title
-            var title = $('<h2>' + htmlentities(data.cluster.label) + ' cluster</h2>').appendTo(tagWindow);
+            var title = $('<h2>' + htmlentities(data.node.label) + ' cluster</h2>').appendTo(tagWindow);
             
-            var sectorLink = $('<a href="javascript:Tags.selectSector(' + data.sector.id + ');" class="back-link">Back to the "' + htmlentities(data.sector.label) + '" sector</a>').appendTo(tagWindow);
+            var sectorLink = $('<a href="javascript:Tags.selectSector(' + data.node.sector.id + ');" class="back-link">Back to the "' + htmlentities(data.node.sector.label) + '" sector</a>').appendTo(tagWindow);
             $('<br/>').appendTo(tagWindow);
             
         } else {
-            alert('Unknown data.results_type "' + data.results_type + '"')
-        }
-        
-        // Show clusters
-        if (data.clusters && data.clusters.length > 0) {
-            for (var i=0; i<data.clusters.length; i++) {
-                this._renderBlock('cluster', tagWindow, data.clusters[i], this.nodeId);
-            }
+            alert('Unknown data.node.type "' + data.node.type + '"')
         }
         
         // Show tags
-        for (var i=0; i<data.tags.length; i++) {
-            this._renderBlock('tag', tagWindow, data.tags[i], this.nodeId);
+        for (var i=0; i<data.child_nodes.length; i++) {
+            this._renderBlock(data.child_nodes[i].type, tagWindow, data.child_nodes[i], this.nodeId);
         }
         
         if (this.onLoadSectorCallback) {
@@ -333,7 +326,7 @@ var Tags = {
     refresh: function() {
         if (this.nodeType == 'sector') {
             this.selectSector(this.nodeId);
-        } else if (this.nodeType == 'cluster') {
+        } else if (this.nodeType == 'tag_cluster') {
             this.selectCluster(this.nodeId);
         } else {
             alert('Textui.refresh(): ERROR: unrecognized nodeType "' + this.nodeType + '"');

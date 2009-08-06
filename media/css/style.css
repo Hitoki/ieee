@@ -515,7 +515,7 @@ ul#view-header li {
 #alternate-page #tag-galaxy div.tag {
 }
 
-#alternate-page #tag-galaxy div.cluster {
+#alternate-page #tag-galaxy div.tag_cluster {
     background-color: #006699;
     border-bottom: 1px solid #navy;
     border-right: 1px solid #navy;
@@ -541,7 +541,7 @@ ul#view-header li {
 }
 */
 
-#alternate-page #tag-galaxy div.cluster img {
+#alternate-page #tag-galaxy div.tag_cluster img {
     margin:-2px 0 -2px 0;
     vertical-align:middle;
 }
@@ -560,13 +560,13 @@ ul#view-header li {
     text-decoration:underline;
 }
 
-#alternate-page #tag-galaxy div.cluster a {
+#alternate-page #tag-galaxy div.tag_cluster a {
     color:white;
     float:none;
     vertical-align:middle;
 }
 
-#alternate-page #tag-galaxy div.cluster a:hover {
+#alternate-page #tag-galaxy div.tag_cluster a:hover {
     color:white;
     text-decoration:underline;
 }

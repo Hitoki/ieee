@@ -358,7 +358,7 @@ class NodeManager(models.Manager):
                 cluster.filters.add(filter)
         cluster.save()
     
-    def get_extra_info(self, queryset):
+    def get_extra_info(self, queryset, order_by=None):
         """
         Returns the queryset with extra columns:
             num_resources1
@@ -380,6 +380,7 @@ class NodeManager(models.Manager):
                 'num_related_tags1': 'SELECT COUNT(*) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id',
                 'num_parents1': 'SELECT COUNT(*) FROM ieeetags_node_parents WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id',
             },
+            order_by=order_by,
         )
     
 class Node(models.Model):
@@ -437,6 +438,7 @@ class Node(models.Model):
     
     def get_tags_and_clusters(self):
         "Returns any clusters and non-clustered child tags."
+        assert self.node_type.name == NodeType.SECTOR, 'get_tags_and_clusters() only works for sectors.'
         return self.child_nodes.exclude(parents__node_type__name=NodeType.TAG_CLUSTER)
     
     def get_sector(self):
