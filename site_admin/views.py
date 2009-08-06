@@ -1477,7 +1477,7 @@ def import_clusters(request):
     else:
         
         # DEBUG: delete all clusters first
-        Node.objects.get_clusters().delete()
+        #Node.objects.get_clusters().delete()
         
         # Import resources from the uploaded file
         file = request.FILES['file']
