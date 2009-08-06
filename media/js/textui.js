@@ -263,11 +263,13 @@ var Tags = {
             }
             
         } else if (data.node.type == 'tag_cluster') {
+            var sectorLink = $('<a href="javascript:Tags.selectSector(' + data.node.sector.id + ');" class="back-link"></a>').appendTo(tagWindow);
+            sectorLink.html('<img src="' + MEDIA_URL + '/images/arrow2-up-small.png" /> Up to the "' + htmlentities(data.node.sector.label) + '" sector');
+            $('<br/>').appendTo(tagWindow);
+            
             // Cluster title
             var title = $('<h2>' + htmlentities(data.node.label) + ' cluster</h2>').appendTo(tagWindow);
             
-            var sectorLink = $('<a href="javascript:Tags.selectSector(' + data.node.sector.id + ');" class="back-link">Back to the "' + htmlentities(data.node.sector.label) + '" sector</a>').appendTo(tagWindow);
-            $('<br/>').appendTo(tagWindow);
             
         } else {
             alert('Unknown data.node.type "' + data.node.type + '"')

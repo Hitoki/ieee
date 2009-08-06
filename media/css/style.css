@@ -500,6 +500,11 @@ ul#view-header li {
     margin:.5em;
 }
 
+#alternate-page #tag-galaxy #tags a.back-link img {
+    border:none;
+    vertical-align:absmiddle;
+}
+
 #alternate-page #tag-galaxy div.node
 {
     float:left;
