@@ -10,68 +10,49 @@ function getNode(parent, name) {
 
 var Tags = {
     
-    sectorId: null,
-    onLoadSector: null,
+    nodeId: null,
+    nodeType: null,
+    selectedClusterId: null,
+    node: null,
+    onLoadSectorCallback: null,
     helpScreenElem: null,
     
     init: function() {
     },
     
-    findSectorLink: function(id) {
-        //console.log("findSectorLink()");
-        var links = $('#sectors a');
-        
-        for (var i=0; i<links.length; i++) {
-            var results = links[i].href.match(/[0-9]+/);
-            if (results.length != 1) {
-                alert("findSectorLink(): error, found " + results.length + " numbers, need 1");
-                return null;
-            }
-            //console.log("results[0]: " + results[0]);
-            if (results[0] == id)
-                return links[i];
-        }
-        //console.log("not found");
-        return null;
-    },
-    
     selectSector: function(id, onload) {
-        //console.log('selectSector()');
-        //console.log('id: ' + id);
+        //log('selectSector()');
+        //log('  id: ' + id);
         
         this.hideHelp();
         
-        if (id)
-            this.sectorId = id;
+        if (id) {
+            this.nodeId = id;
+            this.nodeType = 'sector';
+        }
         
         // Update the switch interfaces link
         this.updateSwitchLink();
             
-        // Remove any active sectors
-        var links = $('#sectors a');
-        for (var i=0; i<links.length; i++) {
-            $(links[i]).removeClass('active-sector');
-        }
-        
-        var sectorLink = this.findSectorLink(this.sectorId);
-        $(sectorLink).addClass('active-sector');
+        this.updateHighlightedNode();
         
         var tagWindow = $("#tags");
         
         tagWindow.empty();
         tagWindow.html("<h1 id=\"wait\">Please wait...</h1>");
         
-        var filters = this.getFilters();
-        var filterStr = implode(',', filters);
+        var filterStr = implode(',', this.getFilters());
         
         if (onload)
-            this.onLoadSector = onload;
+            this.onLoadSectorCallback = onload;
         
-        $.getJSON('/ajax/nodes_json', {sectorId:this.sectorId, filterValues:filterStr, sort:this.getSort()}, Tags.onLoadNodes);
+        $.getJSON('/ajax/nodes_json', {sectorId:this.nodeId, filterValues:filterStr, sort:this.getSort()}, function(data) { Tags.onLoadSector(data); });
     },
     
-    onLoadNodes: function(data) {
-        //console.log("onLoadNodes()");
+    onLoadSector: function(data) {
+        this.node = data.sector;
+        /*
+        //console.log("onLoadSector()");
         var results = [];
         for (var i=0; i<data.length; i++) {
             var node = data[i];
@@ -79,65 +60,145 @@ var Tags = {
                 results.push(node);
             }
         }
-        Tags.renderTags(results);
+        this.renderTags(results);
+        */
+        this.renderTags(data);
     },
     
-    renderTags: function(tags) {
+    updateHighlightedNode: function() {
+        // Remove any active sectors
+        $('#sectors a.active-sector').removeClass('active-sector');
         
-        // Save the tags for the title later
-        this.tags = tags;
+        
+        // If a cluster was highlighted, remove it
+        if (this.selectedClusterId != null && this.selectedClusterId != this.nodeId) {
+            // Remove all clusters, since they're no longer selected
+            var listItem = $('.cluster-list-item');
+            $('.cluster-list-item').fadeOut('slow', function() {
+                // Cluster list item is done fading out, remove it from the page
+                listItem.remove();
+                listItem = null;
+            });
+            this.selectedClusterId = null;
+        }
+        
+        // If a cluster was just selected, show & highlight it
+        if (this.nodeType == 'cluster' && this.selectedClusterId == null) {
+            
+            var sectorListItem = $('#sector-list-item-' + this.node.sectorId);
+            
+            var clusterListItem = $('<li id="cluster-list-item-' + this.nodeId + '" class="cluster-list-item"></li>');
+            clusterListItem.hide();
+            sectorListItem.after(clusterListItem);
+            clusterListItem.fadeIn('slow');
+            
+            var link = $('<a></a>').appendTo(clusterListItem);
+            link.text(this.node.label);
+            link.attr('href', 'javascript:Tags.selectCluster(' + this.nodeId + ');');
+            
+            this.selectedClusterId = this.nodeId;
+        }
+        
+        // Highlight the selected sector
+        if (this.nodeType == 'sector') {
+            $('#sector-list-item-' + this.nodeId + ' a').addClass('active-sector');
+        } else if (this.nodeType == 'cluster') {
+            $('#cluster-list-item-' + this.nodeId + ' a').addClass('active-sector');
+        } else {
+            alert('ERROR: Unknown this.nodeType "' + this.nodeType + '"');
+        }
+    },
+    
+    selectCluster: function(id) {
+        //log("selectCluster()");
+        //log("  id: " + id);
+        
+        this.nodeId = id;
+        this.nodeType = 'cluster';
         
         var tagWindow = $("#tags");
         tagWindow.empty();
+        tagWindow.html("<h1 id=\"wait\">Please wait...</h1>");
         
-        //$('<div>Sector: ' + this.sectorId + '</div>').appendTo(tagWindow);
+        var filterStr = implode(',', this.getFilters());
         
-        //console.log("tags.length: " + tags.length);
+        // Update the switch interfaces link
+        this.updateSwitchLink();
         
-        $('#tag-galaxy h2').html('Tag Galaxy (' + tags.length + ')'); 
-        
-        var str;
-        for (var i=0; i<tags.length; i++) {
-            var tag = tags[i];
-            str = "";
-            str += "<div id=\"tag-" + tag.id + "\" class=\"tag\">";
-            // NOTE: Table is here to prevent the label & color blocks from wrapping onto separate lines
-            str += "  <table>";
-            str += "    <tr>";
-            str += "      <td>";
-            
-            // Truncate long tag names.  The flyover will show the full tag name.
-            var label = tag.label;
-            var MAX_TAG_LENGTH = 30;
-            if (label.length > MAX_TAG_LENGTH) {
-                label = label.substr(0, MAX_TAG_LENGTH) + '...';
+        $.getJSON(
+            '/ajax/nodes_json',
+            {
+                clusterId:id,
+                filterValues:filterStr,
+                sort:this.getSort()
+            },
+            function(data) {
+                Tags.onLoadClusters(data);
             }
-            
-            str += "        <a href=\"javascript:Tags.selectTag(" + tag.id + ");\" class=\"" + tag.level + "\">" + htmlentities(label) + "</a> ";
-            str += "      </td>";
-            str += "      <td>";
-            str += "        <div class=\"tag-block-container\">";
-            str += "          <div class=\"block-top " + tag.sectorLevel + "\">&nbsp;</div>";
-            str += "          <div class=\"block-bottom " + tag.relatedTagLevel + "\">&nbsp;</div>";
-            str += "        </div>";
-            str += "      </td>";
-            str += "    </tr>";
-            str += "  </table>";
-            str += "</div>";
-            
-            var div = $(str);
-            div.appendTo(tagWindow);
-            div.data('tagId', tag.id);
-            div.data('sectorId', this.sectorId);
-            
+        );
+    },
+    
+    onLoadClusters: function(data) {
+        //log('onLoadClusters()');
+        //log('  data.sector.id: ' + data.sector.id);
+        
+        this.node = data.cluster;
+        this.node.sectorId = data.sector.id;
+        
+        this.updateHighlightedNode();
+        
+        this.renderTags(data);
+    },
+    
+    _renderBlock: function(type, tagWindow, node, sectorId) {
+        var str;
+        str = "";
+        str += "<div id=\"tag-" + node.id + "\" class=\"node " + type + "\">";
+        // NOTE: Table is here to prevent the label & color blocks from wrapping onto separate lines
+        str += "  <table>";
+        str += "    <tr>";
+        str += "      <td>";
+        
+        // Truncate long node names.  The flyover will show the full node name.
+        var label = node.label;
+        var MAX_TAG_LENGTH = 30;
+        if (label.length > MAX_TAG_LENGTH) {
+            label = label.substr(0, MAX_TAG_LENGTH) + '...';
+        }
+        
+        if (type == 'tag') {
+            str += "        <a href=\"javascript:Tags.selectTag(" + node.id + ");\" class=\"" + node.level + "\">" + htmlentities(label) + "</a> ";
+        } else if (type == 'cluster') {
+            str += "        <img src=\"/media/images/icon_cluster_sm.png\" />";
+            str += "        <a href=\"javascript:Tags.selectCluster(" + node.id + ");\" class=\"" + node.level + "\">" + htmlentities(label) + "</a> ";
+        } else {
+            alert('Unknown node type "' + type + '" for node "' + node.label + '"');
+        }
+        str += "      </td>";
+        str += "      <td>";
+        str += "        <div class=\"node-block-container\">";
+        str += "          <div class=\"block-top " + node.sectorLevel + "\">&nbsp;</div>";
+        str += "          <div class=\"block-bottom " + node.relatedTagLevel + "\">&nbsp;</div>";
+        str += "        </div>";
+        str += "      </td>";
+        str += "    </tr>";
+        str += "  </table>";
+        str += "</div>";
+        
+        var div = $(str);
+        div.appendTo(tagWindow);
+        div.data('tagId', node.id);
+        div.data('sectorId', sectorId);
+        
+        if (type == 'tag') {
             div.hover(
                 function() {
                     Flyover.show(
                         this,
                         {
-                            url: '/ajax/tooltip?tag_id='+$(this).data('tagId')+'&sector_id='+$(this).data('sectorId'),
+                            url: '/ajax/tooltip/'+$(this).data('tagId')+'/'+$(this).data('sectorId'),
                             position: 'auto',
-                            customClass: 'textui-tag',
+                            customClass: 'textui-node',
                             hideDelay: 100
                         }
                     );
@@ -146,11 +207,70 @@ var Tags = {
                     Flyover.onMouseOut();
                 }
             );
+        } else if (type == 'cluster') {
+            div.hover(
+                function() {
+                    Flyover.show(
+                        this,
+                        {
+                            content: 'Contains ' + node.num_child_tags + ' tags',
+                            position: 'auto',
+                            hideDelay: 100
+                        }
+                    );
+                },
+                function() {
+                    Flyover.onMouseOut();
+                }
+            );
+        } else {
+            alert('ERROR: Unknown type "' + type + '"');
+        }
+    },
+    
+    renderTags: function(data) {
+        
+        // Save the tags for the title later
+        //this.tags = tags;
+        this.data = data;
+        
+        var tagWindow = $("#tags");
+        tagWindow.empty();
+        
+        //$('<div>Sector: ' + this.nodeId + '</div>').appendTo(tagWindow);
+        
+        //console.log("tags.length: " + tags.length);
+        
+        if (data.results_type == 'sector') {
+            // Sector title
+            //var title = $('<h2>' + htmlentities(data.sector.label) + ' sector</h2>').appendTo(tagWindow);
+            
+        } else if (data.results_type == 'cluster') {
+            // Cluster title
+            var title = $('<h2>' + htmlentities(data.cluster.label) + ' cluster</h2>').appendTo(tagWindow);
+            
+            var sectorLink = $('<a href="javascript:Tags.selectSector(' + data.sector.id + ');" class="back-link">Back to the "' + htmlentities(data.sector.label) + '" sector</a>').appendTo(tagWindow);
+            $('<br/>').appendTo(tagWindow);
+            
+        } else {
+            alert('Unknown data.results_type "' + data.results_type + '"')
         }
         
-        if (this.onLoadSector) {
-            this.onLoadSector();
-            this.onLoadSector = null;
+        // Show clusters
+        if (data.clusters && data.clusters.length > 0) {
+            for (var i=0; i<data.clusters.length; i++) {
+                this._renderBlock('cluster', tagWindow, data.clusters[i], this.nodeId);
+            }
+        }
+        
+        // Show tags
+        for (var i=0; i<data.tags.length; i++) {
+            this._renderBlock('tag', tagWindow, data.tags[i], this.nodeId);
+        }
+        
+        if (this.onLoadSectorCallback) {
+            this.onLoadSectorCallback();
+            this.onLoadSectorCallback = null;
         }
     },
     
@@ -205,9 +325,19 @@ var Tags = {
     },
     
     updateSwitchLink: function() {
-        console.log('updateSwitchLink()');
-        console.log('this.sectorId: ' + this.sectorId);
-        $('#switch-link')[0].href = '/roamer?nodeId=' + this.sectorId;
+        //console.log('updateSwitchLink()');
+        //console.log('this.nodeId: ' + this.nodeId);
+        $('#switch-link')[0].href = '/roamer?nodeId=' + this.nodeId;
+    },
+    
+    refresh: function() {
+        if (this.nodeType == 'sector') {
+            this.selectSector(this.nodeId);
+        } else if (this.nodeType == 'cluster') {
+            this.selectCluster(this.nodeId);
+        } else {
+            alert('Textui.refresh(): ERROR: unrecognized nodeType "' + this.nodeType + '"');
+        }
     },
     
     showHelp: function() {

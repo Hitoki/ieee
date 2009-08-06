@@ -24,7 +24,7 @@
                     </table>
                 </td>
                 <td>
-                    {% for sector in tag.parents.all %}
+                    {% for sector in tag.get_sectors.all %}
                         {% ifequal sector tag.parent %}
                             {{sector.name}}
                         {% else %}

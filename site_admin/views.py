@@ -530,6 +530,7 @@ def home(request):
             'num_sectors': num_sectors,
             'num_tags': num_tags,
             'num_resources': num_resources,
+            'DEBUG_ENABLE_CLUSTERS': settings.DEBUG_ENABLE_CLUSTERS,
         })
         
     elif role == Profile.ROLE_SOCIETY_ADMIN:
@@ -660,7 +661,7 @@ def import_tags(request, source):
             sector_names = [sector_name.strip() for sector_name in _split_no_empty(sector_names, ',')]
             filter_names = [filter_name.strip() for filter_name in _split_no_empty(filter_names, ',')]
             
-            sectors = [Node.objects.getSectorByName(sector_name) for sector_name in sector_names]
+            sectors = [Node.objects.get_sector_by_name(sector_name) for sector_name in sector_names]
             filters = [Filter.objects.getFromName(filter_name) for filter_name in filter_names]
             
             #logging.debug('    tag_name: %s' % tag_name)
@@ -1463,8 +1464,7 @@ def import_resources(request):
     
 @login_required
 @admin_required
-#@transaction.commit_manually
-#@transaction.commit_on_success
+@transaction.commit_on_success
 def import_clusters(request):
     if request.method == 'GET':
         # Display form
@@ -1506,32 +1506,44 @@ def _import_clusters(file):
     for row in reader:
         
         # Cluster Name, Tag Names
-        cluster_name, tag_names = row
+        cluster_name, sector_name, tag_names = row
         
         # Formatting
         cluster_name = cluster_name.strip()
-        tag_names = [tag_names.strip() for tag_names in tag_names.split(',')]
+        sector_name = sector_name.strip()
+        sector = Node.objects.get_sector_by_name(sector_name)
+        tag_names = [tag_names.strip() for tag_names in tag_names.split('|')]
         tags = []
         for tag_name in tag_names:
             tag = Node.objects.get_tag_by_name(tag_name)
             if tag is None:
                 errors.append('Unknown tag "%s"' % tag_name)
                 invalid_tags += 1
+            elif sector not in tag.parents.all():
+                errors.append('Tag "%s" is not in the "%s" sector.' % (tag_name, sector_name))
             else:
                 tags.append(tag)
                 tags_added += 1
         
         if cluster_name == '':
             errors.append('Cluster name cannot be blank.')
-        else:
+        
+        if len(errors) == 0:
             # Create the tag cluster
-            if Node.objects.get_cluster_by_name(cluster_name) is not None:
-                errors.append('Duplicate cluster "%s" found.' % cluster_name)
+            if Node.objects.get_cluster_by_name(cluster_name, sector_name) is not None:
+                # Duplicate cluster found
+                errors.append('Duplicate cluster "%s" found in sector "%s".' % (cluster_name, sector_name))
                 duplicate_clusters += 1
             else:
-                cluster = Node.objects.create_cluster(name=cluster_name)
+                cluster = Node.objects.create_cluster(cluster_name, sector)
                 for tag in tags:
                     Node.objects.add_tag_to_cluster(cluster, tag)
+                
+                for tag in tags:
+                    Node.objects.add_tag_to_cluster(cluster, tag)
+                
+                cluster.save()
+                    
                 clusters_created += 1
         
         if not row_count % 50:
@@ -1804,6 +1816,7 @@ def create_tag(request):
 @login_required
 @society_manager_or_admin_required
 def edit_tag(request, tag_id):
+    "Edit an existing tag."
     return_url = request.GET.get('return_url', '')
     society_id = request.GET.get('society_id', '')
     tag = get_object_or_404(Node, id=tag_id)
@@ -1841,6 +1854,7 @@ def edit_tag(request, tag_id):
 @login_required
 @society_manager_or_admin_required
 def save_tag(request, tag_id):
+    "Saves an existing tag."
     return_url = request.GET.get('return_url', '')
     society_id = request.GET.get('society_id', '')
     tag = Node.objects.get(id=tag_id)
@@ -1848,6 +1862,7 @@ def save_tag(request, tag_id):
     form = EditTagForm(request.POST)
     if not form.is_valid():
         
+        # Form had errors, re-render
         form.fields['related_tags'].widget.set_exclude_tag_id(tag.id)
         if society_id != '':
             form.fields['related_tags'].widget.set_society_id(int(society_id))
@@ -1866,20 +1881,39 @@ def save_tag(request, tag_id):
             'return_url': return_url,
             'society_id': society_id,
         })
+        
     else:
+        
+        # Form is valid, save it
         if form.cleaned_data['id'] is None:
             tag = Node.objects.create()
         else:
             tag = Node.objects.get(id=form.cleaned_data['id'])
         
         tag.name = form.cleaned_data['name']
-        tag.parents = form.cleaned_data['parents']
+        
+        # Remove all unselected sectors
+        for sector in tag.get_sectors():
+            if sector not in form.cleaned_data['parents']:
+                tag.parents.remove(sector)
+                logging.debug('Removing sector "%s"' % sector.name)
+        
+        # Add all selected sectors
+        for sector in form.cleaned_data['parents']:
+            if sector not in tag.parents.all():
+                tag.parents.add(sector)
+                logging.debug('Adding sector "%s"' % sector.name)
+        
         #tag.node_type = form.cleaned_data['node_type']
         if form.cleaned_data['societies'] is not None:
             tag.societies = form.cleaned_data['societies']
         tag.filters = form.cleaned_data['filters']
         tag.related_tags = form.cleaned_data['related_tags']
         tag.save()
+        
+        clusters = tag.get_parent_clusters()
+        for cluster in clusters:
+            cluster.cluster_update_filters()
         
         if return_url != '':
             return HttpResponseRedirect(return_url)
@@ -2023,44 +2057,71 @@ def view_cluster(request, cluster_id):
 
 @login_required
 @admin_required
+@transaction.commit_on_success
 def edit_cluster(request, cluster_id=None):
     if cluster_id is not None:
         cluster = Node.objects.get(id=cluster_id)
+        sector_id = cluster.get_sector().id
     else:
         cluster = None
+        sector_id = request.GET.get('sector_id')
     
     if request.method == 'GET':
         # Show the form
-        if cluster is not None:
+        if cluster is None:
+            if sector_id is None:
+                # Show 'Choose a sector' page
+                sectors = Node.objects.getSectors()
+                return render(request, 'site_admin/create_cluster_select_sector.html', {
+                    'sectors': sectors,
+                })
+            else:
+                # New cluster
+                sector = Node.objects.get(id=sector_id)
+                assert sector.node_type.name == NodeType.SECTOR, 'Node "%s" is not a sector' % sector.name
+                form = EditClusterForm(initial={
+                    #'sector': sector,
+                    'sector': sector_id,
+                })
+                
+        else:
+            # Existing cluster
             tags = cluster.get_tags()
             form = EditClusterForm(instance=cluster, initial={
                 'tags': tags,
+                'sector': cluster.get_sector().id,
             })
-        else:
-            form = EditClusterForm()
     else:
         # Process the form
         form = EditClusterForm(request.POST, instance=cluster)
         if form.is_valid():
             if cluster is not None:
+                # Updating an existing cluster
                 form.save()
             else:
+                # Saving a new cluster
                 cluster = form.save(commit=False)
                 cluster.node_type = NodeType.objects.getFromName(NodeType.TAG_CLUSTER)
                 cluster.save()
+                cluster.parents.add(form.cleaned_data['sector'])
             
             tags = form.cleaned_data['tags']
             
-            # Remove tags
+            # First remove all existing tags
             for tag in cluster.get_tags():
                 if tag not in tags:
                     Node.objects.remove_tag_from_cluster(cluster, tag)
-            # Add tags
+                    
+            # Now add any new tags
             for tag in tags:
                 if tag not in cluster.get_tags():
                     Node.objects.add_tag_to_cluster(cluster, tag)
+                    
             return HttpResponseRedirect(reverse('admin_view_cluster', args=[cluster.id]))
-    
+        
+    # Limit tags to the selected sector
+    form.fields['tags'].widget.set_search_url(reverse('ajax_search_tags') + '?filter_sector_ids=%s' % sector_id)
+        
     return render(request, 'site_admin/edit_cluster.html', {
         'cluster': cluster,
         'form': form,
@@ -3443,14 +3504,13 @@ def tags_report(request):
             'page_time': end-start,
         })
 
-#@login_required
-#@admin_required
-#def clusters_report(request):
-#    permissions.require_superuser(request)
-#    clusters = Node.objects.get_clusters()
-#    return render(request, 'site_admin/clusters_report.html', {
-#        'clusters': clusters,
-#    })
+@login_required
+@admin_required
+def clusters_report(request):
+    clusters = Node.objects.get_clusters()
+    return render(request, 'site_admin/clusters_report.html', {
+        'clusters': clusters,
+    })
 
 @login_required
 @admin_required

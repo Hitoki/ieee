@@ -13,12 +13,24 @@
     <table class="grid">
         <tr>
             <th>
-                Sectors
+                Sector
             </th>
             <td>
                 <ul>
                     {% for sector in cluster.get_sectors.all %}
                         <li><a href="{% url admin_view_sector sector.id %}">{{ sector.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Filters
+            </th>
+            <td>
+                <ul>
+                    {% for filter in cluster.filters.all %}
+                        <li>{{ filter.name }}</li>
                     {% endfor %}
                 </ul>
             </td>

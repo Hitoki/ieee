@@ -194,8 +194,8 @@ var Roamer = {
     updateSwitchLink: function() {
         //log('updateSwitchLink()');
         //log('this.id: ' + this.id);
-        if (this.nodeInfo.type == 'sector') {
-            // Enable the switch link for sectors
+        if (this.nodeInfo.type == 'sector' || this.nodeInfo.type == 'tag_cluster') {
+            // Enable the switch link for sectors and clusters
             $('#switch-link').attr('href', '/textui?nodeId=' + this.id);
             Flyover.detach($('#switch-link'));
             

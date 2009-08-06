@@ -30,7 +30,9 @@
                 <li><a href="{% url admin_tagged_resources_report "all" %}">Tagged resources report</a></li>
                 <li><a href="{% url admin_tagged_resources_report "priority" %}">Tagged resources report (priority-only)</a></li>
                 <li><a href="{% url admin_tags_report %}">Tags report</a></li>
-                {# <li><a href="{% url admin_clusters_report %}">Clusters Report</a></li> #}
+                {% if DEBUG_ENABLE_CLUSTERS %}
+                    <li><a href="{% url admin_clusters_report %}">Clusters Report</a></li>
+                {% endif %}
                 <li><a href="{% url admin_priority_report %}">Priority Report</a></li>
                 <li><a href="{% url admin_duplicate_tags_report %}">Duplicate Tags</a></li>
             </ul>
@@ -83,10 +85,9 @@
                     <li><a href="{% url admin_import_users %}">Import Users</a></li>
                     <li><a href="{% url admin_import_resources %}">Import Resources</a></li>
                     <li><a href="{% url admin_import_societies %}">Import Societies</a></li>
-                    {% comment %}
-                        # TODO: This should be re-enabled later
-                        #<li><a href="{% url admin_import_clusters %}">Import Clusters</a></li>
-                    {% endcommen %}
+                    {% if DEBUG_ENABLE_CLUSTERS %}
+                        <li><a href="{% url admin_import_clusters %}">Import Clusters</a></li>
+                    {% endif %}
                 </ul>
             </li>
         

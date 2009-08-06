@@ -157,6 +157,8 @@ DEBUG_ENABLE_CPROFILE = False
 # If true, writes profiling logs for every request
 DEBUG_WRITE_PROFILING = False
 
+DEBUG_ENABLE_CLUSTERS = False
+
 # Local Settings ---------------------------------------------------------------
 
 try:

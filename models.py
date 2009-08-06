@@ -93,11 +93,11 @@ class NodeManager(models.Manager):
         kwargs['node_type'] = NodeType.objects.getFromName(NodeType.TAG)
         return models.Manager.create(self, **kwargs)
         
-    def create_cluster(self, **kwargs):
-        if 'name' in kwargs:
-            kwargs['name'] = string.capwords(kwargs['name'])
-        kwargs['node_type'] = NodeType.objects.getFromName(NodeType.TAG_CLUSTER)
-        return models.Manager.create(self, **kwargs)
+    def create_cluster(self, name, sector):
+        cluster = super(NodeManager, self).create(name=name, node_type = NodeType.objects.getFromName(NodeType.TAG_CLUSTER))
+        cluster.parents = [sector]
+        cluster.save()
+        return cluster
         
     def getNodesForType(self, node_type):
         if type(node_type) is str:
@@ -114,9 +114,9 @@ class NodeManager(models.Manager):
     def getSectors(self):
         return self.filter(node_type__name=NodeType.SECTOR)
     
-    def getSectorByName(self, name):
-        sectorType = NodeType.objects.getFromName('sector')
-        return single_row(self.filter(name=name, node_type=sectorType), 'Can\'t find sector "%s"' % name)
+    def get_sector_by_name(self, name):
+        sector_type = NodeType.objects.getFromName(NodeType.SECTOR)
+        return single_row(self.filter(name=name, node_type=sector_type), 'Looking up sector "%s"' % name)
     
     def get_sectors_from_list(self, names):
         'Returns a list of sectors whose names match the given list of names.'
@@ -134,6 +134,7 @@ class NodeManager(models.Manager):
         return self.get_tags()
     
     def get_tags(self):
+        "Returns all tags."
         tag_type = NodeType.objects.getFromName('tag')
         return self.filter(node_type=tag_type)
     
@@ -186,9 +187,10 @@ class NodeManager(models.Manager):
         
         return (min_resources, max_resources)
 
-    def get_sector_ranges(self, sector):
+    def get_sector_ranges(self, node):
         """
-        Returns the min/max amount of resources/sectors/related-tags per tag for the given sector.
+        Returns the min/max amount of resources/sectors/related-tags per tag for the given sector or cluster.
+        NOTE: node must be a sector or cluster.
         Ignores tags with no resources, no filters, or no societies.
         Returns a tuple:
             (min_resources,
@@ -198,18 +200,13 @@ class NodeManager(models.Manager):
             min_related_tags,
             max_related_tags)
         """
-        tags = sector.child_nodes
+        
+        assert node.node_type.name == NodeType.SECTOR or node.node_type.name == NodeType.TAG_CLUSTER, 'node (%s, %s, %s) must be a node or cluster' % (node.name, node.id, node.node_type.name)
+        
+        tags = node.child_nodes
         
         # Filter out tags with no resources
-        tags = tags.extra(
-            select={
-                'num_resources1': 'SELECT COUNT(*) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id',
-                'num_societies': 'SELECT COUNT(*) FROM ieeetags_node_societies WHERE ieeetags_node_societies.node_id = ieeetags_node.id',
-                'num_filters': 'SELECT COUNT(*) FROM ieeetags_node_filters WHERE ieeetags_node_filters.node_id = ieeetags_node.id',
-                'num_sectors': 'SELECT COUNT(*) FROM ieeetags_node_parents WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id',
-                'num_related_tags1': 'SELECT COUNT(*) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id',
-            },
-        )
+        tags = self.get_extra_info(tags)
         
         min_resources = None
         max_resources = None
@@ -219,16 +216,16 @@ class NodeManager(models.Manager):
         max_related_tags = None
         
         for tag in tags:
-            if (not settings.DEBUG_HIDE_TAGS_WITH_NO_RESOURCES or tag.num_resources1 > 0) and tag.num_societies > 0 and tag.num_filters > 0:
+            if (not settings.DEBUG_HIDE_TAGS_WITH_NO_RESOURCES or tag.num_resources1 > 0) and tag.num_societies1 > 0 and tag.num_filters1 > 0:
                 if min_resources is None or tag.num_resources1 < min_resources:
                     min_resources = tag.num_resources1
                 if max_resources is None or tag.num_resources1 > max_resources:
                     max_resources = tag.num_resources1
 
-                if min_sectors is None or tag.num_sectors < min_sectors:
-                    min_sectors = tag.num_sectors
-                if max_sectors is None or tag.num_sectors > max_sectors:
-                    max_sectors = tag.num_sectors
+                if min_sectors is None or tag.num_sectors1 < min_sectors:
+                    min_sectors = tag.num_sectors1
+                if max_sectors is None or tag.num_sectors1 > max_sectors:
+                    max_sectors = tag.num_sectors1
 
                 if min_related_tags is None or tag.num_related_tags1 < min_related_tags:
                     min_related_tags = tag.num_related_tags1
@@ -237,19 +234,20 @@ class NodeManager(models.Manager):
 
         return (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags)
     
-    def get_sector_range(self, sector):
-        "Returns the min/max amount of sectors-per-tag for the given sector."
-        
-        sector_counts = [tag.parents.count() for tag in sector.child_nodes.all()]
-        
-        if len(sector_counts) == 0:
-            min_sectors = None
-            max_sectors = None
-        else:
-            min_sectors = min(sector_counts)
-            max_sectors = max(sector_counts)
-        
-        return (min_sectors, max_sectors)
+    #def get_cluster_range(self, cluster):
+    #    "Returns the min/max amount of sectors-per-tag for the given sector."
+    #    
+    #    TODO: Should use tag.get_sectors() here instead?  
+    #    sector_counts = [tag.parents.count() for tag in sector.child_nodes.all()]
+    #    
+    #    if len(sector_counts) == 0:
+    #        min_sectors = None
+    #        max_sectors = None
+    #    else:
+    #        min_sectors = min(sector_counts)
+    #        max_sectors = max(sector_counts)
+    #    
+    #    return (min_sectors, max_sectors)
     
     def get_related_tag_range(self, sector):
         "Returns the min/max amount of related_tags-per-tag for the given sector."
@@ -297,10 +295,6 @@ class NodeManager(models.Manager):
         
         return results
     
-    def get_sector_by_name(self, name):
-        sector_type = NodeType.objects.getFromName(NodeType.SECTOR)
-        return single_row(self.filter(name=name, node_type=sector_type), 'Looking up sector "%s"' % name)
-    
     #def get_sectors_for_tag(self, node):
     #    for node1 in self.filter(name=node.name):
     #        yield node1.parent
@@ -337,22 +331,31 @@ class NodeManager(models.Manager):
     def get_clusters(self):
         return self.filter(node_type=NodeType.objects.getFromName(NodeType.TAG_CLUSTER)).all()
     
-    def get_cluster_by_name(self, name):
-        return single_row_or_none(self.filter(node_type=NodeType.objects.getFromName(NodeType.TAG_CLUSTER), name=name))
+    def get_cluster(self, clusterId):
+        return single_row_or_none(self.filter(id=clusterId, node_type__name=NodeType.TAG_CLUSTER))
+    
+    def get_cluster_by_name(self, cluster_name, sector_name):
+        return single_row_or_none(
+            self.filter(
+                node_type__name=NodeType.TAG_CLUSTER,
+                name=cluster_name,
+                parents__name=sector_name,
+            )
+        )
     
     def add_tag_to_cluster(self, cluster, tag):
         cluster.child_nodes.add(tag)
-        for sector in tag.get_sectors():
-            cluster.parents.add(sector)
+        for filter in tag.filters.all():
+            cluster.filters.add(filter)
         cluster.save()
     
     def remove_tag_from_cluster(self, cluster, tag):
         cluster.child_nodes.remove(tag)
-        # Update the list of sectors for this cluster
-        cluster.parents.clear()
+        # Update the list of filters for this cluster
+        cluster.filters.clear()
         for tag in cluster.get_tags():
-            for sector in tag.get_sectors():
-                cluster.parents.add(sector)
+            for filter in tag.filters.all():
+                cluster.filters.add(filter)
         cluster.save()
     
     def get_extra_info(self, queryset):
@@ -363,13 +366,17 @@ class NodeManager(models.Manager):
             num_filters1
             num_sectors1
             num_related_tags1
+            num_parents1
         """
+        sector_node_type_id = NodeType.objects.getFromName(NodeType.SECTOR).id
+        cluster_node_type_id = NodeType.objects.getFromName(NodeType.TAG_CLUSTER).id
         return queryset.extra(
             select={
                 'num_resources1': 'SELECT COUNT(*) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id',
                 'num_societies1': 'SELECT COUNT(*) FROM ieeetags_node_societies WHERE ieeetags_node_societies.node_id = ieeetags_node.id',
                 'num_filters1': 'SELECT COUNT(*) FROM ieeetags_node_filters WHERE ieeetags_node_filters.node_id = ieeetags_node.id',
-                'num_sectors1': 'SELECT COUNT(*) FROM ieeetags_node_parents WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id',
+                'num_sectors1': 'SELECT COUNT(*) FROM ieeetags_node_parents INNER JOIN ieeetags_node as parent on ieeetags_node_parents.to_node_id = parent.id WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id AND parent.node_type_id = %s' % (sector_node_type_id),
+                #'num_clusters1': 'SELECT COUNT(*) FROM ieeetags_node_parents INNER JOIN ieeetags_node as parent on ieeetags_node_parents.to_node_id = parent.id WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id AND parent.node_type_id = %s' % (cluster_node_type_id),
                 'num_related_tags1': 'SELECT COUNT(*) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id',
                 'num_parents1': 'SELECT COUNT(*) FROM ieeetags_node_parents WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id',
             },
@@ -401,7 +408,11 @@ class Node(models.Model):
             return '%s (%s)' % (self.name, self.sector_names())
         else:
             return self.name
-        
+    
+    def get_full_cluster_name(self):
+        assert self.node_type.name == NodeType.TAG_CLUSTER, 'Node "%s" is not a cluster' % self.name
+        return '%s (%s)' % (self.name, self.get_sector().name)
+    
     def get_sectors(self):
         return self.parents.filter(node_type__name=NodeType.SECTOR)
     
@@ -412,8 +423,46 @@ class Node(models.Model):
         return self.child_nodes.filter(node_type__name=NodeType.TAG_CLUSTER)
     
     def get_tags(self):
+        "Returns all tags for this node."
         return self.child_nodes.filter(node_type__name=NodeType.TAG)
     
+    def get_tags_non_clustered(self):
+        "Returns all tags that are not clustered for this node."
+        #print 'get_tags_non_clustered()'
+        tags = self.child_nodes.filter(node_type__name=NodeType.TAG)
+        #print '  tags.count(): %s' % tags.count()
+        tags = tags.exclude(parents__node_type__name=NodeType.TAG_CLUSTER)
+        #print '  tags.count(): %s' % tags.count()
+        return tags
+    
+    def get_tags_and_clusters(self):
+        "Returns any clusters and non-clustered child tags."
+        return self.child_nodes.exclude(parents__node_type__name=NodeType.TAG_CLUSTER)
+    
+    def get_sector(self):
+        "Only valid for clusters.  Gets a cluster's parent sector, ensuring that there is exactly 1 parent."
+        assert self.node_type.name == NodeType.TAG_CLUSTER, 'Node "%s" is not a cluster' % self.name
+        assert self.parents.count() == 1, 'Node "%s" has %s parents' % (self.name, self.parents.count())
+        return self.parents.all()[0]
+    
+    def cluster_update_filters(self):
+        assert self.node_type.name == NodeType.TAG_CLUSTER, 'Node "%s" is not a cluster' % self.name
+        
+        # Remove any filters that no longer apply
+        for filter in self.filters.all():
+            exists = False
+            for tag in self.child_nodes.all():
+                if filter in tag.filters.all():
+                    exists = True
+            if exists == False:
+                self.filters.remove(filter)
+            
+        # Add any new filters
+        for tag in self.child_nodes.all():
+            for filter in tag.filters.all():
+                if filter not in self.filters.all():
+                    self.filters.add(filter)
+                    
     class Meta:
         ordering = ['name']
 

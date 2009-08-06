@@ -25,7 +25,7 @@ urlpatterns = patterns('',
     url(r'^ajax/node$', views.ajax_node, name='ajax_node'),
     url(r'^ajax/nodes_xml$', views.ajax_nodes_xml, name='ajax_nodes_xml'),
     url(r'^ajax/nodes_json$', views.ajax_nodes_json, name='ajax_nodes_json'),
-    url(r'^ajax/tooltip$', views.tooltip, name='tooltip'),
+    url(r'^ajax/tooltip/(?P<tag_id>\d+)/(?P<parent_id>\d+)$', views.tooltip, name='tooltip'),
     
     # Site Admin
     (r'^admin/', include('ieeetags.site_admin.urls')),

@@ -1,0 +1,19 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>Create a Cluster</h1>
+    
+    <p>
+        Please choose a sector for the new cluster:
+    </p>
+    
+    <ul>
+        {% for sector in sectors %}
+            <li>
+                <a href="{% url admin_create_cluster %}?sector_id={{ sector.id }}">{{ sector.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

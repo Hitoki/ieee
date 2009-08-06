@@ -127,14 +127,18 @@ class MultiSearchWidget(widgets.Widget):
             blur_text = self.blur_text
         else:
             blur_text = 'Type a few characters to bring up matching %s' % name
-            
+        
+        if 'id' in attrs:
+            id = 'id="%s"' % attrs['id']
+        else:
+            id = ''
         
         if self.classMetadata is not None:
             classString += ', ' + self.classMetadata
         
         output.append('<div id="%s" class="multi-search { %s } %s">' % ('multisearch_'+name, classString, self.className ))
         output.append('    <input type="hidden" name="%s" value="%s" class="multi-search-data" />' % (name, escape(initial_data)))
-        output.append('    %s: <div class="multi-search-popup-anchor"><input class="multi-search-input blur-text {text:\'(%s)\', blurClass:\'multi-search-input-blur\' }" /></div>' % (widget_label, blur_text))
+        output.append('    %s: <div class="multi-search-popup-anchor"><input %s class="multi-search-input blur-text {text:\'(%s)\', blurClass:\'multi-search-input-blur\' }" /></div>' % (widget_label, id, blur_text))
         output.append('    <div class="multi-search-selected-options">')
         output.append('    </div>')
         output.append('</div>')

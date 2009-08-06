@@ -218,6 +218,7 @@ function MultiSearch(container, options) {
     if (this.input.length == 0)
         return error('MultiSearch(): did not find .multi-search-input element');
     
+    this.input.data('multisearch', this);
     this.input.keydown(function(e) {
         multiSearch.keydown(e);
     });
