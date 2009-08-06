@@ -1137,3 +1137,9 @@ p.export {
 .textui-node-flyover-container {
     max-width:500px;
 }
+
+.no-clusters-warning {
+    font-weight:bold;
+    color:gray;
+    margin:0 .5em;
+}

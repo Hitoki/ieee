@@ -242,8 +242,25 @@ var Tags = {
         //console.log("tags.length: " + tags.length);
         
         if (data.node.type == 'sector') {
+            
             // Sector title
             //var title = $('<h2>' + htmlentities(data.node.sector.label) + ' sector</h2>').appendTo(tagWindow);
+            
+            // Show "no clusters" warning if applicable
+            if (this.getSort() == 'clusters_first_alpha') {
+                
+                var numClusters = 0;
+                for (var i=0; i<data.child_nodes.length; i++) {
+                    if (data.child_nodes[i].type == 'tag_cluster') {
+                        numClusters++;
+                    }
+                }
+                
+                if (numClusters == 0) {
+                    // Show the "no clusters" warning
+                    var noClustersWarning = $('<p class="no-clusters-warning">There are no clusters in this sector for the selected filters.</p>').appendTo(tagWindow);
+                }
+            }
             
         } else if (data.node.type == 'tag_cluster') {
             // Cluster title
