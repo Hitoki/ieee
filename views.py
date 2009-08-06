@@ -255,7 +255,6 @@ def ajax_nodes_json(request):
     
     filterValues = request.GET.get('filterValues')
     
-    
     #log('filterValues: %s' % filterValues)
     
     order_by = None
@@ -269,6 +268,9 @@ def ajax_nodes_json(request):
         extra_order_by = ['-num_sectors1']
     elif sort == 'num_related_tags':
         extra_order_by = ['-num_related_tags1']
+    elif sort == 'clusters_first_alpha':
+        # See below
+        pass
     else:
         raise Exception('Unrecognized sort "%s"' % sort)
     
@@ -289,8 +291,11 @@ def ajax_nodes_json(request):
     else:
         raise Exception('Unrecognized node type "%s" for node "%s"' % (node.node_type.name, node.name))
     
-    # Sort by one of the non-extra columns
-    if order_by is not None:
+    if sort == 'clusters_first_alpha':
+        # Order clusters first, then tags; both sorted alphabetically
+        child_nodes = child_nodes.order_by('-node_type__name', 'name')
+    elif order_by is not None:
+        # Sort by one of the non-extra columns
         child_nodes = child_nodes.order_by(order_by)
         
     (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = Node.objects.get_sector_ranges(node)
@@ -330,7 +335,7 @@ def ajax_nodes_json(request):
                     'relatedTagLevel': related_tag_level,
                     'num_related_tags': child_node.num_related_tags1,
                     
-                    'num_sectors1': child_node.num_sectors1,
+                    #'num_sectors1': child_node.num_sectors1,
                 })
                 
         elif child_node.node_type.name == NodeType.TAG_CLUSTER:
@@ -353,8 +358,8 @@ def ajax_nodes_json(request):
                         'type': child_node.node_type.name,
                         'num_child_tags': num_child_tags,
                         
-                        'num_related_tags': child_node.num_related_tags1,
-                        'num_sectors1': child_node.num_sectors1,
+                        #'num_related_tags': child_node.num_related_tags1,
+                        #'num_sectors1': child_node.num_sectors1,
                     })
         
         else:
