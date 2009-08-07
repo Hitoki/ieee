@@ -216,7 +216,7 @@ class NodeManager(models.Manager):
         max_related_tags = None
         
         for tag in tags:
-            if (not settings.DEBUG_HIDE_TAGS_WITH_NO_RESOURCES or tag.num_resources1 > 0) and tag.num_societies1 > 0 and tag.num_filters1 > 0:
+            if tag.num_resources1 > 0 and tag.num_societies1 > 0 and tag.num_filters1 > 0:
                 if min_resources is None or tag.num_resources1 < min_resources:
                     min_resources = tag.num_resources1
                 if max_resources is None or tag.num_resources1 > max_resources:

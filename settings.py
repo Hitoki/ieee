@@ -130,9 +130,6 @@ SHOW_SOCIETY_LOGIN_BANNER = False
 # Used for the COMSOC demo to assign all tags to comsoc by default
 DEBUG_IMPORT_ASSIGN_ALL_TAGS_TO_COMSOC = False
 
-# If true, tags without resources will not show up in the Roamer/Tags views
-DEBUG_HIDE_TAGS_WITH_NO_RESOURCES = True
-
 # Enable the Help tab on the Manage Society page
 DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB = True
 

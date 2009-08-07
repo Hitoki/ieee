@@ -316,6 +316,8 @@ def ajax_nodes_json(request):
             'label': node.get_sector().name,
         }
     
+    
+    
     for child_node in child_nodes:
         resourceLevel = _get_popularity_level(min_resources, max_resources, child_node.num_resources1)
         sectorLevel = _get_popularity_level(min_sectors, max_sectors, child_node.num_sectors1)
@@ -325,7 +327,7 @@ def ajax_nodes_json(request):
         
         if child_node.node_type.name == NodeType.TAG:
             # Only show tags that have one of the selected filters, and also are associated with a society
-            if (len(child_node.filters.filter(id__in=filterIds))) and child_node.societies.count() > 0 and (not settings.DEBUG_HIDE_TAGS_WITH_NO_RESOURCES or child_node.num_resources1 > 0):
+            if (len(child_node.filters.filter(id__in=filterIds))) and child_node.societies.count() > 0 and child_node.num_resources1 > 0:
                 data['child_nodes'].append({
                     'id': child_node.id,
                     'label': child_node.name,
@@ -399,15 +401,9 @@ def ajax_nodes_xml(request):
         childNodes1 = []
         
         for child_node in child_nodes:
-            if settings.DEBUG_HIDE_TAGS_WITH_NO_RESOURCES:
-                # List all clusters, plus any tags that have societies and resoureces
-                if child_node.node_type.name == NodeType.TAG_CLUSTER or (child_node.num_societies1 > 0 and child_node.num_resources1 > 0):
-                    childNodes1.append(child_node)
-            else:
-                # List all clusters, plus any tags that have societies
-                if child_node.node_type.name == NodeType.TAG_CLUSTER or (child_node.num_societies1 > 0):
-                    # Hide all tags with no societies
-                    childNodes1.append(child_node)
+            # List all clusters, plus any tags that have societies and resoureces
+            if child_node.node_type.name == NodeType.TAG_CLUSTER or (child_node.num_societies1 > 0 and child_node.num_resources1 > 0):
+                childNodes1.append(child_node)
         child_nodes = childNodes1
     
     # The main node
@@ -438,14 +434,9 @@ def ajax_nodes_xml(request):
     related_tags = []
     if node.node_type.name == NodeType.TAG:
         for related_tag in node.related_tags.all():
-            if settings.DEBUG_HIDE_TAGS_WITH_NO_RESOURCES:
-                if related_tag.societies.count() > 0 and related_tag.resources.count() > 0:
-                    # Hide all tags with no societies or no resources
-                    related_tags.append(related_tag)
-            else:
-                if related_tag.societies.count() > 0:
-                    # Hide all tags with no societies
-                    related_tags.append(related_tag)
+            if related_tag.societies.count() > 0 and related_tag.resources.count() > 0:
+                # Hide all tags with no societies or no resources
+                related_tags.append(related_tag)
     nodes.extend(related_tags)
     
     # Edges
@@ -579,7 +570,7 @@ def tooltip(request, tag_id, parent_id):
     # Filter out related tags without filters (to match roamer)
     related_tags = []
     for related_tag in tag.related_tags.all():
-        if related_tag.filters.count() > 0 and (not settings.DEBUG_HIDE_TAGS_WITH_NO_RESOURCES or related_tag.resources.count() > 0):
+        if related_tag.filters.count() > 0 and related_tag.resources.count() > 0:
             related_tags.append(related_tag)
     
     return render(request, 'tooltip.html', {
