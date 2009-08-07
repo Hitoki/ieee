@@ -465,6 +465,14 @@ class Node(models.Model):
                 if filter not in self.filters.all():
                     self.filters.add(filter)
                     
+    def get_filtered_related_tag_count(self):
+        "Returns the number of related tags that have filters/resources (ie. are not hidden)"
+        count = 0
+        for related_tag in self.related_tags.all():
+            if related_tag.filters.count() > 0 and related_tag.resources.count() > 0:
+                count += 1
+        return count
+        
     class Meta:
         ordering = ['name']
 

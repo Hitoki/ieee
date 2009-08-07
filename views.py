@@ -316,14 +316,12 @@ def ajax_nodes_json(request):
             'label': node.get_sector().name,
         }
     
-    
-    
     for child_node in child_nodes:
+        num_related_tags = child_node.get_filtered_related_tag_count()
+        
         resourceLevel = _get_popularity_level(min_resources, max_resources, child_node.num_resources1)
         sectorLevel = _get_popularity_level(min_sectors, max_sectors, child_node.num_sectors1)
-        related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, child_node.num_related_tags1)
-        
-
+        related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
         
         if child_node.node_type.name == NodeType.TAG:
             # Only show tags that have one of the selected filters, and also are associated with a society
@@ -335,7 +333,7 @@ def ajax_nodes_json(request):
                     'level': resourceLevel,
                     'sectorLevel': sectorLevel,
                     'relatedTagLevel': related_tag_level,
-                    'num_related_tags': child_node.num_related_tags1,
+                    'num_related_tags': num_related_tags,
                     
                     #'num_sectors1': child_node.num_sectors1,
                 })
@@ -360,7 +358,7 @@ def ajax_nodes_json(request):
                         'type': child_node.node_type.name,
                         'num_child_tags': num_child_tags,
                         
-                        #'num_related_tags': child_node.num_related_tags1,
+                        #'num_related_tags': num_related_tags,
                         #'num_sectors1': child_node.num_sectors1,
                     })
         
@@ -561,9 +559,11 @@ def tooltip(request, tag_id, parent_id):
     
     (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = Node.objects.get_sector_ranges(parent)
     
+    num_related_tags = tag.get_filtered_related_tag_count()
+    
     resourceLevel = _get_popularity_level(min_resources, max_resources, tag.num_resources1)
     sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.num_sectors1)
-    related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, tag.num_related_tags1)
+    related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
 
     log('  sectorLevel: %s' % sectorLevel)
     
