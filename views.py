@@ -479,7 +479,18 @@ def ajax_nodes_xml(request):
         nodeElem.setAttribute('selected_graphic_fill_color', ROAMER_NODE_COLORS[node1.node_type.name] )
         nodeElem.setAttribute('graphic_border_color', GRAPHIC_BORDER_COLOR)
         nodeElem.setAttribute('graphic_type', 'shape')
-        nodeElem.setAttribute('graphic_shape', 'circle')
+        
+        
+        if node1.node_type.name == NodeType.ROOT:
+            nodeElem.setAttribute('graphic_shape', 'circle')
+        elif node1.node_type.name == NodeType.SECTOR:
+            nodeElem.setAttribute('graphic_shape', 'circle')
+        elif node1.node_type.name == NodeType.TAG_CLUSTER:
+            nodeElem.setAttribute('graphic_shape', 'pentagon')
+        elif node1.node_type.name == NodeType.TAG:
+            nodeElem.setAttribute('graphic_shape', 'square')
+        else:
+            raise Exception('Unknown node type "%s" for node "%s"' % (node1.node_type.name, node1.name))
         
         # This takes up 40% page time
         filters = []
