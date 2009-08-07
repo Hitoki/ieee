@@ -410,11 +410,29 @@ def ajax_nodes_xml(request):
                     childNodes1.append(child_node)
         child_nodes = childNodes1
     
-    # Build node list
+    # The main node
     nodes = [node]
+    
+    # Add the node's children
     nodes.extend(child_nodes)
-    for parent in node.parents.all():
-        nodes.append(parent)
+    
+    parent_nodes = []
+    
+    # The node's parent clusters
+    exclude_sectors = []
+    for cluster in node.get_parent_clusters():
+        nodes.append(cluster)
+        parent_nodes.append(cluster)
+        if cluster.get_sector() not in exclude_sectors:
+            exclude_sectors.append(cluster.get_sector())
+    
+    # The node's parent sectors
+    for sector in node.get_sectors():
+        # Exclude a sector if this node is already in a cluster for that sector
+        # ie. If 'node1' is in 'cluster1' in the 'Agriculture' sector, don't show 'Agriculture'.
+        if sector not in exclude_sectors:
+            nodes.append(sector)
+            parent_nodes.append(sector)
     
     # Get related tags for this tag
     related_tags = []
@@ -430,10 +448,14 @@ def ajax_nodes_xml(request):
                     related_tags.append(related_tag)
     nodes.extend(related_tags)
     
+    # Edges
+    
     edges = []
+    
     for childNode in child_nodes:
         edges.append((node.id, childNode.id))
-    for parent in node.parents.all():
+    
+    for parent in parent_nodes:
         edges.append((parent.id, node.id))
         
     # Edges for related tags
@@ -441,8 +463,6 @@ def ajax_nodes_xml(request):
         for related_tag in related_tags:
             edges.append((node.id, related_tag.id))
     
-    #log('  len(edges):', len(edges))
-
     # XML Output
     
     doc = minidom.Document()
