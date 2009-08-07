@@ -467,11 +467,13 @@ def ajax_nodes_xml(request):
         nodeElem.setAttribute('id', str(node1.id))
         
         if node1.node_type.name == NodeType.TAG_CLUSTER:
-            # Cluster, show full name & sector
-            assert node1.parents.count() == 1
-            parent = node1.parents.all()[0]
-            nodeElem.setAttribute('label', '%s (%s)' % (node1.name, parent.name))
+            # For a cluster, show the short name "Cluster" if we're viewing the cluster or its parent.  Otherwise, show the full name "Cluster (Sector)".
+            if node.id != node1.id and node.id != node1.get_sector().id:
+                nodeElem.setAttribute('label', node1.get_full_cluster_name())
+            else:
+                nodeElem.setAttribute('label', node1.name)
         else:
+            # None-cluster
             nodeElem.setAttribute('label', node1.name)
         nodeElem.setAttribute('depth_loaded', str(2))
         
