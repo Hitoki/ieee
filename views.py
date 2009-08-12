@@ -400,7 +400,7 @@ def ajax_nodes_xml(request):
         
         for child_node in child_nodes:
             # List all clusters, plus any tags that have societies and resoureces
-            if child_node.node_type.name == NodeType.TAG_CLUSTER or (child_node.num_societies1 > 0 and child_node.num_resources1 > 0):
+            if child_node.node_type.name == NodeType.TAG_CLUSTER or (child_node.num_societies1 > 0 and child_node.num_resources1 > 0 and child_node.num_filters1 > 0):
                 childNodes1.append(child_node)
         child_nodes = childNodes1
     
@@ -432,7 +432,7 @@ def ajax_nodes_xml(request):
     related_tags = []
     if node.node_type.name == NodeType.TAG:
         for related_tag in node.related_tags.all():
-            if related_tag.societies.count() > 0 and related_tag.resources.count() > 0:
+            if related_tag.filters.count() > 0 and related_tag.societies.count() > 0 and related_tag.resources.count() > 0:
                 # Hide all tags with no societies or no resources
                 related_tags.append(related_tag)
     nodes.extend(related_tags)
@@ -470,6 +470,9 @@ def ajax_nodes_xml(request):
         'tag': '#00FF00',
     }
     GRAPHIC_BORDER_COLOR = '#bad4f9'
+    
+    log('  nodes: %s' % len(nodes))
+    log('  edges: %s' % len(edges))
     
     for node1 in nodes:
         nodeElem = doc.createElement('node')
