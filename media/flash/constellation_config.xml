@@ -14,7 +14,7 @@
         
         <!-- the preferred minimum distance between unconnected nodes
           -->
-        <node_repulsion_distance>230</node_repulsion_distance>
+        <node_repulsion_distance>130</node_repulsion_distance>
         
         <!-- the base value for calculating the preferred distance between
            - two connected nodes.  the actual edge length depends on other
@@ -22,7 +22,7 @@
            -
            - larger values result in more spread out node layouts
            -->
-        <base_edge_length>150</base_edge_length>
+        <base_edge_length>70</base_edge_length>
         
         <!-- the amount of variation allowed in the preferred distance
            - between two  connected nodes.  this value determines the extent
