@@ -46,6 +46,9 @@ var Tags = {
         if (onload)
             this.onLoadSectorCallback = onload;
         
+        // Hide any flyvoers so they don't persist when the node is gone.
+        Flyover.hide();
+        
         $.getJSON('/ajax/nodes_json', {nodeId:this.nodeId, filterValues:filterStr, sort:this.getSort()}, function(data) { Tags.onLoadSector(data); });
     },
     
@@ -129,6 +132,9 @@ var Tags = {
         
         // Update the switch interfaces link
         this.updateSwitchLink();
+        
+        // Hide any flyvoers so they don't persist when the node is gone.
+        Flyover.hide();
         
         $.getJSON(
             '/ajax/nodes_json',
