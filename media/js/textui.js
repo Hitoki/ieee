@@ -85,6 +85,9 @@ var Tags = {
         // If a cluster was just selected, show & highlight it
         if (this.nodeType == 'tag_cluster' && this.selectedClusterId == null) {
             
+            /*
+            NOTE: This is disabled for now, just show the sector
+            
             var sectorListItem = $('#sector-list-item-' + this.node.sectorId);
             
             var clusterListItem = $('<li id="cluster-list-item-' + this.nodeId + '" class="cluster-list-item"></li>');
@@ -97,13 +100,15 @@ var Tags = {
             link.attr('href', 'javascript:Tags.selectCluster(' + this.nodeId + ');');
             
             this.selectedClusterId = this.nodeId;
+            */
         }
         
         // Highlight the selected sector
         if (this.nodeType == 'sector') {
             $('#sector-list-item-' + this.nodeId + ' a').addClass('active-sector');
         } else if (this.nodeType == 'tag_cluster') {
-            $('#cluster-list-item-' + this.nodeId + ' a').addClass('active-sector');
+            //$('#cluster-list-item-' + this.nodeId + ' a').addClass('active-sector');
+            $('#sector-list-item-' + this.node.sectorId + ' a').addClass('active-sector');
         } else {
             alert('ERROR: Unknown this.nodeType "' + this.nodeType + '"');
         }

@@ -44,6 +44,11 @@ var Roamer = {
             // Selected node is a sector, highlight it
             var link = this.getSectorLink(this.nodeInfo.id);
             link.addClass('active-sector');
+        } else if (this.nodeInfo.type == 'tag_cluster') {
+            // Selected node is a sector, highlight it
+            var sectorId = this.nodeInfo.parents[0].id;
+            var link = this.getSectorLink(sectorId);
+            link.addClass('active-sector');
         }
     },
     
