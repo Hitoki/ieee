@@ -1,3 +1,4 @@
+
 from django.contrib.auth.models import User, UserManager
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
@@ -7,7 +8,7 @@ from django.db.models import Q
 from django.db.models import Q
 from django.db.models.signals import post_save
 from datetime import datetime
-import logging
+from logging import debug as log
 import time
 import string
 import settings
@@ -201,6 +202,8 @@ class NodeManager(models.Manager):
             max_related_tags)
         """
         
+        log('get_sector_ranges()')
+        
         assert node.node_type.name == NodeType.SECTOR or node.node_type.name == NodeType.TAG_CLUSTER, 'node (%s, %s, %s) must be a node or cluster' % (node.name, node.id, node.node_type.name)
         
         tags = node.child_nodes
@@ -232,6 +235,13 @@ class NodeManager(models.Manager):
                 if max_related_tags is None or tag.num_related_tags1 > max_related_tags:
                     max_related_tags = tag.num_related_tags1
 
+        log('  min_resources: %s' % min_resources)
+        log('  max_resources: %s' % max_resources)
+        log('  min_sectors: %s' % min_sectors)
+        log('  max_sectors: %s' % max_sectors)
+        log('  min_related_tags: %s' % min_related_tags)
+        log('  max_related_tags: %s' % max_related_tags)
+        
         return (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags)
     
     #def get_cluster_range(self, cluster):
@@ -377,6 +387,7 @@ class NodeManager(models.Manager):
                 'num_filters1': 'SELECT COUNT(*) FROM ieeetags_node_filters WHERE ieeetags_node_filters.node_id = ieeetags_node.id',
                 'num_sectors1': 'SELECT COUNT(*) FROM ieeetags_node_parents INNER JOIN ieeetags_node as parent on ieeetags_node_parents.to_node_id = parent.id WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id AND parent.node_type_id = %s' % (sector_node_type_id),
                 #'num_clusters1': 'SELECT COUNT(*) FROM ieeetags_node_parents INNER JOIN ieeetags_node as parent on ieeetags_node_parents.to_node_id = parent.id WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id AND parent.node_type_id = %s' % (cluster_node_type_id),
+                # TODO: Some of the related tags will be hidden (no resources, no filters, etc), so this count is off
                 'num_related_tags1': 'SELECT COUNT(*) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id',
                 'num_parents1': 'SELECT COUNT(*) FROM ieeetags_node_parents WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id',
             },
@@ -734,20 +745,20 @@ class FailedLoginLogManager(models.Manager):
     
     def check_if_disabled(self, username, ip):
         "Return True if a given username or ip has been disabled."
-        #logging.debug('check_if_disabled()')
-        #logging.debug('  username: %s' % username)
-        #logging.debug('  ip: %s' % ip)
-        ##logging.debug('  FailedLoginLog.DISABLE_ACCOUNT_TIME: %s' % FailedLoginLog.DISABLE_ACCOUNT_TIME)
+        #log('check_if_disabled()')
+        #log('  username: %s' % username)
+        #log('  ip: %s' % ip)
+        ##log('  FailedLoginLog.DISABLE_ACCOUNT_TIME: %s' % FailedLoginLog.DISABLE_ACCOUNT_TIME)
         before = datetime.fromtimestamp(time.time() - FailedLoginLog.DISABLE_ACCOUNT_TIME)
-        #logging.debug('  before: %s' % before)
-        ##logging.debug('  datetime.now(): %s' % datetime.now())
+        #log('  before: %s' % before)
+        ##log('  datetime.now(): %s' % datetime.now())
         if username is not None:
             num = self.filter(
                 Q(username=username) | Q(ip=ip),
                 disabled=True,
                 date_created__gt=before,
             ).count()
-            #logging.debug('  num: %s' % num)
+            #log('  num: %s' % num)
             return num > 0
         else:
             num = self.filter(
@@ -755,7 +766,7 @@ class FailedLoginLogManager(models.Manager):
                 disabled=True,
                 date_created__gt=before,
             ).count()
-            #logging.debug('  num: %s' % num)
+            #log('  num: %s' % num)
             return num > 0
     
     def add_and_check_if_disabled(self, username, ip):
@@ -766,9 +777,9 @@ class FailedLoginLogManager(models.Manager):
     def _add_failed_login(self, username, ip):
         "Adds a bad login entry and disables an account if necessary."
         
-        #logging.debug('_add_failed_login()')
-        #logging.debug('  username: %s' % username)
-        #logging.debug('  ip: %s' % ip)
+        #log('_add_failed_login()')
+        #log('  username: %s' % username)
+        #log('  ip: %s' % ip)
         
         # Check if there have been too many bad logins (including this one)
         before = datetime.fromtimestamp(time.time() - FailedLoginLog.FAILED_LOGINS_TIME)
@@ -776,14 +787,14 @@ class FailedLoginLogManager(models.Manager):
             Q(username=username) | Q(ip=ip),
             date_created__gt = before,
         ).count()
-        #logging.debug('  num_failed_logins: %s' % num_failed_logins)
+        #log('  num_failed_logins: %s' % num_failed_logins)
         
         if num_failed_logins >= FailedLoginLog.FAILED_LOGINS_MAX - 1:
             disabled = True
         else:
             disabled = False
             
-        #logging.debug('  disabled: %s' % disabled)
+        #log('  disabled: %s' % disabled)
         
         # Add a log entry for this failed entry
         log = self.create(
