@@ -33,6 +33,16 @@
                 {{ resource.resource_type.name }}
             </td>
         </tr>
+        {% ifequal resource.resource_type.name "standard" %}
+            <tr>
+                <th>
+                    Status:
+                </th>
+                <td>
+                    {{ resource.standard_status }}
+                </td>
+            </tr>
+        {% endifequal %}
         <tr>
             <th>
                 Description

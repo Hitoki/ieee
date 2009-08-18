@@ -34,12 +34,15 @@
         
         function updateStandardStatus() {
             var resourceTypeElem = $('#id_resource_type');
-            if ($(resourceTypeElem[0].options[resourceTypeElem[0].selectedIndex]).text() == 'standard') {
-                $('#id_standard_status').attr('disabled', '');
-            }
-            else {
-                $('#id_standard_status')[0].selectedIndex = 0;
-                $('#id_standard_status').attr('disabled', 'disabled');
+            // Silently fail if the resource type SELECT doesn't exist (ie. if the widget is read-only)
+            if (resourceTypeElem.selectedIndex) {
+                if ($(resourceTypeElem[0].options[resourceTypeElem[0].selectedIndex]).text() == 'standard') {
+                    $('#id_standard_status').attr('disabled', '');
+                }
+                else {
+                    $('#id_standard_status')[0].selectedIndex = 0;
+                    $('#id_standard_status').attr('disabled', 'disabled');
+                }
             }
         }
         
@@ -83,15 +86,17 @@
                     {{ form.resource_type }}
                 </td>
             </tr>
-            <tr>
-                <th>
-                    <label for="id_standard_status">{{ form.standard_status.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title='IEEE-provided status of the Standard: Published, Withdrawn or Project (active PAR)'>[?]</span>:</label>
-                </th>
-                <td>
-                    {{ form.standard_status.errors }}
-                    {{ form.standard_status }}
-                </td>
-            </tr>
+            {% if show_standard_status %}
+                <tr>
+                    <th>
+                        <label for="id_standard_status">{{ form.standard_status.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title='IEEE-provided status of the Standard: Published, Withdrawn or Project (active PAR)'>[?]</span>:</label>
+                    </th>
+                    <td>
+                        {{ form.standard_status.errors }}
+                        {{ form.standard_status }}
+                    </td>
+                </tr>
+            {% endif %}
             <tr>
                 <th>
                     <label for="id_id">{{ form.ieee_id.label }} <span class="help_icon flyover {position:'top', customClass:'editForm'}" title="IEEE unique identifier.">[?]</span>:</label>

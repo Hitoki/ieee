@@ -2935,6 +2935,7 @@ def edit_resource(request, resource_id=None):
         })
         if not request.user.is_superuser:
             make_display_only(form.fields['societies'], is_multi_search=True)
+        show_standard_status = True
         
     else:
         # editing an existing resource
@@ -2965,12 +2966,19 @@ def edit_resource(request, resource_id=None):
             make_display_only(form.fields['ieee_id'])
             make_display_only(form.fields['keywords'])
             make_display_only(form.fields['standard_status'])
-        
+            show_standard_status = True
+        else:
+            if resource.resource_type.name == ResourceType.STANDARD:
+                show_standard_status = True
+            else:
+                show_standard_status = False
+    
     return render(request, 'site_admin/edit_resource.html', {
         'return_url': return_url,
         'society_id': society_id,
         'resource': resource,
         'form': form,
+        'show_standard_status': show_standard_status,
     })
 
 @login_required
