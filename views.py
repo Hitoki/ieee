@@ -167,6 +167,22 @@ def ajax_tag_content(request):
     tagId = request.GET['tagId']
     tag = Node.objects.get(id=tagId)
     
+    sectors1 = tag.get_sectors()
+    clusters1 = tag.get_parent_clusters()
+    
+    # Build a list of sectors and clusters, grouped by sector
+    parent_nodes = []
+    for sector in sectors1:
+        clusters = []
+        for cluster in clusters1:
+            if cluster.get_sector() == sector:
+                clusters.append(cluster)
+        
+        parent_nodes.append({
+            'sector': sector,
+            'clusters': clusters,
+        })
+    
     # Build list of icon & no-icon societies
     societies = tag.societies.all()
     iconSocieties = []
@@ -179,7 +195,6 @@ def ajax_tag_content(request):
             noIconSocieties.append(society)
     
     num_resources = Resource.objects.getForNode(tag).count()
-    
     conferences = Resource.objects.getForNode(tag, resourceType=ResourceType.CONFERENCE)
     experts = Resource.objects.getForNode(tag, resourceType=ResourceType.EXPERT)
     periodicals = Resource.objects.getForNode(tag, resourceType=ResourceType.PERIODICAL)
@@ -195,6 +210,7 @@ def ajax_tag_content(request):
         'periodicals': periodicals,
         'standards': standards,
         'num_resources': num_resources,
+        'parent_nodes': parent_nodes,
     })
 
 @login_required
