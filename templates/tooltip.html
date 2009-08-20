@@ -24,14 +24,7 @@
                     </table>
                 </td>
                 <td>
-                    {% for sector in tag.get_sectors.all %}
-                        {% ifequal sector tag.parent %}
-                            {{sector.name}}
-                        {% else %}
-                            <a href="{% url textui %}?nodeId={{sector.id}}">{{sector.name}}</a>{% if not forloop.last %}, {% endif %}
-                        {% endifequal %}
-                        
-                    {% endfor %}
+                    {{ sectors|safe }}
                 </td>
             </tr>
             <tr>
@@ -45,13 +38,7 @@
                     </table>
                 </td>
                 <td>
-                    {% if not related_tags %}
-                        None
-                    {% else %}
-                        {% for related_tag in related_tags %}
-                            <a href="javascript:Tags.selectTag({{ related_tag.id }});">{{ related_tag }}</a>{% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                    {% endif %}
+                    {{ related_tags|safe }}
                 </td>
             </tr>
         </table>

@@ -25,6 +25,38 @@ def render(request, template, dictionary=None):
     "Use this instead of 'render_to_response' to enable custom context processors, which add things like MEDIA_URL to the page automatically."
     return render_to_response(template, dictionary=dictionary, context_instance=RequestContext(request))
 
+def truncate_link_list(items, output_func, plain_output_func, max_chars):
+    """
+    Takes a list of items and outputs links.  If the list is > max_chars, the list is truncated with '...(10 more)' appended.
+    @param items the list of items
+    @param output_func the HTML output formatting function, takes one item as its argument
+    @param output_func the Plaintext output formatting function, takes one item as its argument.  This is used to determine the content length (w/o HTML markup tags)
+    @param max_chasr the maximum length of the output, not including the '... (X more)' if necessary
+    """
+    items_str = ''
+    items_plaintext = ''
+    
+    for i in range(len(items)):
+        item = items[i]
+        if items_str != '':
+            items_str += ', '
+            items_plaintext += ', '
+            
+        str1 = output_func(item)
+        #'<a href="%s">%s</a>' % (reverse('textui') + '?nodeId=%s' % item.id, item.name)
+        items_plaintext += plain_output_func(item)
+        
+        log('items_plaintext: %s' % items_plaintext)
+        log('len(items_plaintext): %s' % len(items_plaintext))
+        
+        if len(items_plaintext) > max_chars:
+            items_str += '... (%s more)' % (len(items) - i)
+            break
+        else:
+            items_str += str1
+    
+    return items_str
+
 # ------------------------------------------------------------------------------
 
 def error_view(request):
@@ -587,7 +619,23 @@ def tooltip(request, tag_id, parent_id):
     sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.num_sectors1)
     related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
 
-    log('  sectorLevel: %s' % sectorLevel)
+    #log('  sectorLevel: %s' % sectorLevel)
+    
+    MAX_CHARS = 125
+    
+    sectors_str = truncate_link_list(
+        tag.get_sectors(),
+        lambda item: '<a href="%s">%s</a>' % (reverse('textui') + '?nodeId=%s' % item.id, item.name),
+        lambda item: '%s' % item.name,
+        MAX_CHARS
+    )
+    
+    related_tags_str = truncate_link_list(
+        tag.related_tags.all(),
+        lambda item: '<a href="javascript:Tags.selectTag(%s);">%s</a>' % (item.id, item.name),
+        lambda item: '%s' % item.name,
+        MAX_CHARS
+    )
     
     # Filter out related tags without filters (to match roamer)
     related_tags = []
@@ -601,6 +649,8 @@ def tooltip(request, tag_id, parent_id):
         'tagLevel': resourceLevel,
         'sectorLevel': sectorLevel,
         'relatedTagLevel': related_tag_level,
+        'sectors': sectors_str,
+        'related_tags': related_tags_str,
     })
 
 def debug_error(request):
