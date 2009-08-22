@@ -202,6 +202,7 @@ var Tags = {
         div.data('sectorId', sectorId);
         
         if (type == 'tag') {
+            // Show the tag flyover
             div.hover(
                 function() {
                     Flyover.show(
@@ -219,12 +220,13 @@ var Tags = {
                 }
             );
         } else if (type == 'tag_cluster') {
+            // Show the cluster flyover
             div.hover(
                 function() {
                     Flyover.show(
                         this,
                         {
-                            content: 'Contains ' + node.num_child_tags + ' tags',
+                            url: '/ajax/tooltip/'+$(this).data('tagId')+'/'+$(this).data('sectorId'),
                             position: 'auto',
                             hideDelay: 100
                         }

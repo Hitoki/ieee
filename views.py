@@ -21,6 +21,8 @@ import settings
 import util
 from widgets import make_display_only
 
+TOOLTIP_MAX_CHARS = 125
+
 def render(request, template, dictionary=None):
     "Use this instead of 'render_to_response' to enable custom context processors, which add things like MEDIA_URL to the page automatically."
     return render_to_response(template, dictionary=dictionary, context_instance=RequestContext(request))
@@ -589,69 +591,87 @@ def tooltip(request, tag_id, parent_id):
     
     log('tooltip()')
     
-    #sector_id = request.GET['sector_id']
+    node = Node.objects.filter(id=tag_id)
+    node = Node.objects.get_extra_info(node)
+    node = single_row(node)
     
-    #tag = Node.objects.get(id=tag_id)
-    tag = Node.objects.filter(id=tag_id)
-    tag = Node.objects.get_extra_info(tag)
-    tag = single_row(tag)
-    
-    log('  tag.parents.all(): %s' % tag.parents.all())
-    log('  tag.num_parents1: %s' % tag.num_parents1)
+    if node.node_type.name == NodeType.TAG:
+        
+        tag = node
+        
+        log('  tag.parents.all(): %s' % tag.parents.all())
+        log('  tag.num_parents1: %s' % tag.num_parents1)
 
-    log('  tag.get_sectors(): %s' % tag.get_sectors())
-    log('  tag.num_sectors1: %s' % tag.num_sectors1)
-    
-    #log('  tag.get_clusters(): %s' % tag.get_parent_clusters())
-    #log('  tag.num_clusters1: %s' % tag.num_clusters1)
-    
-    #sector = single_row(tag.parents.filter(id=sector_id))
-    parent = Node.objects.get(id=parent_id)
-    
-    log('  parent: %s' % parent)
-    log('  parent.node_type.name: %s' % parent.node_type.name)
-    
-    (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = Node.objects.get_sector_ranges(parent)
-    
-    num_related_tags = tag.get_filtered_related_tag_count()
-    
-    resourceLevel = _get_popularity_level(min_resources, max_resources, tag.num_resources1)
-    sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.num_sectors1)
-    related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
+        log('  tag.get_sectors(): %s' % tag.get_sectors())
+        log('  tag.num_sectors1: %s' % tag.num_sectors1)
+        
+        #log('  tag.get_clusters(): %s' % tag.get_parent_clusters())
+        #log('  tag.num_clusters1: %s' % tag.num_clusters1)
+        
+        #sector = single_row(tag.parents.filter(id=sector_id))
+        parent = Node.objects.get(id=parent_id)
+        
+        log('  parent: %s' % parent)
+        log('  parent.node_type.name: %s' % parent.node_type.name)
+        
+        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = Node.objects.get_sector_ranges(parent)
+        
+        num_related_tags = tag.get_filtered_related_tag_count()
+        
+        resourceLevel = _get_popularity_level(min_resources, max_resources, tag.num_resources1)
+        sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.num_sectors1)
+        related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
 
-    #log('  sectorLevel: %s' % sectorLevel)
+        #log('  sectorLevel: %s' % sectorLevel)
+        
+        sectors_str = truncate_link_list(
+            tag.get_sectors(),
+            lambda item: '<a href="%s">%s</a>' % (reverse('textui') + '?nodeId=%s' % item.id, item.name),
+            lambda item: '%s' % item.name,
+            TOOLTIP_MAX_CHARS
+        )
+        
+        related_tags_str = truncate_link_list(
+            tag.related_tags.all(),
+            lambda item: '<a href="javascript:Tags.selectTag(%s);">%s</a>' % (item.id, item.name),
+            lambda item: '%s' % item.name,
+            TOOLTIP_MAX_CHARS
+        )
+        
+        # Filter out related tags without filters (to match roamer)
+        related_tags = []
+        for related_tag in tag.related_tags.all():
+            if related_tag.filters.count() > 0 and related_tag.resources.count() > 0:
+                related_tags.append(related_tag)
+        
+        return render(request, 'tooltip.html', {
+            'tag': tag,
+            'related_tags': related_tags,
+            'tagLevel': resourceLevel,
+            'sectorLevel': sectorLevel,
+            'relatedTagLevel': related_tag_level,
+            'sectors': sectors_str,
+            'related_tags': related_tags_str,
+        })
     
-    MAX_CHARS = 125
-    
-    sectors_str = truncate_link_list(
-        tag.get_sectors(),
-        lambda item: '<a href="%s">%s</a>' % (reverse('textui') + '?nodeId=%s' % item.id, item.name),
-        lambda item: '%s' % item.name,
-        MAX_CHARS
-    )
-    
-    related_tags_str = truncate_link_list(
-        tag.related_tags.all(),
-        lambda item: '<a href="javascript:Tags.selectTag(%s);">%s</a>' % (item.id, item.name),
-        lambda item: '%s' % item.name,
-        MAX_CHARS
-    )
-    
-    # Filter out related tags without filters (to match roamer)
-    related_tags = []
-    for related_tag in tag.related_tags.all():
-        if related_tag.filters.count() > 0 and related_tag.resources.count() > 0:
-            related_tags.append(related_tag)
-    
-    return render(request, 'tooltip.html', {
-        'tag': tag,
-        'related_tags': related_tags,
-        'tagLevel': resourceLevel,
-        'sectorLevel': sectorLevel,
-        'relatedTagLevel': related_tag_level,
-        'sectors': sectors_str,
-        'related_tags': related_tags_str,
-    })
+    elif node.node_type.name == NodeType.TAG_CLUSTER:
+        cluster = node
+        
+        tags_str = truncate_link_list(
+            cluster.get_tags(),
+            #lambda item: '<a href="javascript:Tags.selectTag(%s);">%s</a>' % (item.id, item.name),
+            lambda item: '%s' % item.name,
+            lambda item: '%s' % item.name,
+            TOOLTIP_MAX_CHARS
+        )
+        
+        return render(request, 'tooltip_cluster.html', {
+            'cluster': cluster,
+            'tags': tags_str,
+        })
+        
+    else:
+        raise Exception('Unknown node type "%s" for node "%s"' % (node.node_type.name, node.name))
 
 def debug_error(request):
     # This causes an error

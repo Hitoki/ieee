@@ -629,6 +629,11 @@ h3.level6 {
     color: #ff3000;
 }
 
+td.no-level {
+    background: silver;
+    color:black;
+}
+
 div.level1,
 span.level1,
 td.level1 {
@@ -1062,6 +1067,10 @@ select.items-per-page {
 }
 
 /* Tooltip Styles */
+
+.node-tooltip {
+    width:400px;
+}
 
 .node-tooltip h3 {
     font-size:220%;

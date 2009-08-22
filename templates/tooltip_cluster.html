@@ -1,0 +1,27 @@
+
+{% block content %}
+    <div class="node-tooltip">
+        <h3 class="{{ clusterLevel }}">{{ cluster.name }}</h3>
+
+        <table class="node-tooltip-grid">
+            <tr>
+                <td>
+                    <table class="sector-block vert-center">
+                        <tr>
+                            <td class="no-level">
+                                Tags
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    {{ tags|safe }}
+                </td>
+            </tr>
+        </table>
+        
+        <p>
+            <a href="javascript:Tags.selectCluster({{ cluster.id }});">View full details</a>
+        </p>
+    </div>
+{% endblock %}
