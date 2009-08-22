@@ -754,6 +754,10 @@ table.vert-center td {
     color:#aaa;
 }
 
+.please-wait {
+    top:35% !important;
+}
+
 #loading {
     margin:2em;
 }

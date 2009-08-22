@@ -39,7 +39,12 @@ var Tags = {
         var tagWindow = $("#tags");
         
         tagWindow.empty();
-        tagWindow.html("<h1 id=\"wait\">Please wait...</h1>");
+        tagWindow.html(
+            '<div id="loading" class="please-wait">'
+            + '<h1>Please wait...</h1>'
+            + '<img src="' + MEDIA_URL + '/images/ajax-loader-bar.gif" />'
+            + '</div>'
+        );
         
         var filterStr = implode(',', this.getFilters());
         
