@@ -590,7 +590,8 @@ def missing_resource(request, society_id):
                 + 'Description:\n' \
                 + '%s\n\n' % form.cleaned_data['description']
             send_from = settings.DEFAULT_FROM_EMAIL
-            send_to = settings.ADMIN_EMAILS
+            # Send this to the server admins and also Peter Wiesner (IEEE)
+            send_to = settings.ADMIN_EMAILS + ['pwiesner@ieee.org']
             
             logging.debug('send_to: %s' % send_to)
             logging.debug('send_from: %s' % send_from)
@@ -598,12 +599,15 @@ def missing_resource(request, society_id):
             logging.debug('message: %s' % message)
             
             try:
+                logging.debug('calling send_mail()')
                 send_mail(subject, message, send_from, send_to)
             except Exception, e:
                 logging.error('Error sending missing resource email: %s' % e)
                 email_error = True
             else:
                 email_error = False
+            
+            logging.debug('done sending email')
             
             return render(request, 'site_admin/missing_resource_confirmation.html', {
                 'email_error': email_error,
