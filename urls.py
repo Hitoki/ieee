@@ -50,3 +50,10 @@ else:
         url(r'^debug/error$', views.debug_error, name='debug_error'),
         url(r'^debug/send_email$', views.debug_send_email, name='debug_send_email'),
     )
+
+if settings.DEBUG:
+    # Test views
+    urlpatterns += patterns('',
+        url(r'^test/error$', views.test_error, name='test_error'),
+        url(r'^test/lightbox_error$', views.test_lightbox_error, name='test_lightbox_error'),
+    )

@@ -700,3 +700,14 @@ def debug_send_email(request):
     return render(request, 'debug_send_email.html', {
         'form': form,
     })
+
+def test_error(request):
+    assert settings.DEBUG
+    # Divide by zero error
+    1/0
+    return render(request, 'test_error.html')
+    
+def test_lightbox_error(request):
+    assert settings.DEBUG
+    return render(request, 'test_lightbox_error.html')
+    

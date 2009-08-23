@@ -356,6 +356,31 @@ $(function() {
     
     attachHighlightCheckboxes();
     attachItemsPerPage();
-
+    
+    // Bind a callback to any AJAX error (to prevent silent fails).
+    $('body').bind(
+        'ajaxError',
+        function (event, XMLHttpRequest, textStatus, errorThrown) {
+            
+            // Show the error as a DHTML popup
+            Lightbox.hide();
+            Flyover.hide();
+            
+            var divElem = $('<div></div>').appendTo('body');
+            divElem.css('position', 'absolute');
+            divElem.css('margin', '1em');
+            divElem.css('padding', '1em');
+            divElem.css('background', 'white');
+            divElem.css('border', '1px solid black');
+            divElem.css('top', '0');
+            divElem.css('left', '0');
+            divElem.html(XMLHttpRequest["responseText"]);
+            
+            // Log the error
+            log('-- AJAX ERROR: --------------------');
+            log(XMLHttpRequest["responseText"]);
+            log('-----------------------------------');
+        }
+    );
 });
 
