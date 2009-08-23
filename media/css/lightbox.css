@@ -134,7 +134,8 @@ input.text {
 #lightbox .resources-lightbox-content {
     margin-top:5em;
     height:80%;
-    width: 60%;
+    /* Need to set min-width so the tabs don't wrap */
+    min-width:875px;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border: 1px solid black;
@@ -182,4 +183,8 @@ input.text {
 #lightbox .resources-lightbox-content h1 {
     font-size:140%;
     margin: 1em 1em 0 1em;
+}
+
+#lightbox .resources-lightbox-content  ul.nootabs-menus li {
+    margin-left:.5em;
 }
