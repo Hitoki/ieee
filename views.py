@@ -197,8 +197,10 @@ def browser_warning(request):
 
 @login_required
 def ajax_tag_content(request):
-    
     tagId = request.GET['tagId']
+    ui = request.GET['ui']
+    assert ui in ['roamer', 'textui'], 'Unrecognized ui "%s"' % ui
+    
     tag = Node.objects.get(id=tagId)
     
     sectors1 = tag.get_sectors()
@@ -245,6 +247,7 @@ def ajax_tag_content(request):
         'standards': standards,
         'num_resources': num_resources,
         'parent_nodes': parent_nodes,
+        'ui': ui,
     })
 
 @login_required

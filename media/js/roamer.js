@@ -63,6 +63,9 @@ var Roamer = {
         //log("  id: " + id);
         //log("  this.flash.getSelectedNodeID(): " + this.flash.getSelectedNodeID());
         
+        // Hide the content lightbox if it's visible.
+        Lightbox.hide();
+        
         this.flash.setSelectedNodeID(id);
         this.id = id;
         this.nodeInfo = null;
@@ -213,7 +216,7 @@ var Roamer = {
     },
     
     showResourceResultsLightbox: function() {
-        Lightbox.show('/ajax/tag_content?tagId=' + this.nodeInfo.id, {
+        Lightbox.show('/ajax/tag_content?tagId=' + this.nodeInfo.id + '&ui=roamer', {
             verticalCenter: false,
             customClass: 'resources'
         });

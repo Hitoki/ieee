@@ -31,6 +31,9 @@ var Tags = {
             this.nodeType = 'sector';
         }
         
+        // Hide the content lightbox if it's visible.
+        Lightbox.hide();
+        
         // Update the switch interfaces link
         this.updateSwitchLink();
             
@@ -330,7 +333,7 @@ var Tags = {
         Flyover.hide();
         
         // Show resource results in a lightbox
-        Lightbox.show('/ajax/tag_content?tagId=' + id, {
+        Lightbox.show('/ajax/tag_content?tagId=' + id + '&ui=textui', {
             verticalCenter: false,
             customClass: 'resources'
         });
