@@ -119,7 +119,12 @@
                                         Sort by:
                                         <select id="tag-sort" onchange="Tags.selectSector();">
                                             <option value="alphabetical">Alphabetical</option>
-                                            <option value="clusters_first_alpha">Clusters First</option>
+
+											{% comment %}
+											#TODO: Re-enable clusters
+                                            #<option value="clusters_first_alpha">Clusters First</option>
+											{% endcomment %}
+											
                                             <option value="frequency">Frequency</option>
                                             <option value="num_sectors"># Sectors</option>
                                             <option value="num_related_tags"># Related Tags</option>
