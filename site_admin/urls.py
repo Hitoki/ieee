@@ -107,4 +107,5 @@ urlpatterns = patterns('',
     
     # DEBUG:
     #url(r'^DEBUG_CREATE_ADMIN$', views.create_admin_login, name='create_admin_login'),
+    url(r'^info$', views.admin_info, name='admin_info'),
 )

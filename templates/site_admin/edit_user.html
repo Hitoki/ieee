@@ -2,6 +2,21 @@
 
 {% block main_table_content %}
     
+    <script>
+        function checkRole() {
+            if ($('#id_role').val() == 'admin') {
+                alert('Warning: you are creating an admin user.');
+            }
+        }
+    
+        $(function() {
+            $('#id_role').change(function() {
+                checkRole();
+            });
+            checkRole();
+        });
+    </script>
+    
     <h1>Edit User</h1>
     {% if errors %}
         {{ errors|safe }}

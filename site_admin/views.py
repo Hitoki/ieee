@@ -2178,7 +2178,9 @@ def view_user(request, user_id):
 def edit_user(request, user_id=None):
     if user_id is None:
         # creating a new user
-        form = UserForm()
+        form = UserForm(initial={
+            'role': Profile.ROLE_SOCIETY_MANAGER,
+        })
     else:
         # editing an existing user
         user = User.objects.get(id=user_id)
@@ -3698,3 +3700,18 @@ def export_tab_resources(request):
     file.close()
     
     return HttpResponse(contents, 'text/plain')
+
+@login_required
+def admin_info(request):
+    
+    contents = []
+    contents.append('<h1>Info</h1>')
+    contents.append('')
+    contents.append('sys.path:')
+    for path in sys.path:
+        contents.append('    %s' % path)
+    
+    import models
+    contents.append('models.Node: %r' % models.Node)
+    
+    return HttpResponse('\r\n'.join(contents), 'text/plain')
