@@ -1924,12 +1924,27 @@ def save_tag(request, tag_id):
         else:
             return HttpResponsePermanentRedirect(reverse('admin_view_tag', args=[tag.id]))
 
+def _tag_not_found_response(request, tag_id, return_url):
+    return render(request, 'error_tag_not_found.html', {
+        'tag_id': tag_id,
+        'return_url': return_url,
+    })
+
 @login_required
 @admin_required
 def delete_tag(request, tag_id):
     return_url = request.GET.get('return_url')
     
-    tag = Node.objects.get(id=tag_id)
+    try:
+        tag = Node.objects.get(id=tag_id)
+    except Node.DoesNotExist, e:
+        # Return friendly error page about tag not existing
+        return _tag_not_found_response(
+            request,
+            tag_id,
+            return_url
+        )
+        
     assert tag.node_type.name == NodeType.TAG
     tag.delete()
     

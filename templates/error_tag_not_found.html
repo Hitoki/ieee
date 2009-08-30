@@ -1,0 +1,49 @@
+{% extends 'base_table.html' %}
+
+{% block content %}
+    <table class="main">
+        <tr>
+            <td class="left">
+            </td>
+            <td class="center">
+                
+                <!-- Begin center column -->
+                
+                <div id="header">
+                    <img class="leftCorner" src="{{MEDIA_URL}}images/mainTopLeftCorner.gif" width="26" height="67" />
+                    <a href="/" class="home"><img class="banner" src="{{MEDIA_URL}}images/ieee_banner.jpg" width="563" height="42" /></a>
+                    <img class="rightCorner" src="{{MEDIA_URL}}images/mainTopRightCorner.gif" width="26" height="67" />
+                </div>
+                
+                <div id="error-page">
+                    <h1>Error: Tag not found</h1>
+                    
+                    <p>
+                        The tag you were trying to delete no longer exists.
+                    </p>
+                    <p>
+                        Please go back to the <a href="{{ return_url }}">previous page</a> and make sure to <strong>refresh the page</strong> in your browser to reflect any recent changes.
+                    </p>
+                    <p>
+                        <a href="{{ return_url }}" class="big-link">Continue</a>
+                    </p>
+                    
+                    <p class="debug">
+                        Tag ID: {{ tag_id }}<br/>
+                    </p>
+                    
+                </div>
+                    
+                <div id="footer">
+                    <img class="leftCorner" src="{{MEDIA_URL}}images/mainBottomLeftCorner.png" width="26" height="40" />
+                    <img class="rightCorner" src="{{MEDIA_URL}}images/mainBottomRightCorner.png" width="26" height="40" />
+                </div>
+                
+                <!-- End center column -->
+                
+            </td>
+            <td class="right" rowspan="2">
+            </td>
+        </tr>
+    </table>
+{% endblock %}

@@ -1151,12 +1151,26 @@ table.node-tooltip-grid td {
 p.export {
 }
 
-.textui-node-flyover-container {
-    max-width:500px;
+/* */
+
+#error-page {
+    margin:1em;
+    font-size:100%;
 }
 
-.no-clusters-warning {
+#error-page h1 {
+    color:maroon;
+    font-size:150%;
+}
+
+#error-page .big-link {
+    font-size:110%;
     font-weight:bold;
-    color:gray;
-    margin:0 .5em;
+    color:#02659e;
+    text-align:center;
+}
+
+#error-page .debug {
+    color:silver;
+    font-size:9pt;
 }
