@@ -140,6 +140,7 @@ def textui(request):
         'clusterId': clusterId,
         'sectors':sectors,
         'filters':filters,
+        'ENABLE_TEXTUI_SIMPLIFIED_COLORS': settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS,
     })
 
 @login_required
@@ -350,8 +351,14 @@ def ajax_nodes_json(request):
     elif order_by is not None:
         # Sort by one of the non-extra columns
         child_nodes = child_nodes.order_by(order_by)
+    
+    
+    if settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS and sort == 'frequency':
+        # Sort by the combined score
+        child_nodes = Node.objects.sort_queryset_by_score(child_nodes, False)
         
     (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = Node.objects.get_sector_ranges(node)
+    (min_score, max_score) = Node.objects.get_combined_sector_ranges(node)
     
     # JSON Output
     data = {
@@ -370,26 +377,47 @@ def ajax_nodes_json(request):
         }
     
     for child_node in child_nodes:
+        
+        log('child_node.name: %s' % child_node.name)
+        log('  max_score: %s' % max_score)
+        log('  min_score: %s' % min_score)
+            
         num_related_tags = child_node.get_filtered_related_tag_count()
         
-        resourceLevel = _get_popularity_level(min_resources, max_resources, child_node.num_resources1)
-        sectorLevel = _get_popularity_level(min_sectors, max_sectors, child_node.num_sectors1)
-        related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
+        if not settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
+            # Old-style popularity colors with main color & two color blocks
+            resourceLevel = _get_popularity_level(min_resources, max_resources, child_node.num_resources1)
+            sectorLevel = _get_popularity_level(min_sectors, max_sectors, child_node.num_sectors1)
+            related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
+        else:
+            # New-style popularity colors - single color only
+            score = child_node.get_score()
+            combinedLevel = _get_popularity_level(min_score, max_score, score)
         
         if child_node.node_type.name == NodeType.TAG:
             # Only show tags that have one of the selected filters, and also are associated with a society
             if (len(child_node.filters.filter(id__in=filterIds))) and child_node.societies.count() > 0 and child_node.num_resources1 > 0:
-                data['child_nodes'].append({
+                temp1 = {
                     'id': child_node.id,
                     'label': child_node.name,
                     'type': child_node.node_type.name,
-                    'level': resourceLevel,
-                    'sectorLevel': sectorLevel,
-                    'relatedTagLevel': related_tag_level,
-                    'num_related_tags': num_related_tags,
-                    
                     #'num_sectors1': child_node.num_sectors1,
-                })
+                }
+                
+                if not settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
+                    # Separated color blocks
+                    temp1['level'] = resourceLevel
+                    temp1['sectorLevel'] = sectorLevel
+                    temp1['relatedTagLevel'] = related_tag_level
+                    temp1['num_related_tags'] = num_related_tags
+                else:
+                    # DEBUG:
+                    temp1['score'] = score
+                    temp1['combinedLevel'] = combinedLevel
+                    temp1['min_score'] = min_score
+                    temp1['max_score'] = max_score
+                    
+                data['child_nodes'].append(temp1)
                 
         elif child_node.node_type.name == NodeType.TAG_CLUSTER:
             

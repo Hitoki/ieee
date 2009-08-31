@@ -244,6 +244,48 @@ class NodeManager(models.Manager):
         
         return (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags)
     
+    def get_combined_sector_ranges(self, node):
+        """
+        Returns the min/max amount of resources/sectors/related-tags per tag for the given sector or cluster.
+        NOTE: node must be a sector or cluster.
+        Ignores tags with no resources, no filters, or no societies.
+        
+        This only returns the min and max, since it reflectse combined scores.
+        
+        Returns a tuple:
+            (min, max)
+        """
+        
+        log('get_combined_sector_ranges()')
+        
+        assert node.node_type.name == NodeType.SECTOR or node.node_type.name == NodeType.TAG_CLUSTER, 'node (%s, %s, %s) must be a node or cluster' % (node.name, node.id, node.node_type.name)
+        
+        tags = node.child_nodes
+        
+        # Filter out tags with no resources
+        tags = self.get_extra_info(tags)
+        
+        min_score = None
+        max_score = None
+        
+        for tag in tags:
+            # Ignore all hidden tags
+            if tag.num_resources1 > 0 and tag.num_societies1 > 0 and tag.num_filters1 > 0:
+                
+                score = tag.get_score()
+                log('    score: %s' % score)
+                
+                if min_score is None or score < min_score:
+                    min_score = score
+                
+                if max_score is None or score > max_score:
+                    max_score = score
+
+        log('  min_score: %s' % min_score)
+        log('  max_score: %s' % max_score)
+        
+        return (min_score, max_score)
+    
     #def get_cluster_range(self, cluster):
     #    "Returns the min/max amount of sectors-per-tag for the given sector."
     #    
@@ -394,6 +436,20 @@ class NodeManager(models.Manager):
             order_by=order_by,
         )
     
+    def sort_queryset_by_score(self, queryset, ascending=True):
+        """
+        Returns the queryset as a list with extra columns:
+            score
+        """
+        def sort_function(obj):
+            if ascending:
+                return obj.get_score()
+            else:
+                return -obj.get_score()
+        list1 = list(queryset)
+        list1.sort(key=sort_function)        
+        return list1
+    
 class Node(models.Model):
     name = models.CharField(max_length=500)
     #parent = models.ForeignKey('Node', related_name='child_nodes', null=True, blank=True)
@@ -483,6 +539,20 @@ class Node(models.Model):
             if related_tag.filters.count() > 0 and related_tag.resources.count() > 0:
                 count += 1
         return count
+    
+    def get_score(self):
+        """
+        Returns the combined popularity score for this tag.
+        NOTE: This node must have been called with get_extra_info() for this function to work.
+        """
+        if self.node_type.name == NodeType.TAG:
+            # Tag
+            return self.num_resources1 + self.num_sectors1 + self.num_related_tags1
+        elif self.node_type.name == NodeType.TAG_CLUSTER:
+            # Cluster
+            return self.num_resources1 + self.num_sectors1
+        else:
+            raise Exception('Unknown node type "%s"' % self.node_type.name)
         
     class Meta:
         ordering = ['name']

@@ -170,6 +170,17 @@ var Tags = {
     },
     
     _renderBlock: function(type, tagWindow, node, sectorId) {
+        
+        var simplified;
+        var level;
+        if (node.combinedLevel) {
+            simplified = true;
+            level = node.combinedLevel;
+        } else {
+            simplified = false;
+            level = node.level;
+        }
+        
         var str;
         str = "";
         str += "<div id=\"tag-" + node.id + "\" class=\"node " + type + "\">";
@@ -186,20 +197,25 @@ var Tags = {
         }
         
         if (type == 'tag') {
-            str += "        <a href=\"javascript:Tags.selectTag(" + node.id + ");\" class=\"" + node.level + "\">" + htmlentities(label) + "</a> ";
+            str += "        <a href=\"javascript:Tags.selectTag(" + node.id + ");\" class=\"" + level + "\">" + htmlentities(label) + "</a> ";
         } else if (type == 'tag_cluster') {
             str += "        <img src=\"/media/images/icon_cluster_sm.png\" />";
-            str += "        <a href=\"javascript:Tags.selectCluster(" + node.id + ");\" class=\"" + node.level + "\">" + htmlentities(label) + "</a> ";
+            str += "        <a href=\"javascript:Tags.selectCluster(" + node.id + ");\" class=\"" + level + "\">" + htmlentities(label) + "</a> ";
         } else {
             alert('Unknown node type "' + type + '" for node "' + node.label + '"');
         }
         str += "      </td>";
-        str += "      <td>";
-        str += "        <div class=\"node-block-container\">";
-        str += "          <div class=\"block-top " + node.sectorLevel + "\">&nbsp;</div>";
-        str += "          <div class=\"block-bottom " + node.relatedTagLevel + "\">&nbsp;</div>";
-        str += "        </div>";
-        str += "      </td>";
+        
+        if (!simplified) {
+            // NOTE: Only show the separate color blocks if we're not using the simplified mode
+            str += "      <td>";
+            str += "        <div class=\"node-block-container\">";
+            str += "          <div class=\"block-top " + node.sectorLevel + "\">&nbsp;</div>";
+            str += "          <div class=\"block-bottom " + node.relatedTagLevel + "\">&nbsp;</div>";
+            str += "        </div>";
+            str += "      </td>";
+        }
+        
         str += "    </tr>";
         str += "  </table>";
         str += "</div>";

@@ -158,6 +158,10 @@ DEBUG_ENABLE_CLUSTERS = False
 
 DISABLE_SITE = False
 
+# This setting should be modified in settings.py, not local_settings.py (to ease server configuration tracking)
+#ENABLE_TEXTUI_SIMPLIFIED_COLORS = False
+ENABLE_TEXTUI_SIMPLIFIED_COLORS = True
+
 # Local Settings ---------------------------------------------------------------
 
 try:
