@@ -36,6 +36,7 @@ var jQBrowser2 = function() {
      * Private.netscape
      * Private.opera
      * Private.safari
+     * Private.chrome
      *
      * Private.linux
      * Private.mac
@@ -64,6 +65,7 @@ var jQBrowser2 = function() {
          'netscape': false,
             'opera': false,
            'safari': false,
+           'chrome': false,
 
         // Initially set to false, if detected one of the following operating
         // systems will be updated.
@@ -100,6 +102,11 @@ var jQBrowser2 = function() {
                           'name': 'Safari',
                        'browser':  /Apple/.test(ve),
                        'version': ua.match(/Version\/([^ ]+)/)
+                },
+                { // Chrome <http://www.google.com/chrome>
+                          'name': 'Chrome',
+                       'browser':  /Chrome/.test(ua),
+                       'version': ua.match(/Chrome\/([^ ]+)/)
                 },
                 { // Opera <http://www.opera.com/>
                           'name': 'Opera',
@@ -266,6 +273,7 @@ var jQBrowser2 = function() {
      * $.browser.netscape
      * $.browser.opera
      * $.browser.safari
+     * $.browser.chrome
      *
      * $.browser.linux
      * $.browser.mac
@@ -294,6 +302,7 @@ var jQBrowser2 = function() {
          'netscape': Private.netscape,
             'opera': Private.opera,
            'safari': Private.safari,
+           'chrome': Private.chrome,
 
         // A boolean value indicating whether or not the given OS was
         // detected.
@@ -313,13 +322,15 @@ var jQBrowser2 = function() {
                                     ? 'opera opera'+jQuery.browser.version.string()
                                         : (jQuery.browser.safari) // Safari
                                             ? 'safari'
-                                                : jQuery.browser.konqueror // Konqueror
-                                                    ? 'konqueror'
-                                                        : jQuery.browser.icab // iCab
-                                                            ? 'icab'
-                                                                : jQuery.browser.aol // AOL
-                                                                     ? 'aol'
-                                                                    : '',
+												: (jQuery.browser.chrome) // Chrome
+													? 'chrome'
+														: jQuery.browser.konqueror // Konqueror
+															? 'konqueror'
+																: jQuery.browser.icab // iCab
+																	? 'icab'
+																		: jQuery.browser.aol // AOL
+																			 ? 'aol'
+																			: '',
         os=jQuery.browser.linux?'linux':jQuery.browser.mac?'mac':jQuery.browser.win?'win':'';
         jQuery('html').addClass(b).addClass(os).addClass('js');
 }();
