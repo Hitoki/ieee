@@ -1,0 +1,25 @@
+{% extends 'base_table.html' %}
+
+{% block content %}
+	
+	<style>
+		#output {
+			width:90%;
+			height:500px;
+			font-size:100%;
+			font-family:inherit;
+		}
+	</style>
+    
+    <script>
+		$(function() {
+			var str = '';
+			str += 'navigator.userAgent: ' + navigator.userAgent + '\n';
+			str += 'navigator.vendor: ' + navigator.vendor + '\n';
+			$('#output').val(str);
+		});
+	</script>
+	
+	<textarea id="output"></textarea>
+    
+{% endblock %}

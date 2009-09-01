@@ -739,3 +739,7 @@ def test_lightbox_error(request):
     assert settings.DEBUG
     return render(request, 'test_lightbox_error.html')
     
+def test_browsers(request):
+    assert settings.DEBUG
+    return render(request, 'test_browsers.html')
+    

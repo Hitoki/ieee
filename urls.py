@@ -56,4 +56,5 @@ if settings.DEBUG:
     urlpatterns += patterns('',
         url(r'^test/error$', views.test_error, name='test_error'),
         url(r'^test/lightbox_error$', views.test_lightbox_error, name='test_lightbox_error'),
+        url(r'^test/browsers$', views.test_browsers, name='test_browsers'),
     )
