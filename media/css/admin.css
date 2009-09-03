@@ -483,6 +483,10 @@ ul.pages li a.selected
     margin: 20px 10px 10px 10px;
 }
 
+input#id_username, input#id_password {
+    width: 100%;
+}
+
 .batch-editing-button {
     float: left;
     clear: left;
