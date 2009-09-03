@@ -389,7 +389,9 @@ def ajax_nodes_json(request):
         #log('  max_score: %s' % max_score)
         #log('  min_score: %s' % min_score)
         
-        num_related_tags = child_node.get_filtered_related_tag_count()
+        # TODO: This is too slow, reenable later
+        #num_related_tags = child_node.get_filtered_related_tag_count()
+        num_related_tags = child_node.num_related_tags1
         
         if not settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
             # Old-style popularity colors with main color & two color blocks
