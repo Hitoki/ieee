@@ -1188,6 +1188,14 @@ p.export {
 
 /* Login page */
 
+#about-project-tab p {
+	margin:1.2em 0;
+}
+
+#about-project-tab ul {
+	margin:0 1em;
+}
+
 #about-team-tab p {
 	margin:1em 0;
 }
@@ -1202,4 +1210,3 @@ p.export {
 	float:left;
 	margin:0 1em .2em 0;
 }
-
