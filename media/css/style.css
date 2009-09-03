@@ -1253,6 +1253,10 @@ p.export {
     margin-top: 20px;
 }
 
+#home-container #home-titletag-cell #connections {
+    color: #00a651;
+}
+
 /* */
 
 #error-page {
