@@ -996,7 +996,7 @@ table#login-table {
 }
 
 table#login-table td {
-    padding: 5px 5px 5px 10px;
+    padding: 5px;
 }
 
 /* */
@@ -1310,4 +1310,17 @@ p.export {
     font-size: 26px; 
     letter-spacing: -1px; 
     color: #0070D5;   
+}
+
+#adminLogin ul.nootabs-menus li {
+   font-size: 14px;
+}
+
+#login-table label {
+   font-weight: bold;
+}
+
+#login-table #login-table-okay {
+   float: right;
+   font-weight: bold;
 }
