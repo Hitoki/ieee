@@ -805,8 +805,9 @@ table.vert-center td {
 */
 
 #connectedness {
-    padding-left: 5px;
-    font-size: 0.7em;
+    padding-left: 15px;
+    font-size: 80%;
+    font-weight: bold;
 }
 
 #frequency-indicator {
