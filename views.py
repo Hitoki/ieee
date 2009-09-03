@@ -48,8 +48,8 @@ def truncate_link_list(items, output_func, plain_output_func, max_chars):
         #'<a href="%s">%s</a>' % (reverse('textui') + '?nodeId=%s' % item.id, item.name)
         items_plaintext += plain_output_func(item)
         
-        log('items_plaintext: %s' % items_plaintext)
-        log('len(items_plaintext): %s' % len(items_plaintext))
+        #log('items_plaintext: %s' % items_plaintext)
+        #log('len(items_plaintext): %s' % len(items_plaintext))
         
         if len(items_plaintext) > max_chars:
             items_str += '... (%s more)' % (len(items) - i)
@@ -388,7 +388,7 @@ def ajax_nodes_json(request):
         #log('child_node.name: %s' % child_node.name)
         #log('  max_score: %s' % max_score)
         #log('  min_score: %s' % min_score)
-            
+        
         num_related_tags = child_node.get_filtered_related_tag_count()
         
         if not settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
@@ -398,9 +398,8 @@ def ajax_nodes_json(request):
             related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
         else:
             # New-style popularity colors - single color only
-            score = child_node.get_score()
-            combinedLevel = _get_popularity_level(min_score, max_score, score)
-        
+            combinedLevel = _get_popularity_level(min_score, max_score, child_node.score1)
+                
         if child_node.node_type.name == NodeType.TAG:
             # Only show tags that have one of the selected filters, and also are associated with a society
             if (len(child_node.filters.filter(id__in=filterIds))) and child_node.societies.count() > 0 and child_node.num_resources1 > 0:
@@ -419,7 +418,7 @@ def ajax_nodes_json(request):
                     temp1['num_related_tags'] = num_related_tags
                 else:
                     # DEBUG:
-                    temp1['score'] = score
+                    temp1['score'] = child_node.score1
                     temp1['combinedLevel'] = combinedLevel
                     temp1['min_score'] = min_score
                     temp1['max_score'] = max_score
@@ -452,7 +451,7 @@ def ajax_nodes_json(request):
         
         else:
             raise Exception('Unknown child node type "%s" for node "%s"' % (child_node.node_type.name, child_node.name))
-            
+    
     json = simplejson.dumps(data, sort_keys=True, indent=4)
     
     #log('~ajax_nodes_json()')
@@ -627,7 +626,7 @@ def ajax_nodes_xml(request):
 @login_required
 def tooltip(request, tag_id, parent_id):
     
-    log('tooltip()')
+    #log('tooltip()')
     
     node = Node.objects.filter(id=tag_id)
     node = Node.objects.get_extra_info(node)
@@ -637,20 +636,20 @@ def tooltip(request, tag_id, parent_id):
         
         tag = node
         
-        log('  tag.parents.all(): %s' % tag.parents.all())
-        log('  tag.num_parents1: %s' % tag.num_parents1)
+        #log('  tag.parents.all(): %s' % tag.parents.all())
+        #log('  tag.num_parents1: %s' % tag.num_parents1)
 
-        log('  tag.get_sectors(): %s' % tag.get_sectors())
-        log('  tag.num_sectors1: %s' % tag.num_sectors1)
+        #log('  tag.get_sectors(): %s' % tag.get_sectors())
+        #log('  tag.num_sectors1: %s' % tag.num_sectors1)
         
-        #log('  tag.get_clusters(): %s' % tag.get_parent_clusters())
-        #log('  tag.num_clusters1: %s' % tag.num_clusters1)
+        ##log('  tag.get_clusters(): %s' % tag.get_parent_clusters())
+        ##log('  tag.num_clusters1: %s' % tag.num_clusters1)
         
         #sector = single_row(tag.parents.filter(id=sector_id))
         parent = Node.objects.get(id=parent_id)
         
-        log('  parent: %s' % parent)
-        log('  parent.node_type.name: %s' % parent.node_type.name)
+        #log('  parent: %s' % parent)
+        #log('  parent.node_type.name: %s' % parent.node_type.name)
         
         (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = Node.objects.get_sector_ranges(parent)
         
@@ -663,8 +662,7 @@ def tooltip(request, tag_id, parent_id):
         if settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
             # New-style popularity colors - single color only
             (min_score, max_score) = Node.objects.get_combined_sector_ranges(parent)
-            score = node.get_score()
-            combinedLevel = _get_popularity_level(min_score, max_score, score)
+            combinedLevel = _get_popularity_level(min_score, max_score, node.score1)
             tagLevel = combinedLevel
         else:
             tagLevel = resourceLevel

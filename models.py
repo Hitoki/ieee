@@ -271,16 +271,13 @@ class NodeManager(models.Manager):
         for tag in tags:
             # Ignore all hidden tags
             if tag.num_resources1 > 0 and tag.num_societies1 > 0 and tag.num_filters1 > 0:
+                if min_score is None or tag.score1 < min_score:
+                    min_score = tag.score1
                 
-                score = tag.get_score()
-                #log('    score: %s' % score)
-                
-                if min_score is None or score < min_score:
-                    min_score = score
-                
-                if max_score is None or score > max_score:
-                    max_score = score
+                if max_score is None or tag.score1 > max_score:
+                    max_score = tag.score1
 
+        
         log('  min_score: %s' % min_score)
         log('  max_score: %s' % max_score)
         
@@ -432,6 +429,11 @@ class NodeManager(models.Manager):
                 # TODO: Some of the related tags will be hidden (no resources, no filters, etc), so this count is off
                 'num_related_tags1': 'SELECT COUNT(*) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id',
                 'num_parents1': 'SELECT COUNT(*) FROM ieeetags_node_parents WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id',
+                'score1': """
+                    (SELECT COUNT(*) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id)
+                    + (SELECT COUNT(*) FROM ieeetags_node_parents INNER JOIN ieeetags_node as parent on ieeetags_node_parents.to_node_id = parent.id WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id AND parent.node_type_id = %s)
+                    + (SELECT COUNT(*) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id)
+                    """ % (sector_node_type_id),
             },
             order_by=order_by,
         )
@@ -443,9 +445,9 @@ class NodeManager(models.Manager):
         """
         def sort_function(obj):
             if ascending:
-                return obj.get_score()
+                return obj.score1
             else:
-                return -obj.get_score()
+                return -obj.score1
         list1 = list(queryset)
         list1.sort(key=sort_function)        
         return list1
@@ -540,20 +542,6 @@ class Node(models.Model):
                 count += 1
         return count
     
-    def get_score(self):
-        """
-        Returns the combined popularity score for this tag.
-        NOTE: This node must have been called with get_extra_info() for this function to work.
-        """
-        if self.node_type.name == NodeType.TAG:
-            # Tag
-            return self.num_resources1 + self.num_sectors1 + self.num_related_tags1
-        elif self.node_type.name == NodeType.TAG_CLUSTER:
-            # Cluster
-            return self.num_resources1 + self.num_sectors1
-        else:
-            raise Exception('Unknown node type "%s"' % self.node_type.name)
-        
     class Meta:
         ordering = ['name']
 

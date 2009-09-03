@@ -22,8 +22,8 @@ var Tags = {
     },
     
     updateDisabledFilters: function() {
-		log('updateDisabledFilters()');
-		log(' this.nodeId: ' + this.node);
+		//log('updateDisabledFilters()');
+		//log(' this.nodeId: ' + this.node);
 		if (this.nodeId == null) {
 			// No node selected, disable filters
 			$('#views input').attr('disabled', 'disabled');
