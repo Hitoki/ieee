@@ -886,6 +886,11 @@ table.vert-center td {
 #tag-sort {
     font-size: 100%;
 }
+
+#galaxy-sort-help {
+    padding-left: 5px;
+    font-weight: normal;
+}
 /* */
 
 
