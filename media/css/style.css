@@ -804,6 +804,11 @@ table.vert-center td {
 }
 */
 
+#connectedness {
+    font-size: 0.7em;
+    vertical-align: text-top;
+}
+
 #frequency-indicator {
     margin-top: -2px;
     padding: 0 0 0 5px;
