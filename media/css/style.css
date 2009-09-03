@@ -808,6 +808,7 @@ table.vert-center td {
     padding-left: 15px;
     font-size: 80%;
     font-weight: bold;
+    vertical-align: bottom;
 }
 
 #galaxy-connectedness-help {
