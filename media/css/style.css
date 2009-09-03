@@ -785,6 +785,7 @@ table.vert-center td {
 
 #galaxy-key {
     float: left; 
+    padding-top: 2px;
 }
 
 #frequencybar-tags img {
@@ -806,7 +807,6 @@ table.vert-center td {
 
 #connectedness {
     padding-left: 15px;
-    font-size: 80%;
     font-weight: bold;
     vertical-align: bottom;
 }
@@ -886,8 +886,11 @@ table.vert-center td {
     float: right; 
     padding-top: 4px;
     padding-right: 2px;
-    font-size: 80%;
     font-weight: bold;
+}
+
+#sortmenu select {
+   font-size: 80%;
 }
 
 #tag-sort {
