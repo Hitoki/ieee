@@ -789,7 +789,6 @@ table.vert-center td {
 
 #galaxy-key {
     float: left; 
-    padding-top: 2px;
 }
 
 #frequencybar-tags img {
@@ -872,6 +871,10 @@ table.vert-center td {
     float: left;
 }
 
+#frequencybar-tags #homeico-tags {
+   margin-top: 3px;
+}
+
 #frequencybar #homeico img,
 #frequencybar-tags #homeico-tags img {
     border: none;
@@ -888,8 +891,8 @@ table.vert-center td {
 #sortmenu {
     vertical-align: middle;
     float: right; 
-    padding-top: 4px;
     padding-right: 2px;
+    padding-bottom: 3px;
     font-weight: bold;
 }
 
