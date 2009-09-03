@@ -303,13 +303,13 @@ def _get_popularity_level(min, max, count):
 
 @login_required
 def ajax_nodes_json(request):
-    log('ajax_nodes_json()')
+    #log('ajax_nodes_json()')
     
     node_id = request.GET['nodeId']
-    log('  node_id: %s' % node_id)
+    #log('  node_id: %s' % node_id)
     
     sort = request.GET.get('sort')
-    log('  sort: %s' % sort)
+    #log('  sort: %s' % sort)
     
     filterValues = request.GET.get('filterValues')
     
@@ -385,9 +385,9 @@ def ajax_nodes_json(request):
     
     for child_node in child_nodes:
         
-        log('child_node.name: %s' % child_node.name)
-        log('  max_score: %s' % max_score)
-        log('  min_score: %s' % min_score)
+        #log('child_node.name: %s' % child_node.name)
+        #log('  max_score: %s' % max_score)
+        #log('  min_score: %s' % min_score)
             
         num_related_tags = child_node.get_filtered_related_tag_count()
         

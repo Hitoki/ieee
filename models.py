@@ -273,7 +273,7 @@ class NodeManager(models.Manager):
             if tag.num_resources1 > 0 and tag.num_societies1 > 0 and tag.num_filters1 > 0:
                 
                 score = tag.get_score()
-                log('    score: %s' % score)
+                #log('    score: %s' % score)
                 
                 if min_score is None or score < min_score:
                     min_score = score

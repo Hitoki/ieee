@@ -18,6 +18,23 @@ var Tags = {
     helpScreenElem: null,
     
     init: function() {
+		this.updateDisabledFilters();
+    },
+    
+    updateDisabledFilters: function() {
+		log('updateDisabledFilters()');
+		log(' this.nodeId: ' + this.node);
+		if (this.nodeId == null) {
+			// No node selected, disable filters
+			$('#views input').attr('disabled', 'disabled');
+			Flyover.attach($('#views'), {
+				'content': 'Please select a sector first.'
+			});
+		} else {
+			// Node selected, enable filters
+			$('#views input').attr('disabled', '');
+			Flyover.detach($('#views'));
+		}
     },
     
     selectSector: function(id, onload) {
@@ -36,8 +53,8 @@ var Tags = {
         
         // Update the switch interfaces link
         this.updateSwitchLink();
-            
         this.updateHighlightedNode();
+		this.updateDisabledFilters();
         
         var tagWindow = $("#tags");
         
@@ -120,7 +137,9 @@ var Tags = {
         } else if (this.nodeType == 'tag_cluster') {
             //$('#cluster-list-item-' + this.nodeId + ' a').addClass('active-sector');
             $('#sector-list-item-' + this.node.sectorId + ' a').addClass('active-sector');
-        } else {
+        } else if (this.nodeType == null) {
+			// No node selected
+		} else {
             alert('ERROR: Unknown this.nodeType "' + this.nodeType + '"');
         }
     },
@@ -140,6 +159,7 @@ var Tags = {
         
         // Update the switch interfaces link
         this.updateSwitchLink();
+		this.updateDisabledFilters();
         
         // Hide any flyvoers so they don't persist when the node is gone.
         Flyover.hide();
@@ -380,7 +400,7 @@ var Tags = {
     },
     
     refresh: function() {
-        if (this.nodeType == 'sector') {
+		if (this.nodeType == 'sector') {
             this.selectSector(this.nodeId);
         } else if (this.nodeType == 'tag_cluster') {
             this.selectCluster(this.nodeId);
@@ -391,6 +411,15 @@ var Tags = {
     
     showHelp: function() {
         this.hideHelp();
+		
+		// Unselect any node
+		this.nodeId = null;
+		this.nodeType = null;
+		this.node = null;
+
+        this.updateSwitchLink();
+        this.updateHighlightedNode();
+		this.updateDisabledFilters();
         
         var tagsElem = $('#tags');
         tagsElem.empty();
