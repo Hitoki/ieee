@@ -1022,6 +1022,10 @@ div.submit {
     text-align: right;
 }
 
+#login-table div.submit p {
+    text-align: left;
+}
+
 .horizontal-radios ul li {
     float:left;
     margin:0px 1.2em;
