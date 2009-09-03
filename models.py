@@ -204,7 +204,7 @@ class NodeManager(models.Manager):
         
         log('get_sector_ranges()')
         
-        assert node.node_type.name == NodeType.SECTOR or node.node_type.name == NodeType.TAG_CLUSTER, 'node (%s, %s, %s) must be a node or cluster' % (node.name, node.id, node.node_type.name)
+        assert node.node_type.name == NodeType.SECTOR or node.node_type.name == NodeType.TAG_CLUSTER, 'node (%s, %s, %s) must be a sector or cluster' % (node.name, node.id, node.node_type.name)
         
         tags = node.child_nodes
         
@@ -258,7 +258,7 @@ class NodeManager(models.Manager):
         
         log('get_combined_sector_ranges()')
         
-        assert node.node_type.name == NodeType.SECTOR or node.node_type.name == NodeType.TAG_CLUSTER, 'node (%s, %s, %s) must be a node or cluster' % (node.name, node.id, node.node_type.name)
+        assert node.node_type.name == NodeType.SECTOR or node.node_type.name == NodeType.TAG_CLUSTER, 'node (%s, %s, %s) must be a sector or cluster' % (node.name, node.id, node.node_type.name)
         
         tags = node.child_nodes
         

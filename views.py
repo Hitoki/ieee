@@ -659,8 +659,15 @@ def tooltip(request, tag_id, parent_id):
         resourceLevel = _get_popularity_level(min_resources, max_resources, tag.num_resources1)
         sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.num_sectors1)
         related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
-
-        #log('  sectorLevel: %s' % sectorLevel)
+        
+        if settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
+            # New-style popularity colors - single color only
+            (min_score, max_score) = Node.objects.get_combined_sector_ranges(parent)
+            score = node.get_score()
+            combinedLevel = _get_popularity_level(min_score, max_score, score)
+            tagLevel = combinedLevel
+        else:
+            tagLevel = resourceLevel
         
         sectors_str = truncate_link_list(
             tag.get_sectors(),
@@ -685,7 +692,7 @@ def tooltip(request, tag_id, parent_id):
         return render(request, 'tooltip.html', {
             'tag': tag,
             'related_tags': related_tags,
-            'tagLevel': resourceLevel,
+            'tagLevel': tagLevel,
             'sectorLevel': sectorLevel,
             'relatedTagLevel': related_tag_level,
             'sectors': sectors_str,
