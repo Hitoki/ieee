@@ -128,6 +128,9 @@
                                         Sort by:
                                         <select id="tag-sort" onchange="Tags.selectSector();">
                                             <option value="alphabetical">Alphabetical</option>
+                                            {% if ENABLE_TEXTUI_SIMPLIFIED_COLORS %}
+                                                <option value="connectedness">Connectedness</option>
+                                            {% endif %}
 
 											{% comment %}
 											#TODO: Re-enable clusters

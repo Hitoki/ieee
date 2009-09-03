@@ -325,6 +325,9 @@ def ajax_nodes_json(request):
     elif sort == 'clusters_first_alpha':
         # See below
         pass
+    elif sort == 'connectedness':
+        # See below
+        pass
     else:
         raise Exception('Unrecognized sort "%s"' % sort)
     
@@ -352,9 +355,9 @@ def ajax_nodes_json(request):
         # Sort by one of the non-extra columns
         child_nodes = child_nodes.order_by(order_by)
     
-    
-    if settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS and sort == 'frequency':
+    if sort == 'connectedness':
         # Sort by the combined score
+        assert settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS, 'settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS is not enabled.'
         child_nodes = Node.objects.sort_queryset_by_score(child_nodes, False)
         
     (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = Node.objects.get_sector_ranges(node)
