@@ -1173,6 +1173,67 @@ table.node-tooltip-grid td {
 p.export {
 }
 
+/* Home page */
+
+#home-container {
+   margin-left: 20px;
+   margin-right: 10px;
+   font-size: 13pt;
+   line-height: 20px;
+   font
+}
+
+#home-container .home-leftarrow-cell {
+   background-image: url(/media/images/home_leftarrow.png);
+   background-repeat: no-repeat;
+   width: 80px;
+   padding-bottom: 10px;
+}
+
+#home-container #home-stepstart-arrow {
+    background-position: 0 106px;
+}
+
+#home-container #home-stepstart-cell {
+   height: 165px;
+   width: 200px;
+   vertical-align: bottom;
+}
+
+#home-container #home-stepstart-cell #start {
+    font-weight: bold;
+    color: #00a651;
+}
+
+#home-container #home-stepsort-cell {
+    background-image: url(/media/images/home_uparrow.png);
+    background-repeat: no-repeat;
+    background-position: 107px 20px;
+    float: right;
+    width: 228px;
+    padding-top: 84px;
+}
+
+#home-container #home-stepfilter-arrow {
+    background-position: 0 195px;
+}
+
+#home-container #home-stepfilter-cell {
+    height: 246px;
+    width: 200px;
+    vertical-align: bottom;
+}
+
+#home-container #home-titletag-cell {
+    float: right;
+    width: 345px;
+    font-size: 37px;
+    letter-spacing: -1px;
+    line-height: 1em;
+    padding-top: 61px;
+    color: #0070D5;
+}
+
 /* */
 
 #error-page {
