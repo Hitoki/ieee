@@ -379,7 +379,7 @@ ul#view-header li {
 
 #roamer-outline {
     border:1px solid #dadada;
-    margin:1.5em 0.2em 0.5em;
+    margin:2em 0.2em 0.5em;
     height: 100%;
     
 }
@@ -779,8 +779,12 @@ table.vert-center td {
 }
 
 #frequencybar-tags {
-    margin-top: -10px;
+    margin-top: -7px;
     clear: right;
+}
+
+#frequencybar {
+   margin-top: -6px;
 }
 
 #galaxy-key {
