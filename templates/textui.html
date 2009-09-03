@@ -12,11 +12,12 @@
                 {% else %}
                     {% if clusterId %}
                         Tags.selectCluster({{ clusterId }});
+                    {% else %}
+                        Tags.showHelp();
                     {% endif %}
                 {% endif %}
             {% endif %}
             
-            //Tags.showHelp();
         });
     </script>
 {% endblock %}
