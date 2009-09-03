@@ -785,7 +785,6 @@ table.vert-center td {
 
 #galaxy-key {
     float: left; 
-    padding-bottom: 2px;
 }
 
 #frequencybar-tags img {
@@ -863,7 +862,7 @@ table.vert-center td {
 }
 
 #frequencybar-tags #homeico-tags img {
-    margin-top: 8px;
+    margin-top: -1px;
 }
 
 /* */
