@@ -805,8 +805,8 @@ table.vert-center td {
 */
 
 #connectedness {
+    padding-left: 5px;
     font-size: 0.7em;
-    vertical-align: text-top;
 }
 
 #frequency-indicator {
@@ -814,9 +814,11 @@ table.vert-center td {
     padding: 0 0 0 5px;
 }
 
+/*
 #frequency-indicator img {
     margin-top: -4px;
 }
+*/
 
 #tag-model-left,
 #tag-model-indicator {
