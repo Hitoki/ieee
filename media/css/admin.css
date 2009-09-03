@@ -480,7 +480,7 @@ ul.pages li a.selected
 }
 
 #adminLogin {
-    margin-left: 10px;
+    margin: 20px 10px 10px 10px;
 }
 
 .batch-editing-button {
