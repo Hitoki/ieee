@@ -810,6 +810,11 @@ table.vert-center td {
     font-weight: bold;
 }
 
+#galaxy-connectedness-help {
+    font-size: 8pt;
+    padding-left: 5px;
+}
+
 #frequency-indicator {
     margin-top: -2px;
     padding: 0 0 0 5px;
