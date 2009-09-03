@@ -1195,20 +1195,27 @@ p.export {
    font
 }
 
+#home-container #home-stepconnect-cell {
+    background-image: url(/media/images/home_uparrow.png);
+    background-repeat: no-repeat;
+    background-position: 102px 20px;
+    width: 245px;
+    padding-top: 82px;
+}
+
 #home-container .home-leftarrow-cell {
-   background-image: url(/media/images/home_leftarrow.png);
    background-repeat: no-repeat;
    width: 80px;
    padding-bottom: 10px;
 }
 
 #home-container #home-stepstart-arrow {
-    background-position: 0 106px;
+    background-image: url(/media/images/home_leftarrow_grn.png);
+    background-position: 0 44px;
 }
 
 #home-container #home-stepstart-cell {
-   height: 165px;
-   width: 200px;
+   height: 95px;
    vertical-align: bottom;
 }
 
@@ -1220,30 +1227,30 @@ p.export {
 #home-container #home-stepsort-cell {
     background-image: url(/media/images/home_uparrow.png);
     background-repeat: no-repeat;
-    background-position: 107px 20px;
+    background-position: 140px 20px;
     float: right;
     width: 228px;
-    padding-top: 84px;
+    padding-top: 82px;
 }
 
 #home-container #home-stepfilter-arrow {
-    background-position: 0 195px;
+    background-image: url(/media/images/home_leftarrow.png);
+    background-position: 0 100px;
 }
 
 #home-container #home-stepfilter-cell {
-    height: 246px;
     width: 200px;
-    vertical-align: bottom;
+    padding-top: 78px;
 }
 
 #home-container #home-titletag-cell {
     float: right;
-    width: 345px;
-    font-size: 37px;
+    width: 396px;
+    font-size: 36px;
     letter-spacing: -1px;
     line-height: 1em;
-    padding-top: 61px;
     color: #0070D5;
+    margin-top: 20px;
 }
 
 /* */
