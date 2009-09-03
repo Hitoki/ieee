@@ -17,18 +17,15 @@
 {% block main_table_content %}
 <div id="adminLogin">
     <h1>Login</h1>
-    {% comment %}
-    #<br/>
-    #<div id="society-resource-tabs" class="nootabs {useCookies:false, useHash:true}">
-    #    <ul class="nootabs-menus">
-    #        <li><a href="">Login</a></li>
-    #        <li><a href="">About the Project</a></li>
-    #        <li><a href="">About the Team</a></li>
-    #    </ul>
-    #
-    #    <!-- Login tab -->
-    #    <div id="login-tab" class="nootabs-tab">
-    {% endcomment %}    
+    <div id="society-resource-tabs" class="nootabs {useCookies:false, useHash:true}">
+        <ul class="nootabs-menus">
+            <li><a href="">Login</a></li>
+            <li><a href="">About the Project</a></li>
+            <li><a href="">About the Team</a></li>
+        </ul>
+    
+        <!-- Login tab -->
+        <div id="login-tab" class="nootabs-tab">
             {% if show_society_login_banner %}
                 <p class="society-login-banner">
                     Welcome, IEEE Society &amp; Council Leaders. You will be receiving via email a username and password shortly.
@@ -72,7 +69,6 @@
                         <param name='wmode' value='opaque'/>
                 </object>
             </div> 
-    {% comment %}            
         </div>
         
         <!-- About the Project tab -->
@@ -84,11 +80,46 @@
         <!-- About the Team tab -->
         <div id="about-team-tab" class="nootabs-tab">
             <h1>About the Team</h1>
-            <!-- TODO: need content here -->
+            
+			<p class="name">
+				Allan Tear
+			</p>
+			<p>
+				<img src="{{ MEDIA_URL }}images/about_team_allan.jpg" />
+				An expert consultant in new product and service launches, Allan is the Managing Partner of Aptus Collaborative. Aptus assists large organizations with technology-enabled innovation strategy. Allan previously was a founder of three venture-funded startups. He advises students and schools on entrepreneurship through the Betaspring startup accelerator, the RI Center for Innovation and Entrepreneurship, and the Carnegie Mellon Dean's Leadership Council. He was selected in 2008 for the Providence Business News "40 Under Forty" list. Allan is a graduate of Carnegie Mellon University, with B.S. degrees in Electrical & Computer Engineering, and Public Policy.
+			</p>
+
+			<p class="name">
+				Jack Templin
+			</p>
+			<p>
+				Jack specializes in online business strategy, experience design and web application development. Prior to moving to Rhode Island from New York City, Jack was a Lead Strategist at iXL (now Microsoft), and co-founded Arc, a venture-backed consultancy widely recognized as a leader in the field of customer experience design. As a Co-Founder of Providence Geeks and the RI Nexus program, Jack plays a leading role in Rhode Island's burgeoning info-tech and digital media sector. Jack is a graduate of Middlebury College with a B.A. in Economics., and has a Masters from New York University's Interactive Telecommunications Program (ITP). The Providence Journal recently named Jack one of 9 Rhode Islanders "to watch" in 2009.
+			</p>
+
+			<p class="name">
+				Hilary Mason
+			</p>
+			<p>
+				Hilary is a computer science professor and data scientist focused on web applications and data mining. She's generally interested in techniques for finding insight in the large, unstructured data sets. Hilary has a M.S. Computer Science from Brown University, is an assistant professor at Johnson &amp; Wales University and is the Chief Scientist at Path101, Inc.
+			</p>
+
+			<p class="name">
+				TJ Sondermann
+			</p>
+			<p>
+				TJ combines his broad knowledge in the area of User Experience Design with formal training as a librarian and seven plus years of information search and retrieval experience. He has a B.S. in Management from Binghamton University and an MLIS from the University of Rhode Island.
+			</p>
+			
+			<p class="name">
+				James Yoneda
+			</p>
+			<p>
+				James Yoneda is a computer developer and works in just about every programming language out there.  He is passionate about his work in computers, and enjoys seeing entire systems come together.  He specializes in data-driven web applications, and has worked on them in both large companies (in Fortune's top-100 best places to work) and small.
+			</p>
+			
         </div>
         
     </div>
-    {% endcomment %}
     
     
     
