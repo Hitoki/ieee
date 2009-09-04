@@ -1349,3 +1349,11 @@ p.export {
     font-weight: bold;
     margin-right: 5px;
 }
+
+#tag-sort-overlay {
+    position:absolute;
+    bborder:1px solid red;
+    top:0px;
+    left:0px;
+    z-index:1;
+}

@@ -17,6 +17,8 @@ var Tags = {
     onLoadSectorCallback: null,
     helpScreenElem: null,
     
+    tagSortOverlayElem: null,
+    
     init: function() {
         this.updateChangedNode();
     },
@@ -28,9 +30,29 @@ var Tags = {
         this.updateSwitchLink();
         
         if (this.nodeId == null) {
+            if (!this.tagSortOverlayElem) {
+                this.tagSortOverlayElem = $('<div id="tag-sort-overlay"></div>').appendTo('body');
+                this.tagSortOverlayElem.bgiframe();
+                
+                var pos = $('#tag-sort').position();
+                this.tagSortOverlayElem.css('top', pos.top);
+                this.tagSortOverlayElem.css('left', pos.left);
+                this.tagSortOverlayElem.css('width', $('#tag-sort').attr('offsetWidth'));
+                this.tagSortOverlayElem.css('height', $('#tag-sort').attr('offsetHeight'));
+                
+                Flyover.attach(this.tagSortOverlayElem, {
+                    'content': 'Please select a sector first.',
+                    'position': 'left'
+                    
+                });
+            }
             $('#tag-sort').attr('disabled', 'disabled');
         } else {
+            Flyover.detach(this.tagSortOverlayElem);
+            this.tagSortOverlayElem.remove();
+            this.tagSortOverlayElem = null;
             $('#tag-sort').attr('disabled', '');
+            Flyover.detach($('#tag-sort'));
         }
     },
     
