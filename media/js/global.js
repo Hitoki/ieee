@@ -150,7 +150,7 @@ function isCompatibleBrowser() {
     //alert('$.browser.browser(): ' + $.browser.browser());
     //alert('$.browser.version.string(): ' + $.browser.version.string());
     //alert('$.browser.version.number(): ' + $.browser.version.number());
-    return browserIsFirefox30() || browserIsFirefox35() || browserIsIe7() || browserIsIe8() || browserIsSafari4() || browserIsChrome2();
+    return browserIsFirefox30() || browserIsFirefox35() || browserIsIe7() || browserIsIe8() || browserIsSafari4();
 }
 
 $(function() {
