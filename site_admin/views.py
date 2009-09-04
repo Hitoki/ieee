@@ -1705,8 +1705,16 @@ def list_tags(request):
 
 @login_required
 @admin_required
-def view_tag(request, tagId):
-    tag = get_object_or_404(Node, id=tagId)
+def view_tag(request, tag_id):
+    try:
+        tag = Node.objects.get(id=tag_id)
+    except Node.DoesNotExist:
+        # Return friendly error page about tag not existing
+        return _tag_not_found_response(
+            request,
+            tag_id,
+            None
+        )
     return render(request, 'site_admin/view_tag.html', {
         'tag': tag,
     })
@@ -1823,7 +1831,15 @@ def edit_tag(request, tag_id):
     "Edit an existing tag."
     return_url = request.GET.get('return_url', '')
     society_id = request.GET.get('society_id', '')
-    tag = get_object_or_404(Node, id=tag_id)
+    try:
+        tag = Node.objects.get(id=tag_id)
+    except Node.DoesNotExist:
+        # Return friendly error page about tag not existing
+        return _tag_not_found_response(
+            request,
+            tag_id,
+            return_url
+        )
     
     form = EditTagForm(initial={
         'id': tag.id,
@@ -1925,6 +1941,8 @@ def save_tag(request, tag_id):
             return HttpResponsePermanentRedirect(reverse('admin_view_tag', args=[tag.id]))
 
 def _tag_not_found_response(request, tag_id, return_url):
+    if return_url is None:
+        return_url = 'javascript:history.back();'
     return render(request, 'error_tag_not_found.html', {
         'tag_id': tag_id,
         'return_url': return_url,
