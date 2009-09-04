@@ -396,7 +396,11 @@ var Tags = {
     updateSwitchLink: function() {
         //console.log('updateSwitchLink()');
         //console.log('this.nodeId: ' + this.nodeId);
-        $('#switch-link')[0].href = '/roamer?nodeId=' + this.nodeId;
+        if (this.nodeId != null) {
+            $('#switch-link')[0].href = '/roamer?nodeId=' + this.nodeId;
+        } else {
+            $('#switch-link')[0].href = '/roamer';
+        }
     },
     
     refresh: function() {
