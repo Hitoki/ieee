@@ -255,7 +255,7 @@ var Tags = {
                             url: '/ajax/tooltip/'+$(this).data('tagId')+'/'+$(this).data('sectorId'),
                             position: 'auto',
                             customClass: 'textui-node',
-                            hideDelay: 100
+                            hideDelay: 400
                         }
                     );
                 },
