@@ -989,6 +989,10 @@ input.disabled:focus {
     border: 1px outset #53595F;
 }
 
+#login-tab {
+   padding-top: 23px;
+}
+
 table#login-table th{
     text-align: left;
     padding: 5px;
@@ -1258,7 +1262,7 @@ p.export {
     margin-top: 31px;
 }
 
-#home-container #home-titletag-cell #connections {
+#home-container #home-titletag-cell #connections, #login-message #connections {
     color: #00a651;
 }
 
@@ -1302,7 +1306,6 @@ p.export {
 
 #about-team-tab p.name {
 	font-weight:bold;
-	margin-top:2em;
 	clear:both;
 }
 
