@@ -1334,3 +1334,18 @@ p.export {
    float: right;
    font-weight: bold;
 }
+
+#roamer-key-sector {
+    color: #FF2D2D;
+    margin-left: 10px;
+    font-size: 8pt;
+    font-weight: bold;
+}
+
+#roamer-key-tag {
+    margin-left: 10px;
+    color: #1FFF1F;
+    font-size: 8pt;
+    font-weight: bold;
+    margin-right: 5px;
+}
