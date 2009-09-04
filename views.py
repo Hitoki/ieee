@@ -17,6 +17,7 @@ from urllib import quote
 
 from ieeetags.models import single_row, Filter, Node, NodeType, Resource, ResourceType, Society
 from ieeetags.forms import *
+#from profiler import Profiler
 import settings
 import util
 from widgets import make_display_only
@@ -304,6 +305,7 @@ def _get_popularity_level(min, max, count):
 @login_required
 def ajax_nodes_json(request):
     #log('ajax_nodes_json()')
+    #p = Profiler('ajax_nodes_json')
     
     node_id = request.GET['nodeId']
     #log('  node_id: %s' % node_id)
@@ -335,6 +337,8 @@ def ajax_nodes_json(request):
     else:
         raise Exception('Unrecognized sort "%s"' % sort)
     
+    #p.tick('filters')
+    
     filterIds = []
     if filterValues != '':
         for filterValue in filterValues.split(','):
@@ -344,11 +348,19 @@ def ajax_nodes_json(request):
     assert node.node_type.name in [NodeType.SECTOR, NodeType.TAG_CLUSTER], 'Node "%s" must be a sector or cluster' % node.name
     
     # Get child tags & clusters
+    #p.tick('child tags')
     
     if node.node_type.name == NodeType.SECTOR:
-        child_nodes = Node.objects.get_extra_info(node.get_tags_and_clusters(), extra_order_by)
+        #log('Calling child_nodes.get_extra_info() with filter ids')
+        child_nodes = node.get_tags_and_clusters()
+        # Prefetch the node_type so we don't have to hit the DB later
+        child_nodes = child_nodes.select_related('node_type__name')
+        # The 'filteIds' allows us to get the selected filter count via the DB (much faster)
+        child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, filterIds)
+        
     elif node.node_type.name == NodeType.TAG_CLUSTER:
         child_nodes = Node.objects.get_extra_info(node.get_tags(), extra_order_by)
+        
     else:
         raise Exception('Unrecognized node type "%s" for node "%s"' % (node.node_type.name, node.name))
     
@@ -359,14 +371,17 @@ def ajax_nodes_json(request):
         # Sort by one of the non-extra columns
         child_nodes = child_nodes.order_by(order_by)
     
+    #p.tick('connectedness')
     if sort == 'connectedness':
         # Sort by the combined score
         assert settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS, 'settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS is not enabled.'
         child_nodes = Node.objects.sort_queryset_by_score(child_nodes, False)
         
+    #p.tick('min/max')
     (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = Node.objects.get_sector_ranges(node)
     (min_score, max_score) = Node.objects.get_combined_sector_ranges(node)
     
+    #p.tick('json output')
     # JSON Output
     data = {
         'node': {
@@ -377,13 +392,16 @@ def ajax_nodes_json(request):
         'child_nodes': [],
     }
     
+    #p.tick('tick1')
     if node.node_type.name == NodeType.TAG_CLUSTER:
         data['node']['sector'] = {
             'id': node.get_sector().id,
             'label': node.get_sector().name,
         }
     
+    #p.start_loop()
     for child_node in child_nodes:
+        #p.tick('start')
         
         #log('child_node.name: %s' % child_node.name)
         #log('  max_score: %s' % max_score)
@@ -392,6 +410,8 @@ def ajax_nodes_json(request):
         # TODO: This is too slow, reenable later
         #num_related_tags = child_node.get_filtered_related_tag_count()
         num_related_tags = child_node.num_related_tags1
+        
+        #p.tick('before levels')
         
         if not settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
             # Old-style popularity colors with main color & two color blocks
@@ -402,9 +422,15 @@ def ajax_nodes_json(request):
             # New-style popularity colors - single color only
             combinedLevel = _get_popularity_level(min_score, max_score, child_node.score1)
                 
+        #p.tick('middle')
+        
         if child_node.node_type.name == NodeType.TAG:
-            # Only show tags that have one of the selected filters, and also are associated with a society
-            if (len(child_node.filters.filter(id__in=filterIds))) and child_node.societies.count() > 0 and child_node.num_resources1 > 0:
+            
+            #p.tick('before filter')
+            if child_node.num_selected_filters1 > 0 and child_node.num_societies1 > 0 and child_node.num_resources1 > 0:
+                
+                #p.tick('after filter')
+                
                 temp1 = {
                     'id': child_node.id,
                     'label': child_node.name,
@@ -428,7 +454,7 @@ def ajax_nodes_json(request):
                 data['child_nodes'].append(temp1)
                 
         elif child_node.node_type.name == NodeType.TAG_CLUSTER:
-            
+            #p.tick('cluster')
             # Only show clusters that have one of the selected filters
             if child_node.filters.filter(id__in=filterIds).count():
                 cluster_child_tags = child_node.get_tags()
@@ -453,9 +479,15 @@ def ajax_nodes_json(request):
         
         else:
             raise Exception('Unknown child node type "%s" for node "%s"' % (child_node.node_type.name, child_node.name))
+        
+        #p.tick('end')
+
+    #p.end_loop()
+    
+    #p.tick('end loop')
     
     json = simplejson.dumps(data, sort_keys=True, indent=4)
-    
+    #p.tick('after json')
     #log('~ajax_nodes_json()')
     
     return HttpResponse(json, mimetype='text/plain')
@@ -628,6 +660,8 @@ def ajax_nodes_xml(request):
 @login_required
 def tooltip(request, tag_id, parent_id):
     
+    #p = Profiler('tooltip')
+    
     #log('tooltip()')
     
     node = Node.objects.filter(id=tag_id)
@@ -653,22 +687,26 @@ def tooltip(request, tag_id, parent_id):
         #log('  parent: %s' % parent)
         #log('  parent.node_type.name: %s' % parent.node_type.name)
         
+        #p.tick('Getting max resources')
         (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = Node.objects.get_sector_ranges(parent)
         
         num_related_tags = tag.get_filtered_related_tag_count()
         
+        #p.tick('Getting levels')
         resourceLevel = _get_popularity_level(min_resources, max_resources, tag.num_resources1)
         sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.num_sectors1)
         related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
         
         if settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
             # New-style popularity colors - single color only
+            #p.tick('simplified ui max scores')
             (min_score, max_score) = Node.objects.get_combined_sector_ranges(parent)
             combinedLevel = _get_popularity_level(min_score, max_score, node.score1)
             tagLevel = combinedLevel
         else:
             tagLevel = resourceLevel
         
+        #p.tick('sector list')
         sectors_str = truncate_link_list(
             tag.get_sectors(),
             lambda item: '<a href="%s">%s</a>' % (reverse('textui') + '?nodeId=%s' % item.id, item.name),
@@ -676,6 +714,7 @@ def tooltip(request, tag_id, parent_id):
             TOOLTIP_MAX_CHARS
         )
         
+        #p.tick('related tag list')
         related_tags_str = truncate_link_list(
             tag.related_tags.all(),
             lambda item: '<a href="javascript:Tags.selectTag(%s);">%s</a>' % (item.id, item.name),
@@ -683,12 +722,14 @@ def tooltip(request, tag_id, parent_id):
             TOOLTIP_MAX_CHARS
         )
         
+        #p.tick('filtering out related tags')
         # Filter out related tags without filters (to match roamer)
         related_tags = []
         for related_tag in tag.related_tags.all():
             if related_tag.filters.count() > 0 and related_tag.resources.count() > 0:
                 related_tags.append(related_tag)
         
+        #p.tick('render')
         return render(request, 'tooltip.html', {
             'tag': tag,
             'related_tags': related_tags,

@@ -12,6 +12,7 @@ from logging import debug as log
 import time
 import string
 import settings
+#from profiler import Profiler
 
 def single_row(results, message=None):
     if len(results) != 1:
@@ -256,17 +257,23 @@ class NodeManager(models.Manager):
             (min, max)
         """
         
+        #p = Profiler('get_combined_sector_ranges()')
+        
         log('get_combined_sector_ranges()')
         
         assert node.node_type.name == NodeType.SECTOR or node.node_type.name == NodeType.TAG_CLUSTER, 'node (%s, %s, %s) must be a sector or cluster' % (node.name, node.id, node.node_type.name)
         
         tags = node.child_nodes
         
+        #p.tick('get_extra_info()')
+        
         # Filter out tags with no resources
         tags = self.get_extra_info(tags)
         
         min_score = None
         max_score = None
+        
+        #p.tick('start loop')
         
         for tag in tags:
             # Ignore all hidden tags
@@ -276,7 +283,9 @@ class NodeManager(models.Manager):
                 
                 if max_score is None or tag.score1 > max_score:
                     max_score = tag.score1
-
+        
+        #p.tick('end loop')
+        
         
         log('  min_score: %s' % min_score)
         log('  max_score: %s' % max_score)
@@ -407,23 +416,35 @@ class NodeManager(models.Manager):
                 cluster.filters.add(filter)
         cluster.save()
     
-    def get_extra_info(self, queryset, order_by=None):
+    def get_extra_info(self, queryset, order_by=None, selected_filter_ids=None):
         """
         Returns the queryset with extra columns:
             num_resources1
             num_societies1
             num_filters1
+            num_selected_filters1
             num_sectors1
             num_related_tags1
             num_parents1
+            #filtered_num_related_tags1
         """
         sector_node_type_id = NodeType.objects.getFromName(NodeType.SECTOR).id
         cluster_node_type_id = NodeType.objects.getFromName(NodeType.TAG_CLUSTER).id
+        
+        if selected_filter_ids is not None:
+            selected_filter_ids = [str(id) for id in selected_filter_ids]
+            num_selected_filters1_sql = """
+                SELECT COUNT(*) FROM ieeetags_node_filters WHERE ieeetags_node_filters.node_id = ieeetags_node.id AND ieeetags_node_filters.filter_id in (%s)
+            """ % ','.join(selected_filter_ids)
+        else:
+            num_selected_filters1_sql = 'SELECT NULL'
+        
         return queryset.extra(
             select={
                 'num_resources1': 'SELECT COUNT(*) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id',
                 'num_societies1': 'SELECT COUNT(*) FROM ieeetags_node_societies WHERE ieeetags_node_societies.node_id = ieeetags_node.id',
                 'num_filters1': 'SELECT COUNT(*) FROM ieeetags_node_filters WHERE ieeetags_node_filters.node_id = ieeetags_node.id',
+                'num_selected_filters1': num_selected_filters1_sql,
                 'num_sectors1': 'SELECT COUNT(*) FROM ieeetags_node_parents INNER JOIN ieeetags_node as parent on ieeetags_node_parents.to_node_id = parent.id WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id AND parent.node_type_id = %s' % (sector_node_type_id),
                 #'num_clusters1': 'SELECT COUNT(*) FROM ieeetags_node_parents INNER JOIN ieeetags_node as parent on ieeetags_node_parents.to_node_id = parent.id WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id AND parent.node_type_id = %s' % (cluster_node_type_id),
                 # TODO: Some of the related tags will be hidden (no resources, no filters, etc), so this count is off
@@ -434,6 +455,9 @@ class NodeManager(models.Manager):
                     + (SELECT COUNT(*) FROM ieeetags_node_parents INNER JOIN ieeetags_node as parent on ieeetags_node_parents.to_node_id = parent.id WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id AND parent.node_type_id = %s)
                     + (SELECT COUNT(*) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id)
                     """ % (sector_node_type_id),
+                #'filtered_num_related_tags1': """
+                #    SELECT COUNT(ieeetags_node_related_tags.id) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id
+                #    """,
             },
             order_by=order_by,
         )
@@ -537,8 +561,10 @@ class Node(models.Model):
     def get_filtered_related_tag_count(self):
         "Returns the number of related tags that have filters/resources (ie. are not hidden)"
         
-        # TODO: This is very slow!
+        # TODO: Not done yet
+        #return self.filtered_num_related_tags1
         
+        # TODO: This is very slow!
         count = 0
         for related_tag in self.related_tags.all():
             if related_tag.filters.count() > 0 and related_tag.resources.count() > 0:
