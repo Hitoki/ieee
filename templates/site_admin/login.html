@@ -40,6 +40,9 @@
                     </ul>
                 {% endif %}
                 <table id="login-table">
+                    <tr><td colspan="2">
+                        Don't have an account? <a href="mailto:technav@ieee.org?subject=Requesting%20an%20account">Request one here.</a>
+                    </td></tr>
                     {{ form }}
                     <tr>
                         <td colspan="2">
@@ -47,11 +50,7 @@
                             <input type="submit" value="Okay" id="login-table-okay" />
                                 <p>
                                     <a href="{% url forgot_password %}?cancel_page={% url admin_login %}">Forget your password?</a>
-                                </p>
-                                <p>
-                                    Don't have an account? <a href="mailto:technav@ieee.org?subject=Requesting%20an%20account">Request one here.</a>
-                                </p>
-                                
+                                </p>                                
                             </div>
                          </td>
                     </tr>
@@ -60,8 +59,9 @@
                 <div id="login-message">
                     Technology Navigator helps you discover <span id="connections">connections</span> across the IEEE universe of information.
                 </div>
-                <br style="clear:both"/>
+                
             </form>
+            <br style="clear:both"/>
             {% comment %}
             <div class="login-help-video">
                 <h3>Video Overview of Administrative Interface</h3>

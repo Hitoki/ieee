@@ -787,10 +787,12 @@ table.vert-center td {
 
 #frequencybar {
    margin-top: -5px;
+   margin-left: 2px;
 }
 
 #galaxy-key {
     float: left; 
+    margin-left: 2px;
 }
 
 #frequencybar-tags img {
@@ -816,7 +818,7 @@ table.vert-center td {
 }
 
 #connectedness {
-    padding-left: 70px;
+    padding-left: 64px;
     font-weight: bold;
     vertical-align: bottom;
 }
@@ -1002,7 +1004,6 @@ table#login-table th{
 
 table#login-table {
     margin-bottom: 10px;
-    margin-right: 15px;
     float: left;
 }
 
@@ -1207,11 +1208,9 @@ p.export {
 }
 
 #home-container #home-stepconnect-cell {
-    background-image: url(/media/images/home_uparrow.png);
-    background-repeat: no-repeat;
-    background-position: 105px 20px;
     width: 245px;
-    padding-top: 82px;
+    padding-top: 14px;
+    vertical-align: top;
 }
 
 #home-container .home-leftarrow-cell {
@@ -1222,11 +1221,11 @@ p.export {
 
 #home-container #home-stepstart-arrow {
     background-image: url(/media/images/home_leftarrow_grn.png);
-    background-position: 0 44px;
+    background-position: 0 11px;
 }
 
 #home-container #home-stepstart-cell {
-   height: 95px;
+   height: 50px;
    vertical-align: bottom;
 }
 
@@ -1246,22 +1245,21 @@ p.export {
 
 #home-container #home-stepfilter-arrow {
     background-image: url(/media/images/home_leftarrow.png);
-    background-position: 0 100px;
+    background-position: 0 165px;
 }
 
 #home-container #home-stepfilter-cell {
     width: 200px;
-    padding-top: 78px;
+    padding-top: 155px;
 }
 
 #home-container #home-titletag-cell {
     float: right;
-    width: 379px;
+    width: 326px;
     font-size: 33px;
-    letter-spacing: -1px;
     line-height: 1em;
     color: #0070D5;
-    margin-top: 31px;
+    margin-top: 50px;
 }
 
 #home-container #home-titletag-cell #connections, #login-message #connections {
@@ -1317,13 +1315,18 @@ p.export {
 }
 
 #login-message {
-    font-size: 26px; 
+    font-size: 33px; 
     letter-spacing: -1px; 
-    color: #0070D5;   
+    color: #0070D5;
+    margin-left: 370px;
 }
 
 #adminLogin ul.nootabs-menus li {
    font-size: 18px;
+}
+
+#adminLogin ul.nootabs-menus li a{
+    padding-bottom: 7px;
 }
 
 #login-table label {
