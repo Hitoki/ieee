@@ -51,7 +51,7 @@
                         
                         <!-- Navigation links -->
                         <div id="left-column">
-                            <h2>Choose Sector:</h2>
+                            <h2 class="feature_label">Choose Sector:</h2>
                             <div id="left-column-container">  
                             
                                 <div class="sectors-vert-box alt-box">
@@ -63,7 +63,7 @@
                                 </div>
                                 
                                 <!-- Filters --> 
-                                <h2>View Filters:</h2>
+                                <h2 class="feature_label">View Filters:</h2>
                                 <div class="filters-vert-box alt-box">
                                     <ul id="views">
                                         {% for filter in filters %}
@@ -84,7 +84,7 @@
                                         {% comment %} We are hiding the word Key for now, will appear in galaxy help page
                                         <span id="key-label">Key:</span>
                                         {% endcomment %}
-                                        <span id="connectedness">Connectedness:</span>
+                                        <span id="connectedness" class="feature_label">Connectedness:</span>
                                         <span id="frequency-indicator"><img src="/media/images/frequency-bar.png"/></span>
                                         {% comment %}
                                         <table id="tag-model-indicator">
@@ -125,7 +125,7 @@
                                         <h2 style="float: left;">42 Tags</h2>  
                                         -->
                                     </div>
-                                    <div id="sortmenu">
+                                    <div id="sortmenu" class="feature_label">
                                         Sort by:
                                         <select id="tag-sort" onchange="Tags.selectSector();">
                                             <option value="alphabetical">Alphabetical</option>

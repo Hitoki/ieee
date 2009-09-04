@@ -779,12 +779,12 @@ table.vert-center td {
 }
 
 #frequencybar-tags {
-    margin-top: -7px;
+    margin-top: -6px;
     clear: right;
 }
 
 #frequencybar {
-   margin-top: -6px;
+   margin-top: -5px;
 }
 
 #galaxy-key {
@@ -807,6 +807,11 @@ table.vert-center td {
     display:none;
 }
 */
+
+.feature_label {
+    font-size: 11pt; 
+    font-weight: bold;  
+}
 
 #connectedness {
     padding-left: 15px;
@@ -1313,7 +1318,7 @@ p.export {
 }
 
 #adminLogin ul.nootabs-menus li {
-   font-size: 14px;
+   font-size: 18px;
 }
 
 #login-table label {
