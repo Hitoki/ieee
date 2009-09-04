@@ -199,11 +199,11 @@ ul#view-header li {
 #left-column ul {
     display:block;
     list-style-type: none;
+    width: 174px;
 }
 
 #left-column ul li {
     margin:0px;
-    padding-right: 18px;
 }
 
 #left-column ul li.all {
