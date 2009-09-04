@@ -18,7 +18,20 @@ var Tags = {
     helpScreenElem: null,
     
     init: function() {
-		this.updateDisabledFilters();
+        this.updateChangedNode();
+    },
+    
+    // This should be called any time the selected node has changed
+    updateChangedNode: function() {
+        this.updateDisabledFilters();
+        this.updateHighlightedNode();
+        this.updateSwitchLink();
+        
+        if (this.nodeId == null) {
+            $('#tag-sort').attr('disabled', 'disabled');
+        } else {
+            $('#tag-sort').attr('disabled', '');
+        }
     },
     
     updateDisabledFilters: function() {
@@ -41,40 +54,41 @@ var Tags = {
         //log('selectSector()');
         //log('  id: ' + id);
         
-        this.hideHelp();
-        
         if (id) {
             this.nodeId = id;
             this.nodeType = 'sector';
         }
         
-        // Hide the content lightbox if it's visible.
-        Lightbox.hide();
+        if (this.nodeId != null) {
+            
+            this.hideHelp();
+            
+            // Hide the content lightbox if it's visible.
+            Lightbox.hide();
+            
+            // Update the switch interfaces link
+            this.updateChangedNode();
         
-        // Update the switch interfaces link
-        this.updateSwitchLink();
-        this.updateHighlightedNode();
-		this.updateDisabledFilters();
-        
-        var tagWindow = $("#tags");
-        
-        tagWindow.empty();
-        tagWindow.html(
-            '<div id="loading" class="please-wait">'
-            + '<h1>Please wait...</h1>'
-            + '<img src="' + MEDIA_URL + '/images/ajax-loader-bar.gif" />'
-            + '</div>'
-        );
-        
-        var filterStr = implode(',', this.getFilters());
-        
-        if (onload)
-            this.onLoadSectorCallback = onload;
-        
-        // Hide any flyvoers so they don't persist when the node is gone.
-        Flyover.hide();
-        
-        $.getJSON('/ajax/nodes_json', {nodeId:this.nodeId, filterValues:filterStr, sort:this.getSort()}, function(data) { Tags.onLoadSector(data); });
+            var tagWindow = $("#tags");
+            
+            tagWindow.empty();
+            tagWindow.html(
+                '<div id="loading" class="please-wait">'
+                + '<h1>Please wait...</h1>'
+                + '<img src="' + MEDIA_URL + '/images/ajax-loader-bar.gif" />'
+                + '</div>'
+            );
+            
+            var filterStr = implode(',', this.getFilters());
+            
+            if (onload)
+                this.onLoadSectorCallback = onload;
+            
+            // Hide any flyvoers so they don't persist when the node is gone.
+            Flyover.hide();
+            
+            $.getJSON('/ajax/nodes_json', {nodeId:this.nodeId, filterValues:filterStr, sort:this.getSort()}, function(data) { Tags.onLoadSector(data); });
+        }
     },
     
     onLoadSector: function(data) {
@@ -157,9 +171,7 @@ var Tags = {
         
         var filterStr = implode(',', this.getFilters());
         
-        // Update the switch interfaces link
-        this.updateSwitchLink();
-		this.updateDisabledFilters();
+        this.updateChangedNode();
         
         // Hide any flyvoers so they don't persist when the node is gone.
         Flyover.hide();
@@ -184,7 +196,7 @@ var Tags = {
         this.node = data.node;
         this.node.sectorId = data.node.sector.id;
         
-        this.updateHighlightedNode();
+        this.updateChangedNode();
         
         this.renderTags(data);
     },
@@ -356,8 +368,7 @@ var Tags = {
         //console.log("selectTag()");
         //console.log("id: " + id);
         
-        // Update the switch interfaces link
-        this.updateSwitchLink();
+        this.updateChangedNode();
         
         //$('.tag').removeClass('activeTag');
         
@@ -421,9 +432,7 @@ var Tags = {
 		this.nodeType = null;
 		this.node = null;
 
-        this.updateSwitchLink();
-        this.updateHighlightedNode();
-		this.updateDisabledFilters();
+        this.updateChangedNode();
         
         var tagsElem = $('#tags');
         tagsElem.empty();
