@@ -356,7 +356,10 @@ def ajax_nodes_json(request):
         # Prefetch the node_type so we don't have to hit the DB later
         child_nodes = child_nodes.select_related('node_type__name')
         # The 'filteIds' allows us to get the selected filter count via the DB (much faster)
-        child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, filterIds)
+        if len(filterIds) > 0:
+            child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, filterIds)
+        else:
+            child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, None)
         
     elif node.node_type.name == NodeType.TAG_CLUSTER:
         child_nodes = Node.objects.get_extra_info(node.get_tags(), extra_order_by)
