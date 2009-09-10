@@ -48,9 +48,11 @@ var Tags = {
             }
             $('#tag-sort').attr('disabled', 'disabled');
         } else {
-            Flyover.detach(this.tagSortOverlayElem);
-            this.tagSortOverlayElem.remove();
-            this.tagSortOverlayElem = null;
+            if (this.tagSortOverlayElem) {
+				Flyover.detach(this.tagSortOverlayElem);
+				this.tagSortOverlayElem.remove();
+				this.tagSortOverlayElem = null;
+			}
             $('#tag-sort').attr('disabled', '');
             Flyover.detach($('#tag-sort'));
         }
