@@ -316,6 +316,10 @@ def login(request):
         # Grab the full "next" URL from the hidden form field, including the #hash part
         next = request.POST['next']
         
+        # TODO: this hack is to account for the bug where the 'next' var has the hash instead of a real url
+        if next.startswith('#'):
+            next = ''
+        
         if form.is_valid():
             user = auth.authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
             
