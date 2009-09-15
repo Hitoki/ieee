@@ -15,6 +15,7 @@
 
                     <div id="resource-tabs" class="nootabs tag-resources-tabs {useCookies:false}">
                         <ul class="nootabs-menus">
+                            <li><a href="">Societies {% comment %}<span>({{ num_societies }})</span>{% endcomment %}</a></li>
                             <li><a href="">Sectors ({{ parent_nodes|length }})</a></li>
 							{% comment %}
 							#TODO: Re-enable clusters
@@ -22,7 +23,6 @@
 							{% endcomment %}
                             <li><a href="">Filters ({{ tag.filters.count }})</a></li>
                             <li><a href="">Related Tags ({{ tag.related_tags.count }})</a></li>
-                            <li><a href="">Societies {% comment %}<span>({{ num_societies }})</span>{% endcomment %}</a></li>
                             <li><a href="">Periodicals <span>({{periodicals|length}})</span></a></li>
                             <li><a href="">Conferences <span>({{conferences|length}})</span></a></li>
                             <li><a href="">Standards <span>({{standards|length}})</span></a></li>
@@ -31,54 +31,8 @@
                             {% endcomment %}
                         </ul>
                         
-                        <!-- Sectors &amp; Clusters -->
-                        <div class="sector-tab">
-                            <div class="group">
-                                {% for parent_node in parent_nodes %}
-                                    <p class="{% cycle 'item_odd' 'item_even' %}">
-                                        {% ifequal ui "textui" %}
-                                            <a href="javascript:Tags.selectSector({{ parent_node.sector.id }});">
-                                                {{ parent_node.sector.name }}
-                                            </a>
-                                        {% else %}
-                                            {% ifequal ui "roamer" %}
-                                                <a href="javascript:Roamer.setNode({{ parent_node.sector.id }});">
-                                                    {{ parent_node.sector.name }}
-                                                </a>
-                                            {% endifequal %}
-                                        {% endifequal %}
-                                        {% if parent_node.clusters %}
-                                            - {{ parent_node.clusters|textlist }} cluster{{ parent_node.clusters|pluralize }}
-                                        {% endif %}
-                                    </p>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        
-                        <!-- Filters -->
+						<!-- Societies -->
                         <div>
-                            <div class="group">
-                                {% for filter in tag.filters.all %}
-                                    <p class="{% cycle 'item_odd' 'item_even' %}">
-                                        {{ filter.name }}
-                                    </p>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        
-                        <!-- Related Tags -->
-                        <div>
-                            <div class="group">
-                                {% for related_tag in tag.related_tags.all %}
-                                    <p class="{% cycle 'item_odd' 'item_even' %}">
-                                        {{ related_tag.name }}
-                                    </p>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <!-- Societies -->
                             {% if iconSocieties or noIconSocieties %}
                                 <div class="group">
                                     {% if iconSocieties %}
@@ -139,6 +93,52 @@
                                     </table>
                                 </div>
                             {% endif %}
+                        </div>
+                        
+                        <!-- Sectors &amp; Clusters -->
+                        <div class="sector-tab">
+                            <div class="group">
+                                {% for parent_node in parent_nodes %}
+                                    <p class="{% cycle 'item_odd' 'item_even' %}">
+                                        {% ifequal ui "textui" %}
+                                            <a href="javascript:Tags.selectSector({{ parent_node.sector.id }});">
+                                                {{ parent_node.sector.name }}
+                                            </a>
+                                        {% else %}
+                                            {% ifequal ui "roamer" %}
+                                                <a href="javascript:Roamer.setNode({{ parent_node.sector.id }});">
+                                                    {{ parent_node.sector.name }}
+                                                </a>
+                                            {% endifequal %}
+                                        {% endifequal %}
+                                        {% if parent_node.clusters %}
+                                            - {{ parent_node.clusters|textlist }} cluster{{ parent_node.clusters|pluralize }}
+                                        {% endif %}
+                                    </p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <!-- Filters -->
+                        <div>
+                            <div class="group">
+                                {% for filter in tag.filters.all %}
+                                    <p class="{% cycle 'item_odd' 'item_even' %}">
+                                        {{ filter.name }}
+                                    </p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <!-- Related Tags -->
+                        <div>
+                            <div class="group">
+                                {% for related_tag in tag.related_tags.all %}
+                                    <p class="{% cycle 'item_odd' 'item_even' %}">
+                                        {{ related_tag.name }}
+                                    </p>
+                                {% endfor %}
+                            </div>
                         </div>
                         
                         <div>
