@@ -381,7 +381,7 @@ ul#view-header li {
 
 #roamer-outline {
     border:1px solid #dadada;
-    margin:2em 0.2em 0.5em;
+    margin:5px 0.2em 0.5em;
     height: 100%;
     
 }
@@ -875,6 +875,14 @@ table.vert-center td {
     vertical-align: middle;
 }
 
+#frequencybar .homeico-cell {
+    width:40px;
+}
+
+#frequencybar .key-cell {
+    width:170px;
+}
+
 #frequencybar #homeico,
 #frequencybar-tags #homeico-tags {
     float: left;
@@ -893,6 +901,9 @@ table.vert-center td {
 
 #frequencybar-tags #homeico-tags img {
     margin-top: -1px;
+}
+
+#roamer-beta-warning {
 }
 
 /* */
