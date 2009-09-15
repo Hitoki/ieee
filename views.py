@@ -501,6 +501,8 @@ def ajax_nodes_xml(request):
     
     log('ajax_nodes_xml()')
     
+    DEBUG_ROAMER_MAX_NODES = 60
+    
     nodeId = request.GET['nodeId']
     log('  url: ' + request.get_full_path())
     
@@ -532,6 +534,8 @@ def ajax_nodes_xml(request):
     nodes = [node]
     
     # Add the node's children
+    # TODO: Number of child nodes is temporarily limited to a hard limit... remove this later
+    child_nodes = child_nodes[:DEBUG_ROAMER_MAX_NODES]
     nodes.extend(child_nodes)
     
     parent_nodes = []
