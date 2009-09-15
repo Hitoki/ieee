@@ -376,6 +376,17 @@ ul#view-header li {
 
 /* Roamer Interface */ 
 
+table#roamer-header {
+    width: 100%;
+}
+
+span.roamer-note {
+    font-weight: bold;
+}
+
+span#roamer-beta-warning {
+    font-size: 8pt;
+}
 
 /* Galaxy Interface */
 
@@ -876,11 +887,11 @@ table.vert-center td {
 }
 
 #frequencybar .homeico-cell {
-    width:40px;
+    width:60px;
 }
 
 #frequencybar .key-cell {
-    width:170px;
+    width:190px;
 }
 
 #frequencybar #homeico,
