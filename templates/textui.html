@@ -131,7 +131,7 @@
                                         <select id="tag-sort" onchange="Tags.selectSector();">
                                             <option value="alphabetical">Alphabetical</option>
                                             {% if ENABLE_TEXTUI_SIMPLIFIED_COLORS %}
-                                                <option value="connectedness">Connectedness</option>
+                                                <option value="connectedness">Most Connectedness</option>
                                             {% endif %}
 
 											{% comment %}
@@ -139,9 +139,9 @@
                                             #<option value="clusters_first_alpha">Clusters First</option>
 											{% endcomment %}
 											
-                                            <option value="frequency"># Resources</option>
-                                            <option value="num_sectors"># Sectors</option>
-                                            <option value="num_related_tags"># Related Tags</option>
+                                            <option value="frequency">Most Resources</option>
+                                            <option value="num_sectors">Most Sectors</option>
+                                            <option value="num_related_tags">Most Related Tags</option>
                                         </select>
                                     </div>
                                     
