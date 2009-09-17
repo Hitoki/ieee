@@ -432,9 +432,9 @@ var Tags = {
         //console.log('updateSwitchLink()');
         //console.log('this.nodeId: ' + this.nodeId);
         if (this.nodeId != null) {
-            $('#switch-link')[0].href = '/roamer?nodeId=' + this.nodeId;
+            $('#switch-link').attr('href', '/roamer?nodeId=' + this.nodeId);
         } else {
-            $('#switch-link')[0].href = '/roamer';
+            $('#switch-link').attr('href', '/roamer');
         }
     },
     
