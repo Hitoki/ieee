@@ -39,7 +39,8 @@ Nootab.prototype.setContainer = function(container, options) {
             useHash: true,
             fullWidthMenus: false,
             fillerLine: false,
-            disable: false
+            disable: false,
+			defaultTab: 1
         };
         
         // Parse options
@@ -60,6 +61,8 @@ Nootab.prototype.setContainer = function(container, options) {
             this.options.fullWidthMenus = options.fullWidthMenus;
         if ('fillerLine' in options && typeof options.fillerLine == 'boolean')
             this.options.fillerLine = options.fillerLine;
+        if ('defaultTab' in options)
+            this.options.defaultTab = options.defaultTab;
         
         //for (i in data)
             //console.log("data["+i+"]: " + data[i]);
@@ -127,8 +130,9 @@ Nootab.prototype.setContainer = function(container, options) {
         //} else {
         
         // Default to the first tab
-        
-        var initialTab = 0;
+		// NOTE: "defaultTab" starts at 1, while initialTab starts at 0
+        var initialTab = this.options.defaultTab - 1;
+		
         if (this.options.useHash) {
             // Parse the hash to find an initial tab
             var hash = window.location.hash;

@@ -13,23 +13,73 @@
                 <div id="content" class="alt-box-pad">
     {% endif %}
 
-                    <div id="resource-tabs" class="nootabs tag-resources-tabs {useCookies:false}">
+                    <div id="resource-tabs" class="nootabs tag-resources-tabs { useCookies:false, defaultTab:3 }">
                         <ul class="nootabs-menus">
-                            <li><a href="">Societies {% comment %}<span>({{ num_societies }})</span>{% endcomment %}</a></li>
                             <li><a href="">Sectors ({{ parent_nodes|length }})</a></li>
 							{% comment %}
 							#TODO: Re-enable clusters
 							#<li><a href="">Sectors &amp; Clusters ({{ parent_nodes|length }})</a></li>
 							{% endcomment %}
-                            <li><a href="">Filters ({{ tag.filters.count }})</a></li>
+							{% comment %}
+                            #<li><a href="">Filters ({{ tag.filters.count }})</a></li>
+							{% endcomment %}
                             <li><a href="">Related Tags ({{ tag.related_tags.count }})</a></li>
-                            <li><a href="">Periodicals <span>({{periodicals|length}})</span></a></li>
+                            <li><a href="">Societies {% comment %}<span>({{ num_societies }})</span>{% endcomment %}</a></li>
                             <li><a href="">Conferences <span>({{conferences|length}})</span></a></li>
+                            <li><a href="">Periodicals <span>({{periodicals|length}})</span></a></li>
                             <li><a href="">Standards <span>({{standards|length}})</span></a></li>
                             {% comment %}
                             #    <li><a href="">Experts <span>({{experts|length}})</span></a></li>
                             {% endcomment %}
                         </ul>
+                        
+                        <!-- Sectors &amp; Clusters -->
+                        <div class="sector-tab">
+                            <div class="group">
+                                {% for parent_node in parent_nodes %}
+                                    <p class="{% cycle 'item_odd' 'item_even' %}">
+                                        {% ifequal ui "textui" %}
+                                            <a href="javascript:Tags.selectSector({{ parent_node.sector.id }});">
+                                                {{ parent_node.sector.name }}
+                                            </a>
+                                        {% else %}
+                                            {% ifequal ui "roamer" %}
+                                                <a href="javascript:Roamer.setNode({{ parent_node.sector.id }});">
+                                                    {{ parent_node.sector.name }}
+                                                </a>
+                                            {% endifequal %}
+                                        {% endifequal %}
+                                        {% if parent_node.clusters %}
+                                            - {{ parent_node.clusters|textlist }} cluster{{ parent_node.clusters|pluralize }}
+                                        {% endif %}
+                                    </p>
+                                {% endfor %}
+                            </div>
+                        </div>
+						
+						{% comment %}
+                        <!-- Filters -->
+                        <div>
+                            <div class="group">
+                                {% for filter in tag.filters.all %}
+                                    <p class="{% cycle 'item_odd' 'item_even' %}">
+                                        {{ filter.name }}
+                                    </p>
+                                {% endfor %}
+                            </div>
+                        </div>
+						{% endcomment %}
+                        
+                        <!-- Related Tags -->
+                        <div>
+                            <div class="group">
+                                {% for related_tag in tag.related_tags.all %}
+                                    <p class="{% cycle 'item_odd' 'item_even' %}">
+                                        {{ related_tag.name }}
+                                    </p>
+                                {% endfor %}
+                            </div>
+                        </div>
                         
 						<!-- Societies -->
                         <div>
@@ -95,49 +145,28 @@
                             {% endif %}
                         </div>
                         
-                        <!-- Sectors &amp; Clusters -->
-                        <div class="sector-tab">
+                        <div>
+                            <!-- Conferences -->
                             <div class="group">
-                                {% for parent_node in parent_nodes %}
-                                    <p class="{% cycle 'item_odd' 'item_even' %}">
-                                        {% ifequal ui "textui" %}
-                                            <a href="javascript:Tags.selectSector({{ parent_node.sector.id }});">
-                                                {{ parent_node.sector.name }}
-                                            </a>
-                                        {% else %}
-                                            {% ifequal ui "roamer" %}
-                                                <a href="javascript:Roamer.setNode({{ parent_node.sector.id }});">
-                                                    {{ parent_node.sector.name }}
-                                                </a>
-                                            {% endifequal %}
-                                        {% endifequal %}
-                                        {% if parent_node.clusters %}
-                                            - {{ parent_node.clusters|textlist }} cluster{{ parent_node.clusters|pluralize }}
+                                {% if conferences|length %}
+                                    {% for resource in conferences %}
+                                        {% if resource.url %}
+                                            <a href="{{ resource.url }}" target="_blank">
                                         {% endif %}
-                                    </p>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        
-                        <!-- Filters -->
-                        <div>
-                            <div class="group">
-                                {% for filter in tag.filters.all %}
-                                    <p class="{% cycle 'item_odd' 'item_even' %}">
-                                        {{ filter.name }}
-                                    </p>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        
-                        <!-- Related Tags -->
-                        <div>
-                            <div class="group">
-                                {% for related_tag in tag.related_tags.all %}
-                                    <p class="{% cycle 'item_odd' 'item_even' %}">
-                                        {{ related_tag.name }}
-                                    </p>
-                                {% endfor %}
+                                        <p class="{% cycle 'item_odd' 'item_even' %}">
+                                            {{resource.name}}
+                                            {% if resource.url %}
+                                                <img src="{{ MEDIA_URL }}images/popup.png" />
+                                            {% endif %}
+                                        </p>
+                                        {% if resource.url %}
+                                            </a>
+                                        {% endif %}
+                                        <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
+                                    {% endfor %}
+                                {% else %}
+                                    <p class="no-resources">(no conferences)</p>
+                                {% endif %}
                             </div>
                         </div>
                         
@@ -162,31 +191,6 @@
                                     {% endfor %}
                                 {% else %}
                                     <p class="no-resources">(no periodicals)</p>
-                                {% endif %}
-                            </div>
-                        </div>
-                        
-                        <div>
-                            <!-- Conferences -->
-                            <div class="group">
-                                {% if conferences|length %}
-                                    {% for resource in conferences %}
-                                        {% if resource.url %}
-                                            <a href="{{ resource.url }}" target="_blank">
-                                        {% endif %}
-                                        <p class="{% cycle 'item_odd' 'item_even' %}">
-                                            {{resource.name}}
-                                            {% if resource.url %}
-                                                <img src="{{ MEDIA_URL }}images/popup.png" />
-                                            {% endif %}
-                                        </p>
-                                        {% if resource.url %}
-                                            </a>
-                                        {% endif %}
-                                        <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
-                                    {% endfor %}
-                                {% else %}
-                                    <p class="no-resources">(no conferences)</p>
                                 {% endif %}
                             </div>
                         </div>
