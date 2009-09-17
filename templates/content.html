@@ -75,7 +75,13 @@
                             <div class="group">
                                 {% for related_tag in tag.related_tags.all %}
                                     <p class="{% cycle 'item_odd' 'item_even' %}">
-                                        {{ related_tag.name }}
+										{% ifequal ui "textui" %}
+											<a href="javascript:Tags.selectTag({{ related_tag.id }});">
+												{{ related_tag.name }}
+											</a>
+										{% else %}
+											{{ related_tag.name }}
+										{% endifequal %}
                                     </p>
                                 {% endfor %}
                             </div>
