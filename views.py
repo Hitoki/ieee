@@ -533,9 +533,14 @@ def ajax_nodes_xml(request):
     # The main node
     nodes = [node]
     
+    # First sorting by connectedness here, so we get the X most connected nodes (with the hard limit)
+    if settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
+        child_nodes = Node.objects.sort_queryset_by_score(child_nodes, False)
+    
     # Add the node's children
     # TODO: Number of child nodes is temporarily limited to a hard limit... remove this later
     child_nodes = child_nodes[:DEBUG_ROAMER_MAX_NODES]
+    
     nodes.extend(child_nodes)
     
     parent_nodes = []
