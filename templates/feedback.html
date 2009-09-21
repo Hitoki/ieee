@@ -1,47 +1,18 @@
 {% extends 'base.html' %}
 
-{% block content %}
-    <div class="email-lightbox lightbox-pad">
-        <h3>Feedback Form</h3>
-        
-        <form action="{% url feedback %}" method="post">
-            <table id="feedback">
-                <tr>
-                    <td class="left-column">
-                        Name:
-                    </td>
-                    <td class="right-column">
-                        {{ form.name.errors }}
-                        {{ form.name }}
-                    </td>
-                </tr>
-                <tr>
-                    <td class="left-column">
-                        Email:
-                    </td>
-                    <td class="right-column">
-                        {{ form.email.errors }}
-                        {{ form.email }}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        Comments:<br/>
-                        {{ form.comments.errors }}
-                        <textarea name="comments" class="text">{% if form.comments.data %}{{ form.comments.data }}{% endif %}</textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align:center;">
-                        <div class="submit">
-                            <input type="submit" value="Send" class="button submit-button" />
-                            <a href="javascript:Lightbox.hide();" class="cancel-link">Cancel</a>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </form>
-        
-</div>
-{% endblock %}
+{% block body_class %}class="feedback-page"{% endblock %}
 
+{% block content %}
+    <div id="feedback">
+		<script type="text/javascript" src="http://wufoo.com/scripts/embed/form.js"></script>
+		<script type="text/javascript">
+			var q7x3z9 = new WufooForm();
+			q7x3z9.initialize({
+			'userName':'rneville',
+			'formHash':'q7x3z9',
+			'autoResize':true,
+			'height':'938'});
+			q7x3z9.display();
+		</script>
+	</div>
+{% endblock %}

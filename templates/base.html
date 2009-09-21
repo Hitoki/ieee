@@ -33,7 +33,7 @@
         {% block extra_head %}{% endblock %}
         {% block extra_head2 %}{% endblock %}
     </head>
-    <body>
+    <body {% block body_class %}{% endblock %} >
         {% block server_info %}{% endblock %}
 {% endif %}
         {% block content %}{% endblock %}

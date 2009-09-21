@@ -1390,3 +1390,11 @@ p.export {
     left:0px;
     z-index:1;
 }
+
+.feedback-page {
+	background:white;
+}
+
+#feedback {
+	margin:1em;
+}
