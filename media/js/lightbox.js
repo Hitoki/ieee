@@ -12,7 +12,7 @@ var Lightbox = {
     // Clicked on a link, show the URL in the lightbox
     click: function(linkObj) {
         linkObj = $(linkObj);
-        this.show(linkObj[0].href);
+        this.show(linkObj.attr('href'), linkObj.metadata());
         return false;
     },
     
@@ -30,7 +30,7 @@ var Lightbox = {
                 },
                 options
             );
-            
+			
             // Create the lightbox
             this.lightbox = $('<div id="lightbox"></div>').appendTo('body');
             this.lightboxBackground = $('<div class="lightbox-background"></div>').appendTo(this.lightbox);
@@ -40,15 +40,17 @@ var Lightbox = {
             var customClassContent;
             if (this.options.customClass != null) {
                 customClassOuter = this.options.customClass + '-lightbox-outer';
+                customClassMiddle = this.options.customClass + '-lightbox-middle';
                 customClassContent = this.options.customClass + '-lightbox-content';
             } else {
                 customClassOuter = '';
+                customClassMiddle = '';
                 customClassContent = '';
             }
             
             if (this.options.verticalCenter) {
                 this.lightboxContentOuterElem = $('<div class="vert-center-outer lightbox-content-outer ' + customClassOuter + '"></div>').appendTo(this.lightbox);
-                this.lightboxContentMiddleElem = $('<div class="vert-center-middle"></div>').appendTo(this.lightboxContentOuterElem);
+                this.lightboxContentMiddleElem = $('<div class="vert-center-middle ' + customClassMiddle + '"></div>').appendTo(this.lightboxContentOuterElem);
                 this.lightboxContent = $('<div class="vert-center-inner lightbox-content ' + customClassContent + '"></div>').appendTo(this.lightboxContentMiddleElem);
             } else {
                 this.lightboxContentOuterElem = $('<div class="lightbox-content-outer ' + customClassOuter + '"></div>').appendTo(this.lightbox);

@@ -10,7 +10,7 @@
     {% if user.is_authenticated %}
         <div class="floating">
             Logged in as {{ user.username }} |<a href="{% url change_password %}?return_url=" class="changePassword live-url { varName:'return_url' }">Change Password</a> |<a href="{% url admin_logout %}" class="logout">Log Out</a><br/>
-            <a href="{% url feedback %}" target="_blank">Send Feedback</a>
+            <a href="{% url feedback %}" class="lightbox { customClass:'feedback' }">Send Feedback</a>
         </div>
     {% endif %}
 {% endblock %}

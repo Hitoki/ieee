@@ -188,3 +188,14 @@ input.text {
 #lightbox .resources-lightbox-content  ul.nootabs-menus li {
     margin-left:.5em;
 }
+
+.feedback-lightbox-middle {
+	height:100%;
+}
+
+.feedback-lightbox-content {
+	height:80% !important;
+	width:690px !important;
+	position:relative;
+}
+

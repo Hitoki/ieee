@@ -3,16 +3,8 @@
 {% block body_class %}class="feedback-page"{% endblock %}
 
 {% block content %}
-    <div id="feedback">
-		<script type="text/javascript" src="http://wufoo.com/scripts/embed/form.js"></script>
-		<script type="text/javascript">
-			var q7x3z9 = new WufooForm();
-			q7x3z9.initialize({
-			'userName':'rneville',
-			'formHash':'q7x3z9',
-			'autoResize':true,
-			'height':'938'});
-			q7x3z9.display();
-		</script>
-	</div>
+	<a id="feedback-close" href="javascript:Lightbox.hide();">Close</a>
+	<iframe id="wufoo" title="IEEE Technology Navigator Survey" frameborder="0" src="http://rneville.wufoo.com/forms/q7x3z9/">
+		<a href="http://rneville.wufoo.com/forms/q7x3z9/" title="html form">Fill out my Wufoo form!</a>
+	</iframe>
 {% endblock %}
