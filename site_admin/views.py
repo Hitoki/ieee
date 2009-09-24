@@ -169,7 +169,10 @@ To complete this request and reset your password, please click on the link below
 %s
 
 If you did not request this password reset, simple ignore this email.
-""" % (abs_reset_url)
+
+Username: %s
+Email: %s
+""" % (abs_reset_url, user.username, user.email)
     
     logging.debug('settings.DEFAULT_FROM_EMAIL: %s' % settings.DEFAULT_FROM_EMAIL)
     logging.debug('user.email: %s' % user.email)
