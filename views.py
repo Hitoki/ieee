@@ -501,7 +501,7 @@ def ajax_nodes_xml(request):
     
     log('ajax_nodes_xml()')
     
-    DEBUG_ROAMER_MAX_NODES = 60
+    DEBUG_ROAMER_MAX_NODES = 100
     
     nodeId = request.GET['nodeId']
     log('  url: ' + request.get_full_path())
