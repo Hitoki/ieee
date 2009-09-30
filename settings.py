@@ -154,7 +154,7 @@ DEBUG_ENABLE_CPROFILE = False
 # If true, writes profiling logs for every request
 DEBUG_WRITE_PROFILING = False
 
-DEBUG_ENABLE_CLUSTERS = False
+DEBUG_ENABLE_CLUSTERS = True
 
 DISABLE_SITE = False
 

@@ -49,10 +49,10 @@ var Tags = {
             $('#tag-sort').attr('disabled', 'disabled');
         } else {
             if (this.tagSortOverlayElem) {
-				Flyover.detach(this.tagSortOverlayElem);
-				this.tagSortOverlayElem.remove();
-				this.tagSortOverlayElem = null;
-			}
+                Flyover.detach(this.tagSortOverlayElem);
+                this.tagSortOverlayElem.remove();
+                this.tagSortOverlayElem = null;
+            }
             $('#tag-sort').attr('disabled', '');
             Flyover.detach($('#tag-sort'));
         }
@@ -174,10 +174,12 @@ var Tags = {
             $('#sector-list-item-' + this.nodeId + ' a').addClass('active-sector');
         } else if (this.nodeType == 'tag_cluster') {
             //$('#cluster-list-item-' + this.nodeId + ' a').addClass('active-sector');
-            $('#sector-list-item-' + this.node.sectorId + ' a').addClass('active-sector');
+            if (this.node) {
+                $('#sector-list-item-' + this.node.sectorId + ' a').addClass('active-sector');
+            }
         } else if (this.nodeType == null) {
-			// No node selected
-		} else {
+            // No node selected
+        } else {
             alert('ERROR: Unknown this.nodeType "' + this.nodeType + '"');
         }
     },

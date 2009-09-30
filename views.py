@@ -362,7 +362,7 @@ def ajax_nodes_json(request):
             child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, None)
         
     elif node.node_type.name == NodeType.TAG_CLUSTER:
-        child_nodes = Node.objects.get_extra_info(node.get_tags(), extra_order_by)
+        child_nodes = Node.objects.get_extra_info(node.get_tags(), extra_order_by, filterIds)
         
     else:
         raise Exception('Unrecognized node type "%s" for node "%s"' % (node.node_type.name, node.name))
