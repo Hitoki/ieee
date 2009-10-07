@@ -605,6 +605,8 @@ class Society(models.Model):
     name = models.CharField(max_length=500)
     abbreviation = models.CharField(max_length=20)
     url = models.CharField(blank=True,max_length=1000)
+    logo_thumbnail = models.FileField(upload_to='images/sc_logos/thumbnail')
+    logo_full = models.FileField(upload_to='images/sc_logos/full')
     
     users = models.ManyToManyField(User, related_name='societies', blank=True)
     

@@ -101,6 +101,7 @@ urlpatterns = patterns('',
     url(r'^report/clusters$', views.clusters_report, name='admin_clusters_report'),
     url(r'^report/priority$', views.priority_report, name='admin_priority_report'),
     url(r'^report/duplicate_tags$', views.duplicate_tags_report, name='admin_duplicate_tags_report'),
+    url(r'^report/society_logos$', views.society_logos_report, name='admin_society_logos_report'),
     
     # Exports
     url(r'^export/tab_resources$', views.export_tab_resources, name='admin_export_tab_resources'),

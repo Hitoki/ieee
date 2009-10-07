@@ -1,0 +1,53 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <script>
+        $(function() {
+            $('img.logo-flyover').each(function() {
+                Flyover.attach(this, {
+                    content_html: "<img src=\"" + $(this).metadata().full_url + "\" />"
+                });
+            });
+        });
+    </script>
+    
+    <h1>Society Logos Report</h1>
+    
+    {% if new_logos_count %}
+        <p class="notification">
+            {{ new_logos_count }} new logos were detected.
+        </p>
+    {% endif %}
+    
+    <table class="grid">
+        <tr>
+            <th>
+                Society Name
+            </th>
+            <th>
+                Logo
+            </th>
+        </tr>
+        {% for society in societies %}
+            <tr>
+                <td>
+                    <div class="logo-container">
+                    {% if society.logo_thumbnail %}
+                            <img src="{{ society.logo_thumbnail.url }}" class="logo-flyover { full_url:'{{ society.logo_full.url }}' }" />
+                    {% else %}
+                        <p class="no-logo">
+                            (no logo)
+                        </p>
+                    {% endif %}
+                    </div>
+                </td>
+                <td>
+                    {{ society.name }}
+                    ({{ society.abbreviation }})
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

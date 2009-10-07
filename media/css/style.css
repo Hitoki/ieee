@@ -1412,3 +1412,20 @@ p.export {
 	color:gray;
 	padding:.3em 1em;
 }
+
+.logo-container {
+    min-height:40px;
+}
+
+.no-logo {
+    color:gray;
+    text-align:center;
+    margin:0;
+}
+
+.notification {
+    background:#ffffe1;
+    border:1px solid gray;
+    padding:.5em 1em;
+    margin-bottom:1em;
+}

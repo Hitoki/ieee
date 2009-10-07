@@ -3662,6 +3662,60 @@ def duplicate_tags_report(request):
             'page_time': page_time,
         })
 
+def remove_prefix(prefix, filename):
+    prefix = os.path.normpath(prefix)
+    filename = os.path.normpath(filename)
+    if not filename.startswith(prefix):
+        raise Exception('filename "%s" doesn\'t start with prefix "%s"' % (filename, prefix))
+    filename = filename[len(prefix):]
+    if len(filename) > 0 and filename[0] == '\\':
+        filename = filename[1:]
+    return filename
+
+@login_required
+@admin_required
+def society_logos_report(request):
+    societies = Society.objects.all()
+    
+    logos_path = os.path.join(settings.MEDIA_ROOT, 'images', 'sc_logos')
+    full_logos_path = os.path.join(settings.MEDIA_ROOT, 'images', 'sc_logos', 'full')
+    thumbnail_logos_path = os.path.join(settings.MEDIA_ROOT, 'images', 'sc_logos', 'thumbnail')
+    
+    new_logos_count = 0
+    for society in societies:
+        logo_filename = os.path.join(logos_path, society.abbreviation.lower() + '.jpg')
+        if os.path.exists(logo_filename):
+            print 'found logo'
+            
+            from PIL import Image
+            import shutil
+            
+            MAX_WIDTH = 100
+            MAX_HEIGHT = 100
+            
+            image = Image.open(logo_filename)
+                
+            # Create a thumbnail of the original logo
+            full_logo_filename = os.path.join(full_logos_path, society.abbreviation.lower() + '.jpg')
+            thumbnail_logo_filename = os.path.join(thumbnail_logos_path, society.abbreviation.lower() + '.jpg')
+            image.thumbnail((MAX_WIDTH, MAX_HEIGHT), Image.ANTIALIAS)
+            image.save(thumbnail_logo_filename)
+            del image
+            
+            # Move the original to the "full" folder
+            shutil.move(logo_filename, full_logo_filename)
+            
+            society.logo_full = remove_prefix(settings.MEDIA_ROOT, full_logo_filename)
+            society.logo_thumbnail = remove_prefix(settings.MEDIA_ROOT, thumbnail_logo_filename)
+            society.save()
+            
+            new_logos_count += 1
+    
+    return render(request, 'site_admin/society_logos_report.html', {
+        'societies': societies,
+        'new_logos_count': new_logos_count,
+    })
+
 #def create_admin_login(request):
 #    "Create a test admin account."
 #    username = 'test'

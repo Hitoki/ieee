@@ -90,8 +90,11 @@ var Flyover = {
             elem.onmouseover = function() {
                 Flyover.show(this, options);
             }
-            elem.onmouseout = function() {
-                Flyover.onMouseOut();
+            
+            if ((!options || !('sticky' in options) || !options.sticky)) {
+                elem.onmouseout = function() {
+                    Flyover.onMouseOut();
+                }
             }
             
             if ((options && 'showInitial' in options && options.showInitial) || ('showInitial' in $(elem).metadata() && $(elem).metadata().showInitial)) {
@@ -163,6 +166,7 @@ var Flyover = {
             event: 'hover',
             arrow: true,
             content: null,
+            content_html: null,
             sticky: false,
             closeButton: false,
             clickOffClose: false,
@@ -275,6 +279,8 @@ var Flyover = {
             this.showArrow(this.options.position);
         }
         
+        log(this.options.sticky);
+        
         // If sticky is on, we don't need this (since the flyover will be manually closed).
         // If closeOnMouseOutLink is on, we don't want this to delay hiding the flyover.
         if (!this.options.sticky && !this.options.closeOnMouseOutLink) {
@@ -297,6 +303,11 @@ var Flyover = {
         } else if (this.options.content !== null) {
             // Use the given content
             this.content.html(htmlentities(this.options.content));
+            this._reposition();
+            
+        } else if (this.options.content_html !== null) {
+            // Use the given HTML content
+            this.content.html(this.options.content_html);
             this._reposition();
             
         } else {
@@ -377,6 +388,7 @@ var Flyover = {
     },
     
     onMouseOut: function() {
+        log('onMouseOut()');
         this._startHideTimer();
     },
     
