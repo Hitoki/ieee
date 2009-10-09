@@ -17,7 +17,7 @@ from django.db import transaction
 from django.core.mail import EmailMessage
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponsePermanentRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from django.contrib.auth.models import User
@@ -380,7 +380,7 @@ def logout(request):
         profile.last_logout_time = datetime.now()
         profile.save()
     auth.logout(request)
-    return HttpResponsePermanentRedirect(reverse('index'))
+    return HttpResponseRedirect(reverse('index'))
 
 def forgot_password(request):
     cancel_page = request.GET.get('cancel_page', '')
@@ -1821,7 +1821,7 @@ def create_tag(request):
                 #        }
                 #    })
                 #)
-        #return HttpResponsePermanentRedirect(reverse('admin_view_tag', args=(tagId,)))
+        #return HttpResponseRedirect(reverse('admin_view_tag', args=(tagId,)))
             
     return render(request, 'site_admin/create_tag.html', {
         'form': form,
@@ -1945,7 +1945,7 @@ def save_tag(request, tag_id):
         if return_url != '':
             return HttpResponseRedirect(return_url)
         else:
-            return HttpResponsePermanentRedirect(reverse('admin_view_tag', args=[tag.id]))
+            return HttpResponseRedirect(reverse('admin_view_tag', args=[tag.id]))
 
 def _tag_not_found_response(request, tag_id, return_url):
     if return_url is None:
@@ -2333,7 +2333,7 @@ def save_user(request):
                     'plaintext_password': form.cleaned_data['password1'],
                 })
                 
-            return HttpResponsePermanentRedirect(reverse('admin_users'))
+            return HttpResponseRedirect(reverse('admin_users'))
         
     return render(request, 'site_admin/edit_user.html', {
         'user_id': user_id,
@@ -2346,7 +2346,7 @@ def save_user(request):
 def delete_user(request, user_id):
     "Deletes a user."
     User.objects.get(id=user_id).delete()
-    return HttpResponsePermanentRedirect(reverse('admin_users'))
+    return HttpResponseRedirect(reverse('admin_users'))
 
 @login_required
 @admin_required
@@ -2358,7 +2358,7 @@ Takes as input a list of user id's in the POST list 'user_ids' (use checkboxes w
     for user_id in user_ids:
         User.objects.get(id=user_id).delete()
         
-    return HttpResponsePermanentRedirect(reverse('admin_users'))
+    return HttpResponseRedirect(reverse('admin_users'))
 
 def _send_user_login_info_email(request, user, plaintext_password, reason):
     
@@ -2821,7 +2821,7 @@ def save_society(request):
 @admin_required
 def delete_society(request, society_id):
     Society.objects.get(id=society_id).delete()
-    return HttpResponsePermanentRedirect(reverse('admin_societies'))
+    return HttpResponseRedirect(reverse('admin_societies'))
 
 @login_required
 @admin_required
@@ -3095,10 +3095,10 @@ def save_resource(request):
                     <a href="javascript:window.close();">Close window</a>
                 """)
             elif return_url == '':
-                return HttpResponsePermanentRedirect(reverse('admin_view_resource', args=[resource.id]))
+                return HttpResponseRedirect(reverse('admin_view_resource', args=[resource.id]))
                 
             else:
-                return HttpResponsePermanentRedirect(return_url)
+                return HttpResponseRedirect(return_url)
     
     # Re-render the form
     if 'id' in request.POST:
@@ -3128,7 +3128,7 @@ def delete_resource(request, resource_id):
     old_nodes = resource.nodes.all()
     Resource.objects.get(id=resource_id).delete()
     _update_node_totals(old_nodes)
-    return HttpResponsePermanentRedirect(next)
+    return HttpResponseRedirect(next)
 
 #@login_required
 #@society_manager_or_admin_required
