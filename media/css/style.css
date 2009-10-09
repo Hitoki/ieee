@@ -1365,6 +1365,15 @@ p.export {
     margin-left: 370px;
 }
 
+#logout-message {
+    clear:both;
+}
+
+#logout-message #wufoo {
+    height:350px;
+    border:1px solid gray;
+}
+
 #adminLogin ul.nootabs-menus li {
    font-size: 18px;
 }

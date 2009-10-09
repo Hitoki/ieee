@@ -56,9 +56,23 @@
                     </tr>
                 </table>
                 
-                <div id="login-message">
-                    Technology Navigator helps you discover <span id="connections">connections</span> across the IEEE universe of information.
-                </div>
+                {% if feedback %}
+                    <div id="logout-message">
+                        <div class="notification">
+                            <h1>You Have Been Logged Out.</h1>
+                            <p>
+                                Thanks for using the IEEE Technology Navigator.  Help us improve - complete the survey:
+                            </p>
+                            <iframe id="wufoo" title="IEEE Technology Navigator Survey" src="http://rneville.wufoo.com/forms/q7x3z9/">
+                                <a href="http://rneville.wufoo.com/forms/q7x3z9/" title="html form">Fill out my Wufoo form!</a>
+                            </iframe>
+                        </div>
+                    </div>
+                {% else %}
+                    <div id="login-message">
+                        Technology Navigator helps you discover <span id="connections">connections</span> across the IEEE universe of information.
+                    </div>
+                {% endif %}
                 
             </form>
             <br style="clear:both"/>

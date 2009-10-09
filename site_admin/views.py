@@ -304,6 +304,7 @@ def admin_required(fn):
 def login(request):
     next = request.GET.get('next', '')
     remote_addr = request.META['REMOTE_ADDR']
+    feedback = request.GET.get('feedback')
     
     # Check for too many bad logins from this IP
     if FailedLoginLog.objects.check_if_disabled(None, remote_addr):
@@ -372,6 +373,7 @@ def login(request):
         'next': next,
         'show_society_login_banner': settings.SHOW_SOCIETY_LOGIN_BANNER,
         'form': form,
+        'feedback': feedback,
     })
 
 def logout(request):
@@ -380,7 +382,7 @@ def logout(request):
         profile.last_logout_time = datetime.now()
         profile.save()
     auth.logout(request)
-    return HttpResponseRedirect(reverse('index'))
+    return HttpResponseRedirect(reverse('admin_login') + '?feedback=1')
 
 def forgot_password(request):
     cancel_page = request.GET.get('cancel_page', '')
