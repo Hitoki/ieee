@@ -38,13 +38,12 @@
                         <img class="leftCorner" src="{{MEDIA_URL}}images/mainTopLeftCorner.gif" width="26" height="67" />
                         <a href="javascript:Tags.showHelp();" class="home"><img class="banner" src="{{MEDIA_URL}}images/ieee_banner.jpg" width="563" height="42" /></a>
                         
-
+                        <a id="feedback-link" href="{% url feedback %}" class="floating lightbox { customClass:'feedback' }">Help us improve - complete the survey!</a>
+                        
                         <a id="switch-link" class="floating" href="{% url roamer %}">
                             <img src="{{MEDIA_URL}}images/roamer_icon.png"/>
-                            Switch to<br/>
-                            Visual Map Interface (Beta)
+                            Switch to Visual Map Interface (Beta)
                         </a>
-
                         
                         <img class="rightCorner" src="{{MEDIA_URL}}images/mainTopRightCorner.gif" width="26" height="67" />
                     </div>
@@ -157,9 +156,6 @@
                         
                         </div>
                             <div class="ui-footer">
-                                <div class="feedback-bar">
-                                    Comments, Suggestions? <a href="{% url feedback %}" class="lightbox { customClass:'feedback' }">Send Feedback</a>
-                                </div>
                                 
                                 {% if user %}
                                     <p class="admin-links">

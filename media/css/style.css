@@ -105,7 +105,7 @@ table.main td.center .center-pad {
     display:block;
     position:absolute;
     right:15px;
-    top:15px;
+    bottom:5px;
     font-size:75%;
     color:gray;
     text-align:right;
@@ -116,12 +116,26 @@ table.main td.center .center-pad {
     color: gray;
 }
 
+#header #feedback-link {
+    top:15px;
+    height:1.7em;
+    font-size:.8em;
+    background:#33cc00;
+    color:white;
+    padding:0 2em;
+}
+
+#header #switch-link {
+    bottom:5px;
+}
+
 #header a.floating img {
     vertical-align:middle;
     border:none;
 }
 
 .center-pad p.admin-links {
+    clear:both;
     display:block;
     float:right;
     margin: 0 10px 10px 0;
@@ -1315,25 +1329,25 @@ p.export {
 /* Login page */
 
 #about-project-tab p {
-	margin:1.2em 0;
+    margin:1.2em 0;
 }
 
 #about-project-tab ul {
-	margin:0 1em;
+    margin:0 1em;
 }
 
 #about-team-tab p {
-	margin:1em 0;
+    margin:1em 0;
 }
 
 #about-team-tab p.name {
-	font-weight:bold;
-	clear:both;
+    font-weight:bold;
+    clear:both;
 }
 
 #about-team-tab img {
-	float:left;
-	margin:0 1em 1.5em 0;
+    float:left;
+    margin:0 1em 1.5em 0;
 }
 
 #about-team-tab h1.about-team-section {
@@ -1392,25 +1406,25 @@ p.export {
 }
 
 .feedback-page {
-	background:white;
+    background:white;
 }
 
 #wufoo {
-	width:100%;
-	height:100%;
+    width:100%;
+    height:100%;
 }
 
 #feedback-close {
-	display:block;
-	position:absolute;
-	right:20px;
-	top:5px;
-	font-weight:bold;
-	text-decoration:none;
-	background:white;
-	border:1px outset silver;
-	color:gray;
-	padding:.3em 1em;
+    display:block;
+    position:absolute;
+    right:20px;
+    top:5px;
+    font-weight:bold;
+    text-decoration:none;
+    background:white;
+    border:1px outset silver;
+    color:gray;
+    padding:.3em 1em;
 }
 
 .logo-container {
