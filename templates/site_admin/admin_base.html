@@ -8,7 +8,7 @@
 
 {% block extra_header %}
     {% if user.is_authenticated %}
-        <a id="feedback-link" href="{% url feedback %}" class="floating lightbox { customClass:'feedback' }">Help us improve - complete the survey!</a>
+        <a id="feedback-link" href="{% url feedback %}" class="floating lightbox { customClass:'feedback' }">&nbsp;</a>
         
         <div class="floating">
             Logged in as {{ user.username }} |<a href="{% url change_password %}?return_url=" class="changePassword live-url { varName:'return_url' }">Change Password</a> |<a href="{% url admin_logout %}" class="logout">Log Out</a>

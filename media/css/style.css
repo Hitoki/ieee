@@ -120,9 +120,15 @@ table.main td.center .center-pad {
     top:15px;
     height:1.7em;
     font-size:.8em;
-    background:#33cc00;
     color:white;
-    padding:0 2em;
+    width:234px;
+    background-image:url(../images/survey_button.png);
+    background-position: 0 0;
+    background-repeat: no-repeat;
+}
+
+#header #feedback-link:hover {
+    background-position: 0 -19px;
 }
 
 #header #switch-link {
