@@ -1273,7 +1273,7 @@ p.export {
 
 #home-container #home-stepstart-cell #start {
     font-weight: bold;
-    color: #00a651;
+    color: #33CC00;
 }
 
 #home-container #home-stepsort-cell {
@@ -1305,7 +1305,7 @@ p.export {
 }
 
 #home-container #home-titletag-cell #connections, #login-message #connections {
-    color: #00a651;
+    color: #33CC00;
 }
 
 /* */
@@ -1454,7 +1454,14 @@ p.export {
 
 .notification {
     background:#ffffe1;
-    border:1px solid gray;
     padding:.5em 1em;
     margin-bottom:1em;
+}
+
+.notification h1 {
+   color:#666666;
+}
+
+.notification #survey_label {
+    color:#33cc00;
 }
