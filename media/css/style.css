@@ -1442,10 +1442,6 @@ p.export {
     padding:.3em 1em;
 }
 
-.logo-container {
-    min-height:40px;
-}
-
 .no-logo {
     color:gray;
     text-align:center;
@@ -1464,4 +1460,13 @@ p.export {
 
 .notification #survey_label {
     color:#33cc00;
+}
+
+.society-logo-row-odd {
+	background:#cde;
+}
+
+.society-logo-row-odd td, .society-logo-row-even td {
+	padding:1em .5em !important;
+	vertical-align:middle;
 }

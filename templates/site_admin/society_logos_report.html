@@ -30,9 +30,8 @@
             </th>
         </tr>
         {% for society in societies %}
-            <tr>
+            <tr class="{% cycle 'society-logo-row-odd' 'society-logo-row-even' %}">
                 <td>
-                    <div class="logo-container">
                     {% if society.logo_thumbnail %}
                             <img src="{{ society.logo_thumbnail.url }}" class="logo-flyover { full_url:'{{ society.logo_full.url }}' }" />
                     {% else %}
@@ -40,7 +39,6 @@
                             (no logo)
                         </p>
                     {% endif %}
-                    </div>
                 </td>
                 <td>
                     {{ society.name }}
