@@ -33,6 +33,30 @@
                 {{ resource.resource_type.name }}
             </td>
         </tr>
+        <tr>
+            <th>
+                Year:
+            </th>
+            <td>
+                {{ resource.year|default:"" }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Date:
+            </th>
+            <td>
+                {{ resource.date|date }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Conference Series:
+            </th>
+            <td>
+                {{ resource.conference_series }}
+            </td>
+        </tr>
         {% ifequal resource.resource_type.name "standard" %}
             <tr>
                 <th>

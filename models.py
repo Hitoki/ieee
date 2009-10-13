@@ -1,4 +1,5 @@
 
+
 from django.contrib.auth.models import User, UserManager
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
@@ -672,6 +673,50 @@ class ResourceManager(models.Manager):
     
     #def get_random(self, count):
     #    return self.all().order_by('?')[:count]
+    
+    def get_conference_series(self):
+        """
+        Returns a list of all distinct conference series codes and the number of conferences in each series (ignores blank fields).
+        Returns:
+            [
+                (conference_series, num_in_series),
+                ...
+            ]
+        """
+        cursor = connection.cursor()
+        cursor.execute("""
+            SELECT conference_series, COUNT(id) AS num_in_series
+            FROM ieeetags_resource
+            WHERE conference_series <> ''
+            GROUP BY conference_series
+            """)
+        return cursor.fetchall()
+    
+    def get_current_conference_for_series(self, series):
+        """
+        Return the current conference for the given series.
+        This defined as the next upcoming conference (>= now).
+        If there is no upcoming, then use the last conference.
+        """
+        current_year = datetime.today().year
+        resources = Resource.objects.filter(resource_type__name=ResourceType.CONFERENCE, conference_series=series, year__gte=current_year).order_by('date', 'year', 'id')
+        if resources.count():
+            # Use the next future resource
+            return resources[0]
+        else:
+            # Use the most-recent past resource
+            resources = Resource.objects.filter(resource_type__name=ResourceType.CONFERENCE, conference_series=series, year__lt=current_year).order_by('-date', '-year', '-id')
+            if resources.count():
+                return resources[0]
+            else:
+                # There are no conferences in this series
+                return None
+    
+    def get_non_current_conferences_for_series(self, series, current_conference=None):
+        if current_conference is None:
+            current_conference = self.get_current_conference_for_series(series)
+        # Get the other conferences in the series
+        return Resource.objects.filter(conference_series=series).exclude(id=current_conference.id).all()
 
 class Resource(models.Model):
     STANDARD_STATUS_PROJECT = 'project'
@@ -694,6 +739,8 @@ class Resource(models.Model):
     priority_to_tag = models.BooleanField()
     completed = models.BooleanField()
     keywords = models.CharField(max_length=5000, blank=True)
+    conference_series = models.CharField(max_length=100, blank=True)
+    date = models.DateField(null=True, blank=True)
     
     nodes = models.ManyToManyField(Node, related_name='resources')
     societies = models.ManyToManyField(Society, related_name='resources')

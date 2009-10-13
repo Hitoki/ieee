@@ -1028,8 +1028,8 @@ def _import_resources(file, batch_commits=False):
     
     for row in reader:
         
-        #Type, ID, Name, Description, URL, Tags, Society Abbreviations, Year, Standard Status, Technical Committees, Keywords, Priority, Completed
-        type1, ieee_id, name, description, url, tag_names, society_abbreviations, year, standard_status, technical_committees, keywords, priority_to_tag, completed = row
+        #Type, ID, Name, Description, URL, Tags, Society Abbreviations, Year, Standard Status, Technical Committees, Keywords, Priority, Completed, Project Code, Date
+        type1, ieee_id, name, description, url, tag_names, society_abbreviations, year, standard_status, technical_committees, keywords, priority_to_tag, completed, project_code, date1 = row
         
         #logging.debug('    name: %s' % name)
         
@@ -1042,6 +1042,10 @@ def _import_resources(file, batch_commits=False):
         url = url.strip()
         society_abbreviations = [society_abbreviations.strip() for society_abbreviations in society_abbreviations.split(',')]
         standard_status = standard_status.strip()
+        if date1.strip() == '':
+            date1 = None
+        else:
+            date1 = datetime.strptime(date1, '%m/%d/%Y')
         
         resource_type = ResourceType.objects.getFromName(type1)
         
@@ -1112,6 +1116,8 @@ def _import_resources(file, batch_commits=False):
                     
                     else:
                         #logging.debug('  Adding resource "%s"' % name)
+                        #logging.debug('  project_code: %s' % project_code)
+                        
                         resource = Resource.objects.create(
                             resource_type=resource_type,
                             ieee_id=ieee_id,
@@ -1123,6 +1129,8 @@ def _import_resources(file, batch_commits=False):
                             priority_to_tag=priority_to_tag,
                             standard_status=standard_status,
                             completed=completed,
+                            conference_series=project_code,
+                            date=date1,
                         )
                         resource.societies = societies
                         resource.save()
@@ -1453,13 +1461,9 @@ def import_users(request):
     
 @login_required
 @admin_required
-#@transaction.commit_manually
-#@transaction.commit_on_success
+@transaction.commit_on_success
 def import_resources(request):
     if request.method == 'GET':
-        # DEBUG: Delete all resources first...
-        #Resource.objects.all().delete()
-        
         # Display form
         form = ImportFileForm()
         return render(request, 'site_admin/import_resources_file.html', {
@@ -2982,6 +2986,9 @@ def edit_resource(request, resource_id=None):
             'societies': societies,
         })
         if not request.user.is_superuser:
+            make_display_only(form.fields['conference_series'])
+            make_display_only(form.fields['year'])
+            make_display_only(form.fields['date'])
             make_display_only(form.fields['societies'], is_multi_search=True)
         show_standard_status = True
         
@@ -3001,6 +3008,9 @@ def edit_resource(request, resource_id=None):
             'completed': resource.completed,
             'keywords': resource.keywords,
             'standard_status': resource.standard_status,
+            'conference_series': resource.conference_series,
+            'year': resource.year,
+            'date': resource.date,
         })
         
         if society_id != '':
@@ -3010,10 +3020,13 @@ def edit_resource(request, resource_id=None):
         # Disable edit resource form fields for societies
         if not request.user.is_superuser:
             make_display_only(form.fields['name'])
+            make_display_only(form.fields['conference_series'])
             make_display_only(form.fields['societies'], is_multi_search=True)
             make_display_only(form.fields['ieee_id'])
             make_display_only(form.fields['keywords'])
             make_display_only(form.fields['standard_status'])
+            make_display_only(form.fields['year'])
+            make_display_only(form.fields['date'])
             show_standard_status = True
         else:
             if resource.resource_type.name == ResourceType.STANDARD:
@@ -3076,6 +3089,9 @@ def save_resource(request):
             resource.keywords = form.cleaned_data['keywords']
             if 'standard_status' in request.POST:
                 resource.standard_status = form.cleaned_data['standard_status']
+            resource.conference_series = form.cleaned_data['conference_series']
+            resource.year = form.cleaned_data['year']
+            resource.date = form.cleaned_data['date']
             resource.save()
             
             # Add all resource tags to the owning societies
@@ -3717,6 +3733,26 @@ def society_logos_report(request):
         'societies': societies,
         'new_logos_count': new_logos_count,
     })
+
+@login_required
+@admin_required
+def conference_series_report(request):
+    conferences = []
+    serieses = Resource.objects.get_conference_series()
+
+    # Get the newest conference for each series
+    for conference_series, num_in_series in serieses:
+        # Get most recent conference for the series
+        resource = Resource.objects.get_current_conference_for_series(conference_series)
+        # TODO: Get only other conferences from this society
+        resource.other_conferences = Resource.objects.get_non_current_conferences_for_series(conference_series, current_conference=resource)
+        conferences.append(resource)
+    
+    return render(request, 'site_admin/conference_series_report.html', {
+        'serieses': serieses,
+        'conferences': conferences,
+    })
+
 
 #def create_admin_login(request):
 #    "Create a test admin account."

@@ -26,16 +26,17 @@
         <li>
             Reports <span class="admin-note">(Please allow up to a minute for the report to run)</span>:
             <ul>
-                <li><a href="{% url admin_login_report %}">Login report</a></li>
-                <li><a href="{% url admin_tagged_resources_report "all" %}">Tagged resources report</a></li>
-                <li><a href="{% url admin_tagged_resources_report "priority" %}">Tagged resources report (priority-only)</a></li>
-                <li><a href="{% url admin_tags_report %}">Tags report</a></li>
+                <li><a href="{% url admin_login_report %}">Login Report</a></li>
+                <li><a href="{% url admin_tagged_resources_report "all" %}">Tagged resources Report</a></li>
+                <li><a href="{% url admin_tagged_resources_report "priority" %}">Tagged resources Report (priority-only)</a></li>
+                <li><a href="{% url admin_tags_report %}">Tags Report</a></li>
                 {% if DEBUG_ENABLE_CLUSTERS %}
                     <li><a href="{% url admin_clusters_report %}">Clusters Report</a></li>
                 {% endif %}
                 <li><a href="{% url admin_priority_report %}">Priority Report</a></li>
                 <li><a href="{% url admin_duplicate_tags_report %}">Duplicate Tags Report</a></li>
                 <li><a href="{% url admin_society_logos_report %}">Society Logos Report</a></li>
+                <li><a href="{% url admin_conference_series_report %}">Conference Series Report</a></li>
             </ul>
         </li>
         {% comment %}

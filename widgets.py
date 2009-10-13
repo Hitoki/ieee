@@ -207,6 +207,13 @@ class DisplayOnlyWidget(widgets.HiddenInput):
                 for item in data:
                     display.append(item['name'])
                 display = string.join(display, ', ')
+            
+            elif value is None:
+                super_render = ''
+                display = ''
+            
+            else:
+                assert False, 'type is %r' % str(type(value))
                 
         else:
         

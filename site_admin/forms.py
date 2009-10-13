@@ -115,6 +115,7 @@ class EditResourceForm(Form):
     id = IntegerField(widget=HiddenInput(), required=False)
     name = CharField(max_length=500, label='Resource Name')
     resource_type = ModelChoiceField(queryset=ResourceType.objects.all(), widget=DisplayOnlyWidget(field_type=type(ModelChoiceField), use_capwords=True), label='Resource Type')
+    conference_series = CharField(required=False)
     ieee_id = CharField(required=False, label='ID')
     description = CharField(widget=Textarea, max_length=1000, required=False)
     url = CharField(max_length=1000, required=False, label='URL')
@@ -124,6 +125,8 @@ class EditResourceForm(Form):
     completed = BooleanField(required=False)
     standard_status = ChoiceField(choices=_make_choices(Resource.STANDARD_STATUSES), required=False)
     keywords = CharField(max_length=1000, required=False)
+    year = IntegerField(required=False)
+    date = DateField(required=False)
 
 EditResourceForm = autostrip(EditResourceForm)
 

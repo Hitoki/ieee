@@ -1,0 +1,113 @@
+{% extends 'site_admin/admin_base.html' %}
+{% load filters %}
+
+{% block main_table_content %}
+    <style>
+        tr.current {
+            font-weight:bold;
+        }
+        tr.other {
+            color:gray;
+        }
+        tr.other td.id {
+            /*padding-left:2em;*/
+        }
+        .instruction {
+            color:gray;
+        }
+    </style>
+    
+    <h1>Conference Series Report</h1>
+    
+    <h2>Series</h2>
+    
+    <p>
+        Found {{ serieses|length }} series.
+    </p>
+    
+    <table class="grid">
+        <tr>
+            <th>
+                Conference Series
+            </th>
+            <th>
+                # in Series
+            </th>
+        </tr>
+        {% for series in serieses %}
+            <tr>
+                <td>
+                    <a href="#{{ series.0|urlencode }}">{{ series.0 }}</a> 
+                </td>
+                <td>
+                    {{ series.1 }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Current Conference For Each Series</h2>
+    
+    <p class="instruction">
+        Current conference shown first in bold, other conferences in the same series shown in gray.
+    </p>
+    
+    <table class="grid">
+        <tr>
+            <th>
+                Series
+            </th>
+            <th>
+                Year
+            </th>
+            <th>
+                ID
+            </th>
+            <th>
+                Name
+            </th>
+        </tr>
+        {% for conference in conferences %}
+            <tr class="current">
+                <td>
+                    {{ conference.conference_series }}
+                </td>
+                <td>
+                    {{ conference.year }}
+                </td>
+                <td>
+                    <a name="{{ conference.conference_series|urlencode }}" href="{% url admin_view_resource conference.id %}">
+                        {{ conference.id }}
+                    </a>
+                </td>
+                <td>
+                    {{ conference.name }}
+                </td>
+            </tr>
+            {% for other_conference in conference.other_conferences %}
+                <tr class="other">
+                    <td>
+                        {{ other_conference.conference_series }}
+                    </td>
+                    <td>
+                        {{ other_conference.year }}
+                    </td>
+                    <td class="id">
+                        <a href="{% url admin_view_resource conference.id %}">
+                            {{ other_conference.id }}
+                        </a>
+                    </td>
+                    <td>
+                        {{ other_conference.name }}
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="4">
+                    &nbsp;
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
