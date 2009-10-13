@@ -227,7 +227,14 @@
     #        <a href="{% url admin_edit_society society.id %}?return_url={{ current_url|urlencode }}" class="edit">Edit Society</a>
     #    {% endifpermission %}
     {% endcomment %}
-    <h1>{{ society.name }} ({{ society.abbreviation }}) Society</h1>
+    
+	<h1>{{ society.name }} ({{ society.abbreviation }}) Society</h1>
+	
+	{% if society.logo_thumbnail %}
+		<p>
+			<img src="{{ society.logo_full.url }}" />
+		</p>
+	{% endif %}
     
     <table class="full-grid manage-grid">
         {% comment %}

@@ -335,6 +335,14 @@ function attachItemsPerPage(elem) {
     });    
 }
 
+function attachSocietyLogoFlyovers(elem) {
+	elem.find('img.logo-flyover').each(function() {
+		Flyover.attach(this, {
+			content_html: "<img src=\"" + $(this).metadata().full_url + "\" />"
+		});
+	});
+}
+
 // Call this whenever new content is created dynamically to attach any scripts
 function attachScripts(elem) {
     elem = $(elem);
@@ -346,6 +354,7 @@ function attachScripts(elem) {
     attachNootabs(elem);
     attachSelectCheckboxOnClick(elem);
     attachItemsPerPage(elem);
+	attachSocietyLogoFlyovers(elem);
 }
 
 $(function() {
@@ -386,5 +395,8 @@ $(function() {
             log('-----------------------------------');
         }
     );
+	
+	// Bind society logo flyovers
+	attachSocietyLogoFlyovers($(document));
 });
 

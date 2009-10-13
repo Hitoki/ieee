@@ -2,16 +2,6 @@
 
 {% block main_table_content %}
     
-    <script>
-        $(function() {
-            $('img.logo-flyover').each(function() {
-                Flyover.attach(this, {
-                    content_html: "<img src=\"" + $(this).metadata().full_url + "\" />"
-                });
-            });
-        });
-    </script>
-    
     <h1>Society Logos Report</h1>
     
     {% if new_logos_count %}
@@ -33,7 +23,7 @@
             <tr class="{% cycle 'society-logo-row-odd' 'society-logo-row-even' %}">
                 <td>
                     {% if society.logo_thumbnail %}
-                            <img src="{{ society.logo_thumbnail.url }}" class="logo-flyover { full_url:'{{ society.logo_full.url }}' }" />
+						<img src="{{ society.logo_thumbnail.url }}" class="logo-flyover { full_url:'{{ society.logo_full.url }}' }" />
                     {% else %}
                         <p class="no-logo">
                             (no logo)

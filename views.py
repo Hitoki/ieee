@@ -225,17 +225,6 @@ def ajax_tag_content(request):
             'clusters': clusters,
         })
     
-    # Build list of icon & no-icon societies
-    societies = tag.societies.all()
-    iconSocieties = []
-    noIconSocieties = []
-    for society in societies:
-        iconPath = os.path.join(settings.MEDIA_ROOT, 'images', 'sc_logos', society.abbreviation + '.jpg')
-        if os.path.exists(iconPath):
-            iconSocieties.append(society)
-        else:
-            noIconSocieties.append(society)
-    
     num_resources = Resource.objects.getForNode(tag).count()
     conferences = Resource.objects.getForNode(tag, resourceType=ResourceType.CONFERENCE)
     experts = Resource.objects.getForNode(tag, resourceType=ResourceType.EXPERT)
@@ -244,9 +233,6 @@ def ajax_tag_content(request):
     
     return render(request, 'content.html', {
         'tag':tag,
-        'iconSocieties': iconSocieties,
-        'noIconSocieties': noIconSocieties,
-        'num_societies': societies.count(),
         'conferences': conferences,
         'experts': experts,
         'periodicals': periodicals,

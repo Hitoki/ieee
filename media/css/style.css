@@ -291,21 +291,6 @@ ul#view-header li {
     color: #485973;
 }
 
-#content .group {
-    color: #444444;
-    margin: 0px 0px 10px 0px;
-    padding: 0px;
-    text-align:left;
-}
-
-#content .group a img {
-    border: none;
-}
-
-#content .group a p:hover {
-    text-decoration: underline;
-}
-
 #content .item_head {
     background-color: #006599;
     color: #ffffff;
@@ -324,6 +309,10 @@ ul#view-header li {
 #content table.society-images {
     font-weight: bold;
     margin: 5px 5px 0 25px;
+}
+
+#content table.society-images img {
+    border:none;
 }
 
 #content table.society-images td {

@@ -1,5 +1,7 @@
 {% load filters %}
 
+{# NOTE: This the template page for the Resource Results lightbox/popup #}
+
 {% block content %}
     
     {% if is_ajax %}
@@ -24,7 +26,7 @@
                             #<li><a href="">Filters ({{ tag.filters.count }})</a></li>
 							{% endcomment %}
                             <li><a href="">Related Tags ({{ tag.related_tags.count }})</a></li>
-                            <li><a href="">Societies {% comment %}<span>({{ num_societies }})</span>{% endcomment %}</a></li>
+                            <li><a href="">Societies <span>({{ tag.societies.count }})</span></a></li>
                             <li><a href="">Conferences <span>({{conferences|length}})</span></a></li>
                             <li><a href="">Periodicals <span>({{periodicals|length}})</span></a></li>
                             <li><a href="">Standards <span>({{standards|length}})</span></a></li>
@@ -89,66 +91,31 @@
                         
 						<!-- Societies -->
                         <div>
-                            {% if iconSocieties or noIconSocieties %}
-                                <div class="group">
-                                    {% if iconSocieties %}
-                                        <!-- Societies with icons -->
-                                        <!--<p class="{% cycle 'item_even' 'item_odd' %}">-->
-                                            <table class="society-images">
-                                                {% for society in iconSocieties %}
-                                                    <tr>
-                                                    {% comment %}
-                                                    #    <td class="society-logo">
-                                                    #        <img src="{{MEDIA_URL}}images/sc_logos/{{society.abbreviation}}.jpg" />                                                    #   </td>
-                                                    {% endcomment %}
-                                                        <td>
-                                                            {% if society.url %}
-                                                                <a href="{{ society.url }}" target="_blank">
-                                                            {% endif %}
-                                                            {{ society.name }} ({{ society.abbreviation }})
-                                                            {% if society.url %}
-                                                                <img src="{{ MEDIA_URL }}images/popup.png" />
-                                                            {% endif %}
-                                                            {% if society.url %}
-                                                                </a>
-                                                            {% endif %}
-                                                        </td>
-                                                    </tr>
-                                                {% endfor %}
-                                            </table>
-                                        <!--</p>-->
-                                    {% endif %}
-                                    
-                                    <!-- Societies w/o icons -->
-                                    <table class="society-images" {% if iconSocieties %}style="margin-top:0"{% endif%}>
-                                        {% for society in noIconSocieties %}
-                                            <!--<p class="{% cycle 'item_odd' 'item_even' %}">-->
-                                            <tr>
-                                            {% comment %}
-                                            # When uncommenting this block, be sure to remove the inline style on
-                                            # this table. (margin-top: 0)
-                                            #   <td class="society-logo">
-                                            #    <img src="{{MEDIA_URL}}images/sc_logos/no_logo.jpg" />
-                                            #   </td>
-                                            {% endcomment %}
-                                                <td>
-                                                    {% if society.url %}
-                                                        <a href="{{ society.url }}" target="_blank">
-                                                    {% endif %}
-                                                    {{ society.name }} ({{ society.abbreviation }})
-                                                    {% if society.url %}
-                                                        <img src="{{ MEDIA_URL }}images/popup.png" />
-                                                    {% endif %}
-                                                    {% if society.url %}
-                                                        </a>
-                                                    {% endif %}
-                                                </td>
-                                            </tr>    
-                                            <!--</p>-->
-                                        {% endfor %}
-                                    </table>
-                                </div>
-                            {% endif %}
+                            <table class="society-images">
+                                {% for society in tag.societies.all %}
+                                    <tr>
+                                        <td class="society-logo">
+                                            {% if society.logo_thumbnail %}
+                                                <img src="{{ society.logo_thumbnail.url }}" class="logo-flyover { full_url:'{{ society.logo_full.url }}' }" />
+                                            {% else %}
+                                                <img src="{{ MEDIA_URL }}images/society_logo_none.png" />
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if society.url %}
+                                                <a href="{{ society.url }}" target="_blank">
+                                            {% endif %}
+                                            {{ society.name }} ({{ society.abbreviation }})
+                                            {% if society.url %}
+                                                <img src="{{ MEDIA_URL }}images/popup.png" />
+                                            {% endif %}
+                                            {% if society.url %}
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>    
+                                {% endfor %}
+                            </table>
                         </div>
                         
                         <div>
