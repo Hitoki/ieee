@@ -201,6 +201,60 @@ def feedback(request):
 def browser_warning(request):
     return render(request, 'browser_warning.html')
 
+def _group_conferences_by_series(resources):
+    'For a sequence of resources, groups any conferences in the same series together.'
+    resources = list(resources)
+    
+    series_conferences = {}
+    for resource in resources:
+        if resource.conference_series != '':
+            if resource.conference_series not in series_conferences:
+                series_conferences[resource.conference_series] = []
+            series_conferences[resource.conference_series].append(resource)
+    
+    for series, conferences in series_conferences.items():
+        import datetime
+        
+        # Find the most recent conference for each series
+        current_year = datetime.datetime.now().year
+        conferences.sort(key=lambda obj: obj.year)
+        
+        # Choose the next future conference
+        current_conference = None
+        for conference in conferences:
+            if conference.year >= current_year:
+                current_conference = conference
+                break
+        
+        if current_conference is None:
+            # Choose the most recent past conference (if there are any)
+            if len(conferences) > 0:
+                current_conference = conferences[len(conferences)-1]
+        
+        assert current_conference is not None
+        
+        i = 0
+        while i < len(resources):
+            if resources[i] == current_conference:
+                # Found the current conference in a series
+                resources[i].is_current_conference = True
+                other_conferences = series_conferences[resources[i].conference_series]
+                
+                other_conferences1 = []
+                for conference in other_conferences:
+                    if conference != current_conference:
+                        other_conferences1.append(conference)
+                
+                resources[i].other_conferences = other_conferences1
+                i += 1
+            elif resources[i] in conferences:
+                # Remove all the non-current conferences
+                del resources[i]
+            else:
+                # Found a non-series resource, just ignore it
+                i += 1
+    return resources
+
 @login_required
 def ajax_tag_content(request):
     tagId = request.GET['tagId']
@@ -230,6 +284,9 @@ def ajax_tag_content(request):
     experts = Resource.objects.getForNode(tag, resourceType=ResourceType.EXPERT)
     periodicals = Resource.objects.getForNode(tag, resourceType=ResourceType.PERIODICAL)
     standards = Resource.objects.getForNode(tag, resourceType=ResourceType.STANDARD)
+    
+    conferences = list(conferences)
+    conferences = _group_conferences_by_series(conferences)
     
     return render(request, 'content.html', {
         'tag':tag,

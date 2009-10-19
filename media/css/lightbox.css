@@ -162,6 +162,10 @@ input.text {
     height: 100%;
 }
 
+#lightbox .resources-lightbox-content .resources-pad img {
+    border:none;
+}
+
 #lightbox .resources-lightbox-content .alt-box {
     clear:both;
     padding: 5px 10px 0 10px;
@@ -187,6 +191,22 @@ input.text {
 
 #lightbox .resources-lightbox-content  ul.nootabs-menus li {
     margin-left:.5em;
+}
+
+#lightbox .resources-lightbox-content .group p.more-conferences {
+    margin:.5em 0 1em 3em;
+    padding:0;
+}
+
+#lightbox .resources-lightbox-content .other-conferences {
+    margin:1em 1em 1em 3em;
+    border:1px solid silver;
+    background:#eee;
+    display:none;
+}
+
+#lightbox .resources-lightbox-content .hide-other-conferences {
+    display:none;
 }
 
 .feedback-lightbox-middle {

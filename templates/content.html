@@ -136,6 +136,39 @@
                                             </a>
                                         {% endif %}
                                         <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
+                                        
+                                        {% if resource.is_current_conference %}
+                                            <p class="more-conferences">
+                                                <a href="#" id="show-other-conferences-{{ resource.id }}" class="show-other-conferences {id: {{ resource.id }}}">
+                                                    <img src="{{ MEDIA_URL }}images/plusbox.png"/>
+                                                    Show {{ resource.other_conferences.count }} more conferences in this series...
+                                                </a>
+                                                <a href="#" id="hide-other-conferences-{{ resource.id }}" class="hide-other-conferences {id: {{ resource.id }}}">
+                                                    <img src="{{ MEDIA_URL }}images/minusbox.png"/>
+                                                    Hide other conferences in this series
+                                                </a>
+                                            </p>
+                                            
+                                            <div id="other-conferences-{{ resource.id }}" class="other-conferences">
+                                                {% for other_conference in resource.other_conferences %}
+                                                    {% if other_conference.url %}
+                                                        <a href="{{ other_conference.url }}" target="_blank">
+                                                    {% endif %}
+                                                    <p class="{% cycle 'item_odd' 'item_even' %}">
+                                                        {{other_conference.name}}
+                                                        {% if other_conference.url %}
+                                                            <img src="{{ MEDIA_URL }}images/popup.png" />
+                                                        {% endif %}
+                                                    </p>
+                                                    {% if other_conference.url %}
+                                                        </a>
+                                                    {% endif %}
+                                                    <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{other_conference.description}}</p>
+                                                {% endfor %}
+                                            </div>
+                                            
+                                        {% endif %}
+                                        
                                     {% endfor %}
                                 {% else %}
                                     <p class="no-resources">(no conferences)</p>

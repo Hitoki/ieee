@@ -343,6 +343,17 @@ function attachSocietyLogoFlyovers(elem) {
 	});
 }
 
+function attachOtherConferencesToggle(elem) {
+	elem.find('a.show-other-conferences, a.hide-other-conferences').each(function() {
+        $(this).click(function() {
+            $('#other-conferences-' + $(this).metadata().id).toggle();
+            $('#show-other-conferences-' + $(this).metadata().id).toggle();
+            $('#hide-other-conferences-' + $(this).metadata().id).toggle();
+            return false;
+        });
+	});
+}
+
 // Call this whenever new content is created dynamically to attach any scripts
 function attachScripts(elem) {
     elem = $(elem);
@@ -355,6 +366,7 @@ function attachScripts(elem) {
     attachSelectCheckboxOnClick(elem);
     attachItemsPerPage(elem);
 	attachSocietyLogoFlyovers(elem);
+	attachOtherConferencesToggle(elem);
 }
 
 $(function() {
@@ -398,5 +410,7 @@ $(function() {
 	
 	// Bind society logo flyovers
 	attachSocietyLogoFlyovers($(document));
+	
+    attachOtherConferencesToggle($(document));
 });
 
