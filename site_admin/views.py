@@ -2654,9 +2654,12 @@ def manage_society(request, society_id):
     
     else:
         raise Exception('Unknown resource_sort "%s"' % resource_sort)
+        
+    resources1 = list(resources1)
+    resources1 = group_conferences_by_series(resources1, True)
     
     # Limit search results to one page
-    num_resources = resources1.count()
+    num_resources = len(resources1)
     num_resource_pages = int(math.ceil(num_resources / float(items_per_page)))
     
     # NOTE: resource_page starts at 1, not 0
