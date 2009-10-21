@@ -1473,20 +1473,13 @@ p.export {
     position:absolute;
     left:0px;
     top:0;
-    bborder:1px solid red;
-}
-
-.curly-brace-stretch {
-    position:absolute;
-    left:0px;
-    top:0;
-    bborder:1px solid blue;
 }
 
 .curly-brace-mid-div {
-	border:1px solid black;
-	background:gray;
+	border:1px solid gray;
+	background:silver;
 	color:white;
+    padding:.2em;
     position:absolute;
     left:0px;
     top:0;

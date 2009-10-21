@@ -23,23 +23,18 @@ function getPositionRelativeTo(node, parent) {
 	}
 }
 
-function ExpandSeries(linkElem) {
+function ExpandSeries(rowElem) {
     log('ExpandSeries()');
 	var expandSeries = this;
 	
 	this.isExpanded = false;
 	
-    this.linkElem = $(linkElem);
-	this.linkElem.click(function() {
-		expandSeries.toggle();
-		return false;
-	});
-    
-	// The cell containing the expand link
-    this.cellElem = this.linkElem.parent();
+    this.rowElem = $(rowElem);
+    this.conferenceId = this.rowElem.metadata().id;
     
     // This finds the parent DIV where we should append all images.
-    this.containerElem = this.linkElem.parent().parent().parent().parent().parent().parent();
+    //this.containerElem = this.linkElem.parent().parent().parent().parent().parent().parent();
+    this.containerElem = this.rowElem.parent().parent().parent().parent();
     
     this.imgTopElem = $('<img src="' + MEDIA_URL + 'images/curly_brace_top.png" class="curly-brace"/>');
     this.imgTopElem.appendTo(this.containerElem)
@@ -50,10 +45,10 @@ function ExpandSeries(linkElem) {
     this.imgMiddleElem = $('<img src="' + MEDIA_URL + 'images/curly_brace_middle.png" class="curly-brace"/>');
     this.imgMiddleElem.appendTo(this.containerElem);
     
-    this.imgUpperElem = $('<img src="' + MEDIA_URL + 'images/curly_brace_repeat.png" class="curly-brace-stretch"/>');
+    this.imgUpperElem = $('<img src="' + MEDIA_URL + 'images/curly_brace_repeat.png" class="curly-brace"/>');
     this.imgUpperElem.appendTo(this.containerElem);
     
-    this.imgLowerElem = $('<img src="' + MEDIA_URL + 'images/curly_brace_repeat.png" class="curly-brace-stretch"/>');
+    this.imgLowerElem = $('<img src="' + MEDIA_URL + 'images/curly_brace_repeat.png" class="curly-brace"/>');
     this.imgLowerElem.appendTo(this.containerElem);
 	
 	this.middleDivElem = $('<div class="curly-brace-mid-div"></div>');
@@ -92,14 +87,11 @@ ExpandSeries.prototype.reposition = function() {
 			
 			var firstSubConference = null;
 			var lastSubConference = null;
-			var id = this.linkElem.metadata().id;
-			$('.sub-conference').each(function() {
-				if ($(this).metadata().parentId == id) {
-					if (firstSubConference == null) {
-						firstSubConference = $(this);
-					}
-					lastSubConference = $(this);
-				}
+			$('.sub-conference-' + this.conferenceId).each(function() {
+                if (firstSubConference == null) {
+                    firstSubConference = $(this);
+                }
+                lastSubConference = $(this);
 			});
 			
 			var cellPos = getPositionRelativeTo(firstSubConference, this.containerElem);
@@ -111,9 +103,9 @@ ExpandSeries.prototype.reposition = function() {
 			leftPoint = parseInt(cellPos.left - this.imgTopElem[0].offsetWidth) - 1;
 		} else {
 			// Work from the expand link's row
-			var cellPos = getPositionRelativeTo(this.cellElem, this.containerElem);
+			var cellPos = getPositionRelativeTo(this.rowElem, this.containerElem);
 			topPoint = cellPos.top;
-			bottomPoint = cellPos.top + this.cellElem[0].offsetHeight;
+			bottomPoint = cellPos.top + this.rowElem[0].offsetHeight;
 			leftPoint = parseInt(cellPos.left - this.imgTopElem[0].offsetWidth) - 1;
 		}
 		
@@ -175,27 +167,26 @@ ExpandSeries.prototype.reposition = function() {
 }
 
 ExpandSeries.prototype.toggle = function(doToggle) {
-	//log('toggle()');
-	var id = this.linkElem.metadata().id;
-	
 	if (doToggle == undefined || doToggle) {
 		this.isExpanded = !this.isExpanded;
 	}
 	var isExpanded = this.isExpanded;
-	$('.sub-conference').each(function() {
-		if ($(this).metadata().parentId == id) {
-			if (isExpanded) {
-				$(this).show();
-			} else {
-				$(this).hide();
-			}
-		}
+    
+    // Toggle all sub-conferences
+	$('.sub-conference-' + this.conferenceId).each(function() {
+        if (isExpanded) {
+            $(this).show();
+        } else {
+            $(this).hide();
+        }
 	});
 	
 	if (this.isExpanded) {
-		this.middleLinkElem.html('Collapse Series');
+        this.rowElem.hide();
+		this.middleLinkElem.html('<img src="' + MEDIA_URL + '/images/minusbox.png" /> Collapse Series');
 	} else {
-		this.middleLinkElem.html('Expand Series');
+        this.rowElem.show();
+		this.middleLinkElem.html('<img src="' + MEDIA_URL + '/images/plusbox.png" /> Expand Series');
 	}
 	
 	this.reposition();

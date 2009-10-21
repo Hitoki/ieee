@@ -2672,17 +2672,23 @@ def manage_society(request, society_id):
     (tags, num_tag_pages) = _get_paged_tags(items_per_page, society, tag_sort, tag_page)
     tag_page_url = reverse('admin_manage_society', args=[society.id]) + '?tag_sort=' + quote(tag_sort) + '&amp;items_per_page=' + quote(str(items_per_page)) + '&amp;tag_page={{ page }}#tab-tags-tab'
     
-    # Add the resource row count to the resource object
-    #count = resource_start_count
-    #for resource1 in resources1:
-    #    resource1.count = count+1
-    #    count += 1 
-    
     # For each resource, get a list of society abbreviations in alphabetical order
-    resources = []
-    for resource in resources1:
-        resource.society_abbreviations = [society1.abbreviation for society1 in resource.societies.order_by('abbreviation')]
-        resources.append(resource)
+    for i in range(len(resources1)):
+        resources1[i].society_abbreviations = [society1.abbreviation for society1 in resources1[i].societies.order_by('abbreviation')]
+        
+        if resources1[i].priority_to_tag and resources1[i].completed:
+            resources1[i].classes = 'resource-completed-priority'
+        elif resources1[i].priority_to_tag:
+            resources1[i].classes = 'resource-priority'
+        elif resources1[i].completed:
+            resources1[i].classes = 'resource-completed'
+        else:
+            resources1[i].classes = ''
+        
+        if resources1[i].is_current_conference:
+            resources1[i].classes += ' current-conference current-conference-%s { id:%s }' % (resources1[i].id, resources1[i].id)
+
+    resources = resources1
     
     tags_tab_url = reverse('admin_manage_society', args=[society_id]) + '#tab-tags-tab'
     

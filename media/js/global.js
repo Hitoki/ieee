@@ -360,7 +360,7 @@ function attachOtherConferencesToggle(elem) {
 }
 
 function attachExpandSeries(elem) {
-	elem.find('a.expand-series-link').each(function() {
+	elem.find('tr.current-conference').each(function() {
         var expandSeries = new ExpandSeries(this);
 	});
 }

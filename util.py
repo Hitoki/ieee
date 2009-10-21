@@ -249,6 +249,7 @@ def group_conferences_by_series(resources, include_current_conference=False):
                 del resources[i]
             else:
                 # Found a non-series resource, just ignore it
+                resources[i].is_current_conference = False
                 i += 1
     return resources
 
