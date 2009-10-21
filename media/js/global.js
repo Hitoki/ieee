@@ -359,6 +359,12 @@ function attachOtherConferencesToggle(elem) {
 	});
 }
 
+function attachExpandSeries(elem) {
+	elem.find('a.expand-series-link').each(function() {
+        var expandSeries = new ExpandSeries(this);
+	});
+}
+
 // Call this whenever new content is created dynamically to attach any scripts
 function attachScripts(elem) {
     elem = $(elem);
@@ -372,6 +378,7 @@ function attachScripts(elem) {
     attachItemsPerPage(elem);
 	attachSocietyLogoFlyovers(elem);
 	attachOtherConferencesToggle(elem);
+	attachExpandSeries(elem);
 }
 
 $(function() {
@@ -417,5 +424,9 @@ $(function() {
 	attachSocietyLogoFlyovers($(document));
 	
     attachOtherConferencesToggle($(document));
+    
+	setTimeout(function() {
+        attachExpandSeries($(document));
+    }, 500);
 });
 

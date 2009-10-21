@@ -196,7 +196,7 @@ class odict(UserDict):
     def values(self):
         return map(self.get, self._keys)
 
-def group_conferences_by_series(resources):
+def group_conferences_by_series(resources, include_current_conference=False):
     'For a sequence of resources, groups any conferences in the same series together.'
     resources = list(resources)
     
@@ -235,12 +235,14 @@ def group_conferences_by_series(resources):
                 resources[i].is_current_conference = True
                 other_conferences = series_conferences[resources[i].conference_series]
                 
-                other_conferences1 = []
-                for conference in other_conferences:
-                    if conference != current_conference:
-                        other_conferences1.append(conference)
+                if not include_current_conference:
+                    other_conferences1 = []
+                    for conference in other_conferences:
+                        if conference != current_conference:
+                            other_conferences1.append(conference)
+                    other_conferences = other_conferences1
                 
-                resources[i].other_conferences = other_conferences1
+                resources[i].other_conferences = other_conferences
                 i += 1
             elif resources[i] in conferences:
                 # Remove all the non-current conferences

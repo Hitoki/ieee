@@ -1459,3 +1459,35 @@ p.export {
 	padding:1em .5em !important;
 	vertical-align:middle;
 }
+
+.sub-conference {
+    background:lightblue !important;
+	display:none;
+}
+
+#resources-tab {
+    position:relative;
+}
+
+.curly-brace {
+    position:absolute;
+    left:0px;
+    top:0;
+    bborder:1px solid red;
+}
+
+.curly-brace-stretch {
+    position:absolute;
+    left:0px;
+    top:0;
+    bborder:1px solid blue;
+}
+
+.curly-brace-mid-div {
+	border:1px solid black;
+	background:gray;
+	color:white;
+    position:absolute;
+    left:0px;
+    top:0;
+}

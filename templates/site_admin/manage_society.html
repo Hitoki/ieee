@@ -540,14 +540,18 @@
                                                     {% endif %}
                                                 {% endif %}
                                             {% endif %}
-                                        
-                                            {% comment %}
-                                            #    <tr class="priority-to-tag-resource">
-                                            {% endcomment %}
-                                        
-                                                <td class="select-checkbox-on-click">
-                                                    <input type="checkbox" name="resource_ids" class="select-resources" value="{{ resource.id }}" />
-                                                </td>
+                                            
+                                                {% if resource.is_current_conference %}
+                                                    <td>
+                                                        <a href="javascript:void(0);" class="expand-series-link { id:{{ resource.id }} }">
+                                                            EXPAND FOR SERIES
+                                                        </a>
+                                                    </td>
+                                                {% else %}
+                                                    <td class="select-checkbox-on-click">
+                                                        <input type="checkbox" name="resource_ids" class="select-resources" value="{{ resource.id }}" />
+                                                    </td>
+                                                {% endif %}
                                                 <td class="first-item">
                                                     <a href="{% url admin_edit_resource resource.id %}?return_url={{ current_url|urlencode }}&amp;society_id={{ society.id }}">{{ resource.name }}</a>
                                                 </td>
@@ -589,6 +593,68 @@
                                                     {% endif %}
                                                 </td>
                                             </tr>
+                                            
+                                            {% for sub_conference in resource.other_conferences %}
+                                                {% if sub_conference.priority_to_tag and sub_conference.completed %}
+                                                    <tr class="resource-completed-priority sub-conference { parentId: {{ resource.id }} }">
+                                                {% else %}
+                                                    {% if sub_conference.priority_to_tag %}
+                                                        <tr class="resource-priority sub-conference { parentId: {{ resource.id }} }">
+                                                    {% else %}
+                                                        {% if sub_conference.completed %}
+                                                            <tr class="resource-completed sub-conference { parentId: {{ resource.id }} }">
+                                                        {% else %}
+                                                        <tr>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                {% endif %}
+                                                
+                                                    <td class="select-checkbox-on-click">
+                                                        <input type="checkbox" name="resource_ids" class="select-resources" value="{{ sub_conference.id }}" />
+                                                    </td>
+                                                    <td class="first-item" style="padding-left:2em;">
+                                                        <a href="{% url admin_edit_resource sub_conference.id %}?return_url={{ current_url|urlencode }}&amp;society_id={{ society.id }}">{{ sub_conference.name }}</a>
+                                                    </td>
+                                                    <td>
+                                                        {{ sub_conference.ieee_id }}
+                                                    </td>
+                                                    <td>
+                                                        {{ sub_conference.resource_type.name|capfirst }}
+                                                        {% ifequal sub_conference.resource_type.name "standard" %}
+                                                            <br/>({{ sub_conference.standard_status|capfirst }})
+                                                        {% endifequal %}
+                                                    </td>
+                                                    <td>
+                                                        {% if sub_conference.url %}<a href="{{ sub_conference.url }}" target="_blank"><span class="flyover {position:'bottom'}" title="{{ sub_conference.url }}"><img src="{{ MEDIA_URL }}/images/popup.png"/></span></a>{% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if sub_conference.nodes.all %}{{ sub_conference.nodes.all.count }}{% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if sub_conference.societies.all %}
+                                                            {{ sub_conference.society_abbreviations|join:", " }}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if sub_conference.priority_to_tag %}
+                                                            {{ sub_conference.priority_to_tag|yesno|capfirst }}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if sub_conference.completed %}
+                                                            {{ sub_conference.completed|yesno|capfirst }}
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if sub_conference.description %}
+                                                            <span class="flyover { position:'left', customClass:'sub_conference-description'} " title="{{ sub_conference.description }}">
+                                                                <img src="{{ MEDIA_URL }}images/notes_icon.jpg" />
+                                                            </span>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            
                                         {% endfor %}
                                     </table>
                                 
