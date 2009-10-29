@@ -1441,6 +1441,7 @@ p.export {
     background:#ffffe1;
     padding:.5em 1em;
     margin-bottom:1em;
+    border:1px solid silver;
 }
 
 .notification h1 {

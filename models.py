@@ -1,5 +1,3 @@
-
-
 from django.contrib.auth.models import User, UserManager
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
@@ -729,6 +727,13 @@ class Resource(models.Model):
         STANDARD_STATUS_WITHDRAWN,
     ]
     
+    URL_STATUS_GOOD = 'good'
+    URL_STATUS_BAD = 'bad'
+    URL_STATUS_CHOICES = [
+        (URL_STATUS_GOOD, 'Good'),
+        (URL_STATUS_BAD, 'Bad'),
+    ]
+    
     resource_type = models.ForeignKey(ResourceType)
     ieee_id = models.CharField(max_length=500,blank=True, null=True)
     name = models.CharField(max_length=500)
@@ -741,6 +746,10 @@ class Resource(models.Model):
     keywords = models.CharField(max_length=5000, blank=True)
     conference_series = models.CharField(max_length=100, blank=True)
     date = models.DateField(null=True, blank=True)
+    
+    url_status = models.CharField(blank=True, max_length=100, choices=URL_STATUS_CHOICES)
+    url_date_checked = models.DateTimeField(null=True, blank=True)
+    url_error = models.CharField(null=True, blank=True, max_length=1000)
     
     nodes = models.ManyToManyField(Node, related_name='resources')
     societies = models.ManyToManyField(Society, related_name='resources')
@@ -956,5 +965,11 @@ class FailedLoginLog(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     
     objects = FailedLoginLogManager()
+
+class UrlCheckerLog(models.Model):
+    date_started = models.DateTimeField(auto_now_add=True)
+    date_ended = models.DateTimeField(blank=True, null=True)
+    date_updated = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=1000)
 
 # ------------------------------------------------------------------------------

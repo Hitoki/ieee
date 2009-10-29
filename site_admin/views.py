@@ -9,9 +9,13 @@ import re
 import smtplib
 import string
 import StringIO
+import threading
 import time
+import urllib
 from urllib import quote, urlencode
 import warnings
+from Queue import Empty, Queue
+
 from django.db import IntegrityError
 from django.db import transaction
 from django.core.mail import EmailMessage
@@ -26,9 +30,9 @@ from django.utils import simplejson as json
 
 from ieeetags import settings
 from ieeetags import permissions
+from ieeetags import url_checker
 from ieeetags.util import *
-from ieeetags.models import Node, NodeType, Permission, Resource, ResourceType, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager, FailedLoginLog
-#, UserManager2
+from ieeetags.models import Node, NodeType, Permission, Resource, ResourceType, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager, FailedLoginLog, UrlCheckerLog
 #from ieeetags.logger import log
 from ieeetags.views import render
 from ieeetags.widgets import DisplayOnlyWidget
@@ -3762,6 +3766,70 @@ def conference_series_report(request):
         'conferences': conferences,
     })
 
+def _get_active_url_checker():
+    # Get the most recently-started active log
+    url_checker_log = UrlCheckerLog.objects.filter(date_ended=None).order_by('-date_started')
+    if url_checker_log.count() > 0:
+        return url_checker_log[0]
+    else:
+        return None
+
+@login_required
+@admin_required
+def broken_links_report(request):
+    bad_resources = Resource.objects.filter(url_status=Resource.URL_STATUS_BAD)
+    
+    num_resources = Resource.objects.all().count()
+    num_url_resources = Resource.objects.exclude(url='').count()
+    num_good_resources = Resource.objects.filter(url_status=Resource.URL_STATUS_GOOD).count()
+    num_unchecked_resources = Resource.objects.exclude(url='').filter(url_status='').count()
+    num_checked_resources = num_good_resources + bad_resources.count()
+    
+    url_checker_log = _get_active_url_checker()
+
+    return render(request, 'site_admin/broken_links_report.html', {
+        'bad_resources': bad_resources,
+        'num_resources': num_resources,
+        'num_url_resources': num_url_resources,
+        'num_good_resources': num_good_resources,
+        'num_unchecked_resources': num_unchecked_resources,
+        'num_checked_resources': num_checked_resources,
+        'url_checker_log': url_checker_log,
+    })
+
+@login_required
+@admin_required
+def broken_links_reset(request):
+    Resource.objects.update(url_status='')
+    return HttpResponseRedirect(reverse('admin_broken_links_report'))
+
+@login_required
+@admin_required
+def broken_links_check(request):
+    print 'broken_links_check()'
+    # Get all resources with URLs that have not yet been checked
+    resources = Resource.objects.exclude(url='').filter(url_status='')
+    
+    # DEBUG: limit the number of resources
+    #resources = resources[:300]
+    
+    # Start the URL checking thread (daemon, so it continues to run after this function returns to the browser)
+    thread = threading.Thread(target=url_checker.check_resources, args=[resources], kwargs={ 'num_threads': 500 })
+    thread.setDaemon(True)
+    thread.start()
+    
+    print '~broken_links_check()'
+    return HttpResponseRedirect(reverse('admin_broken_links_report'))
+
+@login_required
+@admin_required
+def broken_links_cancel(request):
+    url_checker_log = _get_active_url_checker()
+    if url_checker_log is not None:
+        url_checker_log.date_ended = datetime.now()
+        url_checker_log.status = 'Cancelled.'
+        url_checker_log.save()
+    return HttpResponseRedirect(reverse('admin_broken_links_report'))
 
 #def create_admin_login(request):
 #    "Create a test admin account."

@@ -31,4 +31,12 @@ def textlist(values):
             str1 += ', and %s' % list1[len(list1)-1]
             
         return str1
-    
+
+@register.filter
+def truncatechars(value, arg):
+    'Like truncatewords, except it works by char count.'
+    char_count = int(arg)
+    if len(value) > char_count:
+        return value[:char_count] + '...'
+    else:
+        return value
