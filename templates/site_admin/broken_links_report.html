@@ -20,7 +20,8 @@
         </div>
     {% else %}
         <p>
-            <a href="{% url admin_broken_links_reset %}">Reset</a>
+            <a href="{% url admin_broken_links_reset 'all' %}">Reset All</a>
+            | <a href="{% url admin_broken_links_reset 'timed_out' %}">Reset Timed Out</a>
             | <a href="{% url admin_broken_links_check %}">Check URLs</a>
         </p>
     {% endif %}
@@ -62,6 +63,9 @@
                 </td>
                 <td>
                     {{ resource.url_date_checked|date }}
+                </td>
+                <td>
+                    <a href="{% url admin_broken_links_reset 'resource' resource.id %}">reset</a>
                 </td>
             </tr>
         {% endfor %}

@@ -23,7 +23,7 @@ class CheckUrlOpener(urllib.FancyURLopener):
         self.is_bad_url = True
         self.error_str = 'HTTP %s: %s' % (code, msg)
         
-def check_url_thread(resource_queue, bad_resource_queue):
+def check_url_thread(resource_queue, resources_to_save_queue):
     thread = threading.currentThread()
     #print '  %s: check_url_thread()' % thread.getName()
     while True:
@@ -44,11 +44,9 @@ def check_url_thread(resource_queue, bad_resource_queue):
             bad_url = True
             
         except socket.error, e:
-            #print 'Got socket.error'
-            #print 'e.args: %s' % str(e.args)
-            resource.url_error = 'Socket Error'
+            #print 'Got socket.error, %s' % e
+            resource.url_error = 'Socket Error: %s' % e
             bad_url = True
-            raise
             
         except IOError, e:
             #print 'Got IOError'
@@ -63,7 +61,7 @@ def check_url_thread(resource_queue, bad_resource_queue):
                 #print 'type(e.args[1]): %r' % type(e.args[1])
                 
                 if type(e.args[1]) is socket.timeout:
-                    #print '    Got socket.timeout'
+                    #print '    Got socket.timeout, %s' % resource.url
                     resource.url_error = 'Timed out'
                 else:
                     error_num, error_msg = e.args[1]
@@ -83,6 +81,7 @@ def check_url_thread(resource_queue, bad_resource_queue):
             bad_url = True
         
         except UnicodeError:
+            #print 'Got unicode error'
             resource.url_error = 'URL contains non-ASCII characters.'
             bad_url = True
             
@@ -92,21 +91,42 @@ def check_url_thread(resource_queue, bad_resource_queue):
             if opener.is_bad_url:
                 # Got an HTTP error
                 #print '    Got bad resource %s' % resource
-                #print '    Got bad resource, error_str: %s' % opener.error_str
+                #print 'Got HTTP error: %s' % opener.error_str
                 bad_url = True
                 resource.url_error = opener.error_str
-            
         
         if bad_url:
             resource.url_status = Resource.URL_STATUS_BAD
         else:
             resource.url_status = Resource.URL_STATUS_GOOD
+            resource.url_error = ''
+            
+        #print '  %s: resource.url_status: %s' % (thread.getName(), resource.url_status)
+        #print '  %s: resource.url_error: %s' % (thread.getName(), resource.url_error)
         resource.url_date_checked = datetime.datetime.now()
         
-        bad_resource_queue.put(resource)
+        #print '  %s: adding resource to resources_to_save_queue' % (thread.getName())
+        resources_to_save_queue.put(resource)
         
         resource_queue.task_done()
     #print '  %s: ~check_url_thread()' % thread.getName()
+
+def save_resources_main(resource_queue):
+    'Save any pending resources.'
+    #print 'save_resources_main()'
+    while True:
+        #print 'save_resources_main(): waiting for resource_queue.'
+        resource = resource_queue.get()
+        if resource is None:
+            #print 'save_resources_main(): resource is None, quitting.'
+            break
+        
+        #print 'Saving resource %s' % resource.id
+        #print '  resource.url_status: %s' % resource.url_status
+        #print '  resource.url_error: %s' % resource.url_error
+        resource.save()
+        resource_queue.task_done()
+    #print '~save_resources_main()'
 
 def check_resources(resources, num_threads):
     """
@@ -115,11 +135,11 @@ def check_resources(resources, num_threads):
     @param num_threads The number of concurrent threads to use for checking URLs.
     Returns a list of all resources with invalid URLs.
     """
-    print 'check_resources()'
+    #print 'check_resources()'
     
     # Set the global socket timeout
     old_socket_timeout = socket.getdefaulttimeout()
-    socket.setdefaulttimeout(5)
+    socket.setdefaulttimeout(10)
     #print '  old_socket_timeout: %s' % old_socket_timeout
     
     
@@ -133,12 +153,12 @@ def check_resources(resources, num_threads):
     for resource in resources:
         resource_queue.put(resource)
     
-    bad_resource_queue = Queue()
+    resources_to_save_queue = Queue()
     
     #print 'starting threads'
     threads = []
     for i in range(num_threads):
-        thread = threading.Thread(name='Thread %s' % i, target=check_url_thread, args=[resource_queue, bad_resource_queue])
+        thread = threading.Thread(name='Thread %s' % i, target=check_url_thread, args=[resource_queue, resources_to_save_queue])
         thread.start()
         threads.append(thread)
     #print 'done starting threads'
@@ -146,17 +166,10 @@ def check_resources(resources, num_threads):
     last_time = time.clock()
     last_num_resources = resource_queue.qsize()
     
-    while resource_queue.qsize() > 0:
-        
-        # Save any pending bad resources
-        while True:
-            try:
-                resource = bad_resource_queue.get_nowait()
-            except Empty:
-                break
-            else:
-                resource.save()
-                bad_resource_queue.task_done()
+    save_resources_thread = threading.Thread(target=save_resources_main, args=[resources_to_save_queue])
+    save_resources_thread.start()
+    
+    while not resource_queue.empty():
         
         # Refresh the log from the DB
         log = UrlCheckerLog.objects.get(id=log.id)
@@ -164,7 +177,7 @@ def check_resources(resources, num_threads):
         if log.date_ended is not None:
             # Checking was cancelled
             log.status = 'Done checking resources.'
-            print 'Done checking resources.'
+            #print 'Done checking resources.'
             log.save()
             
             # Cancelled, empty the queue so threads will stop
@@ -178,7 +191,7 @@ def check_resources(resources, num_threads):
             if (time.clock() - last_time) > 0:
                 speed = (last_num_resources - resource_queue.qsize()) / (time.clock() - last_time)
                 log.status = '%s resources remaining (%s resources/sec).' % (resource_queue.qsize(), speed)
-                print '%s resources remaining (%s resources/sec).' % (resource_queue.qsize(), speed)
+                #print '%s resources remaining (%s resources/sec).' % (resource_queue.qsize(), speed)
                 log.save()
                 last_time = time.clock()
                 last_num_resources = resource_queue.qsize()
@@ -197,8 +210,15 @@ def check_resources(resources, num_threads):
                 del threads[i]
             else:
                 i += 1
-        print 'Waiting for %s threads to die.' % len(threads)
-        time.sleep(2)
+        #print 'Waiting for %s threads to die.' % len(threads)
+        if len(threads):
+            # Either wait for the first thread to end, or 2 seconds (whichever comes first)
+            threads[0].join(2)
+    
+    # Signal save_resources_thread to stop.
+    #print 'Waiting for save_resources_thread to stop.'
+    resources_to_save_queue.put(None)
+    save_resources_thread.join()
     
     
     if log.date_ended is None:
@@ -210,4 +230,4 @@ def check_resources(resources, num_threads):
     # Restore the socket timeout
     socket.setdefaulttimeout(old_socket_timeout)
     
-    print '~check_resources()'
+    #print '~check_resources()'

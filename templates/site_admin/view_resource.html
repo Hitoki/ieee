@@ -80,7 +80,12 @@
                 URL
             </th>
             <td>
-                {{ resource.url }}
+				{% if resource.url %}
+					{% ifequal resource.url_status "bad" %}
+						<div class="error">URL is broken: {{ resource.url_error }} <a href="{% url admin_broken_links_check "resource" resource.id %}?next={{ current_url|urlencode }}">[recheck url]</a></div>
+					{% endifequal %}
+					<a href="{{ resource.url }}">{{ resource.url }}</a>
+				{% endif %}
             </td>
         </tr>
         <tr>

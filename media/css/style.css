@@ -1485,3 +1485,11 @@ p.export {
     left:0px;
     top:0;
 }
+
+div.error {
+	background:maroon;
+	color:white;
+	padding:2px;
+	
+	
+}

@@ -3770,7 +3770,17 @@ def _get_active_url_checker():
     # Get the most recently-started active log
     url_checker_log = UrlCheckerLog.objects.filter(date_ended=None).order_by('-date_started')
     if url_checker_log.count() > 0:
-        return url_checker_log[0]
+        url_checker_log = url_checker_log[0]
+        delta = (datetime.now() - url_checker_log.date_started)
+        delta = delta.days * 60*60*24 + delta.seconds
+        # 5 minute timeout
+        if delta > 5*60:
+            # The last checker has been idle > 5 minutes, assume it's dead and close it out.
+            url_checker_log.date_ended = datetime.now()
+            url_checker_log.save()
+            return None
+        else:
+            return url_checker_log
     else:
         return None
 
@@ -3799,27 +3809,48 @@ def broken_links_report(request):
 
 @login_required
 @admin_required
-def broken_links_reset(request):
-    Resource.objects.update(url_status='')
+def broken_links_reset(request, reset_type, resource_id=None):
+    if reset_type == 'all':
+        # Reset all resources
+        Resource.objects.update(url_status='')
+    elif reset_type == 'timed_out':
+        # Reset 'Timed Out' resources
+        Resource.objects.filter(url_status=Resource.URL_STATUS_BAD, url_error='Timed out').update(url_status='')
+    elif reset_type == 'resource':
+        # Reset a specific resource
+        Resource.objects.filter(id=resource_id).update(url_status='')
+    else:
+        raise Exception('Unknown reset_type "%s"' % reset_type)
     return HttpResponseRedirect(reverse('admin_broken_links_report'))
 
 @login_required
 @admin_required
-def broken_links_check(request):
+def broken_links_check(request, check_type=None, resource_id=None):
     print 'broken_links_check()'
-    # Get all resources with URLs that have not yet been checked
-    resources = Resource.objects.exclude(url='').filter(url_status='')
     
-    # DEBUG: limit the number of resources
-    #resources = resources[:300]
+    next = request.GET.get('next', '')
     
-    # Start the URL checking thread (daemon, so it continues to run after this function returns to the browser)
-    thread = threading.Thread(target=url_checker.check_resources, args=[resources], kwargs={ 'num_threads': 500 })
-    thread.setDaemon(True)
-    thread.start()
+    if check_type is None:
+        # Get all resources with URLs that have not yet been checked
+        resources = Resource.objects.exclude(url='').filter(url_status='')
+        
+        # Start the URL checking thread (daemon, so it continues to run after this function returns to the browser)
+        thread = threading.Thread(target=url_checker.check_resources, args=[resources], kwargs={ 'num_threads': 10 })
+        thread.setDaemon(True)
+        thread.start()
+    elif check_type == 'resource':
+        # Just check a single resource
+        if resource_id is None:
+            raise Exception('Must specify resource_id when check_type is "resource".')
+        resources = Resource.objects.filter(id=resource_id)
+        
+        # Check the resource synchronously (don't use threads)
+        url_checker.check_resources(resources, num_threads=1)
     
-    print '~broken_links_check()'
-    return HttpResponseRedirect(reverse('admin_broken_links_report'))
+    if next != '':
+        return HttpResponseRedirect(next)
+    else:
+        return HttpResponseRedirect(reverse('admin_broken_links_report'))
 
 @login_required
 @admin_required
