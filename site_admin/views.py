@@ -2972,6 +2972,22 @@ def list_resources(request, type1):
 
 @login_required
 @society_manager_or_admin_required
+@transaction.commit_on_success
+def paste_resource(request, resource_id):
+    'Erase all tags from the given resource, and paste tags from the user\'s copied resource.'
+    to_resource = Resource.objects.get(id=resource_id)
+    
+    from_resource = request.user.get_profile().copied_resource
+    assert from_resource is not None
+    
+    to_resource.nodes.clear()
+    for tag in from_resource.nodes.all():
+        to_resource.nodes.add(tag)
+    to_resource.save()
+    return HttpResponseRedirect(reverse('admin_edit_resource', args=[resource_id]))
+
+@login_required
+@society_manager_or_admin_required
 def view_resource(request, resource_id):
     return_url = request.GET.get('return_url', '')
     resource = Resource.objects.get(id=resource_id)
@@ -3350,6 +3366,37 @@ def ajax_update_society(request):
     
     else:
         raise Exception('Unknown action "%s"' % action)
+    
+@login_required
+@society_manager_or_admin_required
+def ajax_copy_resource_tags(request):
+    resource_id = request.POST['resource_id']
+    resource = Resource.objects.get(id=resource_id)
+    
+    profile = request.user.get_profile()
+    profile.copied_resource = resource
+    profile.save()
+    
+    return HttpResponse('Success', mimetype='text/plain')
+    
+@login_required
+@society_manager_or_admin_required
+def ajax_paste_resource_tags(request):
+    resource_id = request.GET['resource_id']
+    
+    to_resource = Resource.objects.get(id=resource_id)
+    to_tag_names = [tag.name for tag in to_resource.nodes.all()]
+    
+    from_resource = request.user.get_profile().copied_resource
+    assert from_resource is not None
+    from_tag_names = [tag.name for tag in from_resource.nodes.all()]
+    
+    return render(request, 'site_admin/ajax_paste_resource_tags.html', {
+        'to_resource': to_resource,
+        'to_tag_names': to_tag_names,
+        'from_resource': from_resource,
+        'from_tag_names': from_tag_names,
+    })
 
 def _response_csv_attachment(rows, filename):
     "Returns an HttpResponse() setup with the data in CSV format, saved as an attachment."

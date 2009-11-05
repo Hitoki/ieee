@@ -219,3 +219,10 @@ input.text {
 	position:relative;
 }
 
+.paste-tags-lightbox-content {
+    padding:1em;
+}
+
+.paste-tags-lightbox-content p.tags {
+    margin-left:1em;
+}

@@ -1494,6 +1494,32 @@ div.error {
 	background:maroon;
 	color:white;
 	padding:2px;
-	
-	
+}
+
+a.copy-tags-to-clipboard {
+    font-size:80%;
+    color:gray;
+    font-weight:normal;
+    display:block;
+    margin-top:1em;
+}
+
+a.copy-tags-to-clipboard img {
+    vertical-align:middle;
+}
+
+a.paste-tags {
+    font-size:80%;
+    color:gray;
+    font-weight:normal;
+    display:block;
+    margin-top:0.5em;
+}
+
+a.paste-tags img {
+    vertical-align:middle;
+}
+
+p.warning {
+    font-weight:bold;
 }

@@ -26,11 +26,12 @@ var Lightbox = {
                 {
                     closeOnClickOutside: true,
                     verticalCenter: true,
-                    customClass: null
+                    customClass: null,
+                    content: null
                 },
                 options
             );
-			
+            
             // Create the lightbox
             this.lightbox = $('<div id="lightbox"></div>').appendTo('body');
             this.lightboxBackground = $('<div class="lightbox-background"></div>').appendTo(this.lightbox);
@@ -73,9 +74,15 @@ var Lightbox = {
             this.updateScrollPos();
         }
         
-        //this.lightbox.clear();
-        $.get(url, null, function(data) { lightbox.onLoadContent(data); }, 'text');
-        //this.lightboxContent.load(url, null, function() { lightbox.onLoadContent(); } );
+        if (this.options.content) {
+            // Load the content
+            this.onLoadContent(this.options.content);
+        } else {
+            // Load a URL
+            //this.lightbox.clear();
+            $.get(url, null, function(data) { lightbox.onLoadContent(data); }, 'text');
+            //this.lightboxContent.load(url, null, function() { lightbox.onLoadContent(); } );
+        }
     },
     
     onLoadContent: function(data) {

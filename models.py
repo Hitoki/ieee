@@ -847,6 +847,7 @@ class Profile(models.Model):
     reset_key = models.CharField(max_length=1000, null=True)
     last_login_time = models.DateTimeField(blank=True, null=True)
     last_logout_time = models.DateTimeField(blank=True, null=True)
+    copied_resource = models.ForeignKey(Resource, related_name='copied_users', null=True, blank=True)
 
 # ------------------------------------------------------------------------------
 

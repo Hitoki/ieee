@@ -341,28 +341,62 @@ function attachItemsPerPage(elem) {
 }
 
 function attachSocietyLogoFlyovers(elem) {
-	elem.find('img.logo-flyover').each(function() {
-		Flyover.attach(this, {
-			content_html: "<img src=\"" + $(this).metadata().full_url + "\" />"
-		});
-	});
+    elem.find('img.logo-flyover').each(function() {
+        Flyover.attach(this, {
+            content_html: "<img src=\"" + $(this).metadata().full_url + "\" />"
+        });
+    });
 }
 
 function attachOtherConferencesToggle(elem) {
-	elem.find('a.show-other-conferences, a.hide-other-conferences').each(function() {
+    elem.find('a.show-other-conferences, a.hide-other-conferences').each(function() {
         $(this).click(function() {
             $('#other-conferences-' + $(this).metadata().id).toggle();
             $('#show-other-conferences-' + $(this).metadata().id).toggle();
             $('#hide-other-conferences-' + $(this).metadata().id).toggle();
             return false;
         });
-	});
+    });
 }
 
 function attachExpandSeries(elem) {
-	elem.find('tr.current-conference').each(function() {
+    elem.find('tr.current-conference').each(function() {
         var expandSeries = new ExpandSeries(this);
-	});
+    });
+}
+
+function attachCopyTags(elem) {
+    // Attach handlers to the "copy tags" links
+    elem.find('a.copy-tags-to-clipboard').click(function() {
+        var resourceId = $(this).metadata().resourceId
+        var linkElem = this;
+        $.ajax({
+            url: INDEX_URL + 'admin/ajax/copy_resource_tags',
+            data: {
+                resource_id: resourceId
+            },
+            type: 'POST',
+            success: function(data) {
+                onCopyTagsSuccess(linkElem, data);
+            }
+        });
+        
+        return false;
+    });
+    
+    // Attach handlers to the "paste tags" links
+    elem.find('a.paste-tags').click(function() {
+        var resourceId = $(this).metadata().resourceId;
+        Lightbox.show(INDEX_URL + 'admin/ajax/paste_resource_tags?resource_id=' + resourceId, { customClass: 'paste-tags' });
+        return false;
+    });
+}
+
+// Called when an AJAX request has copied the tags, change the link text to show the status
+function onCopyTagsSuccess(linkElem, data) {
+    $(linkElem).html('<img src="' + MEDIA_URL + 'images/copy_to_clipboard_checked.png" /> Tags copied to clipboard');
+    $(linkElem).hide();
+    $(linkElem).fadeIn();
 }
 
 // Call this whenever new content is created dynamically to attach any scripts
@@ -376,9 +410,10 @@ function attachScripts(elem) {
     attachNootabs(elem);
     attachSelectCheckboxOnClick(elem);
     attachItemsPerPage(elem);
-	attachSocietyLogoFlyovers(elem);
-	attachOtherConferencesToggle(elem);
-	attachExpandSeries(elem);
+    attachSocietyLogoFlyovers(elem);
+    attachOtherConferencesToggle(elem);
+    attachExpandSeries(elem);
+    attachCopyTags(elem);
 }
 
 $(function() {
@@ -419,14 +454,16 @@ $(function() {
             log('-----------------------------------');
         }
     );
-	
-	// Bind society logo flyovers
-	attachSocietyLogoFlyovers($(document));
-	
+    
+    // Bind society logo flyovers
+    attachSocietyLogoFlyovers($(document));
+    
     attachOtherConferencesToggle($(document));
     
-	setTimeout(function() {
+    setTimeout(function() {
         attachExpandSeries($(document));
     }, 500);
+    
+    attachCopyTags($(document));
 });
 

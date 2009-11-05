@@ -1,0 +1,24 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    <h1>Paste Tags</h1>
+    <p class="warning">
+        Warning: Pasting these tags will overwrite any existing tags for the "{{ to_resource.name }}" resource.  This action cannot be undone.  Also, if you have made any changes to the Edit Resource form, please save those changes and then paste tags.
+    </p>
+    <p>
+        Current Tags for the "{{ to_resource.name }}" resource:
+    </p>
+    <p class="tags">
+        {{ to_tag_names|join:", " }}
+    </p>
+    <p>
+        Tags After Pasting:
+    </p>
+    <p class="tags">
+        {{ from_tag_names|join:", " }}
+    </p>
+    
+    <input type="button" value="Paste Tags" onclick="window.location='{% url admin_paste_resource to_resource.id %}';" />
+    <input type="button" value="Cancel" class="lightbox-close" />
+    
+{% endblock %}

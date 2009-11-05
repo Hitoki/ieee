@@ -88,11 +88,15 @@ urlpatterns = patterns('',
     #url(r'^resources/remove_priorities$', views.remove_priorities, name='admin_remove_priorities'),
     url(r'^resources/(?P<type1>.+)$', views.list_resources, name='admin_list_resources'),
     
+    url(r'^resource/(?P<resource_id>\d+)/paste$', views.paste_resource, name='admin_paste_resource'),
+    
     # AJAX
     url(r'^ajax/search_tags$', views.ajax_search_tags, name='ajax_search_tags'),
     url(r'^ajax/search_resources$', views.ajax_search_resources, name='ajax_search_resources'),
     url(r'^ajax/search_societies$', views.ajax_search_societies, name='ajax_search_societies'),
     url(r'^ajax/update_society$', views.ajax_update_society, name='ajax_update_society'),
+    url(r'^ajax/copy_resource_tags$', views.ajax_copy_resource_tags, name='ajax_copy_resource_tags'),
+    url(r'^ajax/paste_resource_tags$', views.ajax_paste_resource_tags, name='ajax_paste_resource_tags'),
     
     # Reports
     url(r'^report/login$', views.login_report, name='admin_login_report'),
