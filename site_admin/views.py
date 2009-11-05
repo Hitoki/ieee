@@ -2689,7 +2689,7 @@ def manage_society(request, society_id):
         else:
             resources1[i].classes = ''
         
-        if resources1[i].is_current_conference:
+        if resources1[i].conference_series != '' and resources1[i].is_current_conference:
             resources1[i].classes += ' current-conference current-conference-%s { id:%s }' % (resources1[i].id, resources1[i].id)
 
     resources = resources1
