@@ -1,20 +1,13 @@
 
+// Gets the position of an element relative to a given parent element
 function getPositionRelativeTo(node, parent) {
-	//log('getPositionRelativeTo()');
 	node = $(node);
-	//log('  node[0].nodeName: ' + node[0].nodeName);
 	parent = $(parent);
-	//log('  parent[0].nodeName: ' + parent[0].nodeName);
-	//log('  parent[0].id: ' + parent[0].id);
 	var left = 0
 	var top = 0;
 	while (node[0] != parent[0] && node[0].nodeName != 'BODY') {
-		//log('    node[0].nodeName: ' + node[0].nodeName);
-		//log('    node[0].id: ' + node[0].id);
-		//log('    adding ' + node.position().left + ', ' + node.position().top);
 		left += node.position().left;
 		top += node.position().top;
-		//log('    left/top: ' + left + ', ' + top);
 		node = node.offsetParent();
 	}
 	return {
@@ -33,7 +26,6 @@ function ExpandSeries(rowElem) {
     this.conferenceId = this.rowElem.metadata().id;
     
     // This finds the parent DIV where we should append all images.
-    //this.containerElem = this.linkElem.parent().parent().parent().parent().parent().parent();
     this.containerElem = this.rowElem.parent().parent().parent().parent();
     
     this.imgTopElem = $('<img src="' + MEDIA_URL + 'images/curly_brace_top.png" class="curly-brace"/>');
@@ -54,10 +46,24 @@ function ExpandSeries(rowElem) {
 	this.middleDivElem = $('<div class="curly-brace-mid-div"></div>');
     this.middleDivElem.appendTo(this.containerElem);
 	
-	this.middleLinkElem = $('<a href=""></a>');
-	this.middleLinkElem.appendTo(this.middleDivElem);
-	this.middleLinkElem.click(function() {
+	this.expandLinkElem = $('<a href=""></a>');
+	this.expandLinkElem.appendTo(this.middleDivElem);
+	this.expandLinkElem.click(function() {
 		expandSeries.toggle();
+		return false;
+	});
+	
+	this.selectAllLinkElem = $('<a href=""><img src="' + MEDIA_URL + '/images/checkbox_on.png" /> Select All</a>');
+	this.selectAllLinkElem.appendTo(this.middleDivElem);
+	this.selectAllLinkElem.click(function() {
+		expandSeries.selectAll();
+		return false;
+	});
+	
+	this.selectNoneLinkElem = $('<a href=""><img src="' + MEDIA_URL + '/images/checkbox.png" /> Select None</a>');
+	this.selectNoneLinkElem.appendTo(this.middleDivElem);
+	this.selectNoneLinkElem.click(function() {
+		expandSeries.selectNone();
 		return false;
 	});
 	
@@ -183,11 +189,29 @@ ExpandSeries.prototype.toggle = function(doToggle) {
 	
 	if (this.isExpanded) {
         this.rowElem.hide();
-		this.middleLinkElem.html('<img src="' + MEDIA_URL + '/images/minusbox.png" /> Collapse Series');
+		this.expandLinkElem.html('<img src="' + MEDIA_URL + '/images/minusbox.png" /> Collapse Series');
+        this.selectAllLinkElem.show();
+        this.selectNoneLinkElem.show();
 	} else {
         this.rowElem.show();
-		this.middleLinkElem.html('<img src="' + MEDIA_URL + '/images/plusbox.png" /> Expand Series');
+		this.expandLinkElem.html('<img src="' + MEDIA_URL + '/images/plusbox.png" /> Expand Series');
+        this.selectAllLinkElem.hide();
+        this.selectNoneLinkElem.hide();
 	}
 	
 	this.reposition();
+}
+
+ExpandSeries.prototype.selectAll = function() {
+	$('.sub-conference-' + this.conferenceId + ' .select-resources').each(function() {
+        this.checked = true;
+	});
+    updateBatchEditResourcesButtons();
+}
+
+ExpandSeries.prototype.selectNone = function() {
+	$('.sub-conference-' + this.conferenceId + ' .select-resources').each(function() {
+        this.checked = false;
+	});
+    updateBatchEditResourcesButtons();
 }

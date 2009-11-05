@@ -1486,6 +1486,10 @@ p.export {
     top:0;
 }
 
+.curly-brace-mid-div a {
+	display:block;
+}
+
 div.error {
 	background:maroon;
 	color:white;
