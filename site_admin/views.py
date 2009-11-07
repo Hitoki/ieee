@@ -3873,7 +3873,7 @@ def broken_links_reset(request, reset_type, resource_id=None):
 @login_required
 @admin_required
 def broken_links_check(request, check_type=None, resource_id=None):
-    print 'broken_links_check()'
+    #print 'broken_links_check()'
     
     next = request.GET.get('next', '')
     
@@ -3882,7 +3882,7 @@ def broken_links_check(request, check_type=None, resource_id=None):
         resources = Resource.objects.exclude(url='').filter(url_status='')
         
         # Start the URL checking thread (daemon, so it continues to run after this function returns to the browser)
-        thread = threading.Thread(target=url_checker.check_resources, args=[resources], kwargs={ 'num_threads': 10 })
+        thread = threading.Thread(target=url_checker.check_resources, args=[resources], kwargs={ 'num_threads': 200 })
         thread.setDaemon(True)
         thread.start()
     elif check_type == 'resource':

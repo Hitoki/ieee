@@ -2,10 +2,121 @@ import socket
 import time
 import threading
 import urllib
+import urlparse
 from Queue import Empty, Queue
 from ieeetags.models import *
 import datetime
 
+class ArrayThreadSafe(object):
+    def __init__(self):
+        self.lock = threading.Condition(threading.Lock())
+        self.array = []
+        self.num_blocks = 0
+    
+    def size(self):
+        self.lock.acquire()
+        size1 = len(self.array)
+        self.lock.release()
+        return size1
+    
+    def get(self, index):
+        self.lock.acquire()
+        if index < 0 or index >= len(self.array):
+            result = None
+        else:
+            result = self.array[index]
+        self.lock.release()
+        return result
+    
+    def set(self, index, value):
+        self.lock.acquire()
+        if index < 0 or index > len(self.array):
+            raise Exception('ERROR: Bad index %s' % index)
+        else:
+            self.array[index] = value
+        self.lock.release()
+    
+    def append(self, value):
+        self.lock.acquire()
+        self.array.append(value)
+        self.lock.release()
+
+    #def remove(self, index):
+    #    print 'ArrayThreadSafe.remove()'
+    #    self.lock.acquire()
+    #    if index < 0 or index > len(self.array):
+    #        print 'ERROR: Bad index %s' % index
+    #    else:
+    #        print 'ArrayThreadSafe.remove(): removing item %s' % index
+    #        for item in self.array:
+    #            print '  item: %s' % item
+    #        print 'After delete:'
+    #        del self.array[index]
+    #        for item in self.array:
+    #            print '  item: %s' % item
+    #        self.lock.notifyAll()
+    #    self.lock.release()
+    
+    def remove_value(self, value):
+        #print 'ArrayThreadSafe.remove_value()'
+        self.lock.acquire()
+            
+        index = None
+        for i in range(len(self.array)):
+            if self.array[i] == value:
+                index = i
+                break
+        
+        if index is None:
+            raise Exception('ERROR: Value "%s" not found.' % value)
+        else:
+            del self.array[index]
+            self.lock.notifyAll()
+        self.lock.release()
+    
+    def has(self, value):
+        result = False
+        self.lock.acquire()
+        while item in self.array:
+            if item == value:
+                result = True
+                break
+        self.lock.release()
+        return result
+    
+    def block_and_append(self, value):
+        'Tries to add a value to the list.  If the value exists already, block until it\'s removed.'
+        self.lock.acquire()
+        
+        #print 'ArrayThreadSafe.block_and_append()'
+        
+        first = True
+        while True:
+            result = False
+            for item in self.array:
+                if item == value:
+                    result = True
+                    break
+            
+            if not result:
+                # Value doesn't exist in array, add it and break
+                #print 'ArrayThreadSafe.block_and_append(): adding "%s" to the array' % value
+                self.array.append(value)
+                break
+            else:
+                # Value already exist, wait until it doesn't
+                if first:
+                    #print 'ArrayThreadSafe.block_and_append(): waiting...'
+                    first = False
+                
+                #for item in self.array:
+                #    print '  item: %s' % item
+                
+                self.lock.wait()
+                
+        self.lock.release()
+        return result
+    
 class CheckUrlOpener(urllib.FancyURLopener):
     def __init__(self, *args, **kwargs):
         #print 'CheckUrlOpener.__init__()'
@@ -23,7 +134,7 @@ class CheckUrlOpener(urllib.FancyURLopener):
         self.is_bad_url = True
         self.error_str = 'HTTP %s: %s' % (code, msg)
         
-def check_url_thread(resource_queue, resources_to_save_queue):
+def check_url_thread(resource_queue, resources_to_save_queue, checking_hosts):
     thread = threading.currentThread()
     #print '  %s: check_url_thread()' % thread.getName()
     while True:
@@ -31,9 +142,18 @@ def check_url_thread(resource_queue, resources_to_save_queue):
             resource = resource_queue.get(block=False)
         except Empty:
             break
+        
         #print '  %s: checking %s' % (thread.getName(), resource.url)
         opener = CheckUrlOpener()
         bad_url = False
+        
+        # Check if the host is being checked right now... wait until it's not
+        
+        urlparts = urlparse.urlparse(resource.url)
+        hostname = urlparts.netloc
+        
+        #print '  %s:   adding %s to checking_hosts' % (thread.getName(), hostname)
+        checking_hosts.block_and_append(hostname)
         
         try:
             opener.open(resource.url)
@@ -95,12 +215,16 @@ def check_url_thread(resource_queue, resources_to_save_queue):
                 bad_url = True
                 resource.url_error = opener.error_str
         
+        #print '  %s:   Removing %s from checking_hosts' % (thread.getName(), hostname)
+        checking_hosts.remove_value(hostname)
+        
         if bad_url:
             resource.url_status = Resource.URL_STATUS_BAD
         else:
             resource.url_status = Resource.URL_STATUS_GOOD
             resource.url_error = ''
             
+        #print '  %s: resource.url: %s' % (thread.getName(), resource.url)
         #print '  %s: resource.url_status: %s' % (thread.getName(), resource.url_status)
         #print '  %s: resource.url_error: %s' % (thread.getName(), resource.url_error)
         resource.url_date_checked = datetime.datetime.now()
@@ -122,6 +246,7 @@ def save_resources_main(resource_queue):
             break
         
         #print 'Saving resource %s' % resource.id
+        #print '  resource.url: %s' % resource.url
         #print '  resource.url_status: %s' % resource.url_status
         #print '  resource.url_error: %s' % resource.url_error
         resource.save()
@@ -149,26 +274,31 @@ def check_resources(resources, num_threads):
     
     num_resources = resources.count()
     
+    # Add all the resources to a queue
     resource_queue = Queue()
     for resource in resources:
         resource_queue.put(resource)
     
+    # Keep track of which resources we need to save
     resources_to_save_queue = Queue()
     
-    #print 'starting threads'
+    checking_hosts = ArrayThreadSafe()
+    
+    # Start all the threads
     threads = []
     for i in range(num_threads):
-        thread = threading.Thread(name='Thread %s' % i, target=check_url_thread, args=[resource_queue, resources_to_save_queue])
+        thread = threading.Thread(name='Thread %s' % i, target=check_url_thread, args=[resource_queue, resources_to_save_queue, checking_hosts])
         thread.start()
         threads.append(thread)
-    #print 'done starting threads'
     
     last_time = time.clock()
     last_num_resources = resource_queue.qsize()
     
+    # Start the saving thread
     save_resources_thread = threading.Thread(target=save_resources_main, args=[resources_to_save_queue])
     save_resources_thread.start()
     
+    # Loop while URLs are being checked
     while not resource_queue.empty():
         
         # Refresh the log from the DB
@@ -214,6 +344,8 @@ def check_resources(resources, num_threads):
         if len(threads):
             # Either wait for the first thread to end, or 2 seconds (whichever comes first)
             threads[0].join(2)
+        
+    #print 'checking_hosts.size(): %s' % checking_hosts.size()
     
     # Signal save_resources_thread to stop.
     #print 'Waiting for save_resources_thread to stop.'
