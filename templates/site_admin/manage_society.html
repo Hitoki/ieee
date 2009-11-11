@@ -551,6 +551,13 @@
                                                 </td>
                                                 <td>
                                                     {% if resource.url %}<a href="{{ resource.url }}" target="_blank"><span class="flyover {position:'bottom'}" title="{{ resource.url }}"><img src="{{ MEDIA_URL }}/images/popup.png"/></span></a>{% endif %}
+                                                    
+                                                    {% ifequal resource.url_status "bad" %}
+                                                        <!-- Bad URL icon -->
+                                                        <span class="flyover" title="{{ resource.url_error }}">
+                                                            <img src="{{ MEDIA_URL }}images/red_circle_x.png" />
+                                                        </span>
+                                                    {% endifequal %}
                                                 </td>
                                                 <td>
                                                     {% if resource.nodes.all %}{{ resource.nodes.all.count }}{% endif %}
