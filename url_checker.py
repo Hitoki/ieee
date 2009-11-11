@@ -133,7 +133,66 @@ class CheckUrlOpener(urllib.FancyURLopener):
         #print '  headers: %r' % headers
         self.is_bad_url = True
         self.error_str = 'HTTP %s: %s' % (code, msg)
+
+def check_url(url, timeout=None):
+    '''
+    Checks a single URL.
+    @param url: the URL to check.
+    @return: A tuple (url_status, url_error), where url_status is 'good' or 'bad' or '', and url_error is the error message.
+    '''
+    opener = CheckUrlOpener()
+    url_status = ''
+    url_error = ''
+    
+    if timeout is not None:
+        old_socket_timeout = socket.getdefaulttimeout()
+        socket.setdefaulttimeout(timeout)
+    
+    try:
+        opener.open(url)
+    
+    except socket.timeout, e:
+        url_status = Resource.URL_STATUS_BAD
+        url_error = 'Timed out'
         
+    except socket.error, e:
+        url_error = 'Socket Error: %s' % e
+        url_status = Resource.URL_STATUS_BAD
+        
+    except IOError, e:
+        error_type = e.args[0]
+        if error_type == 'socket error':
+            if type(e.args[1]) is socket.timeout:
+                url_error = 'Timed out'
+            else:
+                error_num, error_msg = e.args[1]
+                if error_num == 11001:
+                    # getaddrinfo failed - bad host name
+                    url_error = 'Bad hostname'
+                else:
+                    url_error = 'Error #%s: %s' % (error_num, error_msg)
+        else:
+            # Unknown exception
+            url_error = str(e)
+        url_status = Resource.URL_STATUS_BAD
+    
+    except UnicodeError:
+        url_error = 'URL contains non-ASCII characters.'
+        url_status = Resource.URL_STATUS_BAD
+        
+    else:
+        # No exceptions, check for HTTP errors
+        opener.close()
+        if opener.is_bad_url:
+            # Got an HTTP error
+            url_status = Resource.URL_STATUS_BAD
+            url_error = opener.error_str
+
+    if timeout is not None:
+        socket.setdefaulttimeout(old_socket_timeout)
+
+    return (url_status, url_error)
+
 def check_url_thread(resource_queue, resources_to_save_queue, checking_hosts):
     thread = threading.currentThread()
     #print '  %s: check_url_thread()' % thread.getName()

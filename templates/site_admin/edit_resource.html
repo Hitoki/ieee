@@ -138,6 +138,13 @@
                     <label for="id_url">{{ form.url.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title="Web link for the resource in format: www.resource.com/path">[?]</span>:</label>
                 </th>
                 <td>
+                    {% if url_error %}
+                        <div class="error">URL is broken: {{ url_error }}</div>
+                    {% else %}
+                        {% ifequal resource.url_status "bad" %}
+                            <div class="error">URL is broken: {{ resource.url_error }}</div>
+                        {% endifequal %}
+                    {% endif %}
                     {{ form.url.errors }}
                     {{ form.url }}
                 </td>

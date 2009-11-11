@@ -168,32 +168,6 @@ $(function() {
     }
 });
 
-
-function FormatUrl(elem) {
-    var formatUrl = this;
-    this.elem = $(elem);
-    this.elem.change(function() {
-        formatUrl.update();
-    });
-    this.elem.blur(function() {
-        formatUrl.update();
-    });
-}
-
-FormatUrl.prototype.update = function() {
-    var value = this.elem.attr('value');
-    if (!/^http:\/\//.test(value) && !/^https:\/\//.test(value)) {
-        value = 'http://' + value;
-        this.elem.attr('value', value);
-    }
-}
-
-$(function () {
-    $('#id_url').each(function() {
-        new FormatUrl(this);
-    });
-});
-
 // Append a string to the end of a URL, before the #hash
 function urlAppend(url, str) {
     if (/#/.test(url)) {

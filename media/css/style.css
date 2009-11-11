@@ -1523,3 +1523,8 @@ a.paste-tags img {
 p.warning {
     font-weight:bold;
 }
+
+ul.errors {
+    background:maroon;
+    color:white;
+}

@@ -3084,6 +3084,7 @@ def save_resource(request):
         form = EditResourceForm(request.POST)
     
     errors = []
+    url_error = None
     
     if form.is_valid():
         
@@ -3091,16 +3092,28 @@ def save_resource(request):
         if form.cleaned_data['resource_type'].name == ResourceType.STANDARD and form.cleaned_data['standard_status'] == '':
             errors.append('A Status is required for Standards')
         
-        if len(errors) == 0:
+        if form.cleaned_data['url'] != '':
+            # Has a URL, check it
+            print 'Checking url %s' % form.cleaned_data['url']
+            
+            (url_status, url_error1) = url_checker.check_url(form.cleaned_data['url'], 4)
+            
+            if url_status == Resource.URL_STATUS_BAD:
+                #errors.append('URL is broken: %s' % url_error)
+                url_error = url_error1
+        
+        if len(errors) == 0 and url_error is None:
             # Passed validation
             if 'id' in form.cleaned_data:
                 # Existing resource
                 resource = Resource.objects.get(id=form.cleaned_data['id'])
+                new_resource = False
             else:
                 # New resource
                 resource = Resource.objects.create(
                     resource_type=form.cleaned_data['resource_type']
                 )
+                new_resource = True
             
             # Need to update these node totals later (in case the user has removed one from this resource)
             # NOTE: without list(), this becomes a lazy reference and is evaluated after the resource.svae() later on... need to call list() here to make a current copy.
@@ -3110,6 +3123,9 @@ def save_resource(request):
             resource.ieee_id = form.cleaned_data['ieee_id']
             resource.description = form.cleaned_data['description']
             resource.url = form.cleaned_data['url']
+            # NOTE: Assume that if we're saving the resource, there can't be URL errors...
+            resource.url_status = Resource.URL_STATUS_GOOD
+            resource.url_error = ''
             resource.nodes = form.cleaned_data['nodes']
             if form.cleaned_data['societies'] is not None:
                 resource.societies = form.cleaned_data['societies']
@@ -3162,7 +3178,8 @@ def save_resource(request):
         'return_url': return_url,
         'resource': resource,
         'form': form,
-        'errors': list_to_html_list(errors),
+        'errors': list_to_html_list(errors, 'errors'),
+        'url_error': url_error,
     })
     
 
