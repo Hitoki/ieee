@@ -1,3 +1,4 @@
+import cgi
 from django.contrib.auth.decorators import login_required
 from django.core.mail import mail_admins
 from django.core.mail import send_mail
@@ -6,14 +7,17 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils import simplejson
-from xml.dom import minidom
 from logging import debug as log
 import os.path
+import re
 import string
 import sys
 import time
 import traceback
 from urllib import quote
+import urllib
+import urllib2
+import xml.dom.minidom
 
 from ieeetags.models import single_row, Filter, Node, NodeType, Resource, ResourceType, Society
 from ieeetags.forms import *
@@ -177,7 +181,6 @@ def feedback(request):
             
             # Send email
             from django.core.mail import send_mail
-            import time
             
             subject = 'IEEE Comments from %s' % form.cleaned_data['email']
             message = 'Sent on %s:\n%s\n\n' % (time.strftime('%Y-%m-%d %H:%M:%S'), form.cleaned_data['comments'])
@@ -234,6 +237,73 @@ def ajax_tag_content(request):
     conferences = list(conferences)
     conferences = util.group_conferences_by_series(conferences)
     
+    # Get xplore results
+    
+    url = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?' + urllib.urlencode({
+        # Number of results
+        'hc': 10,
+        # Specifies the result # to start from
+        'rs': 1,
+        'ti': tag.name,
+    })
+    
+    try:
+        file1 = urllib2.urlopen(url)
+    except urllib2.URLError:
+        xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
+        xplore_results = []
+    else:
+        xplore_error = None
+        xml1 = xml.dom.minidom.parse(file1)
+        
+        def getElementByTagName(node, tag_name):
+            nodes = node.getElementsByTagName(tag_name)
+            if len(nodes) == 0:
+                return None
+            elif len(nodes) == 1:
+                return nodes[0]
+            else:
+                raise Exception('More than one element found for tag name "%s"' % tag_name)
+        
+        def getElementValueByTagName(node, tag_name):
+            node1 = getElementByTagName(node, tag_name)
+            if node1 is None:
+                return None
+            else:
+                value = ''
+                #print '  len(node1.childNodes): %r' % len(node1.childNodes)
+                for child_node in node1.childNodes:
+                    #print '  child_node: %r' % child_node
+                    if child_node.nodeType == child_node.TEXT_NODE or child_node.nodeType == child_node.CDATA_SECTION_NODE:
+                        value += child_node.nodeValue
+                    
+                return value
+        
+        print 'tag.name: %r' % tag.name
+        
+        xplore_results = []
+        for document1 in xml1.documentElement.getElementsByTagName('document'):
+            title = getElementValueByTagName(document1, 'title')
+            abstract = getElementValueByTagName(document1, 'abstract')
+            pdf = getElementValueByTagName(document1, 'pdf')
+            
+            # Escape here, since we're going to output this as |safe on the template
+            title = cgi.escape(title)
+            print 'title: %r' % title
+            title = re.sub('(?i)(%s)' % tag.name, r'<strong>\1</strong>', title)
+            print 'after title: %r' % title
+            
+            result = {
+                'name': title,
+                'description': abstract,
+                'url': pdf,
+            }
+            xplore_results.append(result)
+        
+        file1.close()
+    
+    # End get xplore results
+    
     return render(request, 'content.html', {
         'tag':tag,
         'conferences': conferences,
@@ -243,6 +313,8 @@ def ajax_tag_content(request):
         'num_resources': num_resources,
         'parent_nodes': parent_nodes,
         'ui': ui,
+        'xplore_error': xplore_error,
+        'xplore_results': xplore_results,
     })
 
 @login_required
@@ -576,7 +648,7 @@ def ajax_nodes_xml(request):
     
     # XML Output
     
-    doc = minidom.Document()
+    doc = xml.dom.minidom.Document()
     
     root = doc.createElement('graph_data')
     doc.appendChild(root)
