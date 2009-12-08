@@ -29,6 +29,7 @@ else:
         
         # AJAX
         url(r'^ajax/tag_content$', views.ajax_tag_content, name='ajax_tag_content'),
+        url(r'^ajax/xplore_results$', views.ajax_xplore_results, name='ajax_xplore_results'),
         url(r'^ajax/node$', views.ajax_node, name='ajax_node'),
         url(r'^ajax/nodes_xml$', views.ajax_nodes_xml, name='ajax_nodes_xml'),
         url(r'^ajax/nodes_json$', views.ajax_nodes_json, name='ajax_nodes_json'),

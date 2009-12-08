@@ -1528,3 +1528,12 @@ ul.errors {
     background:maroon;
     color:white;
 }
+
+#xplore-results-container div.loading {
+    text-align:center;
+}
+
+#xplore-results-container img.loading {
+    ddisplay:block;
+    mmargin:4em auto;
+}

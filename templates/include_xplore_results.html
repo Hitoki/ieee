@@ -1,0 +1,31 @@
+        
+    
+    <div id="num-xplore-results-hidden" style="display:none;">{{ xplore_results|length }}</div>
+    
+    {% if xplore_error %}
+        <p class="error">
+            {{ xplore_error }}
+        </p>
+    {% else %}
+        {% if xplore_results|length %}
+            {% for result in xplore_results %}
+                {% if result.url %}
+                    <a href="{{ result.url }}" target="_blank">
+                {% endif %}
+                <p class="{% cycle 'item_odd' 'item_even' %}">
+                    <span class="AAAuto-truncate-words {length:165, flyover:true}">
+                        {{ result.name|safe }}
+                    </span>
+                    {% if result.url %}
+                        <img src="{{ MEDIA_URL }}images/popup.png" />
+                    {% endif %}
+                </p>
+                {% if result.url %}
+                    </a>
+                {% endif %}
+                <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{ result.description|default:"(no description)" }}</p>
+            {% endfor %}
+        {% else %}
+            <p class="no-resources">(no Xplore results)</p>
+        {% endif %}
+    {% endif %}

@@ -373,7 +373,35 @@ function onCopyTagsSuccess(linkElem, data) {
     $(linkElem).fadeIn();
 }
 
-// Call this whenever new content is created dynamically to attach any scripts
+
+function attachXploreResults(elem) {
+    var elem2 = $(elem);
+    if (!elem2.data('ajax')) {
+        var tagId = elem2.metadata().tagId;
+        elem2.html('<div class="loading"><img src="/media/images/ajax-loader.gif" class="loading" /><br/>Loading Xplore results...</div>');
+        var ajax = $.ajax({
+            url: '/ajax/xplore_results',
+            data: {
+                tag_id: tagId
+            },
+            type: 'post',
+            success: function(data) {
+                log('success...');
+                elem2.html(data);
+                log('  elem2: ' + elem2);
+                log('  elem2.length: ' + elem2.length);
+                log('  elem2[0]: ' + elem2[0]);
+                log('  elem2[0].nodeName: ' + elem2[0].nodeName);
+                var num = elem2.find('#num-xplore-results-hidden').html();
+                log('  num: ' + num);
+                $('#num-xplore-results').html('(' + num + ')');
+            }
+        });
+        elem2.data('ajax', ajax);
+    }
+}
+
+// Call elem whenever new content is created dynamically to attach any scripts
 function attachScripts(elem) {
     elem = $(elem);
     attachBlurTexts(elem);
@@ -440,4 +468,3 @@ $(function() {
     
     attachCopyTags($(document));
 });
-

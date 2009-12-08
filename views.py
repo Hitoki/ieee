@@ -237,6 +237,23 @@ def ajax_tag_content(request):
     conferences = list(conferences)
     conferences = util.group_conferences_by_series(conferences)
     
+    return render(request, 'content.html', {
+        'tag':tag,
+        'conferences': conferences,
+        'experts': experts,
+        'periodicals': periodicals,
+        'standards': standards,
+        'num_resources': num_resources,
+        'parent_nodes': parent_nodes,
+        'ui': ui,
+        #'xplore_error': xplore_error,
+        #'xplore_results': xplore_results,
+    })
+
+def ajax_xplore_results(request):
+    tagId = request.POST['tag_id']
+    tag = Node.objects.get(id=tagId)
+    
     # Get xplore results
     
     url = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?' + urllib.urlencode({
@@ -304,18 +321,12 @@ def ajax_tag_content(request):
     
     # End get xplore results
     
-    return render(request, 'content.html', {
+    return render(request, 'include_xplore_results.html', {
         'tag':tag,
-        'conferences': conferences,
-        'experts': experts,
-        'periodicals': periodicals,
-        'standards': standards,
-        'num_resources': num_resources,
-        'parent_nodes': parent_nodes,
-        'ui': ui,
         'xplore_error': xplore_error,
         'xplore_results': xplore_results,
     })
+
 
 @login_required
 def ajax_node(request):
