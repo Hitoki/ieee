@@ -96,6 +96,9 @@ class ChangePasswordForm(Form):
     password1 = CharField(widget=PasswordInput(), label='Please enter your new password:')
     password2 = CharField(widget=PasswordInput(), label='Type your password again:')
 
+class CreateFakeTagsForm(Form):
+	total_num_tags = IntegerField()
+
 class CreateResourceForm(Form):
     resource_type = ModelChoiceField(queryset=ResourceType.objects.all())
     ieee_id = CharField(required=False, label='ID')

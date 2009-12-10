@@ -72,8 +72,16 @@ def generate_password(length=8, chars='all'):
         CHARS = ALL
     elif chars == 'alphanumeric':
         CHARS = ALPHA + NUMERIC
+    elif chars == 'alpha':
+        CHARS = ALPHA
+    elif chars == 'numeric':
+        CHARS = NUMERIC
+    elif chars == 'loweralpha':
+        CHARS = ALPHA_LOWER
     elif chars == 'loweralphanumeric':
         CHARS = ALPHA_LOWER + NUMERIC
+    elif chars == 'upperalpha':
+        CHARS = ALPHA_UPPER
     elif chars == 'upperalphanumeric':
         CHARS = ALPHA_UPPER + NUMERIC
     else:
@@ -83,6 +91,16 @@ def generate_password(length=8, chars='all'):
     for i in range(length):
         passwd += random.choice(CHARS)
     return passwd
+
+def generate_words(min, max, chars='loweralpha'):
+    import random
+    length = random.randint(min, max)
+    string = generate_password(length, chars)
+    i = 0
+    while i < len(string):
+        i += random.randint(2, 10)
+        string = string[:i] + ' ' + string[i:]
+    return string
 
 ## Generate a human readable 'random' password
 ## password  will be generated in the form 'word'+digits+'word' 

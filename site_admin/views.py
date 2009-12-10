@@ -3926,6 +3926,116 @@ def broken_links_cancel(request):
         url_checker_log.save()
     return HttpResponseRedirect(reverse('admin_broken_links_report'))
 
+@login_required
+@admin_required
+def create_fake_tags(request):
+
+    delete_tags = bool(request.GET.get('delete_tags', 0))
+    
+    if delete_tags:
+        # Delete all fake tags
+        num_fake = Node.objects.filter(name__startswith='(temp) ').count()
+        print 'num_fake: %s' % num_fake
+        Node.objects.filter(name__startswith='(temp) ').delete()
+        return HttpResponseRedirect(reverse('admin_create_fake_tags'))
+        
+    #print 'delete_tags: %r' % delete_tags
+
+    num_tags = Node.objects.all().count()
+    if request.method == 'GET':
+        form = CreateFakeTagsForm(initial={
+            'total_num_tags': num_tags,
+        })
+    else:
+        form = CreateFakeTagsForm(request.POST)
+        
+        if form.is_valid():
+            num_create_tags = form.cleaned_data['total_num_tags'] - num_tags
+            print 'num_tags: %s' % num_tags
+            print 'num_create_tags: %s' % num_create_tags
+            if num_create_tags > 0:
+                print 'creating tags...'
+                
+                #conference_type = TagType.objects.getFromName(TagType.CONFERENCE)
+                
+                start = time.clock()
+                last = start
+                
+                for i in range(num_create_tags):
+                    Node.objects.create_tag(
+                        name = '(temp) ' + generate_words(10, 150),
+                    )
+                    
+                    #Resource.objects.create(
+                    #    tag_type = conference_type,
+                    #    ieee_id = generate_password(10, 'numeric'),
+                    #    name = '(temp) ' + generate_words(10, 150),
+                    #    description = generate_words(10, 400),
+                    #    #url = models.CharField(blank=True, max_length=1000)
+                    #    year = random.randint(1995, 2020),
+                    #    #standard_status = models.CharField(blank=True, max_length=100)
+                    #    priority_to_tag = False,
+                    #    completed = False,
+                    #    keywords = generate_words(10, 100),
+                    #    #conference_series = models.CharField(max_length=100, blank=True)
+                    #    #date = models.DateField(null=True, blank=True)
+                    #    #url_status = models.CharField(blank=True, max_length=100, choices=URL_STATUS_CHOICES)
+                    #    #url_date_checked = models.DateTimeField(null=True, blank=True)
+                    #    #url_error = models.CharField(null=True, blank=True, max_length=1000)
+                    #    #nodes = models.ManyToManyField(Node, related_name='tags')
+                    #    #societies = models.ManyToManyField(Society, related_name='tags')
+                    #)
+                    
+                    if time.clock() - last > 1:
+                        last = time.clock()
+                        tags_per_second = i / (last - start)
+                        print 'tags: %s/%s, tags_per_second: %s' % (i, num_create_tags, tags_per_second)
+                    
+                print 'done creating tags'
+            return HttpResponseRedirect(reverse('admin_create_fake_tags'))
+    return render(request, 'site_admin/create_fake_tags.html', {
+        'num_tags': num_tags,
+        'form': form,
+    })
+
+def live_search_results(request):
+    print 'live_search_results()'
+    
+    search_for = request.GET['search_for']
+    search_for = search_for.strip()
+    
+    MAX_RESULTS = 20
+    
+    # NOTE: <= 2 char searches take a long time (2-3 seconds), vs 200ms average for anything longer
+    if len(search_for) >= 2:
+        tags = Node.objects.filter(name__icontains=search_for)
+        total_num_tags = tags.count()
+        tags = tags[:MAX_RESULTS]
+        num_more_tags = total_num_tags - tags.count()
+    else:
+        tags = []
+        total_num_tags = 0
+        num_more_tags = 0
+    
+    results = []
+    for tag in tags:
+        results.append({
+            'id': tag.id,
+            'name': tag.name,
+        })
+    
+    return HttpResponse(
+        json.dumps({
+            'search_for': request.GET['search_for'],
+            'total_num_tags': total_num_tags,
+            'num_more_tags': num_more_tags,
+            'results': results,
+        }),
+        #mimetype='application/json'
+        mimetype='text/plain'
+        #mimetype='text/html'
+    )
+    
 #def create_admin_login(request):
 #    "Create a test admin account."
 #    username = 'test'
