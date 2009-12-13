@@ -10,8 +10,11 @@ var Roamer = {
     flash: null,
     id: null,
     filters: {},
+    oldHash: null,
     
     init: function() {
+        var roamer = this;
+        
         //log("Roamer.init()");
         this.flash = getConstellationRoamer();
         //log("this.flash: " + this.flash);
@@ -21,7 +24,54 @@ var Roamer = {
             this.filter(filters[i].id, filters[i].checked);
         }
         
+        $.historyInit(function(hash) {
+            roamer.onChangeHash(hash);
+        });
+        
+        // Need to manually call this when page is loaded if hash is empty.
+        if (window.location.hash == '' || window.location.hash == '#') {
+            this.onChangeHash(window.location.hash);
+        }
+        
         this.onChange();
+    },
+
+    onChangeHash: function(hash) {
+        if (this.oldHash != hash) {
+            
+            // Matches "#/sector/123"
+            var sector_matches = hash.match(/^\/sector\/(\d+)$/);
+            // Matches "#/tag/123"
+            var tag_matches = hash.match(/^\/tag\/(\d+)$/);
+            
+            if (hash == '') {
+                // Home page
+                this.setNode(1, false);
+                
+            } else if (sector_matches) {
+                // Sector
+                var sectorId = parseInt(sector_matches[1]);
+                if (this.id != sectorId) {
+                    log('  setting id to ' + sectorId);
+                    this.setNode(sectorId, false);
+                }
+            
+            } else if (tag_matches) {
+                // Tag
+                var tagId = parseInt(tag_matches[1]);
+                if (this.id != tagId) {
+                    log('  setting id to ' + tagId);
+                    this.setNode(tagId, false);
+                }
+            
+            } else {
+                // Catch all for bad hashes... especially "#tag-login-tab" leftover from login redirect...
+                this.showHelp(false);
+                
+            }
+            
+            this.oldHash = hash;
+        }
     },
     
     getSectorLink: function(id) {
@@ -58,10 +108,15 @@ var Roamer = {
         return id;
     },
     
-    setNode: function(id) {
+    setNode: function(id, setHash) {
         //log("setNode()");
         //log("  id: " + id);
+        //log("  setHash: " + setHash);
         //log("  this.flash.getSelectedNodeID(): " + this.flash.getSelectedNodeID());
+        
+        if (setHash == undefined) {
+            setHash = true;
+        }
         
         // Hide the content lightbox if it's visible.
         Lightbox.hide();
@@ -69,23 +124,22 @@ var Roamer = {
         this.flash.setSelectedNodeID(id);
         this.id = id;
         this.nodeInfo = null;
-        this.getNodeInfo();
+        this.getNodeInfo(setHash);
         this.loadContent();
         // TODO:
         //this.updateSector();
         this.updateSwitchLink();
     },
     
-    getNodeInfo: function() {
+    getNodeInfo: function(setHash) {
         //log('getNodeInfo()');
         var results = null;
-        function copyResults(data) {
-            results = data;
-        }
-        // Get the info synchronously
+        // Get the info synchronously (save results in "results" var)
         $.ajax({
             async: false,
-            success: copyResults,
+            success: function(data) {
+                results = data;
+            },
             data: {
                 'nodeId': this.id
             },
@@ -99,12 +153,25 @@ var Roamer = {
         // Check if another node was selected after making the above ajax request
         if (this.id == results.id) {
             this.nodeInfo = results;
-            //log('  this.nodeInfo: ' + this.nodeInfo);
-            //for (var i in this.nodeInfo) {
-            //    log('    this.nodeInfo[' + i + ']: ' + this.nodeInfo[i]);
-            //}
             this.highlightSector();
         }
+        
+        if (setHash) {
+            // Update the hash...
+            if (this.nodeInfo.type == 'sector') {
+                //log('setting sector hash');
+                $.historyLoad('/sector/' + this.nodeInfo.id);
+            } else if (this.nodeInfo.type == 'tag') {
+                //log('setting tag hash');
+                $.historyLoad('/tag/' + this.nodeInfo.id);
+            } else if (this.nodeInfo.type == 'root') {
+                //log('setting root hash');
+                $.historyLoad('');
+            } else {
+                alert('ERROR in getNodeInfo(): unknown nodeInfo.type: ' + this.nodeInfo.type);
+            }
+        }
+        
         //log('~getNodeInfo()');
     },
     
@@ -115,7 +182,7 @@ var Roamer = {
         if (id != this.id) {
             this.id = id;
             this.nodeInfo = null;
-            this.getNodeInfo();
+            this.getNodeInfo(true);
             this.updateSwitchLink();
             this.loadContent();
         }
@@ -204,13 +271,21 @@ var Roamer = {
         //log('this.id: ' + this.id);
         if (this.nodeInfo.type == 'sector' || this.nodeInfo.type == 'tag_cluster') {
             // Enable the switch link for sectors and clusters
-            $('#switch-link').attr('href', '/textui?nodeId=' + this.id);
+            $('#switch-link').attr('href', '/textui#/sector/' + this.id);
+            Flyover.detach($('#switch-link'));
+            
+        } else if (this.nodeInfo.type == 'tag') {
+            // Disable the switch link for tags
+            $('#switch-link').attr('href', 'javascript:void(0);');
+            Flyover.attach($('#switch-link'));
+            
+        } else if (this.nodeInfo.type == 'root') {
+            // Root switch link (blank hash)
+            $('#switch-link').attr('href', '/textui');
             Flyover.detach($('#switch-link'));
             
         } else {
-            // Disable the switch link for sectors and enable the flyover
-            $('#switch-link').attr('href', 'javascript:void(0);');
-            Flyover.attach($('#switch-link'));
+            alert('ERROR in updateSwitchLink(): unknown nodeInfo.type "' + this.nodeInfo.type + '"');
         }
         //log('~updateSwitchLink()');
     },

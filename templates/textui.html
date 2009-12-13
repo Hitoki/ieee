@@ -4,20 +4,6 @@
     <script type="text/javascript">
         $(function() {
             Tags.init();
-            {% if tagId %}
-                Tags.selectSector({{sectorId}}, function(){Tags.selectTag({{tagId}});} );
-            {% else %}
-                {% if sectorId %}
-                    Tags.selectSector({{sectorId}});
-                {% else %}
-                    {% if clusterId %}
-                        Tags.selectCluster({{ clusterId }});
-                    {% else %}
-                        Tags.showHelp();
-                    {% endif %}
-                {% endif %}
-            {% endif %}
-            
         });
     </script>
 {% endblock %}

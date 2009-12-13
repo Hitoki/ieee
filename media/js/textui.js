@@ -16,11 +16,51 @@ var Tags = {
     node: null,
     onLoadSectorCallback: null,
     helpScreenElem: null,
-    
     tagSortOverlayElem: null,
+    oldHash: null,
     
     init: function() {
+        var tags = this;
+        
+        $.historyInit(function(hash) {
+            tags.onChangeHash(hash);
+        });
+        
+        // Need to manually call this when page is loaded if hash is empty.
+        if (window.location.hash == '' || window.location.hash == '#') {
+            this.onChangeHash(window.location.hash);
+        }
+        
         this.updateChangedNode();
+    },
+    
+    onChangeHash: function(hash) {
+        //log('onChangeHash()');
+        if (this.oldHash != hash) {
+            //log('  hash: ' + hash);
+            
+            // Matches "#/sector/123"
+            var sector_matches = hash.match(/^\/sector\/(\d+)$/);
+            
+            if (hash == '') {
+                // Home page
+                this.showHelp(false);
+                
+            } else if (sector_matches) {
+                // Sector
+                var sectorId = parseInt(sector_matches[1]);
+                if (this.nodeId != sectorId) {
+                    this.selectSector(sectorId, null, false);
+                }
+            
+            } else {
+                // Catch all for bad hashes... especially "#tag-login-tab" leftover from login redirect...
+                this.showHelp(false);
+                
+            }
+            
+            this.oldHash = hash;
+        }
     },
     
     // This should be called any time the selected node has changed
@@ -74,13 +114,22 @@ var Tags = {
 		}
     },
     
-    selectSector: function(id, onload) {
+    selectSector: function(id, onload, setHash) {
         //log('selectSector()');
         //log('  id: ' + id);
         
         if (id) {
             this.nodeId = id;
             this.nodeType = 'sector';
+        }
+        
+        if (setHash == undefined) {
+            setHash = true;
+        }
+        
+        if (setHash) {
+            //log('setting hash to "' + '/sector/' + this.nodeId + '"');
+            $.historyLoad('/sector/' + this.nodeId);
         }
         
         if (this.nodeId != null) {
@@ -105,8 +154,9 @@ var Tags = {
             
             var filterStr = implode(',', this.getFilters());
             
-            if (onload)
+            if (onload) {
                 this.onLoadSectorCallback = onload;
+            }
             
             // Hide any flyvoers so they don't persist when the node is gone.
             Flyover.hide();
@@ -431,10 +481,12 @@ var Tags = {
     },
     
     updateSwitchLink: function() {
-        //console.log('updateSwitchLink()');
-        //console.log('this.nodeId: ' + this.nodeId);
         if (this.nodeId != null) {
-            $('#switch-link').attr('href', '/roamer?nodeId=' + this.nodeId);
+            if (this.nodeType == 'sector') {
+                $('#switch-link').attr('href', '/roamer#/sector/' + this.nodeId);
+            } else {
+                alert('ERROR in updateSwitchLink(): Unrecognized nodeType "' + this.nodeType + '"');
+            }
         } else {
             $('#switch-link').attr('href', '/roamer');
         }
@@ -450,7 +502,16 @@ var Tags = {
         }
     },
     
-    showHelp: function() {
+    showHelp: function(setHash) {
+        if (setHash == undefined) {
+            setHash = true;
+        }
+        
+        if (setHash) {
+            //log('setting hash to ""');
+            $.historyLoad('');
+        }
+        
         this.hideHelp();
 		
 		// Unselect any node

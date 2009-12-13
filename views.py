@@ -793,7 +793,7 @@ def tooltip(request, tag_id, parent_id):
         #p.tick('sector list')
         sectors_str = truncate_link_list(
             tag.get_sectors(),
-            lambda item: '<a href="%s">%s</a>' % (reverse('textui') + '?nodeId=%s' % item.id, item.name),
+            lambda item: '<a href="javascript:Tags.selectSector(%s);">%s</a>' % (item.id, item.name),
             lambda item: '%s' % item.name,
             TOOLTIP_MAX_CHARS
         )
