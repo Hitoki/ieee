@@ -41,18 +41,20 @@
                                     </ul>
                                 </div>
                                 
-                                <!-- Filters -->
-                                <h2 class="feature_label">View Filters:</h2>
-                                <div class="filters-vert-box alt-box">
-                                    <ul id="views">
-                                        {% for filter in filters %}
-                                            <li id="{{filter.value}}_highlight" class="filter_background">
-                                                <input id="{{filter.value}}" value="{{filter.value}}" type="checkbox" onclick="Roamer.filter(this.id, this.checked);" class="filter highlight-checkbox { highlightElem: '#{{filter.value}}_highlight' }" checked="checked" />
-                                                <label for="{{filter.value}}">{{filter.name}}</label>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>  
+                                {% comment %}
+                                #<!-- Filters -->
+                                #<h2 class="feature_label">View Filters:</h2>
+                                #<div class="filters-vert-box alt-box">
+                                #    <ul id="views">
+                                #        {% for filter in filters %}
+                                #            <li id="{{filter.value}}_highlight" class="filter_background">
+                                #                <input id="{{filter.value}}" value="{{filter.value}}" type="checkbox" onclick="Roamer.filter(this.id, this.checked);" class="filter highlight-checkbox { highlightElem: '#{{filter.value}}_highlight' }" checked="checked" />
+                                #                <label for="{{filter.value}}">{{filter.name}}</label>
+                                #            </li>
+                                #        {% endfor %}
+                                #    </ul>
+                                #</div>  
+                                {% endcomment %}
                             </div>
                        </div>
                            

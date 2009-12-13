@@ -62,19 +62,23 @@
                                         {% endfor %}
                                     </ul>
                                 </div>
+								
+                                {# NOTE: Filters are hidden from end-user for now, but must still exist on page for JS to function #}
+                                <div style="display:none;">
+                                    <!-- Filters -->
+                                    <h2 class="feature_label">View Filters:</h2>
+                                    <div class="filters-vert-box alt-box">
+                                        <ul id="views">
+                                            {% for filter in filters %}
+                                                <li id="{{filter.value}}_highlight" class="filter_background">
+                                                    <input id="{{filter.value}}" value="{{filter.value}}" type="checkbox" onclick="Tags.refresh();" class="filter highlight-checkbox { highlightElem: '#{{filter.value}}_highlight' }" checked="checked" />
+                                                    <label for="{{filter.value}}">{{filter.name}}</label>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div> 
+                                </div>
                                 
-                                <!-- Filters --> 
-                                <h2 class="feature_label">View Filters:</h2>
-                                <div class="filters-vert-box alt-box">
-                                    <ul id="views">
-                                        {% for filter in filters %}
-                                            <li id="{{filter.value}}_highlight" class="filter_background">
-                                                <input id="{{filter.value}}" value="{{filter.value}}" type="checkbox" onclick="Tags.refresh();" class="filter highlight-checkbox { highlightElem: '#{{filter.value}}_highlight' }" checked="checked" />
-                                                <label for="{{filter.value}}">{{filter.name}}</label>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                               </div> 
                             </div>
                         </div>
                     
