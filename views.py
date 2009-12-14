@@ -237,7 +237,7 @@ def ajax_tag_content(request):
     conferences = list(conferences)
     conferences = util.group_conferences_by_series(conferences)
     
-    return render(request, 'content.html', {
+    return render(request, 'ajax_tag_content', {
         'tag':tag,
         'conferences': conferences,
         'experts': experts,
