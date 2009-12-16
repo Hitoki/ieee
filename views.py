@@ -1,4 +1,5 @@
 import cgi
+import datetime
 from django.contrib.auth.decorators import login_required
 from django.core.mail import mail_admins
 from django.core.mail import send_mail
@@ -250,10 +251,7 @@ def ajax_tag_content(request):
         #'xplore_results': xplore_results,
     })
 
-def ajax_xplore_results(request):
-    tagId = request.POST['tag_id']
-    tag = Node.objects.get(id=tagId)
-    
+def _get_xplore_results(tag, highlight_search_term=True):
     # Get xplore results
     
     url = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?' + urllib.urlencode({
@@ -296,8 +294,6 @@ def ajax_xplore_results(request):
                     
                 return value
         
-        print 'tag.name: %r' % tag.name
-        
         xplore_results = []
         for document1 in xml1.documentElement.getElementsByTagName('document'):
             title = getElementValueByTagName(document1, 'title')
@@ -306,9 +302,8 @@ def ajax_xplore_results(request):
             
             # Escape here, since we're going to output this as |safe on the template
             title = cgi.escape(title)
-            print 'title: %r' % title
-            title = re.sub('(?i)(%s)' % tag.name, r'<strong>\1</strong>', title)
-            print 'after title: %r' % title
+            if highlight_search_term:
+                title = re.sub('(?i)(%s)' % tag.name, r'<strong>\1</strong>', title)
             
             result = {
                 'name': title,
@@ -319,14 +314,19 @@ def ajax_xplore_results(request):
         
         file1.close()
     
-    # End get xplore results
+    return xplore_results, xplore_error
+
+def ajax_xplore_results(request):
+    tagId = request.POST['tag_id']
+    tag = Node.objects.get(id=tagId)
+    
+    xplore_results, xplore_error = _get_xplore_results(tag)
     
     return render(request, 'include_xplore_results.html', {
         'tag':tag,
         'xplore_error': xplore_error,
         'xplore_results': xplore_results,
     })
-
 
 @login_required
 def ajax_node(request):
@@ -842,6 +842,50 @@ def tooltip(request, tag_id, parent_id):
         
     else:
         raise Exception('Unknown node type "%s" for node "%s"' % (node.node_type.name, node.name))
+
+def print_resource(request, tag_id, resource_type):
+    tag = Node.objects.get(id=tag_id)
+    
+    sectors = None
+    related_tags = None
+    societies = None
+    conferences = None
+    periodicals = None
+    standards = None
+    xplore_results = None
+    
+    if resource_type not in ['all', 'sectors', 'related_tags', 'societies', 'conferences', 'periodicals', 'standards', 'xplore']:
+        raise Exception('Unknown resource_type "%s"' % resource_type)
+
+    if resource_type == 'sectors' or resource_type == 'all':
+        # TODO: Need to filter clusters out here?
+        sectors = tag.parents.all()
+    if resource_type == 'related_tags' or resource_type == 'all':
+        related_tags = tag.related_tags.all()
+    if resource_type == 'societies' or resource_type == 'all':
+        societies = tag.societies.all()
+    if resource_type == 'conferences' or resource_type == 'all':
+        conferences = Resource.objects.getForNode(tag, resourceType=ResourceType.CONFERENCE)
+    if resource_type == 'periodicals' or resource_type == 'all':
+        periodicals = Resource.objects.getForNode(tag, resourceType=ResourceType.PERIODICAL)
+    if resource_type == 'standards' or resource_type == 'all':
+        standards = Resource.objects.getForNode(tag, resourceType=ResourceType.STANDARD)
+    if resource_type == 'xplore' or resource_type == 'all':
+        xplore_results, xplore_error = _get_xplore_results(tag, False)
+    
+    page_date = datetime.datetime.now()
+    
+    return render(request, 'print_resource.html', {
+        'page_date': page_date,
+        'tag': tag,
+        'sectors': sectors,
+        'related_tags': related_tags,
+        'societies': societies,
+        'conferences': conferences,
+        'periodicals': periodicals,
+        'standards': standards,
+        'xplore_results': xplore_results,
+    })
 
 def debug_error(request):
     # This causes an error

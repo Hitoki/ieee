@@ -35,6 +35,9 @@ else:
         url(r'^ajax/nodes_json$', views.ajax_nodes_json, name='ajax_nodes_json'),
         url(r'^ajax/tooltip/(?P<tag_id>\d+)/(?P<parent_id>\d+)$', views.tooltip, name='tooltip'),
         
+        # Print
+        url(r'^print/resource/(?P<tag_id>\d+)/(?P<resource_type>.+)$', views.print_resource, name='print_resource'),
+        
         # Site Admin
         (r'^admin/', include('ieeetags.site_admin.urls')),
         

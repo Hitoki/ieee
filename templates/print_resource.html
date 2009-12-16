@@ -1,0 +1,90 @@
+{% extends "base_print.html" %}
+
+{% block body %}
+    <div class="print-resource">
+        <p class="page-date">
+            {{ page_date|date }} {{ page_date|time }}
+        </p>
+        
+        <h1>IEEE Technical Activities - Technology Navigator</h1>
+        <h2>Resources for "{{ tag.name }}"</h2>
+        
+        {% if sectors %}
+            <h3>Sectors</h3>
+            <ul>
+                {% for parent in sectors %}
+                    <li>
+                        {{ parent.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        
+        {% if related_tags %}
+            <h3>Related Tags</h3>
+            <ul>
+                {% for related_tag in related_tags %}
+                    <li>
+                        {{ related_tag.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        
+        {% if societies %}
+            <h3>Societies</h3>
+            <ul>
+                {% for society in societies %}
+                    <li>
+                        {{ society.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+            
+        {% if conferences %}
+            <h3>Conferences</h3>
+            <ul>
+                {% for conference in conferences.all %}
+                    <li>
+                        {{ conference.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+            
+        {% if periodicals %}
+            <h3>Periodicals</h3>
+            <ul>
+                {% for periodical in periodicals.all %}
+                    <li>
+                        {{ periodical.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+            
+        {% if standards %}
+            <h3>Standards</h3>
+            <ul>
+                {% for standard in standards.all %}
+                    <li>
+                        {{ standard.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+            
+        {% if xplore_results %}
+            <h3>Xplore</h3>
+            <ul>
+                {% for xplore_result in xplore_results %}
+                    <li>
+                        {{ xplore_result.name }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    
+    </div>
+{% endblock %}

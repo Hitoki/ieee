@@ -1,0 +1,41 @@
+
+body {
+    margin:1em;
+}
+
+h1, h2, h3 {
+    font-weight:bold;
+    margin:.5em 0 .5em 0;
+}
+
+h1 {
+    font-size:160%;
+}
+
+h2 {
+    font-size:140%;
+}
+
+h3 {
+    font-size:120%;
+}
+
+.print-resource {
+}
+
+.print-resource h1 {
+    font-size:.8em;
+    color:gray;
+}
+
+.print-resource ul {
+    margin-left:1em;
+}
+
+.print-resource .page-date {
+    float:right;
+    margin:0em 1em 1em 1em;
+    font-weight:bold;
+    font-size:.8em;
+    color:gray;
+}
