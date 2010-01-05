@@ -356,12 +356,21 @@ a.edit {
 
 /* */
 
+h1#forgot-password {
+    padding-left: 5px;
+}
+
 table.forgot-password th {
-    text-align:right;
+    text-align:left;
+    font-weight: bold;
+}
+
+#forgot-password-okay {
+    font-weight:bold;
 }
 
 table.forgot-password td, th {
-    padding: 5px 0 5px 0;
+    padding: 5px;
 }
 
 ul.error {
@@ -483,7 +492,7 @@ ul.pages li a.selected
     margin: 20px 10px 10px 10px;
 }
 
-input#id_username, input#id_password {
+input#id_username, input#id_password, input#id_email {
     width: 230px;
 }
 
