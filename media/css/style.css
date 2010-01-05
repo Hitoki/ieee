@@ -222,7 +222,7 @@ ul#view-header li {
     width: 174px;
 }
 
-#left-column ul li {
+#left-column ul#sectors li {
     margin:0px;
 }
 
@@ -238,6 +238,28 @@ ul#view-header li {
 #left-column ul li a:hover {
     /* TODO: this affects galaxy too, should be roamer only */
     background:#bad4f9;
+}
+
+#galaxy-tabs li{
+    width: 40%;
+}
+
+#left-column-container .nootabs-menu {
+    margin-left: 0;
+}
+
+#left-column-container .nootabs-menu a {
+    background-color:white;
+}
+
+#left-column-container .nootabs-tab {
+    border: 1px solid #DADADA;
+    height: 400px;
+    width: 174px;
+}
+#left-column-container .nootabs-menus li.nootabs-selected-menu {
+    border: 1px solid #DADADA;
+    border-bottom: 0px solid white;
 }
 
 #right-column {
@@ -420,7 +442,7 @@ span#roamer-beta-warning {
 }
 
 #left-column-container .sectors-vert-box {
-    height: 71.3%;
+    /*height: 71.3%;*/
 }
 
 #left-column-container .filters-vert-box {

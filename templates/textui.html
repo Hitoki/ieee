@@ -38,15 +38,22 @@
                         
                         <!-- Navigation links -->
                         <div id="left-column">
-                            <h2 class="feature_label">Choose Sector:</h2>
-                            <div id="left-column-container">  
-                            
-                                <div class="sectors-vert-box alt-box">
+                            <h2 class="feature_label">Navigate by:</h2>
+                            <div id="left-column-container" class="nootabs {useCookies:false}">
+                                <ul id="galaxy-tabs" class="nootabs-menus">
+                                    <li><a href="">Industry Sector</a></li>
+                                    <li><a href="">IEEE Society</a></li>
+                                    <li style="display:none;"><a href="">&nbsp;</a></li> {# used to compensate for filters div #}
+                                </ul>
+                                <div class="sectors-vert-box">
                                     <ul id="sectors">                                        
                                         {% for sector in sectors %}
                                             <li id="sector-list-item-{{ sector.id }}"><a href="javascript:Tags.selectSector({{sector.id}});">{{sector.name}}</a></li>
                                         {% endfor %}
                                     </ul>
+                                </div>
+                                <div>
+                                    <p>&nbsp;</p>
                                 </div>
 								
                                 {# NOTE: Filters are hidden from end-user for now, but must still exist on page for JS to function #}
