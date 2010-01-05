@@ -36,3 +36,7 @@ form.items-per-page {
 #sortmenu {
     padding-top: 0 !important;
 }
+
+#home-container #home-titletag-cell {
+    padding-top: 35px;
+}
