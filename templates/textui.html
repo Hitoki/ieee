@@ -48,14 +48,14 @@
                                 <div class="sectors-vert-box">
                                     <ul id="sectors">                                        
                                         {% for sector in sectors %}
-                                            <li id="sector-list-item-{{ sector.id }}"><a href="javascript:Tags.selectSector({{sector.id}});">{{sector.name}}</a></li>
+                                            <li id="sector-list-item-{{ sector.id }}"><a href="javascript:Tags.selectSector({{ sector.id }});">{{ sector.name }}</a></li>
                                         {% endfor %}
                                     </ul>
                                 </div>
                                 <div style="overflow-y:scroll;">
                                     <ul id="societies">                                        
                                         {% for society in societies %}
-                                            <li id="society-list-item-{{ society.id }}"><a href="javascript:Tags.selectSociety({{ society.id }});">{{ society.name }}</a>{{society.name}}</a></li>
+                                            <li id="society-list-item-{{ society.id }}"><a href="javascript:Tags.selectSociety({{ society.id }});">{{ society.name }}</a></li>
                                         {% endfor %}
                                     </ul>
                                 </div>

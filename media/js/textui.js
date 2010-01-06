@@ -212,23 +212,19 @@ var Tags = {
             // Hide any flyvoers so they don't persist when the node is gone.
             Flyover.hide();
             
-            $.getJSON('/ajax/nodes_json', {society_id:this.societyId, filterValues:filterStr, sort:this.getSort()}, function(data) { Tags.onLoadSector(data); });
+            $.getJSON('/ajax/nodes_json', {society_id:this.societyId, filterValues:filterStr, sort:this.getSort()}, function(data) { Tags.onLoadSociety(data); });
         }
     },
     
     onLoadSector: function(data) {
         this.node = data.node.sector;
-        /*
-        //console.log("onLoadSector()");
-        var results = [];
-        for (var i=0; i<data.length; i++) {
-            var node = data[i];
-            if (node.type == 'tag') {
-                results.push(node);
-            }
-        }
-        this.renderTags(results);
-        */
+        this.society = null;
+        this.renderTags(data);
+    },
+    
+    onLoadSociety: function(data) {
+        this.node = null;
+        this.society = data.society;
         this.renderTags(data);
     },
     
@@ -437,7 +433,8 @@ var Tags = {
         
         //console.log("tags.length: " + tags.length);
         
-        if (data.node.type == 'sector') {
+        if (data.node && data.node.type == 'sector') {
+            // Got a sector
             
             // Sector title
             //var title = $('<h2>' + htmlentities(data.node.sector.label) + ' sector</h2>').appendTo(tagWindow);
@@ -458,14 +455,17 @@ var Tags = {
                 }
             }
             
-        } else if (data.node.type == 'tag_cluster') {
+        } else if (data.node && data.node.type == 'tag_cluster') {
+            // Got a cluster
             var sectorLink = $('<a href="javascript:Tags.selectSector(' + data.node.sector.id + ');" class="back-link"></a>').appendTo(tagWindow);
             sectorLink.html('<img src="' + MEDIA_URL + '/images/arrow2-up-small.png" /> Up to the "' + htmlentities(data.node.sector.label) + '" sector');
             $('<br/>').appendTo(tagWindow);
             
             // Cluster title
             var title = $('<h2>' + htmlentities(data.node.label) + ' cluster</h2>').appendTo(tagWindow);
-            
+        } else if (data.society) {
+            // Got a society
+            // NOTE: do nothing...
             
         } else {
             alert('Unknown data.node.type "' + data.node.type + '"')

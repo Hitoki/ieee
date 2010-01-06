@@ -405,12 +405,11 @@ def ajax_nodes_json(request):
     #log('ajax_nodes_json()')
     #p = Profiler('ajax_nodes_json')
     
-    node_id = request.GET['nodeId']
-    #log('  node_id: %s' % node_id)
-    
+    node_id = request.GET.get('nodeId', None)
     society_id = request.GET.get('society_id', None)
     
-    assert society_id is None and node_id is None, 'Either society_id or node_id is required'
+    assert society_id is not None or node_id is not None, 'Either society_id or node_id is required'
+    assert society_id is None or node_id is None, 'Cannot specify both society_id or node_id'
     
     sort = request.GET.get('sort')
     #log('  sort: %s' % sort)
@@ -448,8 +447,10 @@ def ajax_nodes_json(request):
     
     if node_id is not None:
         node = Node.objects.get(id=node_id)
+        society = None
         assert node.node_type.name in [NodeType.SECTOR, NodeType.TAG_CLUSTER], 'Node "%s" must be a sector or cluster' % node.name
     elif society_id is not None:
+        node = None
         society = Society.objects.get(id=society_id)
     
     # Get child tags & clusters
@@ -489,8 +490,12 @@ def ajax_nodes_json(request):
         child_nodes = Node.objects.sort_queryset_by_score(child_nodes, False)
         
     #p.tick('min/max')
-    (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = Node.objects.get_sector_ranges(node)
-    (min_score, max_score) = Node.objects.get_combined_sector_ranges(node)
+    if node is not None:
+        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = Node.objects.get_sector_ranges(node)
+        (min_score, max_score) = Node.objects.get_combined_sector_ranges(node)
+    elif society is not None:
+        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = society.get_tag_ranges()
+        (min_score, max_score) = society.get_combined_ranges()
     
     #p.tick('json output')
     # JSON Output
@@ -513,7 +518,7 @@ def ajax_nodes_json(request):
         }
     
     #p.tick('tick1')
-    if node.node_type.name == NodeType.TAG_CLUSTER:
+    if node is not None and node.node_type.name == NodeType.TAG_CLUSTER:
         data['node']['sector'] = {
             'id': node.get_sector().id,
             'label': node.get_sector().name,
