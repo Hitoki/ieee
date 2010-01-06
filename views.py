@@ -144,12 +144,14 @@ def textui(request):
     
     sectors = Node.objects.getSectors()
     filters = Filter.objects.all()
+    societies = Society.objects.all()
     
     return render(request, 'textui.html', {
         'sectorId':sectorId,
         'clusterId': clusterId,
         'sectors':sectors,
         'filters':filters,
+        'societies':societies,
         'ENABLE_TEXTUI_SIMPLIFIED_COLORS': settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS,
     })
 
@@ -406,6 +408,10 @@ def ajax_nodes_json(request):
     node_id = request.GET['nodeId']
     #log('  node_id: %s' % node_id)
     
+    society_id = request.GET.get('society_id', None)
+    
+    assert society_id is None and node_id is None, 'Either society_id or node_id is required'
+    
     sort = request.GET.get('sort')
     #log('  sort: %s' % sort)
     
@@ -440,13 +446,16 @@ def ajax_nodes_json(request):
         for filterValue in filterValues.split(','):
             filterIds.append(Filter.objects.getFromValue(filterValue).id)
     
-    node = Node.objects.get(id=node_id)
-    assert node.node_type.name in [NodeType.SECTOR, NodeType.TAG_CLUSTER], 'Node "%s" must be a sector or cluster' % node.name
+    if node_id is not None:
+        node = Node.objects.get(id=node_id)
+        assert node.node_type.name in [NodeType.SECTOR, NodeType.TAG_CLUSTER], 'Node "%s" must be a sector or cluster' % node.name
+    elif society_id is not None:
+        society = Society.objects.get(id=society_id)
     
     # Get child tags & clusters
     #p.tick('child tags')
     
-    if node.node_type.name == NodeType.SECTOR:
+    if node is not None and node.node_type.name == NodeType.SECTOR:
         #log('Calling child_nodes.get_extra_info() with filter ids')
         child_nodes = node.get_tags_and_clusters()
         # Prefetch the node_type so we don't have to hit the DB later
@@ -457,8 +466,11 @@ def ajax_nodes_json(request):
         else:
             child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, None)
         
-    elif node.node_type.name == NodeType.TAG_CLUSTER:
+    elif node is not None and node.node_type.name == NodeType.TAG_CLUSTER:
         child_nodes = Node.objects.get_extra_info(node.get_tags(), extra_order_by, filterIds)
+    
+    elif society is not None:
+        child_nodes = Node.objects.get_extra_info(society.tags, extra_order_by, filterIds)
         
     else:
         raise Exception('Unrecognized node type "%s" for node "%s"' % (node.node_type.name, node.name))
@@ -482,14 +494,23 @@ def ajax_nodes_json(request):
     
     #p.tick('json output')
     # JSON Output
-    data = {
-        'node': {
-            'id': node.id,
-            'label': node.name,
-            'type': node.node_type.name,
-        },
-        'child_nodes': [],
-    }
+    if node is not None:
+        data = {
+            'node': {
+                'id': node.id,
+                'label': node.name,
+                'type': node.node_type.name,
+            },
+            'child_nodes': [],
+        }
+    elif society is not None:
+        data = {
+            'society': {
+                'id': society.id,
+                'label': society.name,
+            },
+            'child_nodes': [],
+        }
     
     #p.tick('tick1')
     if node.node_type.name == NodeType.TAG_CLUSTER:

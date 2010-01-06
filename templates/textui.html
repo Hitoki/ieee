@@ -52,8 +52,12 @@
                                         {% endfor %}
                                     </ul>
                                 </div>
-                                <div>
-                                    <p>&nbsp;</p>
+                                <div style="overflow-y:scroll;">
+                                    <ul id="societies">                                        
+                                        {% for society in societies %}
+                                            <li id="society-list-item-{{ society.id }}"><a href="javascript:Tags.selectSociety({{ society.id }});">{{ society.name }}</a>{{society.name}}</a></li>
+                                        {% endfor %}
+                                    </ul>
                                 </div>
 								
                                 {# NOTE: Filters are hidden from end-user for now, but must still exist on page for JS to function #}
