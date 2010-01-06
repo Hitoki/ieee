@@ -158,14 +158,26 @@ function isCompatibleBrowser() {
     return browserIsFirefox30() || browserIsFirefox35() || browserIsFirefox36() || browserIsIe7() || browserIsIe8() || browserIsSafari4();
 }
 
+function setBrowserCookie() {
+    $('.browser-warning').remove();
+    //set a cookie to show that the user has skipped the warning
+    var options = { path: '/', expires: 1 };
+    $.cookie("ignoreWarning", 'ignore', options);
+}
+
 $(function() {
+
+    // get browser compatibility cookie
+    var browser_cookie = $.cookie("ignoreWarning");
+    
     // Show browser compatibility warning
-    if (!isCompatibleBrowser()) {
+    if ( browser_cookie != 'ignore' && !isCompatibleBrowser()) {
         $('html').css('height', '100%');
         $('body').css('height', '100%');
         $('html').css('overflow', 'hidden');
         showBrowserWarning();
     }
+    
 });
 
 // Append a string to the end of a URL, before the #hash
