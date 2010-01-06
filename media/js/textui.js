@@ -165,6 +165,57 @@ var Tags = {
         }
     },
     
+    selectSociety: function(societyId, onload, setHash) {
+        //log('selectSector()');
+        //log('  societyId: ' + societyId);
+        
+        if (societyId) {
+            this.societyId = societyId;
+            this.nodeType = 'society';
+        }
+        
+        if (setHash == undefined) {
+            setHash = true;
+        }
+        
+        if (setHash) {
+            //log('setting hash to "' + '/sector/' + this.nodeId + '"');
+            $.historyLoad('/sector/' + this.nodeId);
+        }
+        
+        if (this.societyId != null) {
+            
+            this.hideHelp();
+            
+            // Hide the content lightbox if it's visible.
+            Lightbox.hide();
+            
+            // Update the switch interfaces link
+            //this.updateChangedNode();
+        
+            var tagWindow = $("#tags");
+            
+            tagWindow.empty();
+            tagWindow.html(
+                '<div id="loading" class="please-wait">'
+                + '<h1>Please wait...</h1>'
+                + '<img src="' + MEDIA_URL + '/images/ajax-loader-bar.gif" />'
+                + '</div>'
+            );
+            
+            var filterStr = implode(',', this.getFilters());
+            
+            if (onload) {
+                this.onLoadSectorCallback = onload;
+            }
+            
+            // Hide any flyvoers so they don't persist when the node is gone.
+            Flyover.hide();
+            
+            $.getJSON('/ajax/nodes_json', {society_id:this.societyId, filterValues:filterStr, sort:this.getSort()}, function(data) { Tags.onLoadSector(data); });
+        }
+    },
+    
     onLoadSector: function(data) {
         this.node = data.node.sector;
         /*
