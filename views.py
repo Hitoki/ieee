@@ -251,12 +251,29 @@ def ajax_tag_content(request):
         #'xplore_results': xplore_results,
     })
 
-def _get_xplore_results(tag, highlight_search_term=True):
-    # Get xplore results
+def _get_xplore_results(tag, highlight_search_term=True, show_all=False):
+    '''
+    Get xplore results for the given tag from the IEEE Xplore search gateway.  Searches all fields for the tag phrase, returns results.
+    @return a 2-tuple of (results, errors).  'errors' is a string of any errors that occurred, or None.  'results' is an array of dicts:
+        [
+            {
+                'name': ...
+                'description': ...
+                'url': ...
+            },
+            ...
+        ]
+    '''
+    
+    if show_all:
+        # Some arbitrarily big number...
+        max_num_results = 10000
+    else:
+        max_num_results = 10
     
     url = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?' + urllib.urlencode({
         # Number of results
-        'hc': 10,
+        'hc': max_num_results,
         # Specifies the result # to start from
         'rs': 1,
         'ti': tag.name,
@@ -269,6 +286,7 @@ def _get_xplore_results(tag, highlight_search_term=True):
         xplore_results = []
     else:
         xplore_error = None
+        
         xml1 = xml.dom.minidom.parse(file1)
         
         def getElementByTagName(node, tag_name):
@@ -294,6 +312,8 @@ def _get_xplore_results(tag, highlight_search_term=True):
                     
                 return value
         
+        totalfound = int(getElementValueByTagName(xml1.documentElement, 'totalfound'))
+        
         xplore_results = []
         for document1 in xml1.documentElement.getElementsByTagName('document'):
             title = getElementValueByTagName(document1, 'title')
@@ -314,18 +334,22 @@ def _get_xplore_results(tag, highlight_search_term=True):
         
         file1.close()
     
-    return xplore_results, xplore_error
+    return xplore_results, xplore_error, totalfound
 
 def ajax_xplore_results(request):
     tagId = request.POST['tag_id']
     tag = Node.objects.get(id=tagId)
     
-    xplore_results, xplore_error = _get_xplore_results(tag)
+    show_all = (request.POST['show_all'] == 'true')
+    
+    xplore_results, xplore_error, totalfound = _get_xplore_results(tag, show_all=show_all)
     
     return render(request, 'include_xplore_results.html', {
         'tag':tag,
         'xplore_error': xplore_error,
         'xplore_results': xplore_results,
+        'totalfound': totalfound,
+        'show_all': show_all,
     })
 
 @login_required

@@ -1,4 +1,11 @@
-        
+    
+    <p style="font-style:italic; padding-left:25px;">
+        {% if show_all %}
+            Showing all {{ totalfound }} results
+        {% else %}
+            Showing first {{ xplore_results|length }} of {{ totalfound }} results (<a id="xplore-view-all" href="#">View All</a>)
+        {% endif %}
+    </p>
     
     <div id="num-xplore-results-hidden" style="display:none;">{{ xplore_results|length }}</div>
     
