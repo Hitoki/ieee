@@ -207,7 +207,7 @@ ul#view-header li {
 
 #left-column {
     float:left;
-    margin:10px 5px 10px 0;
+    margin:5px 5px 10px 0;
     overflow:auto;
 }
 
@@ -222,7 +222,8 @@ ul#view-header li {
     width: 174px;
 }
 
-#left-column ul#sectors li {
+#left-column ul#sectors li,
+#left-column ul#societies li {
     margin:0px;
 }
 
@@ -240,6 +241,10 @@ ul#view-header li {
     background:#bad4f9;
 }
 
+#left-column h2.feature_label {
+    margin-bottom: 5px;
+}
+
 #galaxy-tabs li{
     width: 40%;
 }
@@ -250,16 +255,33 @@ ul#view-header li {
 
 #left-column-container .nootabs-menu a {
     background-color:white;
+    font-weight: normal;
 }
 
 #left-column-container .nootabs-tab {
-    border: 1px solid #DADADA;
+    border: 1px solid #006699;
     height: 400px;
     width: 174px;
 }
 #left-column-container .nootabs-menus li.nootabs-selected-menu {
-    border: 1px solid #DADADA;
+    border: 1px solid #006699;
     border-bottom: 0px solid white;
+}
+
+#left-column-container .nootabs-menus li.nootabs-menu a:hover{
+    background-color: white;
+    text-decoration: underline !important;
+    color: orange;
+}
+
+#left-column-container .nootabs-menus li.nootabs-selected-menu a:hover {
+    background-color: white;
+    text-decoration: none !important;
+    color: black !important;
+}
+
+#left-column-container .nootabs-menus li.nootabs-selected-menu a{
+    font-weight: bold;
 }
 
 #right-column {
@@ -466,7 +488,8 @@ span#roamer-beta-warning {
     padding:.5em;
 }
 
-#alternate-page #left-column ul#sectors li a {
+#alternate-page #left-column ul#sectors li a,
+#alternate-page #left-column ul#societies li a {
     color:#333333;
     margin:0px;
     padding:.2em .4em;
@@ -476,8 +499,9 @@ span#roamer-beta-warning {
     padding-left:1.5em;
 }
 
-#alternate-page #left-column ul#sectors li a:hover {
-    background:orange;
+#alternate-page #left-column ul#sectors li a:hover,
+#alternate-page #left-column ul#societies li a:hover {
+    background:orange !important;
     color: white;
 }
 
