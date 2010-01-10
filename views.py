@@ -797,9 +797,28 @@ def ajax_nodes_xml(request):
     return HttpResponse(doc.toprettyxml(), 'text/xml')
 
 @login_required
-def tooltip(request, tag_id, parent_id):
+def tooltip(request, tag_id):
     
     #p = Profiler('tooltip')
+    
+    parent_id = request.GET.get('parent_id', None)
+    society_id = request.GET.get('society_id', None)
+    
+    if parent_id == 'null':
+        parent_id = None
+    else:
+        parent_id = int(parent_id)
+    
+    if society_id == 'null':
+        society_id = None
+    else:
+        society_id = int(society_id)
+    
+    assert parent_id is not None or society_id is not None, 'Must specify either parent_id or society_id.'
+    assert parent_id is None or society_id is None, 'Cannot specify both parent_id or society_id.'
+    
+    print 'parent_id: %r' % parent_id
+    print 'society_id: %r' % society_id
     
     #log('tooltip()')
     
@@ -811,23 +830,15 @@ def tooltip(request, tag_id, parent_id):
         
         tag = node
         
-        #log('  tag.parents.all(): %s' % tag.parents.all())
-        #log('  tag.num_parents1: %s' % tag.num_parents1)
-
-        #log('  tag.get_sectors(): %s' % tag.get_sectors())
-        #log('  tag.num_sectors1: %s' % tag.num_sectors1)
-        
-        ##log('  tag.get_clusters(): %s' % tag.get_parent_clusters())
-        ##log('  tag.num_clusters1: %s' % tag.num_clusters1)
-        
-        #sector = single_row(tag.parents.filter(id=sector_id))
-        parent = Node.objects.get(id=parent_id)
-        
-        #log('  parent: %s' % parent)
-        #log('  parent.node_type.name: %s' % parent.node_type.name)
-        
-        #p.tick('Getting max resources')
-        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = Node.objects.get_sector_ranges(parent)
+        if parent_id is not None:
+            parent = Node.objects.get(id=parent_id)
+            #p.tick('Getting max resources')
+            (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = Node.objects.get_sector_ranges(parent)
+        elif society_id is not None:
+            society = Society.objects.get(id=society_id)
+            (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = society.get_tag_ranges()
+        else:
+            assert False
         
         num_related_tags = tag.get_filtered_related_tag_count()
         
@@ -839,7 +850,15 @@ def tooltip(request, tag_id, parent_id):
         if settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
             # New-style popularity colors - single color only
             #p.tick('simplified ui max scores')
-            (min_score, max_score) = Node.objects.get_combined_sector_ranges(parent)
+            
+                
+            if parent_id is not None:
+                (min_score, max_score) = Node.objects.get_combined_sector_ranges(parent)
+            elif society_id is not None:
+                (min_score, max_score) = society.get_combined_ranges()
+            else:
+                assert False
+            
             combinedLevel = _get_popularity_level(min_score, max_score, node.score1)
             tagLevel = combinedLevel
         else:

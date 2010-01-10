@@ -227,6 +227,10 @@ ul#view-header li {
     margin:0px;
 }
 
+#left-column ul#societies li {
+    margin:0px;
+}
+
 #left-column ul li.all {
     font-weight:bold;
 }
@@ -506,6 +510,26 @@ span#roamer-beta-warning {
 }
 
 #alternate-page #left-column ul#sectors li a.active-sector {
+    background:#006699;
+    color: white;
+}
+
+#alternate-page #left-column ul#societies li a {
+    color:#333333;
+    margin:0px;
+    padding:.2em .4em;
+}
+
+#alternate-page #left-column ul#societies li.cluster-list-item a {
+    padding-left:1.5em;
+}
+
+#alternate-page #left-column ul#societies li a:hover {
+    background:orange;
+    color: white;
+}
+
+#alternate-page #left-column ul#societies li a.active-society {
     background:#006699;
     color: white;
 }

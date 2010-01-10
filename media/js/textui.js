@@ -11,6 +11,7 @@ function getNode(parent, name) {
 var Tags = {
     
     nodeId: null,
+    societyId: null,
     nodeType: null,
     selectedClusterId: null,
     node: null,
@@ -42,6 +43,9 @@ var Tags = {
             // Matches "#/sector/123"
             var sector_matches = hash.match(/^\/sector\/(\d+)$/);
             
+            // Matches "#/society/123"
+            var society_matches = hash.match(/^\/society\/(\d+)$/);
+            
             if (hash == '') {
                 // Home page
                 this.showHelp(false);
@@ -51,6 +55,13 @@ var Tags = {
                 var sectorId = parseInt(sector_matches[1]);
                 if (this.nodeId != sectorId) {
                     this.selectSector(sectorId, null, false);
+                }
+            
+            } else if (society_matches) {
+                // Society
+                var societyId = parseInt(society_matches[1]);
+                if (this.societyId != societyId) {
+                    this.selectSociety(societyId, null, false);
                 }
             
             } else {
@@ -120,6 +131,7 @@ var Tags = {
         
         if (id) {
             this.nodeId = id;
+            this.societyId = null;
             this.nodeType = 'sector';
         }
         
@@ -171,7 +183,8 @@ var Tags = {
         
         if (societyId) {
             this.societyId = societyId;
-            this.nodeType = 'society';
+            this.nodeId = null;
+            this.nodeType = null;
         }
         
         if (setHash == undefined) {
@@ -180,7 +193,7 @@ var Tags = {
         
         if (setHash) {
             //log('setting hash to "' + '/sector/' + this.nodeId + '"');
-            $.historyLoad('/sector/' + this.nodeId);
+            $.historyLoad('/society/' + this.societyId);
         }
         
         if (this.societyId != null) {
@@ -213,6 +226,8 @@ var Tags = {
             Flyover.hide();
             
             $.getJSON('/ajax/nodes_json', {society_id:this.societyId, filterValues:filterStr, sort:this.getSort()}, function(data) { Tags.onLoadSociety(data); });
+            
+            this.updateHighlightedNode();
         }
     },
     
@@ -229,9 +244,11 @@ var Tags = {
     },
     
     updateHighlightedNode: function() {
+        log('updateHighlightedNode()');
+        
         // Remove any active sectors
         $('#sectors a.active-sector').removeClass('active-sector');
-        
+        $('#societies a.active-society').removeClass('active-society');
         
         // If a cluster was highlighted, remove it
         if (this.selectedClusterId != null && this.selectedClusterId != this.nodeId) {
@@ -247,7 +264,6 @@ var Tags = {
         
         // If a cluster was just selected, show & highlight it
         if (this.nodeType == 'tag_cluster' && this.selectedClusterId == null) {
-            
             /*
             NOTE: This is disabled for now, just show the sector
             
@@ -266,16 +282,28 @@ var Tags = {
             */
         }
         
+        log('this.nodeId: ' + this.nodeId);
+        log('this.societyId: ' + this.societyId);
+        log('this.nodeType: ' + this.nodeType);
+        
         // Highlight the selected sector
-        if (this.nodeType == 'sector') {
+        if (this.nodeId != null && this.nodeType == 'sector') {
             $('#sector-list-item-' + this.nodeId + ' a').addClass('active-sector');
-        } else if (this.nodeType == 'tag_cluster') {
+        } else if (this.nodeId != null && this.nodeType == 'tag_cluster') {
             //$('#cluster-list-item-' + this.nodeId + ' a').addClass('active-sector');
             if (this.node) {
                 $('#sector-list-item-' + this.node.sectorId + ' a').addClass('active-sector');
             }
-        } else if (this.nodeType == null) {
+        } else if (this.societyId != null) {
+            // Society is selected...
+            // TODO:
+            log('highlight society...');
+            $('#society-list-item-' + this.societyId + ' a').addClass('active-society');
+            log(' found ' + $('#society-list-item-' + this.societyId + ' a').length + ' matching nodes.');
+            
+        } else if (this.nodeId == null) {
             // No node selected
+            
         } else {
             alert('ERROR: Unknown this.nodeType "' + this.nodeType + '"');
         }
@@ -286,6 +314,7 @@ var Tags = {
         //log("  id: " + id);
         
         this.nodeId = id;
+        this.societyId = null;
         this.nodeType = 'tag_cluster';
         
         var tagWindow = $("#tags");
@@ -324,7 +353,7 @@ var Tags = {
         this.renderTags(data);
     },
     
-    _renderBlock: function(type, tagWindow, node, sectorId) {
+    _renderBlock: function(type, tagWindow, node, sectorId, societyId) {
         
         var simplified;
         var level;
@@ -379,6 +408,7 @@ var Tags = {
         div.appendTo(tagWindow);
         div.data('tagId', node.id);
         div.data('sectorId', sectorId);
+        div.data('societyId', societyId);
         
         if (type == 'tag') {
             // Show the tag flyover
@@ -387,7 +417,7 @@ var Tags = {
                     Flyover.show(
                         this,
                         {
-                            url: '/ajax/tooltip/'+$(this).data('tagId')+'/'+$(this).data('sectorId'),
+                            url: '/ajax/tooltip/'+$(this).data('tagId')+'?parent_id='+$(this).data('sectorId')+'&society_id='+$(this).data('societyId'),
                             position: 'auto',
                             customClass: 'textui-node',
                             hideDelay: 400
@@ -405,7 +435,7 @@ var Tags = {
                     Flyover.show(
                         this,
                         {
-                            url: '/ajax/tooltip/'+$(this).data('tagId')+'/'+$(this).data('sectorId'),
+                            url: '/ajax/tooltip/'+$(this).data('tagId')+'?parent_id='+$(this).data('sectorId')+'&society_id='+$(this).data('societyId'),
                             position: 'auto',
                             hideDelay: 100
                         }
@@ -473,7 +503,7 @@ var Tags = {
         
         // Show tags
         for (var i=0; i<data.child_nodes.length; i++) {
-            this._renderBlock(data.child_nodes[i].type, tagWindow, data.child_nodes[i], this.nodeId);
+            this._renderBlock(data.child_nodes[i].type, tagWindow, data.child_nodes[i], this.nodeId, this.societyId);
         }
         
         if (this.onLoadSectorCallback) {
@@ -567,6 +597,7 @@ var Tags = {
 		
 		// Unselect any node
 		this.nodeId = null;
+		this.societyId = null;
 		this.nodeType = null;
 		this.node = null;
 
