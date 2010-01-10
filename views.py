@@ -289,7 +289,14 @@ def _get_xplore_results(tag, highlight_search_term=True, show_all=False):
     else:
         xplore_error = None
         
-        xml1 = xml.dom.minidom.parse(file1)
+        # Get the charset of the request and decode/re-encode the response text into UTF-8 so we can parse it
+        info = file1.info()
+        temp, charset = info['content-type'].split('charset=')
+        xml_body = file1.read()
+        file1.close()
+        xml_body = xml_body.decode(charset).encode('utf-8')
+        
+        xml1 = xml.dom.minidom.parseString(xml_body)
         
         def getElementByTagName(node, tag_name):
             nodes = node.getElementsByTagName(tag_name)
@@ -334,8 +341,6 @@ def _get_xplore_results(tag, highlight_search_term=True, show_all=False):
             }
             xplore_results.append(result)
         
-        file1.close()
-    
     return xplore_results, xplore_error, totalfound
 
 def ajax_xplore_results(request):
