@@ -286,21 +286,24 @@ var Tags = {
         log('this.societyId: ' + this.societyId);
         log('this.nodeType: ' + this.nodeType);
         
-        // Highlight the selected sector
         if (this.nodeId != null && this.nodeType == 'sector') {
+            // Highlight the selected sector
             $('#sector-list-item-' + this.nodeId + ' a').addClass('active-sector');
+            var tabs = $('#left-column-container').data('nootabs');
+			tabs.setTab('sectors-tab');
         } else if (this.nodeId != null && this.nodeType == 'tag_cluster') {
+            // Highlight the selected cluster
             //$('#cluster-list-item-' + this.nodeId + ' a').addClass('active-sector');
             if (this.node) {
                 $('#sector-list-item-' + this.node.sectorId + ' a').addClass('active-sector');
             }
+            var tabs = $('#left-column-container').data('nootabs');
+			tabs.setTab('sectors-tab');
         } else if (this.societyId != null) {
-            // Society is selected...
-            // TODO:
-            log('highlight society...');
+            // Highlight the selected society
             $('#society-list-item-' + this.societyId + ' a').addClass('active-society');
-            log(' found ' + $('#society-list-item-' + this.societyId + ' a').length + ' matching nodes.');
-            
+            var tabs = $('#left-column-container').data('nootabs');
+            tabs.setTab('societies-tab');
         } else if (this.nodeId == null) {
             // No node selected
             

@@ -21,6 +21,7 @@ Nootab.prototype.setContainer = function(container, options) {
     if (container) {
         //console.log("container: " + container);
         this.container = $(container);
+        $(container).data('nootabs', this);
         
         if (!this.container[0].id)
             alert("nootabs: the container must have an id.");
@@ -63,6 +64,8 @@ Nootab.prototype.setContainer = function(container, options) {
             this.options.fillerLine = options.fillerLine;
         if ('defaultTab' in options)
             this.options.defaultTab = options.defaultTab;
+        if ('useHash' in options)
+            this.options.useHash = options.useHash;
         
         //for (i in data)
             //console.log("data["+i+"]: " + data[i]);
