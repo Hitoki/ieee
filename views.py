@@ -256,7 +256,7 @@ def ajax_tag_content(request):
 def _get_xplore_results(tag, highlight_search_term=True, show_all=False):
     '''
     Get xplore results for the given tag from the IEEE Xplore search gateway.  Searches all fields for the tag phrase, returns results.
-    @return a 2-tuple of (results, errors).  'errors' is a string of any errors that occurred, or None.  'results' is an array of dicts:
+    @return a 3-tuple of (results, errors, total_results).  'errors' is a string of any errors that occurred, or None.  'total_results' is the total number of results (regardless of how many are returned in 'results'.  'results' is an array of dicts:
         [
             {
                 'name': ...
@@ -265,6 +265,7 @@ def _get_xplore_results(tag, highlight_search_term=True, show_all=False):
             },
             ...
         ]
+        
     '''
     
     if show_all:
@@ -945,7 +946,7 @@ def print_resource(request, tag_id, resource_type):
     if resource_type == 'standards' or resource_type == 'all':
         standards = Resource.objects.getForNode(tag, resourceType=ResourceType.STANDARD)
     if resource_type == 'xplore' or resource_type == 'all':
-        xplore_results, xplore_error = _get_xplore_results(tag, False)
+        xplore_results, xplore_error, totalfound = _get_xplore_results(tag, False)
     
     page_date = datetime.datetime.now()
     

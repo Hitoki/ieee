@@ -1,6 +1,12 @@
 {% extends "base_print.html" %}
 
 {% block body %}
+    <script>
+        window.onload = function() {
+            window.print();
+        }
+    </script>
+    
     <div class="print-resource">
         <p class="page-date">
             {{ page_date|date }} {{ page_date|time }}
