@@ -329,6 +329,9 @@ def _get_xplore_results(tag, highlight_search_term=True, show_all=False):
             title = getElementValueByTagName(document1, 'title')
             abstract = getElementValueByTagName(document1, 'abstract')
             pdf = getElementValueByTagName(document1, 'pdf')
+            authors = getElementValueByTagName(document1, 'authors')
+            pub_title = getElementValueByTagName(document1, 'pubtitle')
+            pub_year = getElementValueByTagName(document1, 'py')
             
             # Escape here, since we're going to output this as |safe on the template
             title = cgi.escape(title)
@@ -339,6 +342,9 @@ def _get_xplore_results(tag, highlight_search_term=True, show_all=False):
                 'name': title,
                 'description': abstract,
                 'url': pdf,
+                'authors': authors,
+                'pub_title': pub_title,
+                'pub_year': pub_year,
             }
             xplore_results.append(result)
         

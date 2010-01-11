@@ -398,6 +398,19 @@ ul#view-header li {
     margin: 0px;
 }
 
+#content p.pub_even {
+    /* background-color: #BAD4F9; */
+    font-style: italic;
+    padding: 5px 5px 0 25px;
+    margin: 0px;
+}
+
+#content p.pub_odd {
+    font-style: italic;
+    padding: 5px 5px 0 25px;
+    margin: 0px;
+}
+
 #content-title {
     clear: both;
 }
