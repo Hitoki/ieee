@@ -43,6 +43,20 @@
                     {{ related_tags|safe }}
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <table class="societies-block vert-center">
+                        <tr>
+                            <td class="{{societyLevel}}">
+                                Societies
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    {{ societies|safe }}
+                </td>
+            </tr>
         </table>
         <div class="results-links"><a href="javascript:Tags.selectTag({{tag.id}});">{{ tag.resources.count }} Resource{{tag.resources.count|pluralize}} Tagged "{{ tag.name }}"</a></div>
         

@@ -1240,7 +1240,8 @@ table.node-tooltip-grid td {
 
 .sector-block,
 .related-tags-block,
-.filter-block
+.filter-block,
+.societies-block
 {
     height:50px;
     width:50px;

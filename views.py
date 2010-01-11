@@ -842,11 +842,35 @@ def tooltip(request, tag_id):
             assert False
         
         num_related_tags = tag.get_filtered_related_tag_count()
+        num_societies = tag.societies.all()
         
         #p.tick('Getting levels')
         resourceLevel = _get_popularity_level(min_resources, max_resources, tag.num_resources1)
         sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.num_sectors1)
         related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
+        #Trying to get society popularity level (min_resources, max_resources and tag.num_resources1 all = 50)
+        society_level = _get_popularity_level(min_resources, max_resources, tag.num_resources1)
+        
+        
+        #debugging statements
+        print "num resources"
+        print tag.num_resources1
+        print "----"
+        print "min resources"
+        print min_resources
+        print "----"
+        print "max resources"
+        print max_resources
+        print "----"
+        print "min sectors"
+        print min_sectors
+        print "----"
+        print "max sectors"
+        print max_sectors
+        
+        
+        print "society level:" + society_level
+        print "sector level:" + sectorLevel
         
         if settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
             # New-style popularity colors - single color only
@@ -887,6 +911,14 @@ def tooltip(request, tag_id):
         for related_tag in tag.related_tags.all():
             if related_tag.filters.count() > 0 and related_tag.resources.count() > 0:
                 related_tags.append(related_tag)
+                
+        #p.tick('sector list')
+        societies_str = truncate_link_list(
+            tag.societies.all(),
+            lambda item: '<a href="javascript:Tags.selectSociety(%s);">%s</a>' % (item.id, item.name),
+            lambda item: '%s' % item.name,
+            TOOLTIP_MAX_CHARS
+        )
         
         #p.tick('render')
         return render(request, 'tooltip.html', {
@@ -895,8 +927,10 @@ def tooltip(request, tag_id):
             'tagLevel': tagLevel,
             'sectorLevel': sectorLevel,
             'relatedTagLevel': related_tag_level,
+            'societyLevel' : society_level,
             'sectors': sectors_str,
             'related_tags': related_tags_str,
+            'societies': societies_str,
         })
     
     elif node.node_type.name == NodeType.TAG_CLUSTER:
