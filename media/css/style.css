@@ -266,10 +266,16 @@ ul#view-header li {
     border: 1px solid #006699;
     height: 400px;
     width: 174px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
 }
 #left-column-container .nootabs-menus li.nootabs-selected-menu {
     border: 1px solid #006699;
     border-bottom: 0px solid white;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
 }
 
 #left-column-container .nootabs-menus li.nootabs-menu a:hover{
@@ -286,6 +292,15 @@ ul#view-header li {
 
 #left-column-container .nootabs-menus li.nootabs-selected-menu a{
     font-weight: bold;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+}
+
+#left-column-container div#sectors-tab {
+    -moz-border-radius-topleft: 0px !important;
+    -webkit-border-top-left-radius: 0px !important;
 }
 
 #right-column {
