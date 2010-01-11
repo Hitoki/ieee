@@ -1229,6 +1229,10 @@ select.items-per-page {
     margin:0;
 }
 
+table.node-tooltip-grid {
+    margin-top: 10px;
+}
+
 table.node-tooltip-grid td {
     padding-top:5px;
     padding-right:5px; 
