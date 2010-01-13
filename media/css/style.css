@@ -1309,7 +1309,7 @@ table.node-tooltip-grid td {
 }
 
 .results-links a {     
-    text-decoration:none;
+    text-decoration:underline;
     color:#006699;
     font-size:110%;
     font-weight:bold;
@@ -1317,7 +1317,7 @@ table.node-tooltip-grid td {
 }
 
 .results-links a:hover {
-    text-decoration: underline;
+    color: orange;
 }
 
 .textui-help {
