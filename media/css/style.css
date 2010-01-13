@@ -481,7 +481,6 @@ span#roamer-beta-warning {
     border:1px solid #dadada;
     margin:5px 0.2em 0.5em;
     height: 100%;
-    
 }
 
 #alternate-page #left-column {
@@ -597,6 +596,8 @@ span#roamer-beta-warning {
 #alternate-page #tag-galaxy {
     height: 417px;
     clear: both;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
 }                            
 
 
