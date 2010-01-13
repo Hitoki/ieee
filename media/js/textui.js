@@ -92,8 +92,8 @@ var Tags = {
                 this.tagSortOverlayElem.css('height', $('#tag-sort').attr('offsetHeight'));
                 
                 Flyover.attach(this.tagSortOverlayElem, {
-                    'content': 'Please select a sector first.',
-                    'position': 'left'
+                    'content': 'Please start by selecting an Industry Section or IEEE Society',
+                    'position': 'bottom'
                     
                 });
             }
@@ -116,7 +116,7 @@ var Tags = {
 			// No node selected, disable filters
 			$('#views input').attr('disabled', 'disabled');
 			Flyover.attach($('#views'), {
-				'content': 'Please select a sector first.'
+				'content': 'Please start by selecting an Industry Section or IEEE Society'
 			});
 		} else {
 			// Node selected, enable filters
