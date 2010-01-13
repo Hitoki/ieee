@@ -132,7 +132,9 @@ table.main td.center .center-pad {
 }
 
 #header #switch-link {
-    bottom:5px;
+    top: 15px;
+    right: 255px;
+    height: 20px;
 }
 
 #header a.floating img {
