@@ -31,20 +31,6 @@
             </tr>
             <tr>
                 <td>
-                    <table class="related-tags-block vert-center">
-                        <tr>
-                            <td class="{{relatedTagLevel}}">
-                                Related Tags
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-                <td>
-                    {{ related_tags|safe }}
-                </td>
-            </tr>
-            <tr>
-                <td>
                     <table class="societies-block vert-center">
                         <tr>
                             <td class="{{societyLevel}}">
@@ -55,6 +41,20 @@
                 </td>
                 <td>
                     {{ societies|safe }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table class="related-tags-block vert-center">
+                        <tr>
+                            <td class="{{relatedTagLevel}}">
+                                Related Tags
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    {{ related_tags|safe }}
                 </td>
             </tr>
         </table>
