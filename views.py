@@ -33,7 +33,7 @@ def render(request, template, dictionary=None):
     "Use this instead of 'render_to_response' to enable custom context processors, which add things like MEDIA_URL to the page automatically."
     return render_to_response(template, dictionary=dictionary, context_instance=RequestContext(request))
 
-def truncate_link_list(items, output_func, plain_output_func, max_chars):
+def truncate_link_list(items, output_func, plain_output_func, max_chars, tag):
     """
     Takes a list of items and outputs links.  If the list is > max_chars, the list is truncated with '...(10 more)' appended.
     @param items the list of items
@@ -57,7 +57,7 @@ def truncate_link_list(items, output_func, plain_output_func, max_chars):
         #log('len(items_plaintext): %s' % len(items_plaintext))
         
         if len(items_plaintext) > max_chars:
-            items_str += ' ... (%s more)' % (len(items) - i)
+            items_str += ' ... <a href="javascript:Tags.selectTag(%s);">(%s more)</a>' % (tag.id,len(items) - i)
             break
         else:
             if items_str != '':
@@ -903,7 +903,8 @@ def tooltip(request, tag_id):
             tag.get_sectors(),
             lambda item: '<a href="javascript:Tags.selectSector(%s);">%s</a>' % (item.id, item.name),
             lambda item: '%s' % item.name,
-            TOOLTIP_MAX_CHARS
+            TOOLTIP_MAX_CHARS,
+            tag
         )
         
         #p.tick('related tag list')
@@ -911,7 +912,8 @@ def tooltip(request, tag_id):
             tag.related_tags.all(),
             lambda item: '<a href="javascript:Tags.selectTag(%s);">%s</a>' % (item.id, item.name),
             lambda item: '%s' % item.name,
-            TOOLTIP_MAX_CHARS
+            TOOLTIP_MAX_CHARS,
+            tag
         )
         
         #p.tick('filtering out related tags')
@@ -926,7 +928,8 @@ def tooltip(request, tag_id):
             tag.societies.all(),
             lambda item: '<a href="javascript:Tags.selectSociety(%s);">%s</a>' % (item.id, item.name),
             lambda item: '%s' % item.name,
-            TOOLTIP_MAX_CHARS
+            TOOLTIP_MAX_CHARS,
+            tag
         )
         
         #p.tick('render')
