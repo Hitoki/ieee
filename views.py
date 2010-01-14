@@ -447,6 +447,8 @@ def ajax_nodes_json(request):
     elif sort == 'connectedness':
         # See below
         pass
+    elif sort == 'num_societies':
+        extra_order_by = ['num_societies1']
     else:
         raise Exception('Unrecognized sort "%s"' % sort)
     
