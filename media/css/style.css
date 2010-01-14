@@ -231,6 +231,7 @@ ul#view-header li {
 
 #left-column ul#societies li {
     margin:0px;
+    width: 160px;
 }
 
 #left-column ul li.all {
