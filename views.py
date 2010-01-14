@@ -505,10 +505,10 @@ def ajax_nodes_json(request):
         
     #p.tick('min/max')
     if node is not None:
-        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = Node.objects.get_sector_ranges(node)
+        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = Node.objects.get_sector_ranges(node)
         (min_score, max_score) = Node.objects.get_combined_sector_ranges(node)
     elif society is not None:
-        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = society.get_tag_ranges()
+        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = society.get_tag_ranges()
         (min_score, max_score) = society.get_combined_ranges()
     
     #p.tick('json output')
@@ -807,7 +807,7 @@ def ajax_nodes_xml(request):
 
 @login_required
 def tooltip(request, tag_id):
-    
+    #print 'tooltip()'
     #p = Profiler('tooltip')
     
     parent_id = request.GET.get('parent_id', None)
@@ -842,10 +842,10 @@ def tooltip(request, tag_id):
         if parent_id is not None:
             parent = Node.objects.get(id=parent_id)
             #p.tick('Getting max resources')
-            (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = Node.objects.get_sector_ranges(parent)
+            (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = Node.objects.get_sector_ranges(parent)
         elif society_id is not None:
             society = Society.objects.get(id=society_id)
-            (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags) = society.get_tag_ranges()
+            (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = society.get_tag_ranges()
         else:
             assert False
         
@@ -857,7 +857,7 @@ def tooltip(request, tag_id):
         sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.num_sectors1)
         related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
         #Trying to get society popularity level (min_resources, max_resources and tag.num_resources1 all = 50)
-        society_level = _get_popularity_level(min_resources, max_resources, tag.num_resources1)
+        society_level = _get_popularity_level(min_societies, max_societies, tag.num_societies1)
         
         
         #debugging statements
@@ -929,6 +929,7 @@ def tooltip(request, tag_id):
         )
         
         #p.tick('render')
+        #print '~tooltip()'
         return render(request, 'tooltip.html', {
             'tag': tag,
             'related_tags': related_tags,
@@ -952,6 +953,7 @@ def tooltip(request, tag_id):
             TOOLTIP_MAX_CHARS
         )
         
+        #print '~tooltip()'
         return render(request, 'tooltip_cluster.html', {
             'cluster': cluster,
             'tags': tags_str,

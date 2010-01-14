@@ -199,7 +199,9 @@ class NodeManager(models.Manager):
             min_sectors,
             max_sectors,
             min_related_tags,
-            max_related_tags)
+            max_related_tags,
+            min_societies,
+            max_societies)
         """
         
         log('get_sector_ranges()')
@@ -217,6 +219,8 @@ class NodeManager(models.Manager):
         max_sectors = None
         min_related_tags = None
         max_related_tags = None
+        min_societies = None
+        max_societies = None
         
         for tag in tags:
             if tag.num_resources1 > 0 and tag.num_societies1 > 0 and tag.num_filters1 > 0:
@@ -235,14 +239,21 @@ class NodeManager(models.Manager):
                 if max_related_tags is None or tag.num_related_tags1 > max_related_tags:
                     max_related_tags = tag.num_related_tags1
 
+                if min_societies is None or tag.num_societies1 < min_societies:
+                    min_societies = tag.num_societies1
+                if max_societies is None or tag.num_societies1 > max_societies:
+                    max_societies = tag.num_societies1
+
         log('  min_resources: %s' % min_resources)
         log('  max_resources: %s' % max_resources)
         log('  min_sectors: %s' % min_sectors)
         log('  max_sectors: %s' % max_sectors)
         log('  min_related_tags: %s' % min_related_tags)
         log('  max_related_tags: %s' % max_related_tags)
+        log('  min_societies: %s' % min_societies)
+        log('  max_societies: %s' % max_societies)
         
-        return (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags)
+        return (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies)
     
     def get_combined_sector_ranges(self, node):
         """
@@ -622,7 +633,9 @@ class Society(models.Model):
             min_sectors,
             max_sectors,
             min_related_tags,
-            max_related_tags)
+            max_related_tags,
+            min_societies,
+            max_societies)
         """
         
         log('get_tag_ranges()')
@@ -636,6 +649,8 @@ class Society(models.Model):
         max_sectors = None
         min_related_tags = None
         max_related_tags = None
+        min_societies = None
+        max_societies = None
         
         for tag in tags:
             if tag.num_resources1 > 0 and tag.num_societies1 > 0 and tag.num_filters1 > 0:
@@ -654,16 +669,23 @@ class Society(models.Model):
                 if max_related_tags is None or tag.num_related_tags1 > max_related_tags:
                     max_related_tags = tag.num_related_tags1
 
+                if min_societies is None or tag.num_societies1 < min_societies:
+                    min_societies = tag.num_societies1
+                if max_societies is None or tag.num_societies1 > max_societies:
+                    max_societies = tag.num_societies1
+
         log('  min_resources: %s' % min_resources)
         log('  max_resources: %s' % max_resources)
         log('  min_sectors: %s' % min_sectors)
         log('  max_sectors: %s' % max_sectors)
         log('  min_related_tags: %s' % min_related_tags)
         log('  max_related_tags: %s' % max_related_tags)
+        log('  min_societies: %s' % min_societies)
+        log('  max_societies: %s' % max_societies)
         
         #assert False
         
-        return (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags)
+        return (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies)
     
     def get_combined_ranges(self):
         """
