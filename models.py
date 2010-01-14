@@ -422,7 +422,7 @@ class NodeManager(models.Manager):
             num_sectors1
             num_related_tags1
             num_parents1
-            #filtered_num_related_tags1
+            score1
         """
         sector_node_type_id = NodeType.objects.getFromName(NodeType.SECTOR).id
         cluster_node_type_id = NodeType.objects.getFromName(NodeType.TAG_CLUSTER).id
@@ -450,6 +450,7 @@ class NodeManager(models.Manager):
                     (SELECT COUNT(*) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id)
                     + (SELECT COUNT(*) FROM ieeetags_node_parents INNER JOIN ieeetags_node as parent on ieeetags_node_parents.to_node_id = parent.id WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id AND parent.node_type_id = %s)
                     + (SELECT COUNT(*) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id)
+                    + (SELECT COUNT(*) FROM ieeetags_node_societies WHERE ieeetags_node_societies.node_id = ieeetags_node.id)
                     """ % (sector_node_type_id),
                 #'filtered_num_related_tags1': """
                 #    SELECT COUNT(ieeetags_node_related_tags.id) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id
