@@ -47,7 +47,6 @@ def truncate_link_list(items, output_func, plain_output_func, max_chars):
     for i in range(len(items)):
         item = items[i]
         if items_str != '':
-            items_str += ', '
             items_plaintext += ', '
             
         str1 = output_func(item)
@@ -58,9 +57,11 @@ def truncate_link_list(items, output_func, plain_output_func, max_chars):
         #log('len(items_plaintext): %s' % len(items_plaintext))
         
         if len(items_plaintext) > max_chars:
-            items_str += '... (%s more)' % (len(items) - i)
+            items_str += ' ... (%s more)' % (len(items) - i)
             break
         else:
+            if items_str != '':
+                items_str += ', '
             items_str += str1
     
     return items_str
