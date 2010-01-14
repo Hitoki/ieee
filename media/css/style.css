@@ -940,7 +940,6 @@ table.vert-center td {
 }
 
 #connectedness {
-    padding-left: 64px;
     font-weight: bold;
     vertical-align: bottom;
 }
@@ -1006,23 +1005,25 @@ table.vert-center td {
     width:190px;
 }
 
-#frequencybar #homeico,
-#frequencybar-tags #homeico-tags {
+.roamer-beta-warning-cell{
+    padding-left: 2px;
+}
+
+#homeico,
+#homeico-tags {
     float: left;
+    margin-right: 10px;
 }
 
-#frequencybar-tags #homeico-tags {
-   margin-top: 3px;
-}
 
-#frequencybar #homeico img,
-#frequencybar-tags #homeico-tags img {
+#homeico img,
+#homeico-tags img {
     border: none;
     padding-left: .1em;
     padding-bottom: 2.3px;
 }
 
-#frequencybar-tags #homeico-tags img {
+#homeico-tags img {
     margin-top: -1px;
 }
 

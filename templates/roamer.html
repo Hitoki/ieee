@@ -30,6 +30,7 @@
                         
                         <!-- Navigation links -->
                         <div id="left-column">
+                            <span id="homeico"><a href="javascript:Roamer.setNode(1);"><img src="{{MEDIA_URL}}images/home_icon.png" alt="home" height="18" /></a></span>
                             <h2 class="feature_label">Choose Sector:</h2>
                             <div id="left-column-container">  
                             
@@ -64,9 +65,6 @@
                             <div id="frequencybar">
                                 <table id='roamer-header'>
                                     <tr>
-                                        <td class="homeico-cell">
-                                            <span id="homeico"><a href="javascript:Roamer.setNode(1);"><img src="{{MEDIA_URL}}images/home_icon.png" alt="home" height="18" /></a></span>
-                                        </td>
                                         <td class="roamer-beta-warning-cell">
                                             <span id="roamer-beta-warning">
                                                 <span class='roamer-note'>NOTE:</span> This beta interface uses a subset of data from the tags with the highest "Connectedness". To explore all the data, switch to the <a href="{% url textui %}">Textual Interface</a>.
