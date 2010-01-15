@@ -4120,7 +4120,9 @@ def server_update_svn(request):
     import subprocess
     
     r = []
-    path = os.path.abspath('.')
+    
+    path = relpath(__file__, '..')
+    
     r.append('path: %s' % path)
     r.append('')
    
