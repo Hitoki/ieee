@@ -4115,51 +4115,67 @@ def export_tab_resources(request):
     
     return HttpResponse(contents, 'text/plain')
 
-@admin_required
-def server_update_svn(request):
-    import subprocess
-    
-    r = []
-    
-    path = relpath(__file__, '..')
-    
-    r.append('path: %s' % path)
-    r.append('')
-   
-    r.append('Updating SVN...')
-    r.append('> svn update')
-    proc = subprocess.Popen(
-        [
-            'svn',
-            'update'
-        ],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT
-    )
-    result, temp = proc.communicate()
-    r.append('result: %s' % result.strip())
-    r.append('')
-    
-    wsgi_filename = os.path.abspath('start-wsgi.py')
-    assert os.path.exists(wsgi_filename), 'wsgi_filename "%s" doesn\'t exist.' % wsgi_filename
-    
-    r.append('Restarting Django...')
-    r.append('> touch %s' % wsgi_filename)
-    proc = subprocess.Popen(
-        [
-            'touch',
-            wsgi_filename
-        ],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT
-    )
-    result, temp = proc.communicate()
-    r.append('result: %s' % result.strip())
-    r.append('')
-    
-    r.append('Done.')
-    
-    return HttpResponse('\n'.join(r), 'text/plain')
+# NOTE: This doesn't work due to apache user permissions
+#@admin_required
+#def server_update_svn(request):
+#    import subprocess
+#    
+#    r = []
+#    
+#    path = relpath(__file__, '..')
+#    
+#    r.append('path: %s' % path)
+#    r.append('')
+#   
+#    r.append('Updating SVN...')
+#    r.append('> svn update')
+#    proc = subprocess.Popen(
+#        [
+#            'svn',
+#            'update'
+#        ],
+#        cwd=path,
+#        stdout=subprocess.PIPE,
+#        stderr=subprocess.STDOUT
+#    )
+#    result, temp = proc.communicate()
+#    r.append('result: %s' % result.strip())
+#    r.append('')
+#    
+#    #proc = subprocess.Popen(
+#    #    [
+#    #        'touch',
+#    #        'temp/hey.txt'
+#    #    ],
+#    #    cwd=path,
+#    #    stdout=subprocess.PIPE,
+#    #    stderr=subprocess.STDOUT
+#    #)
+#    #result, temp = proc.communicate()
+#    #r.append('result: %s' % result.strip())
+#    #r.append('')
+#    
+#    wsgi_filename = os.path.join(path, 'start-wsgi.py')
+#    assert os.path.exists(wsgi_filename), 'wsgi_filename "%s" doesn\'t exist.' % wsgi_filename
+#    
+#    r.append('Restarting Django...')
+#    r.append('> touch %s' % wsgi_filename)
+#    proc = subprocess.Popen(
+#        [
+#            'touch',
+#            wsgi_filename
+#        ],
+#        cwd=path,
+#        stdout=subprocess.PIPE,
+#        stderr=subprocess.STDOUT
+#    )
+#    result, temp = proc.communicate()
+#    r.append('result: %s' % result.strip())
+#    r.append('')
+#    
+#    r.append('Done.')
+#    
+#    return HttpResponse('\n'.join(r), 'text/plain')
 
 @login_required
 def admin_info(request):

@@ -120,7 +120,7 @@ urlpatterns = patterns('',
     url(r'^export/tab_resources$', views.export_tab_resources, name='admin_export_tab_resources'),
     
     # Server Admin
-    url(r'^server/update_svn$', views.server_update_svn, name='admin_server_update_svn'),
+    #url(r'^server/update_svn$', views.server_update_svn, name='admin_server_update_svn'),
     
     # DEBUG:
     #url(r'^DEBUG_CREATE_ADMIN$', views.create_admin_login, name='create_admin_login'),
