@@ -14,6 +14,10 @@
     height: 100%;
 }
 
+#lightbox .resources-lightbox-content {
+    height:573px !important;
+}
+
 ul.pages {
     padding-top: 10px !important;
 }
