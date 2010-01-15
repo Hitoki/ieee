@@ -524,10 +524,9 @@ var Tags = {
         return null;
     },
     
-    selectTag: function(id) {
+    selectTag: function(id, tabName) {
         //console.log("selectTag()");
         //console.log("id: " + id);
-        
         this.updateChangedNode();
         
         //$('.tag').removeClass('activeTag');
@@ -538,12 +537,28 @@ var Tags = {
         
         // Hide the flyover so it doesn't overlap with the lightbox
         Flyover.hide();
-        
+
         // Show resource results in a lightbox
-        Lightbox.show('/ajax/tag_content?tagId=' + id + '&ui=textui', {
-            verticalCenter: false,
-            customClass: 'resources'
-        });
+        // if there was no tab name given, use the default tab
+        if (tabName == undefined) {
+            Lightbox.show('/ajax/tag_content?tagId=' + id + '&ui=textui', {
+                verticalCenter: false,
+                customClass: 'resources'
+            });
+        } else {
+            Lightbox.show('/ajax/tag_content?tagId=' + id + '&ui=textui', {
+               verticalCenter: false,
+               customClass: 'resources',
+               onShowCallback: function() {
+                   Tags.onSelectTag(tabName);
+               }
+            });
+        }
+    },
+    
+    onSelectTag: function(tabName) {
+        var tabs = $('#resource-tabs').data('nootabs');
+        tabs.setTab(tabName);
     },
     
     getFilters: function() {
