@@ -27,7 +27,8 @@ var Lightbox = {
                     closeOnClickOutside: true,
                     verticalCenter: true,
                     customClass: null,
-                    content: null
+                    content: null,
+                    onShowCallback: null
                 },
                 options
             );
@@ -144,6 +145,10 @@ var Lightbox = {
                 this.lightboxContent.find('.lightbox-close').click(function(e) {
                     lightbox.hide();
                 });
+                
+                if (this.options.onShowCallback) {
+                    this.options.onShowCallback();
+                }
             }
         }
     },
