@@ -33,7 +33,7 @@ def render(request, template, dictionary=None):
     "Use this instead of 'render_to_response' to enable custom context processors, which add things like MEDIA_URL to the page automatically."
     return render_to_response(template, dictionary=dictionary, context_instance=RequestContext(request))
 
-def truncate_link_list(items, output_func, plain_output_func, max_chars, tag = None, tab_name = None):
+def truncate_link_list(items, output_func, plain_output_func, max_chars, tag=None, tab_name=None):
     """
     Takes a list of items and outputs links.  If the list is > max_chars, the list is truncated with '...(10 more)' appended.
     @param items the list of items
@@ -61,8 +61,10 @@ def truncate_link_list(items, output_func, plain_output_func, max_chars, tag = N
             if tab_name is None:
                 items_str += ' ... (%s more)' % (len(items) - i)
             else:
-                items_str += ' ... <a href="javascript:Tags.selectTag(%s, &quot;%s&quot;);">(%s more)</a>' % (tag.id, tab_name, len(items) - i)
-
+                if tag is not None:
+                    items_str += ' ... <a href="javascript:Tags.selectTag(%s, &quot;%s&quot;);">(%s more)</a>' % (tag.id, tab_name, len(items) - i)
+                else:
+                    items_str += ' ... (%s more)' % (len(items) - i)
             break
         else:
             if items_str != '':
