@@ -125,6 +125,29 @@ var Tags = {
 		}
     },
     
+    _showWaitScreen: function() {
+        this.hideHelp();
+        
+        // Hide the content lightbox if it's visible.
+        Lightbox.hide();
+        
+        // Hide any flyvoers so they don't persist when the node is gone.
+        Flyover.hide();
+        
+        // Update the switch interfaces link
+        this.updateChangedNode();
+    
+        var tagWindow = $("#tags");
+        tagWindow.empty();
+        tagWindow.html(
+            '<div id="loading" class="please-wait">'
+            + '<h1>Please wait...</h1>'
+            + '<img src="' + MEDIA_URL + '/images/ajax-loader-bar.gif" />'
+            + '</div>'
+        );
+        
+    },
+    
     selectSector: function(id, onload, setHash) {
         //log('selectSector()');
         //log('  id: ' + id);
@@ -133,6 +156,7 @@ var Tags = {
             this.nodeId = id;
             this.societyId = null;
             this.nodeType = 'sector';
+            $('#tags-live-search').val('');
         }
         
         if (setHash == undefined) {
@@ -146,32 +170,13 @@ var Tags = {
         
         if (this.nodeId != null) {
             
-            this.hideHelp();
-            
-            // Hide the content lightbox if it's visible.
-            Lightbox.hide();
-            
-            // Update the switch interfaces link
-            this.updateChangedNode();
-        
-            var tagWindow = $("#tags");
-            
-            tagWindow.empty();
-            tagWindow.html(
-                '<div id="loading" class="please-wait">'
-                + '<h1>Please wait...</h1>'
-                + '<img src="' + MEDIA_URL + '/images/ajax-loader-bar.gif" />'
-                + '</div>'
-            );
+            this._showWaitScreen();
             
             var filterStr = implode(',', this.getFilters());
             
             if (onload) {
                 this.onLoadSectorCallback = onload;
             }
-            
-            // Hide any flyvoers so they don't persist when the node is gone.
-            Flyover.hide();
             
             $.ajax({
                 url: '/ajax/textui_nodes',
@@ -194,6 +199,7 @@ var Tags = {
             this.societyId = societyId;
             this.nodeId = null;
             this.nodeType = null;
+            $('#tags-live-search').val('');
         }
         
         if (setHash == undefined) {
@@ -207,32 +213,13 @@ var Tags = {
         
         if (this.societyId != null) {
             
-            this.hideHelp();
-            
-            // Hide the content lightbox if it's visible.
-            Lightbox.hide();
-            
-            // Update the switch interfaces link
-            //this.updateChangedNode();
-        
-            var tagWindow = $("#tags");
-            
-            tagWindow.empty();
-            tagWindow.html(
-                '<div id="loading" class="please-wait">'
-                + '<h1>Please wait...</h1>'
-                + '<img src="' + MEDIA_URL + '/images/ajax-loader-bar.gif" />'
-                + '</div>'
-            );
+            this._showWaitScreen();
             
             var filterStr = implode(',', this.getFilters());
             
             if (onload) {
                 this.onLoadSectorCallback = onload;
             }
-            
-            // Hide any flyvoers so they don't persist when the node is gone.
-            Flyover.hide();
             
             $.ajax({
                 url: '/ajax/textui_nodes',
@@ -250,18 +237,18 @@ var Tags = {
     },
     
     showSearchResults: function(search_for) {
-        this.search_for = search_for;
         this.societyId = null;
         this.nodeId = null;
         this.nodeType = null;
         
         this.updateHighlightedNode();
+        this._showWaitScreen();
         
-        log('searching for "' + this.search_for + '"');
+        log('searching for "' + search_for + '"');
         $.ajax({
             url: '/ajax/textui_nodes',
             data: {
-                search_for: this.search_for
+                search_for: search_for
             },
             success: function(data) {
                 Tags.onLoadResults(data);
