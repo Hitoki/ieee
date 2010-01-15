@@ -279,8 +279,6 @@ var Flyover = {
             this.showArrow(this.options.position);
         }
         
-        log(this.options.sticky);
-        
         // If sticky is on, we don't need this (since the flyover will be manually closed).
         // If closeOnMouseOutLink is on, we don't want this to delay hiding the flyover.
         if (!this.options.sticky && !this.options.closeOnMouseOutLink) {
@@ -388,7 +386,7 @@ var Flyover = {
     },
     
     onMouseOut: function() {
-        log('onMouseOut()');
+        //log('onMouseOut()');
         this._startHideTimer();
     },
     
@@ -610,13 +608,13 @@ $(function() {
 
 function attachFlyovers(elem) {
     elem = $(elem);
-    elem.find('span.flyover, a.flyover').each(function() {
+    elem.find('span.flyover, div.flyover, a.flyover').each(function() {
         Flyover.attach(this, {shadows:false});
     });
 }
 
 $(function() {
-    $('span.flyover, a.flyover').each(function() {
+    $('span.flyover, div.flyover, a.flyover').each(function() {
         Flyover.attach(this, {shadows:false});
     });
     

@@ -1675,3 +1675,12 @@ a.resource-tab-print-link {
     font-weight:bold;
     cursor:pointer;
 }
+
+#textui-tags-search {
+    font-size:80%;
+}
+
+#textui-tags-search input {
+    font-size:100%;
+    border:1px inset gray;
+}

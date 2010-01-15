@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect  
 from django.shortcuts import render_to_response
 from django.template import RequestContext
-from django.utils import simplejson
+from django.utils import simplejson as json
 from logging import debug as log
 import os.path
 import re
@@ -73,6 +73,16 @@ def truncate_link_list(items, output_func, plain_output_func, max_chars, tag=Non
     
     return items_str
 
+def get_min_max(list, attr):
+    min1 = None
+    max1 = None
+    for item in list:
+        if min1 is None or getattr(item, attr) < min1:
+            min1 = getattr(item, attr)
+        if max1 is None or getattr(item, attr) > max1:
+            max1 = getattr(item, attr)
+    return (min1, max1)
+    
 # ------------------------------------------------------------------------------
 
 def error_view(request):
@@ -400,9 +410,9 @@ def ajax_node(request):
                 'name': parent.name,
             })
     
-    json = simplejson.dumps(data, sort_keys=True, indent=4)
+    json1 = json.dumps(data, sort_keys=True, indent=4)
     
-    return HttpResponse(json, mimetype="text/plain")
+    return HttpResponse(json1, mimetype="text/plain")
 
 
 _POPULARITY_LEVELS = [
@@ -421,20 +431,21 @@ def _get_popularity_level(min, max, count):
     return 'level' + str(level)
 
 @login_required
-def ajax_nodes_json(request):
-    #log('ajax_nodes_json()')
-    #p = Profiler('ajax_nodes_json')
+def ajax_textui_nodes(request):
+    #log('ajax_textui_nodes()')
+    #p = Profiler('ajax_textui_nodes')
     
-    node_id = request.GET.get('nodeId', None)
+    node_id = request.GET.get('sector_id', None)
     society_id = request.GET.get('society_id', None)
+    search_for = request.GET.get('search_for', None)
     
-    assert society_id is not None or node_id is not None, 'Either society_id or node_id is required'
-    assert society_id is None or node_id is None, 'Cannot specify both society_id or node_id'
+    #assert society_id is not None or node_id is not None, 'Either society_id or node_id is required'
+    #assert society_id is None or node_id is None, 'Cannot specify both society_id or node_id'
     
     sort = request.GET.get('sort')
     #log('  sort: %s' % sort)
     
-    filterValues = request.GET.get('filterValues')
+    #filterValues = request.GET.get('filterValues')
     
     #log('filterValues: %s' % filterValues)
     
@@ -462,92 +473,117 @@ def ajax_nodes_json(request):
     
     #p.tick('filters')
     
-    filterIds = []
-    if filterValues != '':
-        for filterValue in filterValues.split(','):
-            filterIds.append(Filter.objects.getFromValue(filterValue).id)
+    # TODO: Filters disabled for now
+    #filterIds = []
+    #if filterValues != '' and filterValues is not None:
+    #    for filterValue in filterValues.split(','):
+    #        filterIds.append(Filter.objects.getFromValue(filterValue).id)
+    # TODO: Just select all filters for now
+    filterIds = [filter.id for filter in Filter.objects.all()]
     
     if node_id is not None:
+        # Get a sector or cluster's child nodes
         node = Node.objects.get(id=node_id)
         society = None
         assert node.node_type.name in [NodeType.SECTOR, NodeType.TAG_CLUSTER], 'Node "%s" must be a sector or cluster' % node.name
+
+        if node.node_type.name == NodeType.SECTOR:
+            #log('Calling child_nodes.get_extra_info() with filter ids')
+            child_nodes = node.get_tags_and_clusters()
+            # Prefetch the node_type so we don't have to hit the DB later
+            child_nodes = child_nodes.select_related('node_type__name')
+            
+            # The 'filteIds' allows us to get the selected filter count via the DB (much faster)
+            if len(filterIds) > 0:
+                child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, filterIds)
+            else:
+                child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, None)
+            
+        elif node.node_type.name == NodeType.TAG_CLUSTER:
+            child_nodes = Node.objects.get_extra_info(node.get_tags(), extra_order_by, filterIds)
+        
+        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = Node.objects.get_sector_ranges(node)
+        (min_score, max_score) = Node.objects.get_combined_sector_ranges(node)
+
     elif society_id is not None:
+        # Get a society's nodes
         node = None
         society = Society.objects.get(id=society_id)
+        child_nodes = Node.objects.get_extra_info(society.tags, extra_order_by, filterIds)
+        
+        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = society.get_tag_ranges()
+        (min_score, max_score) = society.get_combined_ranges()
+        
+    elif search_for is not None:
+        # Search for nodes with a phrase
+        # NOTE: <= 2 char searches take a long time (2-3 seconds), vs 200ms average for anything longer
+        if len(search_for) >= 2:
+            
+            search_words = re.split(r'\s', search_for)
+            print 'search_words: %s' % search_words
+            
+            
+            from django.db.models import Q
+            
+            queries = None
+            for word in search_words:
+                if queries is None:
+                    queries = Q(name__icontains=word)
+                else:
+                    queries &= Q(name__icontains=word)
+            child_nodes = Node.objects.filter(queries, node_type__name=NodeType.TAG)
+            child_nodes = Node.objects.get_extra_info(child_nodes, None, filterIds)
+        else:
+            child_nodes = Node.objects.none()
+        
+        print 'searching for phrase "%s"' % search_for
+        print 'child_nodes: %s' % child_nodes
+        
+        # Get the min/max scores for these search results
+        min_score = None
+        max_score = None
+        for node in child_nodes:
+            if min_score is None:
+                min_score = node.score1
+            else:
+                min_score = min(min_score, node.score1)
+            if max_score is None:
+                max_score = node.score1
+            else:
+                max_score = max(max_score, node.score1)
+        
+    else:
+        assert False
     
     # Get child tags & clusters
     #p.tick('child tags')
     
-    if node is not None and node.node_type.name == NodeType.SECTOR:
-        #log('Calling child_nodes.get_extra_info() with filter ids')
-        child_nodes = node.get_tags_and_clusters()
-        # Prefetch the node_type so we don't have to hit the DB later
-        child_nodes = child_nodes.select_related('node_type__name')
-        # The 'filteIds' allows us to get the selected filter count via the DB (much faster)
-        if len(filterIds) > 0:
-            child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, filterIds)
-        else:
-            child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, None)
-        
-    elif node is not None and node.node_type.name == NodeType.TAG_CLUSTER:
-        child_nodes = Node.objects.get_extra_info(node.get_tags(), extra_order_by, filterIds)
-    
-    elif society is not None:
-        child_nodes = Node.objects.get_extra_info(society.tags, extra_order_by, filterIds)
-        
-    else:
-        raise Exception('Unrecognized node type "%s" for node "%s"' % (node.node_type.name, node.name))
-    
     if sort == 'clusters_first_alpha':
         # Order clusters first, then tags; both sorted alphabetically
+        print 'sorting by clusters, then alpha'
         child_nodes = child_nodes.order_by('-node_type__name', 'name')
     elif order_by is not None:
         # Sort by one of the non-extra columns
+        print 'sorting by a normal column "%s"' % order_by
         child_nodes = child_nodes.order_by(order_by)
     
     #p.tick('connectedness')
     if sort == 'connectedness':
         # Sort by the combined score
+        print 'sorting by connectedness'
         assert settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS, 'settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS is not enabled.'
         child_nodes = Node.objects.sort_queryset_by_score(child_nodes, False)
-        
-    #p.tick('min/max')
-    if node is not None:
-        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = Node.objects.get_sector_ranges(node)
-        (min_score, max_score) = Node.objects.get_combined_sector_ranges(node)
-    elif society is not None:
-        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = society.get_tag_ranges()
-        (min_score, max_score) = society.get_combined_ranges()
-    
-    #p.tick('json output')
-    # JSON Output
-    if node is not None:
-        data = {
-            'node': {
-                'id': node.id,
-                'label': node.name,
-                'type': node.node_type.name,
-            },
-            'child_nodes': [],
-        }
-    elif society is not None:
-        data = {
-            'society': {
-                'id': society.id,
-                'label': society.name,
-            },
-            'child_nodes': [],
-        }
-    
-    #p.tick('tick1')
-    if node is not None and node.node_type.name == NodeType.TAG_CLUSTER:
-        data['node']['sector'] = {
-            'id': node.get_sector().id,
-            'label': node.get_sector().name,
-        }
     
     #p.start_loop()
-    for child_node in child_nodes:
+    #print 'hey'
+    print 'child_nodes.count(): %s' % child_nodes.count()
+    #print 'child_nodes: %s' % child_nodes
+    
+    
+    child_nodes = list(child_nodes)
+    print 'before loop'
+    print 'len(child_nodes): %s' % len(child_nodes)
+    for child_node in child_nodes[:]:
         #p.tick('start')
         
         #log('child_node.name: %s' % child_node.name)
@@ -578,27 +614,24 @@ def ajax_nodes_json(request):
                 
                 #p.tick('after filter')
                 
-                temp1 = {
-                    'id': child_node.id,
-                    'label': child_node.name,
-                    'type': child_node.node_type.name,
-                    #'num_sectors1': child_node.num_sectors1,
-                }
-                
                 if not settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
                     # Separated color blocks
-                    temp1['level'] = resourceLevel
-                    temp1['sectorLevel'] = sectorLevel
-                    temp1['relatedTagLevel'] = related_tag_level
-                    temp1['num_related_tags'] = num_related_tags
+                    child_node.level = resourceLevel
+                    child_node.sectorLevel = sectorLevel
+                    child_node.relatedTagLevel = related_tag_level
+                    child_node.num_related_tags = num_related_tags
                 else:
-                    # DEBUG:
-                    temp1['score'] = child_node.score1
-                    temp1['combinedLevel'] = combinedLevel
-                    temp1['min_score'] = min_score
-                    temp1['max_score'] = max_score
-                    
-                data['child_nodes'].append(temp1)
+                    # Combined scores
+                    child_node.score = child_node.score1
+                    child_node.level = combinedLevel
+                    #child_node.min_score = min_score
+                    #child_node.max_score = max_score
+            else:
+                #print 'removing node %s' % child_node.name
+                #print '  child_node.num_selected_filters1: %s' % child_node.num_selected_filters1
+                #print '  child_node.num_societies1: %s' % child_node.num_societies1
+                #print '  child_node.num_resources1: %s' % child_node.num_resources1
+                child_nodes.remove(child_node)
                 
         elif child_node.node_type.name == NodeType.TAG_CLUSTER:
             #p.tick('cluster')
@@ -614,30 +647,32 @@ def ajax_nodes_json(request):
                         num_child_tags += 1
                 
                 if num_child_tags > 0:
-                    data['child_nodes'].append({
-                        'id': child_node.id,
-                        'label': child_node.name,
-                        'type': child_node.node_type.name,
-                        'num_child_tags': num_child_tags,
-                        
-                        #'num_related_tags': num_related_tags,
-                        #'num_sectors1': child_node.num_sectors1,
-                    })
+                    # do nothing
+                    pass
+                else:
+                    child_nodes.remove(child_node)
         
         else:
             raise Exception('Unknown child node type "%s" for node "%s"' % (child_node.node_type.name, child_node.name))
         
         #p.tick('end')
-
     #p.end_loop()
     
     #p.tick('end loop')
     
-    json = simplejson.dumps(data, sort_keys=True, indent=4)
-    #p.tick('after json')
-    #log('~ajax_nodes_json()')
+    print 'after loop'
+    print 'len(child_nodes): %s' % len(child_nodes)
     
-    return HttpResponse(json, mimetype='text/plain')
+    #p.tick('after json')
+    #log('~ajax_textui_nodes()')
+    
+    return render(request, 'ajax_textui_nodes.html', {
+        'child_nodes': child_nodes,
+        'parent_id': node_id,
+        'society_id': society_id,
+        'search_for': search_for,
+    })
+    
 
 @login_required
 def ajax_nodes_xml(request):
@@ -820,6 +855,7 @@ def tooltip(request, tag_id):
     
     parent_id = request.GET.get('parent_id', None)
     society_id = request.GET.get('society_id', None)
+    search_for = request.GET.get('search_for', None)
     
     if parent_id == 'null':
         parent_id = None
@@ -831,11 +867,12 @@ def tooltip(request, tag_id):
     else:
         society_id = int(society_id)
     
-    assert parent_id is not None or society_id is not None, 'Must specify either parent_id or society_id.'
-    assert parent_id is None or society_id is None, 'Cannot specify both parent_id or society_id.'
+    #assert parent_id is not None or society_id is not None, 'Must specify either parent_id or society_id.'
+    #assert parent_id is None or society_id is None, 'Cannot specify both parent_id or society_id.'
     
-    print 'parent_id: %r' % parent_id
-    print 'society_id: %r' % society_id
+    #print 'parent_id: %r' % parent_id
+    #print 'society_id: %r' % society_id
+    #print 'search_for: %r' % search_for
     
     #log('tooltip()')
     
@@ -851,9 +888,39 @@ def tooltip(request, tag_id):
             parent = Node.objects.get(id=parent_id)
             #p.tick('Getting max resources')
             (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = Node.objects.get_sector_ranges(parent)
+            (min_score, max_score) = Node.objects.get_combined_sector_ranges(parent)
+        
         elif society_id is not None:
             society = Society.objects.get(id=society_id)
             (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = society.get_tag_ranges()
+            (min_score, max_score) = society.get_combined_ranges()
+            
+        elif search_for is not None:
+            # Search for nodes with a phrase
+            if len(search_for) >= 2:
+                search_words = re.split(r'\s', search_for)
+                from django.db.models import Q
+                queries = None
+                for word in search_words:
+                    if queries is None:
+                        queries = Q(name__icontains=word)
+                    else:
+                        queries &= Q(name__icontains=word)
+                #child_nodes = Node.objects.filter(name__icontains=search_for, node_type__name=NodeType.TAG)
+                child_nodes = Node.objects.filter(queries, node_type__name=NodeType.TAG)
+                filterIds = [filter.id for filter in Filter.objects.all()]
+                child_nodes = Node.objects.get_extra_info(child_nodes, None, filterIds)
+            else:
+                child_nodes = Node.objects.none()
+            
+            # Get the min/max for these search results
+            # TODO: These don't account for filter==0, num_resources1==0, etc.
+            min_score, max_score = get_min_max(child_nodes, 'score1')
+            min_resources, max_resources = get_min_max(child_nodes, 'num_resources1')
+            min_sectors, max_sectors = get_min_max(child_nodes, 'num_sectors1')
+            min_related_tags, max_related_tags = get_min_max(child_nodes, 'num_related_tags1')
+            min_societies, max_societies = get_min_max(child_nodes, 'num_societies1')
+            
         else:
             assert False
         
@@ -861,47 +928,16 @@ def tooltip(request, tag_id):
         num_societies = tag.societies.all()
         
         #p.tick('Getting levels')
+        
         resourceLevel = _get_popularity_level(min_resources, max_resources, tag.num_resources1)
         sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.num_sectors1)
         related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
-        #Trying to get society popularity level (min_resources, max_resources and tag.num_resources1 all = 50)
         society_level = _get_popularity_level(min_societies, max_societies, tag.num_societies1)
-        
-        
-        #debugging statements
-        print "num resources"
-        print tag.num_resources1
-        print "----"
-        print "min resources"
-        print min_resources
-        print "----"
-        print "max resources"
-        print max_resources
-        print "----"
-        print "min sectors"
-        print min_sectors
-        print "----"
-        print "max sectors"
-        print max_sectors
-        
-        
-        print "society level:" + society_level
-        print "sector level:" + sectorLevel
         
         if settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
             # New-style popularity colors - single color only
             #p.tick('simplified ui max scores')
-            
-                
-            if parent_id is not None:
-                (min_score, max_score) = Node.objects.get_combined_sector_ranges(parent)
-            elif society_id is not None:
-                (min_score, max_score) = society.get_combined_ranges()
-            else:
-                assert False
-            
-            combinedLevel = _get_popularity_level(min_score, max_score, node.score1)
-            tagLevel = combinedLevel
+            tagLevel = _get_popularity_level(min_score, max_score, node.score1)
         else:
             tagLevel = resourceLevel
         

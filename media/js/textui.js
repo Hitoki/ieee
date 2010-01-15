@@ -173,7 +173,16 @@ var Tags = {
             // Hide any flyvoers so they don't persist when the node is gone.
             Flyover.hide();
             
-            $.getJSON('/ajax/nodes_json', {nodeId:this.nodeId, filterValues:filterStr, sort:this.getSort()}, function(data) { Tags.onLoadSector(data); });
+            $.ajax({
+                url: '/ajax/textui_nodes',
+                data: {
+                    sector_id: this.nodeId,
+                    sort: this.getSort()
+                },
+                success: function(data) {
+                    Tags.onLoadResults(data);
+                }
+            });
         }
     },
     
@@ -225,26 +234,48 @@ var Tags = {
             // Hide any flyvoers so they don't persist when the node is gone.
             Flyover.hide();
             
-            $.getJSON('/ajax/nodes_json', {society_id:this.societyId, filterValues:filterStr, sort:this.getSort()}, function(data) { Tags.onLoadSociety(data); });
+            $.ajax({
+                url: '/ajax/textui_nodes',
+                data: {
+                    society_id: this.societyId,
+                    sort: this.getSort()
+                },
+                success: function(data) {
+                    Tags.onLoadResults(data);
+                }
+            });
             
             this.updateHighlightedNode();
         }
     },
     
-    onLoadSector: function(data) {
-        this.node = data.node.sector;
-        this.society = null;
-        this.renderTags(data);
+    showSearchResults: function(search_for) {
+        this.search_for = search_for;
+        this.societyId = null;
+        this.nodeId = null;
+        this.nodeType = null;
+        
+        this.updateHighlightedNode();
+        
+        log('searching for "' + this.search_for + '"');
+        $.ajax({
+            url: '/ajax/textui_nodes',
+            data: {
+                search_for: this.search_for
+            },
+            success: function(data) {
+                Tags.onLoadResults(data);
+            }
+        });
     },
     
-    onLoadSociety: function(data) {
-        this.node = null;
-        this.society = data.society;
-        this.renderTags(data);
+    onLoadResults: function(data) {
+        var tagWindow = $("#tags");
+        tagWindow.html(data);
     },
     
     updateHighlightedNode: function() {
-        log('updateHighlightedNode()');
+        //log('updateHighlightedNode()');
         
         // Remove any active sectors
         $('#sectors a.active-sector').removeClass('active-sector');
@@ -282,9 +313,9 @@ var Tags = {
             */
         }
         
-        log('this.nodeId: ' + this.nodeId);
-        log('this.societyId: ' + this.societyId);
-        log('this.nodeType: ' + this.nodeType);
+        //log('this.nodeId: ' + this.nodeId);
+        //log('this.societyId: ' + this.societyId);
+        //log('this.nodeType: ' + this.nodeType);
         
         if (this.nodeId != null && this.nodeType == 'sector') {
             // Highlight the selected sector
@@ -312,208 +343,49 @@ var Tags = {
         }
     },
     
-    selectCluster: function(id) {
-        //log("selectCluster()");
-        //log("  id: " + id);
-        
-        this.nodeId = id;
-        this.societyId = null;
-        this.nodeType = 'tag_cluster';
-        
-        var tagWindow = $("#tags");
-        tagWindow.empty();
-        tagWindow.html("<h1 id=\"wait\">Please wait...</h1>");
-        
-        var filterStr = implode(',', this.getFilters());
-        
-        this.updateChangedNode();
-        
-        // Hide any flyvoers so they don't persist when the node is gone.
-        Flyover.hide();
-        
-        $.getJSON(
-            '/ajax/nodes_json',
-            {
-                nodeId:id,
-                filterValues:filterStr,
-                sort:this.getSort()
-            },
-            function(data) {
-                Tags.onLoadClusters(data);
-            }
-        );
-    },
-    
-    onLoadClusters: function(data) {
-        //log('onLoadClusters()');
-        //log('  data.node.sector.id: ' + data.node.sector.id);
-        
-        this.node = data.node;
-        this.node.sectorId = data.node.sector.id;
-        
-        this.updateChangedNode();
-        
-        this.renderTags(data);
-    },
-    
-    _renderBlock: function(type, tagWindow, node, sectorId, societyId) {
-        
-        var simplified;
-        var level;
-        if (node.combinedLevel) {
-            simplified = true;
-            level = node.combinedLevel;
-        } else {
-            simplified = false;
-            level = node.level;
-        }
-        
-        var str;
-        str = "";
-        str += "<div id=\"tag-" + node.id + "\" class=\"node " + type + "\">";
-        // NOTE: Table is here to prevent the label & color blocks from wrapping onto separate lines
-        str += "  <table>";
-        str += "    <tr>";
-        str += "      <td>";
-        
-        // Truncate long node names.  The flyover will show the full node name.
-        var label = node.label;
-        var MAX_TAG_LENGTH = 30;
-        if (label.length > MAX_TAG_LENGTH) {
-            label = label.substr(0, MAX_TAG_LENGTH) + '...';
-        }
-        
-        if (type == 'tag') {
-            str += "        <a href=\"javascript:Tags.selectTag(" + node.id + ");\" class=\"" + level + "\">" + htmlentities(label) + "</a> ";
-        } else if (type == 'tag_cluster') {
-            str += "        <img src=\"/media/images/icon_cluster_sm.png\" />";
-            str += "        <a href=\"javascript:Tags.selectCluster(" + node.id + ");\" class=\"" + level + "\">" + htmlentities(label) + "</a> ";
-        } else {
-            alert('Unknown node type "' + type + '" for node "' + node.label + '"');
-        }
-        str += "      </td>";
-        
-        if (!simplified) {
-            // NOTE: Only show the separate color blocks if we're not using the simplified mode
-            str += "      <td>";
-            str += "        <div class=\"node-block-container\">";
-            str += "          <div class=\"block-top " + node.sectorLevel + "\">&nbsp;</div>";
-            str += "          <div class=\"block-bottom " + node.relatedTagLevel + "\">&nbsp;</div>";
-            str += "        </div>";
-            str += "      </td>";
-        }
-        
-        str += "    </tr>";
-        str += "  </table>";
-        str += "</div>";
-        
-        var div = $(str);
-        div.appendTo(tagWindow);
-        div.data('tagId', node.id);
-        div.data('sectorId', sectorId);
-        div.data('societyId', societyId);
-        
-        if (type == 'tag') {
-            // Show the tag flyover
-            div.hover(
-                function() {
-                    Flyover.show(
-                        this,
-                        {
-                            url: '/ajax/tooltip/'+$(this).data('tagId')+'?parent_id='+$(this).data('sectorId')+'&society_id='+$(this).data('societyId'),
-                            position: 'auto',
-                            customClass: 'textui-node',
-                            hideDelay: 400
-                        }
-                    );
-                },
-                function() {
-                    Flyover.onMouseOut();
-                }
-            );
-        } else if (type == 'tag_cluster') {
-            // Show the cluster flyover
-            div.hover(
-                function() {
-                    Flyover.show(
-                        this,
-                        {
-                            url: '/ajax/tooltip/'+$(this).data('tagId')+'?parent_id='+$(this).data('sectorId')+'&society_id='+$(this).data('societyId'),
-                            position: 'auto',
-                            hideDelay: 100
-                        }
-                    );
-                },
-                function() {
-                    Flyover.onMouseOut();
-                }
-            );
-        } else {
-            alert('ERROR: Unknown type "' + type + '"');
-        }
-    },
-    
-    renderTags: function(data) {
-        
-        // Save the tags for the title later
-        //this.tags = tags;
-        this.data = data;
-        
-        var tagWindow = $("#tags");
-        tagWindow.empty();
-        
-        //$('<div>Sector: ' + this.nodeId + '</div>').appendTo(tagWindow);
-        
-        //console.log("tags.length: " + tags.length);
-        
-        if (data.node && data.node.type == 'sector') {
-            // Got a sector
-            
-            // Sector title
-            //var title = $('<h2>' + htmlentities(data.node.sector.label) + ' sector</h2>').appendTo(tagWindow);
-            
-            // Show "no clusters" warning if applicable
-            if (this.getSort() == 'clusters_first_alpha') {
-                
-                var numClusters = 0;
-                for (var i=0; i<data.child_nodes.length; i++) {
-                    if (data.child_nodes[i].type == 'tag_cluster') {
-                        numClusters++;
-                    }
-                }
-                
-                if (numClusters == 0) {
-                    // Show the "no clusters" warning
-                    var noClustersWarning = $('<p class="no-clusters-warning">There are no clusters in this sector for the selected filters.</p>').appendTo(tagWindow);
-                }
-            }
-            
-        } else if (data.node && data.node.type == 'tag_cluster') {
-            // Got a cluster
-            var sectorLink = $('<a href="javascript:Tags.selectSector(' + data.node.sector.id + ');" class="back-link"></a>').appendTo(tagWindow);
-            sectorLink.html('<img src="' + MEDIA_URL + '/images/arrow2-up-small.png" /> Up to the "' + htmlentities(data.node.sector.label) + '" sector');
-            $('<br/>').appendTo(tagWindow);
-            
-            // Cluster title
-            var title = $('<h2>' + htmlentities(data.node.label) + ' cluster</h2>').appendTo(tagWindow);
-        } else if (data.society) {
-            // Got a society
-            // NOTE: do nothing...
-            
-        } else {
-            alert('Unknown data.node.type "' + data.node.type + '"')
-        }
-        
-        // Show tags
-        for (var i=0; i<data.child_nodes.length; i++) {
-            this._renderBlock(data.child_nodes[i].type, tagWindow, data.child_nodes[i], this.nodeId, this.societyId);
-        }
-        
-        if (this.onLoadSectorCallback) {
-            this.onLoadSectorCallback();
-            this.onLoadSectorCallback = null;
-        }
-    },
+    //selectCluster: function(id) {
+    //    //log("selectCluster()");
+    //    //log("  id: " + id);
+    //    
+    //    this.nodeId = id;
+    //    this.societyId = null;
+    //    this.nodeType = 'tag_cluster';
+    //    
+    //    var tagWindow = $("#tags");
+    //    tagWindow.empty();
+    //    tagWindow.html("<h1 id=\"wait\">Please wait...</h1>");
+    //    
+    //    var filterStr = implode(',', this.getFilters());
+    //    
+    //    this.updateChangedNode();
+    //    
+    //    // Hide any flyvoers so they don't persist when the node is gone.
+    //    Flyover.hide();
+    //    
+    //    $.getJSON(
+    //        '/ajax/textui_nodes',
+    //        {
+    //            nodeId:id,
+    //            filterValues:filterStr,
+    //            sort:this.getSort()
+    //        },
+    //        function(data) {
+    //            Tags.onLoadClusters(data);
+    //        }
+    //    );
+    //},
+    //
+    //onLoadClusters: function(data) {
+    //    //log('onLoadClusters()');
+    //    //log('  data.node.sector.id: ' + data.node.sector.id);
+    //    
+    //    this.node = data.node;
+    //    this.node.sectorId = data.node.sector.id;
+    //    
+    //    this.updateChangedNode();
+    //    
+    //    this.renderTags(data);
+    //},
     
     getTagById: function(id) {
         for (var i=0; i<this.tags.length; i++) {
@@ -647,4 +519,3 @@ var Tags = {
     }
     
 };
-   

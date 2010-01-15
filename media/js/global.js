@@ -444,6 +444,8 @@ function attachScripts(elem) {
 }
 
 $(function() {
+    log('global.js');
+    
     $('.select-checkbox-on-click').click(function() {
         $(this).find('input[type="checkbox"]').click();
         $(this).find('input[type="checkbox"]').change();

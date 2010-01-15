@@ -1,0 +1,75 @@
+{% load filters %}
+
+{% for tag in child_nodes %}
+
+    <div id="tag-{{ tag.id }}" class="node {{ tag.node_type.name }} flyover { url: '/ajax/tooltip/{{ tag.id }}?parent_id={{ parent_id|default:"null" }}&society_id={{ society_id|default:"null" }}&search_for={{ search_for }}', position: 'auto', customClass: 'textui-node', hideDelay: 400 }">
+    {# NOTE: Table is here to prevent the label & color blocks from wrapping onto separate lines #}
+        <table>
+            <tr>
+                <td>
+                    {# tag.level: {{ tag.level }}<br/> #}
+                    
+                    {% ifequal tag.node_type.name 'tag' %}
+                        <a href="javascript:Tags.selectTag({{ tag.id }});" class="{{ tag.level }}">{{ tag.name|truncatechars:30 }}</a>
+                    {% else %}
+                        {% ifequal tag.node_type.name 'tag_cluster' %}
+                            <img src="/media/images/icon_cluster_sm.png" />
+                            <a href="javascript:Tags.selectCluster({{ tag.id }});" class="{{ tag.level }}">{{ tag.name|truncatechars:30 }}</a> 
+                        {% endifequal %}
+                    {% endifequal %}
+                </td>
+    
+                {% comment %}
+                #if (!simplified) {
+                #    // NOTE: Only show the separate color blocks if we're not using the simplified mode
+                #    str += "      <td>";
+                #    str += "        <div class=\"node-block-container\">";
+                #    str += "          <div class=\"block-top " + tag.sectorLevel + "\">&nbsp;</div>";
+                #    str += "          <div class=\"block-bottom " + tag.relatedTagLevel + "\">&nbsp;</div>";
+                #    str += "        </div>";
+                #    str += "      </td>";
+                #}
+                {% endcomment %}
+     
+            </tr>
+        </table>
+    </div>
+    
+    {% comment %}
+    #} else if (type == 'tag_cluster') {
+    #    // Show the cluster flyover
+    #    div.hover(
+    #        function() {
+    #            Flyover.show(
+    #                this,
+    #                {
+    #                    url: '/ajax/tooltip/'+$(this).data('tagId')+'?parent_id='+$(this).data('sectorId')+'&society_id='+$(this).data('societyId'),
+    #                    position: 'auto',
+    #                    hideDelay: 100
+    #                }
+    #            );
+    #        },
+    #        function() {
+    #            Flyover.onMouseOut();
+    #        }
+    #    );
+    #}
+    {% endcomment %}
+
+{% endfor %}
+
+<script>
+    $(function() {
+        attachFlyovers('#tags');
+    });
+</script>
+
+
+{% comment %}
+#// Got a cluster
+#var sectorLink = $('<a href="javascript:Tags.selectSector(' + data.tag.sector.id + ');" class="back-link"></a>').appendTo(tagWindow);
+#sectorLink.html('<img src="' + MEDIA_URL + '/images/arrow2-up-small.png" /> Up to the "' + htmlentities(data.tag.sector.label) + '" sector');
+#$('<br/>').appendTo(tagWindow);
+#// Cluster title
+#var title = $('<h2>' + htmlentities(data.tag.label) + ' cluster</h2>').appendTo(tagWindow);
+{% endcomment %}
