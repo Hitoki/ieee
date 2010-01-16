@@ -174,7 +174,8 @@ var Flyover = {
             closeCallback: null,
             closeOnMouseOutLink: false,
             url: null,
-            showInitial: false
+            showInitial: false,
+			positionCursor: false
         };
         this.options = $.extend(this.options, options);
         this.options = $.extend(this.options, elem.metadata());
@@ -235,8 +236,11 @@ var Flyover = {
         } else if (typeof this.options.showInitial != 'boolean') {
             alert('Flyover: showInitial must be a boolean (' + this.options.showInitial + ')');
             return;
+        } else if (typeof this.options.positionCursor != 'boolean') {
+            alert('Flyover: positionCursor must be a boolean (' + this.options.positionCursor + ')');
+            return;
         }
-        
+		
         // NOTE: Special behavior for closeOnMouseOutLink
         if (this.options.closeOnMouseOutLink && (!'hideDelay' in this.options && !'hideDelay' in elem.metadata())) {
             // closeOnMouseOutLink is true and there is no manually-specificied hideDelay, so shorten the default hideDelay
@@ -407,7 +411,7 @@ var Flyover = {
     // Repositions the flyover and arrow
     _reposition: function(onLoadObject) {
         if (this._flyover) {
-            var pos = getElemPos(this._elem);
+            var pos;
             var left;
             var top;
             var arrowLeft;
@@ -416,6 +420,19 @@ var Flyover = {
             var arrowHeight;
             
             var position = this.options.position;
+			
+			var CURSOR_PADDING = 5;
+			
+			if (this.options.positionCursor) {
+				// Position relative to the mouse cursor
+				pos = {
+					x: mouseX,
+					y: mouseY
+				}
+			} else {
+				// Position relative to the elem
+				pos = getElemPos(this._elem);
+			}
             
             if (this.options.position == 'auto-left-right-top') {
                 // Automatically determine the horizontal position according to where the anchor point is
@@ -451,8 +468,17 @@ var Flyover = {
             if (this.options.height != null)
                 this._flyover.css('height', this.options.height);
             
-            var elemWidth = this._elem[0].offsetWidth;
-            var elemHeight = this._elem[0].offsetHeight;
+            var elemWidth;
+            var elemHeight;
+			
+			if (this.options.positionCursor) {
+				elemWidth = CURSOR_PADDING;
+				elemHeight = 0;
+			} else {
+				elemWidth = this._elem[0].offsetWidth;
+				elemHeight = this._elem[0].offsetHeight;
+			}
+			
             var flyoverWidth = this._flyover[0].offsetWidth;
             var flyoverHeight = this._flyover[0].offsetHeight;
             

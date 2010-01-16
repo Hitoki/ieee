@@ -6,7 +6,7 @@
 
 {% for tag in child_nodes %}
 
-    <div id="tag-{{ tag.id }}" class="node {{ tag.node_type.name }} flyover { url: '/ajax/tooltip/{{ tag.id }}?parent_id={{ parent_id|default:"null" }}&society_id={{ society_id|default:"null" }}&search_for={{ search_for }}', position: 'auto', customClass: 'textui-node', hideDelay: 400 }">
+    <div id="tag-{{ tag.id }}" class="node {{ tag.node_type.name }} flyover { url: '/ajax/tooltip/{{ tag.id }}?parent_id={{ parent_id|default:"null" }}&society_id={{ society_id|default:"null" }}&search_for={{ search_for }}', position: 'auto', customClass: 'textui-node', hideDelay: 400, positionCursor: true }">
     {# NOTE: Table is here to prevent the label & color blocks from wrapping onto separate lines #}
         <table>
             <tr>

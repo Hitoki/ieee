@@ -443,6 +443,9 @@ function attachScripts(elem) {
     attachCopyTags(elem);
 }
 
+var mouseX = null;
+var mouseY = null;
+
 $(function() {
     log('global.js');
     
@@ -494,4 +497,11 @@ $(function() {
     }, 500);
     
     attachCopyTags($(document));
+	
+	// Keep track of the mouse's position
+	$().mousemove(function(e) {
+		mouseX = e.pageX;
+		mouseY = e.pageY;
+	}); 
+
 });
