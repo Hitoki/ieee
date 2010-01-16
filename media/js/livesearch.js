@@ -22,7 +22,10 @@ function LiveSearch(inputElem) {
         }
     }
     
+	// The last known searchFor value, so we can tell if the input value has changed.
     this.lastValue = null;
+	// The phrase currently being searched for.
+    this.searchingFor = null;
     
     this.inputElem = $(inputElem);
     this.inputElem.change(function(e) {
@@ -46,22 +49,32 @@ LiveSearch.prototype.update = function(e) {
     log('LiveSearch.update()');
     var liveSearch = this;
     var value = this.inputElem.val();
+	log('  value: ' + value);
+	log('  this.lastValue: ' + this.lastValue);
     if (value != this.lastValue) {
-        log('value: ' + value);
         
         if (this.options.use_tags_callback) {
-            
-            // Busy wait to make sure the Tags object exists
-            //for (var i=0; i<1000000 && window.Tags == undefined; i++);
-            
-            if (window.Tags == undefined) {
-                alert('Error in LiveSearch.update(): Tags is not defined.')
-                return;
-            }
-            
-            Tags.showSearchResults(value);
+			log('calling callback');
+			
+			if (this.searchingFor != null) {
+				log('Already searching!');
+			} else {
+				
+				this.searchingFor = value;
+				
+            	if (window.Tags == undefined) {
+					alert('Error in LiveSearch.update(): Tags is not defined.')
+					return;
+				}
+				
+				Tags.showSearchResults(value, function(searchFor, data) {
+					liveSearch.onUpdate(searchFor, data);
+				});
+				this.lastValue = this.inputElem.val();
+			}
             
         } else {
+			log('calling ajax url');
             $.ajax({
                 url: this.options.url,
                 data: {
@@ -73,10 +86,19 @@ LiveSearch.prototype.update = function(e) {
                     liveSearch.onResults(data);
                 }
             });
+			this.lastValue = this.inputElem.val();
         }
         
-        this.lastValue = this.inputElem.val();
     }
+}
+
+LiveSearch.prototype.onUpdate = function(searchFor, data) {
+    log('LiveSearch.onUpdate(): received page for "' + searchFor + '"');
+	if (searchFor == this.searchingFor) {
+		log('clearing searchingFor');
+		this.searchingFor = null;
+		this.update();
+	}
 }
 
 LiveSearch.prototype.onResults = function(data) {

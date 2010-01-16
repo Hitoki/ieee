@@ -236,7 +236,7 @@ var Tags = {
         }
     },
     
-    showSearchResults: function(search_for) {
+    showSearchResults: function(search_for, showSearchResultsCallback) {
         this.societyId = null;
         this.nodeId = null;
         this.nodeType = null;
@@ -252,6 +252,9 @@ var Tags = {
             },
             success: function(data) {
                 Tags.onLoadResults(data);
+                if (showSearchResultsCallback) {
+                    showSearchResultsCallback(search_for, data);
+                }
             }
         });
     },

@@ -1677,7 +1677,10 @@ a.resource-tab-print-link {
 }
 
 #textui-tags-search {
-    font-size:80%;
+    ffont-size:80%;
+    float:left;
+    margin-left:2em;
+    font-weight:bold;
 }
 
 #textui-tags-search input {
