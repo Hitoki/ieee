@@ -221,7 +221,7 @@ ul#view-header li {
 #left-column ul {
     display:block;
     list-style-type: none;
-    width: 174px;
+    width: 176px;
 }
 
 #left-column ul#sectors li,
@@ -253,7 +253,7 @@ ul#view-header li {
 }
 
 #galaxy-tabs li{
-    width: 40%;
+    width: 87px;
 }
 
 #left-column-container .nootabs-menu {
@@ -305,6 +305,11 @@ ul#view-header li {
 #left-column-container div#sectors-tab {
     -moz-border-radius-topleft: 0px !important;
     -webkit-border-top-left-radius: 0px !important;
+}
+
+#left-column-container div#societies-tab {
+    -moz-border-radius-topright: 0px !important;
+    -webkit-border-top-right-radius: 0px !important;
 }
 
 #right-column {
