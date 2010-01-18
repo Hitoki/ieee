@@ -193,6 +193,10 @@ input.text {
     margin-left:.5em;
 }
 
+#lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-first-menu {
+    margin-left: 0;
+}
+
 #lightbox .resources-lightbox-content .group p.more-conferences {
     margin:.5em 0 1em 3em;
     padding:0;
