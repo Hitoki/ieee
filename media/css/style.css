@@ -227,6 +227,7 @@ ul#view-header li {
 #left-column ul#sectors li,
 #left-column ul#societies li {
     margin:0px;
+    width: 174px;
 }
 
 #left-column ul#societies li {
