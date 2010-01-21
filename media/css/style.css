@@ -486,7 +486,7 @@ span#roamer-beta-warning {
 /* Galaxy Interface */
 
 #roamer-outline {
-    border:1px solid #dadada;
+    border:1px solid #006699;
     margin:5px 0.2em 0.5em;
     height: 100%;
 }
@@ -498,7 +498,7 @@ span#roamer-beta-warning {
 }
 
 #left-column-container {
-    margin-top: .1em; 
+    margin-top: .2em; 
     position:absolute;
     /*height:437px;*/
     width: auto;
@@ -521,7 +521,7 @@ span#roamer-beta-warning {
 }
 
 #alternate-page .alt-box {
-    border:1px solid #dadada;
+    border:1px solid #006699;
     margin: .2em .2em 1em .2em;
 }
 
