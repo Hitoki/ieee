@@ -202,6 +202,10 @@ input.text {
     font-weight: bold;
 }
 
+#lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-selected-menu a span {
+    font-weight: bold;
+}
+
 #lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-selected-menu a span#articles-tab {
     font-weight: bold;
 }
