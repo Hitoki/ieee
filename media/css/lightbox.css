@@ -197,6 +197,20 @@ input.text {
     margin-left: 0;
 }
 
+#lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-selected-menu a {
+    background: white;
+    font-weight: bold;
+}
+
+#lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-selected-menu a span#articles-tab {
+    font-weight: bold;
+}
+
+#lightbox .resources-lightbox-content ul.nootabs-menus li a {
+    background: #DFE1E4;
+    font-weight: normal;
+}
+
 #lightbox .resources-lightbox-content .group p.more-conferences {
     margin:.5em 0 1em 3em;
     padding:0;

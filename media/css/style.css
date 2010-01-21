@@ -1679,7 +1679,6 @@ a.resource-tab-print-link {
 #articles-tab {
     float:left;
     display:inline;
-    font-weight:bold;
     cursor:pointer;
 }
 

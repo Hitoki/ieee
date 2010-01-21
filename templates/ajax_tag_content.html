@@ -22,7 +22,7 @@
 
                     <div id="resource-tabs" class="nootabs tag-resources-tabs { useCookies:false, defaultTab:3, useHash:false }">
                         <ul class="nootabs-menus">
-                            <li><a href="">Sectors ({{ parent_nodes|length }})</a></li>
+                            <li><a href="">Sectors <span>({{ parent_nodes|length }})</span></a></li>
 							{% comment %}
 							#TODO: Re-enable clusters
 							#<li><a href="">Sectors &amp; Clusters ({{ parent_nodes|length }})</a></li>
@@ -30,7 +30,7 @@
 							{% comment %}
                             #<li><a href="">Filters ({{ tag.filters.count }})</a></li>
 							{% endcomment %}
-                            <li><a href="">Related Tags ({{ tag.related_tags.count }})</a></li>
+                            <li><a href="">Related Tags <span>({{ tag.related_tags.count }})</span></a></li>
                             <li><a href="">Societies <span>({{ tag.societies.count }})</span></a></li>
                             <li><a href="">Conferences <span>({{conferences|length}})</span></a></li>
                             <li><a href="">Periodicals <span>({{periodicals|length}})</span></a></li>
