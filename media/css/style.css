@@ -1692,4 +1692,6 @@ a.resource-tab-print-link {
 #textui-tags-search input {
     font-size:100%;
     border:1px inset gray;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
 }
