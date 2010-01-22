@@ -21,7 +21,7 @@ try:
 	logging.debug('check_urls.py:   resources.count(): %s' % resources.count())
 	NUM_THREADS = 100
 	logging.debug('check_urls.py:   Checking %s URLs...' % resources.count())
-	#url_checker.check_resources(resources, NUM_THREADS)
+	url_checker.check_resources(resources, NUM_THREADS)
 	logging.debug('check_urls.py:   Done checking URLs.')
 	logging.debug('check_urls.py: End.')
 
