@@ -576,7 +576,7 @@ def ajax_textui_nodes(request):
     
     #p.start_loop()
     #print 'hey'
-    print 'child_nodes.count(): %s' % child_nodes.count()
+    #print 'len(child_nodes): %s' % len(child_nodes)
     #print 'child_nodes: %s' % child_nodes
     
     

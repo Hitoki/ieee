@@ -80,7 +80,7 @@ var Tags = {
         this.updateHighlightedNode();
         this.updateSwitchLink();
         
-        if (this.nodeId == null) {
+        if (this.nodeId == null && this.societyId == null) {
             if (!this.tagSortOverlayElem) {
                 this.tagSortOverlayElem = $('<div id="tag-sort-overlay"></div>').appendTo('body');
                 this.tagSortOverlayElem.bgiframe();
@@ -92,9 +92,8 @@ var Tags = {
                 this.tagSortOverlayElem.css('height', $('#tag-sort').attr('offsetHeight'));
                 
                 Flyover.attach(this.tagSortOverlayElem, {
-                    'content': 'Please start by selecting an Industry Section or IEEE Society',
+                    'content': 'Please start by selecting an Industry Sector or IEEE Society',
                     'position': 'bottom'
-                    
                 });
             }
             $('#tag-sort').attr('disabled', 'disabled');
@@ -233,6 +232,16 @@ var Tags = {
             });
             
             this.updateHighlightedNode();
+        }
+    },
+    
+    updateSort: function() {
+        if (this.nodeId != null) {
+            this.selectSector();
+        } else if (this.societyId != null) {
+            this.selectSociety();
+        } else {
+            alert('Tags.updateSort(): Error, both this.nodeId and this.societyId are null');
         }
     },
     
