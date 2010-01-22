@@ -1688,6 +1688,12 @@ a.resource-tab-print-link {
     font-weight:bold;
 }
 
+#textui-tags-search span.feature_label {
+    margin: 1px 5px 0 0;
+    display: inline-block;
+    float:left;
+}
+
 #textui-tags-search input {
     font-size:100%;
     border:1px inset gray;
