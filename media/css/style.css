@@ -493,9 +493,10 @@ span#roamer-beta-warning {
 }
 
 #alternate-page #left-column {
-  /* width:23%;  */
-    height:500px;
     width:180px;   
+    height:500px;
+	float:left;
+    margin:0;
 }
 
 #left-column-container {
@@ -514,7 +515,13 @@ span#roamer-beta-warning {
 }
 
 #alternate-page #right-column {
-    width:77%;
+    float:none;
+    /* NOTE: This is overridden for IE7 */
+    padding-left:185px;
+}
+
+#alternate-page .ui-footer {
+	clear:both;
 }
 
 .textui-page #right-column {
@@ -604,7 +611,6 @@ span#roamer-beta-warning {
 
 #alternate-page #tag-galaxy {
     height: 417px;
-    clear: both;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
 }                            
@@ -911,8 +917,9 @@ table.vert-center td {
 }
 
 #frequencybar-tags {
-    margin-top: -6px;
+    /*margin-top: -6px;*/
     clear: right;
+    overflow:auto;
 }
 
 #frequencybar {

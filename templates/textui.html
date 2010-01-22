@@ -38,7 +38,7 @@
                         
                         <!-- Navigation links -->
                         <div id="left-column">
-                        <span id="homeico-tags"><a href="javascript:Tags.showHelp();"><img src="{{MEDIA_URL}}images/home_icon.png" alt="home" height="18" /></a></span>
+                            <span id="homeico-tags"><a href="javascript:Tags.showHelp();"><img src="{{MEDIA_URL}}images/home_icon.png" alt="home" height="18" /></a></span>
                             <h2 class="feature_label">Navigate by:</h2>
                             <div id="left-column-container" class="nootabs {useCookies:false, useHash:false}">
                                 <ul id="galaxy-tabs" class="nootabs-menus">
@@ -60,7 +60,7 @@
                                         {% endfor %}
                                     </ul>
                                 </div>
-								
+                                
                                 {# NOTE: Filters are hidden from end-user for now, but must still exist on page for JS to function #}
                                 <div style="display:none;">
                                     <!-- Filters -->
@@ -76,51 +76,50 @@
                                         </ul>
                                     </div> 
                                 </div>
-                                
                             </div>
                         </div>
-                    
+                        
                         <div id="right-column">
                             <div id="frequencybar-tags">
                                 <div id="galaxy-key">
-                                        {% comment %} We are hiding the word Key for now, will appear in galaxy help page
-                                        <span id="key-label">Key:</span>
-                                        {% endcomment %}
-                                        <span id="connectedness" class="feature_label">Connectedness:</span>
-                                        <span id="frequency-indicator"><img src="/media/images/frequency-bar.png"/></span>
-                                        {% comment %}
-                                        <table id="tag-model-indicator">
+                                    {% comment %} We are hiding the word Key for now, will appear in galaxy help page
+                                    <span id="key-label">Key:</span>
+                                    {% endcomment %}
+                                    <span id="connectedness" class="feature_label">Connectedness:</span>
+                                    <span id="frequency-indicator"><img src="/media/images/frequency-bar.png"/></span>
+                                    {% comment %}
+                                    <table id="tag-model-indicator">
+                                        <tr>
+                                            <td>
+                                                <span class="flyover helpbracket" id="tag-model-indicator-helpico" title="Color coding reflecting the # of each of the 3 variables to the right">[?]</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    
+                                        <table id="tag-model-left">
                                             <tr>
                                                 <td>
-                                                    <span class="flyover helpbracket" id="tag-model-indicator-helpico" title="Color coding reflecting the # of each of the 3 variables to the right">[?]</span>
+                                                    # of Resources 
+                                                </td>
+                                                <td>
+                                                    <span class="flyover helpbracket" title="The number of IEEE products or services mapped to this tag" style="margin-right: 3px;">[?]</span><img src="/media/images/arrow-right.png" class="tag-model-arrow" />
                                                 </td>
                                             </tr>
                                         </table>
-                                        
-                                            <table id="tag-model-left">
-                                                <tr>
-                                                    <td>
-                                                        # of Resources 
-                                                    </td>
-                                                    <td>
-                                                        <span class="flyover helpbracket" title="The number of IEEE products or services mapped to this tag" style="margin-right: 3px;">[?]</span><img src="/media/images/arrow-right.png" class="tag-model-arrow" />
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        {% endcomment %}
-                                        {% if ENABLE_TEXTUI_SIMPLIFIED_COLORS %}
-                                        {% comment %}
-                                            <img style="margin-top:-4px;" src="/media/images/model-tag-simplified.png"/>
-                                        {% endcomment %}
-                                        {% else %}
-                                            <img style="margin-top:-4px;" src="/media/images/model-tag.png"/>
-                                            <span id="tag-model-right">
-                                                <ul style="line-height:10px;">
-                                                    <li><img class="tag-model-rightarrow" src="/media/images/arrow-left.png"/># of Sectors <span class="flyover helpbracket" style="height:12px; font-size:1em;" title="The number of sectors that this tag is associated with">[?]</span></li>
-                                                    <li><img class="tag-model-rightarrow" src="/media/images/arrow-left.png"/># of Related Tags <span class="flyover helpbracket" style="height:12px; font-size:1em;" title="The number of tags that are related concepts or technology areas">[?]</span></li>
-                                                </ul>
-                                            </span>
-                                        {% endif %}
+                                    {% endcomment %}
+                                    {% if ENABLE_TEXTUI_SIMPLIFIED_COLORS %}
+                                    {% comment %}
+                                        <img style="margin-top:-4px;" src="/media/images/model-tag-simplified.png"/>
+                                    {% endcomment %}
+                                    {% else %}
+                                        <img style="margin-top:-4px;" src="/media/images/model-tag.png"/>
+                                        <span id="tag-model-right">
+                                            <ul style="line-height:10px;">
+                                                <li><img class="tag-model-rightarrow" src="/media/images/arrow-left.png"/># of Sectors <span class="flyover helpbracket" style="height:12px; font-size:1em;" title="The number of sectors that this tag is associated with">[?]</span></li>
+                                                <li><img class="tag-model-rightarrow" src="/media/images/arrow-left.png"/># of Related Tags <span class="flyover helpbracket" style="height:12px; font-size:1em;" title="The number of tags that are related concepts or technology areas">[?]</span></li>
+                                            </ul>
+                                        </span>
+                                    {% endif %}
                                         <span class="flyover {width: 300} helpbracket" id="galaxy-connectedness-help" title="A tag's color shows how connected it is to industry sectors, to IEEE societies, to other tags, and to IEEE resources. 
 ">[?]</span>
                                         <!-- TODO: Enable live tag count -->
@@ -162,25 +161,27 @@
                                 <div id="tags" class="alt-box-pad">
                                 </div>
                             </div>
-                        
+                            
                         </div>
-                            <div class="ui-footer">
-                                
-                                {% if user %}
-                                    <p class="admin-links">
-                                        {% ifequal user.get_profile.role "admin" %}
-                                            <a href="{% url admin_home %}">Admin</a> |
-                                        {% endifequal %}
-                                        {% ifequal user.get_profile.role "society_admin" %}
-                                            <a href="{% url admin_home %}">Society Admin</a> |
-                                        {% endifequal %}
-                                        {% ifequal user.get_profile.role "society_manager" %}
-                                            <a href="{% url admin_home %}">Society Manager</a> |
-                                        {% endifequal %}
-                                        <a href="{% url admin_logout %}">Logout</a>
-                                    </p>
-                                {% endif %}
-                            </div>
+                        <!-- end of right-column -->
+                            
+                        <div class="ui-footer">
+                            
+                            {% if user %}
+                                <p class="admin-links">
+                                    {% ifequal user.get_profile.role "admin" %}
+                                        <a href="{% url admin_home %}">Admin</a> |
+                                    {% endifequal %}
+                                    {% ifequal user.get_profile.role "society_admin" %}
+                                        <a href="{% url admin_home %}">Society Admin</a> |
+                                    {% endifequal %}
+                                    {% ifequal user.get_profile.role "society_manager" %}
+                                        <a href="{% url admin_home %}">Society Manager</a> |
+                                    {% endifequal %}
+                                    <a href="{% url admin_logout %}">Logout</a>
+                                </p>
+                            {% endif %}
+                        </div>
                     
                     </div>
                     
