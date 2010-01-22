@@ -20,7 +20,7 @@
         
     {% endif %}
 
-                    <div id="resource-tabs" class="nootabs tag-resources-tabs { useCookies:false, defaultTab:3, useHash:false }">
+                    <div id="resource-tabs" class="nootabs tag-resources-tabs { useCookies:false, defaultTab:2, useHash:false }">
                         <ul class="nootabs-menus">
                             <li><a href="">Sectors <span>({{ parent_nodes|length }})</span></a></li>
 							{% comment %}
@@ -30,8 +30,8 @@
 							{% comment %}
                             #<li><a href="">Filters ({{ tag.filters.count }})</a></li>
 							{% endcomment %}
-                            <li><a href="">Related Tags <span>({{ tag.related_tags.count }})</span></a></li>
                             <li><a href="">Societies <span>({{ tag.societies.count }})</span></a></li>
+                            <li><a href="">Related Tags <span>({{ tag.related_tags.count }})</span></a></li>
                             <li><a href="">Conferences <span>({{conferences|length}})</span></a></li>
                             <li><a href="">Periodicals <span>({{periodicals|length}})</span></a></li>
                             <li><a href="">Standards <span>({{standards|length}})</span></a></li>
@@ -79,25 +79,7 @@
                         </div>
 						{% endcomment %}
                         
-                        <!-- Related Tags -->
-                        <div id="related-tab">
-                            <a class="resource-tab-print-link" href="{% url print_resource tag.id "related_tags" %}">Print This Tab</a>
-                            <div class="group">
-                                {% for related_tag in tag.related_tags.all %}
-                                    <p class="{% cycle 'item_odd' 'item_even' %}">
-										{% ifequal ui "textui" %}
-											<a href="javascript:Tags.selectTag({{ related_tag.id }});">
-												{{ related_tag.name }}
-											</a>
-										{% else %}
-											{{ related_tag.name }}
-										{% endifequal %}
-                                    </p>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        
-						<!-- Societies -->
+                        <!-- Societies -->
                         <div id="society-tab">
                             <a class="resource-tab-print-link" href="{% url print_resource tag.id "societies" %}">Print This Tab</a>
                             <table class="society-images">
@@ -125,6 +107,24 @@
                                     </tr>    
                                 {% endfor %}
                             </table>
+                        </div>
+                        
+                        <!-- Related Tags -->
+                        <div id="related-tab">
+                            <a class="resource-tab-print-link" href="{% url print_resource tag.id "related_tags" %}">Print This Tab</a>
+                            <div class="group">
+                                {% for related_tag in tag.related_tags.all %}
+                                    <p class="{% cycle 'item_odd' 'item_even' %}">
+										{% ifequal ui "textui" %}
+											<a href="javascript:Tags.selectTag({{ related_tag.id }});">
+												{{ related_tag.name }}
+											</a>
+										{% else %}
+											{{ related_tag.name }}
+										{% endifequal %}
+                                    </p>
+                                {% endfor %}
+                            </div>
                         </div>
                         
                         <div id="conference-tab">
