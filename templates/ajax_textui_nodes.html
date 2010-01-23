@@ -1,7 +1,11 @@
 {% load filters %}
 
 {% if search_for %}
-    <h3>Showing {{ child_nodes|length }} results for "{{ search_for }}":</h3>
+    {% if search_for_too_short %}
+        <h3>The search phrase "{{ search_for }}" is too short, please enter more characters.</h3>
+    {% else %}
+        <h3>Showing {{ child_nodes|length }} results for "{{ search_for }}":</h3>
+    {% endif %}
 {% endif %}
 
 {% for tag in child_nodes %}

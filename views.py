@@ -432,7 +432,9 @@ def _get_popularity_level(min, max, count):
 
 @login_required
 def ajax_textui_nodes(request):
-    #log('ajax_textui_nodes()')
+    log('ajax_textui_nodes()')
+    
+    #from profiler import Profiler
     #p = Profiler('ajax_textui_nodes')
     
     node_id = request.GET.get('sector_id', None)
@@ -481,6 +483,10 @@ def ajax_textui_nodes(request):
     # TODO: Just select all filters for now
     filterIds = [filter.id for filter in Filter.objects.all()]
     
+    #p.tick('Getting child_nodes')
+    
+    search_for_too_short = False
+    
     if node_id is not None:
         # Get a sector or cluster's child nodes
         node = Node.objects.get(id=node_id)
@@ -517,10 +523,13 @@ def ajax_textui_nodes(request):
     elif search_for is not None:
         # Search for nodes with a phrase
         # NOTE: <= 2 char searches take a long time (2-3 seconds), vs 200ms average for anything longer
+        
+        #p.tick('Searching for phrase...')
+        
         if len(search_for) >= 2:
             
             search_words = re.split(r'\s', search_for)
-            print 'search_words: %s' % search_words
+            #print 'search_words: %s' % search_words
             
             
             from django.db.models import Q
@@ -535,9 +544,12 @@ def ajax_textui_nodes(request):
             child_nodes = Node.objects.get_extra_info(child_nodes, None, filterIds)
         else:
             child_nodes = Node.objects.none()
+            search_for_too_short = True
         
-        print 'searching for phrase "%s"' % search_for
-        print 'child_nodes: %s' % child_nodes
+        #p.tick('Done searching for phrase.')
+        
+        #print 'searching for phrase "%s"' % search_for
+        #print 'child_nodes: %s' % child_nodes
         
         # Get the min/max scores for these search results
         min_score = None
@@ -556,35 +568,40 @@ def ajax_textui_nodes(request):
         assert False
     
     # Get child tags & clusters
-    #p.tick('child tags')
+    #p.tick('Got child tags')
     
     if sort == 'clusters_first_alpha':
         # Order clusters first, then tags; both sorted alphabetically
-        print 'sorting by clusters, then alpha'
+        #print 'sorting by clusters, then alpha'
         child_nodes = child_nodes.order_by('-node_type__name', 'name')
     elif order_by is not None:
         # Sort by one of the non-extra columns
-        print 'sorting by a normal column "%s"' % order_by
+        #print 'sorting by a normal column "%s"' % order_by
         child_nodes = child_nodes.order_by(order_by)
     
-    #p.tick('connectedness')
+    #p.tick('Done sorting')
+    
     if sort == 'connectedness':
         # Sort by the combined score
-        print 'sorting by connectedness'
+        #print 'sorting by connectedness'
         assert settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS, 'settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS is not enabled.'
         child_nodes = Node.objects.sort_queryset_by_score(child_nodes, False)
+    #p.tick('done sorting for connectedness')
+    
+    # This saves time when we check child_node.node_type later on (prevents DB hit for every single child_node)
+    child_nodes = child_nodes.select_related('node_type')
+    #p.tick('done .select_related()')
+    
+    #p.tick('done converting child_nodes to list')
+    #print 'before loop'
+    #print 'len(child_nodes): %s' % len(child_nodes)
     
     #p.start_loop()
-    #print 'hey'
-    #print 'len(child_nodes): %s' % len(child_nodes)
-    #print 'child_nodes: %s' % child_nodes
-    
-    
-    child_nodes = list(child_nodes)
-    print 'before loop'
-    print 'len(child_nodes): %s' % len(child_nodes)
-    for child_node in child_nodes[:]:
+    child_nodes2 = []
+    for child_node in child_nodes:
         #p.tick('start')
+        
+        filter_child_node = False
         
         #log('child_node.name: %s' % child_node.name)
         #log('  max_score: %s' % max_score)
@@ -609,10 +626,10 @@ def ajax_textui_nodes(request):
         
         if child_node.node_type.name == NodeType.TAG:
             
-            #p.tick('before filter')
+            #p.tick('before filter ')
             if child_node.num_selected_filters1 > 0 and child_node.num_societies1 > 0 and child_node.num_resources1 > 0:
                 
-                #p.tick('after filter')
+                #p.tick('in filter loop')
                 
                 if not settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
                     # Separated color blocks
@@ -626,12 +643,15 @@ def ajax_textui_nodes(request):
                     child_node.level = combinedLevel
                     #child_node.min_score = min_score
                     #child_node.max_score = max_score
+                
             else:
                 #print 'removing node %s' % child_node.name
                 #print '  child_node.num_selected_filters1: %s' % child_node.num_selected_filters1
                 #print '  child_node.num_societies1: %s' % child_node.num_societies1
                 #print '  child_node.num_resources1: %s' % child_node.num_resources1
-                child_nodes.remove(child_node)
+                filter_child_node = True
+                
+            #p.tick('after filter')
                 
         elif child_node.node_type.name == NodeType.TAG_CLUSTER:
             #p.tick('cluster')
@@ -650,20 +670,27 @@ def ajax_textui_nodes(request):
                     # do nothing
                     pass
                 else:
-                    child_nodes.remove(child_node)
-        
+                    filter_child_node = True
+                
         else:
             raise Exception('Unknown child node type "%s" for node "%s"' % (child_node.node_type.name, child_node.name))
         
+
+        if not filter_child_node:
+            child_nodes2.append(child_node)
+
         #p.tick('end')
     #p.end_loop()
     
     #p.tick('end loop')
     
-    print 'after loop'
+    child_nodes = child_nodes2
+    
+    #print 'after loop'
     print 'len(child_nodes): %s' % len(child_nodes)
     
     #p.tick('after json')
+    #p.tick('Rendering html...')
     #log('~ajax_textui_nodes()')
     
     return render(request, 'ajax_textui_nodes.html', {
@@ -671,6 +698,7 @@ def ajax_textui_nodes(request):
         'parent_id': node_id,
         'society_id': society_id,
         'search_for': search_for,
+        'search_for_too_short': search_for_too_short,
     })
     
 

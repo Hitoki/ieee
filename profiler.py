@@ -12,8 +12,7 @@ class Profiler:
         self.last_loop_time = None
     
     def __del__(self):
-        seconds = round(time.time() - self.start_time, 1)
-        log('profile %s: %ss -- end ----------' % (self.name, seconds))
+        log('profile %s: %0.2fs -- end ----------' % (self.name, time.time() - self.start_time))
     
     def tick(self, name):
         if self.is_loop:
@@ -24,24 +23,20 @@ class Profiler:
             self.last_loop_time = now
             self.ticks[name] += seconds
         else:
-            seconds = round(time.time() - self.start_time, 1)
-            log('profile %s: %ss - %s' % (self.name, seconds, name))
+            log('profile %s: %0.2fs - %s' % (self.name, time.time() - self.start_time, name))
     
     def start_loop(self):
         self.is_loop = True
         self.loop_start_time = time.time()
         self.last_loop_time = self.loop_start_time
         self.ticks = odict()
-        seconds = round(time.time() - self.start_time, 1)
-        log('profile %s: %ss - START LOOP' % (self.name, seconds))
+        log('profile %s: %0.2fs - START LOOP' % (self.name, time.time() - self.start_time))
     
     def end_loop(self):
         self.is_loop = False
         self.loop_start_time = None
         
         for name, value in self.ticks.items():
-            seconds = round(value, 1)
-            log('profile %s: %ss - total for loop tick "%s"' % (self.name, seconds, name))
+            log('profile %s: %0.2fs - total for loop tick "%s"' % (self.name, value, name))
         
-        seconds = round(time.time() - self.start_time, 1)
-        log('profile %s: %ss - END LOOP' % (self.name, seconds))
+        log('profile %s: %0.2fs - END LOOP' % (self.name, time.time() - self.start_time))

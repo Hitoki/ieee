@@ -28,11 +28,11 @@ function LiveSearch(inputElem) {
     this.searchingFor = null;
     
     this.inputElem = $(inputElem);
-    this.inputElem.change(function(e) {
-        liveSearch.update(e);
+    this.inputElem.change(function() {
+        liveSearch.update();
     });
-    this.inputElem.keyup(function(e) {
-        liveSearch.update(e);
+    this.inputElem.keyup(function() {
+        liveSearch.update();
     });
     
     if (this.options.search_on_page_load) {
@@ -45,51 +45,73 @@ function LiveSearch(inputElem) {
     }
 }
 
-LiveSearch.prototype.update = function(e) {
+LiveSearch.prototype.update = function(useDelayValue) {
     log('LiveSearch.update()');
     var liveSearch = this;
     var value = this.inputElem.val();
 	log('  value: ' + value);
+	log('  useDelayValue: ' + useDelayValue);
 	log('  this.lastValue: ' + this.lastValue);
-    if (value != this.lastValue) {
+	// Check if the value has changed, or the delay has expired for this value.
+    if (value != this.lastValue || value == useDelayValue) {
         
-        if (this.options.use_tags_callback) {
-			log('calling callback');
+		if (value.length == 2 && value != useDelayValue) {
+			// Found a new 2 char value, set the delay timer.
+			log('Found a new 2 char value "' + value + '", setting delay timer.');
+			setTimeout(
+				function() {
+					liveSearch.update(value);
+				},
+				750
+			);
 			
-			if (this.searchingFor != null) {
-				log('Already searching!');
-			} else {
+		} else if (
+			value.length != 2 || 
+			(value.length == 2 && value == useDelayValue)
+		) {
+			// Value was > 3 chars, or the delay for this 2-char value has expired.
+			log('Searching for "' + value + '"');
+			
+			// Do the search
+			if (this.options.use_tags_callback) {
+				log('calling callback');
 				
-				this.searchingFor = value;
-				
-            	if (window.Tags == undefined) {
-					alert('Error in LiveSearch.update(): Tags is not defined.')
-					return;
+				if (this.searchingFor != null) {
+					log('Already searching!');
+				} else {
+					
+					this.searchingFor = value;
+					
+					if (window.Tags == undefined) {
+						alert('Error in LiveSearch.update(): Tags is not defined.')
+						return;
+					}
+					
+					Tags.showSearchResults(value, function(searchFor, data) {
+						liveSearch.onUpdate(searchFor, data);
+					});
 				}
 				
-				Tags.showSearchResults(value, function(searchFor, data) {
-					liveSearch.onUpdate(searchFor, data);
+			} else {
+				log('calling ajax url');
+				$.ajax({
+					url: this.options.url,
+					data: {
+						search_for: value
+					},
+					//dataType: 'json',
+					dataType: 'html',
+					success: function(data) {
+						liveSearch.onResults(data);
+					}
 				});
-				this.lastValue = this.inputElem.val();
 			}
-            
-        } else {
-			log('calling ajax url');
-            $.ajax({
-                url: this.options.url,
-                data: {
-                    search_for: value
-                },
-                //dataType: 'json',
-                dataType: 'html',
-                success: function(data) {
-                    liveSearch.onResults(data);
-                }
-            });
-			this.lastValue = this.inputElem.val();
-        }
-        
-    }
+		} else {
+			log('Ignoring "' + value + '"');
+		}
+		
+		this.lastValue = value;
+	}
 }
 
 LiveSearch.prototype.onUpdate = function(searchFor, data) {
