@@ -272,7 +272,7 @@ ul#view-header li {
     width: 174px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
-    padding-top: 1px;
+    padding-top: 5px;
 }
 #left-column-container .nootabs-menus li.nootabs-selected-menu {
     border: 1px solid #006699;
