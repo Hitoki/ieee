@@ -250,7 +250,7 @@ ul#view-header li {
 }
 
 #left-column h2.feature_label {
-    margin-bottom: 5px;
+    padding-bottom: 6px;
 }
 
 #galaxy-tabs li{
@@ -613,6 +613,7 @@ span#roamer-beta-warning {
     height: 417px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
+    padding: 7px 5px 0 0;
 }                            
 
 

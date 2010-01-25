@@ -57,3 +57,11 @@ form.items-per-page {
 #alternate-page #right-column {
     padding-left:0;
 }
+
+#alternate-page #tag-galaxy {
+    padding: 7px 5px 0 0 !important;
+}                   
+
+#left-column h2.feature_label {
+    padding-bottom: 5px !important;
+}         
