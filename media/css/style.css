@@ -142,16 +142,16 @@ table.main td.center .center-pad {
     border:none;
 }
 
-.center-pad p.admin-links {
+p.admin-links {
     clear:both;
     display:block;
     float:right;
-    margin: 0 10px 10px 0;
+    margin: -8px 15px 10px 0;
     font-size:80%;
     color:gray;
 }
 
-.center-pad p.admin-links a {
+p.admin-links a {
     color:gray;
 }
 
@@ -494,7 +494,7 @@ span#roamer-beta-warning {
 
 #alternate-page #left-column {
     width:180px;   
-    height:500px;
+    height:488px;
 	float:left;
     margin:0;
 }
@@ -1228,6 +1228,9 @@ div.submit {
     border: 0;
     text-align: center;
     font-weight: bold;
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 0;
 }
 
 #resources-explanation-text {
