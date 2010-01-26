@@ -137,6 +137,16 @@ table.main td.center .center-pad {
     height: 20px;
 }
 
+.textui-switch {
+    padding-left: 3em;
+    background: transparent url(/media/images/roamer_icon.png) no-repeat scroll left center;
+}
+
+.roamer-switch {
+    padding-left: 3em;
+    background: transparent url(/media/images/tags_icon.png) no-repeat scroll left center;
+}
+
 #header a.floating img {
     vertical-align:middle;
     border:none;
