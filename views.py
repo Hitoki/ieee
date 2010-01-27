@@ -704,7 +704,7 @@ def ajax_textui_nodes(request):
 
 @login_required
 def ajax_nodes_xml(request):
-    "Creates an XML list of nodes & connections for Asterisq Constellation Roamer"
+    "Creates an XML list of nodes & connections for Asterisq Constellation Roamer."
     
     log('ajax_nodes_xml()')
     
@@ -821,12 +821,14 @@ def ajax_nodes_xml(request):
         if node1.node_type.name == NodeType.TAG_CLUSTER:
             # For a cluster, show the short name "Cluster" if we're viewing the cluster or its parent.  Otherwise, show the full name "Cluster (Sector)".
             if node.id != node1.id and node.id != node1.get_sector().id:
-                nodeElem.setAttribute('label', node1.get_full_cluster_name())
+                label = node1.get_full_cluster_name()
             else:
-                nodeElem.setAttribute('label', node1.name)
+                label = node1.name
         else:
             # None-cluster
-            nodeElem.setAttribute('label', node1.name)
+            label = node1.name
+        
+        nodeElem.setAttribute('label', util.word_wrap(label, 25))
         nodeElem.setAttribute('depth_loaded', str(2))
         
         nodeElem.setAttribute('graphic_fill_color', ROAMER_NODE_COLORS[node1.node_type.name] )

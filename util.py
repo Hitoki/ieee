@@ -271,6 +271,29 @@ def group_conferences_by_series(resources, include_current_conference=False):
                 i += 1
     return resources
 
+def word_wrap(string, max_chars):
+    'Breaks up a string into separate lines, wrapping at word boundaries.'
+    import re
+    
+    lines = [string]
+    
+    # Loop while the latest line has more than max_chars chars...
+    while len(lines[len(lines)-1]) > max_chars:
+        index = len(lines)-1
+        expr = re.compile(r'\b')
+        rline = lines[index][::-1]
+        start_pos = len(lines[index]) - 20
+        match = expr.search(rline, start_pos)
+        if match is not None:
+            pos = len(lines[index]) - match.start()
+            line = lines[index]
+            lines[index] = line[:pos]
+            lines.append(line[pos:])
+            
+    result = '\n'.join(lines)
+    return result
+
+
 
 # Command line util functions --------------------------------------------------
 
