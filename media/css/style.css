@@ -616,7 +616,7 @@ span#roamer-beta-warning {
 #alternate-page #tags {
     height: 440px;
     overflow: hidden;
-    line-height: 1.2em;
+    /*line-height: 1.2em;*/
 }
 
 #alternate-page #tag-galaxy {
@@ -1720,4 +1720,28 @@ a.resource-tab-print-link {
     border:1px inset gray;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
+}
+
+/* Textui zoom slider */
+
+#textui-zoom-container {
+	float:left;
+	margin-left:10px; 
+}
+
+#textui-zoom-container .feature_label {
+	float:left;
+}
+
+#textui-zoom-slider {
+	float:left;
+	width:50px;
+	margin:3px;
+	margin-right:12px;
+	
+}
+
+#textui-zoom-default-zoom {
+	cursor:pointer;
+	margin:3px;
 }

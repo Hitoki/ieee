@@ -271,6 +271,7 @@ var Tags = {
     onLoadResults: function(data) {
         var tagWindow = $("#tags");
         tagWindow.html(data);
+		this.updateZoom();
     },
     
     updateHighlightedNode: function() {
@@ -515,6 +516,38 @@ var Tags = {
             $('.alt-box-pad').css('padding-top', this.helpOldPaddingTop);
             $('.alt-box-pad').css('padding-bottom', this.helpOldPaddingBottom);
         }
-    }
+    },
+	
+	updateZoom: function() {
+		log('resizeNodes()');
+		
+		var zoom = $('#textui-zoom-slider').slider('value');
+		log('  zoom: ' + zoom);
+		
+		$('#textui-zoom-value').text(zoom + '%');
+		
+		var defaultVertMargin = 13;
+		var defaultHorizMargin = 7;
+		var defaultTextSize = 14;
+		var defaultHeight = 18;
+		var defaultPadding = 3;
+		
+		// Scales down the effect of this zoom.
+		function scaleZoom(zoom, scale) {
+			return (zoom - 100) * scale + 100;
+		}
+		
+		$('#tags .node').css('margin-top', (defaultVertMargin * zoom / 100) + 'px');
+		$('#tags .node').css('margin-bottom', (defaultVertMargin * zoom / 100) + 'px');
+		$('#tags .node').css('margin-left', (defaultHorizMargin * zoom / 100) + 'px');
+		$('#tags .node').css('margin-right', (defaultHorizMargin * zoom / 100) + 'px');
+		$('#tags .node').css('font-size', (defaultTextSize * zoom / 100) + 'px');
+		$('#tags .node').css('height', (defaultHeight * zoom / 100) + 'px');
+		$('#tags .node').css('padding-top', (defaultPadding * scaleZoom(zoom, 5) / 100) + 'px');
+		$('#tags .node').css('padding-bottom', (defaultPadding * scaleZoom(zoom, 2) / 100) + 'px');
+		$('#tags .node').css('padding-left', (defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
+		$('#tags .node').css('padding-right', (defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
+		log('~resizeNodes()');
+	}
     
 };
