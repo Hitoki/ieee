@@ -54,6 +54,10 @@ form.items-per-page {
     width: 164px !important;
 }
 
+#right-column {
+	margin-left:190px;
+}
+
 #alternate-page #right-column {
     padding-left:0;
 }
