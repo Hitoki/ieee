@@ -5,6 +5,11 @@
         $(function() {
             Tags.init();
 			
+			// Attach event to tags-search clear button.
+			$('#textui-tags-search-clear').click(function() {
+				Tags.clearSearchResults();
+			});
+			
 			// Attach the zoom slider.
 			$("#textui-zoom-slider").slider({
 				min: 65,
@@ -149,6 +154,7 @@
                                     <div id="textui-tags-search">
                                         <span class="feature_label">Filter:</span>
                                         <input id="tags-live-search" class="live-search { use_tags_callback: true }" />
+										<img id="textui-tags-search-clear" src="{{ MEDIA_URL }}images/close.gif" />
                                     </div>
                                     
                                     <div id="textui-zoom-container">

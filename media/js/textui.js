@@ -19,6 +19,7 @@ var Tags = {
     helpScreenElem: null,
     tagSortOverlayElem: null,
     oldHash: null,
+	isSearching: false,
     
     init: function() {
         var tags = this;
@@ -155,6 +156,7 @@ var Tags = {
             this.nodeId = id;
             this.societyId = null;
             this.nodeType = 'sector';
+			this.isSearching = false;
             $('#tags-live-search').val('');
         }
         
@@ -198,6 +200,7 @@ var Tags = {
             this.societyId = societyId;
             this.nodeId = null;
             this.nodeType = null;
+			this.isSearching = false;
             $('#tags-live-search').val('');
         }
         
@@ -246,9 +249,17 @@ var Tags = {
     },
     
     showSearchResults: function(search_for, showSearchResultsCallback) {
-        this.societyId = null;
+		if (!this.isSearching) {
+			// Save the previous selected society/sector, so we can go back to it if the user clicks on the clear button.
+			this.oldSocietyId = this.societyId;
+			this.oldNodeId = this.nodeId;
+			this.oldNodeType = this.nodeType;
+		}
+        
+		this.societyId = null;
         this.nodeId = null;
         this.nodeType = null;
+        this.isSearching = true;
         
         this.updateHighlightedNode();
         this._showWaitScreen();
@@ -267,6 +278,19 @@ var Tags = {
             }
         });
     },
+	
+	clearSearchResults: function() {
+		if (this.isSearching) {
+			// Restore the previous sector/society.
+			if (this.oldSocietyId != null) {
+				this.selectSociety(this.oldSocietyId);
+			} else if (this.oldNodeId != null) {
+				this.selectSector(this.oldNodeId);
+			} else {
+				this.showHelp();
+			}
+		}
+	},
     
     onLoadResults: function(data) {
         var tagWindow = $("#tags");
@@ -490,6 +514,7 @@ var Tags = {
 		this.societyId = null;
 		this.nodeType = null;
 		this.node = null;
+		this.isSearching = false;
 
         this.updateChangedNode();
         

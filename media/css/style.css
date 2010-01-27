@@ -1722,6 +1722,10 @@ a.resource-tab-print-link {
     -webkit-border-radius: 5px;
 }
 
+#textui-tags-search-clear {
+	cursor:hand;
+}
+
 /* Textui zoom slider */
 
 #textui-zoom-container {
