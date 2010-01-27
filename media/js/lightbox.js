@@ -35,7 +35,7 @@ var Lightbox = {
             
             // Create the lightbox
             this.lightbox = $('<div id="lightbox"></div>').appendTo('body');
-            this.lightboxBackground = $('<div class="lightbox-background"></div>').appendTo(this.lightbox);
+            this.lightboxBackground = $('<div class="lightbox-background"></div>').appendTo('body');
             
             // Create custom classes
             var customClassOuter;
@@ -59,20 +59,32 @@ var Lightbox = {
                 this.lightboxContent = $('<div class="lightbox-content ' + customClassContent + '"></div>').appendTo(this.lightboxContentOuterElem);
             }
             
-            // Close the lightbox if user clicks outside the content area
-            this.lightbox.click(function() {
-                //console.log('lightbox.click()');
-                if (lightbox.options.closeOnClickOutside)
-                    lightbox.hide();
-            });
+            // Prevent the click from propagating when user clicks inside the content area
             this.lightboxContent.click(function(e) {
                 //console.log('lightboxContent.click()');
                 e.stopPropagation();
                 lightbox._notify('clickOnLightbox');
             });
             
+            // Close the lightbox if user clicks outside the content area
+            $('body').click(function() {
+                //console.log('body.click()');
+                if (lightbox.options.closeOnClickOutside) {
+                    lightbox.hide();
+                }
+            });
+            
             this.visible = true;
+            
+            // Position the background
             this.updateScrollPos();
+            
+            // Position the lightbox
+            var scrollTop = $(window).scrollTop();
+            var scrollLeft = $(window).scrollLeft();
+            this.lightbox.css('top', scrollTop);
+            this.lightbox.css('left', scrollLeft);
+
         }
         
         if (this.options.content) {
@@ -162,6 +174,7 @@ var Lightbox = {
     hide: function() {
         if (this.visible) {
             this.lightbox.remove();
+            this.lightboxBackground.remove();
             this.lightbox = null;
             this.visible = false;
         }
@@ -174,10 +187,11 @@ var Lightbox = {
     
     updateScrollPos: function() {
         if (this.visible) {
+            // Reposition the background so it's always visible.
             var scrollTop = $(window).scrollTop();
             var scrollLeft = $(window).scrollLeft();
-            this.lightbox.css('top', scrollTop);
-            this.lightbox.css('left', scrollLeft);
+            this.lightboxBackground.css('top', scrollTop);
+            this.lightboxBackground.css('left', scrollLeft);
         }
     },
     

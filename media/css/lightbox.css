@@ -4,10 +4,10 @@
     width:100%;
     height:100%;
     margin:0px auto;
-    z-index:50;
+    z-index:101;
 }
 
-#lightbox .lightbox-background {
+.lightbox-background {
     position:absolute;
     width:100%;
     height:100%;
@@ -15,7 +15,8 @@
     left:0px;
     background:gray;
     opacity:0.50;
-    filter:alpha(opacity=50)
+    filter:alpha(opacity=50);
+    z-index: 100;
 }
 
 #lightbox .lightbox-content-outer {
