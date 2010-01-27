@@ -402,14 +402,14 @@ function getXploreResults(elem, showAll) {
         },
         type: 'post',
         success: function(data) {
-            log('success...');
+            //log('success...');
             elem2.html(data);
-            log('  elem2: ' + elem2);
-            log('  elem2.length: ' + elem2.length);
-            log('  elem2[0]: ' + elem2[0]);
-            log('  elem2[0].nodeName: ' + elem2[0].nodeName);
+            //log('  elem2: ' + elem2);
+            //log('  elem2.length: ' + elem2.length);
+            //log('  elem2[0]: ' + elem2[0]);
+            //log('  elem2[0].nodeName: ' + elem2[0].nodeName);
             var num = elem2.find('#num-xplore-results-hidden').html();
-            log('  num: ' + num);
+            //log('  num: ' + num);
             $('#num-xplore-results').html('(' + num + ')');
             
             elem2.find('#xplore-view-all').click(function() {

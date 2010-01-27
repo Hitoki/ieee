@@ -496,8 +496,6 @@ def ajax_textui_nodes(request):
         if node.node_type.name == NodeType.SECTOR:
             #log('Calling child_nodes.get_extra_info() with filter ids')
             child_nodes = node.get_tags_and_clusters()
-            # Prefetch the node_type so we don't have to hit the DB later
-            child_nodes = child_nodes.select_related('node_type__name')
             
             # The 'filteIds' allows us to get the selected filter count via the DB (much faster)
             if len(filterIds) > 0:
@@ -581,6 +579,10 @@ def ajax_textui_nodes(request):
     
     #p.tick('Done sorting')
     
+    # This saves time when we check child_node.node_type later on (prevents DB hit for every single child_node)
+    child_nodes = child_nodes.select_related('node_type')
+    #p.tick('done .select_related()')
+    
     if sort == 'connectedness':
         # Sort by the combined score
         #print 'sorting by connectedness'
@@ -588,9 +590,6 @@ def ajax_textui_nodes(request):
         child_nodes = Node.objects.sort_queryset_by_score(child_nodes, False)
     #p.tick('done sorting for connectedness')
     
-    # This saves time when we check child_node.node_type later on (prevents DB hit for every single child_node)
-    child_nodes = child_nodes.select_related('node_type')
-    #p.tick('done .select_related()')
     
     #p.tick('done converting child_nodes to list')
     #print 'before loop'

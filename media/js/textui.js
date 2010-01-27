@@ -10,6 +10,14 @@ function getNode(parent, name) {
 
 var Tags = {
     
+    PAGE_SECTOR: 'sector',
+    PAGE_SOCIETY: 'society',
+    PAGE_HELP: 'help',
+    PAGE_SEARCH: 'search',
+    
+    // The current page (sector/cluster, society, help, search, etc)
+    page: null,
+    
     nodeId: null,
     societyId: null,
     nodeType: null,
@@ -20,6 +28,7 @@ var Tags = {
     tagSortOverlayElem: null,
     oldHash: null,
 	isSearching: false,
+    oldZoom: null,
     
     init: function() {
         var tags = this;
@@ -77,11 +86,21 @@ var Tags = {
     
     // This should be called any time the selected node has changed
     updateChangedNode: function() {
-        this.updateDisabledFilters();
+        //this.updateDisabledFilters();
         this.updateHighlightedNode();
         this.updateSwitchLink();
         
-        if (this.nodeId == null && this.societyId == null) {
+        if (this.page == this.PAGE_SECTOR || this.page == this.PAGE_SOCIETY) {
+            // Enable sorting
+            if (this.tagSortOverlayElem) {
+                Flyover.detach(this.tagSortOverlayElem);
+                this.tagSortOverlayElem.remove();
+                this.tagSortOverlayElem = null;
+            }
+            $('#tag-sort').attr('disabled', '');
+            Flyover.detach($('#tag-sort'));
+        } else {
+            // Disable sorting
             if (!this.tagSortOverlayElem) {
                 this.tagSortOverlayElem = $('<div id="tag-sort-overlay"></div>').appendTo('body');
                 this.tagSortOverlayElem.bgiframe();
@@ -98,17 +117,10 @@ var Tags = {
                 });
             }
             $('#tag-sort').attr('disabled', 'disabled');
-        } else {
-            if (this.tagSortOverlayElem) {
-                Flyover.detach(this.tagSortOverlayElem);
-                this.tagSortOverlayElem.remove();
-                this.tagSortOverlayElem = null;
-            }
-            $('#tag-sort').attr('disabled', '');
-            Flyover.detach($('#tag-sort'));
         }
     },
     
+    /*
     updateDisabledFilters: function() {
 		//log('updateDisabledFilters()');
 		//log(' this.nodeId: ' + this.node);
@@ -124,6 +136,7 @@ var Tags = {
 			Flyover.detach($('#views'));
 		}
     },
+    */
     
     _showWaitScreen: function() {
         this.hideHelp();
@@ -148,17 +161,17 @@ var Tags = {
         
     },
     
-    selectSector: function(id, onload, setHash) {
+    selectSector: function(nodeId, onload, setHash) {
         //log('selectSector()');
-        //log('  id: ' + id);
+        //log('  nodeId: ' + nodeId);
         
-        if (id) {
-            this.nodeId = id;
-            this.societyId = null;
-            this.nodeType = 'sector';
-			this.isSearching = false;
-            $('#tags-live-search').val('');
-        }
+        this.page = this.PAGE_SECTOR;
+        
+        this.nodeId = nodeId;
+        this.societyId = null;
+        this.nodeType = 'sector';
+        this.isSearching = false;
+        $('#tags-live-search').val('');
         
         if (setHash == undefined) {
             setHash = true;
@@ -193,16 +206,16 @@ var Tags = {
     },
     
     selectSociety: function(societyId, onload, setHash) {
-        //log('selectSector()');
+        //log('selectSociety()');
         //log('  societyId: ' + societyId);
         
-        if (societyId) {
-            this.societyId = societyId;
-            this.nodeId = null;
-            this.nodeType = null;
-			this.isSearching = false;
-            $('#tags-live-search').val('');
-        }
+        this.page = this.PAGE_SOCIETY
+        
+        this.societyId = societyId;
+        this.nodeId = null;
+        this.nodeType = null;
+        this.isSearching = false;
+        $('#tags-live-search').val('');
         
         if (setHash == undefined) {
             setHash = true;
@@ -239,22 +252,24 @@ var Tags = {
     },
     
     updateSort: function() {
-        if (this.nodeId != null) {
-            this.selectSector();
-        } else if (this.societyId != null) {
-            this.selectSociety();
+        if (this.page == this.PAGE_SECTOR) {
+            this.selectSector(this.nodeId);
+        } else if (this.page == this.PAGE_SOCIETY) {
+            this.selectSociety(this.societyId);
         } else {
-            alert('Tags.updateSort(): Error, both this.nodeId and this.societyId are null');
+            alert('Tags.updateSort(): Error, page (' + this.page + ') must be "sector" or "society".');
         }
     },
     
     showSearchResults: function(search_for, showSearchResultsCallback) {
-		if (!this.isSearching) {
+		if (!this.page != this.PAGE_SEARCH) {
 			// Save the previous selected society/sector, so we can go back to it if the user clicks on the clear button.
 			this.oldSocietyId = this.societyId;
 			this.oldNodeId = this.nodeId;
 			this.oldNodeType = this.nodeType;
 		}
+        
+        this.page = this.PAGE_SEARCH;
         
 		this.societyId = null;
         this.nodeId = null;
@@ -341,11 +356,12 @@ var Tags = {
         //log('this.societyId: ' + this.societyId);
         //log('this.nodeType: ' + this.nodeType);
         
-        if (this.nodeId != null && this.nodeType == 'sector') {
+        if (this.page == this.PAGE_SECTOR) {
             // Highlight the selected sector
             $('#sector-list-item-' + this.nodeId + ' a').addClass('active-sector');
             var tabs = $('#left-column-container').data('nootabs');
 			tabs.setTab('sectors-tab');
+        /*
         } else if (this.nodeId != null && this.nodeType == 'tag_cluster') {
             // Highlight the selected cluster
             //$('#cluster-list-item-' + this.nodeId + ' a').addClass('active-sector');
@@ -354,16 +370,14 @@ var Tags = {
             }
             var tabs = $('#left-column-container').data('nootabs');
 			tabs.setTab('sectors-tab');
-        } else if (this.societyId != null) {
+        */
+        } else if (this.page == this.PAGE_SOCIETY) {
             // Highlight the selected society
             $('#society-list-item-' + this.societyId + ' a').addClass('active-society');
             var tabs = $('#left-column-container').data('nootabs');
             tabs.setTab('societies-tab');
-        } else if (this.nodeId == null) {
-            // No node selected
-            
         } else {
-            alert('ERROR: Unknown this.nodeType "' + this.nodeType + '"');
+            // No node selected
         }
     },
     
@@ -498,6 +512,8 @@ var Tags = {
     },
     
     showHelp: function(setHash) {
+        this.page = this.PAGE_HELP;
+        
         if (setHash == undefined) {
             setHash = true;
         }
@@ -544,35 +560,42 @@ var Tags = {
     },
 	
 	updateZoom: function() {
-		log('resizeNodes()');
+		//log('resizeNodes()');
 		
 		var zoom = $('#textui-zoom-slider').slider('value');
-		log('  zoom: ' + zoom);
-		
-		$('#textui-zoom-value').text(zoom + '%');
-		
-		var defaultVertMargin = 13;
-		var defaultHorizMargin = 7;
-		var defaultTextSize = 14;
-		var defaultHeight = 18;
-		var defaultPadding = 3;
-		
-		// Scales down the effect of this zoom.
-		function scaleZoom(zoom, scale) {
-			return (zoom - 100) * scale + 100;
-		}
-		
-		$('#tags .node').css('margin-top', (defaultVertMargin * zoom / 100) + 'px');
-		$('#tags .node').css('margin-bottom', (defaultVertMargin * zoom / 100) + 'px');
-		$('#tags .node').css('margin-left', (defaultHorizMargin * zoom / 100) + 'px');
-		$('#tags .node').css('margin-right', (defaultHorizMargin * zoom / 100) + 'px');
-		$('#tags .node').css('font-size', (defaultTextSize * zoom / 100) + 'px');
-		$('#tags .node').css('height', (defaultHeight * zoom / 100) + 'px');
-		$('#tags .node').css('padding-top', (defaultPadding * scaleZoom(zoom, 5) / 100) + 'px');
-		$('#tags .node').css('padding-bottom', (defaultPadding * scaleZoom(zoom, 2) / 100) + 'px');
-		$('#tags .node').css('padding-left', (defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
-		$('#tags .node').css('padding-right', (defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
-		log('~resizeNodes()');
+        
+        // Only zoom if necessary (either the zoom is not 100, or the zoom is 100 but wasn't before).
+        if (zoom != 100 || (this.oldZoom != null && this.oldZoom != zoom)) {
+            log('  zooming to ' + zoom + '%');
+            
+            $('#textui-zoom-value').text(zoom + '%');
+            
+            var defaultVertMargin = 13;
+            var defaultHorizMargin = 7;
+            var defaultTextSize = 14;
+            var defaultHeight = 18;
+            var defaultPadding = 3;
+            
+            // Scales down the effect of this zoom.
+            function scaleZoom(zoom, scale) {
+                return (zoom - 100) * scale + 100;
+            }
+            
+            $('#tags .node').css('margin-top', (defaultVertMargin * zoom / 100) + 'px');
+            $('#tags .node').css('margin-bottom', (defaultVertMargin * zoom / 100) + 'px');
+            $('#tags .node').css('margin-left', (defaultHorizMargin * zoom / 100) + 'px');
+            $('#tags .node').css('margin-right', (defaultHorizMargin * zoom / 100) + 'px');
+            $('#tags .node').css('font-size', (defaultTextSize * zoom / 100) + 'px');
+            $('#tags .node').css('height', (defaultHeight * zoom / 100) + 'px');
+            $('#tags .node').css('padding-top', (defaultPadding * scaleZoom(zoom, 5) / 100) + 'px');
+            $('#tags .node').css('padding-bottom', (defaultPadding * scaleZoom(zoom, 2) / 100) + 'px');
+            $('#tags .node').css('padding-left', (defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
+            $('#tags .node').css('padding-right', (defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
+        }
+        
+        this.oldZoom = zoom;
+        
+		//log('~resizeNodes()');
 	}
     
 };
