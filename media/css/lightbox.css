@@ -134,7 +134,7 @@ input.text {
 
 #lightbox .resources-lightbox-content {
     margin-top:5em;
-    height:535px;
+    height:500px;
     /* Need to set min-width so the tabs don't wrap */
     min-width:875px;
     -moz-border-radius: 10px;
@@ -180,7 +180,7 @@ input.text {
 }
 
 #lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs .nootabs-selected-tab {
-    height: 406px;
+    height: 387px;
     background-color: white;
 }
 

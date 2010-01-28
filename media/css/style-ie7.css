@@ -14,8 +14,16 @@
     height: 100%;
 }
 
+#lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs .nootabs-selected-tab {
+    height: 372px !important;
+}
+
+.nootabs-selected-tab div.group {
+    height: 342px !important;
+}
+
 #lightbox .resources-lightbox-content {
-    height:549px !important;
+    height:500px !important;
 }
 
 ul.pages {
