@@ -8,6 +8,10 @@
     width: 98.5%;
 }
 
+#lightbox .resources-lightbox-content h1 {
+    margin-left: 31px !important;
+}
+
 #lightbox .resources-lightbox-content .resources-pad .alt-box,
 #lightbox .resources-lightbox-content .resources-pad .alt-box #content,
 #lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs {
