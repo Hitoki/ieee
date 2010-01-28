@@ -197,6 +197,10 @@ input.text {
     margin-left: 0;
 }
 
+#lightbox .resources-lightbox-content ul.nootabs-menus li.last-tab {
+    float: right;
+}
+
 #lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-selected-menu a {
     background: white;
     font-weight: bold;
