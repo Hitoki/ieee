@@ -180,8 +180,7 @@ input.text {
 }
 
 #lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs .nootabs-selected-tab {
-    overflow: auto;
-    height: 422px;
+    height: 406px;
     background-color: white;
 }
 

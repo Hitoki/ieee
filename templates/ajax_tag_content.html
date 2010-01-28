@@ -43,7 +43,7 @@
                         
                         <!-- Sectors &amp; Clusters -->
                         <div id="sector-tab" class="sector-tab">
-                            <a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "sectors" %}">Print This Tab</a>
+                            <div class="print-resource"><a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "sectors" %}">Print This Tab</a></div>
                             <div class="group">
                                 {% for parent_node in parent_nodes %}
                                     <p class="{% cycle 'item_odd' 'item_even' %}">
@@ -81,7 +81,8 @@
                         
                         <!-- Societies -->
                         <div id="society-tab">
-                            <a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "societies" %}">Print This Tab</a>
+                            <div class="print-resource"><a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "societies" %}">Print This Tab</a></div>
+                            <div class="group">
                             <table class="society-images">
                                 {% for society in tag.societies.all %}
                                     <tr>
@@ -107,11 +108,12 @@
                                     </tr>    
                                 {% endfor %}
                             </table>
+                            </div>
                         </div>
                         
                         <!-- Related Tags -->
                         <div id="related-tab">
-                            <a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "related_tags" %}">Print This Tab</a>
+                            <div class="print-resource"><a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "related_tags" %}">Print This Tab</a></div>
                             <div class="group">
                                 {% for related_tag in tag.related_tags.all %}
                                     <p class="{% cycle 'item_odd' 'item_even' %}">
@@ -129,7 +131,7 @@
                         
                         <div id="conference-tab">
                             <!-- Conferences -->
-                            <a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "conferences" %}">Print This Tab</a>
+                            <div class="print-resource"><a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "conferences" %}">Print This Tab</a></div>
                             <div class="group">
                                 {% if conferences|length %}
                                     {% for resource in conferences %}
@@ -188,7 +190,7 @@
                         
                         <div id="periodical-tab">
                             <!-- Periodicals -->
-                            <a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "periodicals" %}">Print This Tab</a>
+                            <div class="print-resource"><a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "periodicals" %}">Print This Tab</a></div>
                             <div class="group">
                                 {% if periodicals|length %}
                                     {% for resource in periodicals %}
@@ -214,7 +216,7 @@
                         
                         <div id="standard-tab">
                             <!-- Standards -->
-                            <a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "standards" %}">Print This Tab</a>
+                            <div class="print-resource"><a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "standards" %}">Print This Tab</a></div>
                             <div class="group">
                                 {% if standards|length %}
                                     {% for resource in standards %}
@@ -262,7 +264,7 @@
 
                         <div id="xplore-tab">
                             <!-- Xplore -->
-                            <a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "xplore" %}">Print This Tab</a>
+                            <div class="print-resource"><a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "xplore" %}">Print This Tab</a></div>
                             <div class="group">
                                 <div id="xplore-results-container" class="{ tagId: {{ tag.id }} }">
                                     {# NOTE: This is replaced by ajax after page load. #}

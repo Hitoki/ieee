@@ -69,3 +69,11 @@ form.items-per-page {
 #left-column h2.feature_label {
     padding-bottom: 5px !important;
 }         
+
+.print-resource {
+    width: 777px !important;
+}
+
+#resource-print-link {
+    margin-right: 2em !important;
+}

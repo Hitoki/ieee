@@ -1678,9 +1678,29 @@ ul.errors {
     mmargin:4em auto;
 }
 
+.print-resource {
+    width: 797px;
+    height: 20px;
+    text-align: right;
+    position: absolute;
+    padding: 5px;
+    background: white;
+}
+
+.print-resource #resource-print-link, a.resource-tab-print-link {
+    float: none !important;
+    margin-right: .5em !important;
+}
+
+.nootabs-selected-tab div.group {
+    padding-top: 30px;
+    height: 376px;
+    overflow: auto;
+}
+
 #resource-print-link, a.resource-tab-print-link {
     float:right;
-    margin:1.2em .5em;
+    margin:1.2em 1.4em 1.2em .5em;
     font-size:80%;
     background:url(../images/printer.png) no-repeat left;
     padding-left:2em;
