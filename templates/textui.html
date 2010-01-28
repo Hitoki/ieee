@@ -52,8 +52,6 @@
                             Switch to Visual Map Interface (Beta)
                         </a>
                         
-                        <a id="feedback-link" href="{% url feedback %}" class="floating lightbox { customClass:'feedback' }">&nbsp;</a>
-                        
                         <img class="rightCorner" src="{{MEDIA_URL}}images/mainTopRightCorner.gif" width="26" height="67" />
                     </div>
                     
@@ -199,6 +197,8 @@
                     <div id="footer">
                         {% if user %}
                             <p class="admin-links">
+                                <a id="feedback-link" href="{% url feedback %}" class="floating lightbox { customClass:'feedback' }">&nbsp;</a>
+                                
                                 {% ifequal user.get_profile.role "admin" %}
                                     <a href="{% url admin_home %}">Admin</a> |
                                 {% endifequal %}
@@ -211,6 +211,7 @@
                                 <a href="{% url admin_logout %}">Logout</a>
                             </p>
                         {% endif %}
+                        
                         <img class="leftCorner" src="{{MEDIA_URL}}images/mainBottomLeftCorner.png" width="26" height="40" />
                         <img class="rightCorner" src="{{MEDIA_URL}}images/mainBottomRightCorner.png" width="26" height="40" />
                     </div>
