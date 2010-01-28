@@ -264,12 +264,10 @@
 
                         <div id="xplore-tab">
                             <!-- Xplore -->
-                            <div class="print-resource"><a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "xplore" %}">Print This Tab</a></div>
-                            <div class="group">
-                                <div id="xplore-results-container" class="{ tagId: {{ tag.id }} }">
-                                    {# NOTE: This is replaced by ajax after page load. #}
-                                </div>
+                            <div id="xplore-results-container" class="{ tagId: {{ tag.id }} }">
+                                {# NOTE: This is replaced by ajax after page load. #}
                             </div>
+
                         </div>
                         
                         <script type="text/javascript">

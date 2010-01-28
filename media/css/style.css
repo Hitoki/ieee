@@ -1678,6 +1678,13 @@ ul.errors {
     mmargin:4em auto;
 }
 
+#xplore-totals {
+    font-style:italic;
+    padding-left:20px;
+    float: left;
+    margin: 0;
+}
+
 .print-resource {
     width: 797px;
     height: 20px;

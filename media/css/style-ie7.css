@@ -89,3 +89,7 @@ form.items-per-page {
 #resource-print-link {
     margin-right: 2em !important;
 }
+
+#xplore-totals {
+    margin-top: -15px !important;
+}
