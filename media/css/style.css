@@ -1735,7 +1735,7 @@ a.resource-tab-print-link {
 
 #textui-tags-search {
     float:left;
-    margin-left:2em;
+    margin-left:1.5em;
     font-weight:bold;
 }
 
@@ -1750,6 +1750,7 @@ a.resource-tab-print-link {
     border:1px inset gray;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
+    width: 100px;
 }
 
 #textui-tags-search-clear {
