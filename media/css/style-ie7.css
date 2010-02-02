@@ -24,6 +24,7 @@
 
 .nootabs-selected-tab div.group {
     height: 342px !important;
+    padding-top: 30px !important;
 }
 
 #lightbox .resources-lightbox-content {
@@ -88,6 +89,14 @@ form.items-per-page {
 
 #resource-print-link {
     margin-right: 2em !important;
+}
+
+#xplore-tab div.print-resource {
+    margin-top: 0;
+}
+
+#xplore-tab div.group {
+    margin-top: 0;
 }
 
 #xplore-totals {

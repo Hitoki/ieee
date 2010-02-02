@@ -1700,9 +1700,13 @@ ul.errors {
 }
 
 .nootabs-selected-tab div.group {
-    padding-top: 30px;
+    margin-top: 30px;
     height: 357px;
     overflow: auto;
+}
+
+#xplore-tab div.print-resource {
+    margin-top: -30px;
 }
 
 #resource-print-link, a.resource-tab-print-link {
