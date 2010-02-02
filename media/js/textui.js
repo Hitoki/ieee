@@ -13,21 +13,21 @@ var Tags = {
     PAGE_SECTOR: 'sector',
     PAGE_SOCIETY: 'society',
     PAGE_HELP: 'help',
-    PAGE_SEARCH: 'search',
+    //PAGE_SEARCH: 'search',
     
     // The current page (sector/cluster, society, help, search, etc)
     page: null,
+    isSearching: false,
     
     nodeId: null,
     societyId: null,
     nodeType: null,
-    selectedClusterId: null,
+    //selectedClusterId: null,
     node: null,
     onLoadSectorCallback: null,
     helpScreenElem: null,
     tagSortOverlayElem: null,
     oldHash: null,
-	isSearching: false,
     oldZoom: null,
     
     init: function() {
@@ -170,7 +170,6 @@ var Tags = {
         this.nodeId = nodeId;
         this.societyId = null;
         this.nodeType = 'sector';
-        this.isSearching = false;
         $('#tags-live-search').val('');
         
         if (setHash == undefined) {
@@ -214,7 +213,6 @@ var Tags = {
         this.societyId = societyId;
         this.nodeId = null;
         this.nodeType = null;
-        this.isSearching = false;
         $('#tags-live-search').val('');
         
         if (setHash == undefined) {
@@ -262,29 +260,61 @@ var Tags = {
     },
     
     showSearchResults: function(search_for, showSearchResultsCallback) {
-		if (!this.page != this.PAGE_SEARCH) {
+        log('showSearchResults()');
+		if (!this.isSearching) {
 			// Save the previous selected society/sector, so we can go back to it if the user clicks on the clear button.
-			this.oldSocietyId = this.societyId;
-			this.oldNodeId = this.nodeId;
-			this.oldNodeType = this.nodeType;
+            //this.oldPage = this.page;
+			//this.oldSocietyId = this.societyId;
+			//this.oldNodeId = this.nodeId;
+			//this.oldNodeType = this.nodeType;
 		}
         
-        this.page = this.PAGE_SEARCH;
+        //log('  this.oldPage: ' + this.oldPage);
+        //log('  this.oldSocietyId: ' + this.oldSocietyId);
+        //log('  this.oldNodeId: ' + this.oldNodeId);
+        //log('  this.oldNodeType: ' + this.oldNodeType);
         
-		this.societyId = null;
-        this.nodeId = null;
-        this.nodeType = null;
+        //this.page = this.PAGE_SEARCH;
         this.isSearching = true;
+        
+		//this.societyId = null;
+        //this.nodeId = null;
+        //this.nodeType = null;
         
         this.updateHighlightedNode();
         this._showWaitScreen();
         
         log('searching for "' + search_for + '"');
+        
+        //if (search_for == '') {
+        //    // Empty search phrase, call the callback to clear the search term from the livesearch object.
+        //    this.clearSearchResults();
+        //    if (showSearchResultsCallback) {
+        //        showSearchResultsCallback(search_for, {});
+        //    }
+        //    return;
+        //}
+        
+        var data = {
+            search_for: search_for
+        };
+        if (this.page == this.PAGE_SOCIETY) {
+            log('  was society, adding to data');
+            data.society_id = this.societyId;
+        } else if (this.page == this.PAGE_SECTOR) {
+            log('  was sector, adding to data');
+            data.sector_id = this.nodeId;
+        } else if (this.page == this.PAGE_HELP) {
+            log('  was help, doing nothing');
+            // Do nothing
+        } else {
+            alert('Tags.showSearchResults(): Error, unknown page ' + this.page);
+            return;
+        }
+        
         $.ajax({
             url: '/ajax/textui_nodes',
-            data: {
-                search_for: search_for
-            },
+            data: data,
             success: function(data) {
                 Tags.onLoadResults(data);
                 if (showSearchResultsCallback) {
@@ -297,13 +327,16 @@ var Tags = {
 	clearSearchResults: function() {
 		if (this.isSearching) {
 			// Restore the previous sector/society.
-			if (this.oldSocietyId != null) {
-				this.selectSociety(this.oldSocietyId);
-			} else if (this.oldNodeId != null) {
-				this.selectSector(this.oldNodeId);
-			} else {
+            this.isSearching = false;
+			if (this.page == this.PAGE_SOCIETY) {
+				this.selectSociety(this.societyId);
+			} else if (this.page == this.PAGE_SECTOR) {
+				this.selectSector(this.nodeId);
+			} else if (this.page == this.PAGE_HELP) {
 				this.showHelp();
-			}
+			} else {
+                alert('Tags.clearSearchResults(): Error, unkonwn page: ' + this.page);
+            }
 		}
 	},
     
@@ -321,6 +354,7 @@ var Tags = {
         $('#societies a.active-society').removeClass('active-society');
         
         // If a cluster was highlighted, remove it
+        /*
         if (this.selectedClusterId != null && this.selectedClusterId != this.nodeId) {
             // Remove all clusters, since they're no longer selected
             var listItem = $('.cluster-list-item');
@@ -334,7 +368,6 @@ var Tags = {
         
         // If a cluster was just selected, show & highlight it
         if (this.nodeType == 'tag_cluster' && this.selectedClusterId == null) {
-            /*
             NOTE: This is disabled for now, just show the sector
             
             var sectorListItem = $('#sector-list-item-' + this.node.sectorId);
@@ -349,8 +382,8 @@ var Tags = {
             link.attr('href', 'javascript:Tags.selectCluster(' + this.nodeId + ');');
             
             this.selectedClusterId = this.nodeId;
-            */
         }
+        */
         
         //log('this.nodeId: ' + this.nodeId);
         //log('this.societyId: ' + this.societyId);
@@ -530,7 +563,6 @@ var Tags = {
 		this.societyId = null;
 		this.nodeType = null;
 		this.node = null;
-		this.isSearching = false;
 
         this.updateChangedNode();
         

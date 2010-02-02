@@ -437,22 +437,37 @@ def ajax_textui_nodes(request):
     #from profiler import Profiler
     #p = Profiler('ajax_textui_nodes')
     
-    node_id = request.GET.get('sector_id', None)
+    sector_id = request.GET.get('sector_id', None)
     society_id = request.GET.get('society_id', None)
     search_for = request.GET.get('search_for', None)
     
-    #assert society_id is not None or node_id is not None, 'Either society_id or node_id is required'
-    #assert society_id is None or node_id is None, 'Cannot specify both society_id or node_id'
+    log('  sector_id: %s' % sector_id)
+    log('  society_id: %s' % society_id)
+    log('  search_for: %s' % search_for)
+    
+    #assert society_id is not None or sector_id is not None, 'Either society_id or sector_id is required'
+    #assert society_id is None or sector_id is None, 'Cannot specify both society_id or sector_id'
+    
+    assert sector_id is None or society_id is None, 'Cannot specify both sector_id and society_id'
     
     sort = request.GET.get('sort')
     #log('  sort: %s' % sort)
-    
     #filterValues = request.GET.get('filterValues')
-    
     #log('filterValues: %s' % filterValues)
+    
+    if sector_id is not None:
+        sector = Node.objects.get(id=sector_id)
+    else:
+        sector = None
+    
+    if society_id is not None:
+        society = Society.objects.get(id=society_id)
+    else:
+        society = None
     
     order_by = None
     extra_order_by = None
+    search_page_title = None
     
     if sort is None or sort == 'alphabetical':
         order_by = 'name'
@@ -487,9 +502,68 @@ def ajax_textui_nodes(request):
     
     search_for_too_short = False
     
-    if node_id is not None:
+    if search_for is not None:
+        # Search for nodes with a phrase
+        # NOTE: <= 2 char searches take a long time (2-3 seconds), vs 200ms average for anything longer
+        
+        #p.tick('Searching for phrase...')
+        
+        # Require >= 3 chars for general search, or >= 2 chars for in-sector/in-society search.
+        if len(search_for) >= 3 or (len(search_for) >= 2 and (sector_id is not None or society_id is not None)):
+            
+            search_words = re.split(r'\s', search_for)
+            #print 'search_words: %s' % search_words
+            
+            from django.db.models import Q
+            
+            queries = None
+            for word in search_words:
+                #log('  word: %r' % word)
+                if queries is None:
+                    queries = Q(name__icontains=word)
+                else:
+                    queries &= Q(name__icontains=word)
+            
+            if sector_id is not None:
+                # Search within the sector
+                queries &= Q(parents__id=sector_id)
+            
+            elif society_id is not None:
+                # Search within the society
+                queries &= Q(societies__id=society_id)
+            
+            child_nodes = Node.objects.filter(queries, node_type__name=NodeType.TAG)
+            child_nodes = Node.objects.get_extra_info(child_nodes, None, filterIds)
+            #log('  child_nodes: %r' % child_nodes)
+            #log('  child_nodes.count(): %r' % child_nodes.count())
+            
+        else:
+            # Search phrase was too short, return empty results.
+            #search_page_title = 'Hi there'
+            child_nodes = Node.objects.none()
+            search_for_too_short = True
+        
+        #p.tick('Done searching for phrase.')
+        
+        #print 'searching for phrase "%s"' % search_for
+        #print 'child_nodes: %s' % child_nodes
+        
+        # Get the min/max scores for these search results
+        min_score = None
+        max_score = None
+        for node in child_nodes:
+            if min_score is None:
+                min_score = node.score1
+            else:
+                min_score = min(min_score, node.score1)
+            if max_score is None:
+                max_score = node.score1
+            else:
+                max_score = max(max_score, node.score1)
+                
+    elif sector_id is not None:
         # Get a sector or cluster's child nodes
-        node = Node.objects.get(id=node_id)
+        node = Node.objects.get(id=sector_id)
         society = None
         assert node.node_type.name in [NodeType.SECTOR, NodeType.TAG_CLUSTER], 'Node "%s" must be a sector or cluster' % node.name
 
@@ -517,50 +591,6 @@ def ajax_textui_nodes(request):
         
         (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = society.get_tag_ranges()
         (min_score, max_score) = society.get_combined_ranges()
-        
-    elif search_for is not None:
-        # Search for nodes with a phrase
-        # NOTE: <= 2 char searches take a long time (2-3 seconds), vs 200ms average for anything longer
-        
-        #p.tick('Searching for phrase...')
-        
-        if len(search_for) >= 2:
-            
-            search_words = re.split(r'\s', search_for)
-            #print 'search_words: %s' % search_words
-            
-            
-            from django.db.models import Q
-            
-            queries = None
-            for word in search_words:
-                if queries is None:
-                    queries = Q(name__icontains=word)
-                else:
-                    queries &= Q(name__icontains=word)
-            child_nodes = Node.objects.filter(queries, node_type__name=NodeType.TAG)
-            child_nodes = Node.objects.get_extra_info(child_nodes, None, filterIds)
-        else:
-            child_nodes = Node.objects.none()
-            search_for_too_short = True
-        
-        #p.tick('Done searching for phrase.')
-        
-        #print 'searching for phrase "%s"' % search_for
-        #print 'child_nodes: %s' % child_nodes
-        
-        # Get the min/max scores for these search results
-        min_score = None
-        max_score = None
-        for node in child_nodes:
-            if min_score is None:
-                min_score = node.score1
-            else:
-                min_score = min(min_score, node.score1)
-            if max_score is None:
-                max_score = node.score1
-            else:
-                max_score = max(max_score, node.score1)
         
     else:
         assert False
@@ -685,6 +715,13 @@ def ajax_textui_nodes(request):
     
     child_nodes = child_nodes2
     
+    if search_for is not None:
+        if sector_id is not None:
+            search_page_title = 'Showing %s results for "%s" in the %s sector:' % (len(child_nodes), search_for, sector.name)
+        elif society_id is not None:
+            search_page_title = 'Showing %s results for "%s" for the %s society:' % (len(child_nodes), search_for, society.name)
+        
+    
     #print 'after loop'
     print 'len(child_nodes): %s' % len(child_nodes)
     
@@ -694,10 +731,11 @@ def ajax_textui_nodes(request):
     
     return render(request, 'ajax_textui_nodes.html', {
         'child_nodes': child_nodes,
-        'parent_id': node_id,
+        'parent_id': sector_id,
         'society_id': society_id,
         'search_for': search_for,
         'search_for_too_short': search_for_too_short,
+        'search_page_title': search_page_title,
     })
     
 
