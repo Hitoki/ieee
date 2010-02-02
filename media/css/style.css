@@ -627,6 +627,7 @@ span#roamer-beta-warning {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     padding: 5px 5px 2px 0;
+    margin-right:60px;
 }                            
 
 
@@ -1543,7 +1544,6 @@ p.export {
 
 #tag-sort-overlay {
     position:absolute;
-    bborder:1px solid red;
     top:0px;
     left:0px;
     z-index:1;
@@ -1759,8 +1759,8 @@ a.resource-tab-print-link {
 /* Textui zoom slider */
 
 #textui-zoom-container {
-	float:left;
-	margin-left:10px; 
+	float:right;
+    width:50px;
 }
 
 #textui-zoom-container .feature_label {
@@ -1769,10 +1769,9 @@ a.resource-tab-print-link {
 
 #textui-zoom-slider {
 	float:left;
-	width:50px;
 	margin:3px;
 	margin-right:12px;
-	
+	background:url(../images/textui-zoom-background.png);
 }
 
 #textui-zoom-default-zoom {
