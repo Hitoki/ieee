@@ -213,6 +213,10 @@ input.text {
     float: right;
 }
 
+#lightbox .resources-lightbox-content ul.nootabs-menus li.end-group-tab {
+    margin-right: 55px;
+}
+
 #lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-selected-menu a {
     background: white;
     font-weight: bold;
