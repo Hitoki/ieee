@@ -219,6 +219,16 @@ input.text {
     font-weight: normal;
 }
 
+#lightbox .resources-lightbox-content ul.nootabs-menus li a:hover {
+    text-decoration: underline !important;
+    color: orange;
+}
+
+#lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-selected-menu a:hover {
+    text-decoration: none !important;
+    color: black;
+}
+
 #lightbox .resources-lightbox-content .group p.more-conferences {
     margin:.5em 0 1em 3em;
     padding:0;
