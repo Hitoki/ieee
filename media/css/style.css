@@ -1692,6 +1692,8 @@ ul.errors {
     position: absolute;
     padding: 5px;
     background: white;
+    -moz-border-radius-topleft: 5px;
+    -webkit-border-top-left-radius: 5px;
 }
 
 .print-resource #resource-print-link, a.resource-tab-print-link {

@@ -182,6 +182,18 @@ input.text {
 #lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs .nootabs-selected-tab {
     height: 372px;
     background-color: white;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+#lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs #sector-tab {
+    -moz-border-radius-topleft:0 !important;
+    -webkit-border-top-left-radius: 0 !important;
+}
+
+#lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs #xplore-tab {
+    -moz-border-radius-topright:0 !important;
+    -webkit-border-top-right-radius: 0 !important;
 }
 
 #lightbox .resources-lightbox-content h1 {
@@ -204,6 +216,14 @@ input.text {
 #lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-selected-menu a {
     background: white;
     font-weight: bold;
+}
+
+#lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-selected-menu a,
+#lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-selected-menu {
+    -moz-border-radius-topleft: 5px;
+    -webkit-border-top-left-radius: 5px;
+    -moz-border-radius-topright: 5px;
+    -webkit-border-top-right-radius: 5px;
 }
 
 #lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-selected-menu a span {
