@@ -13,7 +13,6 @@ var Tags = {
     PAGE_SECTOR: 'sector',
     PAGE_SOCIETY: 'society',
     PAGE_HELP: 'help',
-    //PAGE_SEARCH: 'search',
     
     // The current page (sector/cluster, society, help, search, etc)
     page: null,
@@ -24,7 +23,6 @@ var Tags = {
     nodeType: null,
     //selectedClusterId: null,
     node: null,
-    onLoadSectorCallback: null,
     helpScreenElem: null,
     tagSortOverlayElem: null,
     oldHash: null,
@@ -64,14 +62,14 @@ var Tags = {
                 // Sector
                 var sectorId = parseInt(sector_matches[1]);
                 if (this.nodeId != sectorId) {
-                    this.selectSector(sectorId, null, false);
+                    this.selectSector(sectorId, false);
                 }
             
             } else if (society_matches) {
                 // Society
                 var societyId = parseInt(society_matches[1]);
                 if (this.societyId != societyId) {
-                    this.selectSociety(societyId, null, false);
+                    this.selectSociety(societyId, false);
                 }
             
             } else {
@@ -161,7 +159,7 @@ var Tags = {
         
     },
     
-    selectSector: function(nodeId, onload, setHash) {
+    selectSector: function(nodeId, setHash) {
         //log('selectSector()');
         //log('  nodeId: ' + nodeId);
         
@@ -170,7 +168,6 @@ var Tags = {
         this.nodeId = nodeId;
         this.societyId = null;
         this.nodeType = 'sector';
-        $('#tags-live-search').val('');
         
         if (setHash == undefined) {
             setHash = true;
@@ -181,30 +178,10 @@ var Tags = {
             $.historyLoad('/sector/' + this.nodeId);
         }
         
-        if (this.nodeId != null) {
-            
-            this._showWaitScreen();
-            
-            var filterStr = implode(',', this.getFilters());
-            
-            if (onload) {
-                this.onLoadSectorCallback = onload;
-            }
-            
-            $.ajax({
-                url: '/ajax/textui_nodes',
-                data: {
-                    sector_id: this.nodeId,
-                    sort: this.getSort()
-                },
-                success: function(data) {
-                    Tags.onLoadResults(data);
-                }
-            });
-        }
+        this.updateResults();
     },
     
-    selectSociety: function(societyId, onload, setHash) {
+    selectSociety: function(societyId, setHash) {
         //log('selectSociety()');
         //log('  societyId: ' + societyId);
         
@@ -213,7 +190,6 @@ var Tags = {
         this.societyId = societyId;
         this.nodeId = null;
         this.nodeType = null;
-        $('#tags-live-search').val('');
         
         if (setHash == undefined) {
             setHash = true;
@@ -224,29 +200,7 @@ var Tags = {
             $.historyLoad('/society/' + this.societyId);
         }
         
-        if (this.societyId != null) {
-            
-            this._showWaitScreen();
-            
-            var filterStr = implode(',', this.getFilters());
-            
-            if (onload) {
-                this.onLoadSectorCallback = onload;
-            }
-            
-            $.ajax({
-                url: '/ajax/textui_nodes',
-                data: {
-                    society_id: this.societyId,
-                    sort: this.getSort()
-                },
-                success: function(data) {
-                    Tags.onLoadResults(data);
-                }
-            });
-            
-            this.updateHighlightedNode();
-        }
+        this.updateResults();
     },
     
     updateSort: function() {
@@ -261,40 +215,18 @@ var Tags = {
     
     showSearchResults: function(search_for, showSearchResultsCallback) {
         log('showSearchResults()');
-		if (!this.isSearching) {
-			// Save the previous selected society/sector, so we can go back to it if the user clicks on the clear button.
-            //this.oldPage = this.page;
-			//this.oldSocietyId = this.societyId;
-			//this.oldNodeId = this.nodeId;
-			//this.oldNodeType = this.nodeType;
-		}
         
-        //log('  this.oldPage: ' + this.oldPage);
-        //log('  this.oldSocietyId: ' + this.oldSocietyId);
-        //log('  this.oldNodeId: ' + this.oldNodeId);
-        //log('  this.oldNodeType: ' + this.oldNodeType);
-        
-        //this.page = this.PAGE_SEARCH;
         this.isSearching = true;
         
-		//this.societyId = null;
-        //this.nodeId = null;
-        //this.nodeType = null;
-        
         this.updateHighlightedNode();
+        
+        
         this._showWaitScreen();
         
-        log('searching for "' + search_for + '"');
+        log('  searching for "' + search_for + '"');
         
-        //if (search_for == '') {
-        //    // Empty search phrase, call the callback to clear the search term from the livesearch object.
-        //    this.clearSearchResults();
-        //    if (showSearchResultsCallback) {
-        //        showSearchResultsCallback(search_for, {});
-        //    }
-        //    return;
-        //}
-        
+        this.updateResults(showSearchResultsCallback);
+        /*
         var data = {
             search_for: search_for
         };
@@ -322,22 +254,77 @@ var Tags = {
                 }
             }
         });
+        */
     },
 	
+    updateResults: function(showSearchResultsCallback) {
+        this._showWaitScreen();
+        //var filterStr = implode(',', this.getFilters());
+        
+        var search_for = $('#tags-live-search').val();
+        
+        if (this.nodeId != null) {
+            // Load the sector
+            $.ajax({
+                url: '/ajax/textui_nodes',
+                data: {
+                    sector_id: this.nodeId,
+                    sort: this.getSort(),
+                    search_for: search_for
+                },
+                success: function(data) {
+                    Tags.onLoadResults(data);
+                }
+            });
+            this.updateHighlightedNode();
+            
+        } else if (this.societyId != null) {
+            // Load the society
+            $.ajax({
+                url: '/ajax/textui_nodes',
+                data: {
+                    society_id: this.societyId,
+                    sort: this.getSort(),
+                    search_for: search_for
+                },
+                success: function(data) {
+                    Tags.onLoadResults(data);
+                }
+            });
+            this.updateHighlightedNode();
+        
+        } else if (search_for != '') {
+            // Search for tags
+            
+            var data = {
+                search_for: search_for,
+                society_id: this.societyId,
+                sector_id: this.nodeId
+            };
+            
+            $.ajax({
+                url: '/ajax/textui_nodes',
+                data: data,
+                success: function(data) {
+                    Tags.onLoadResults(data);
+                    if (showSearchResultsCallback) {
+                        showSearchResultsCallback(search_for, data);
+                    }
+                }
+            });            
+            
+        } else {
+            // Nothing selected
+            this.showHelp();
+            
+        }
+        
+    },
+    
 	clearSearchResults: function() {
-		if (this.isSearching) {
-			// Restore the previous sector/society.
-            this.isSearching = false;
-			if (this.page == this.PAGE_SOCIETY) {
-				this.selectSociety(this.societyId);
-			} else if (this.page == this.PAGE_SECTOR) {
-				this.selectSector(this.nodeId);
-			} else if (this.page == this.PAGE_HELP) {
-				this.showHelp();
-			} else {
-                alert('Tags.clearSearchResults(): Error, unkonwn page: ' + this.page);
-            }
-		}
+        log('clearSearchResults()');
+        $('#tags-live-search').val('');
+        this.updateResults();
 	},
     
     onLoadResults: function(data) {
@@ -542,6 +529,12 @@ var Tags = {
         } else {
             alert('Textui.refresh(): ERROR: unrecognized nodeType "' + this.nodeType + '"');
         }
+    },
+    
+    home: function(setHash) {
+        this.nodeId = null;
+        this.societyId = null;
+        this.updateResults();
     },
     
     showHelp: function(setHash) {

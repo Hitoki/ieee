@@ -482,7 +482,7 @@ $(function() {
             
             // Log the error
             log('-- AJAX ERROR: --------------------');
-            log(XMLHttpRequest["responseText"]);
+            log(XMLHttpRequest["responseText"].substr(0, 200));
             log('-----------------------------------');
         }
     );

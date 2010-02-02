@@ -445,6 +445,13 @@ def ajax_textui_nodes(request):
     log('  society_id: %s' % society_id)
     log('  search_for: %s' % search_for)
     
+    if sector_id == 'null':
+        sector_id = None
+    if society_id == 'null':
+        society_id = None
+    if search_for == 'null' or search_for == '':
+        search_for = None
+    
     #assert society_id is not None or sector_id is not None, 'Either society_id or sector_id is required'
     #assert society_id is None or sector_id is None, 'Cannot specify both society_id or sector_id'
     

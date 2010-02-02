@@ -74,24 +74,31 @@ LiveSearch.prototype.update = function(useDelayValue) {
 			
 			// Do the search
 			if (this.options.use_tags_callback) {
-				log('calling callback');
-				
+                log('calling callback');
+                
+                // TODO: Fix this use of this.searchingFor
+
+                /*
 				if (this.searchingFor != null) {
 					log('Already searching!');
 				} else {
-					
-					this.searchingFor = value;
-					
-					if (window.Tags == undefined) {
-						alert('Error in LiveSearch.update(): Tags is not defined.')
-						return;
-					}
-					
-					Tags.showSearchResults(value, function(searchFor, data) {
-						liveSearch.onUpdate(searchFor, data);
-					});
-				}
+                */
+                
+                this.searchingFor = value;
+                
+                if (window.Tags == undefined) {
+                    alert('Error in LiveSearch.update(): Tags is not defined.')
+                    return;
+                }
+                
+                Tags.showSearchResults(value, function(searchFor, data) {
+                    liveSearch.onUpdate(searchFor, data);
+                });
 				
+                /*
+                }
+                */
+                
 			} else {
 				log('calling ajax url');
 				$.ajax({
