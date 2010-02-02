@@ -1,6 +1,6 @@
 {% load humanize %}
     <div class="print-resource">
-        <a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "xplore" %}">Print This Tab</a>    
+        <a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "xplore" %}">Print this Tab</a>    
         <p id="xplore-totals">
             {% if show_all %}
                 Showing all {{ totalfound|intcomma }} results
