@@ -180,7 +180,7 @@ input.text {
 }
 
 #lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs .nootabs-selected-tab {
-    height: 387px;
+    height: 372px;
     background-color: white;
 }
 
@@ -217,6 +217,12 @@ input.text {
 #lightbox .resources-lightbox-content ul.nootabs-menus li a {
     background: #DFE1E4;
     font-weight: normal;
+    height: 31px;
+}
+
+#lightbox .resources-lightbox-content ul.nootabs-menus li a.one-word-tab {
+    padding-top: 12px;
+    height: 24px !important;
 }
 
 #lightbox .resources-lightbox-content ul.nootabs-menus li a:hover {
