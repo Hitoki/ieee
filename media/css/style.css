@@ -266,7 +266,19 @@ ul#view-header li {
 }
 
 #galaxy-tabs li{
-    width: 87px;
+    width: 86px;
+    border: 1px solid gray;
+    border-bottom: 1px solid #006699;
+}
+
+#galaxy-tabs li.second-tab {
+    -moz-border-radius-topleft: 0 !Important;
+    -moz-border-radius-topright: 5px !important;
+    -webkit-border-top-left-radius: 0 !Important;
+    -webkit-border-top-right-radius: 5px !important;
+    margin-left: -1px !Important;
+    border-left: 1px solid #006699;
+    width: 87px !important;
 }
 
 #left-column-container .nootabs-menu {
@@ -282,17 +294,27 @@ ul#view-header li {
     border: 1px solid #006699;
     height: 400px;
     width: 174px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    -moz-border-radius-bottomright: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
     padding-top: 5px;
 }
+
 #left-column-container .nootabs-menus li.nootabs-selected-menu {
     border: 1px solid #006699;
-    border-bottom: 0px solid white;
+    border-bottom: 1px solid white !important;
     -moz-border-radius-topleft: 5px;
     -moz-border-radius-topright: 5px;
     -webkit-border-top-left-radius: 5px;
     -webkit-border-top-right-radius: 5px;
+}
+
+#left-column-container .nootabs-menus li.nootabs-first-menu {
+    -moz-border-radius-topleft: 5px !Important;
+    -moz-border-radius-topright: 0 !important;
+    -webkit-border-top-left-radius: 5px !Important;
+    -webkit-border-top-right-radius: 0 !important;
 }
 
 #left-column-container .nootabs-menus li.nootabs-menu a:hover{
@@ -309,11 +331,13 @@ ul#view-header li {
 
 #left-column-container .nootabs-menus li.nootabs-selected-menu a{
     font-weight: bold;
+    color: #006699;
+}
+#left-column-container .nootabs-menus li a {
     -moz-border-radius-topleft: 5px;
     -moz-border-radius-topright: 5px;
     -webkit-border-top-left-radius: 5px;
     -webkit-border-top-right-radius: 5px;
-    color: #006699;
 }
 
 #left-column-container div#sectors-tab {
@@ -622,7 +646,7 @@ span#roamer-beta-warning {
 }
 
 #alternate-page #tag-galaxy {
-    height: 440px;
+    height: 441px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     padding: 5px 5px 2px 0;
