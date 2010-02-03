@@ -283,10 +283,11 @@ ul#view-header li {
 
 #left-column-container .nootabs-menu {
     margin-left: 0;
+    background-color: lightgrey;
 }
 
 #left-column-container .nootabs-menu a {
-    background-color:white;
+    background-color:lightgrey;
     font-weight: normal;
 }
 
@@ -304,6 +305,7 @@ ul#view-header li {
 #left-column-container .nootabs-menus li.nootabs-selected-menu {
     border: 1px solid #006699;
     border-bottom: 1px solid white !important;
+    background-color: white;
     -moz-border-radius-topleft: 5px;
     -moz-border-radius-topright: 5px;
     -webkit-border-top-left-radius: 5px;
@@ -318,7 +320,7 @@ ul#view-header li {
 }
 
 #left-column-container .nootabs-menus li.nootabs-menu a:hover{
-    background-color: white;
+    background-color: lightgrey;
     text-decoration: underline !important;
     color: orange;
 }
@@ -332,6 +334,7 @@ ul#view-header li {
 #left-column-container .nootabs-menus li.nootabs-selected-menu a{
     font-weight: bold;
     color: #006699;
+    background-color: white;
 }
 #left-column-container .nootabs-menus li a {
     -moz-border-radius-topleft: 5px;

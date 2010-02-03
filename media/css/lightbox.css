@@ -182,8 +182,10 @@ input.text {
 #lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs .nootabs-selected-tab {
     height: 372px;
     background-color: white;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
+    -moz-border-radius-bottomleft:5px;
+    -moz-border-radius-bottomright:5px;
+    -webkit-border-bottom-right-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
 }
 
 #lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs #sector-tab {
@@ -202,19 +204,43 @@ input.text {
 }
 
 #lightbox .resources-lightbox-content  ul.nootabs-menus li {
-    margin-left:.5em;
-}
-
-#lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-first-menu {
     margin-left: 0;
+    border: 1px solid gray;
+    border-bottom: 1px solid black;
 }
 
 #lightbox .resources-lightbox-content ul.nootabs-menus li.last-tab {
     float: right;
 }
 
+#lightbox .resources-lightbox-content ul.nootabs-menus li.middle-group-tab {
+    border-left: 0 !Important;
+    border-right: 0 !important;
+}
+
+#lightbox .resources-lightbox-content ul.nootabs-menus li.last-tab,
+#lightbox .resources-lightbox-content ul.nootabs-menus li.last-tab a {
+    -moz-border-radius-topright: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -webkit-border-top-left-radius: 5px;
+}
+
 #lightbox .resources-lightbox-content ul.nootabs-menus li.end-group-tab {
     margin-right: 55px;
+}
+
+
+#lightbox .resources-lightbox-content ul.nootabs-menus li.end-group-tab a,
+#lightbox .resources-lightbox-content ul.nootabs-menus li.end-group-tab {
+    -moz-border-radius-topright: 5px;
+    -webkit-border-top-right-radius: 5px;
+}
+
+#lightbox .resources-lightbox-content ul.nootabs-menus li.begin-group-tab a,
+#lightbox .resources-lightbox-content ul.nootabs-menus li.begin-group-tab {
+    -moz-border-radius-topleft: 5px;
+    -webkit-border-top-left-radius: 5px;
 }
 
 #lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-selected-menu a {
@@ -222,12 +248,9 @@ input.text {
     font-weight: bold;
 }
 
-#lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-selected-menu a,
 #lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-selected-menu {
-    -moz-border-radius-topleft: 5px;
-    -webkit-border-top-left-radius: 5px;
-    -moz-border-radius-topright: 5px;
-    -webkit-border-top-right-radius: 5px;
+    border: 1px solid black;
+    border-bottom:1px solid white;
 }
 
 #lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-selected-menu a span {
@@ -239,7 +262,7 @@ input.text {
 }
 
 #lightbox .resources-lightbox-content ul.nootabs-menus li a {
-    background: #DFE1E4;
+    background-color: lightgrey;
     font-weight: normal;
     height: 31px;
 }
