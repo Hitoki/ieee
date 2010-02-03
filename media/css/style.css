@@ -1767,7 +1767,8 @@ a.resource-tab-print-link {
 
 #textui-zoom-container {
 	float:right;
-    width:40px;
+    width:35px;
+    padding-top: 65px;
 }
 
 #textui-zoom-container .feature_label {
@@ -1778,10 +1779,15 @@ a.resource-tab-print-link {
 	float:left;
 	margin:3px;
 	margin-right:12px;
-	background:url(../images/textui-zoom-background.png);
+	/*background:url(../images/textui-zoom-background.png);*/
+    cursor: pointer;
 }
 
 #textui-zoom-default-zoom {
 	cursor:pointer;
 	margin:3px;
+}
+
+.ui-slider-vertical {
+    height: 278px !important;
 }
