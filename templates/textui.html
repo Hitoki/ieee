@@ -107,8 +107,6 @@
                                     {% comment %} We are hiding the word Key for now, will appear in galaxy help page
                                     #<span id="key-label">Key:</span>
                                     {% endcomment %}
-                                    <span id="connectedness" class="feature_label">Connectedness:</span>
-                                    <span id="frequency-indicator" class="flyover {width:300}" title=" tag's color shows how connected it is to industry sectors, to IEEE societies, to other tags, and to IEEE resources."><img src="/media/images/frequency-bar.png"/></span>
                                     {% comment %}
                                     #<table id="tag-model-indicator">
                                     #    <tr>
@@ -190,10 +188,13 @@
                             
                         </div>
                         <!-- end of right-column -->
-                            
                     </div>
                     
                     <div id="footer">
+                         <div id="connectedness-container">
+                            <span id="connectedness" class="feature_label">Connectedness:</span>
+                            <span id="frequency-indicator" class="flyover {width:300}" title=" tag's color shows how connected it is to industry sectors, to IEEE societies, to other tags, and to IEEE resources."><img src="/media/images/frequency-bar.png"/></span>
+                        </div>
                         {% if user %}
                             <p class="admin-links">
                                 <a id="feedback-link" href="{% url feedback %}" class="floating lightbox { customClass:'feedback' }">&nbsp;</a>

@@ -156,7 +156,6 @@ table.main td.center .center-pad {
 }
 
 p.admin-links {
-    clear:both;
     display:block;
     float:right;
     margin: -8px 15px 10px 0;
@@ -623,7 +622,7 @@ span#roamer-beta-warning {
 }
 
 #alternate-page #tag-galaxy {
-    height: 417px;
+    height: 440px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     padding: 5px 5px 2px 0;
@@ -971,7 +970,7 @@ table.vert-center td {
 
 #connectedness {
     font-weight: bold;
-    vertical-align: bottom;
+    vertical-align: top;
 }
 
 #galaxy-connectedness-help {
@@ -1741,7 +1740,7 @@ a.resource-tab-print-link {
 
 #textui-tags-search {
     float:left;
-    margin-left:1.5em;
+    margin-left:3px;
     font-weight:bold;
 }
 
@@ -1790,4 +1789,9 @@ a.resource-tab-print-link {
 
 .ui-slider-vertical {
     height: 278px !important;
+}
+
+div#connectedness-container {
+    margin: -10px 0 0 199px;
+    float:left;
 }
