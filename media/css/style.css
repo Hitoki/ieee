@@ -158,7 +158,7 @@ table.main td.center .center-pad {
 p.admin-links {
     display:block;
     float:right;
-    margin: -8px 15px 10px 0;
+    margin: -15px 15px 10px 0;
     font-size:80%;
     color:gray;
 }
@@ -506,7 +506,7 @@ span#roamer-beta-warning {
 
 #alternate-page #left-column {
     width:180px;   
-    height:488px;
+    height:500px;
 	float:left;
     margin:0;
 }
@@ -1792,6 +1792,6 @@ a.resource-tab-print-link {
 }
 
 div#connectedness-container {
-    margin: -10px 0 0 199px;
+    margin: -16px 0 0 199px;
     float:left;
 }
