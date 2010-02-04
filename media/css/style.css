@@ -653,7 +653,7 @@ span#roamer-beta-warning {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     padding: 5px 5px 2px 0;
-    margin-right:60px;
+    margin-right:35px;
 }                            
 
 
@@ -1805,7 +1805,7 @@ a.resource-tab-print-link {
 
 #textui-zoom-container {
 	float:right;
-    width:35px;
+    width:22px;
     padding-top: 65px;
 }
 
@@ -1838,6 +1838,11 @@ a.resource-tab-print-link {
 
 .ui-slider-vertical {
     height: 278px !important;
+}
+
+#textui-zoom-value {
+    margin-left: -3px;
+    font-size: 8pt;
 }
 
 div#connectedness-container {
