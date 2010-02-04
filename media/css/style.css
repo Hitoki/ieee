@@ -93,11 +93,11 @@ table.main td.center .center-pad {
 }
 
 #header #tagline {
-    color:#006699;
+    color:orange;
     display:inline-block;
-    font-size:1.3em;
+    font-size:1.2em;
     font-style:italic;
-    margin:41px 0 0 55px;
+    margin:42px 0 0 58px;
 }
 
 #header .leftCorner {
