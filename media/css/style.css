@@ -1834,6 +1834,16 @@ a.resource-tab-print-link {
     cursor: pointer;
 }
 
+.ui-state-default, .ui-widget-content .ui-state-default { /* overrides Jquery UI */ 
+    background-color: #D0E5F5 !important;
+    background-image: url(/media/images/zoom-back.png) !important;
+    background-repeat: no-repeat !important;
+}
+
+.ui-slider .ui-slider-handle { /* overrides Jquery UI */
+   cursor: pointer !important;
+}
+
 #textui-zoom-default-zoom {
 	cursor:pointer;
 	margin:3px;
