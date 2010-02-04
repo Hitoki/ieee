@@ -421,7 +421,7 @@ var Flyover = {
             
             var position = this.options.position;
 			
-			var CURSOR_PADDING = 5;
+			var CURSOR_PADDING = 15;
 			
 			if (this.options.positionCursor) {
 				// Position relative to the mouse cursor
@@ -429,6 +429,7 @@ var Flyover = {
 					x: mouseX,
 					y: mouseY
 				}
+                pos.x -= CURSOR_PADDING/2;
 			} else {
 				// Position relative to the elem
 				pos = getElemPos(this._elem);
