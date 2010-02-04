@@ -429,6 +429,13 @@ ul#view-header li {
     padding-right: 10px;
 }
 
+div.image-container {
+    height: 75px;
+    width: 75px;
+    overflow: hidden;
+    border: 1px solid #666;
+}
+
 #content p.item_even {
     font-weight: bold;
     /* background-color: #BAD4F9; */

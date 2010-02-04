@@ -88,9 +88,13 @@
                                     <tr>
                                         <td class="society-logo">
                                             {% if society.logo_thumbnail %}
-                                                <img src="{{ society.logo_thumbnail.url }}" class="logo-flyover { full_url:'{{ society.logo_full.url }}' }" />
+                                                <div class="image-container">
+                                                    <img src="{{ society.logo_full.url }}" />
+                                                </div>
                                             {% else %}
-                                                <img src="{{ MEDIA_URL }}images/society_logo_none.png" />
+                                                <div class="image-container">
+                                                    <img src="{{ MEDIA_URL }}images/society_logo_none.png" />
+                                                </div>
                                             {% endif %}
                                         </td>
                                         <td>
