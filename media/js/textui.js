@@ -374,15 +374,12 @@ var Tags = {
         }
         */
         
-        //log('this.nodeId: ' + this.nodeId);
-        //log('this.societyId: ' + this.societyId);
-        //log('this.nodeType: ' + this.nodeType);
-        
         if (this.page == this.PAGE_SECTOR) {
             // Highlight the selected sector
             $('#sector-list-item-' + this.nodeId + ' a').addClass('active-sector');
             var tabs = $('#left-column-container').data('nootabs');
 			tabs.setTab('sectors-tab');
+            
         /*
         } else if (this.nodeId != null && this.nodeType == 'tag_cluster') {
             // Highlight the selected cluster
@@ -398,6 +395,7 @@ var Tags = {
             $('#society-list-item-' + this.societyId + ' a').addClass('active-society');
             var tabs = $('#left-column-container').data('nootabs');
             tabs.setTab('societies-tab');
+            $('#societies-tab').scrollTo($('#society-list-item-' + this.societyId));
         } else {
             // No node selected
         }

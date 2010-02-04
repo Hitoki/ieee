@@ -72,7 +72,7 @@
                                         {% endfor %}
                                     </ul>
                                 </div>
-                                <div id="societies-tab" style="overflow-y:scroll; overflow-x:hidden;">
+                                <div id="societies-tab">
                                     <ul id="societies">                                        
                                         {% for society in societies %}
                                             <li id="society-list-item-{{ society.id }}"><a href="javascript:Tags.selectSociety({{ society.id }});">{{ society.name }}</a></li>

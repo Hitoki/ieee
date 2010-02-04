@@ -347,6 +347,8 @@ ul#view-header li {
 #left-column-container div#societies-tab {
     -moz-border-radius-topright: 0px !important;
     -webkit-border-top-right-radius: 0px !important;
+    overflow-y:scroll;
+    overflow-x:hidden;
 }
 
 #right-column {
