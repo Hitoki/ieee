@@ -983,8 +983,7 @@ table.vert-center td {
 }
 
 #frequencybar-tags img {
-    margin-right: 1px;
-    vertical-align:text-top;
+    vertical-align:top;
 }
 
 #frequencybar-tags ul li {
@@ -1791,13 +1790,28 @@ a.resource-tab-print-link {
 #textui-tags-search input {
     font-size:100%;
     border:1px inset gray;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    width: 100px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    width: 150px;
+    padding-left: 2px;
 }
 
 #textui-tags-search-clear {
-	cursor:hand;
+    background-image: url(/media/images/clear-search.png);
+    background-position: 0 0;
+    background-repeat: no-repeat;
+	cursor: pointer;
+	margin-left: -1px;
+	height: 20px;
+	width: 17px;
+	display: inline-block;
+	vertical-align: top;
+}
+
+#textui-tags-search-clear:hover {
+   background-position: 0 -21px;
 }
 
 /* Textui zoom slider */

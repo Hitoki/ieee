@@ -635,3 +635,12 @@ h1.no-resources-message {
 #tag-count {
     font-weight: bold;
 }
+
+#admin_footer #left {
+   float: left;
+   margin-left: 11px;
+}
+
+#admin_footer #right {
+   float: right;
+}
