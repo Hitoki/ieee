@@ -17,6 +17,7 @@ ul.nootabs-menus li {
     font-size: 12px;
     border: 1px solid gray;
     border-bottom: 1px solid #006699;
+    position: relative;
 }
 
 ul.nootabs-menus li a {
@@ -40,6 +41,7 @@ li.nootabs-selected-menu {
     text-decoration: none; 
     border: 1px solid #006699 !important;
     border-bottom: 1px solid white !important;
+    z-index: 10;
 }
 
 .nootabs-selected-menu a, .nootabs-selected-menu a:hover {
