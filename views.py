@@ -174,6 +174,10 @@ def textui(request):
     })
 
 @login_required
+def textui_home(request):
+    return render(request, 'textui_home.html')
+
+@login_required
 def textui_help(request):
     return render(request, 'textui_help.html')
 

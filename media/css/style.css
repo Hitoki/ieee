@@ -1390,6 +1390,11 @@ table.node-tooltip-grid td {
     color: orange;
 }
 
+.textui-home {
+    width:100%;
+    height:100%;
+}
+
 .textui-help {
     width:100%;
     height:100%;

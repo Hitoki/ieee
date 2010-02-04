@@ -13,6 +13,7 @@ var Tags = {
     PAGE_SECTOR: 'sector',
     PAGE_SOCIETY: 'society',
     PAGE_HELP: 'help',
+    PAGE_HOME: 'home',
     
     // The current page (sector/cluster, society, help, search, etc)
     page: null,
@@ -137,6 +138,7 @@ var Tags = {
     */
     
     _showWaitScreen: function() {
+        this.hideHome();
         this.hideHelp();
         
         // Hide the content lightbox if it's visible.
@@ -531,10 +533,45 @@ var Tags = {
         }
     },
     
-    home: function(setHash) {
+    clearSectorSociety: function(setHash) {
         this.nodeId = null;
         this.societyId = null;
         this.updateResults();
+    },
+    
+    showHome: function() {
+        this.page = this.PAGE_HOME;
+		
+        // Unselect any node
+		this.nodeId = null;
+		this.societyId = null;
+
+        this.updateChangedNode();
+        
+        var tagsElem = $('#tags');
+        tagsElem.empty();
+        
+        this.homeOldPaddingLeft = $('.alt-box-pad').css('padding-left');
+        this.homeOldPaddingRight = $('.alt-box-pad').css('padding-right');
+        this.homeOldPaddingTop = $('.alt-box-pad').css('padding-top');
+        this.homeOldPaddingBottom = $('.alt-box-pad').css('padding-bottom');
+        $('.alt-box-pad').css('padding', '0px');
+        
+        this.homeScreenElem = $('<div class="textui-home"></div>').appendTo(tagsElem);
+        this.homeScreenElem.load(TEXTUI_HOME_URL);
+        
+    },
+    
+    hideHome: function() {
+        if (this.homeScreenElem) {
+            this.homeScreenElem.remove();
+            this.homeScreenElem = null;
+            
+            $('.alt-box-pad').css('padding-left', this.homeOldPaddingLeft);
+            $('.alt-box-pad').css('padding-right', this.homeOldPaddingRight);
+            $('.alt-box-pad').css('padding-top', this.homeOldPaddingTop);
+            $('.alt-box-pad').css('padding-bottom', this.homeOldPaddingBottom);
+        }
     },
     
     showHelp: function(setHash) {
