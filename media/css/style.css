@@ -1707,12 +1707,11 @@ ul.errors {
 }
 
 #xplore-results-container div.loading {
+    padding-top:6em;
     text-align:center;
 }
 
 #xplore-results-container img.loading {
-    ddisplay:block;
-    mmargin:4em auto;
 }
 
 #xplore-totals {

@@ -275,7 +275,7 @@ def ajax_tag_content(request):
         #'xplore_results': xplore_results,
     })
 
-def _get_xplore_results(tag, highlight_search_term=True, show_all=False):
+def _get_xplore_results(tag, highlight_search_term=True, show_all=False, offset=0):
     '''
     Get xplore results for the given tag from the IEEE Xplore search gateway.  Searches all fields for the tag phrase, returns results.
     @return a 3-tuple of (results, errors, total_results).  'errors' is a string of any errors that occurred, or None.  'total_results' is the total number of results (regardless of how many are returned in 'results'.  'results' is an array of dicts:
@@ -300,7 +300,7 @@ def _get_xplore_results(tag, highlight_search_term=True, show_all=False):
         # Number of results
         'hc': max_num_results,
         # Specifies the result # to start from
-        'rs': 1,
+        'rs': offset+1,
         'ti': tag.name,
     })
     
@@ -348,6 +348,7 @@ def _get_xplore_results(tag, highlight_search_term=True, show_all=False):
         
         xplore_results = []
         for document1 in xml1.documentElement.getElementsByTagName('document'):
+            rank = getElementValueByTagName(document1, 'rank')
             title = getElementValueByTagName(document1, 'title')
             abstract = getElementValueByTagName(document1, 'abstract')
             pdf = getElementValueByTagName(document1, 'pdf')
@@ -361,6 +362,7 @@ def _get_xplore_results(tag, highlight_search_term=True, show_all=False):
                 title = re.sub('(?i)(%s)' % tag.name, r'<strong>\1</strong>', title)
             
             result = {
+                'rank': rank,
                 'name': title,
                 'description': abstract,
                 'url': pdf,
@@ -377,8 +379,9 @@ def ajax_xplore_results(request):
     tag = Node.objects.get(id=tagId)
     
     show_all = (request.POST['show_all'] == 'true')
+    offset = int(request.POST.get('offset', 0))
     
-    xplore_results, xplore_error, totalfound = _get_xplore_results(tag, show_all=show_all)
+    xplore_results, xplore_error, totalfound = _get_xplore_results(tag, show_all=show_all, offset=offset)
     
     return render(request, 'include_xplore_results.html', {
         'tag':tag,

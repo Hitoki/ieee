@@ -6,6 +6,10 @@
                 Showing all {{ totalfound|intcomma }} results
             {% else %}
                 Showing {{ xplore_results|length }} of {{ totalfound|intcomma }} results (<a id="xplore-view-all" href="#">View All</a>)
+                
+                | <a id="xplore-view-previous" href="#">View previous 10</a>
+                | <a id="xplore-view-next" href="#">View next 10</a>
+                
             {% endif %}
         </p>
     </div>
@@ -26,7 +30,7 @@
                     {% endif %}
                     <p class="{% cycle 'item_odd' 'item_even' %}">
                         <span class="AAAuto-truncate-words {length:165, flyover:true}">
-                            {{ result.name|safe }}
+                            {{ result.rank }}. {{ result.name|safe }}
                         </span>
                         {% if result.url %}
                             <img src="{{ MEDIA_URL }}images/popup.png" />

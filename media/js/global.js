@@ -386,9 +386,12 @@ function onCopyTagsSuccess(linkElem, data) {
 }
 
 // This loads the xplore results for a tag into the given element via AJAX.
-function getXploreResults(elem, showAll) {
+function getXploreResults(elem, showAll, offset) {
     if (showAll == undefined) {
         showAll = false;
+    }
+    if (offset == undefined) {
+        offset = 0;
     }
     
     var elem2 = $(elem);
@@ -398,7 +401,8 @@ function getXploreResults(elem, showAll) {
         url: '/ajax/xplore_results',
         data: {
             tag_id: tagId,
-            show_all: showAll
+            show_all: showAll,
+            offset: offset
         },
         type: 'post',
         success: function(data) {
@@ -415,6 +419,17 @@ function getXploreResults(elem, showAll) {
             elem2.find('#xplore-view-all').click(function() {
                 // Show all results
                 getXploreResults(elem, true);
+                return false;
+            });
+            
+            elem2.find('#xplore-view-previous').click(function() {
+                getXploreResults(elem, false, offset-10);
+                return false;
+            });
+            
+            elem2.find('#xplore-view-next').click(function() {
+                getXploreResults(elem, false, offset+10);
+                return false;
             });
             
         }
