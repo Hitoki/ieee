@@ -612,7 +612,7 @@ var Tags = {
             $('#tags .node').css('margin-right', (defaultHorizMargin * zoom / 100) + 'px');
             $('#tags .node').css('font-size', (defaultTextSize * zoom / 100) + 'px');
             $('#tags .node').css('height', (defaultHeight * zoom / 100) + 'px');
-            $('#tags .node').css('padding-top', (defaultPadding * scaleZoom(zoom, 5) / 100) + 'px');
+            $('#tags .node').css('padding-top', (defaultPadding * scaleZoom(zoom, 2) / 100) + 'px');
             $('#tags .node').css('padding-bottom', (defaultPadding * scaleZoom(zoom, 2) / 100) + 'px');
             $('#tags .node').css('padding-left', (defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
             $('#tags .node').css('padding-right', (defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
