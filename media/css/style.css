@@ -82,10 +82,10 @@ table.main td.center .center-pad {
 }
 
 #header .right-banner {
+    clear:both;
     float:right;
-    position:relative;
-    top:19px;
-    right:10px;
+    margin-right:10px;
+    margin-top:-38px;
 }
 
 #header a.home img {
@@ -1768,6 +1768,8 @@ a.resource-tab-print-link {
     float:left;
     margin-left:3px;
     font-weight:bold;
+    display: inline-block;
+    height: 20px;
 }
 
 #textui-tags-search span.feature_label {
@@ -1794,9 +1796,8 @@ a.resource-tab-print-link {
 	cursor: pointer;
 	margin-left: -1px;
 	height: 20px;
-	width: 17px;
-	display: inline-block;
-	vertical-align: top;
+	width: 20px;
+	float: right;
 }
 
 #textui-tags-search-clear:hover {
