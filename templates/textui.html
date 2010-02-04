@@ -187,17 +187,8 @@
                     </div>
                     
                     <div id="footer">
-                         <div id="connectedness-container">
-                            <span id="connectedness" class="feature_label">Connectedness:</span>
-                            <span id="frequency-indicator" class="flyover {width:300}" title=" tag's color shows how connected it is to industry sectors, to IEEE societies, to other tags, and to IEEE resources."><img src="/media/images/frequency-bar.png"/></span>
-                        </div>
-                        <div id="textswitchlink-container">
-                            <a id="switch-link" class="floating textui-switch" href="{% url roamer %}">Switch to Visual Map Interface (Beta)</a>
-                        </div>
                         {% if user %}
-                            <p class="admin-links">
-                                <a id="feedback-link" href="{% url feedback %}" class="floating lightbox { customClass:'feedback' }">&nbsp;</a>
-                                
+                            <p class="admin-links">                                
                                 {% ifequal user.get_profile.role "admin" %}
                                     <a href="{% url admin_home %}">Admin</a> |
                                 {% endifequal %}
@@ -210,6 +201,17 @@
                                 <a href="{% url admin_logout %}">Logout</a>
                             </p>
                         {% endif %}
+                         <div id="connectedness-container">
+                            <span id="connectedness" class="feature_label">Connectedness:</span>
+                            <span id="frequency-indicator" class="flyover {width:300}" title=" tag's color shows how connected it is to industry sectors, to IEEE societies, to other tags, and to IEEE resources."><img src="/media/images/frequency-bar.png"/></span>
+                        </div>
+                        <div id="textswitchlink-container">
+                            <a id="switch-link" class="floating textui-switch" href="{% url roamer %}">Switch to Visual Map Interface (Beta)</a>
+                        </div>
+
+                        <div class="survey-button">
+                            <a id="feedback-link" href="{% url feedback %}" class="floating lightbox { customClass:'feedback' }">&nbsp;</a>
+                        </div>
                         
                         <img class="leftCorner" src="{{MEDIA_URL}}images/mainBottomLeftCorner.png" width="26" height="40" />
                         <img class="rightCorner" src="{{MEDIA_URL}}images/mainBottomRightCorner.png" width="26" height="40" />

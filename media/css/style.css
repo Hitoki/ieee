@@ -163,11 +163,16 @@ table.main td.center .center-pad {
 }
 
 p.admin-links {
+    float: left;
     display:block;
-    float:right;
-    margin: -15px 15px 10px 0;
+    margin: -14px 0 10px 12px;
     font-size:80%;
     color:gray;
+}
+
+div.survey-button {
+    float:right;
+    margin: -15px 35px 10px 0;
 }
 
 p.admin-links a {
@@ -1849,6 +1854,6 @@ a.resource-tab-print-link {
 }
 
 div#connectedness-container {
-    margin: -16px 0 0 199px;
+    margin: -16px 0 0 115px;
     float:left;
 }

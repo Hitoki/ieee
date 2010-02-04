@@ -144,15 +144,8 @@
                         </div>
                         
                         <div class="ui-footer">
-                            <div id="roamerswitchlink-container">
-                                <a id="switch-link" class="roamer-switch floating { content: 'Please select a sector to enable this link.', position:'left' }" href="{% url textui %}">
-                                    Switch to Textual Interface
-                                </a>
-                            </div>
-                        
-                            {% if user %}
+                             {% if user %}
                                     <p class="admin-links">
-                                        <a id="feedback-link" href="{% url feedback %}" class="floating lightbox { customClass:'feedback' }">&nbsp;</a>
                                         
                                         {% ifequal user.get_profile.role "admin" %}
                                             <a href="{% url admin_home %}">Admin</a> |
@@ -166,7 +159,15 @@
                                         <a href="{% url admin_logout %}">Logout</a>
                                     </p>
                             {% endif %}
+                            <div id="roamerswitchlink-container">
+                                <a id="switch-link" class="roamer-switch floating { content: 'Please select a sector to enable this link.', position:'left' }" href="{% url textui %}">
+                                    Switch to Textual Interface
+                                </a>
+                            </div>
                             
+                            <div class="survey-button">
+                                <a id="feedback-link" href="{% url feedback %}" class="floating lightbox { customClass:'feedback' }">&nbsp;</a>
+                            </div>
                         </div>
                         
                     </div>
