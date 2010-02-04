@@ -45,22 +45,20 @@ table.main {
 }
 
 table.main td.left {
-    width:10%;
+    width:50px;
     background-image:url(../images/leftMainShadow.gif);
     background-position:right;
     background-color: #6F7985;
 }
 
 table.main td.right {
-    width:10%;
+    width:50px;
     background-image:url(../images/rightMainShadow.gif);
     background-position:left;
     background-color: #6F7985;
 }
 
 table.main td.center {
-    width:80%;
-    min-width: 970px;
 }
 
 table.main td.center .center-pad {
@@ -524,6 +522,10 @@ span#roamer-beta-warning {
 }
 
 /* Galaxy Interface */
+
+.textui-page, .roamer-page {
+    min-width:1090px;
+}
 
 #roamer-outline {
     border:1px solid #006699;
