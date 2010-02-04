@@ -3,7 +3,7 @@
 {% block body %}
     <script>
         window.onload = function() {
-            window.print();
+            //window.print();
         }
     </script>
     
@@ -53,7 +53,12 @@
             <ul>
                 {% for conference in conferences.all %}
                     <li>
-                        {{ conference.name }}
+                        <p class="title">
+                            {{ conference.name }}
+                        </p>
+                        <p class="description">
+                            {{ conference.description|truncatewords:60 }}
+                        </p>
                     </li>
                 {% endfor %}
             </ul>
@@ -64,7 +69,12 @@
             <ul>
                 {% for periodical in periodicals.all %}
                     <li>
-                        {{ periodical.name }}
+                        <p class="title">
+                            {{ periodical.name }}
+                        </p>
+                        <p class="description">
+                            {{ periodical.description|truncatewords:60 }}
+                        </p>
                     </li>
                 {% endfor %}
             </ul>
@@ -75,7 +85,12 @@
             <ul>
                 {% for standard in standards.all %}
                     <li>
-                        {{ standard.name }}
+                        <p class="title">
+                            {{ standard.name }}
+                        </p>
+                        <p class="description">
+                            {{ standard.description|truncatewords:60 }}
+                        </p>
                     </li>
                 {% endfor %}
             </ul>
@@ -86,7 +101,12 @@
             <ul>
                 {% for xplore_result in xplore_results %}
                     <li>
-                        {{ xplore_result.name }}
+                        <p class="title">
+                            {{ xplore_result.name }}
+                        </p>
+                        <p class="description">
+                            {{ xplore_result.description|truncatewords:60 }}
+                        </p>
                     </li>
                 {% endfor %}
             </ul>

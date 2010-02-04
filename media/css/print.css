@@ -39,3 +39,12 @@ h3 {
     font-size:.8em;
     color:gray;
 }
+
+.title {
+}
+
+.description {
+    margin:.3em 1em .7em 1.5em;
+    font-size:90%;
+    color:#222;
+}
