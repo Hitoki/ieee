@@ -76,19 +76,30 @@ table.main td.center .center-pad {
     position:relative;
 }
 
-#header .banner {
+#header .left-banner {
+    float: left;
     position:relative;
-    top:17px;
+    top:10px;
     left:10px;
 }
 
-#header a.home {
-    float:left;
-    display:block;
+#header .right-banner {
+    float:right;
+    position:relative;
+    top:19px;
+    right:10px;
 }
 
 #header a.home img {
     border: none;
+}
+
+#header #tagline {
+    color:#006699;
+    display:inline-block;
+    font-size:1.3em;
+    font-style:italic;
+    margin:41px 0 0 55px;
 }
 
 #header .leftCorner {
@@ -99,21 +110,6 @@ table.main td.center .center-pad {
 #header .rightCorner {
     position:absolute;
     right:-13px;
-}
-
-#header .floating {
-    display:block;
-    position:absolute;
-    right:15px;
-    bottom:5px;
-    font-size:75%;
-    color:gray;
-    text-align:right;
-    line-height:1.8em;
-}
-
-#header .floating a {
-    color: gray;
 }
 
 #feedback-link {
@@ -135,22 +131,35 @@ table.main td.center .center-pad {
     background-position: 0 -19px;
 }
 
-#header #switch-link {
-    top: 15px;
-    height: 20px;
+#textswitchlink-container {
+    float: left;
+    margin: -16px 0 0 10px;
 }
 
 .textui-switch {
     padding-left: 3em;
     background: transparent url(/media/images/roamer_icon.png) no-repeat scroll left center;
+    font-size:75%;
+    color:gray !important;
+    height:15px;
+    display:inline-block;
+}
+
+#roamerswitchlink-container {
+    float: left;
+    margin: -16px 0 0 185px;
 }
 
 .roamer-switch {
     padding-left: 3em;
     background: transparent url(/media/images/tags_icon.png) no-repeat scroll left center;
+    font-size:75%;
+    color:gray !important;
+    height:15px;
+    display:inline-block;
 }
 
-#header a.floating img {
+#footer a.floating img {
     vertical-align:middle;
     border:none;
 }
@@ -1165,6 +1174,8 @@ input[type=submit], input[type=button] {
     color: white;
     cursor: pointer;
     padding: 2px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
     /* NOTE: This causes IE7 to truncate button widths */
     /*min-width: 40px;
     width: auto;*/
@@ -1772,7 +1783,7 @@ a.resource-tab-print-link {
 }
 
 #textui-tags-search span.feature_label {
-    margin: 1px 5px 0 0;
+    margin: 0 5px 0 0;
     display: inline-block;
     float:left;
 }

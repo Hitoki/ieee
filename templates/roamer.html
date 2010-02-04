@@ -14,15 +14,12 @@
                     
                     <div id="header">
                         <img class="leftCorner" src="{{MEDIA_URL}}images/mainTopLeftCorner.gif" width="26" height="67" />
-                        <a href="javascript:Roamer.setNode(1);" class="home"><img class="banner" src="{{MEDIA_URL}}images/ieee_banner.jpg" width="563" height="42" /></a>
-                        
-                        <a id="switch-link" class="roamer-switch floating { content: 'Please select a sector to enable this link.', position:'left' }" href="{% url textui %}">
-                            Switch to Textual Interface
-                        </a>
-                        
+                        <a href="javascript:Roamer.setNode(1);" class="home"><img class="left-banner" src="{{MEDIA_URL}}images/technav_banner.jpg" width="139" height="57" /></a>
+                        <span id="tagline">Connecting the IEEE Universe of Information</span>
+                        <a href="javascript:Roamer.setNode(1);" class="home"><img class="right-banner" src="{{MEDIA_URL}}images/ieee_banner.jpg" width="133" height="42" /></a>
                         <img class="rightCorner" src="{{MEDIA_URL}}images/mainTopRightCorner.gif" width="26" height="67" />
                     </div>
-                    
+                                        
                     <div class="center-pad">
                         
                         <!-- Navigation links -->
@@ -147,7 +144,11 @@
                         </div>
                         
                         <div class="ui-footer">
-                        
+                            <div id="roamerswitchlink-container">
+                                <a id="switch-link" class="roamer-switch floating { content: 'Please select a sector to enable this link.', position:'left' }" href="{% url textui %}">
+                                    Switch to Textual Interface
+                                </a>
+                            </div>
                         
                             {% if user %}
                                     <p class="admin-links">
