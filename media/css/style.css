@@ -262,7 +262,6 @@ ul#view-header li {
 
 #left-column ul li a {
     display:block;
-    color:black;
     text-decoration:none;
 }
 #left-column ul li a:hover {
@@ -280,11 +279,7 @@ ul#view-header li {
     border-bottom: 1px solid #006699;
 }
 
-#galaxy-tabs li.second-tab {
-    -moz-border-radius-topleft: 0 !Important;
-    -moz-border-radius-topright: 5px !important;
-    -webkit-border-top-left-radius: 0 !Important;
-    -webkit-border-top-right-radius: 5px !important;
+#galaxy-tabs li.last-menu {
     margin-left: -1px !Important;
     border-left: 1px solid #006699;
     width: 87px !important;
@@ -296,7 +291,6 @@ ul#view-header li {
 }
 
 #left-column-container .nootabs-menu a {
-    background-color:lightgrey;
     font-weight: normal;
 }
 
@@ -315,10 +309,6 @@ ul#view-header li {
     border: 1px solid #006699;
     border-bottom: 1px solid white !important;
     background-color: white;
-    -moz-border-radius-topleft: 5px;
-    -moz-border-radius-topright: 5px;
-    -webkit-border-top-left-radius: 5px;
-    -webkit-border-top-right-radius: 5px;
 }
 
 #left-column-container .nootabs-menus li.nootabs-first-menu {
@@ -329,7 +319,7 @@ ul#view-header li {
 }
 
 #left-column-container .nootabs-menus li.nootabs-menu a:hover{
-    background-color: lightgrey;
+    background-color: #EAEDEF;
     text-decoration: underline !important;
     color: orange;
 }
@@ -344,12 +334,6 @@ ul#view-header li {
     font-weight: bold;
     color: #006699;
     background-color: white;
-}
-#left-column-container .nootabs-menus li a {
-    -moz-border-radius-topleft: 5px;
-    -moz-border-radius-topright: 5px;
-    -webkit-border-top-left-radius: 5px;
-    -webkit-border-top-right-radius: 5px;
 }
 
 #left-column-container div#sectors-tab {
@@ -1544,10 +1528,6 @@ p.export {
 #logout-message #wufoo {
     height:930px;
     border:1px solid gray;
-}
-
-#adminLogin ul.nootabs-menus li {
-   font-size: 18px;
 }
 
 #adminLogin ul.nootabs-menus li a{

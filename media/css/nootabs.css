@@ -15,19 +15,20 @@ ul.nootabs-menus li {
     text-align: left;
     width: auto;
     font-size: 12px;
+    border: 1px solid gray;
+    border-bottom: 1px solid #006699;
 }
 
 ul.nootabs-menus li a {
     padding: 5px 40px 5px 5px;
     display: block;
-    text-decoration: none !important;
     line-height: 16px;
-    font-weight: bold;
     text-align: left;
 }
 
 ul.nootabs-menus li a:hover {
-    color: var(link-hover);
+    color: orange;
+    text-decoration: underline;
 }
 
 .nootabs-menu-filler {
@@ -35,14 +36,16 @@ ul.nootabs-menus li a:hover {
     border-bottom: 1px solid var(pallette-lines);
 }
 
-.nootabs-selected-menu {
+li.nootabs-selected-menu {
     text-decoration: none; 
-    border: 1px solid var(pallette-lines);
-    border-bottom: 0px solid white;
+    border: 1px solid #006699 !important;
+    border-bottom: 1px solid white !important;
 }
 
 .nootabs-selected-menu a, .nootabs-selected-menu a:hover {
-    color: var(current-page);
+    color: #006699;
+    font-weight: bold;
+    text-decoration: none !important;
 }
 
 .nootabs-tab {
@@ -53,11 +56,31 @@ ul.nootabs-menus li a:hover {
 .nootabs-selected-tab {
     display: block;
     top: 5px;
-    border: 1px solid var(pallette-lines);
+    border: 1px solid #006699;
+    -moz-border-radius-bottomright:5px;
+    -moz-border-radius-bottomleft:5px;
+    -webkit-border-bottom-left-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
 }
 
 .noocontainer {
     padding: 5px;  
+}
+
+ul.nootabs-menus li.nootabs-first-menu {
+    margin-left :0 !important;
+}
+
+ul.nootabs-menus li.nootabs-first-menu,
+ul.nootabs-menus li.nootabs-first-menu a {
+    -moz-border-radius-topleft:5px;
+    -webkit-border-top-left-radius: 5px;
+}
+
+ul.nootabs-menus li.last-menu,
+ul.nootabs-menus li.last-menu a {
+    -moz-border-radius-topright:5px;
+    -webkit-border-top-right-radius: 5px;
 }
 
 /* used to be .nootab_tab */
@@ -104,12 +127,12 @@ ul.nootabs-menus li a:hover {
 /* Page-specific styling below: */
 
 ul.nootabs-menus li {
-    margin:0em 0em -1px 1em;
+    margin:0em 0em -1px -1px;
 }
 
 ul.nootabs-menus li a {
     color:#666;
-    background:silver;
+    background:#EAEBEF;
 }
 
 ul.nootabs-menus li a span {
@@ -119,11 +142,11 @@ ul.nootabs-menus li a span {
 ul.nootabs-menus li.nootabs-selected-menu a {
     /*background:#006599;*/
     background: white;
-    color: black;
+    color: #006699;
 }
 
 div.nootabs-tab {
-    border:1px solid var(pallette-lines);
+    border:1px solid #006699;
 }
 
 #resource-tabs {

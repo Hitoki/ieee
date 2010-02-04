@@ -182,20 +182,6 @@ input.text {
 #lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs .nootabs-selected-tab {
     height: 372px;
     background-color: white;
-    -moz-border-radius-bottomleft:5px;
-    -moz-border-radius-bottomright:5px;
-    -webkit-border-bottom-right-radius: 5px;
-    -webkit-border-bottom-left-radius: 5px;
-}
-
-#lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs #sector-tab {
-    -moz-border-radius-topleft:0 !important;
-    -webkit-border-top-left-radius: 0 !important;
-}
-
-#lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs #xplore-tab {
-    -moz-border-radius-topright:0 !important;
-    -webkit-border-top-right-radius: 0 !important;
 }
 
 #lightbox .resources-lightbox-content h1 {
@@ -203,54 +189,29 @@ input.text {
     margin: 1em 1em 0 24px;
 }
 
-#lightbox .resources-lightbox-content  ul.nootabs-menus li {
-    margin-left: 0;
-    border: 1px solid gray;
-    border-bottom: 1px solid black;
-}
 
-#lightbox .resources-lightbox-content ul.nootabs-menus li.last-tab {
+#lightbox .resources-lightbox-content ul.nootabs-menus li.right-menu {
     float: right;
 }
 
-#lightbox .resources-lightbox-content ul.nootabs-menus li.middle-group-tab {
-    border-left: 0 !Important;
-    border-right: 0 !important;
-}
 
-#lightbox .resources-lightbox-content ul.nootabs-menus li.last-tab,
-#lightbox .resources-lightbox-content ul.nootabs-menus li.last-tab a {
+#lightbox .resources-lightbox-content ul.nootabs-menus li.right-menu,
+#lightbox .resources-lightbox-content ul.nootabs-menus li.right-menu a {
     -moz-border-radius-topright: 5px;
     -webkit-border-top-right-radius: 5px;
     -moz-border-radius-topleft: 5px;
     -webkit-border-top-left-radius: 5px;
 }
 
-#lightbox .resources-lightbox-content ul.nootabs-menus li.end-group-tab {
+#lightbox .resources-lightbox-content ul.nootabs-menus li.end-group-menu {
     margin-right: 55px;
 }
 
 
-#lightbox .resources-lightbox-content ul.nootabs-menus li.end-group-tab a,
-#lightbox .resources-lightbox-content ul.nootabs-menus li.end-group-tab {
-    -moz-border-radius-topright: 5px;
-    -webkit-border-top-right-radius: 5px;
-}
-
-#lightbox .resources-lightbox-content ul.nootabs-menus li.begin-group-tab a,
-#lightbox .resources-lightbox-content ul.nootabs-menus li.begin-group-tab {
+#lightbox .resources-lightbox-content ul.nootabs-menus li.begin-group-menu a,
+#lightbox .resources-lightbox-content ul.nootabs-menus li.begin-group-menu {
     -moz-border-radius-topleft: 5px;
     -webkit-border-top-left-radius: 5px;
-}
-
-#lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-selected-menu a {
-    background: white;
-    font-weight: bold;
-}
-
-#lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-selected-menu {
-    border: 1px solid black;
-    border-bottom:1px solid white;
 }
 
 #lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-selected-menu a span {
@@ -261,25 +222,9 @@ input.text {
     font-weight: bold;
 }
 
-#lightbox .resources-lightbox-content ul.nootabs-menus li a {
-    background-color: lightgrey;
-    font-weight: normal;
-    height: 31px;
-}
-
-#lightbox .resources-lightbox-content ul.nootabs-menus li a.one-word-tab {
+#lightbox .resources-lightbox-content ul.nootabs-menus li a.one-word-menu {
     padding-top: 12px;
-    height: 24px !important;
-}
-
-#lightbox .resources-lightbox-content ul.nootabs-menus li a:hover {
-    text-decoration: underline !important;
-    color: orange;
-}
-
-#lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-selected-menu a:hover {
-    text-decoration: none !important;
-    color: black;
+    height: 25px !important;
 }
 
 #lightbox .resources-lightbox-content .group p.more-conferences {
