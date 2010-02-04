@@ -118,3 +118,8 @@ div.survey-button {
 p.admin-links {
     margin-top: -20px !important;
 }
+
+#textui-tags-search-clear {
+    float: none;
+    display: inline-block;
+}

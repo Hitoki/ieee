@@ -1775,6 +1775,7 @@ a.resource-tab-print-link {
     font-weight:bold;
     display: inline-block;
     height: 20px;
+    line-height: 1.4
 }
 
 #textui-tags-search span.feature_label {
@@ -1792,17 +1793,21 @@ a.resource-tab-print-link {
     -webkit-border-bottom-left-radius: 5px;
     width: 150px;
     padding-left: 2px;
+    float: left;
+    display: inline-block;
+    margin-top: 0;
 }
 
 #textui-tags-search-clear {
-    background-image: url(/media/images/clear-search.png);
-    background-position: 0 0;
-    background-repeat: no-repeat;
-	cursor: pointer;
-	margin-left: -1px;
-	height: 20px;
-	width: 20px;
-	float: right;
+    background-image:url(/media/images/clear-search.png);
+    background-position:0 0;
+    background-repeat:no-repeat;
+    cursor:pointer;
+    display:inline-block;
+    height:20px;
+    margin-left:-1px;
+    width:20px;
+    float: right;
 }
 
 #textui-tags-search-clear:hover {
