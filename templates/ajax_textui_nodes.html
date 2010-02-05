@@ -7,7 +7,7 @@
         {% if search_page_title %}
             <h3>{{ search_page_title }}</h3>
         {% else %}
-            <h3>Showing {{ child_nodes|length }} results for "{{ search_for }}":</h3>
+            <h3>{{ child_nodes|length }} results for "{{ search_for }}":</h3>
         {% endif %}
     {% endif %}
 {% endif %}
