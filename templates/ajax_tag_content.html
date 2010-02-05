@@ -10,7 +10,7 @@
         <a class="lightbox-close"></a>
         <a id="resource-print-link" target="_blank" href="{% url print_resource tag.id "all" %}">Print all Tabs</a>
         
-        <h1>{{ num_resources }} Resource{{num_resources|pluralize}} Tagged "{{ tag.name }}"</h1>
+        <h1>"{{ tag.name }}" has <span id="num-related-items" class="{ number: {{ num_related_items }} }"><img src="{{ MEDIA_URL }}images/resource_popup_xplore_loader.gif" /></span> related items</h1>
         <div class="resources-pad">
         
             

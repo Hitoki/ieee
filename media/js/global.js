@@ -414,7 +414,9 @@ function getXploreResults(elem, showAll, offset) {
             //log('  elem2[0].nodeName: ' + elem2[0].nodeName);
             var num = elem2.find('#num-xplore-results-hidden').html();
             //log('  num: ' + num);
-            $('#num-xplore-results').html('(' + num + ')');
+            $('#num-xplore-results').text('(' + num + ')');
+            var numRelatedItems= parseInt($('#num-related-items').metadata().number);
+            $('#num-related-items').text(numRelatedItems + parseInt(num));
             
             elem2.find('#xplore-view-all').click(function() {
                 // Show all results

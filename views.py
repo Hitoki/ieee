@@ -262,6 +262,16 @@ def ajax_tag_content(request):
     conferences = list(conferences)
     conferences = util.group_conferences_by_series(conferences)
     
+    num_related_items =  \
+        sectors1.count() \
+        + clusters1.count() \
+        + tag.societies.count() \
+        + tag.related_tags.count() \
+        + len(conferences) \
+        + experts.count() \
+        + periodicals.count() \
+        + standards.count() \
+    
     return render(request, 'ajax_tag_content.html', {
         'tag':tag,
         'conferences': conferences,
@@ -269,6 +279,7 @@ def ajax_tag_content(request):
         'periodicals': periodicals,
         'standards': standards,
         'num_resources': num_resources,
+        'num_related_items': num_related_items,
         'parent_nodes': parent_nodes,
         'ui': ui,
         #'xplore_error': xplore_error,
