@@ -413,9 +413,10 @@ function getXploreResults(elem, showAll, offset) {
             //log('  elem2[0]: ' + elem2[0]);
             //log('  elem2[0].nodeName: ' + elem2[0].nodeName);
             var num = elem2.find('#num-xplore-results-hidden').html();
-            //log('  num: ' + num);
+            // NOTE: Need to get rid of the comma, or we get bad numbers.
+            num = num.replace(',', '');
             $('#num-xplore-results').text('(' + num + ')');
-            var numRelatedItems= parseInt($('#num-related-items').metadata().number);
+            var numRelatedItems = parseInt($('#num-related-items').metadata().number);
             $('#num-related-items').text(numRelatedItems + parseInt(num));
             
             elem2.find('#xplore-view-all').click(function() {
