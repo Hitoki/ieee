@@ -43,7 +43,7 @@
                     <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{ result.description|default:"(no description)" }}</p>
                 {% endfor %}
             {% else %}
-                <p class="no-resources">(no Xplore results)</p>
+               <p class="no-resources">No xplore results are currently tagged "{{ tag.name }}"</p>
             {% endif %}
         {% endif %}
         

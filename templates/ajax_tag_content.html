@@ -45,24 +45,28 @@
                         <div id="sector-tab" class="sector-tab">
                             <div class="print-resource"><a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "sectors" %}">Print this Tab</a></div>
                             <div class="group">
-                                {% for parent_node in parent_nodes %}
-                                    <p class="{% cycle 'item_odd' 'item_even' %}">
-                                        {% ifequal ui "textui" %}
-                                            <a href="javascript:Tags.selectSector({{ parent_node.sector.id }});">
-                                                {{ parent_node.sector.name }}
-                                            </a>
-                                        {% else %}
-                                            {% ifequal ui "roamer" %}
-                                                <a href="javascript:Roamer.setNode({{ parent_node.sector.id }});">
+                                {% if parent_nodes|length %}
+                                    {% for parent_node in parent_nodes %}
+                                        <p class="{% cycle 'item_odd' 'item_even' %}">
+                                            {% ifequal ui "textui" %}
+                                                <a href="javascript:Tags.selectSector({{ parent_node.sector.id }});">
                                                     {{ parent_node.sector.name }}
                                                 </a>
+                                            {% else %}
+                                                {% ifequal ui "roamer" %}
+                                                    <a href="javascript:Roamer.setNode({{ parent_node.sector.id }});">
+                                                        {{ parent_node.sector.name }}
+                                                    </a>
+                                                {% endifequal %}
                                             {% endifequal %}
-                                        {% endifequal %}
-                                        {% if parent_node.clusters %}
-                                            - {{ parent_node.clusters|textlist }} cluster{{ parent_node.clusters|pluralize }}
-                                        {% endif %}
-                                    </p>
-                                {% endfor %}
+                                            {% if parent_node.clusters %}
+                                                - {{ parent_node.clusters|textlist }} cluster{{ parent_node.clusters|pluralize }}
+                                            {% endif %}
+                                        </p>
+                                    {% endfor %}
+                                {% else %}
+                                    <p class="no-resources">No sectors are currently tagged "{{ tag.name }}"</p>
+                                {% endif %}
                             </div>
                         </div>
 						
@@ -83,35 +87,39 @@
                         <div id="society-tab">
                             <div class="print-resource"><a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "societies" %}">Print this Tab</a></div>
                             <div class="group">
-                            <table class="society-images">
-                                {% for society in tag.societies.all %}
-                                    <tr>
-                                        <td class="society-logo">
-                                            {% if society.logo_thumbnail %}
-                                                <div class="image-container">
-                                                    <img src="{{ society.logo_full.url }}" />
-                                                </div>
-                                            {% else %}
-                                                <div class="image-container">
-                                                    <img src="{{ MEDIA_URL }}images/society_logo_none.png" />
-                                                </div>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            {% if society.url %}
-                                                <a href="{{ society.url }}" target="_blank">
-                                            {% endif %}
-                                            {{ society.name }} ({{ society.abbreviation }})
-                                            {% if society.url %}
-                                                <img src="{{ MEDIA_URL }}images/popup.png" />
-                                            {% endif %}
-                                            {% if society.url %}
-                                                </a>
-                                            {% endif %}
-                                        </td>
-                                    </tr>    
-                                {% endfor %}
-                            </table>
+                            {% if tag.societies.all %}
+                                <table class="society-images">
+                                    {% for society in tag.societies.all %}
+                                        <tr>
+                                            <td class="society-logo">
+                                                {% if society.logo_thumbnail %}
+                                                    <div class="image-container">
+                                                        <img src="{{ society.logo_full.url }}" />
+                                                    </div>
+                                                {% else %}
+                                                    <div class="image-container">
+                                                        <img src="{{ MEDIA_URL }}images/society_logo_none.png" />
+                                                    </div>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if society.url %}
+                                                    <a href="{{ society.url }}" target="_blank">
+                                                {% endif %}
+                                                {{ society.name }} ({{ society.abbreviation }})
+                                                {% if society.url %}
+                                                    <img src="{{ MEDIA_URL }}images/popup.png" />
+                                                {% endif %}
+                                                {% if society.url %}
+                                                    </a>
+                                                {% endif %}
+                                            </td>
+                                        </tr>    
+                                    {% endfor %}
+                                </table>
+                                {% else %}
+                                    <p class="no-resources">No societies are currently tagged "{{ tag.name }}"</p>
+                                {% endif %}
                             </div>
                         </div>
                         
@@ -119,17 +127,21 @@
                         <div id="related-tab">
                             <div class="print-resource"><a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "related_tags" %}">Print this Tab</a></div>
                             <div class="group">
-                                {% for related_tag in tag.related_tags.all %}
-                                    <p class="{% cycle 'item_odd' 'item_even' %}">
-										{% ifequal ui "textui" %}
-											<a href="javascript:Tags.selectTag({{ related_tag.id }});">
-												{{ related_tag.name }}
-											</a>
-										{% else %}
-											{{ related_tag.name }}
-										{% endifequal %}
-                                    </p>
-                                {% endfor %}
+                                {% if tag.related_tags.all %}
+                                    {% for related_tag in tag.related_tags.all %}
+                                        <p class="{% cycle 'item_odd' 'item_even' %}">
+                                            {% ifequal ui "textui" %}
+                                                <a href="javascript:Tags.selectTag({{ related_tag.id }});">
+                                                    {{ related_tag.name }}
+                                                </a>
+                                            {% else %}
+                                                {{ related_tag.name }}
+                                            {% endifequal %}
+                                        </p>
+                                    {% endfor %}
+                                {% else %}
+                                    <p class="no-resources">No related tags are currently tagged "{{ tag.name }}"</p>
+                                {% endif %}
                             </div>
                         </div>
                         
@@ -187,7 +199,7 @@
                                         
                                     {% endfor %}
                                 {% else %}
-                                    <p class="no-resources">(no conferences)</p>
+                                    <p class="no-resources">No conferences are currently tagged "{{ tag.name }}"</p>
                                 {% endif %}
                             </div>
                         </div>
@@ -213,7 +225,7 @@
                                         <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
                                     {% endfor %}
                                 {% else %}
-                                    <p class="no-resources">(no periodicals)</p>
+                                    <p class="no-resources">No periodicals are currently tagged "{{ tag.name }}"</p>
                                 {% endif %}
                             </div>
                         </div>
@@ -239,7 +251,7 @@
                                         <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
                                     {% endfor %}
                                 {% else %}
-                                    <p class="no-resources">(no standards)</p>
+                                    <p class="no-resources">No standards are currently tagged "{{ tag.name }}"</p>
                                 {% endif %}
                             </div>
                         </div>
