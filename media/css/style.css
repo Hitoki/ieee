@@ -93,7 +93,7 @@ table.main td.center .center-pad {
 }
 
 #header #tagline {
-    color:orange;
+    color:#006699;
     display:inline-block;
     font-size:1.2em;
     font-style:italic;
@@ -110,15 +110,30 @@ table.main td.center .center-pad {
     right:-13px;
 }
 
+#header #links {
+    display:inline-block;
+    margin-right:150px;
+    margin-top:16px;
+    position:absolute;
+    right:0;
+    top:0;
+}
+
+p.admin-links {
+    font-size:80%;
+    color:gray;
+    margin: 0;
+    padding: 0;
+}
+
 #feedback-link {
     height:18px;
     font-size:.8em;
     color:white;
-    width:229px;
+    width:111px;
     background-image:url(../images/survey_button.png);
     background-position: 0 0;
     background-repeat: no-repeat;
-    
     display:block;
     float:left;
     margin-right:1em;
@@ -130,8 +145,10 @@ table.main td.center .center-pad {
 }
 
 #textswitchlink-container {
-    float: left;
-    margin: -16px 0 0 10px;
+    float:left;
+    margin:-16px 0 0;
+    text-align:center;
+    width:40%;
 }
 
 .textui-switch {
@@ -160,15 +177,6 @@ table.main td.center .center-pad {
 #footer a.floating img {
     vertical-align:middle;
     border:none;
-}
-
-p.admin-links {
-    float: left;
-    display:block;
-    margin: -14px 0 10px 12px;
-    font-size:80%;
-    color:gray;
-    width: 175px;
 }
 
 div.survey-button {
@@ -1800,7 +1808,7 @@ a.resource-tab-print-link {
     -moz-border-radius-bottomleft: 5px;
     -webkit-border-top-left-radius: 5px;
     -webkit-border-bottom-left-radius: 5px;
-    width: 150px;
+    width: 200px;
     padding: 2px 0 1px 2px;
     float: left;
     display: inline-block;
@@ -1857,12 +1865,12 @@ a.resource-tab-print-link {
 #textui-zoom-default-zoom {
 	cursor:pointer;
 	font-size: 7pt;
-	margin-left: -7px;
+	margin-left: -3px;
+	text-decoration: underline;
 }
 
 #textui-zoom-default-zoom:hover {
     color: orange;
-    text-decoration: underline;
 }
 
 .ui-slider-vertical {
@@ -1878,7 +1886,7 @@ a.resource-tab-print-link {
 }
 
 div#connectedness-container {
-    margin: -16px 0 0 10px;
+    margin: -16px 0 0 198px;
     float:left;
 }
 

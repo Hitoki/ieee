@@ -48,7 +48,24 @@
                     <div id="header">
                         <img class="leftCorner" src="{{MEDIA_URL}}images/mainTopLeftCorner.gif" width="26" height="67" />
                         <a href="javascript:Tags.clearSectorSociety();" class="home"><img class="left-banner" src="{{MEDIA_URL}}images/technav_banner.png" width="139" height="57" /></a>
-                        <span id="tagline">Connecting the IEEE Universe of Information</span>
+                        <span id="tagline">Connecting You to the IEEE Universe of Information</span>
+                        <span id="links">
+                            {% if user %}
+                            <p class="admin-links">                                
+                                {% ifequal user.get_profile.role "admin" %}
+                                    <a href="{% url admin_home %}">Admin</a> |
+                                {% endifequal %}
+                                {% ifequal user.get_profile.role "society_admin" %}
+                                    <a href="{% url admin_home %}">Society Admin</a> |
+                                {% endifequal %}
+                                {% ifequal user.get_profile.role "society_manager" %}
+                                    <a href="{% url admin_home %}">Society Manager</a> |
+                                {% endifequal %}
+                                <a href="#">Help</a> |
+                                <a href="{% url admin_logout %}">Logout</a>
+                            </p>
+                            {% endif %}
+                        </span>
                         <a href="javascript:Tags.clearSectorSociety();" class="home"><img class="right-banner" src="{{MEDIA_URL}}images/ieee_banner.jpg" width="133" height="42" /></a>
                         <img class="rightCorner" src="{{MEDIA_URL}}images/mainTopRightCorner.gif" width="26" height="67" />
                     </div>
@@ -174,7 +191,7 @@
                             <div id="textui-zoom-container">
                                 <div id="textui-zoom-slider"></div>
                                 <div id="textui-zoom-value">100%</div>
-                                <span id="textui-zoom-default-zoom">(Reset)</span>
+                                <span id="textui-zoom-default-zoom">Reset</span>
                             </div>
                             
 							<div id="tag-galaxy" class="alt-box">
@@ -187,26 +204,12 @@
                     </div>
                     
                     <div id="footer">
-                        {% if user %}
-                            <p class="admin-links">                                
-                                {% ifequal user.get_profile.role "admin" %}
-                                    <a href="{% url admin_home %}">Admin</a> |
-                                {% endifequal %}
-                                {% ifequal user.get_profile.role "society_admin" %}
-                                    <a href="{% url admin_home %}">Society Admin</a> |
-                                {% endifequal %}
-                                {% ifequal user.get_profile.role "society_manager" %}
-                                    <a href="{% url admin_home %}">Society Manager</a> |
-                                {% endifequal %}
-                                <a href="{% url admin_logout %}">Logout</a>
-                            </p>
-                        {% endif %}
                          <div id="connectedness-container">
                             <span id="connectedness" class="feature_label">Connectedness:</span>
                             <span id="frequency-indicator" class="flyover {width:300}" title=" tag's color shows how connected it is to industry sectors, to IEEE societies, to other tags, and to IEEE resources."><img src="/media/images/frequency-bar.png"/></span>
                         </div>
                         <div id="textswitchlink-container">
-                            <a id="switch-link" class="floating textui-switch" href="{% url roamer %}">Switch to Visual Map Interface (Beta)</a>
+                            <a id="switch-link" class="floating textui-switch" href="{% url roamer %}">Visual Map Interface (Beta)</a>
                         </div>
 
                         <div class="survey-button">

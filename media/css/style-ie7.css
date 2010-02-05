@@ -104,7 +104,7 @@ form.items-per-page {
 }
 
 div#connectedness-container {
-    margin: -20px 0 0 15px !important;
+    margin: -20px 0 0 203px !important;
 }
 
 div.survey-button {
@@ -118,4 +118,8 @@ p.admin-links {
 #textui-tags-search-clear {
     float: none;
     display: inline-block;
+}
+
+#header #links {
+    padding-top: 25px;
 }
