@@ -79,10 +79,6 @@ form.items-per-page {
     padding: 7px 5px 0 0 !important;
 }                   
 
-#left-column h2.feature_label {
-    padding-bottom: 5px !important;
-}         
-
 .print-resource {
     width: 777px !important;
 }
@@ -108,7 +104,7 @@ form.items-per-page {
 }
 
 div#connectedness-container {
-    margin: -20px 0 0 118px !important;
+    margin: -20px 0 0 15px !important;
 }
 
 div.survey-button {
