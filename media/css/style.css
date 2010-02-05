@@ -208,6 +208,25 @@ p.admin-links a {
     right:-13px;
 }
 
+.helpicon {
+   background-image: url(/media/images/sm_help.png);
+   background-position: 0 0;
+   background-repeat: no-repeat;
+   display: inline-block;
+   height: 20px;
+   width: 20px;
+   cursor: pointer;
+}
+
+.helpicon:hover {
+   background-position: 0 -33px;
+}
+
+#connectedness-help {
+    margin-left: 3px;
+    line-height: 1.7;
+}
+
 /* Reset Firefox & IE's lists */
 
 ul {
