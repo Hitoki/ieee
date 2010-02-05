@@ -385,6 +385,19 @@ function onCopyTagsSuccess(linkElem, data) {
     $(linkElem).fadeIn();
 }
 
+function addCommas(nStr) {
+    // From http://www.mredkj.com/javascript/nfbasic.html, public domain
+	nStr += '';
+	x = nStr.split('.');
+	x1 = x[0];
+	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	}
+	return x1 + x2;
+}
+
 // This loads the xplore results for a tag into the given element via AJAX.
 function getXploreResults(elem, showAll, offset) {
     if (showAll == undefined) {
@@ -413,11 +426,12 @@ function getXploreResults(elem, showAll, offset) {
             //log('  elem2[0]: ' + elem2[0]);
             //log('  elem2[0].nodeName: ' + elem2[0].nodeName);
             var num = elem2.find('#num-xplore-results-hidden').html();
+            $('#num-xplore-results').text('(' + num + ')');
+            
             // NOTE: Need to get rid of the comma, or we get bad numbers.
             num = num.replace(',', '');
-            $('#num-xplore-results').text('(' + num + ')');
             var numRelatedItems = parseInt($('#num-related-items').metadata().number);
-            $('#num-related-items').text(numRelatedItems + parseInt(num));
+            $('#num-related-items').text(addCommas(numRelatedItems + parseInt(num)));
             
             elem2.find('#xplore-view-all').click(function() {
                 // Show all results
