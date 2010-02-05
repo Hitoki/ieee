@@ -1881,3 +1881,7 @@ div#connectedness-container {
     margin: -16px 0 0 10px;
     float:left;
 }
+
+.about-header {
+    font-weight: bold;
+}
