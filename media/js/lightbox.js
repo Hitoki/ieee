@@ -227,6 +227,7 @@ function attachLightboxes(elem) {
         $(this).click(function(e) {
             e.preventDefault();
             Lightbox.click(this);
+            return false;
         });
     });
 }
@@ -238,6 +239,7 @@ $(function() {
         $(this).click(function(e) {
             e.preventDefault();
             Lightbox.click(this);
+            return false;
         });
     });
     
