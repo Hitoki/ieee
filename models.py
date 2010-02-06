@@ -613,8 +613,8 @@ class Society(models.Model):
     name = models.CharField(max_length=500)
     abbreviation = models.CharField(max_length=20)
     url = models.CharField(blank=True,max_length=1000)
-    logo_thumbnail = models.FileField(upload_to='images/sc_logos/thumbnail')
-    logo_full = models.FileField(upload_to='images/sc_logos/full')
+    logo_thumbnail = models.FileField(upload_to='images/sc_logos/thumbnail',blank=True)
+    logo_full = models.FileField(upload_to='images/sc_logos/full',blank=True)
     
     users = models.ManyToManyField(User, related_name='societies', blank=True)
     
@@ -790,13 +790,15 @@ class ResourceManager(models.Manager):
                 ...
             ]
         """
+        conference_type = ResourceType.objects.getFromName(ResourceType.CONFERENCE)
         cursor = connection.cursor()
         cursor.execute("""
             SELECT conference_series, COUNT(id) AS num_in_series
             FROM ieeetags_resource
             WHERE conference_series <> ''
+            AND resource_type_id = %s
             GROUP BY conference_series
-            """)
+            """, [conference_type.id])
         return cursor.fetchall()
     
     def get_current_conference_for_series(self, series):
@@ -805,23 +807,39 @@ class ResourceManager(models.Manager):
         This defined as the next upcoming conference (>= now).
         If there is no upcoming, then use the last conference.
         """
+        #print 'get_current_conference_for_series()'
+        #print '  series: %s' % series
         current_year = datetime.today().year
+        #print '  current_year: %s' % current_year
         resources = Resource.objects.filter(resource_type__name=ResourceType.CONFERENCE, conference_series=series, year__gte=current_year).order_by('date', 'year', 'id')
+        #print '  resources.count(): %s' % resources.count()
         if resources.count():
             # Use the next future resource
+            #print '  using next future'
             return resources[0]
         else:
             # Use the most-recent past resource
+            #print '  using most recent'
             resources = Resource.objects.filter(resource_type__name=ResourceType.CONFERENCE, conference_series=series, year__lt=current_year).order_by('-date', '-year', '-id')
+            #print '  resources.count(): %s' % resources.count()
             if resources.count():
                 return resources[0]
             else:
-                # There are no conferences in this series
-                return None
+                # Check if any resources have a NULL year
+                resources = Resource.objects.filter(resource_type__name=ResourceType.CONFERENCE, conference_series=series, year=None).order_by('-date', '-year', '-id')
+                if resources.count():
+                    return resources[0]
+                else:
+                    # There are no conferences in this series
+                    return None
     
     def get_non_current_conferences_for_series(self, series, current_conference=None):
+        #print 'get_non_current_conferences_for_series()'
+        #print '  series: %s' % series
+        #print '  current_conference: %s' % current_conference
         if current_conference is None:
             current_conference = self.get_current_conference_for_series(series)
+        #print '  current_conference: %s' % current_conference
         # Get the other conferences in the series
         return Resource.objects.filter(conference_series=series).exclude(id=current_conference.id).all()
 

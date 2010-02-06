@@ -28,6 +28,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.utils import simplejson as json
 
+from csv_utf8 import UnicodeReader
 from ieeetags import settings
 from ieeetags import permissions
 from ieeetags import url_checker
@@ -38,6 +39,7 @@ from ieeetags.views import render
 from ieeetags.widgets import DisplayOnlyWidget
 from forms import *
 from widgets import make_display_only
+
 
 _IMPORT_SOURCES = [
     'comsoc',
@@ -103,7 +105,11 @@ def _unicode_csv_reader(unicode_csv_data, dialect=csv.excel, **kwargs):
 
 def _utf_8_encoder(unicode_csv_data):
     for line in unicode_csv_data:
-        yield line.encode('utf-8')
+        try:
+            yield line.encode('utf-8')
+        except UnicodeDecodeError, e:
+            print 'line: %r' % line
+            raise
 
 # Return a random selection from the given list
 def _random_slice_list(list, min, max):
@@ -1024,11 +1030,15 @@ def _import_resources(file, batch_commits=False):
     num_invalid_societies = 0
     resources_skipped = 0
     
-    #(file, reader) = _open_unicode_csv_reader(filename)
-    reader = _open_unicode_csv_reader_for_file(file)
+    reader = UnicodeReader(file)
+    # Get rid of header line
+    reader.next()
     
     valid_societies = {}
     invalid_societies = {}
+    
+    tab_society = Society.objects.getFromAbbreviation('TAB')
+    assert tab_society is not None, 'Cant find TAB society.'
     
     for row in reader:
         
@@ -1044,7 +1054,7 @@ def _import_resources(file, batch_commits=False):
             year = int(year)
         name = name.strip()
         url = url.strip()
-        society_abbreviations = [society_abbreviations.strip() for society_abbreviations in society_abbreviations.split(',')]
+        society_abbreviations = [society_abbreviations.strip() for society_abbreviations in society_abbreviations.split('|')]
         standard_status = standard_status.strip()
         if date1.strip() == '':
             date1 = None
@@ -1102,43 +1112,45 @@ def _import_resources(file, batch_commits=False):
                     societies_assigned += 1
                     societies.append(society)
         
-        # DEBUG: skip adding resource (for checking data)
-        if True:
+        # DEBUG:
+        if len(societies) == 0:
+            # No valid societies - assign this resource to the TAB society
+            societies.append(tab_society)
             
-            if len(societies) == 0:
-                # No valid societies, skip this resource
-                resources_skipped += 1
-                
-            else:
-                # Resource has valid societies, insert it
-                
-                if True:
-                    num_existing = Resource.objects.filter(resource_type=resource_type, ieee_id=ieee_id).count()
-                    if num_existing > 0:
-                        #logging.debug('  DUPLICATE: resource "%s" already exists.' % name)
-                        duplicate_resources += 1
-                    
-                    else:
-                        #logging.debug('  Adding resource "%s"' % name)
-                        #logging.debug('  project_code: %s' % project_code)
-                        
-                        resource = Resource.objects.create(
-                            resource_type=resource_type,
-                            ieee_id=ieee_id,
-                            name=name,
-                            description=description,
-                            url=url,
-                            year=year,
-                            keywords=keywords,
-                            priority_to_tag=priority_to_tag,
-                            standard_status=standard_status,
-                            completed=completed,
-                            conference_series=project_code,
-                            date=date1,
-                        )
-                        resource.societies = societies
-                        resource.save()
-                        resources_created += 1
+        #if len(societies) == 0:
+        #    # No valid societies, skip this resource
+        #    resources_skipped += 1
+        #
+        #else:
+        
+        # Resource has valid societies, insert it
+        num_existing = Resource.objects.filter(resource_type=resource_type, ieee_id=ieee_id).count()
+        if num_existing > 0:
+            # Skip over existing resources
+            #logging.debug('  DUPLICATE: resource "%s" already exists.' % name)
+            duplicate_resources += 1
+        
+        else:
+            #logging.debug('  Adding resource "%s"' % name)
+            #logging.debug('  project_code: %s' % project_code)
+            
+            resource = Resource.objects.create(
+                resource_type=resource_type,
+                ieee_id=ieee_id,
+                name=name,
+                description=description,
+                url=url,
+                year=year,
+                keywords=keywords,
+                priority_to_tag=priority_to_tag,
+                standard_status=standard_status,
+                completed=completed,
+                conference_series=project_code,
+                date=date1,
+            )
+            resource.societies = societies
+            resource.save()
+            resources_created += 1
                     
         if not row_count % 50:
             try:
@@ -1509,6 +1521,59 @@ def import_clusters(request):
         return render(request, 'site_admin/import_file.html', {
             #'errors': list_to_html_list(errors, 'errors'),
             'page_title': 'Import Tag Clusters',
+            'results': results,
+        })
+
+@login_required
+@admin_required
+@transaction.commit_on_success
+def import_conference_series(request):
+    if request.method == 'GET':
+        # Display form
+        form = ImportFileForm()
+        return render(request, 'site_admin/import_file.html', {
+            'page_title': 'Import Conference Series',
+            'submit_url': reverse('admin_import_conference_series'),
+            'form': form,
+        })
+        
+    else:
+        
+        file = request.FILES['file']
+        
+        results = {
+            'log': '',
+        }
+        
+        reader = _open_unicode_csv_reader_for_file(file)
+        
+        start = time.time()
+        
+        count = 0
+        conference_type = ResourceType.objects.getFromName(ResourceType.CONFERENCE)
+        for row in reader:
+            
+            count += 1
+            if not count % 100:
+                elapsed = time.time() - start
+                if count != 0:
+                    print '%s, %s/s' % (count, count/elapsed)
+                
+            ieee_id, conference_series = row
+            try:
+                resource = Resource.objects.get(ieee_id=ieee_id, resource_type=conference_type)
+            except Resource.DoesNotExist, e:
+                print 'ieee_id: %s' % ieee_id
+                raise
+            resource.conference_series = conference_series
+            resource.save()
+            #results['log'] += 'Resource %s had series "%s", now has "%s".<br/>\n' % (ieee_id, resource.conference_series, conference_series)
+        
+        #results['errors'] = list_to_html_list(results['errors'])
+        
+        return render(request, 'site_admin/import_file.html', {
+            'page_title': 'Import Tag Clusters',
+            'submit_url': reverse('admin_import_conference_series'),
             'results': results,
         })
 
@@ -3816,11 +3881,14 @@ def society_logos_report(request):
 def conference_series_report(request):
     conferences = []
     serieses = Resource.objects.get_conference_series()
-
+    
     # Get the newest conference for each series
     for conference_series, num_in_series in serieses:
         # Get most recent conference for the series
         resource = Resource.objects.get_current_conference_for_series(conference_series)
+        
+        assert resource is not None, 'resource returned from get_current_conference_for_series() is None'
+        
         # TODO: Get only other conferences from this society
         resource.other_conferences = Resource.objects.get_non_current_conferences_for_series(conference_series, current_conference=resource)
         conferences.append(resource)
