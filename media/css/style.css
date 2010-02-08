@@ -1597,10 +1597,11 @@ p.export {
 }
 
 #login-message {
-    font-size: 33px; 
+    font-size: 19px; 
     letter-spacing: -1px; 
     color: #0070D5;
-    margin-left: 370px;
+    margin-left: 5px;
+    clear: both;
 }
 
 #logout-message {
