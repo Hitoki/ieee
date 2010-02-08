@@ -30,6 +30,7 @@ a {
 a:hover {
     text-decoration: underline;
     outline: none;
+    color: orange;
 }
 
 a:visited {
@@ -155,7 +156,6 @@ p.admin-links {
     padding-left: 3em;
     background: transparent url(/media/images/roamer_icon.png) no-repeat scroll left center;
     font-size:75%;
-    color:gray !important;
     height:16px;
     display:inline-block;
 }
@@ -169,9 +169,16 @@ p.admin-links {
     padding-left: 3em;
     background: transparent url(/media/images/tags_icon.png) no-repeat scroll left center;
     font-size:75%;
-    color:gray !important;
     height:15px;
     display:inline-block;
+}
+
+#roamerswitchlink-container a, #textswitchlink-container a {
+    color:gray;
+}
+
+#roamerswitchlink-container a:hover, #textswitchlink-container a:hover {
+    color:orange;
 }
 
 #footer a.floating img {
@@ -186,6 +193,10 @@ div.survey-button {
 
 p.admin-links a {
     color:gray;
+}
+
+p.admin-links a:hover {
+    color:orange;
 }
 
 #footer {
@@ -482,6 +493,10 @@ div.image-container {
     /* background-color: #CDE0FC; */
     padding: 5px 5px 0 25px;
     margin: 0px;
+}
+
+#content p.item_odd:hover , #content p.item_even:hover {
+    text-decoration: underline;
 }
 
 #content p.desc_even {
@@ -1786,12 +1801,12 @@ ul.errors {
     padding-left:2em;
 }
 
-#resource-print-link {
-    color:#777;
+.print-resource a, #resource-print-link {
+    color: gray;
 }
 
-a.resource-tab-print-link {
-    color:#999;
+.print-resource a:hover, #resource-print-link:hover {
+   color: orange;
 }
 
 #powered-by {
