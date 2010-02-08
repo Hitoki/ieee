@@ -155,7 +155,8 @@ input.text {
     background:white url(../images/close.gif);
 }
 
-#lightbox .resources-lightbox-content a.lightbox-close:hover {
+#lightbox .resources-lightbox-content a.lightbox-close:hover,
+#lightbox .overview-video-lightbox-content a.lightbox-close:hover {
     background:white url(../images/close-hover.gif);
 }
 
@@ -259,4 +260,25 @@ input.text {
 
 .paste-tags-lightbox-content p.tags {
     margin-left:1em;
+}
+
+#lightbox .overview-video-lightbox-content {
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    background-color:#DFE1E4;
+    border:1px solid black;
+    min-width: 640px;
+    padding: 2em;
+}
+
+#lightbox .overview-video-lightbox-content a.lightbox-close {
+    display:block;
+    float:right;
+    cursor:pointer;
+    top: 0px;
+    right: 5px;
+    width:14px;
+    height:13px;
+    background:white url(../images/close.gif);
+    margin: -18px -18px 0 0;
 }
