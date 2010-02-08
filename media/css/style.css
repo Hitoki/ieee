@@ -1963,3 +1963,9 @@ div#connectedness-container {
     margin:3.5em 1em 2em 2em;
     float:left;
 }
+
+#roamer-help a:hover {
+    text-decoration: none;
+    color: gray;
+    cursor: default;
+}
