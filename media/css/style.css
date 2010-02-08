@@ -1780,7 +1780,7 @@ ul.errors {
 
 #resource-print-link, a.resource-tab-print-link {
     float:right;
-    margin:1.2em 1.4em 1.2em .5em;
+    margin:1.2em 1.5em 1.2em .5em;
     font-size:80%;
     background:url(../images/printer.png) no-repeat left;
     padding-left:2em;
