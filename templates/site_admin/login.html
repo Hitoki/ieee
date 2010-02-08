@@ -68,9 +68,51 @@
                         </div>
                     </div>
                 {% else %}
+                    {% comment %}
                     <div id="login-message">
                         Technology Navigator helps you discover <span id="connections">connections</span> across the IEEE universe of information.
                     </div>
+                    {% endcomment %}
+                        {% if not feedback %}
+        <div style="text-align:center;">
+            <script type="text/javascript" src="{{ MEDIA_URL }}js/AC_RunActiveContent.js"></script>
+            <script>
+                AC_FL_RunContent(
+                    'codebase','http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,28,0',
+                    'width','640',
+                    'height','410',
+                    'title','Technology Navigator Promo',
+                    'src','{{ MEDIA_URL }}flash/TechNav-640',
+                    'quality','high',
+                    'allowFullScreen','true',
+                    'pluginspage','http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash',
+                    'movie','{{ MEDIA_URL }}flash/TechNav-640'
+                );
+                //end AC code
+            </script>
+            <noscript>
+                <object
+                    classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+                    codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,28,0"
+                    width="640"
+                    height="410"
+                    title="Technology Navigator Promo">
+                    <param name="movie" value="{{ MEDIA_URL }}flash/TechNav-640.swf" />
+                    <param name="quality" value="high" />
+                    <param name="allowFullScreen" value="true" />
+                    <embed
+                        src="{{ MEDIA_URL }}flash/TechNav-640.swf"
+                        quality="high"
+                        pluginspage="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash"
+                        type="application/x-shockwave-flash"
+                        width="640"
+                        height="410"
+                        allowFullScreen="true">
+                    </embed>
+                </object>
+            </noscript>
+        </div>
+    {% endif %}
                 {% endif %}
                 
             </form>
@@ -189,47 +231,6 @@
         </div>
         
     </div>
-    
-    {% if not feedback %}
-        <div style="text-align:center;">
-            <script type="text/javascript" src="{{ MEDIA_URL }}js/AC_RunActiveContent.js"></script>
-            <script>
-                AC_FL_RunContent(
-                    'codebase','http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,28,0',
-                    'width','640',
-                    'height','410',
-                    'title','Technology Navigator Promo',
-                    'src','{{ MEDIA_URL }}flash/TechNav-640',
-                    'quality','high',
-                    'allowFullScreen','true',
-                    'pluginspage','http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash',
-                    'movie','{{ MEDIA_URL }}flash/TechNav-640'
-                );
-                //end AC code
-            </script>
-            <noscript>
-                <object
-                    classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
-                    codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,28,0"
-                    width="640"
-                    height="410"
-                    title="Technology Navigator Promo">
-                    <param name="movie" value="{{ MEDIA_URL }}flash/TechNav-640.swf" />
-                    <param name="quality" value="high" />
-                    <param name="allowFullScreen" value="true" />
-                    <embed
-                        src="{{ MEDIA_URL }}flash/TechNav-640.swf"
-                        quality="high"
-                        pluginspage="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash"
-                        type="application/x-shockwave-flash"
-                        width="640"
-                        height="410"
-                        allowFullScreen="true">
-                    </embed>
-                </object>
-            </noscript>
-        </div>
-    {% endif %}
     
 </div>
 {% endblock %}
