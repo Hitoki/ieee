@@ -433,12 +433,6 @@ function getXploreResults(elem, showAll, offset) {
             var numRelatedItems = parseInt($('#num-related-items').metadata().number);
             $('#num-related-items').text(addCommas(numRelatedItems + parseInt(num)));
             
-            elem2.find('#xplore-view-all').click(function() {
-                // Show all results
-                getXploreResults(elem, true);
-                return false;
-            });
-            
             elem2.find('#xplore-view-previous').click(function() {
                 getXploreResults(elem, false, offset-10);
                 return false;

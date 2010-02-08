@@ -27,6 +27,7 @@ else:
         url(r'^textui_home$', views.textui_home, name='textui_home'),
         url(r'^feedback$', views.feedback, name='feedback'),
         url(r'^browser_warning$', views.browser_warning, name='browser_warning'),
+        url(r'^xplore_full_results/(?P<tag_id>\d+)$', views.xplore_full_results, name='xplore_full_results'),
         
         # AJAX
         url(r'^ajax/tag_content$', views.ajax_tag_content, name='ajax_tag_content'),

@@ -230,6 +230,18 @@ def browser_warning(request):
     return render(request, 'browser_warning.html')
 
 @login_required
+def xplore_full_results(request, tag_id):
+    tag = Node.objects.get(id=tag_id)
+    results, errors, total_results = _get_xplore_results(tag, show_all=True)
+    return render(request, 'xplore_full_results.html', {
+        'tag':tag,
+        'xplore_error': errors,
+        'xplore_results': results,
+        'totalfound': total_results,
+    })
+    
+
+@login_required
 def ajax_tag_content(request):
     tagId = request.GET['tagId']
     ui = request.GET['ui']

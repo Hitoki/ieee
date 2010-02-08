@@ -1928,3 +1928,9 @@ div#connectedness-container {
 .about-header {
     font-weight: bold;
 }
+
+.xplore-full-results-page .pub,
+.xplore-full-results-page .desc {
+    margin-left:1em;
+    margin-right:1em;
+}

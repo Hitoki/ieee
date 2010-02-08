@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+
+{% block content %}
+    <div id="alternate-page" class="textui-page">
+        <table class="main alternate-page">
+            <tr>
+                <td class="left">
+                </td>
+                <td class="center">
+                    
+                    <!-- Begin center column -->
+                    
+                    <div id="page-min-width"></div>
+                    
+                    <div id="header">
+                        <img class="leftCorner" src="{{MEDIA_URL}}images/mainTopLeftCorner.gif" width="26" height="67" />
+                        <a href="{% url index %}" class="home"><img class="left-banner" src="{{MEDIA_URL}}images/technav_banner.png" width="139" height="57" /></a>
+                        <span id="tagline">Connecting the IEEE Universe of Information</span>
+                        <a href="{% url index %}" class="home"><img class="right-banner" src="{{MEDIA_URL}}images/ieee_banner.jpg" width="133" height="42" /></a>
+                        <img class="rightCorner" src="{{MEDIA_URL}}images/mainTopRightCorner.gif" width="26" height="67" />
+                    </div>
+                    
+                    <div class="center-pad xplore-full-results-page">
+                        
+                        <h1>Xplore Full Results</h1>
+                        
+                        <p style="font-weight:bold;">
+                            Showing {{ totalfound|intcomma }} results for "{{ tag.name }}".
+                        </p>
+                        
+                        {% if xplore_error %}
+                            <p class="error">
+                                {{ xplore_error }}
+                            </p>
+                        {% else %}
+                            {% if xplore_results|length %}
+                                {% for result in xplore_results %}
+                                    {% if result.url %}
+                                        <a href="{{ result.url }}" target="_blank">
+                                    {% endif %}
+                                    <p class="{% cycle 'item_odd' 'item_even' %}">
+                                        <span>
+                                            {{ result.rank }}. {{ result.name|safe }}
+                                        </span>
+                                        {% if result.url %}
+                                            <img src="{{ MEDIA_URL }}images/popup.png" />
+                                        {% endif %}
+                                    </p>
+                                    {% if result.url %}
+                                        </a>
+                                    {% endif %}
+                                    <p class="pub {% cycle 'pub_odd' 'pub_even' %}">{{ result.authors }} {{ result.pub_title }},  {{ result.pub_year }}</p>
+                                    <p class="desc {% cycle 'desc_odd' 'desc_even' %}">{{ result.description|default:"(no description)" }}</p>
+                                {% endfor %}
+                            {% else %}
+                               <p class="no-resources">No xplore results are currently tagged "{{ tag.name }}"</p>
+                            {% endif %}
+                        {% endif %}
+                        
+                        <br/>
+                        <br/>
+                        
+                    </div>
+                    
+                    <div id="footer">
+                        {% if user %}
+                            <p class="admin-links">                                
+                                {% ifequal user.get_profile.role "admin" %}
+                                    <a href="{% url admin_home %}">Admin</a> |
+                                {% endifequal %}
+                                {% ifequal user.get_profile.role "society_admin" %}
+                                    <a href="{% url admin_home %}">Society Admin</a> |
+                                {% endifequal %}
+                                {% ifequal user.get_profile.role "society_manager" %}
+                                    <a href="{% url admin_home %}">Society Manager</a> |
+                                {% endifequal %}
+                                <a href="{% url admin_logout %}">Logout</a>
+                            </p>
+                        {% endif %}
+
+                        <div class="survey-button">
+                            <a id="feedback-link" href="{% url feedback %}" class="floating lightbox { customClass:'feedback' }">&nbsp;</a>
+                        </div>
+                        
+                        <img class="leftCorner" src="{{MEDIA_URL}}images/mainBottomLeftCorner.png" width="26" height="40" />
+                        <img class="rightCorner" src="{{MEDIA_URL}}images/mainBottomRightCorner.png" width="26" height="40" />
+                    </div>
+                    
+                    <!-- End center column -->
+                    
+                </td>
+                <td class="right" rowspan="2">
+                </td>
+            </tr>
+        </table>
+        
+    </div>
+    
+{% endblock %}
+
