@@ -219,20 +219,17 @@ p.admin-links a:hover {
 }
 
 .helpicon {
-    /*
-    NOTE: This is missing... where did it go?
-    background-image: url(/media/images/sm_help.png);
-    */
-    background-position: 0 0;
-    background-repeat: no-repeat;
-    display: inline-block;
-    height: 20px;
-    width: 20px;
-    cursor: pointer;
+   background-image: url(/media/images/sm_help.png);
+   background-position: 0 0;
+   background-repeat: no-repeat;
+   display: inline-block;
+   height: 20px;
+   width: 20px;
+   cursor: pointer;
 }
 
 .helpicon:hover {
-    background-position: 0 -33px;
+   background-position: 0 -33px;
 }
 
 #connectedness-help {
