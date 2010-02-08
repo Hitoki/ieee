@@ -36,6 +36,7 @@ else:
         url(r'^ajax/nodes_xml$', views.ajax_nodes_xml, name='ajax_nodes_xml'),
         url(r'^ajax/textui_nodes$', views.ajax_textui_nodes, name='ajax_textui_nodes'),
         url(r'^ajax/tooltip/(?P<tag_id>\d+)$', views.tooltip, name='tooltip'),
+        url(r'^ajax/video$', views.ajax_video, name='ajax_video'),
         
         # Print
         url(r'^print/resource/(?P<tag_id>\d+)/(?P<resource_type>.+)$', views.print_resource, name='print_resource'),

@@ -1,6 +1,8 @@
+
 html {
     overflow-y: scroll;
 }
+
 body {
     margin: 0px;
     font-family:verdana,tahoma,sans-serif;
@@ -1951,4 +1953,13 @@ div#connectedness-container {
 
 #tag-name {
     background:#DFE1E4
+}
+
+#show-video-link {
+    display:block;
+    font-weight:bold;
+    text-align:center;
+    /* NOTE:Make this non-float and add more left margin to center this on the right side*/
+    margin:1em 1em 3em 5em;
+    float:left;
 }

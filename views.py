@@ -1116,6 +1116,9 @@ def tooltip(request, tag_id):
     else:
         raise Exception('Unknown node type "%s" for node "%s"' % (node.node_type.name, node.name))
 
+def ajax_video(request):
+    return render(request, 'ajax_video.html')
+    
 def print_resource(request, tag_id, resource_type):
     tag = Node.objects.get(id=tag_id)
     
