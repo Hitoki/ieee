@@ -497,16 +497,18 @@ div.image-container {
     color: gray;
 }
 
-.group a:hover {
+.group a:hover, .society-images a {
    color: blue;
    cursor: default;
+   text-decoration: none;
 }
 
 .group a img, .xplore-totals img {
    cursor: pointer;
 }
 
-.group .item_odd span:hover, .group .item_even span:hover, #xplore-totals span:hover {
+.group .item_odd span:hover, .group .item_even span:hover, 
+#xplore-totals span:hover, .society-images span:hover {
     color: orange;
     text-decoration: underline;
     cursor: pointer;
