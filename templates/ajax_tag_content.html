@@ -106,8 +106,8 @@
                                                 {% if society.url %}
                                                     <a href="{{ society.url }}" target="_blank">
                                                 {% endif %}
-                                                {{ society.name }} ({{ society.abbreviation }})
-                                                <span>{% if society.url %}</span>
+                                                <span>{{ society.name }} ({{ society.abbreviation }})</span>
+                                                {% if society.url %}
                                                     <img src="{{ MEDIA_URL }}images/popup.png" />
                                                 {% endif %}
                                                 {% if society.url %}
