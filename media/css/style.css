@@ -45,14 +45,14 @@ table.main {
 }
 
 table.main td.left {
-    width:50px;
+    width:100px;
     background-image:url(../images/leftMainShadow.gif);
     background-position:right;
     background-color: #6F7985;
 }
 
 table.main td.right {
-    width:50px;
+    width:100px;
     background-image:url(../images/rightMainShadow.gif);
     background-position:left;
     background-color: #6F7985;
