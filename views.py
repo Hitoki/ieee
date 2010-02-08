@@ -462,7 +462,7 @@ def _get_popularity_level(min, max, count):
 
 @login_required
 def ajax_textui_nodes(request):
-    log('ajax_textui_nodes()')
+    #log('ajax_textui_nodes()')
     
     #from profiler import Profiler
     #p = Profiler('ajax_textui_nodes')
@@ -471,9 +471,9 @@ def ajax_textui_nodes(request):
     society_id = request.GET.get('society_id', None)
     search_for = request.GET.get('search_for', None)
     
-    log('  sector_id: %s' % sector_id)
-    log('  society_id: %s' % society_id)
-    log('  search_for: %s' % search_for)
+    #log('  sector_id: %s' % sector_id)
+    #log('  society_id: %s' % society_id)
+    #log('  search_for: %s' % search_for)
     
     if sector_id == 'null':
         sector_id = None
@@ -488,9 +488,9 @@ def ajax_textui_nodes(request):
     assert sector_id is None or society_id is None, 'Cannot specify both sector_id and society_id'
     
     sort = request.GET.get('sort')
-    #log('  sort: %s' % sort)
+    ##log('  sort: %s' % sort)
     #filterValues = request.GET.get('filterValues')
-    #log('filterValues: %s' % filterValues)
+    ##log('filterValues: %s' % filterValues)
     
     if sector_id is not None:
         sector = Node.objects.get(id=sector_id)
@@ -555,7 +555,7 @@ def ajax_textui_nodes(request):
             
             queries = None
             for word in search_words:
-                #log('  word: %r' % word)
+                ##log('  word: %r' % word)
                 if queries is None:
                     queries = Q(name__icontains=word)
                 else:
@@ -571,8 +571,8 @@ def ajax_textui_nodes(request):
             
             child_nodes = Node.objects.filter(queries, node_type__name=NodeType.TAG)
             child_nodes = Node.objects.get_extra_info(child_nodes, None, filterIds)
-            #log('  child_nodes: %r' % child_nodes)
-            #log('  child_nodes.count(): %r' % child_nodes.count())
+            ##log('  child_nodes: %r' % child_nodes)
+            ##log('  child_nodes.count(): %r' % child_nodes.count())
             
         else:
             # Search phrase was too short, return empty results.
@@ -605,7 +605,7 @@ def ajax_textui_nodes(request):
         assert node.node_type.name in [NodeType.SECTOR, NodeType.TAG_CLUSTER], 'Node "%s" must be a sector or cluster' % node.name
 
         if node.node_type.name == NodeType.SECTOR:
-            #log('Calling child_nodes.get_extra_info() with filter ids')
+            ##log('Calling child_nodes.get_extra_info() with filter ids')
             child_nodes = node.get_tags_and_clusters()
             
             # The 'filteIds' allows us to get the selected filter count via the DB (much faster)
@@ -669,9 +669,9 @@ def ajax_textui_nodes(request):
         
         filter_child_node = False
         
-        #log('child_node.name: %s' % child_node.name)
-        #log('  max_score: %s' % max_score)
-        #log('  min_score: %s' % min_score)
+        ##log('child_node.name: %s' % child_node.name)
+        ##log('  max_score: %s' % max_score)
+        ##log('  min_score: %s' % min_score)
         
         # TODO: This is too slow, reenable later
         #num_related_tags = child_node.get_filtered_related_tag_count()
@@ -760,11 +760,11 @@ def ajax_textui_nodes(request):
         
     
     #print 'after loop'
-    print 'len(child_nodes): %s' % len(child_nodes)
+    #print 'len(child_nodes): %s' % len(child_nodes)
     
     #p.tick('after json')
     #p.tick('Rendering html...')
-    #log('~ajax_textui_nodes()')
+    ##log('~ajax_textui_nodes()')
     
     return render(request, 'ajax_textui_nodes.html', {
         'child_nodes': child_nodes,
@@ -780,12 +780,12 @@ def ajax_textui_nodes(request):
 def ajax_nodes_xml(request):
     "Creates an XML list of nodes & connections for Asterisq Constellation Roamer."
     
-    log('ajax_nodes_xml()')
+    #log('ajax_nodes_xml()')
     
     DEBUG_ROAMER_MAX_NODES = 40
     
     nodeId = request.GET['nodeId']
-    log('  url: ' + request.get_full_path())
+    #log('  url: ' + request.get_full_path())
     
     # TODO: the depth param is ignored, doesn't seem to affect anything now
     
@@ -885,8 +885,8 @@ def ajax_nodes_xml(request):
     }
     GRAPHIC_BORDER_COLOR = '#bad4f9'
     
-    log('  nodes: %s' % len(nodes))
-    log('  edges: %s' % len(edges))
+    #log('  nodes: %s' % len(nodes))
+    #log('  edges: %s' % len(edges))
     
     for node1 in nodes:
         nodeElem = doc.createElement('node')
@@ -945,9 +945,9 @@ def ajax_nodes_xml(request):
         edgesElem.appendChild(edgeElem)
     
     #if False:
-    #    log('XML: ----------')
-    #    log(doc.toprettyxml())
-    #    log('---------------')
+    #    #log('XML: ----------')
+    #    #log(doc.toprettyxml())
+    #    #log('---------------')
     
     #return HttpResponse(doc.toprettyxml(), 'text/plain')
     return HttpResponse(doc.toprettyxml(), 'text/xml')

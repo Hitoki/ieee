@@ -204,7 +204,7 @@ class NodeManager(models.Manager):
             max_societies)
         """
         
-        log('get_sector_ranges()')
+        #log('get_sector_ranges()')
         
         assert node.node_type.name == NodeType.SECTOR or node.node_type.name == NodeType.TAG_CLUSTER, 'node (%s, %s, %s) must be a sector or cluster' % (node.name, node.id, node.node_type.name)
         
@@ -244,14 +244,14 @@ class NodeManager(models.Manager):
                 if max_societies is None or tag.num_societies1 > max_societies:
                     max_societies = tag.num_societies1
 
-        log('  min_resources: %s' % min_resources)
-        log('  max_resources: %s' % max_resources)
-        log('  min_sectors: %s' % min_sectors)
-        log('  max_sectors: %s' % max_sectors)
-        log('  min_related_tags: %s' % min_related_tags)
-        log('  max_related_tags: %s' % max_related_tags)
-        log('  min_societies: %s' % min_societies)
-        log('  max_societies: %s' % max_societies)
+        #log('  min_resources: %s' % min_resources)
+        #log('  max_resources: %s' % max_resources)
+        #log('  min_sectors: %s' % min_sectors)
+        #log('  max_sectors: %s' % max_sectors)
+        #log('  min_related_tags: %s' % min_related_tags)
+        #log('  max_related_tags: %s' % max_related_tags)
+        #log('  min_societies: %s' % min_societies)
+        #log('  max_societies: %s' % max_societies)
         
         return (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies)
     
@@ -266,7 +266,7 @@ class NodeManager(models.Manager):
         
         #p = Profiler('get_combined_sector_ranges()')
         
-        log('get_combined_sector_ranges()')
+        #log('get_combined_sector_ranges()')
         
         assert node.node_type.name == NodeType.SECTOR or node.node_type.name == NodeType.TAG_CLUSTER, 'node (%s, %s, %s) must be a sector or cluster' % (node.name, node.id, node.node_type.name)
         
@@ -294,8 +294,8 @@ class NodeManager(models.Manager):
         #p.tick('end loop')
         
         
-        log('  min_score: %s' % min_score)
-        log('  max_score: %s' % max_score)
+        #log('  min_score: %s' % min_score)
+        #log('  max_score: %s' % max_score)
         
         return (min_score, max_score)
     
