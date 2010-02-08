@@ -630,7 +630,7 @@ var Tags = {
         
         // Only zoom if necessary (either the zoom is not 100, or the zoom is 100 but wasn't before).
         if (zoom != 100 || (this.oldZoom != null && this.oldZoom != zoom)) {
-            log('  zooming to ' + zoom + '%');
+            log('zooming to ' + zoom + '%');
             
             $('#textui-zoom-value').text(zoom + '%');
             
@@ -642,7 +642,11 @@ var Tags = {
             
             // Scales down the effect of this zoom.
             function scaleZoom(zoom, scale) {
-                return (zoom - 100) * scale + 100;
+                if (zoom >= 100) {
+                    return (zoom - 100) * scale + 100;
+                } else {
+                    return zoom;
+                }
             }
             
             $('#tags .node').css('margin-top', (defaultVertMargin * zoom / 100) + 'px');
