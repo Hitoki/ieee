@@ -16,6 +16,7 @@ from ieeetags.site_admin.views import _open_unicode_csv_reader, _open_unicode_cs
 from logging import debug as log
 import re
 import time
+import os
 
 import csv
 import cStringIO
@@ -83,9 +84,9 @@ def translate_old_society_abbr(abbr):
 
 def main():
     
-    filename = r"C:\Webpage\ieee\!other\data\2010-02-03 - allan's data files\conferences 2.csv"
-    out_filename1 = r"C:\Webpage\ieee\!other\data\2010-02-03 - allan's data files\conferences 2 - existing resources, project codes only.csv"
-    out_filename2 = r"C:\Webpage\ieee\!other\data\2010-02-03 - allan's data files\conferences 2 - new resources.csv"
+    filename = os.path.join(os.path.dirname(__file__), 'conferences.csv')
+    out_filename1 = os.path.join(os.path.dirname(__file__), 'conferences-existing-project-codes.csv')
+    out_filename2 = os.path.join(os.path.dirname(__file__), 'conferences-new.csv')
     
     file1, reader = _open_unicode_csv_reader(filename)
     out_file1, existing_writer = _open_unicode_csv_writer(out_filename1)
