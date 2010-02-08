@@ -107,7 +107,7 @@
                                                     <a href="{{ society.url }}" target="_blank">
                                                 {% endif %}
                                                 {{ society.name }} ({{ society.abbreviation }})
-                                                {% if society.url %}
+                                                <span>{% if society.url %}</span>
                                                     <img src="{{ MEDIA_URL }}images/popup.png" />
                                                 {% endif %}
                                                 {% if society.url %}
@@ -155,7 +155,7 @@
                                             <a href="{{ resource.url }}" target="_blank">
                                         {% endif %}
                                         <p class="{% cycle 'item_odd' 'item_even' %}">
-                                            {{resource.name}}
+                                            <span>{{resource.name}}</span>
                                             {% if resource.url %}
                                                 <img src="{{ MEDIA_URL }}images/popup.png" />
                                             {% endif %}
@@ -183,7 +183,7 @@
                                                         <a href="{{ other_conference.url }}" target="_blank">
                                                     {% endif %}
                                                     <p class="{% cycle 'item_odd' 'item_even' %}">
-                                                        {{other_conference.name}}
+                                                        <span>{{other_conference.name}}</span>
                                                         {% if other_conference.url %}
                                                             <img src="{{ MEDIA_URL }}images/popup.png" />
                                                         {% endif %}
@@ -214,7 +214,7 @@
                                             <a href="{{ resource.url }}" target="_blank">
                                         {% endif %}
                                         <p class="{% cycle 'item_odd' 'item_even' %}">
-                                            {{resource.name}}
+                                            <span>{{resource.name}}</span>
                                             {% if resource.url %}
                                                 <img src="{{ MEDIA_URL }}images/popup.png" />
                                             {% endif %}
@@ -240,7 +240,7 @@
                                             <a href="{{ resource.url }}" target="_blank">
                                         {% endif %}
                                         <p class="{% cycle 'item_odd' 'item_even' %}">
-                                            {{resource.name}}
+                                            <span>{{resource.name}}</span>
                                             {% if resource.url %}
                                                 <img src="{{ MEDIA_URL }}images/popup.png" />
                                             {% endif %}

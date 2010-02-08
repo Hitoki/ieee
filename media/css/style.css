@@ -495,8 +495,19 @@ div.image-container {
     margin: 0px;
 }
 
-#content p.item_odd:hover , #content p.item_even:hover {
+.group a:hover {
+   color: blue;
+   cursor: default;
+}
+
+.group a img {
+   cursor: pointer;
+}
+
+.group .item_odd span:hover, .group .item_even span:hover {
+    color: orange;
     text-decoration: underline;
+    cursor: pointer;
 }
 
 #content p.desc_even {
