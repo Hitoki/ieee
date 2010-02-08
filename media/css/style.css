@@ -85,7 +85,7 @@ table.main td.center .center-pad {
     clear:both;
     float:right;
     margin-right:10px;
-    margin-top:-38px;
+    margin-top:-25px;
 }
 
 #header a.home img {
@@ -112,8 +112,8 @@ table.main td.center .center-pad {
 
 #header #links {
     display:inline-block;
-    margin-right:150px;
-    margin-top:16px;
+    margin-right:12px;
+    margin-top:14px;
     position:absolute;
     right:0;
     top:0;
