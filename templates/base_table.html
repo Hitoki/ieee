@@ -16,7 +16,7 @@
                     <a href="{% url index %}" class="home"><img class="left-banner" src="{{MEDIA_URL}}images/technav_banner.png" width="139" height="57" /></a>
                     <span id="tagline">Connecting You to the IEEE Universe of Information</span>
                     <span id="links">
-                            {% if user %}
+                            {% if user.is_authenticated %}
                             <p class="admin-links">                                
                                 {% ifequal user.get_profile.role "admin" %}
                                     <a href="{% url admin_home %}">Admin</a> |
