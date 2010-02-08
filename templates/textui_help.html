@@ -4,6 +4,24 @@
     <table style="width: 100%">
         <tr>
             <td>
+                <img src="{{ MEDIA_URL }}images/home-left.png"/>
+            </td>
+            <td style="text-align:right;vertical-align:top">
+                <img src="{{ MEDIA_URL }}images/home-right.png"/>
+            </td>
+        </tr>
+    </table>
+    {% comment %} 
+    TODO: Unable to get video to launch in lightbox, keeps redirecting to new page
+    <span style="display:none;text-align:right;float:right;margin-top:-25px">
+        <a href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}">Watch Overview Video</a>
+    </span>
+    {% endcomment %}
+
+    {% comment %}
+    <table style="width: 100%">
+        <tr>
+            <td>
                 &nbsp;
             </td>
             <td>
@@ -36,5 +54,6 @@
             </td>
         </tr>
     </table>
+    {% endcomment %}
 </div>
 
