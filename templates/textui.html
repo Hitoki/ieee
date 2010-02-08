@@ -3,7 +3,6 @@
 {% block extra_head %}
     <script type="text/javascript">
         $(function() {
-            Tags.init();
 			
 			// Attach event to tags-search clear button.
 			$('#textui-tags-search-clear').click(function() {
@@ -24,11 +23,13 @@
 					Tags.updateZoom();
 				}
 			});
-			
-			// Attach event to default-zoom image.
+            
+            // Attach event to default-zoom image.
 			$('#textui-zoom-default-zoom').click(function() {
 				$('#textui-zoom-slider').slider('value', 100);
 			});
+            
+            Tags.init();
         });
     </script>
 {% endblock %}

@@ -90,6 +90,9 @@ var Tags = {
         this.updateSwitchLink();
         
         if (this.page == this.PAGE_SECTOR || this.page == this.PAGE_SOCIETY) {
+            // Enable the slider
+            $('#textui-zoom-slider').slider('enable');
+            
             // Enable sorting
             if (this.tagSortOverlayElem) {
                 Flyover.detach(this.tagSortOverlayElem);
@@ -99,6 +102,18 @@ var Tags = {
             $('#tag-sort').attr('disabled', '');
             Flyover.detach($('#tag-sort'));
         } else {
+            
+            if (this.page == this.PAGE_HELP) {
+                // Enable/disable the slider
+                if ($('#tags-live-search').val().length >= 3) {
+                    $('#textui-zoom-slider').slider('enable');
+                } else {
+                    $('#textui-zoom-slider').slider('disable');
+                }
+            } else {
+                $('#textui-zoom-slider').slider('disable');
+            }
+            
             // Disable sorting
             if (!this.tagSortOverlayElem) {
                 this.tagSortOverlayElem = $('<div id="tag-sort-overlay"></div>').appendTo('body');
@@ -222,6 +237,9 @@ var Tags = {
         
         this.updateHighlightedNode();
         
+        if (this.page == this.PAGE_HOME) {
+            this.page = this.PAGE_HELP;
+        }
         
         this._showWaitScreen();
         
@@ -625,7 +643,7 @@ var Tags = {
 	
 	updateZoom: function() {
 		//log('resizeNodes()');
-		
+
 		var zoom = $('#textui-zoom-slider').slider('value');
         
         // Only zoom if necessary (either the zoom is not 100, or the zoom is 100 but wasn't before).
