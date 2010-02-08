@@ -19,11 +19,17 @@ function getPositionRelativeTo(node, parent) {
 function ExpandSeries(rowElem) {
     log('ExpandSeries()');
 	var expandSeries = this;
-	
+    
 	this.isExpanded = false;
 	
     this.rowElem = $(rowElem);
     this.conferenceId = this.rowElem.metadata().id;
+    
+    // TODO: This prevents series with only one conference (the current one) from having JS errors... need to fix later.
+    if ($('.sub-conference-' + this.conferenceId).length == 0) {
+        this.rowElem.hide();
+        return;
+    }
     
     // This finds the parent DIV where we should append all images.
     this.containerElem = this.rowElem.parent().parent().parent().parent();
@@ -166,7 +172,7 @@ ExpandSeries.prototype.reposition = function() {
         this.imgLowerElem.css('height', height + 'px');
         this.imgLowerElem.css('width', width + 'px');
     }
-	
+    
 	setTimeout(function() {
 		expandSeries.reposition();
 	}, 100);
