@@ -74,7 +74,8 @@
                         </iframe>
                     </div>
                 </div>
-            {% else %}
+            {% else %} 
+                {% comment %}
                 <div style="text-align:center;">
                     <script type="text/javascript" src="{{ MEDIA_URL }}js/AC_RunActiveContent.js"></script>
                     <script>
@@ -113,6 +114,10 @@
                         </object>
                     </noscript>
                 </div>
+                {% endcomment %}
+                <a id="show-video-link" href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}">
+                    Watch the overview video
+                </a>
                 
                 {% comment %}
                 #<div id="login-message">
