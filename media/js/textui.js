@@ -473,15 +473,19 @@ var Tags = {
         if (tabName == undefined) {
             Lightbox.show('/ajax/tag_content?tagId=' + id + '&ui=textui', {
                 verticalCenter: false,
-                customClass: 'resources'
+                customClass: 'resources',
+                onShowCallback: function() {
+                    $('#tag-name').effect("highlight", {}, 2000);
+                }
             });
         } else {
             Lightbox.show('/ajax/tag_content?tagId=' + id + '&ui=textui', {
-               verticalCenter: false,
-               customClass: 'resources',
-               onShowCallback: function() {
-                   Tags.onSelectTag(tabName);
-               }
+                verticalCenter: false,
+                customClass: 'resources',
+                onShowCallback: function() {
+                    Tags.onSelectTag(tabName);
+                    $('#tag-name').effect("highlight", {}, 2000);
+                }
             });
         }
     },
