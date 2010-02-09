@@ -215,9 +215,15 @@ class odict(UserDict):
         return map(self.get, self._keys)
 
 def group_conferences_by_series(resources, include_current_conference=False):
-    'For a sequence of resources, groups any conferences in the same series together.'
+    '''
+    For a sequence of resources, groups any conferences in the same series together.
+        -Loop through each conference series
+        -If the 
+    '''
+    
     resources = list(resources)
     
+    # Create a dict of series with all matching conferences from the list.
     series_conferences = {}
     for resource in resources:
         if resource.conference_series != '':
@@ -225,6 +231,7 @@ def group_conferences_by_series(resources, include_current_conference=False):
                 series_conferences[resource.conference_series] = []
             series_conferences[resource.conference_series].append(resource)
     
+    # Loop through all conferences in each series, remove them from the main list unless they're the current conference.
     for series, conferences in series_conferences.items():
         import datetime
         
@@ -250,6 +257,7 @@ def group_conferences_by_series(resources, include_current_conference=False):
         while i < len(resources):
             if resources[i] == current_conference:
                 # Found the current conference in a series
+                    
                 resources[i].is_current_conference = True
                 other_conferences = series_conferences[resources[i].conference_series]
                 
