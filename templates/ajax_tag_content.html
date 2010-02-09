@@ -1,5 +1,5 @@
 {% extends "base_table.html" %}
-{% load filters %}
+{% load filters smartif%}
 
 {# NOTE: This the template page for the Resource Results lightbox/popup #}
 
@@ -151,16 +151,16 @@
                             <div class="group">
                                 {% if conferences|length %}
                                     {% for resource in conferences %}
-                                        {% if resource.url %}
+                                        {% if resource.url and resource.url_status != 'bad' %}
                                             <a href="{{ resource.url }}" target="_blank">
                                         {% endif %}
                                         <p class="{% cycle 'item_odd' 'item_even' %}">
                                             <span>{{resource.name}}</span>
-                                            {% if resource.url %}
+                                            {% if resource.url and resource.url_status != 'bad' %}
                                                 <img src="{{ MEDIA_URL }}images/popup.png" />
                                             {% endif %}
                                         </p>
-                                        {% if resource.url %}
+                                        {% if resource.url and resource.url_status != 'bad' %}
                                             </a>
                                         {% endif %}
                                         <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
@@ -179,16 +179,16 @@
                                             
                                             <div id="other-conferences-{{ resource.id }}" class="other-conferences">
                                                 {% for other_conference in resource.other_conferences %}
-                                                    {% if other_conference.url %}
+                                                    {% if other_conference.url and other_conference.url_status != 'bad'%}
                                                         <a href="{{ other_conference.url }}" target="_blank">
                                                     {% endif %}
                                                     <p class="{% cycle 'item_odd' 'item_even' %}">
                                                         <span>{{other_conference.name}}</span>
-                                                        {% if other_conference.url %}
+                                                        {% if other_conference.url and other_conference.url_status != 'bad'%}
                                                             <img src="{{ MEDIA_URL }}images/popup.png" />
                                                         {% endif %}
                                                     </p>
-                                                    {% if other_conference.url %}
+                                                    {% if other_conference.url and other_conference.url_status != 'bad'%}
                                                         </a>
                                                     {% endif %}
                                                     <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{other_conference.description}}</p>
@@ -210,16 +210,16 @@
                             <div class="group">
                                 {% if periodicals|length %}
                                     {% for resource in periodicals %}
-                                        {% if resource.url %}
+                                        {% if resource.url and resource.url_status != 'bad'%}
                                             <a href="{{ resource.url }}" target="_blank">
                                         {% endif %}
                                         <p class="{% cycle 'item_odd' 'item_even' %}">
                                             <span>{{resource.name}}</span>
-                                            {% if resource.url %}
+                                            {% if resource.url and resource.url_status != 'bad'%}
                                                 <img src="{{ MEDIA_URL }}images/popup.png" />
                                             {% endif %}
                                         </p>
-                                        {% if resource.url %}
+                                        {% if resource.url and resource.url_status != 'bad'%}
                                             </a>
                                         {% endif %}
                                         <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
@@ -236,16 +236,16 @@
                             <div class="group">
                                 {% if standards|length %}
                                     {% for resource in standards %}
-                                        {% if resource.url %}
+                                        {% if resource.url and resource.url_status != 'bad'%}
                                             <a href="{{ resource.url }}" target="_blank">
                                         {% endif %}
                                         <p class="{% cycle 'item_odd' 'item_even' %}">
                                             <span>{{resource.name}}</span>
-                                            {% if resource.url %}
+                                            {% if resource.url and resource.url_status != 'bad'%}
                                                 <img src="{{ MEDIA_URL }}images/popup.png" />
                                             {% endif %}
                                         </p>
-                                        {% if resource.url %}
+                                        {% if resource.url and resource.url_status != 'bad'%}
                                             </a>
                                         {% endif %}
                                         <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
