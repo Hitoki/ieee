@@ -123,3 +123,8 @@ p.admin-links {
 #header #links {
     padding-top: 25px;
 }
+
+#help-overview-link {
+   margin-top: 170px;
+   width: 200px;
+}
