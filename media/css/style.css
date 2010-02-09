@@ -36,6 +36,10 @@ a:hover {
     color: orange;
 }
 
+img {
+   border: 0 none;
+}
+
 /* Main layout table */
 
 
@@ -494,23 +498,28 @@ div.image-container {
     margin: 0px;
 }
 
+.xplore-full-results-page p.item_even, .xplore-full-results-page p.item_odd {
+   font-weight: bold;
+}
+
 #xplore-totals a:hover {
     text-decoration: none;
     color: gray;
 }
 
-.group a:hover, .society-images a {
+.group a:hover, .society-images a, .xplore-full-results-page a:hover {
    color: blue;
    cursor: default;
    text-decoration: none;
 }
 
-.group a img, .xplore-totals img {
+.group a img, .xplore-totals img, .xplore-full-results-page img {
    cursor: pointer;
 }
 
 .group .item_odd span:hover, .group .item_even span:hover, 
-#xplore-totals span:hover, .society-images span:hover {
+#xplore-totals span:hover, .society-images span:hover,
+.xplore-full-results-page .item_odd span:hover, .xplore-full-results-page .item_even span:hover {
     color: orange;
     text-decoration: underline;
     cursor: pointer;
@@ -1472,7 +1481,7 @@ p.export {
 #help-panel-left {
     display: inline-block;
     height: 423px;
-    width: 305px;
+    width: 310px;
     background-image: url(/media/images/help-left.png);
     background-repeat: no-repeat;
     background-position: 20px 13px;
