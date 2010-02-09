@@ -66,6 +66,7 @@
     {% endif %}
     
     <form action="{% url admin_save_resource %}?return_url={{ return_url|urlencode }}" method="post">
+        <input type="hidden" name="ignore_url_error" value="{{ ignore_url_error }}" />
         <table class="full-grid edit-create">
             {{ form.id }}
             <tr>
@@ -139,7 +140,10 @@
                 </th>
                 <td>
                     {% if url_error %}
-                        <div class="error">URL is broken: {{ url_error }}</div>
+                        <div class="error">
+                            URL is broken: {{ url_error }}<br/>
+                            Click "Save" below to ignore this error and continue saving.
+                        </div>
                     {% else %}
                         {% ifequal resource.url_status "bad" %}
                             <div class="error">URL is broken: {{ resource.url_error }}</div>

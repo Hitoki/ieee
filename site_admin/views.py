@@ -3066,6 +3066,7 @@ def view_resource(request, resource_id):
 def edit_resource(request, resource_id=None):
     return_url = request.GET.get('return_url', '')
     society_id = request.GET.get('society_id', '')
+    ignore_url_error = int(request.POST.get('ignore_url_error', 0))
     
     if resource_id is None:
         # creating a new resource
@@ -3134,6 +3135,7 @@ def edit_resource(request, resource_id=None):
         'resource': resource,
         'form': form,
         'show_standard_status': show_standard_status,
+        'ignore_url_error': '',
     })
 
 @login_required
@@ -3142,6 +3144,8 @@ def save_resource(request):
     if 'return_url' not in request.GET:
         raise Exception('Query variable "return_url" not found')
     return_url = request.GET['return_url']
+    
+    ignore_url_error = request.POST.get('ignore_url_error') == 'True'
     
     if 'id' not in request.POST:
         form = CreateResourceForm(request.POST)
@@ -3167,7 +3171,7 @@ def save_resource(request):
                 #errors.append('URL is broken: %s' % url_error)
                 url_error = url_error1
         
-        if len(errors) == 0 and url_error is None:
+        if len(errors) == 0 and (url_error is None or ignore_url_error):
             # Passed validation
             if 'id' in form.cleaned_data:
                 # Existing resource
@@ -3190,7 +3194,12 @@ def save_resource(request):
             resource.url = form.cleaned_data['url']
             # NOTE: Assume that if we're saving the resource, there can't be URL errors...
             resource.url_status = Resource.URL_STATUS_GOOD
-            resource.url_error = ''
+            if url_error is not None:
+                resource.url_status = Resource.URL_STATUS_BAD
+                resource.url_error = url_error
+            else:
+                resource.url_status = Resource.URL_STATUS_GOOD
+                resource.url_error = ''
             resource.nodes = form.cleaned_data['nodes']
             if form.cleaned_data['societies'] is not None:
                 resource.societies = form.cleaned_data['societies']
@@ -3228,6 +3237,9 @@ def save_resource(request):
             else:
                 return HttpResponseRedirect(return_url)
     
+        if url_error is not None and not ignore_url_error:
+            ignore_url_error = True
+        
     # Re-render the form
     if 'id' in request.POST:
         resource = Resource.objects.get(id=int(request.POST['id']))
@@ -3245,6 +3257,7 @@ def save_resource(request):
         'form': form,
         'errors': list_to_html_list(errors, 'errors'),
         'url_error': url_error,
+        'ignore_url_error': ignore_url_error,
     })
     
 
