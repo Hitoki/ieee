@@ -1468,9 +1468,9 @@ table.node-tooltip-grid td {
 p.export {
 }
 
-/* Home page */
+/* Help page */
 
-#home-container {
+#help-container {
    margin-left: 10px;
    margin-right: 10px;
    font-size: 13pt;
@@ -1478,63 +1478,14 @@ p.export {
    font
 }
 
-#home-container #home-stepconnect-cell {
-    width: 245px;
-    padding-top: 120px;
-    vertical-align: top;
-}
-
-#home-container .home-leftarrow-cell {
-   background-repeat: no-repeat;
-   width: 68px;
-   padding-bottom: 10px;
-}
-
-#home-container #home-stepstart-arrow {
-    background-image: url(/media/images/home_leftarrow_grn.png);
-    background-position: 0 11px;
-}
-
-#home-container #home-stepstart-cell {
-   height: 50px;
-   vertical-align: bottom;
-}
-
-#home-container #home-stepstart-cell #start {
-    font-weight: bold;
-    color: #33CC00;
-}
-
-#home-container #home-stepsort-cell {
-    background-image:url(/media/images/home_uparrow.png);
-    background-position:62px 16px;
-    background-repeat:no-repeat;
+#help-overview-link {
+    text-align:right;
     float:right;
-    padding-top:82px;
-    width:230px;
+    margin-top:-25px
 }
 
-#home-container #home-stepfilter-arrow {
-    background-image: url(/media/images/home_leftarrow.png);
-    background-position: 0 165px;
-}
-
-#home-container #home-stepfilter-cell {
-    width: 200px;
-    padding-top: 155px;
-}
-
-#home-container #home-titletag-cell {
-    float: right;
-    width: 326px;
-    font-size: 33px;
-    line-height: 1em;
-    color: #0070D5;
-    margin-top: 30px;
-}
-
-#home-container #home-titletag-cell #connections, #login-message #connections {
-    color: #33CC00;
+#help-overview-link a {
+    color: orange;
 }
 
 /* */

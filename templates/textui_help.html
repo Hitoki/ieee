@@ -1,6 +1,11 @@
 
 {# This page is loaded into the textui tags DIV when the page is first loaded #}
-<div id="home-container">
+
+<script type="text/javascript">
+    attachScripts($("#help-container"));
+</script>
+
+<div id="help-container">
     <table style="width: 100%">
         <tr>
             <td>
@@ -11,49 +16,8 @@
             </td>
         </tr>
     </table>
-    {% comment %} 
-    TODO: Unable to get video to launch in lightbox, keeps redirecting to new page
-    <span style="display:none;text-align:right;float:right;margin-top:-25px">
+    <span id="help-overview-link">
         <a href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}">Watch Overview Video</a>
     </span>
-    {% endcomment %}
-
-    {% comment %}
-    <table style="width: 100%">
-        <tr>
-            <td>
-                &nbsp;
-            </td>
-            <td>
-                
-            </td>
-            <td id="home-stepsort-cell">
-                Order the tags by alpha, overall connectedness, or more detailed statistics.
-            </td>
-        </tr>
-        <tr>
-            <td id="home-stepstart-arrow" class="home-leftarrow-cell">
-                &nbsp;
-            </td>
-            <td id="home-stepstart-cell">
-                <span id="start">Start here.</span> Choose an industry sector or an IEEE Society - its tags will appear in this window.
-            </td>
-            <td>
-                &nbsp;
-            </td>
-        </tr>
-        <tr>
-            <td>
-                &nbsp;
-            </td>
-            <td id="home-stepconnect-cell">
-                A tag's color shows how connected it is to sectors, to other tags, and to IEEE resources.
-            </td>
-            <td>
-                &nbsp;
-            </td>
-        </tr>
-    </table>
-    {% endcomment %}
 </div>
 
