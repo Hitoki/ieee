@@ -165,7 +165,7 @@
                                         {% endif %}
                                         <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
                                         
-                                        {% if resource.is_current_conference %}
+                                        {% if resource.is_current_conference and resource.other_conferences|length %}
                                             <p class="more-conferences">
                                                 <a href="#" id="show-other-conferences-{{ resource.id }}" class="show-other-conferences {id: {{ resource.id }}}">
                                                     <img src="{{ MEDIA_URL }}images/plusbox.png"/>
