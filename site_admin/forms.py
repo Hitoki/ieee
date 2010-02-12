@@ -111,6 +111,9 @@ class CreateResourceForm(Form):
     completed = BooleanField(required=False)
     standard_status = ChoiceField(choices=_make_choices_with_blank(Resource.STANDARD_STATUSES), required=False)
     keywords = CharField(max_length=1000, required=False)
+    conference_series = CharField(max_length=100, required=False)
+    year = IntegerField(required=False)
+    date = DateField(required=False)
 
 CreateResourceForm = autostrip(CreateResourceForm)
 
