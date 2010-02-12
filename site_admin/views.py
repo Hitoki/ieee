@@ -3250,12 +3250,18 @@ def save_resource(request):
     if not request.user.is_superuser:
         make_display_only(form.fields['societies'], is_multi_search=True)
         make_display_only(form.fields['ieee_id'])
+    else:
+        if resource.resource_type.name == ResourceType.STANDARD:
+            show_standard_status = True
+        else:
+            show_standard_status = False
         
     return render(request, 'site_admin/edit_resource.html', {
         'return_url': return_url,
         'resource': resource,
         'form': form,
         'errors': list_to_html_list(errors, 'errors'),
+        'show_standard_status': show_standard_status,
         'url_error': url_error,
         'ignore_url_error': ignore_url_error,
     })
