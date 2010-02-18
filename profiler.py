@@ -3,6 +3,25 @@ import time
 from util import odict
 
 class Profiler:
+    '''
+    Used to manually profile functions and see where time is being spent.
+    
+    Usage:
+        p = Profiler('page number 1')
+        # ...
+        p.tick('Before action X')
+        # ... 
+        p.tick('Before action Y')
+        # ... 
+        for i in range(10):
+            p.start_loop()
+            # ... 
+            p.tick('Before action Z')
+            # ... 
+            p.end_loop()
+        
+    Prints all output to the log.
+    '''
     def __init__(self, name=''):
         self.name = name
         self.is_loop = False

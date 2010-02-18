@@ -1,3 +1,7 @@
+'''
+This module handles threaded URL checking.
+'''
+
 import socket
 import time
 import threading
@@ -194,6 +198,7 @@ def check_url(url, timeout=None):
     return (url_status, url_error)
 
 def check_url_thread(resource_queue, resources_to_save_queue, checking_hosts):
+    'A single URL checking thread.'
     thread = threading.currentThread()
     #print '  %s: check_url_thread()' % thread.getName()
     while True:

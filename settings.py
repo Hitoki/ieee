@@ -1,4 +1,6 @@
-# Django settings for ieeetags project.
+'''
+Django settings for the ieeetags project.
+'''
 
 import logging
 import os
@@ -6,11 +8,11 @@ import os
 from util import relpath
 
 DEBUG = False
-TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),
 )
+'This stores all admins.  By default they will receive any errors.'
 
 MANAGERS = ADMINS
 
@@ -125,6 +127,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 # Application Settings ---------------------------------------------------------
 
 SHOW_SOCIETY_LOGIN_BANNER = False
+'OBSOLETE: Shows a "Welcome" banner on the login page.'
 
 # Debug Settings ---------------------------------------------------------------
 
@@ -140,28 +143,31 @@ LOG_FILENAME = None
 DMIGRATIONS_DIR = relpath(__file__, 'migrations')
 DISABLE_SYNCDB = True
 
-# Print exceptions to the console
 DEBUG_PRINT_EXCEPTIONS = False
+'Print all exceptions to the console.  Should not be used with WSGI, only local dev.'
 
-# Email exceptions to admins
 DEBUG_EMAIL_EXCEPTIONS = False
+'Email all exceptions to the admins.'
 
-# Enable the /debug/email test
 DEBUG_ENABLE_EMAIL_TEST = False
+'Enable the /debug/email test.'
 
-# If true, enables the profiling middleware (necessary for the DEBUG_WRITE_PROFILING option below)
 DEBUG_ENABLE_CPROFILE = False
+'Enable the profiling middleware (necessary for the DEBUG_WRITE_PROFILING option).'
 
-# If true, writes profiling logs for every request
 DEBUG_WRITE_PROFILING = False
+'Writes profiling logs for every request.'
 
 DEBUG_ENABLE_CLUSTERS = True
+'Enables clusters in the admin UI.'
 
 DISABLE_SITE = False
+'Disables the entire site, printing a "Site is disabled" message.  Used for server maintenance.'
 
 # This setting should be modified in settings.py, not local_settings.py (to ease server configuration tracking)
 #ENABLE_TEXTUI_SIMPLIFIED_COLORS = False
 ENABLE_TEXTUI_SIMPLIFIED_COLORS = True
+'Enables a single tag color in textui.  Otherwise, two extra color blocks are shown for sector/related tag popularity.  This is on by default, and the alternate color blocks method should be removed at some point.'
 
 # Local Settings ---------------------------------------------------------------
 

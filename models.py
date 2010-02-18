@@ -916,12 +916,16 @@ class Resource(models.Model):
     priority_to_tag = models.BooleanField()
     completed = models.BooleanField()
     keywords = models.CharField(max_length=5000, blank=True)
+    'This field is a text field, displayed to society managers on Edit Resource page to help them tag.  Not used in any other way.'
     conference_series = models.CharField(max_length=100, blank=True)
+    'Optional.  All conferences with the same "conference_series" are grouped together as a series.'
     date = models.DateField(null=True, blank=True)
     
     url_status = models.CharField(blank=True, max_length=100, choices=URL_STATUS_CHOICES)
+    'Reflects the status of this URL.  Can be "good", "bad", or None (not yet checked).'
     url_date_checked = models.DateTimeField(null=True, blank=True)
     url_error = models.CharField(null=True, blank=True, max_length=1000)
+    'The error (if any) that occured when checking this URL.'
     
     nodes = models.ManyToManyField(Node, related_name='resources')
     societies = models.ManyToManyField(Society, related_name='resources')
@@ -964,8 +968,10 @@ class Filter(NamedValueType):
 # ------------------------------------------------------------------------------
   
 class PermissionManager(models.Manager):
+    'This object stores all permission-related functions.  All new permission checks should go here.'
     
     def user_can_edit_society(self, user, society): 
+        'Checks if a user can edit a society.'
         if user.is_superuser:
             return True
         elif society in user.societies.all():
@@ -975,12 +981,14 @@ class PermissionManager(models.Manager):
             return self._user_has_permission(user, Permission.USER_CAN_EDIT_SOCIETY, society)
     
     def user_can_edit_society_name(self, user, society):
+        'Only superusers (admins) can edit a society name.'
         if user.is_superuser:
             return True
         else:
             return False
     
     def _user_has_permission(self, user, permission_type, object):
+        'Generic helper function to check if the user has the a certain permission for an object.'
         object_type = ContentType.objects.get_for_model(object)
         results = self.filter(user=user, object_id=object.id, object_type=object_type, permission_type=permission_type)
         return len(results) > 0
@@ -999,6 +1007,7 @@ class Permission(models.Model):
 # ------------------------------------------------------------------------------
 
 class Profile(models.Model):
+    'A user\'s profile.  By default, a profile is created whenever a user is created.'
     ROLE_ADMIN = 'admin'
     ROLE_SOCIETY_ADMIN = 'society_admin'
     ROLE_SOCIETY_MANAGER = 'society_manager'
@@ -1017,6 +1026,7 @@ class Profile(models.Model):
     last_login_time = models.DateTimeField(blank=True, null=True)
     last_logout_time = models.DateTimeField(blank=True, null=True)
     copied_resource = models.ForeignKey(Resource, related_name='copied_users', null=True, blank=True)
+    'This stores the source resource for copy & pasting tags.'
 
 # ------------------------------------------------------------------------------
 
@@ -1041,7 +1051,7 @@ class UserManager:
 # ------------------------------------------------------------------------------
 
 def _create_profile_for_user(sender, instance, signal, created, *args, **kwargs):
-    "Automatically creates a profile for each newly created user."
+    "Automatically creates a profile for each newly created user.  Uses signals to detect user creation."
     if created:
         profile = Profile(user=instance)
         profile.save()
@@ -1122,6 +1132,8 @@ class FailedLoginLogManager(models.Manager):
         return disabled
         
 class FailedLoginLog(models.Model):
+    'Keeps track of past failed logins.  Suspends future logins for a certain time if there are too many failed logins.'
+    
     # This is the number of seconds in the past to check for bad logins
     FAILED_LOGINS_TIME = 10 * 60
     # The number of minutes to disable an account for
@@ -1137,6 +1149,7 @@ class FailedLoginLog(models.Model):
     objects = FailedLoginLogManager()
 
 class UrlCheckerLog(models.Model):
+    'Keeps track of the current URL-checking thread\'s status.'
     date_started = models.DateTimeField(auto_now_add=True)
     date_ended = models.DateTimeField(blank=True, null=True)
     date_updated = models.DateTimeField(auto_now=True)

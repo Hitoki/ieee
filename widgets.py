@@ -146,6 +146,15 @@ class MultiSearchWidget(widgets.Widget):
         return mark_safe(u'\n'.join(output))
 
 def make_display_only(field, **kwargs):
+    '''
+    Makes a form field display-only, using DisplayOnlyWidget().
+    
+    Example:
+        
+        form = SomeForm()
+        make_display_only(form.fields['fieldname'])
+        
+    '''
     if kwargs is None:
         kwargs = {}
     kwargs.update({

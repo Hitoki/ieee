@@ -29,35 +29,36 @@ def strip_bom(file):
         return False
 
 def begins_with(str1, prefix):
+    'DEPRECATED: This should be replaced with x.beginswith(...) instead.'
     return str1[:len(prefix)] == prefix
-
-def ends_with(str1, prefix):
-    return str1[-len(prefix):] == prefix
-
-#def current_server_url(request):
-#    print 'current_server_url()'
-#    for name, value in request.META.items():
-#        print '  %sm: %s' % (name, value)
 
 class EndUserException(Exception):
     pass
 
 def default_date_format(date1=None):
+    'Formats a date.'
     import datetime
     if date1 is None:
         date1 = datetime.date.today()
     return date1.strftime('%a %b %d, %Y')
 
 def default_time_format(time1=None):
+    'Formats a time.'
     import time
     if time1 is None:
         time1 = time.localtime()
     return time.strftime('%I:%M %p', time1)
 
 def default_datetime_format(datetime1=None):
+    'Formats a date/time.'
     return default_date_format(datetime1) + ' ' + default_time_format(datetime1)
 
 def generate_password(length=8, chars='all'):
+    '''
+    Creates a random string useful for passwords.
+    @param length: The number of chars for this password.
+    @param chars: The charset to use, can be ALPHA_LOWER, ALPHA_UPPER, ALPHA, NUMERIC, SYMBOLS, SYMBOLS2, or ALL.
+    '''
     ALPHA_LOWER = 'abcdefghijklmnopqrstuvwxyz'
     ALPHA_UPPER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     ALPHA = ALPHA_LOWER + ALPHA_UPPER
@@ -93,6 +94,7 @@ def generate_password(length=8, chars='all'):
     return passwd
 
 def generate_words(min, max, chars='loweralpha'):
+    'Generates random strings of chars, for testing.'
     import random
     length = random.randint(min, max)
     string = generate_password(length, chars)
@@ -102,68 +104,11 @@ def generate_words(min, max, chars='loweralpha'):
         string = string[:i] + ' ' + string[i:]
     return string
 
-## Generate a human readable 'random' password
-## password  will be generated in the form 'word'+digits+'word' 
-## eg.,nice137pass
-## parameters: number of 'characters' , number of 'digits'
-## Pradeep Kishore Gowda <pradeep at btbytes.com >
-## License : GPL 
-## Date : 2005.April.15
-## Revision 1.2 
-## ChangeLog: 
-## 1.1 - fixed typos 
-## 1.2 - renamed functions _apart & _npart to a_part & n_part as zope does not allow functions to 
-## start with _
-#
-#def nicepass(alpha=6,numeric=2):
-#    """
-#    returns a human-readble password (say rol86din instead of 
-#    a difficult to remember K8Yn9muL ) 
-#    """
-#    import string
-#    import random
-#    vowels = ['a','e','i','o','u']
-#    consonants = [a for a in string.ascii_lowercase if a not in vowels]
-#    digits = string.digits
-#    
-#    ####utility functions
-#    def a_part(slen):
-#        ret = ''
-#        for i in range(slen):			
-#            if i%2 ==0:
-#                randid = random.randint(0,20) #number of consonants
-#                ret += consonants[randid]
-#            else:
-#                randid = random.randint(0,4) #number of vowels
-#                ret += vowels[randid]
-#        return ret
-#    
-#    def n_part(slen):
-#        ret = ''
-#        for i in range(slen):
-#            randid = random.randint(0,9) #number of digits
-#            ret += digits[randid]
-#        return ret
-#        
-#    #### 	
-#    fpl = alpha/2		
-#    if alpha % 2 :
-#        fpl = int(alpha/2) + 1 					
-#    lpl = alpha - fpl	
-#    
-#    start = a_part(fpl)
-#    mid = n_part(numeric)
-#    end = a_part(lpl)
-#    
-#    return "%s%s%s" % (start,mid,end)
-#    
-##if __name__ == "__main__":
-##    for i in range(30):
-##        print nicepass(8,2)
-
 from UserDict import UserDict
 
 class odict(UserDict):
+    'Represents an ordered dict.  Normal dict objects do not maintain order.'
+    
     def __init__(self, dict = None):
         self._keys = []
         UserDict.__init__(self, dict)

@@ -47,6 +47,7 @@ _IMPORT_SOURCES = [
 ]
 
 def _get_version():
+    'Gets the current code version from the version.txt file, or the SVN working copy properties.'
     #logging.debug('_get_version()')
     path = relpath(__file__, '..')
     version_path = relpath(__file__, '../version.txt')
@@ -92,12 +93,8 @@ def _get_version():
             
     return version, revision, date
 
-def _update_node_totals(nodes):
-    for node in nodes:
-        node.save()
-    
 def _unicode_csv_reader(unicode_csv_data, dialect=csv.excel, **kwargs):
-    # csv.py doesn't do Unicode; encode temporarily as UTF-8:
+    'csv.py doesn\'t do Unicode; encode temporarily as UTF-8'
     csv_reader = csv.reader(_utf_8_encoder(unicode_csv_data), dialect=dialect, **kwargs)
     for row in csv_reader:
         # decode UTF-8 back to Unicode, cell by cell:
@@ -111,8 +108,8 @@ def _utf_8_encoder(unicode_csv_data):
             print 'line: %r' % line
             raise
 
-# Return a random selection from the given list
 def _random_slice_list(list, min, max):
+    'Return a random selection from the given list.'
     list1 = list[:]
     count = random.randrange(min, max+1)
     random.shuffle(list1)
@@ -153,13 +150,14 @@ def _open_unicode_csv_writer(filename):
     writer = csv.writer(file)
     return (file, writer)
 
-def _check_tags_in_same_sector(tag1, tag2):
-    for sector in tag1.parents.all():
-        if sector in tag2.parents.all():
-            return True
-    return False
+#def _check_tags_in_same_sector(tag1, tag2):
+#    for sector in tag1.parents.all():
+#        if sector in tag2.parents.all():
+#            return True
+#    return False
 
 def _send_password_reset_email(request, user):
+    'Sends the user a password reset email, with a confirmation link.'
     if user.get_profile().reset_key is None:
         profile = user.get_profile()
         
@@ -193,6 +191,7 @@ Email: %s
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
 
 def _send_password_change_notification(user):
+    'Sends an email to the user that their password has changed.'
     subject = 'Your password has been changed'
     message = """The password on your account has been changed.  Please use the new password to login to your account.
 """
@@ -206,6 +205,7 @@ def _send_password_change_notification(user):
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
 
 def _escape_csv_field(value, add_quotes=True):
+    'Formats a CSV field correctly.'
     if value is None:
         value = ''
     elif type(value) is bool:
@@ -220,17 +220,6 @@ def _escape_csv_field(value, add_quotes=True):
         return '"%s"' % value
     else:
         return '%s' % value
-
-def _escape_csv_list(list1, add_quotes=True):
-    results = []
-    for item in list1:
-        if u',' in item:
-            raise Exception('Found a comma in a CSV list value: %s' % item)
-        results.append(_escape_csv_field(item, False))
-    if add_quotes:
-        return '"%s"' % ','.join(results)
-    else:
-        return '%s' % ','.join(results)
 
 def list_to_html_list(list, className=''):
     "Convert a python list to an HTML UL list."
@@ -1294,67 +1283,9 @@ def _get_random_from_sequence(seq, num):
 
 @login_required
 @admin_required
-def fix_user_import(request):
-    in_filename = relpath(__file__, '../data/v.7/2009-04-30 - users - append.csv')
-    out_filename = relpath(__file__, '../data/v.7/2009-04-30 - users - append - fixed.csv')
-    
-    row_count = 0
-    
-    (in_file, reader) = _open_unicode_csv_reader(in_filename)
-    out_file = codecs.open(out_filename, 'w', encoding='utf-8')
-
-    # Write the header row
-    out_row = '"%s","%s","%s","%s","%s","%s","%s"\r\n' % (
-        'Username',
-        'Password',
-        'First Name',
-        'Last Name',
-        'Email',
-        'Role',
-        'Society Abbreviations',
-    )
-    out_file.write(out_row)
-    
-    row_count = 0
-    generated_passwords = 0
-    
-    for row in reader:
-        
-        # Username,Password,First Name,Last Name,Email,Role,Society Abbreviations
-        username, password, first_name, last_name, email, role, society_abbreviations = row
-        
-        # Generate a password if necessary
-        if password.strip() == '':
-            password = generate_password(chars='loweralphanumeric')
-            generated_passwords += 1
-        
-        out_row = '%s,%s,%s,%s,%s,%s,%s\r\n' % (
-            _escape_csv_field(username),
-            _escape_csv_field(password),
-            _escape_csv_field(first_name),
-            _escape_csv_field(last_name),
-            _escape_csv_field(email),
-            _escape_csv_field(role),
-            _escape_csv_field(society_abbreviations),
-        )
-        out_file.write(out_row)
-
-        row_count += 1
-            
-    in_file.close()
-    out_file.close()
-    
-    return render(request, 'site_admin/results.html', {
-        'results': {
-            'row_count': row_count,
-            'generated_passwords': generated_passwords,
-        }
-    })
-    
-@login_required
-@admin_required
 @transaction.commit_manually
 def import_users(request):
+    'Imports users from an import file.'
     if request.method == 'GET':
         # Display form
         form = ImportFileForm()
@@ -1480,6 +1411,7 @@ def import_users(request):
 @admin_required
 @transaction.commit_on_success
 def import_resources(request):
+    'Imports resources from an import file.'
     if request.method == 'GET':
         # Display form
         form = ImportFileForm()
@@ -1500,6 +1432,7 @@ def import_resources(request):
 @admin_required
 @transaction.commit_on_success
 def import_clusters(request):
+    'Imports clusters from an import file.'
     if request.method == 'GET':
         # Display form
         form = ImportFileForm()
@@ -1529,6 +1462,7 @@ def import_clusters(request):
 @admin_required
 @transaction.commit_on_success
 def import_conference_series(request):
+    'Updates conference series from an import file.  Does not create new conferences, only updates the "conference series" attribute of existing ones.'
     if request.method == 'GET':
         # Display form
         form = ImportFileForm()
@@ -1655,6 +1589,7 @@ def _import_clusters(file):
 @login_required
 @admin_required
 def list_sectors(request):
+    'Lists all sectors.'
     sectors = Node.objects.getSectors()
     return render(request, 'site_admin/list_sectors.html', {
         'sectors': sectors,
@@ -1663,6 +1598,7 @@ def list_sectors(request):
 @login_required
 @admin_required
 def view_sector(request, sectorId):
+    'Shows a sectors.'
     sector = Node.objects.get(id=sectorId)
     return render(request, 'site_admin/view_sector.html', {
         'sector': sector,
@@ -1671,6 +1607,7 @@ def view_sector(request, sectorId):
 @login_required
 @admin_required
 def list_orphan_tags(request):
+    'Lists all tags that have no parent sectors.'
     tags = Node.objects.get_orphan_tags()
     return render(request, 'site_admin/list_orphan_tags.html', {
         'tags': tags,
@@ -1679,6 +1616,7 @@ def list_orphan_tags(request):
 @login_required
 @admin_required
 def send_email_all_users(request):
+    'Sends an email to all registered technav users.'
     if request.method == 'GET':
         form = SendEmailAllUsersForm(initial={
             'send_email': False,
@@ -1731,6 +1669,7 @@ def send_email_all_users_confirmation(request):
 @society_manager_or_admin_required
 @transaction.commit_on_success
 def edit_tags(request):
+    'The Edit Tag page.'
     # TODO: Check permissions on each tag
     assert request.method == 'POST'
     
@@ -1780,6 +1719,7 @@ def edit_tags(request):
 @login_required
 @admin_required
 def list_tags(request):
+    'Shows a list of all tags.'
     tags = Node.objects.getTags()
     return render(request, 'site_admin/list_tags.html', {
         'page_title': 'List Tags',
@@ -1789,6 +1729,7 @@ def list_tags(request):
 @login_required
 @admin_required
 def view_tag(request, tag_id):
+    'Shows a tag\'s information.'
     try:
         tag = Node.objects.get(id=tag_id)
     except Node.DoesNotExist:
@@ -1805,6 +1746,7 @@ def view_tag(request, tag_id):
 @login_required
 @society_manager_or_admin_required
 def create_tag(request):
+    'The Create Tag page.'
     sector_id = request.GET.get('sector_id', None)
     done_action = request.GET.get('done_action', None)
     return_url = request.GET.get('return_url', '')
@@ -1911,7 +1853,7 @@ def create_tag(request):
 @login_required
 @society_manager_or_admin_required
 def edit_tag(request, tag_id):
-    "Edit an existing tag."
+    "Shows the Edit Tag form."
     return_url = request.GET.get('return_url', '')
     society_id = request.GET.get('society_id', '')
     try:
@@ -1957,7 +1899,7 @@ def edit_tag(request, tag_id):
 @login_required
 @society_manager_or_admin_required
 def save_tag(request, tag_id):
-    "Saves an existing tag."
+    "Processes the Edit Tag form."
     return_url = request.GET.get('return_url', '')
     society_id = request.GET.get('society_id', '')
     tag = Node.objects.get(id=tag_id)
@@ -2024,6 +1966,7 @@ def save_tag(request, tag_id):
             return HttpResponseRedirect(reverse('admin_view_tag', args=[tag.id]))
 
 def _tag_not_found_response(request, tag_id, return_url):
+    'Error page when a tag is not found.'
     if return_url is None:
         return_url = 'javascript:history.back();'
     return render(request, 'error_tag_not_found.html', {
@@ -2034,6 +1977,7 @@ def _tag_not_found_response(request, tag_id, return_url):
 @login_required
 @admin_required
 def delete_tag(request, tag_id):
+    'Deletes a tag.'
     return_url = request.GET.get('return_url')
     
     try:
@@ -2154,6 +2098,7 @@ def _combine_tags(tag_id1, tag_id2):
 @admin_required
 @transaction.commit_on_success
 def combine_tags(request):
+    'Combine Tags page - combines all duplicate tags.'
     return_url = request.GET['return_url']
     duplicate_tags_json = request.POST['duplicate_tags_json']
     
@@ -2170,6 +2115,7 @@ def combine_tags(request):
 @login_required
 @admin_required
 def view_cluster(request, cluster_id):
+    'Shows a cluster.'
     cluster = Node.objects.get(id=cluster_id)
     return render(request, 'site_admin/view_cluster.html', {
         'cluster': cluster,
@@ -2179,6 +2125,7 @@ def view_cluster(request, cluster_id):
 @admin_required
 @transaction.commit_on_success
 def edit_cluster(request, cluster_id=None):
+    'Edit Cluster page.'
     if cluster_id is not None:
         cluster = Node.objects.get(id=cluster_id)
         sector_id = cluster.get_sector().id
@@ -2250,6 +2197,7 @@ def edit_cluster(request, cluster_id=None):
 @login_required
 @admin_required
 def delete_cluster(request, cluster_id):
+    'Deletes a cluster.'
     #return_to = request.GET.get('return_to')
     cluster = Node.objects.get(id=cluster_id)
     cluster.delete()
@@ -2259,6 +2207,7 @@ def delete_cluster(request, cluster_id):
 @login_required
 @admin_required
 def search_tags(request):
+    'Allows admin to search through tags by phrase.'
     tag_results = None
     if request.method == 'GET':
         form = SearchTagsForm()
@@ -2276,6 +2225,7 @@ def search_tags(request):
 @login_required
 @admin_required
 def users(request):
+    'Shows all users.'
     users = User.objects.all()
     return render(request, 'site_admin/users.html', {
         'users': users,
@@ -2315,6 +2265,7 @@ def edit_user(request, user_id=None):
     })
 
 def _errors_to_list(errors):
+    'Converts a list of errors into an HTML list.'
     if len(errors) == 0:
         return None
     else:
@@ -2437,7 +2388,7 @@ Takes as input a list of user id's in the POST list 'user_ids' (use checkboxes w
     return HttpResponseRedirect(reverse('admin_users'))
 
 def _send_user_login_info_email(request, user, plaintext_password, reason):
-    
+    'Sends login info to a user.'
     if reason == 'created':
         text1 = 'Your account has been created'
     elif reason == 'password_changed':
@@ -2500,6 +2451,7 @@ def view_society(request, society_id):
     })
 
 def _get_paged_tags(items_per_page, society, tag_sort, tag_page):
+    'Gets a list of a certain number of tags, sorted appropriately, for a society.'
     assert type(items_per_page) is int
     assert type(tag_page) is int
     
@@ -2600,7 +2552,9 @@ def _get_paged_tags(items_per_page, society, tag_sort, tag_page):
 @login_required
 @society_manager_or_admin_required
 def manage_society(request, society_id):
+    'The main society manager home page.  Allows society managers to edit their society, add/remove resources and tags, etc.'
     try:
+        # TODO: Use the Permissions model instead of the permissions module.
         permissions.require_society_user(request, society_id)
     except Exception, e:
         # Give a friendly error page with a link to the correct home page
@@ -2792,6 +2746,7 @@ def manage_society(request, society_id):
 @login_required
 @society_manager_or_admin_required
 def manage_society_tags_table(request, society_id, tag_sort, tag_page, items_per_page):
+    'Loads the AJAX content for the tags table, so it can be updated whenever it\'s changed on the page.'
     society = Society.objects.get(id=society_id)
     tag_page = int(tag_page)
     items_per_page = int(items_per_page)
@@ -3036,21 +2991,21 @@ def list_resources(request, type1):
         'resources': resources,
     })
 
-@login_required
-@society_manager_or_admin_required
-@transaction.commit_on_success
-def paste_resource(request, resource_id):
-    'Erase all tags from the given resource, and paste tags from the user\'s copied resource.'
-    to_resource = Resource.objects.get(id=resource_id)
-    
-    from_resource = request.user.get_profile().copied_resource
-    assert from_resource is not None
-    
-    to_resource.nodes.clear()
-    for tag in from_resource.nodes.all():
-        to_resource.nodes.add(tag)
-    to_resource.save()
-    return HttpResponseRedirect(reverse('admin_edit_resource', args=[resource_id]))
+#@login_required
+#@society_manager_or_admin_required
+#@transaction.commit_on_success
+#def paste_resource(request, resource_id):
+#    'Erase all tags from the given resource, and paste tags from the user\'s copied resource.'
+#    to_resource = Resource.objects.get(id=resource_id)
+#    
+#    from_resource = request.user.get_profile().copied_resource
+#    assert from_resource is not None
+#    
+#    to_resource.nodes.clear()
+#    for tag in from_resource.nodes.all():
+#        to_resource.nodes.add(tag)
+#    to_resource.save()
+#    return HttpResponseRedirect(reverse('admin_edit_resource', args=[resource_id]))
 
 @login_required
 @society_manager_or_admin_required
@@ -3220,10 +3175,6 @@ def save_resource(request):
                     society.tags.add(node)
                 society.save()
             
-            # Update the node totals (for both the old & current nodes)
-            _update_node_totals(old_nodes)
-            _update_node_totals(resource.nodes.all())
-            
             # Return to the society the user was editing
             if begins_with(return_url, 'close_window'):
                 return HttpResponse("""
@@ -3276,37 +3227,7 @@ def delete_resource(request, resource_id):
     resource = Resource.objects.get(id=resource_id)
     old_nodes = resource.nodes.all()
     Resource.objects.get(id=resource_id).delete()
-    _update_node_totals(old_nodes)
     return HttpResponseRedirect(next)
-
-#@login_required
-#@society_manager_or_admin_required
-#@transaction.commit_on_success
-#def remove_priorities(request):
-#    """
-#    Removes priorities from resources according to the requirements.  Only the following should have priority = True:
-#    - 2009 Conferences
-#    - Published Standards
-#    - All publications
-#    """
-#    permissions.require_superuser(request)
-#    logging.debug('remove_priorities()')
-#    
-#    # Remove priority from all non-2009 conferences
-#    conferences = Resource.objects.get_conferences()
-#    logging.debug('  conferences.count(): %s' % conferences.count())
-#    conferences = conferences.exclude(year='2009')
-#    logging.debug('  non-2009 conferences.count(): %s' % conferences.count())
-#    conferences.update(priority_to_tag=False)
-#    
-#    standards = Resource.objects.get_standards()
-#    logging.debug('  standards.count(): %s' % standards.count())
-#    standards = standards.exclude(standard_status=Resource.STANDARD_STATUS_PUBLISHED)
-#    logging.debug('  non-published standards.count(): %s' % standards.count())
-#    standards.update(priority_to_tag=False)
-#    
-#    return HttpResponseRedirect(reverse('admin_priority_report'))
-    
 
 @login_required
 @admin_required
@@ -3328,6 +3249,7 @@ def search_resources(request):
 @login_required
 @society_manager_or_admin_required
 def ajax_search_tags(request):
+    'Used for the multisearch widget on the Manage Society page.'
     #MAX_RESULTS = 50
     
     society_id = request.GET.get('society_id', '')
@@ -3472,6 +3394,7 @@ def ajax_update_society(request):
 @login_required
 @society_manager_or_admin_required
 def ajax_copy_resource_tags(request):
+    'Saves a resource into the user\'s profile, to use ajax_paste_resource_tags() later.'
     resource_id = request.POST['resource_id']
     resource = Resource.objects.get(id=resource_id)
     
@@ -3484,6 +3407,7 @@ def ajax_copy_resource_tags(request):
 @login_required
 @society_manager_or_admin_required
 def ajax_paste_resource_tags(request):
+    'Pastes tags from the user\'s copied resource onto the current resource.'
     resource_id = request.GET['resource_id']
     
     to_resource = Resource.objects.get(id=resource_id)
@@ -4017,6 +3941,7 @@ def broken_links_cancel(request):
 @login_required
 @admin_required
 def create_fake_tags(request):
+    'Used to create lots of fake tags to test performance.'
 
     delete_tags = bool(request.GET.get('delete_tags', 0))
     
@@ -4087,6 +4012,7 @@ def create_fake_tags(request):
     })
 
 def live_search_results(request):
+    'Used for Create Fake Tags page to test live search performance.'
     print 'live_search_results()'
     
     search_for = request.GET['search_for']
