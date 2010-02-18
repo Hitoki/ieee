@@ -1,3 +1,4 @@
+'Adds models to the django admin page.'
 
 from django.contrib import admin
 from models import *

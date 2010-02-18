@@ -18,6 +18,7 @@ def current_url(request):
     return {'current_url': request.get_full_path()}
 
 def is_ajax(request):
+    'Adds an "is_ajax" param to each template.  Detects if the current request is an AJAX request.'
     if request.GET.get('ajax', None) is not None:
         return {'is_ajax': True}
     else:

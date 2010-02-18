@@ -1,3 +1,6 @@
+'''
+Supporting classes for profiling, currently not used.
+'''
 # Originally from http://www.djangosnippets.org/snippets/186/
 
 import sys

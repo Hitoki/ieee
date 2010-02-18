@@ -13,7 +13,10 @@ def get_current_url(request):
     return url
 
 class ExceptionMiddleware:
-    
+    '''
+    Custom middleware, sends emails to admins for each error.  Configurable to send emails, log errors, etc.
+    '''
+        
     def process_exception(self, request, exception):
         "Print or email exception info, depending on settings."
         message = getattr(exception, 'message', '')

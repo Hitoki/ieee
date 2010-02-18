@@ -36,10 +36,10 @@ def render(request, template, dictionary=None):
 def truncate_link_list(items, output_func, plain_output_func, max_chars, tag=None, tab_name=None):
     """
     Takes a list of items and outputs links.  If the list is > max_chars, the list is truncated with '...(10 more)' appended.
-    @param items the list of items
-    @param output_func the HTML output formatting function, takes one item as its argument
-    @param output_func the Plaintext output formatting function, takes one item as its argument.  This is used to determine the content length (w/o HTML markup tags)
-    @param max_chasr the maximum length of the output, not including the '... (X more)' if necessary
+    @param items: the list of items
+    @param output_func: the HTML output formatting function, takes one item as its argument
+    @param output_func: the Plaintext output formatting function, takes one item as its argument.  This is used to determine the content length (w/o HTML markup tags)
+    @param max_chars: the maximum length of the output, not including the '... (X more)' if necessary
     """
     items_str = ''
     items_plaintext = ''
@@ -74,6 +74,12 @@ def truncate_link_list(items, output_func, plain_output_func, max_chars, tag=Non
     return items_str
 
 def get_min_max(list, attr):
+    '''
+    Finds the min and max value of the attr attribute of each item in the list.
+    @param list: the list of items.
+    @param attr: the name of the attribute to check the value.
+    @return: A 2-tuple (min, max).
+    '''
     min1 = None
     max1 = None
     for item in list:
@@ -86,7 +92,11 @@ def get_min_max(list, attr):
 # ------------------------------------------------------------------------------
 
 def error_view(request):
-    "Custom error view for production servers."
+    '''
+    Custom error view for production servers.  Sends an email to admins for every error with a traceback.
+    
+    Only active when settings.DEBUG == True.
+    '''
     
     # Get the latest exception from Python system service 
     (type, value, traceback1) = sys.exc_info()
@@ -109,18 +119,18 @@ def error_view(request):
     })
 
 def site_disabled(request):
+    'Displays "site disabled" message when the entire site is disabled (settings.DISABLE_SITE == True).'
     return render(request, 'site_disabled.html', {
     })
     
 @login_required
 def index(request):
-    # TODO: Temporarily show the textui page first, since roamer has performance problems.
+    'Redirects user to textui page.'
     return HttpResponseRedirect(reverse('textui'))
-    #return render(request, 'index.html')
 
 @login_required
 def roamer(request):
-    
+    'Shows the Asterisq Constellation Roamer flash UI.'
     nodeId = request.GET.get('nodeId', Node.objects.getRoot().id)
     sectors = Node.objects.getSectors()
     filters = Filter.objects.all()
@@ -132,7 +142,7 @@ def roamer(request):
 
 @login_required
 def textui(request):
-    
+    'Shows the textui (aka. Tag Galaxy) UI.'
     nodeId = request.GET.get('nodeId', None)
     sectorId = None
     clusterId = None
@@ -175,14 +185,17 @@ def textui(request):
 
 @login_required
 def textui_home(request):
+    'Shows textui "home" AJAX page.'
     return render(request, 'textui_home.html')
 
 @login_required
 def textui_help(request):
+    'Shows textui "help" AJAX page.'
     return render(request, 'textui_help.html')
 
 @login_required
 def feedback(request):
+    'User feedback page.  When submitted, sends an email to all admins.'
     if request.method == 'GET':
         if request.user.is_authenticated:
             form = FeedbackForm(
@@ -227,10 +240,12 @@ def feedback(request):
             })
 
 def browser_warning(request):
+    'Shows the AJAX browser compatability warning page.  Allows the user to click through if they still want to browse the site.'
     return render(request, 'browser_warning.html')
 
 @login_required
 def xplore_full_results(request, tag_id):
+    'Returns full listing of IEEE xplore results for the given tag.'
     tag = Node.objects.get(id=tag_id)
     results, errors, total_results = _get_xplore_results(tag, show_all=True)
     return render(request, 'xplore_full_results.html', {
@@ -239,10 +254,10 @@ def xplore_full_results(request, tag_id):
         'xplore_results': results,
         'totalfound': total_results,
     })
-    
 
 @login_required
 def ajax_tag_content(request):
+    'The AJAX resource results popup.'
     tagId = request.GET['tagId']
     ui = request.GET['ui']
     assert ui in ['roamer', 'textui'], 'Unrecognized ui "%s"' % ui
@@ -301,7 +316,7 @@ def ajax_tag_content(request):
 def _get_xplore_results(tag, highlight_search_term=True, show_all=False, offset=0):
     '''
     Get xplore results for the given tag from the IEEE Xplore search gateway.  Searches all fields for the tag phrase, returns results.
-    @return a 3-tuple of (results, errors, total_results).  'errors' is a string of any errors that occurred, or None.  'total_results' is the total number of results (regardless of how many are returned in 'results'.  'results' is an array of dicts:
+    @return: a 3-tuple of (results, errors, total_results).  'errors' is a string of any errors that occurred, or None.  'total_results' is the total number of results (regardless of how many are returned in 'results'.  'results' is an array of dicts:
         [
             {
                 'name': ...
@@ -399,6 +414,11 @@ def _get_xplore_results(tag, highlight_search_term=True, show_all=False, offset=
     return xplore_results, xplore_error, totalfound
 
 def ajax_xplore_results(request):
+    '''
+    Shows the list of IEEE xplore articles for the given tag.
+    @param tag_id: POST var, specifyies the tag.
+    @return: HTML output of results.
+    '''
     tagId = request.POST['tag_id']
     tag = Node.objects.get(id=tagId)
     
@@ -456,6 +476,16 @@ _POPULARITY_LEVELS = [
 ]
 
 def _get_popularity_level(min, max, count):
+    '''
+    Gets the popularity level for the given count of items.
+    
+    For example, if we are looking at all tags for a given sector, then we find the min/max number of related tags is 1 and 10 respectively.  Then we can call this function for each tag with params (1, 10, count) where count is the number of related tags for each tag, and we'll get a popularity level for each tag.
+    
+    @param min: The minimum count for all other peer items.
+    @param max: The maximum count for all other peer items.
+    @param count: The count for this specific item.
+    @return: A text label 'level1' through 'level6'.
+    '''
     if min == max:
         return _POPULARITY_LEVELS[len(_POPULARITY_LEVELS)-1]
     level = int(round((count-min) / float(max-min) * float(len(_POPULARITY_LEVELS)-1))) + 1
@@ -463,6 +493,14 @@ def _get_popularity_level(min, max, count):
 
 @login_required
 def ajax_textui_nodes(request):
+    '''
+    Gets an AJAX list of tag/cluster info for the textui page.
+    @param sector_id: (Optional) The sector to filter results.
+    @param society_id: (Optional) The society to filter results.
+    @param search_for: (Optional) A search phrase to filter results.
+    @param sort: The sort method.
+    @return: The HTML content for all results.
+    '''
     #log('ajax_textui_nodes()')
     
     #from profiler import Profiler
@@ -955,6 +993,7 @@ def ajax_nodes_xml(request):
 
 @login_required
 def tooltip(request, tag_id):
+    'Returns the AJAX content for the tag tooltip/flyover in textui.'
     #print 'tooltip()'
     #p = Profiler('tooltip')
     
@@ -1118,9 +1157,16 @@ def tooltip(request, tag_id):
         raise Exception('Unknown node type "%s" for node "%s"' % (node.node_type.name, node.name))
 
 def ajax_video(request):
+    'Returns the HTML content for the flash video.'
     return render(request, 'ajax_video.html')
     
 def print_resource(request, tag_id, resource_type):
+    '''
+    The print resource page.
+    
+    @param tag_id: The tag to print results for.
+    @param resource_type: Which resource(s) to include.
+    '''
     tag = Node.objects.get(id=tag_id)
     
     sectors = None
@@ -1165,11 +1211,11 @@ def print_resource(request, tag_id, resource_type):
     })
 
 def debug_error(request):
-    # This causes an error
+    'DEBUG: Causes an error, to test the error handling.'
     test = 0/0
 
 def debug_send_email(request):
-    log('debug_send_email()')
+    'DEBUG: Tests sending an email.'
     if not settings.DEBUG_ENABLE_EMAIL_TEST:
         raise Exception('DEBUG_ENABLE_EMAIL_TEST is not enabled')
         
@@ -1190,16 +1236,19 @@ def debug_send_email(request):
     })
 
 def test_error(request):
+    'DEBUG: Tests causing an error.'
     assert settings.DEBUG
     # Divide by zero error
     1/0
     return render(request, 'test_error.html')
     
 def test_lightbox_error(request):
+    'DEBUG: Tests a lightbox error.'
     assert settings.DEBUG
     return render(request, 'test_lightbox_error.html')
     
 def test_browsers(request):
+    'DEBUG: Tests a browsers error.'
     assert settings.DEBUG
     return render(request, 'test_browsers.html')
-    
+   

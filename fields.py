@@ -4,6 +4,11 @@ from django.utils import simplejson as json
 import widgets
 
 class MultiSearchField(fields.Field):
+    '''
+    Custom form widget.  Allows user to type a search phrase into the INPUT, and shows results in an AJAX dropdown.  Users can select multiple values.
+    
+    Uses extensive Javascript.
+    '''
     widget = widgets.MultiSearchWidget
     
     def __init__(self, model, search_url, format='simple', widget_label=None, show_create_tag_link=False, society_id=None, *args, **kwargs):

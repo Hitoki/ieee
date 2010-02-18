@@ -14,6 +14,11 @@ import settings
 #from profiler import Profiler
 
 def single_row(results, message=None):
+    '''
+    Returns a single row from the results.  Raises an error if there is 0 or >1 rows.
+    @param results: queryset.
+    @param message: (Optional) Message to include in the exception if there are 0 or >1 results.
+    '''
     if len(results) != 1:
         if message is None:
             raise Exception('Require 1 row, found %i.' % len(results))
@@ -22,6 +27,9 @@ def single_row(results, message=None):
     return results[0]
 
 def single_row_or_none(results):
+    '''
+    Returns a single row from the results, or None if there are 0 results.  Raises an exception if there are >1 results.
+    '''
     if len(results) > 1:
         raise Exception('Require 1 row, found %d' % len(results))
     elif len(results) == 0:
@@ -39,12 +47,14 @@ def list_to_choices(list):
 
 class NamedTypeManager(models.Manager):
     def getFromName(self, name):
+        'Looks up a NamedType that matches the given name.  Fails if none found.'
         types = self.filter(name=name)
         if len(types) != 1:
             raise Exception('Found %d %s for name "%s", looking for 1 result' % (len(types), self.__class__, name))
         return types[0]
 
 class NamedType(models.Model):
+    'A named type.  Used for named constants in the DB.'
     name = models.CharField(max_length=50)
     
     def __unicode__(self):
@@ -56,10 +66,12 @@ class NamedType(models.Model):
 
 class NamedValueTypeManager(NamedTypeManager):
     def getFromValue(self, value):
+        'Looks up a NamedType that matches the given value.  Fails if none found.'
         types = self.filter(value=value)
         return single_row(types)
 
 class NamedValueType(NamedType):
+    'A named & valued type.  Each object has a name and value.  Used for named/valued constants in the DB.'
     value = models.CharField(max_length=500)
     
     def __unicode__(self):
@@ -73,6 +85,7 @@ class NodeTypeManager(NamedTypeManager):
     pass
 
 class NodeType(NamedType):
+    'The constant node types.  Can be a cluster, tag, sector, or root.'
     TAG_CLUSTER = 'tag_cluster'
     TAG = 'tag'
     SECTOR = 'sector'
@@ -83,29 +96,34 @@ class NodeType(NamedType):
 class NodeManager(models.Manager):
     
     def create(self, **kwargs):
+        'Creates a node.  Automatically reformats the name using string.capwords(), so "some node NAME" becomes "Some Node Name".'
         if 'name' in kwargs:
             #print 'got name'
             kwargs['name'] = string.capwords(kwargs['name'])
         return models.Manager.create(self, **kwargs)
     
     def create_tag(self, **kwargs):
+        'Creates a tag.  Automatically reformats the name using string.capwords(), so "some node NAME" becomes "Some Node Name".'
         if 'name' in kwargs:
             kwargs['name'] = string.capwords(kwargs['name'])
         kwargs['node_type'] = NodeType.objects.getFromName(NodeType.TAG)
         return models.Manager.create(self, **kwargs)
         
     def create_cluster(self, name, sector):
+        'Creates a cluster for the given sector.'
         cluster = super(NodeManager, self).create(name=name, node_type = NodeType.objects.getFromName(NodeType.TAG_CLUSTER))
         cluster.parents = [sector]
         cluster.save()
         return cluster
         
     def getNodesForType(self, node_type):
+        'Gets all nodes of the given node type.'
         if type(node_type) is str:
             node_type = NodeType.objects.getFromName(node_type)
         return self.filter(node_type=node_type)
     
     def getRoot(self):
+        'Gets the root node.'
         rootType = NodeType.objects.getFromName('root')
         nodes = self.filter(node_type=rootType)
         if len(nodes) != 1:
@@ -113,9 +131,11 @@ class NodeManager(models.Manager):
         return nodes[0]
     
     def getSectors(self):
+        'Gets all sectors.'
         return self.filter(node_type__name=NodeType.SECTOR)
     
     def get_sector_by_name(self, name):
+        'Looks up a sector from its name.'
         sector_type = NodeType.objects.getFromName(NodeType.SECTOR)
         return single_row(self.filter(name=name, node_type=sector_type), 'Looking up sector "%s"' % name)
     
@@ -128,10 +148,11 @@ class NodeManager(models.Manager):
         return results
     
     def getFirstSector(self):
+        'Gets the first sector.'
         return self.getSectors()[0]
     
-    # DEPRECATED: use get_tags()
     def getTags(self):
+        'DEPRECATED: Use get_tags() instead.'
         return self.get_tags()
     
     def get_tags(self):
@@ -139,44 +160,20 @@ class NodeManager(models.Manager):
         tag_type = NodeType.objects.getFromName('tag')
         return self.filter(node_type=tag_type)
     
-    #def getChildNodes(self, node):
-    #    return self.filter(parent=node)
-    
     def getTagsByName(self, name):
+        'Gets all tags that have a given name.'
         tag_type = NodeType.objects.getFromName('tag')
         return self.filter(name=name, node_type=tag_type)
     
-    #def getTagByName(self, sector, tagName):
-    #    tag_type = NodeType.objects.getFromName('tag')
-    #    return single_row_or_none(self.filter(name=tagName, parent=sector, node_type=tag_type))
-    
     def get_tag_by_name(self, tag_name):
+        'Returns a single tag matching the given name, or None if not found.  Fails if more than one exist.'
         #print 'get_tag_by_name()'
         #print '  tag_name:', tag_name
         tag_type = NodeType.objects.getFromName('tag')
         return single_row_or_none(self.filter(name=tag_name, node_type=tag_type))
         
-    def getRandomTag(self):
-        tag_type = NodeType.objects.getFromName('tag')
-        return self.filter(node_type=tag_type).order_by('?')[0]
-    
-    #def get_random_related_tags(self, tag, count):
-    #    tag_type = NodeType.objects.getFromName('tag')
-    #    return self.filter(node_type=tag_type,parent=tag.parent).exclude(id=tag.id).order_by('?')[:count]
-    
-    def getFilteredNodes(self, nodeId, filterIds, sort):
-        return []
-    
-    #def getRelatedSectors(self, tag):
-    #    # Get all related sectors (including the given tag's sector)
-    #    relatedSectors = self.filter(node_type__name=NodeType.SECTOR, child_nodes__name=tag.name)#.exclude(id=tag.parent.id)
-    #    #print '  relatedSectors:', relatedSectors
-    #    #print '  len(relatedSectors):', len(relatedSectors)
-    #    return relatedSectors
-    
     def get_resource_range(self, sector):
         "Returns the min/max amount of resources-per-tag for the given sector."
-
         
         resource_counts = [tag.resources.count() for tag in sector.child_nodes.all()]
         if len(resource_counts) == 0:
@@ -394,12 +391,19 @@ class NodeManager(models.Manager):
         return tags
     
     def get_clusters(self):
+        'Returns all clusters.'
         return self.filter(node_type=NodeType.objects.getFromName(NodeType.TAG_CLUSTER)).all()
     
     def get_cluster(self, clusterId):
+        'Returns the give cluster.'
         return single_row_or_none(self.filter(id=clusterId, node_type__name=NodeType.TAG_CLUSTER))
     
     def get_cluster_by_name(self, cluster_name, sector_name):
+        '''
+        Looks up a cluster in a given sector.  Returns None if none found.
+        @param cluster_name: The cluster's name.
+        @param sector_name: The sector's name.
+        '''
         return single_row_or_none(
             self.filter(
                 node_type__name=NodeType.TAG_CLUSTER,
@@ -409,12 +413,14 @@ class NodeManager(models.Manager):
         )
     
     def add_tag_to_cluster(self, cluster, tag):
+        'Adds a tag to the given cluster.'
         cluster.child_nodes.add(tag)
         for filter in tag.filters.all():
             cluster.filters.add(filter)
         cluster.save()
     
     def remove_tag_from_cluster(self, cluster, tag):
+        'Removes a tag from the given cluster.'
         cluster.child_nodes.remove(tag)
         # Update the list of filters for this cluster
         cluster.filters.clear()
@@ -485,13 +491,24 @@ class NodeManager(models.Manager):
         return list1
     
 class Node(models.Model):
+    '''
+    This model can represent differen types of nodes (root, sector, cluter, tag).
+    
+    There is only one root tag.
+    
+    Each sector is a child of the root tag, and can contain clusters and tags.
+    
+    Each cluster is the child of a single cluster, and can contain tags.
+    
+    Each tag is a child of any number of sectors and clusters.  It contains no children.
+    '''
     name = models.CharField(max_length=500)
-    #parent = models.ForeignKey('Node', related_name='child_nodes', null=True, blank=True)
     parents = models.ManyToManyField('self', symmetrical=False, related_name='child_nodes', null=True, blank=True)
+    'This shows child object this node is a child of.  The types of the parent nodes changes depending on the type of this node.'
     node_type = models.ForeignKey(NodeType)
+    'The type of node this is: root, sector, cluster, tag.'
     societies = models.ManyToManyField('Society', related_name='tags', blank=True)
     filters = models.ManyToManyField('Filter', related_name='nodes')
-
     related_tags = models.ManyToManyField('self', null=True, blank=True)
     
     objects = NodeManager()
@@ -516,20 +533,23 @@ class Node(models.Model):
         return '%s (%s)' % (self.name, self.get_sector().name)
     
     def get_sectors(self):
+        'Returns all parent sectors for this node.'
         return self.parents.filter(node_type__name=NodeType.SECTOR)
     
     def get_parent_clusters(self):
+        'Returns all parent clusters for this node (for tags).'
         return self.parents.filter(node_type__name=NodeType.TAG_CLUSTER)
     
     def get_child_clusters(self):
+        'Returns all child clusters for this node (for sectors).'
         return self.child_nodes.filter(node_type__name=NodeType.TAG_CLUSTER)
     
     def get_tags(self):
-        "Returns all tags for this node."
+        "Returns all child tags for this node."
         return self.child_nodes.filter(node_type__name=NodeType.TAG)
     
     def get_tags_non_clustered(self):
-        "Returns all tags that are not clustered for this node."
+        "Returns all child tags that are not clustered for this node."
         #print 'get_tags_non_clustered()'
         tags = self.child_nodes.filter(node_type__name=NodeType.TAG)
         #print '  tags.count(): %s' % tags.count()
@@ -538,7 +558,7 @@ class Node(models.Model):
         return tags
     
     def get_tags_and_clusters(self):
-        "Returns any clusters and non-clustered child tags."
+        "Returns any child clusters and non-clustered child tags."
         assert self.node_type.name == NodeType.SECTOR, 'get_tags_and_clusters() only works for sectors.'
         return self.child_nodes.exclude(parents__node_type__name=NodeType.TAG_CLUSTER)
     
@@ -549,6 +569,7 @@ class Node(models.Model):
         return self.parents.all()[0]
     
     def cluster_update_filters(self):
+        'For clusters only.  Updates this cluster\'s filters to reflect all the current filters of its child tags.'
         assert self.node_type.name == NodeType.TAG_CLUSTER, 'Node "%s" is not a cluster' % self.name
         
         # Remove any filters that no longer apply
@@ -585,21 +606,22 @@ class Node(models.Model):
 # ------------------------------------------------------------------------------
 
 class SocietyManager(models.Manager):
-    def getRandom(self):
-        return self.all().order_by('?')[0]
-    
     def getFromName(self, name):
+        'Returns the society with the given name, or None.'
         return single_row_or_none(self.filter(name=name))
     
     def getFromAbbreviation(self, abbr):
+        'Returns the society with the given abbreviation, or None.'
         return single_row_or_none(self.filter(abbreviation=abbr))
     
     def searchByNameSubstring(self, substring):
+        'Returns any societies that match the search phrase.'
         if substring.strip() == '':
             return None
         return self.filter(name__icontains=substring)
     
     def getForUser(self, user):
+        'Returns all societies that the given user has access to.'
         if user.get_profile().role == Profile.ROLE_ADMIN:
             return self.all()
         elif user.get_profile().role == Profile.ROLE_SOCIETY_ADMIN:
@@ -731,6 +753,7 @@ class ResourceTypeManager(NamedTypeManager):
     pass
 
 class ResourceType(NamedType):
+    'NamedType model for each of the available resource types: conference, expert, periodical, standard.'
     objects = ResourceTypeManager()
     
     CONFERENCE = 'conference'
@@ -740,18 +763,26 @@ class ResourceType(NamedType):
 
 class ResourceManager(models.Manager):
     def get_conferences(self):
+        'Returns all conferences.'
         resource_type = ResourceType.objects.getFromName(ResourceType.CONFERENCE)
         return self.filter(resource_type=resource_type)
         
     def get_standards(self):
+        'Returns all standards.'
         resource_type = ResourceType.objects.getFromName(ResourceType.STANDARD)
         return self.filter(resource_type=resource_type)
         
     def get_periodicals(self):
+        'Returns all periodicals.'
         resource_type = ResourceType.objects.getFromName(ResourceType.PERIODICAL)
         return self.filter(resource_type=resource_type)
         
     def getForNode(self, node, resourceType=None):
+        '''
+        Gets all resources for the given node.  Optionally filter by resource type.
+        @param node: The node to search for.
+        @param resourceType: (Optional) The type of resource to filter by.
+        '''
         if type(resourceType) is str:
             resourceType = ResourceType.objects.getFromName(resourceType)
         if resourceType is not None:
@@ -760,9 +791,19 @@ class ResourceManager(models.Manager):
             return self.filter(nodes=node)
     
     def getNumForNode(self, node, resourceType=None):
+        '''
+        Get number of resources for the given node.
+        @param node: The node to search for.
+        @param resourceType: (Optional) The type of resource to filter by.
+        '''
         return len(self.getForNode(node, resourceType))
         
     def getForSociety(self, society, resourceType=None):
+        '''
+        Get all resources for the society.
+        @param node: The node to search for.
+        @param resourceType: (Optional) The type of resource to filter by.
+        '''
         if type(resourceType) is str:
             resourceType = ResourceType.objects.getFromName(resourceType)
         if resourceType is not None:
@@ -771,15 +812,18 @@ class ResourceManager(models.Manager):
             return self.filter(society=society)
     
     def getNumForSociety(self, society, resourceType=None):
+        '''
+        Get the number of resources for the society.
+        @param node: The node to search for.
+        @param resourceType: (Optional) The type of resource to filter by.
+        '''
         return len(self.getForSociety(society, resourceType))
     
     def searchByNameSubstring(self, substring):
+        'Return resources that match the search string.'
         if substring.strip() == '':
             return None
         return self.filter(name__icontains=substring)
-    
-    #def get_random(self, count):
-    #    return self.all().order_by('?')[:count]
     
     def get_conference_series(self):
         """
@@ -834,6 +878,7 @@ class ResourceManager(models.Manager):
                     return None
     
     def get_non_current_conferences_for_series(self, series, current_conference=None):
+        'Get all non-current conferences in the given series.'
         #print 'get_non_current_conferences_for_series()'
         #print '  series: %s' % series
         #print '  current_conference: %s' % current_conference
@@ -891,9 +936,6 @@ class Resource(models.Model):
 # ------------------------------------------------------------------------------
 
 class FilterManager(NamedValueTypeManager):
-    def getRandom(self):
-        return single_row_or_none(self.order_by('?')[:1])
-    
     def get_from_name_list(self, names):
         'Returns a list of filters whose names match the given list of names.'
         results = self.filter(name__in=names)
