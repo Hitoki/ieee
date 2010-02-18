@@ -641,170 +641,171 @@ def missing_resource(request, society_id):
 def permission_denied(request):
     return render(request, 'site_admin/permission_denied.html')
 
-@login_required
-@society_manager_or_admin_required
-@transaction.commit_on_success
-def import_tags(request, source):
-    logging.debug('import_tags()')
-    start = time.time()
-    
-    if source == 'v.7':
-        filename = relpath(__file__, '../data/v.7/2009-04-21 - tags.csv')
-    elif source == 'comsoc':
-        filename = relpath(__file__, '../data/comsoc/tags.csv')
-    else:
-        raise Exception('Unknown source "%s"' % source)
-    
-    logging.debug('  filename: %s' % filename)
-    
-    if source == 'comsoc':
-        # DEBUG: For comsoc only:
-        comsoc = Society.objects.all()[0]
-    
-    # DEBUG:
-    DEBUG_MAX_ROWS = None
-    #DEBUG_MAX_ROWS = 50
-    
-    row_count = 0
-    tags_created = 0
-    num_duplicate_tags = 0
-    related_tags_assigned = 0
-    duplicate_tags = ''
-    
-    # Import all tags
-    if True:
-        # Delete all existing tags
-        Node.objects.getTags().delete()
-    
-        (file, reader) = _open_unicode_csv_reader(filename)
-        for row in reader:
-            # Tag,Sectors,Filters,Related Tags
-            tag_name, sector_names, filter_names, related_tag_names = row
-            tag_name = tag_name.strip()
-            sector_names = [sector_name.strip() for sector_name in _split_no_empty(sector_names, ',')]
-            filter_names = [filter_name.strip() for filter_name in _split_no_empty(filter_names, ',')]
-            
-            sectors = [Node.objects.get_sector_by_name(sector_name) for sector_name in sector_names]
-            filters = [Filter.objects.getFromName(filter_name) for filter_name in filter_names]
-            
-            #logging.debug('    tag_name: %s' % tag_name)
-            
-            tag = Node.objects.get_tag_by_name(tag_name)
-            
-            if tag is not None:
-                ## Found duplicate tag, don't insert
-                #logging.error('    Duplicate tag "%s" found.' % tag_name)
-                #duplicate_tags += '%s<br/>\n' % tag_name
-                #num_duplicate_tags += 1
-            
-                # Tag already exists, add any sectors for the duplicate to the existing tag
-                logging.debug('    Duplicate tag "%s" found.' % tag_name)
-                duplicate_tags += '%s<br/>\n' % tag_name
-                num_duplicate_tags += 1
-                
-                #logging.debug('      tag.parents.all(): %s' % tag.parents.all())
-                #logging.debug('      sectors: %s' % sectors)
-                
-                for sector in sectors:
-                    #if tag.parents.filter(id=sector.id).count() == 0:
-                    #logging.debug('      adding sector: %s' % sector)
-                    tag.parents.add(sector)
-                
-                #logging.debug('      tag.parents.all(): %s' % tag.parents.all())
-                tag.save()
-                
-                #assert False
-            
-            else:
-                # Tag is unique, insert it
-            
-                tag = Node.objects.create_tag(
-                    name=tag_name,
-                )
-                #print '  sectors:', sectors
-                tag.parents = sectors
-                tag.filters = filters
-                
-                if settings.DEBUG_IMPORT_ASSIGN_ALL_TAGS_TO_COMSOC and source == 'comsoc':
-                    # For the comsoc demo only, assign all tags to COMSOC society
-                    tag.societies.add(comsoc)
-                
-                tag.save()
-                tags_created += 1
-                
-            row_count += 1
-            if not row_count % 50:
-                logging.debug('    Parsing row %d, row/sec %f' % (row_count, row_count/(time.time()-start) ))
-            
-            if DEBUG_MAX_ROWS is not None and row_count > DEBUG_MAX_ROWS:
-                logging.debug('  reached max row count of %d, breaking out of loop' % DEBUG_MAX_ROWS)
-                break
-            
-        file.close()
-        
-    # Reparse the file to import related tags
-    if True:
-        logging.debug('  parsing related tags')
-        
-        # Now reopen the file to parse for related tags
-        (file, reader) = _open_unicode_csv_reader(filename)
-        
-        row_count = 0
-        related_tags_start = time.time()
-        
-        for row in reader:
-            # Tag,Sectors,Filters,Related Tags
-            tag_name, sector_names, filter_names, related_tag_names = row
-            related_tag_names = [related_tag_name.strip() for related_tag_name in _split_no_empty(related_tag_names, ',')]
-            
-            # Continue if there are any related names to lookup
-            if len(related_tag_names):
-                tag_name = string.capwords(tag_name.strip())
-                sector_names = [sector_name.strip() for sector_name in _split_no_empty(sector_names, ',')]
-                
-                tag = Node.objects.get_tag_by_name(tag_name)
-                
-                related_tags = []
-                for related_tag_name in related_tag_names:
-                    related_tag = Node.objects.get_tag_by_name(related_tag_name)
-                    if related_tag is None:
-                        raise Exception('Can\'t find matching related tag "%s"' % related_tag_name)
-                    
-                    if not _check_tags_in_same_sector(tag, related_tag):
-                        raise Exception('Related tag "%s" is not in the same sector(s) as tag "%s".' % (related_tag, tag))
-                    
-                    related_tags.append(related_tag)
-                
-                tag.related_tags = related_tags
-                related_tags_assigned += len(related_tags)
-                tag.save()
-                
-            row_count += 1
-            if not row_count % 50:
-                try:
-                    logging.debug('    Parsing row %d, row/sec %f' % (row_count, row_count/(time.time()-start) ))
-                except:
-                    pass
-            
-            if DEBUG_MAX_ROWS is not None and row_count > DEBUG_MAX_ROWS:
-                logging.debug('  reached max row count of %d, breaking out of loop' % DEBUG_MAX_ROWS)
-                break
-                
-        file.close()
-    
-    page_time = time.time()-start
-    
-    return render(request, 'site_admin/import_results.html', {
-        'page_title': 'Import Tags',
-        'results': {
-            'page_time': page_time,
-            'row_count': row_count,
-            'tags_created': tags_created,
-            'num_duplicate_tags': num_duplicate_tags,
-            'related_tags_assigned': related_tags_assigned,
-            'duplicate_tags': duplicate_tags,
-        },
-    })
+# NOTE: This is obsolete, and will need to be re-written to handle new tag/node format.
+#@login_required
+#@society_manager_or_admin_required
+#@transaction.commit_on_success
+#def import_tags(request, source):
+#    logging.debug('import_tags()')
+#    start = time.time()
+#    
+#    if source == 'v.7':
+#        filename = relpath(__file__, '../data/v.7/2009-04-21 - tags.csv')
+#    elif source == 'comsoc':
+#        filename = relpath(__file__, '../data/comsoc/tags.csv')
+#    else:
+#        raise Exception('Unknown source "%s"' % source)
+#    
+#    logging.debug('  filename: %s' % filename)
+#    
+#    if source == 'comsoc':
+#        # DEBUG: For comsoc only:
+#        comsoc = Society.objects.all()[0]
+#    
+#    # DEBUG:
+#    DEBUG_MAX_ROWS = None
+#    #DEBUG_MAX_ROWS = 50
+#    
+#    row_count = 0
+#    tags_created = 0
+#    num_duplicate_tags = 0
+#    related_tags_assigned = 0
+#    duplicate_tags = ''
+#    
+#    # Import all tags
+#    if True:
+#        # Delete all existing tags
+#        Node.objects.getTags().delete()
+#    
+#        (file, reader) = _open_unicode_csv_reader(filename)
+#        for row in reader:
+#            # Tag,Sectors,Filters,Related Tags
+#            tag_name, sector_names, filter_names, related_tag_names = row
+#            tag_name = tag_name.strip()
+#            sector_names = [sector_name.strip() for sector_name in _split_no_empty(sector_names, ',')]
+#            filter_names = [filter_name.strip() for filter_name in _split_no_empty(filter_names, ',')]
+#            
+#            sectors = [Node.objects.get_sector_by_name(sector_name) for sector_name in sector_names]
+#            filters = [Filter.objects.getFromName(filter_name) for filter_name in filter_names]
+#            
+#            #logging.debug('    tag_name: %s' % tag_name)
+#            
+#            tag = Node.objects.get_tag_by_name(tag_name)
+#            
+#            if tag is not None:
+#                ## Found duplicate tag, don't insert
+#                #logging.error('    Duplicate tag "%s" found.' % tag_name)
+#                #duplicate_tags += '%s<br/>\n' % tag_name
+#                #num_duplicate_tags += 1
+#            
+#                # Tag already exists, add any sectors for the duplicate to the existing tag
+#                logging.debug('    Duplicate tag "%s" found.' % tag_name)
+#                duplicate_tags += '%s<br/>\n' % tag_name
+#                num_duplicate_tags += 1
+#                
+#                #logging.debug('      tag.parents.all(): %s' % tag.parents.all())
+#                #logging.debug('      sectors: %s' % sectors)
+#                
+#                for sector in sectors:
+#                    #if tag.parents.filter(id=sector.id).count() == 0:
+#                    #logging.debug('      adding sector: %s' % sector)
+#                    tag.parents.add(sector)
+#                
+#                #logging.debug('      tag.parents.all(): %s' % tag.parents.all())
+#                tag.save()
+#                
+#                #assert False
+#            
+#            else:
+#                # Tag is unique, insert it
+#            
+#                tag = Node.objects.create_tag(
+#                    name=tag_name,
+#                )
+#                #print '  sectors:', sectors
+#                tag.parents = sectors
+#                tag.filters = filters
+#                
+#                if settings.DEBUG_IMPORT_ASSIGN_ALL_TAGS_TO_COMSOC and source == 'comsoc':
+#                    # For the comsoc demo only, assign all tags to COMSOC society
+#                    tag.societies.add(comsoc)
+#                
+#                tag.save()
+#                tags_created += 1
+#                
+#            row_count += 1
+#            if not row_count % 50:
+#                logging.debug('    Parsing row %d, row/sec %f' % (row_count, row_count/(time.time()-start) ))
+#            
+#            if DEBUG_MAX_ROWS is not None and row_count > DEBUG_MAX_ROWS:
+#                logging.debug('  reached max row count of %d, breaking out of loop' % DEBUG_MAX_ROWS)
+#                break
+#            
+#        file.close()
+#        
+#    # Reparse the file to import related tags
+#    if True:
+#        logging.debug('  parsing related tags')
+#        
+#        # Now reopen the file to parse for related tags
+#        (file, reader) = _open_unicode_csv_reader(filename)
+#        
+#        row_count = 0
+#        related_tags_start = time.time()
+#        
+#        for row in reader:
+#            # Tag,Sectors,Filters,Related Tags
+#            tag_name, sector_names, filter_names, related_tag_names = row
+#            related_tag_names = [related_tag_name.strip() for related_tag_name in _split_no_empty(related_tag_names, ',')]
+#            
+#            # Continue if there are any related names to lookup
+#            if len(related_tag_names):
+#                tag_name = string.capwords(tag_name.strip())
+#                sector_names = [sector_name.strip() for sector_name in _split_no_empty(sector_names, ',')]
+#                
+#                tag = Node.objects.get_tag_by_name(tag_name)
+#                
+#                related_tags = []
+#                for related_tag_name in related_tag_names:
+#                    related_tag = Node.objects.get_tag_by_name(related_tag_name)
+#                    if related_tag is None:
+#                        raise Exception('Can\'t find matching related tag "%s"' % related_tag_name)
+#                    
+#                    if not _check_tags_in_same_sector(tag, related_tag):
+#                        raise Exception('Related tag "%s" is not in the same sector(s) as tag "%s".' % (related_tag, tag))
+#                    
+#                    related_tags.append(related_tag)
+#                
+#                tag.related_tags = related_tags
+#                related_tags_assigned += len(related_tags)
+#                tag.save()
+#                
+#            row_count += 1
+#            if not row_count % 50:
+#                try:
+#                    logging.debug('    Parsing row %d, row/sec %f' % (row_count, row_count/(time.time()-start) ))
+#                except:
+#                    pass
+#            
+#            if DEBUG_MAX_ROWS is not None and row_count > DEBUG_MAX_ROWS:
+#                logging.debug('  reached max row count of %d, breaking out of loop' % DEBUG_MAX_ROWS)
+#                break
+#                
+#        file.close()
+#    
+#    page_time = time.time()-start
+#    
+#    return render(request, 'site_admin/import_results.html', {
+#        'page_title': 'Import Tags',
+#        'results': {
+#            'page_time': page_time,
+#            'row_count': row_count,
+#            'tags_created': tags_created,
+#            'num_duplicate_tags': num_duplicate_tags,
+#            'related_tags_assigned': related_tags_assigned,
+#            'duplicate_tags': duplicate_tags,
+#        },
+#    })
 
 @login_required
 @admin_required
