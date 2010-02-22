@@ -63,10 +63,18 @@ def autostrip(cls):
 # ------------------------------------------------------------------------------
 
 class CreateTagForm(Form):
-    name = CharField(max_length=100, label='Tag Name')
+    name = CharField(max_length=100, label='Tag Name', show_hidden_initial=True)
     sectors = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), label='Sectors', widget=CheckboxSelectMultipleColumns(columns=3))
     filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultipleColumns(columns=2), required=False, label='Filters')
     related_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags', show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from Tag', blur_text='Type a few characters to bring up matching tags'))
+        
+    def clean_name(self):
+        data = self.cleaned_data['name']
+        # If the name has changed check to see if it already exists in the DB.
+        # If the name value has not changed the user is resubmitting the same name, despite the warning that it is a duplicate..
+        if 'name' in self._get_changed_data() and len(Node.objects.getTagsByName(data)):
+            raise forms.ValidationError("A tag with this name already exists. To create this tag anyway resubmit the form.")
+        return data
 
 CreateTagForm = autostrip(CreateTagForm)
 
