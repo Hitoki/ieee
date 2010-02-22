@@ -1993,7 +1993,8 @@ def delete_tag(request, tag_id):
     assert tag.node_type.name == NodeType.TAG
     tag.delete()
     
-    if return_url is not None:
+    print return_url
+    if return_url is not None and len(return_url):
         return HttpResponseRedirect(return_url)
     else:
         return HttpResponseRedirect(reverse('admin_home'))
