@@ -1,10 +1,16 @@
 from django.conf.urls.defaults import *
 
 import views
+from django.conf import settings
 
-urlpatterns = patterns('',
-    
-    url(r'^login$', views.login, name='admin_login'),
+urlpatterns = patterns('',)
+
+if settings.USE_SITEMINDER_LOGIN:
+    urlpatterns += patterns('', url(r'^login$', views.login_siteminder, name='admin_login'))
+else:
+    urlpatterns += patterns('', url(r'^login$', views.login, name='admin_login'))
+
+urlpatterns += patterns('',
     url(r'^logout$', views.logout, name='admin_logout'),
     url(r'^forgot_password$', views.forgot_password, name='forgot_password'),
     url(r'^forgot_password_confirmation$', views.forgot_password_confirmation, name='forgot_password_confirmation'),

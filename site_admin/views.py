@@ -374,6 +374,9 @@ def login(request):
         'form': form,
         'feedback': feedback,
     })
+    
+def login_siteminder(request):
+    return render(request, 'site_admin/login_siteminder.html', {})
 
 def logout(request):
     if request.user.is_authenticated():
