@@ -258,6 +258,29 @@ def checkout_site():
     run('touch "%(site_code)s/start-wsgi.py"' % env)
     
     sudo('/etc/init.d/httpd restart', pty=True)
+    
+def install_siteminder_client():
+    script = """
+    # Install required packages
+    sudo yum -y install compat-gcc-34
+    sudo yum -y install compat-libstdc++-33
+    sudo yum -y install compat-gcc-34-c++
+    """
+    run_multiline_script(script)
+    
+    # Upload the siteminder installer and properties files.
+    put(env.siteminder_properties_file, '~/', mode=0644)
+    put(env.siteminder_installer_file, '~/', mode=0644)
+    
+    # Unzip and run the siteminder installer file.
+    script="""
+    sudo yum -y install zip unzip
+    unzip %s
+    sudo chmod +x nete-wa-6qmr5-cr027-rhas30-x86-64.bin
+    sudo ./nete-wa-6qmr5-cr027-rhas30-x86-64.bin -f %s -i silent
+    rm -f nete-wa-6qmr5-cr027-rhas30-x86-64.bin readme.txt
+    """ % (os.path.split(env.siteminder_installer_file)[1], env.siteminder_properties_file)
+    run_multiline_script(script)
 
 def _expand_site_paths(env):
     """
