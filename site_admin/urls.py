@@ -7,9 +7,8 @@ urlpatterns = patterns('',)
 
 if settings.USE_SITEMINDER_LOGIN:
     urlpatterns += patterns('',
-    	url(r'^login.fcc$', views.login_siteminder, name='admin_login'),
-    	url(r'^login$', 'django.views.generic.simple.redirect_to', {'url': '/admin/login.fcc', 'permanent': False})
-    	)
+        url(r'^login$', views.login_siteminder, name='admin_login'),
+        )
     
 else:
     urlpatterns += patterns('', url(r'^login$', views.login, name='admin_login'))
