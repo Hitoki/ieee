@@ -469,6 +469,11 @@ function attachScripts(elem) {
     attachCopyTags(elem);
 }
 
+function openIEEEtv(URL){
+	newWindow = window.open(URL,"ieeeTV","scrollbars=no,resizable=no,HEIGHT=624,WIDTH=982");
+	newWindow.focus();
+}
+
 var mouseX = null;
 var mouseY = null;
 

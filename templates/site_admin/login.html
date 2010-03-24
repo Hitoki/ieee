@@ -60,9 +60,10 @@
             
                 
             {% if feedback %}
-                <a id="show-video-link" href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}">
-                    Watch the overview video
-                </a>
+                <div style="margin-top: -16px;" id="overview-video-link">
+                    <a href="http://www.ieee.org/portal/ieeetv/viewer.html?progId=122237" onclick="openIEEEtv('http://www.ieee.org/portal/ieeetv/viewer.html?progId=122237'); return false;" target="ieeeTV"><span class="lightbox {customClass: 'overview-video'}" style="margin-left: 16px;">Watch the overview video</span><img src='{{ MEDIA_URL}}images/video-still.png' alt="IEEE Video Still" style="width: 223px; height: 125px; vertical-align: middle" /></a>
+                </div>
+
                 
                 <div id="logout-message">
                     <div class="notification">
@@ -140,34 +141,34 @@
         <!-- About the Project tab -->
         <div id="about-project-tab" class="nootabs-tab">
             <p class="about-header">Connecting You to the IEEE Universe of Information</p>
-			<p>The IEEE Technology Navigator is a web-based discovery tool that helps IEEE members, prospective members, engineering practitioners and corporate partners to connect to IEEE resources and intellectual property.</p>
+            <p>The IEEE Technology Navigator is a web-based discovery tool that helps IEEE members, prospective members, engineering practitioners and corporate partners to connect to IEEE resources and intellectual property.</p>
 
-			<p>Unlike standard search engines, Technology Navigator uses visual navigation to present key concepts that match a user's needs and interests.</p>
+            <p>Unlike standard search engines, Technology Navigator uses visual navigation to present key concepts that match a user's needs and interests.</p>
             <p>Industry, education and government users can now connect to all IEEE products, services, and intellectual property from a single point of entry.</p>
             <p>Users can "drill down" from general industry and technology terms to specific IEEE society - and council-developed resources - publications, conferences and standards.</p>
-			<p class="about-header">Presenting IEEE information through the Technology Navigator:</p>
+            <p class="about-header">Presenting IEEE information through the Technology Navigator:</p>
 
-			<ul>
-				<li>Connects IEEE resources and IP to real-world applications</li>
-				<li>Breaks down discipline-specific silos</li>
-				<li>Provides access to information and resources regarding emerging technologies</li>
-				<li>Identifies areas of intersection that will encourage technical societies and councils to cooperate in overlapping areas</li>
-			</ul>
+            <ul>
+                <li>Connects IEEE resources and IP to real-world applications</li>
+                <li>Breaks down discipline-specific silos</li>
+                <li>Provides access to information and resources regarding emerging technologies</li>
+                <li>Identifies areas of intersection that will encourage technical societies and councils to cooperate in overlapping areas</li>
+            </ul>
 
-			<p>Technology Navigator is currently in private Beta to select IEEE communities, and will be publicly available in Fall 2010.</p>
+            <p>Technology Navigator is currently in private Beta to select IEEE communities, and will be publicly available in Fall 2010.</p>
 
-			<p class="about-header">The goals for the Technology Navigator are to help IEEE to:</p>
+            <p class="about-header">The goals for the Technology Navigator are to help IEEE to:</p>
 
-			<ul>
-				<li>Become a global information resource.</li>
-				<li>Be the preferred place to go for timely, relevant scientific information.</li>
-				<li>Be recognized as the leading organization for forming new knowledge communities, delivering quality information and supporting technical professionals.</li>
-				<li>Connect industry "edge users" to "rich" and relevant IEEE content.</li>
-				<li>Gather together IEEE Societies and Councils, Conferences, Standards and Publications in one place.</li>
+            <ul>
+                <li>Become a global information resource.</li>
+                <li>Be the preferred place to go for timely, relevant scientific information.</li>
+                <li>Be recognized as the leading organization for forming new knowledge communities, delivering quality information and supporting technical professionals.</li>
+                <li>Connect industry "edge users" to "rich" and relevant IEEE content.</li>
+                <li>Gather together IEEE Societies and Councils, Conferences, Standards and Publications in one place.</li>
                 <li>Indicate future activity, for example Conferences that have not taken place, but are on the books.</li>
-			</ul>
+            </ul>
 
-			<p>Questions or comments about the Technology Navigator? Contact us at <a href="mailto:technav@ieee.org">technav@ieee.org</a>.</p>
+            <p>Questions or comments about the Technology Navigator? Contact us at <a href="mailto:technav@ieee.org">technav@ieee.org</a>.</p>
 
         </div>
         {% comment %}
@@ -192,48 +193,48 @@
             
             <h1 class="about-team-section">Consultant Team</h1>
             
-			<p class="name">
-				Allan Tear
-			</p>
-			<p>
-				<img src="{{ MEDIA_URL }}images/about_team_allan.jpg" />
-				An expert consultant in new product and service launches, Allan is the Managing Partner of Aptus Collaborative. Aptus assists large organizations with technology-enabled innovation strategy. Allan previously was a founder of three venture-funded startups. He advises students and schools on entrepreneurship through the Betaspring startup accelerator, the RI Center for Innovation and Entrepreneurship, and the Carnegie Mellon Dean's Leadership Council. He was selected in 2008 for the Providence Business News "40 Under Forty" list. Allan is a graduate of Carnegie Mellon University, with B.S. degrees in Electrical & Computer Engineering, and Public Policy.
-			</p>
+            <p class="name">
+                Allan Tear
+            </p>
+            <p>
+                <img src="{{ MEDIA_URL }}images/about_team_allan.jpg" />
+                An expert consultant in new product and service launches, Allan is the Managing Partner of Aptus Collaborative. Aptus assists large organizations with technology-enabled innovation strategy. Allan previously was a founder of three venture-funded startups. He advises students and schools on entrepreneurship through the Betaspring startup accelerator, the RI Center for Innovation and Entrepreneurship, and the Carnegie Mellon Dean's Leadership Council. He was selected in 2008 for the Providence Business News "40 Under Forty" list. Allan is a graduate of Carnegie Mellon University, with B.S. degrees in Electrical & Computer Engineering, and Public Policy.
+            </p>
 
-			<p class="name">
-				Jack Templin
-			</p>
-			<p>
+            <p class="name">
+                Jack Templin
+            </p>
+            <p>
                 <img src="{{ MEDIA_URL }}images/about_team_jack.jpg" />
-				Jack specializes in online business strategy, experience design and web application development. Prior to moving to Rhode Island from New York City, Jack was a Lead Strategist at iXL (now Microsoft), and co-founded Arc, a venture-backed consultancy widely recognized as a leader in the field of customer experience design. As a Co-Founder of Providence Geeks and the RI Nexus program, Jack plays a leading role in Rhode Island's burgeoning info-tech and digital media sector. Jack is a graduate of Middlebury College with a B.A. in Economics., and has a Masters from New York University's Interactive Telecommunications Program (ITP). The Providence Journal recently named Jack one of 9 Rhode Islanders "to watch" in 2009.
-			</p>
+                Jack specializes in online business strategy, experience design and web application development. Prior to moving to Rhode Island from New York City, Jack was a Lead Strategist at iXL (now Microsoft), and co-founded Arc, a venture-backed consultancy widely recognized as a leader in the field of customer experience design. As a Co-Founder of Providence Geeks and the RI Nexus program, Jack plays a leading role in Rhode Island's burgeoning info-tech and digital media sector. Jack is a graduate of Middlebury College with a B.A. in Economics., and has a Masters from New York University's Interactive Telecommunications Program (ITP). The Providence Journal recently named Jack one of 9 Rhode Islanders "to watch" in 2009.
+            </p>
 
-			<p class="name">
-				Hilary Mason
-			</p>
-			<p>
+            <p class="name">
+                Hilary Mason
+            </p>
+            <p>
                 <img src="{{ MEDIA_URL }}images/about_team_hillary.jpg" />
-				Hilary is a computer science professor and data scientist focused on web applications and data mining. She's generally interested in techniques for finding insight in the large, unstructured data sets. Hilary has a M.S. Computer Science from Brown University, is an assistant professor at Johnson &amp; Wales University and is the Chief Scientist at Path101, Inc.
-			</p>
+                Hilary is a computer science professor and data scientist focused on web applications and data mining. She's generally interested in techniques for finding insight in the large, unstructured data sets. Hilary has a M.S. Computer Science from Brown University, is an assistant professor at Johnson &amp; Wales University and is the Chief Scientist at Path101, Inc.
+            </p>
 
-			<p class="name">
-				TJ Sondermann
-			</p>
-			<p>
+            <p class="name">
+                TJ Sondermann
+            </p>
+            <p>
                 <img src="{{ MEDIA_URL }}images/about_team_tj.jpg" />
-				TJ combines his broad knowledge in the area of User Experience Design with formal training as a librarian and seven plus years of information search and retrieval experience. He has a B.S. in Management from Binghamton University and an MLIS from the University of Rhode Island.
-			</p>
-			
-			<p class="name">
-				James Yoneda
-			</p>
-			<p>
-				<img src="{{ MEDIA_URL }}images/about_team_james.jpg" />
-				James Yoneda is a senior software developer specializing in data-driven web applications. Over the past 10 years, James has built a wide variety of systems for clients ranging from Fortune 1000 companies to start-ups. James has a B.S. in Computer Engineering from the University of Rhode Island.
-			</p>
+                TJ combines his broad knowledge in the area of User Experience Design with formal training as a librarian and seven plus years of information search and retrieval experience. He has a B.S. in Management from Binghamton University and an MLIS from the University of Rhode Island.
+            </p>
+            
+            <p class="name">
+                James Yoneda
+            </p>
+            <p>
+                <img src="{{ MEDIA_URL }}images/about_team_james.jpg" />
+                James Yoneda is a senior software developer specializing in data-driven web applications. Over the past 10 years, James has built a wide variety of systems for clients ranging from Fortune 1000 companies to start-ups. James has a B.S. in Computer Engineering from the University of Rhode Island.
+            </p>
             
             <br style="clear:both;" />
-			
+            
         </div>
         {% endcomment %}
     </div>

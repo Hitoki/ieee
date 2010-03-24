@@ -4,28 +4,13 @@
 <script type="text/javascript">
     attachScripts($("#help-container"));
 </script>
-<script type="text/javascript">
-function openIEEEtv(URL){
-	newWindow = window.open(URL,"ieeeTV","scrollbars=no,resizable=no,HEIGHT=624,WIDTH=982");
-	newWindow.focus();
-}
-</script>
-
-<style type="text/css">
-a:hover {
-	text-decoration: none;
-}
-a:hover span{
-	text-decoration: underline;
-}
-</style>
 
 <div id="help-container">
     <div id="help-panel-left">&nbsp;</div>
     <div id="help-panel-right">&nbsp;</div>
     <div id="help-overview-link">
     	
-    	<div style="text-align: center">
+    	<div style="text-align: center" id="overview-video-link">
         <a href="http://www.ieee.org/portal/ieeetv/viewer.html?progId=122237" onclick="openIEEEtv('http://www.ieee.org/portal/ieeetv/viewer.html?progId=122237'); return false;" target="ieeeTV"><img src='{{ MEDIA_URL}}images/video-still.png' alt="IEEE Video Still" style="width: 223px; height: 125px;" /><br /><span class="lightbox {customClass: 'overview-video'}">Watch Overview Video</span></a>
         </div>
     </div>

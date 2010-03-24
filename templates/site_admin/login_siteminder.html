@@ -62,9 +62,9 @@
             
                 
             {% if feedback %}
-                <a id="show-video-link" href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}">
-                    Watch the overview video
-                </a>
+                <div style="margin-top: -16px;" id="overview-video-link">
+                    <a href="http://www.ieee.org/portal/ieeetv/viewer.html?progId=122237" onclick="openIEEEtv('http://www.ieee.org/portal/ieeetv/viewer.html?progId=122237'); return false;" target="ieeeTV"><span class="lightbox {customClass: 'overview-video'}" style="margin-left: 16px;">Watch the overview video</span><img src='{{ MEDIA_URL}}images/video-still.png' alt="IEEE Video Still" style="width: 223px; height: 125px; vertical-align: middle" /></a>
+                </div>
                 
                 <div id="logout-message">
                     <div class="notification">

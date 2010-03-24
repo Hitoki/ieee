@@ -1940,3 +1940,10 @@ div#connectedness-container {
     color: gray;
     cursor: default;
 }
+
+#overview-video-link a:hover {
+	text-decoration: none;
+}
+#overview-video-link a:hover span{
+	text-decoration: underline;
+}
