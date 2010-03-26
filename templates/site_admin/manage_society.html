@@ -283,7 +283,7 @@
                             <li><a href="">Manage this Society's Resources ({{ num_unfiltered_resources }})</a></li>
                             <li {% if not DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB %}class="last-menu"{% endif %}><a href="">Manage this Society's Tags <span id="tag-count"></span></a></li>
                             {% if DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB %}
-                                <li class="last-menu"><a href="">Help</a></li>
+                                <li class="last-menu"><a href="{{ EXTERNAL_HELP_URL }}"> target="zendesk"Help</a></li>
                             {% endif %}
                         </ul>
                         

@@ -60,6 +60,8 @@ ADMIN_MEDIA_PREFIX = '/admin_media/'
 
 LOGIN_URL = '/admin/login'
 
+EXTERNAL_HELP_URL = 'http://help.technav.systemicist.com/forums'
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'o5tqsvh$&e3@@jzm)uvc02s*lsuw+5*r6jd%d+8u-6lzi3i%6j'
 
@@ -119,6 +121,7 @@ INSTALLED_APPS = (
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.auth',
     'ieeetags.context_processors.media_url',
+    'ieeetags.context_processors.external_help_url',
     'ieeetags.context_processors.user',
     'ieeetags.context_processors.current_url',
     'ieeetags.context_processors.is_ajax',

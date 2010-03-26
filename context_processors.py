@@ -5,6 +5,11 @@ def media_url(request):
     "Adds settings.MEDIA_URL to the context as MEDIA_URL."
     from django.conf import settings
     return {'MEDIA_URL': settings.MEDIA_URL}
+    
+def external_help_url(request):
+    "Adds settings.EXTERNAL_HELP_URL to the context as EXTERNAL_HELP_URL."
+    from django.conf import settings
+    return {'EXTERNAL_HELP_URL': settings.EXTERNAL_HELP_URL}
 
 def user(request):
     "Adds the request.user object to the context as 'user'."
