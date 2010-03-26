@@ -48,7 +48,7 @@ function getElemPos(elem) {
     elem = originalElem;
     do {
         if (elem.scrollLeft != undefined && elem.scrollTop != undefined) {
-            if (!browserIsSafari4() || elem.nodeName != 'BODY') {
+            if ( !(browserIsSafari4() || $.browser.chrome) || elem.nodeName != 'BODY') {
                 x -= elem.scrollLeft;
                 y -= elem.scrollTop;
                 //log('  '
