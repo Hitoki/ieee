@@ -1777,6 +1777,7 @@ def create_tag(request):
     else:
         # Process the form
         form = CreateTagForm(request.POST)
+        form.user_role = request.user.get_profile().role
         
         if request.is_ajax():
             form.fields['related_tags'].widget.set_show_create_tag_link(False)

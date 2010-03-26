@@ -70,11 +70,18 @@ class CreateTagForm(Form):
         
     def clean_name(self):
         data = self.cleaned_data['name']
-        # If the name has changed check to see if it already exists in the DB.
-        # If the name value has not changed the user is resubmitting the same name, despite the warning that it is a duplicate..
-        if 'name' in self._get_changed_data() and len(Node.objects.getTagsByName(data)):
-            raise forms.ValidationError("A tag with this name already exists. To create this tag anyway resubmit the form.")
+        
+        # Admins can create duplicate tags. Other roles cannot.
+        if self.user_role in [Profile.ROLE_ADMIN]:
+            # If the name has changed check to see if it already exists in the DB.
+            # If the name value has not changed the user is resubmitting the same name, despite the warning that it is a duplicate.
+            if 'name' in self._get_changed_data() and len(Node.objects.getTagsByName(data)):
+                raise forms.ValidationError("A tag with this name already exists. To create this tag anyway resubmit the form.")
+        else:
+            if len(Node.objects.getTagsByName(data)):
+                raise forms.ValidationError("A tag named \"%s\" already exists. As a %s you do not have permission to create a duplicate tag. Only Administrators can do so." % (data, self.user_role.replace('_', ' ').title()))
         return data
+                
 
 CreateTagForm = autostrip(CreateTagForm)
 
