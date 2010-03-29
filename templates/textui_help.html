@@ -11,8 +11,7 @@
     <div id="help-overview-link">
     	
     	<div style="text-align: center" id="overview-video-link">
-        <a href="http://www.ieee.org/portal/ieeetv/viewer.html?progId=122237" onclick="openIEEEtv('http://www.ieee.org/portal/ieeetv/viewer.html?progId=122237'); return false;" target="ieeeTV"><img src='{{ MEDIA_URL}}images/video-still.png' alt="IEEE Video Still" style="width: 223px; height: 125px;" /><br /><span class="lightbox {customClass: 'overview-video'}">Watch Overview Video</span></a>
+        <a href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}"><img src='{{ MEDIA_URL}}images/video-still.png' alt="IEEE Video Still" style="width: 223px; height: 125px;" /><br /><span class="lightbox {customClass: 'overview-video'}">Watch Overview Video</span></a>
         </div>
     </div>
 </div>
-

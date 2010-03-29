@@ -1,23 +1,8 @@
 
         <a class="lightbox-close"></a>
-<div style="text-align:center;">
-    <object
-        classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
-        codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,28,0"
-        width="640"
-        height="410"
-        title="Technology Navigator Promo">
-        <param name="movie" value="{{ MEDIA_URL }}flash/TechNav-640.swf" />
-        <param name="quality" value="high" />
-        <param name="allowFullScreen" value="true" />
-        <embed
-            src="{{ MEDIA_URL }}flash/TechNav-640.swf"
-            quality="high"
-            pluginspage="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash"
-            type="application/x-shockwave-flash"
-            width="640"
-            height="410"
-            allowFullScreen="true">
-        </embed>
-    </object>
+<script>
+$('#videoContainer').html('<iframe src="http://www.ieee.org/portal/site/ieeetv/embed.html?progId=122237" name="ieeetv" scrolling="no" width="500" height="282"  marginwidth="0" marginheight="0" frameborder="no"></iframe>');
+</script>
+<div id="videoContainer" style="text-align:center;">
+
 </div>
