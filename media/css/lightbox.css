@@ -267,7 +267,8 @@ input.text {
     -webkit-border-radius: 5px;
     background-color:#DFE1E4;
     border:1px solid black;
-    min-width: 640px;
+    width: 512px;
+    min-width: 512px;
     padding: 2em;
 }
 
