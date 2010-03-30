@@ -1122,7 +1122,7 @@ def tooltip(request, tag_id):
             'society-tab'
         )
         
-        show_edit_link = request.user.get_profile().role in (Profile.ROLE_SOCIETY_MANAGER)
+        show_edit_link = request.user.get_profile().role in (Profile.ROLE_SOCIETY_MANAGER, Profile.ROLE_ADMIN)
         
         #p.tick('render')
         #print '~tooltip()'
