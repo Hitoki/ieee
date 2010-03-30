@@ -58,7 +58,11 @@
                 </td>
             </tr>
         </table>
-        <div class="results-links"><a href="javascript:Tags.selectTag({{tag.id}});">{{ tag.resources.count }} Resource{{tag.resources.count|pluralize}} Tagged "{{ tag.name }}"</a></div>
-        
+        <div class="results-links">
+            <a href="javascript:Tags.selectTag({{tag.id}});">{{ tag.resources.count }} Resource{{tag.resources.count|pluralize}} Tagged "{{ tag.name }}"</a>
+            {% if showEditLink %}
+                <br /><a href="/admin/tag/{{ tag.id }}/edit">Edit this Tag</a>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}

@@ -20,7 +20,7 @@ import urllib
 import urllib2
 import xml.dom.minidom
 
-from ieeetags.models import single_row, Filter, Node, NodeType, Resource, ResourceType, Society
+from ieeetags.models import single_row, Filter, Node, NodeType, Profile, Resource, ResourceType, Society
 from ieeetags.forms import *
 #from profiler import Profiler
 import settings
@@ -1122,6 +1122,8 @@ def tooltip(request, tag_id):
             'society-tab'
         )
         
+        show_edit_link = request.user.get_profile().role in (Profile.ROLE_SOCIETY_MANAGER)
+        
         #p.tick('render')
         #print '~tooltip()'
         return render(request, 'tooltip.html', {
@@ -1134,6 +1136,7 @@ def tooltip(request, tag_id):
             'sectors': sectors_str,
             'related_tags': related_tags_str,
             'societies': societies_str,
+            'showEditLink': show_edit_link,
         })
     
     elif node.node_type.name == NodeType.TAG_CLUSTER:
