@@ -326,6 +326,7 @@ Nootab.prototype.onSelectLink = function(link) {
         var i = this.getMenuFromObj(link.parentNode);
         this.setTab(i);
     }
+    $(document).trigger('onShowLightboxTab');
 }
 
 ////////////////////////////////////////////////////////////////////////////////

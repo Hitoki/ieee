@@ -494,6 +494,7 @@ var Tags = {
                 customClass: 'resources',
                 onShowCallback: function() {
                     $('#tag-name').effect("highlight", {}, 2000);
+                    $(document).trigger('onShowLightboxTab');
                 }
             });
         } else {
@@ -503,6 +504,7 @@ var Tags = {
                 onShowCallback: function() {
                     Tags.onSelectTag(tabName);
                     $('#tag-name').effect("highlight", {}, 2000);
+                    $(document).trigger('onShowLightboxTab');
                 }
             });
         }
