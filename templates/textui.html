@@ -14,11 +14,12 @@
                 $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 180 - navTabsHeight);
                 $('div#tag-galaxy').css('height', windowHeight - 180);
                 $('.resources-lightbox-content:visible').css('height', windowHeight - 200);
+                $('#resource-tabs .nootabs-selected-tab').css('height', windowHeight - 320);
+                $('.nootabs-selected-tab div.group').css('height', windowHeight - 350);
             };
             onWindowResize();
             $(window).resize(onWindowResize);
-
-			
+            
 			// Attach event to tags-search clear button.
 			$('#textui-tags-search-clear').click(function() {
 				Tags.clearSearchResults();
@@ -36,7 +37,7 @@
 				change: function(e, ui) {
 					$('#textui-zoom-value').text(ui.value + '%');
 					Tags.updateZoom();
-				}
+				}	
 			});
             
             // Attach event to default-zoom image.
