@@ -3,6 +3,21 @@
 {% block extra_head %}
     <script type="text/javascript">
         $(function() {
+            
+            var navTabsHeight = $('#galaxy-tabs .nootabs-menu').eq(0).height();
+            $('div#sectors-tab, div#societies-tab').css('min-height', 441-navTabsHeight);
+            
+            var onWindowResize = function() {
+                
+                var windowHeight = $(window).height();
+                
+                $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 180 - navTabsHeight);
+                $('div#tag-galaxy').css('height', windowHeight - 180);
+                $('.resources-lightbox-content:visible').css('height', windowHeight - 200);
+            };
+            onWindowResize();
+            $(window).resize(onWindowResize);
+
 			
 			// Attach event to tags-search clear button.
 			$('#textui-tags-search-clear').click(function() {

@@ -210,6 +210,7 @@ p.admin-links a:hover {
     height:40px;
     position:relative;
     z-index: 1;
+    margin-top: 20px;
 }
 
 #footer .leftCorner {
@@ -341,7 +342,7 @@ ul#view-header li {
 
 #left-column-container .nootabs-tab {
     border: 1px solid #006699;
-    height: 400px;
+    height: 100%;
     width: 174px;
     -moz-border-radius-bottomleft: 5px;
     -moz-border-radius-bottomright: 5px;
@@ -642,7 +643,7 @@ span#roamer-beta-warning {
 }
 
 .textui-page #right-column {
-    height:440px;
+    height:auto;
 }
 
 #alternate-page .alt-box {
@@ -728,6 +729,7 @@ span#roamer-beta-warning {
 
 #alternate-page #tag-galaxy {
     height: 441px;
+    min-height: 441px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     padding: 5px 5px 2px 0;
@@ -737,6 +739,7 @@ span#roamer-beta-warning {
 
 #alternate-page #tag-galaxy .alt-box-pad {
     height: 96.5%;
+    min-height: 431px;
     overflow: auto;
 }
 
@@ -1773,7 +1776,7 @@ ul.errors {
 
 .nootabs-selected-tab div.group {
     margin-top: 30px;
-    height: 342px;
+    height: 100%;
     overflow: auto;
 }
 

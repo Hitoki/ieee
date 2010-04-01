@@ -181,7 +181,7 @@ input.text {
 }
 
 #lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs .nootabs-selected-tab {
-    height: 372px;
+    height: 100%
     background-color: white;
 }
 
