@@ -25,30 +25,30 @@
             $(window).resize(resizeTagGalaxy).resize(resizeLightboxTab);
             $(document).bind('onShowLightboxTab', resizeLightboxTab);
             
-			// Attach event to tags-search clear button.
-			$('#textui-tags-search-clear').click(function() {
-				Tags.clearSearchResults();
-			});
-			
-			// Attach the zoom slider.
-			$("#textui-zoom-slider").slider({
-				min: 50,
-				max: 150,
-				value: 100,
-				orientation: 'vertical',
-				slide: function(e, ui) {
-					$('#textui-zoom-value').text(ui.value + '%');
-				},
-				change: function(e, ui) {
-					$('#textui-zoom-value').text(ui.value + '%');
-					Tags.updateZoom();
-				}	
-			});
+            // Attach event to tags-search clear button.
+            $('#textui-tags-search-clear').click(function() {
+                Tags.clearSearchResults();
+            });
+            
+            // Attach the zoom slider.
+            $("#textui-zoom-slider").slider({
+                min: 50,
+                max: 150,
+                value: 100,
+                orientation: 'vertical',
+                slide: function(e, ui) {
+                    $('#textui-zoom-value').text(ui.value + '%');
+                },
+                change: function(e, ui) {
+                    $('#textui-zoom-value').text(ui.value + '%');
+                    Tags.updateZoom();
+                }	
+            });
             
             // Attach event to default-zoom image.
-			$('#textui-zoom-default-zoom').click(function() {
-				$('#textui-zoom-slider').slider('value', 100);
-			});
+            $('#textui-zoom-default-zoom').click(function() {
+                $('#textui-zoom-slider').slider('value', 100);
+            });
             
             Tags.init();
         });
@@ -195,11 +195,11 @@
                                                 <option value="connectedness">Most Connectedness</option>
                                             {% endif %}
 
-											{% comment %}
-											#TODO: Re-enable clusters
+                                            {% comment %}
+                                            #TODO: Re-enable clusters
                                             #<option value="clusters_first_alpha">Clusters First</option>
-											{% endcomment %}
-											
+                                            {% endcomment %}
+                                            
                                             <option value="frequency">Most Resources</option>
                                             <option value="num_sectors">Most Sectors</option>
                                             <option value="num_related_tags">Most Related Tags</option>
@@ -216,7 +216,7 @@
                                 <span id="textui-zoom-default-zoom">Reset</span>
                             </div>
                             
-							<div id="tag-galaxy" class="alt-box">
+                            <div id="tag-galaxy" class="alt-box">
                                 <div id="tags" class="alt-box-pad">
                                 </div>
                             </div>
