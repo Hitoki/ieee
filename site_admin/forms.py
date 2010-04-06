@@ -5,6 +5,7 @@ from django.forms import *
 from ieeetags.models import Filter, Node, NodeType, Society, Resource, ResourceType, Profile, list_to_choices
 from ieeetags.fields import MultiSearchField
 from ieeetags.widgets import MultiSearchWidget, DisplayOnlyWidget, CheckboxSelectMultipleColumns
+from ieeetags import url_checker
 
 TRISTATE_CHOICES = [
     'no change',
@@ -159,6 +160,15 @@ class SocietyForm(ModifiedFormBase):
     users = ModelMultipleChoiceField(queryset=User.objects.all(), required=False)
     tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags')
     resources = MultiSearchField(model=Resource, search_url='/admin/ajax/search_resources')
+    
+    def clean_url(self):
+        data = self.cleaned_data['url']
+        
+        (url_status, url_error) = url_checker.check_url(data, 4)
+        
+        if url_error != '':
+            raise forms.ValidationError(url_error)
+        return data
 
 SocietyForm = autostrip(SocietyForm)
 
