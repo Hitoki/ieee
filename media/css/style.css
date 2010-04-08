@@ -1481,13 +1481,28 @@ p.export {
 }
 
 /* Help page */
+#help-container {
+    width:100%;
+    height:100%;
+}
+
 #help-panel-left {
     display: inline-block;
-    height: 423px;
+    height: 254px;
     width: 310px;
     background-image: url(/media/images/help-left.png);
     background-repeat: no-repeat;
     background-position: 20px 13px;
+    float: left;
+}
+
+#help-panel-left-btm {
+    display: inline-block;
+    height: 153px;
+    width: 310px;
+    background-image: url(/media/images/help-left-btm.png);
+    background-repeat: no-repeat;
+    background-position: 20px 0;
     float: left;
 }
 
@@ -1502,16 +1517,23 @@ p.export {
 }
 
 #help-overview-link {
-    text-align:right;
-    float:right;
-    margin-top:-150px;
-    margin-right: 20px;
-    clear:both;
+    text-align:center;
     font-size:13pt;
+    width:223px;
+    float:right;
+    margin-right: 15px;
 }
 
 #help-overview-link a {
     color: orange;
+}
+
+#help-top-row {
+    vertical-align:top;
+}
+
+#help-btm-row {
+    vertical-align:bottom;
 }
 
 /* */
