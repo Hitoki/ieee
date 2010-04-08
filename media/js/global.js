@@ -143,9 +143,14 @@ function browserIsSafari4() {
     return $.browser.safari && $.browser.version.string().substr(0,1) == "4";
 }
 
-// Check if browser is Chrome
+// Check if browser is Chrome 2
 function browserIsChrome2() {
     return $.browser.chrome && $.browser.version.string().substr(0,1) == "2";
+}
+
+// Check if browser is Chrome 4
+function browserIsChrome4() {
+    return $.browser.chrome && $.browser.version.string().substr(0,1) == "4";
 }
 
 function isCompatibleBrowser() {
@@ -155,7 +160,7 @@ function isCompatibleBrowser() {
     //alert('$.browser.browser(): ' + $.browser.browser());
     //alert('$.browser.version.string(): ' + $.browser.version.string());
     //alert('$.browser.version.number(): ' + $.browser.version.number());
-    return browserIsFirefox30() || browserIsFirefox35() || browserIsFirefox36() || browserIsIe7() || browserIsIe8() || browserIsSafari4();
+    return browserIsFirefox30() || browserIsFirefox35() || browserIsFirefox36() || browserIsIe7() || browserIsIe8() || browserIsSafari4() || browserIsChrome4();
 }
 
 function setBrowserCookie() {
