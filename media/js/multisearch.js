@@ -955,15 +955,15 @@ MultiSearch.prototype.closePopup = function(clear_value) {
     if (clear_value == undefined)
         clear_value = false;
     
-    // Close the popup & reset options
-    this.popupVisible = false;
-    this.popupElem.html('');
-    if (clear_value) {
+    if (this.popupVisible && clear_value) {
         // NOTE: Simply setting this.input.attr('value', '') here does not work (it's immediately overwritten with the original value).
         setTimeout(function() {
             multisearch.clearValue();
         }, 10);
     }
+    // Close the popup & reset options
+    this.popupVisible = false;
+    this.popupElem.html('');
     if (this.options.society_tags_first) {
         this.popupFirstElem = $('<div><div class="multi-search-popup-first">This Society&#39;s Tags:</div></div>').appendTo(this.popupElem);
         this.popupSecondElem = $('<div><div class="multi-search-popup-second">Other Tags:</div></div>').appendTo(this.popupElem);

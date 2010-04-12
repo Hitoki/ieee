@@ -18,7 +18,8 @@ function BlurText(elem, options) {
         blurText.onFocus();
     });
     this.elem.blur(function() {
-        blurText.onBlur();
+    	// HACK This timeout allow multisearch.js to blank the value before this handler executes.
+        setTimeout(function(){blurText.onBlur();}, 200);
     });
     this.onBlur();
 }
