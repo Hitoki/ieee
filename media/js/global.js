@@ -105,59 +105,6 @@ function showBrowserWarning() {
     warning.load('/browser_warning');
 }
 
-// Check if browser is IE7
-function browserIsIe7() {
-    return $.browser.msie && $.browser.version.string().substr(0, 1) == "7";
-}
-
-// Check if browser is IE7
-function browserIsIe8() {
-    return $.browser.msie && $.browser.version.string().substr(0, 1) == "8";
-}
-
-// Check if browser is Firefox 3.0
-function browserIsFirefox30() {
-    /*log('browserIsFirefox30()');
-    log('$.browser.firefox(): ' + $.browser.firefox());
-    log('$.browser.version.string(): ' + $.browser.version.string());*/
-    return $.browser.firefox && $.browser.version.string().substr(0,3) == "3.0";
-}
-
-// Check if browser is Firefox 3.5
-function browserIsFirefox35() {
-    return $.browser.firefox && $.browser.version.string().substr(0,3) == "3.5";
-}
-
-// Check if browser is Firefox 3.6
-function browserIsFirefox36() {
-    return $.browser.firefox && $.browser.version.string().substr(0,3) == "3.6";
-}
-
-// Check if browser is Safari 3
-function browserIsSafari3() {
-    return $.browser.safari && $.browser.version.string().substr(0,1) == "3";
-}
-
-// Check if browser is Safari 4
-function browserIsSafari4() {
-    return $.browser.safari && $.browser.version.string().substr(0,1) == "4";
-}
-
-// Check if browser is Chrome 2
-function browserIsChrome2() {
-    return $.browser.chrome && $.browser.version.string().substr(0,1) == "2";
-}
-
-// Check if browser is Chrome 4
-function browserIsChrome4() {
-    return $.browser.chrome && $.browser.version.string().substr(0,1) == "4";
-}
-
-// Check if browser is Chrome 5
-function browserIsChrome5() {
-    return $.browser.chrome && $.browser.version.string().substr(0,1) == "5";
-}
-
 function isCompatibleBrowser() {
     //alert('isCompatibleBrowser()');
     //alert('navigator.userAgent: ' + navigator.userAgent);
