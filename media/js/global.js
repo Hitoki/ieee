@@ -113,12 +113,12 @@ function isCompatibleBrowser() {
     //alert('$.browser.version.string(): ' + $.browser.version.string());
     //alert('$.browser.version.number(): ' + $.browser.version.number());
     
-    var majV = $.browser.version.number();
+    var v = $.browser.version.number();
     return (
-    	( $.browser.msie    && majV >= 7 ) ||
-    	( $.browser.firefox && majV >= 3 ) ||
-		( $.browser.safari  && majV >= 4 ) ||
-		( $.browser.chrome  && majV >= 4 )
+    	( $.browser.msie    && v >= 7 ) ||
+    	( $.browser.firefox && v >= 3 ) ||
+		( $.browser.safari  && v >= 4 ) ||
+		( $.browser.chrome  && v >= 4 )
     );
 }
 
