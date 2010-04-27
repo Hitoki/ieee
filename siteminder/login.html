@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html>
+    <head>
+        <title>
+            IEEE Technology Navigator
+        </title>
+</head>
+<body>
+<form method="post" action="login.fcc">
+                
+                <input type="hidden" id="full_url" name="next" value="" />
+                <input type="hidden" id="target" name="target" value="/textui" /> 
+                <table id="login-table">
+                    <tr><td colspan="2">
+                        Don't have an account? <a href="mailto:technav@ieee.org?subject=Requesting%20an%20account">Request one here.</a>
+                    </td></tr>
+                    <tr><th>
+                    	<label for="username">User Name:</label></th><td><input id="USERNAME" type="text" name="username" maxlength="30" />
+                    </td></tr>
+					<tr><th>
+						<label for="password">Password:</label></th><td><input id="PASSWORD" type="password" name="password" maxlength="1000" />
+					</td></tr>
+					<tr><td colspan="2">
+						<p>(requires <a target="webAccount" href="http://www.ieee.org/web/web/accounts/index.html">IEEE Web Account</a>)</p>
+					</td></tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="submit">
+                            <input type="submit" value="Okay" id="login-table-okay" />
+                                <p>
+                                    <a href="/admin/forgot_password?cancel_page=/admin/login">Forget your password?</a>
+                                </p>                                
+                            </div>
+                         </td>
+                    </tr>
+                </table>
+            </form>
+</body>
+</html>
+            
