@@ -1,0 +1,6 @@
+@username=%USER%
+@password=%PASSWORD%
+@target=%target%
+@smagentname=%smagentname%
+@smauthreason=%smauthreason%
+@realmoid=%realmoid%
