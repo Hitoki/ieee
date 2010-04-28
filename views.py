@@ -1,6 +1,5 @@
 import cgi
 import datetime
-from django.contrib.auth.decorators import login_required
 from django.core.mail import mail_admins
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
@@ -19,6 +18,7 @@ from urllib import quote
 import urllib
 import urllib2
 import xml.dom.minidom
+from decorators import optional_login_required as login_required
 
 from ieeetags.models import single_row, Filter, Node, NodeType, Profile, Resource, ResourceType, Society
 from ieeetags.forms import *
@@ -1122,7 +1122,7 @@ def tooltip(request, tag_id):
             'society-tab'
         )
         
-        show_edit_link = request.user.get_profile().role in (Profile.ROLE_SOCIETY_MANAGER, Profile.ROLE_ADMIN)
+        show_edit_link = request.user.is_authenticated() and request.user.get_profile().role in (Profile.ROLE_SOCIETY_MANAGER, Profile.ROLE_ADMIN)
         
         #p.tick('render')
         #print '~tooltip()'

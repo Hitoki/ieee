@@ -135,6 +135,9 @@ SHOW_SOCIETY_LOGIN_BANNER = False
 USE_SITEMINDER_LOGIN = False
 'If True application authorizes users against IEEE SiteMinder database. Otherwise use local database.'
 
+REQUIRE_LOGIN_FOR_NON_ADMIN_VIEWS = False
+'If False the optional_login_required decorator will allow unauthenticated users.'
+
 # Debug Settings ---------------------------------------------------------------
 
 # Used for the COMSOC demo to assign all tags to comsoc by default
