@@ -388,9 +388,11 @@ def logout(request):
     response = HttpResponseRedirect(reverse('admin_login') + '?feedback=1')
     
     #if settings.USE_SITEMINDER_LOGIN:
-    response.delete_cookie("SMSESSION", domain="." + request.META['HTTP_HOST'])
-    
-    
+    host = request.META['HTTP_HOST']
+    if host.count('.') > 1:
+        host = host[host.find('.')-1:]
+    response.delete_cookie("SMSESSION", domain=host)
+
     return response
 
 def forgot_password(request):
