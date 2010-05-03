@@ -384,7 +384,14 @@ def logout(request):
         profile.last_logout_time = datetime.now()
         profile.save()
     auth.logout(request)
-    return HttpResponseRedirect(reverse('admin_login') + '?feedback=1')
+    
+    response = HttpResponseRedirect(reverse('admin_login') + '?feedback=1')
+    
+    #if settings.USE_SITEMINDER_LOGIN:
+    response.delete_cookie("SMSESSION", domain="." + request.META['HTTP_HOST'])
+    
+    
+    return response
 
 def forgot_password(request):
     cancel_page = request.GET.get('cancel_page', '')
