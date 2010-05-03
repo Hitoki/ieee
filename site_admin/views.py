@@ -390,10 +390,10 @@ def logout(request):
     #if settings.USE_SITEMINDER_LOGIN:
     host = request.META['HTTP_HOST']
     if host.count('.') > 1:
-        host = host[host.find('.')-1:]
+        host = host[host.find('.'):]
     response.delete_cookie("SMSESSION", domain=host)
-
     return response
+
 
 def forgot_password(request):
     cancel_page = request.GET.get('cancel_page', '')
