@@ -979,6 +979,7 @@ MultiSearch.prototype.closePopup = function(clear_value) {
 
 MultiSearch.prototype.clearValue = function() {
     this.input.attr('value', '');
+    this.input.blur();
 }
 
 // Gets the number of selected options
