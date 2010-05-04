@@ -288,7 +288,6 @@ ul#view-header li {
 #left-column ul {
     display:block;
     list-style-type: none;
-    width: 178px;
 }
 
 #left-column ul#sectors li,
@@ -319,8 +318,13 @@ ul#view-header li {
 
 }
 
+#galaxy-tabs {
+    width: 187px;  
+}
+
 #galaxy-tabs li{
     width: 86px;
+    min-height: 42px;
     border: 1px solid gray;
     border-bottom: 1px solid #006699;
 }
@@ -333,7 +337,7 @@ ul#view-header li {
 
 #left-column-container .nootabs-menu {
     margin-left: 0;
-    background-color: lightgrey;
+    background-color: #EAEBEF;
 }
 
 #left-column-container .nootabs-menu a {
