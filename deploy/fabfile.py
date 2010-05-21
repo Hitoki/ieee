@@ -29,7 +29,7 @@ def install_webstack():
     
     sudo /etc/init.d/httpd stop
     
-    # Install the EPEL repository (already done on FireHost, but not on RedPlaid)
+    # Install the EPEL repository
     # Currently, this just gives us access to a precompiled mod_wsgi.
     sudo rpm -V epel-release-5-3 || rpm -Uvh http://download.fedora.redhat.com/pub/epel/5/i386/epel-release-5-3.noarch.rpm
     """
@@ -45,8 +45,7 @@ def install_webstack():
     sudo [ ! -f /etc/httpd/conf.d/welcome.conf ] || mv /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/disabled/
     
     # Next 4 lines remove unwanted manual.conf, perl.conf, python.conf, and
-    # squid.conf if present. They were apparently present by default on
-    # FireHost but not on RedPlaid.
+    # squid.conf if present.
     sudo [ ! -f /etc/httpd/conf.d/manual.conf ] || mv /etc/httpd/conf.d/manual.conf /etc/httpd/conf.d/disabled/
     sudo [ ! -f /etc/httpd/conf.d/perl.conf ] || mv /etc/httpd/conf.d/perl.conf /etc/httpd/conf.d/disabled/
     sudo [ ! -f /etc/httpd/conf.d/python.conf ] || mv /etc/httpd/conf.d/python.conf /etc/httpd/conf.d/disabled/
@@ -213,6 +212,14 @@ def create_blank_domain():
         http_password = getpass.getpass('Enter new site basic auth password: ')
         run('/usr/bin/htpasswd -bc "%s/htpasswd" "%s" "%s"' % (env.site_home,
             http_username, http_password))
+            
+    # add robots.txt
+    robots = """
+# Disallow all
+User-agent: *
+Disallow: /
+"""
+    sudo_put_data(robots, '%s/html/robots.txt' % env.site_home)
         
     # Set up SELinux security under RHEL/CentOS
     sudo('chcon system_u:object_r:httpd_sys_content_t "%s/html"' % env.site_home, pty=True)
@@ -257,7 +264,7 @@ def checkout_site():
     env.site_code = code_symlink
     run('touch "%(site_code)s/start-wsgi.py"' % env)
     
-    sudo('/etc/init.d/httpd restart', pty=True)
+    #sudo('/etc/init.d/httpd restart', pty=True)
     
 def install_siteminder_client():
     script = """
