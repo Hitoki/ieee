@@ -181,6 +181,15 @@ def create_blank_domain():
         'domain': env.domain, 'short_name': env.domain.replace('.', '')}
     
     current_dir = os.path.dirname(__file__)
+    
+    # Populate and upload the apache config file for situations when the site is down (maintenance, etc.)
+    site_conf = open(os.path.join(current_dir, 'site.down.template.conf'), 'rU').read()
+    for var_name, value in config.iteritems():
+        site_conf = site_conf.replace('#{%s}' % var_name, value)
+    sudo_put_data(site_conf, '/etc/httpd/sites-available/%s.down.conf'
+        % env.domain, uid='root', gid='wheel', mode=0644)
+    
+    # Populate and upload the apache config file for normal operations
     site_conf = open(os.path.join(current_dir, 'site.template.conf'), 'rU').read()
     for var_name, value in config.iteritems():
         site_conf = site_conf.replace('#{%s}' % var_name, value)
@@ -257,6 +266,11 @@ def checkout_site():
     sudo('chmod 777 "%(site_code)s/media/caches"' % env, pty=True)
     sudo('chmod o+x ~', pty=True)
     
+    # Move the site_down directory to /html/maintenance. When the instance.lockify.com.down.conf config file is used
+    # all request will serve the default file in this directory.    
+    run('rm -rf %(site_home)s/html/maintenance' % env)
+    run('mv %(site_code)s/site_down %(site_home)s/html/maintenance' % env)
+    
     # Redirect the 'current' and 'previous' symlinks.
     run('cd "%(site_home)s/python/releases" && ( [ ! -d previous ] || rm previous ) && ( [ ! -d current ] || mv current previous )' % env)
     run('cd "%(site_home)s/python/releases" && ln -s %(release)s current' % env)
@@ -328,4 +342,33 @@ def set_ieee_domain(domain, subdomain):
     env.abbr_site_python_root = env.abbr_site_home + '/python'
     env.abbr_site_code = env.abbr_site_python_root + '/releases/current/project'
     env.make_checksum_args = ''
+    
+def status():
+    'Returns "enabled", "disabled"'
+    site_status = sudo(' if [ -f /etc/httpd/sites-enabled/%(domain)s.conf ]; then echo enabled; elif [ -f /etc/httpd/sites-enabled/%(domain)s.down.conf ]; then echo disabled; fi' % env, pty=True)
+    return site_status
+    
+def disable():
+    'Puts the site into "maintenance" mode.'
+    site_status = status()
+    if site_status == 'disabled':
+        print 'Site is already disabled. Doing nothing.'
+        return
+    if site_status == 'enabled':
+        sudo(' if [ -f /etc/httpd/sites-enabled/%(domain)s.conf ]; then unlink /etc/httpd/sites-enabled/%(domain)s.conf; fi' % env, pty=True)
+        
+    sudo ('ln -s /etc/httpd/sites-available/%(domain)s.down.conf /etc/httpd/sites-enabled/ && /sbin/service httpd restart' % env, pty=True)
+    print 'Site successfully disabled.'
+
+def enable():
+    'Take the site out of "maintenance" mode.'
+    site_status = status()
+    if site_status == 'enabled':
+        print 'Site is already enabled. Doing nothing.'
+        return
+    if site_status == 'disabled':
+        sudo(' if [ -f /etc/httpd/sites-enabled/%(domain)s.down.conf ]; then unlink /etc/httpd/sites-enabled/%(domain)s.down.conf; fi' % env, pty=True)
+        
+    sudo(' ln -s /etc/httpd/sites-available/%(domain)s.conf /etc/httpd/sites-enabled/ && /sbin/service httpd restart' % env, pty=True)    
+    print 'Site successfully enabled.'
 
