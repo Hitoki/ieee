@@ -30,7 +30,9 @@ else:
         url(r'^xplore_full_results/(?P<tag_id>\d+)$', views.xplore_full_results, name='xplore_full_results'),
         
         # AJAX
-        url(r'^ajax/tag_content$', views.ajax_tag_content, name='ajax_tag_content'),
+        #url(r'^ajax/tag_content$', views.ajax_tag_content, name='ajax_tag_content'),
+        url(r'^ajax/tag_content/(?P<tag_id>\d+)/(?P<ui>\S+)$', views.ajax_tag_content, name='ajax_tag_content'),
+        url(r'^ajax/tag_content/(?P<tag_slug>\d+)/(?P<ui>\S+)$', views.ajax_tag_content, name='ajax_tag_content'),
         url(r'^ajax/xplore_results$', views.ajax_xplore_results, name='ajax_xplore_results'),
         url(r'^ajax/node$', views.ajax_node, name='ajax_node'),
         url(r'^ajax/nodes_xml$', views.ajax_nodes_xml, name='ajax_nodes_xml'),
@@ -40,6 +42,9 @@ else:
         
         # Print
         url(r'^print/resource/(?P<tag_id>\d+)/(?P<resource_type>.+)$', views.print_resource, name='print_resource'),
+        
+        # Tag
+        url(r'^tag/(?P<tag_id>\d+)/$', views.tag_landing, name='tag_landing'),
         
         # Single static SWF file, for Flash player bug
         url(r'^admin/(?P<path>SkinUnderAllNoCaption.swf)$', 'django.views.static.serve', {'document_root': '%s/flash' % settings.MEDIA_ROOT}),

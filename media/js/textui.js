@@ -489,7 +489,7 @@ var Tags = {
         // Show resource results in a lightbox
         // if there was no tab name given, use the default tab
         if (tabName == undefined) {
-            Lightbox.show('/ajax/tag_content?tagId=' + id + '&ui=textui', {
+            Lightbox.show('/ajax/tag_content/' + id + '/textui', {
                 verticalCenter: false,
                 customClass: 'resources',
                 onShowCallback: function() {
@@ -498,7 +498,7 @@ var Tags = {
                 }
             });
         } else {
-            Lightbox.show('/ajax/tag_content?tagId=' + id + '&ui=textui', {
+            Lightbox.show('/ajax/tag_content/' + id + '/textui', {
                 verticalCenter: false,
                 customClass: 'resources',
                 onShowCallback: function() {

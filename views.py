@@ -256,13 +256,13 @@ def xplore_full_results(request, tag_id):
     })
 
 @login_required
-def ajax_tag_content(request):
+def ajax_tag_content(request, tag_id, ui=None):
     'The AJAX resource results popup.'
-    tagId = request.GET['tagId']
-    ui = request.GET['ui']
+    if ui is None:
+        ui = 'textui'
     assert ui in ['roamer', 'textui'], 'Unrecognized ui "%s"' % ui
     
-    tag = Node.objects.get(id=tagId)
+    tag = Node.objects.get(id=tag_id)
     
     sectors1 = tag.get_sectors()
     clusters1 = tag.get_parent_clusters()
@@ -1163,13 +1163,22 @@ def ajax_video(request):
     'Returns the HTML content for the flash video.'
     return render(request, 'ajax_video.html')
     
-def print_resource(request, tag_id, resource_type):
+def tag_landing(request, tag_id):
+    '''
+    Displays a wikipedia-style "flat" view of the resource. No tabs or other fancy UI.
+    Simple uses the print_resource view passing in a different template name.
+    '''
+    
+    return print_resource(request, tag_id, 'all', template_name='tag_landing.html')
+
+def print_resource(request, tag_id, resource_type, template_name='print_resource.html'):
     '''
     The print resource page.
     
     @param tag_id: The tag to print results for.
     @param resource_type: Which resource(s) to include.
     '''
+    
     tag = Node.objects.get(id=tag_id)
     
     sectors = None
@@ -1201,7 +1210,7 @@ def print_resource(request, tag_id, resource_type):
     
     page_date = datetime.datetime.now()
     
-    return render(request, 'print_resource.html', {
+    return render(request, template_name, {
         'page_date': page_date,
         'tag': tag,
         'sectors': sectors,
