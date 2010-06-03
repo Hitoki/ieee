@@ -1,4 +1,3 @@
-{% load flat_resource_link %}
 {% comment %}
 Include file used by both print_resource.html and tag_landing.html
 {% endcomment %}
@@ -17,7 +16,8 @@ Include file used by both print_resource.html and tag_landing.html
             {% if societies %}<li><a href="#societies">Societies</a></li>{% endif %}
             {% if conferences %}<li><a href="#conferences">Conferences</a></li>{% endif %}
             {% if periodicals %}<li><a href="#periodicals">Periodicals</a></li>{% endif %}
-            {% if standards %}<li><a href="#xplore">Xplore</a></li>{% endif %}
+            {% if standards %}<li><a href="#standards">Standaards</a></li>{% endif %}
+            {% if xplore_results %}<li><a href="#xplore">Xplore</a></li>{% endif %}
         </ul>
         {% endif %}
         
@@ -26,7 +26,11 @@ Include file used by both print_resource.html and tag_landing.html
             <ul>
                 {% for parent in sectors %}
                     <li>
-                        {% flat_resource_link parent.id parent.name %}
+                        {% if create_links %}
+                            <a href="/tag/{{ parent.id }}/{{ parent.name|slugify }}">{{ parent.name }}</a>
+                        {% else %}
+                            {{ parent.name }}
+                        {% endif %}
                     </li>
                 {% endfor %}
             </ul>
@@ -37,7 +41,11 @@ Include file used by both print_resource.html and tag_landing.html
             <ul>
                 {% for related_tag in related_tags %}
                     <li>
-                        {% flat_resource_link related_tag.id related_tag.name %}
+                        {% if create_links %}
+                            <a href="/tag/{{ related_tag.id }}/{{ related_tag.name|slugify }}">{{ related_tag.name }}</a>
+                        {% else %}
+                            {{ related_tag.name }}
+                        {% endif %}
                     </li>
                 {% endfor %}
             </ul>
@@ -49,9 +57,9 @@ Include file used by both print_resource.html and tag_landing.html
                 {% for society in societies %}
                     <li>
                         {% if create_links %}
-                        <a href="{{ society.url }}">{{ society.name }}</a>
+                            <a href="{{ society.url }}">{{ society.name }}</a>
                         {% else %}
-                        {{ society.name }}
+                            {{ society.name }}
                         {% endif %}
                     </li>
                 {% endfor %}
@@ -65,9 +73,9 @@ Include file used by both print_resource.html and tag_landing.html
                     <li>
                         <p class="title">
                         {% if create_links %}
-                        <a href="{{ conference.url }}">{{ conference.name }}</a>
+                            <a href="{{ conference.url }}">{{ conference.name }}</a>
                         {% else %}
-                        {{ conference.name }}
+                            {{ conference.name }}
                         {% endif %}
                         </p>
                         <p class="description">
@@ -85,9 +93,9 @@ Include file used by both print_resource.html and tag_landing.html
                     <li>
                         <p class="title">
                         {% if create_links %}
-                        <a href="{{ periodical.url }}">{{ periodical.name }}</a>
+                            <a href="{{ periodical.url }}">{{ periodical.name }}</a>
                         {% else %}
-                        {{ periodical.name }}
+                            {{ periodical.name }}
                         {% endif %}
                         </p>
                         <p class="description">
@@ -105,9 +113,9 @@ Include file used by both print_resource.html and tag_landing.html
                     <li>
                         <p class="title">
                         {% if create_links %}
-                        <a href="{{ standard.url }}">{{ standard.name }}</a>
+                            <a href="{{ standard.url }}">{{ standard.name }}</a>
                         {% else %}
-                        {{ standard.name }}
+                            {{ standard.name }}
                         {% endif %}
                         </p>
                         <p class="description">
@@ -125,9 +133,9 @@ Include file used by both print_resource.html and tag_landing.html
                     <li>
                         <p class="title">
                         {% if create_links %}
-                        <a href="{{ xplore_result.url }}">{{ xplore_result.name }}</a>
+                            <a href="{{ xplore_result.url }}">{{ xplore_result.name }}</a>
                         {% else %}
-                        {{ xplore_result.name }}
+                            {{ xplore_result.name }}
                         {% endif %}
                         </p>
                         <p class="pub-info">

@@ -44,7 +44,7 @@ else:
         url(r'^print/resource/(?P<tag_id>\d+)/(?P<resource_type>.+)$', views.print_resource, name='print_resource'),
         
         # Tag
-        url(r'^tag/(?P<tag_id>\d+)/$', views.tag_landing, name='tag_landing'),
+        url(r'^tag/(?P<tag_id>\d+)/[0-9a-zA-Z_-]*$', views.tag_landing, name='tag_landing'),
         
         # Single static SWF file, for Flash player bug
         url(r'^admin/(?P<path>SkinUnderAllNoCaption.swf)$', 'django.views.static.serve', {'document_root': '%s/flash' % settings.MEDIA_ROOT}),
