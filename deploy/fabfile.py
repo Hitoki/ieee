@@ -229,6 +229,7 @@ User-agent: *
 Disallow: /
 """
     sudo_put_data(robots, '%s/html/robots.txt' % env.site_home)
+    sudo('chown systemicist:systemicist %(site_home)s/html/robots.txt && chmod 664 %(site_home)s/html/robots.txt' % env, pty=True)
         
     # Set up SELinux security under RHEL/CentOS
     sudo('chcon system_u:object_r:httpd_sys_content_t "%s/html"' % env.site_home, pty=True)
@@ -258,6 +259,9 @@ def checkout_site():
     # Make a 'ieeetags' link to the 'project' directory. References to the ieeetags module are hardcoded in codebase.
     run('ln -s %(site_code)s %(site_code)s/../ieeetags' % env);
     
+    if files.exists("%s/local_settings.py" % code_symlink):
+        run('cp -p "%s/local_settings.py" "%s/"' % (code_symlink, env.site_code))
+    
     # Create log.txt
     run('touch %(site_code)s/log.txt' % env)
     run('chmod 666 %(site_code)s/log.txt' % env)
@@ -274,7 +278,8 @@ def checkout_site():
     # Redirect the 'current' and 'previous' symlinks.
     run('cd "%(site_home)s/python/releases" && ( [ ! -d previous ] || rm previous ) && ( [ ! -d current ] || mv current previous )' % env)
     run('cd "%(site_home)s/python/releases" && ln -s %(release)s current' % env)
-    run('cd "%(site_home)s/python/releases" && rm -rf $(ls | grep -v -E previous\|current\|`readlink previous`\|`readlink current`)' % env)
+    # Use sudo for next line. Some cached django media files won't delete otherwise.
+    sudo('cd "%(site_home)s/python/releases" && rm -rf $(ls | grep -v -E previous\|current\|`readlink previous`\|`readlink current`)' % env, pty=True)
     env.site_code = code_symlink
     run('touch "%(site_code)s/start-wsgi.py"' % env)
     
