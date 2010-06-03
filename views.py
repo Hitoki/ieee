@@ -1169,9 +1169,9 @@ def tag_landing(request, tag_id):
     Simple uses the print_resource view passing in a different template name.
     '''
     
-    return print_resource(request, tag_id, 'all', template_name='tag_landing.html')
+    return print_resource(request, tag_id, 'all', template_name='tag_landing.html', create_links=True, toc=True)
 
-def print_resource(request, tag_id, resource_type, template_name='print_resource.html'):
+def print_resource(request, tag_id, resource_type, template_name='print_resource.html', create_links=False, toc=False):
     '''
     The print resource page.
     
@@ -1220,6 +1220,8 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
         'periodicals': periodicals,
         'standards': standards,
         'xplore_results': xplore_results,
+        'toc': toc,
+        'create_links': create_links,
     })
 
 def debug_error(request):

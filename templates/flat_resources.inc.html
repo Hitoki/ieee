@@ -1,3 +1,4 @@
+{% load flat_resource_link %}
 {% comment %}
 Include file used by both print_resource.html and tag_landing.html
 {% endcomment %}
@@ -9,46 +10,65 @@ Include file used by both print_resource.html and tag_landing.html
         <h1>IEEE Technical Activities - Technology Navigator</h1>
         <h2>Resources for "{{ tag.name }}"</h2>
         
+        {% if toc %}
+        <ul>
+            {% if sectors %}<li><a href="#sectors">Sectors</a></li>{% endif %}
+            {% if related_tags %}<li><a href="#related_tags">Related Tags</a></li>{% endif %}
+            {% if societies %}<li><a href="#societies">Societies</a></li>{% endif %}
+            {% if conferences %}<li><a href="#conferences">Conferences</a></li>{% endif %}
+            {% if periodicals %}<li><a href="#periodicals">Periodicals</a></li>{% endif %}
+            {% if standards %}<li><a href="#xplore">Xplore</a></li>{% endif %}
+        </ul>
+        {% endif %}
+        
         {% if sectors %}
-            <h3>Sectors</h3>
+            <h3><a href="" name="sectors"></a>Sectors</h3>
             <ul>
                 {% for parent in sectors %}
                     <li>
-                        {{ parent.name }}
+                        {% flat_resource_link parent.id parent.name %}
                     </li>
                 {% endfor %}
             </ul>
         {% endif %}
         
         {% if related_tags %}
-            <h3>Related Tags</h3>
+            <h3><a name="related_tags"></a>Related Tags</h3>
             <ul>
                 {% for related_tag in related_tags %}
                     <li>
-                        {{ related_tag.name }}
+                        {% flat_resource_link related_tag.id related_tag.name %}
                     </li>
                 {% endfor %}
             </ul>
         {% endif %}
         
         {% if societies %}
-            <h3>Societies</h3>
+            <h3><a name="societies"></a>Societies</h3>
             <ul>
                 {% for society in societies %}
                     <li>
+                        {% if create_links %}
+                        <a href="{{ society.url }}">{{ society.name }}</a>
+                        {% else %}
                         {{ society.name }}
+                        {% endif %}
                     </li>
                 {% endfor %}
             </ul>
         {% endif %}
             
         {% if conferences %}
-            <h3>Conferences</h3>
+            <h3><a name="conferences"></a>Conferences</h3>
             <ul>
                 {% for conference in conferences.all %}
                     <li>
                         <p class="title">
-                            {{ conference.name }}
+                        {% if create_links %}
+                        <a href="{{ conference.url }}">{{ conference.name }}</a>
+                        {% else %}
+                        {{ conference.name }}
+                        {% endif %}
                         </p>
                         <p class="description">
                             {{ conference.description|truncatewords:60 }}
@@ -59,12 +79,16 @@ Include file used by both print_resource.html and tag_landing.html
         {% endif %}
             
         {% if periodicals %}
-            <h3>Periodicals</h3>
+            <h3><a name="periodicals"></a>Periodicals</h3>
             <ul>
                 {% for periodical in periodicals.all %}
                     <li>
                         <p class="title">
-                            {{ periodical.name }}
+                        {% if create_links %}
+                        <a href="{{ periodical.url }}">{{ periodical.name }}</a>
+                        {% else %}
+                        {{ periodical.name }}
+                        {% endif %}
                         </p>
                         <p class="description">
                             {{ periodical.description|truncatewords:60 }}
@@ -75,12 +99,16 @@ Include file used by both print_resource.html and tag_landing.html
         {% endif %}
             
         {% if standards %}
-            <h3>Standards</h3>
+            <h3><a name="standards"></a>Standards</h3>
             <ul>
                 {% for standard in standards.all %}
                     <li>
                         <p class="title">
-                            {{ standard.name }}
+                        {% if create_links %}
+                        <a href="{{ standard.url }}">{{ standard.name }}</a>
+                        {% else %}
+                        {{ standard.name }}
+                        {% endif %}
                         </p>
                         <p class="description">
                             {{ standard.description|truncatewords:60 }}
@@ -91,12 +119,16 @@ Include file used by both print_resource.html and tag_landing.html
         {% endif %}
             
         {% if xplore_results %}
-            <h3>Xplore</h3>
+            <h3><a name="xplore"></a>Xplore</h3>
             <ul>
                 {% for xplore_result in xplore_results %}
                     <li>
                         <p class="title">
-                            {{ xplore_result.name }}
+                        {% if create_links %}
+                        <a href="{{ xplore_result.url }}">{{ xplore_result.name }}</a>
+                        {% else %}
+                        {{ xplore_result.name }}
+                        {% endif %}
                         </p>
                         <p class="pub-info">
                             {{ xplore_result.authors }} {{ xplore_result.pub_title }},  {{ xplore_result.pub_year }}
