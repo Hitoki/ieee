@@ -1969,6 +1969,11 @@ div#connectedness-container {
     cursor: default;
 }
 
+#overview-video-link {
+margin-top: -16px;
+float: right;   
+}
+
 #overview-video-link a:hover {
 	text-decoration: none;
 }
