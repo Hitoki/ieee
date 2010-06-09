@@ -251,7 +251,7 @@ def checkout_site():
     # env.site_code.
     
     run_prompted('svn co'
-        ' https://templin.unfuddle.com/svn/templin_ieeee/ieeetags/trunk/ieeetags'
+        ' %(scm_url)s'
         ' "%(site_code)s" --no-auth-cache'
         ' --username=%(scm_username)s' % env,
         prompt="Password for '[^']+': ", password=env.scm_password, pty=True)
