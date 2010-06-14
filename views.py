@@ -197,7 +197,7 @@ def textui_help(request):
 def feedback(request):
     'User feedback page.  When submitted, sends an email to all admins.'
     if request.method == 'GET':
-        if request.user.is_authenticated:
+        if request.user.is_authenticated and not request.user.is_anonymous:
             form = FeedbackForm(
                 initial={
                     'name': '%s %s' % (request.user.first_name, request.user.last_name),
@@ -593,12 +593,21 @@ def ajax_textui_nodes(request):
             from django.db.models import Q
             
             queries = None
+            or_flag = False
             for word in search_words:
                 ##log('  word: %r' % word)
+                if word == 'OR':
+                    or_flag = True
+                    continue
+                
                 if queries is None:
                     queries = Q(name__icontains=word)
                 else:
-                    queries &= Q(name__icontains=word)
+                    if or_flag:
+                        queries |= Q(name__icontains=word)
+                        or_flag = False
+                    else:
+                        queries &= Q(name__icontains=word)
             
             if sector_id is not None:
                 # Search within the sector
