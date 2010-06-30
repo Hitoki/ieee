@@ -217,10 +217,9 @@ def group_conferences_by_series(resources, include_current_conference=False):
                 i += 1
             elif resources[i] in conferences:
                 # Remove all the non-current conferences
-                del resources[i]
+                del resources[i] # warning: altering collection while looping through it.
             else:
                 # Found a non-series resource, just ignore it
-                resources[i].is_current_conference = False
                 i += 1
     return resources
 

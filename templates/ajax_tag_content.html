@@ -164,12 +164,11 @@
                                             </a>
                                         {% endif %}
                                         <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
-                                        
                                         {% if resource.is_current_conference and resource.other_conferences|length %}
                                             <p class="more-conferences">
                                                 <a href="#" id="show-other-conferences-{{ resource.id }}" class="show-other-conferences {id: {{ resource.id }}}">
                                                     <img src="{{ MEDIA_URL }}images/plusbox.png"/>
-                                                    Show {{ resource.other_conferences.count }} more conferences in this series...
+                                                    Show {{ resource.other_conferences|length }} more conferences in this series...
                                                 </a>
                                                 <a href="#" id="hide-other-conferences-{{ resource.id }}" class="hide-other-conferences {id: {{ resource.id }}}">
                                                     <img src="{{ MEDIA_URL }}images/minusbox.png"/>
