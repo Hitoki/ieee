@@ -291,7 +291,7 @@ var Roamer = {
     },
     
     showResourceResultsLightbox: function() {
-        Lightbox.show('/ajax/tag_content?tagId=' + this.nodeInfo.id + '&ui=roamer', {
+        Lightbox.show('/ajax/tag_content/' + this.nodeInfo.id + '/roamer', {
             verticalCenter: false,
             customClass: 'resources'
         });
