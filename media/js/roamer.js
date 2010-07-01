@@ -293,7 +293,10 @@ var Roamer = {
     showResourceResultsLightbox: function() {
         Lightbox.show('/ajax/tag_content/' + this.nodeInfo.id + '/roamer', {
             verticalCenter: false,
-            customClass: 'resources'
+            customClass: 'resources',
+            onShowCallback: function() {
+                    $(document).trigger('onShowLightboxTab');
+                }
         });
     }
 };
