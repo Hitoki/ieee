@@ -141,11 +141,15 @@ def roamer(request):
     })
 
 @login_required
-def textui(request):
+def textui(request, survey=False):
     'Shows the textui (aka. Tag Galaxy) UI.'
     nodeId = request.GET.get('nodeId', None)
     sectorId = None
     clusterId = None
+    
+    # If url ends with /survey set a session var so we can display an additional banner.
+    if survey:
+        request.session['survey'] = True
     
     # NOTE: Disabled so we can land on the help page
     #if nodeId is None:

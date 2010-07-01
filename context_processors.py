@@ -28,3 +28,7 @@ def is_ajax(request):
         return {'is_ajax': True}
     else:
         return {'is_ajax': request.is_ajax()}
+        
+def survey(request):
+    'Adds a flag value to the context if this user used the survey url to enter the site.'
+    return {'survey': 'survey' in request.session}

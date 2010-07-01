@@ -22,7 +22,7 @@ else:
     urlpatterns = patterns('',
         url(r'^$', views.index, name='index'),
         url(r'^roamer$', views.roamer, name='roamer'),
-        url(r'^textui$', views.textui, name='textui'),
+        url(r'^textui/(survey)?$', views.textui, name='textui'),
         url(r'^textui_help$', views.textui_help, name='textui_help'),
         url(r'^textui_home$', views.textui_home, name='textui_home'),
         url(r'^feedback$', views.feedback, name='feedback'),
