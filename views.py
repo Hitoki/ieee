@@ -150,6 +150,7 @@ def textui(request, survey=False):
     # If url ends with /survey set a session var so we can display an additional banner.
     if survey:
         request.session['survey'] = True
+        request.session.set_expiry(0)
     
     # NOTE: Disabled so we can land on the help page
     #if nodeId is None:
