@@ -291,7 +291,8 @@ def ajax_tag_content(request, tag_id, ui=None):
     periodicals = Resource.objects.getForNode(tag, resourceType=ResourceType.PERIODICAL)
     standards = Resource.objects.getForNode(tag, resourceType=ResourceType.STANDARD)
     
-    conferences = list(conferences)
+    # Sort the conferences by year latest to earliest.
+    conferences = list(sorted(conferences, key=lambda resource: resource.year, reverse=True))
     conferences = util.group_conferences_by_series(conferences)
     
     num_related_items =  \
