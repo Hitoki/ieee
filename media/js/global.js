@@ -349,6 +349,13 @@ function onCopyTagsSuccess(linkElem, data) {
     $(linkElem).fadeIn();
 }
 
+function resizeLightboxTab() {
+    var windowHeight = $(window).height();
+    $('.resources-lightbox-content').css('height', windowHeight - 200);
+    $('#resource-tabs .nootabs-selected-tab').css('height', windowHeight - 320);
+    $('.nootabs-selected-tab div.group').css('height', windowHeight - 350);
+}
+
 function addCommas(nStr) {
     // From http://www.mredkj.com/javascript/nfbasic.html, public domain
 	nStr += '';
@@ -406,6 +413,8 @@ function getXploreResults(elem, showAll, offset) {
                 getXploreResults(elem, false, offset+10);
                 return false;
             });
+            
+            resizeLightboxTab();
             
         }
     });
