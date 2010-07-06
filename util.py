@@ -213,6 +213,9 @@ def group_conferences_by_series(resources, include_current_conference=False):
                             other_conferences1.append(conference)
                     other_conferences = other_conferences1
                 
+                # Sort the other conferences by year latest to earliest.
+                other_conferences = sorted(other_conferences, key=lambda resource: resource.year, reverse=True)
+                
                 resources[i].other_conferences = other_conferences
                 i += 1
             elif resources[i] in conferences:
