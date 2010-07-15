@@ -378,6 +378,8 @@ function getXploreResults(elem, showAll, offset) {
         offset = 0;
     }
     
+    var numXploreResultsPerPage = 10;
+    
     var elem2 = $(elem);
     var tagId = elem2.metadata().tagId;
     elem2.html('<div class="loading"><img src="/media/images/ajax-loader.gif" class="loading" /><br/>Loading Xplore results...</div>');
@@ -404,15 +406,37 @@ function getXploreResults(elem, showAll, offset) {
             var numRelatedItems = parseInt($('#num-related-items').metadata().number);
             $('#num-related-items').text(addCommas(numRelatedItems + parseInt(num)));
             
-            elem2.find('#xplore-view-previous').click(function() {
-                getXploreResults(elem, false, offset-10);
-                return false;
-            });
+            var prevButton = elem2.find('#xplore-view-previous');
+            if ( offset === 0 ) {
+                // Hide and disable the "previous" button (add its leading pipe) if we're at the beginning
+                prevButton.prev('span').andSelf().hide();
+                prevButton.click(function(){
+                   return false; 
+                });
+            } else {
+                prevButton.click(function() {
+                    getXploreResults(elem, false, offset - numXploreResultsPerPage);
+                    return false;
+                });
+            }
             
-            elem2.find('#xplore-view-next').click(function() {
-                getXploreResults(elem, false, offset+10);
-                return false;
-            });
+            var totalCount = parseInt(elem2.find('#num-xplore-results-hidden').text().replace(',',''));
+            var displayedCount = elem2.children('div.group').eq(0).children('a').length;
+            var nextButton = elem2.find('#xplore-view-next');
+            if ( offset + displayedCount >=  totalCount){
+                // Hide and disable the "next" button (add its leading pipe) if we're at the end
+                nextButton.prev('span').andSelf().hide();
+                nextButton.click(function(){
+                   return false; 
+                });
+            } else {
+                var remainingCount = totalCount - offset - displayedCount;
+                elem2.find('#nextCount').text( Math.min(remainingCount , numXploreResultsPerPage) );
+                nextButton.click(function() {
+                    getXploreResults(elem, false, offset + numXploreResultsPerPage);
+                    return false;
+                });
+            }
             
             resizeLightboxTab();
             

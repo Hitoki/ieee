@@ -7,8 +7,8 @@
             {% else %}
                 Showing {{ xplore_results|length }} of {{ totalfound|intcomma }} results (<a href="{% url xplore_full_results tag.id %}" target="_blank"><span>View All</span> <img src="{{ MEDIA_URL }}images/popup.png" /></a>)
                 
-                | <a id="xplore-view-previous" href="#"><span>View previous 10</span></a>
-                | <a id="xplore-view-next" href="#"><span>View next 10</span></a>
+                <span>| </span><a id="xplore-view-previous" href="#"><span>View previous 10</span></a>
+                <span>| </span><a id="xplore-view-next" href="#"><span>View next <span id="nextCount"></span></span></a>
                 
             {% endif %}
         </p>
