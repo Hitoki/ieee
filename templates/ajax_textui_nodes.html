@@ -15,36 +15,28 @@
 {% for tag in child_nodes %}
 
     <div id="tag-{{ tag.id }}" class="node {{ tag.node_type.name }} flyover { url: '/ajax/tooltip/{{ tag.id }}?parent_id={{ parent_id|default:"null" }}&society_id={{ society_id|default:"null" }}&search_for={{ search_for|urlencode }}', position: 'auto', customClass: 'textui-node', hideDelay: 400, positionCursor: true }">
-    {# NOTE: Table is here to prevent the label & color blocks from wrapping onto separate lines #}
-        <table>
-            <tr>
-                <td>
-                    {# tag.level: {{ tag.level }}<br/> #}
+        {# tag.level: {{ tag.level }}<br/> #}
                     
-                    {% ifequal tag.node_type.name 'tag' %}
-                        <a href="javascript:Tags.selectTag({{ tag.id }});" class="{{ tag.level }}">{{ tag.name|truncatechars:30 }}</a>
-                    {% else %}
-                        {% ifequal tag.node_type.name 'tag_cluster' %}
-                            <img src="/media/images/icon_cluster_sm.png" />
-                            <a href="javascript:Tags.selectCluster({{ tag.id }});" class="{{ tag.level }}">{{ tag.name|truncatechars:30 }}</a> 
-                        {% endifequal %}
-                    {% endifequal %}
-                </td>
+        {% ifequal tag.node_type.name 'tag' %}
+            <a href="javascript:Tags.selectTag({{ tag.id }});" class="{{ tag.level }}">{{ tag.name|truncatechars:30 }}</a>
+        {% else %}
+            {% ifequal tag.node_type.name 'tag_cluster' %}
+                <img src="/media/images/icon_cluster_sm.png" />
+                    <a href="javascript:Tags.selectCluster({{ tag.id }});" class="{{ tag.level }}">{{ tag.name|truncatechars:30 }}</a> 
+            {% endifequal %}
+        {% endifequal %}
     
-                {% comment %}
-                #if (!simplified) {
-                #    // NOTE: Only show the separate color blocks if we're not using the simplified mode
-                #    str += "      <td>";
-                #    str += "        <div class=\"node-block-container\">";
-                #    str += "          <div class=\"block-top " + tag.sectorLevel + "\">&nbsp;</div>";
-                #    str += "          <div class=\"block-bottom " + tag.relatedTagLevel + "\">&nbsp;</div>";
-                #    str += "        </div>";
-                #    str += "      </td>";
-                #}
-                {% endcomment %}
-     
-            </tr>
-        </table>
+            {% comment %}
+            #if (!simplified) {
+            #    // NOTE: Only show the separate color blocks if we're not using the simplified mode
+            #    str += "      <td>";
+            #    str += "        <div class=\"node-block-container\">";
+            #    str += "          <div class=\"block-top " + tag.sectorLevel + "\">&nbsp;</div>";
+            #    str += "          <div class=\"block-bottom " + tag.relatedTagLevel + "\">&nbsp;</div>";
+            #    str += "        </div>";
+            #    str += "      </td>";
+            #}
+            {% endcomment %}
     </div>
     
     {% comment %}
