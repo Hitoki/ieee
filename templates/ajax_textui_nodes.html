@@ -12,9 +12,10 @@
     {% endif %}
 {% endif %}
 
+{% spaceless %}
 {% for tag in child_nodes %}
 
-    <div id="tag-{{ tag.id }}" class="node {{ tag.node_type.name }} flyover { url: '/ajax/tooltip/{{ tag.id }}?parent_id={{ parent_id|default:"null" }}&society_id={{ society_id|default:"null" }}&search_for={{ search_for|urlencode }}', position: 'auto', customClass: 'textui-node', hideDelay: 400, positionCursor: true }">
+    <div id="tag-{{ tag.id }}" class="node {{ tag.node_type.name }} flyover">
         {# tag.level: {{ tag.level }}<br/> #}
                     
         {% ifequal tag.node_type.name 'tag' %}
@@ -61,10 +62,12 @@
     {% endcomment %}
 
 {% endfor %}
-
+{% endspaceless %}
 <script>
     $(function() {
-        attachFlyovers('#tags');
+        // Calling special function to avoid code bloat due to duplication. The string "tagid" in the url will be replaced with the
+        // actual id.
+        attachTextUiFlyovers('#tags', {url: '/ajax/tooltip/tagid?parent_id={{ parent_id|default:"null" }}&society_id={{ society_id|default:"null" }}&search_for={{ search_for|urlencode }}', position: 'auto', customClass: 'textui-node', hideDelay: 400, positionCursor: true });
     });
 </script>
 

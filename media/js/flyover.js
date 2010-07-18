@@ -641,6 +641,18 @@ function attachFlyovers(elem) {
     });
 }
 
+function attachTextUiFlyovers(elem, options) {
+    elem = $(elem);
+    options = $.extend(options, {shadows:false});
+    elem.find('span.flyover, div.flyover, a.flyover').each(function() {
+        // Clone the generic options.
+        var tag_options = $.extend(true, {}, options)
+        // Replace the "tagid" placeholder with the tag's actual id.
+        tag_options["url"] = tag_options["url"].replace('tagid', $(this).attr("id").substr(4));
+        Flyover.attach(this, tag_options);
+    });   
+}
+
 $(function() {
     $('span.flyover, div.flyover, a.flyover').each(function() {
         Flyover.attach(this, {shadows:false});
