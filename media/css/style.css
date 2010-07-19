@@ -818,7 +818,7 @@ span#roamer-beta-warning {
     color:black;
     font-size:110%;
     text-decoration:none;
-    font-weight:bold;
+    font-weight:normal;
     white-space: nowrap;
 }
 
