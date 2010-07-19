@@ -778,6 +778,8 @@ span#roamer-beta-warning {
     border-bottom: 1px solid #37607d;
     border-right: 1px solid #37607d;
     height:18px;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
 }
 
 #alternate-page #tag-galaxy div.tag {
