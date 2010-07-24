@@ -340,7 +340,8 @@ def _get_xplore_results(tag, highlight_search_term=True, show_all=False, offset=
     else:
         max_num_results = 10
     
-    url = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?' + urllib.urlencode({
+    url = 'http://xploreuat.ieee.org/gateway/ipsSearch.jsp?' + urllib.urlencode({
+    #url = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?' + urllib.urlencode({
         # Number of results
         'hc': max_num_results,
         # Specifies the result # to start from
