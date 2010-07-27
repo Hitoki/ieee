@@ -148,13 +148,6 @@ p.admin-links {
     background-position: 0 -19px;
 }
 
-#textswitchlink-container {
-    float:left;
-    margin:-16px 0 0;
-    text-align:center;
-    width:40%;
-}
-
 .textui-switch {
     padding-left: 3em;
     background: transparent url(/media/images/roamer_icon.png) no-repeat scroll left center;
@@ -176,11 +169,11 @@ p.admin-links {
     display:inline-block;
 }
 
-#roamerswitchlink-container a, #textswitchlink-container a {
+#roamerswitchlink-container a {
     color:gray;
 }
 
-#roamerswitchlink-container a:hover, #textswitchlink-container a:hover {
+#roamerswitchlink-container a:hover {
     color:orange;
 }
 
