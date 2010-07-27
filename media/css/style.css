@@ -1080,6 +1080,7 @@ table.vert-center td {
     font-weight: bold;
     line-height: 1.5;
     height: 20px;
+    padding: 0;
 }
 
 #connectedness {
@@ -1148,21 +1149,15 @@ table.vert-center td {
     width:190px;
 }
 
-#homeico,
-#homeico-tags {
+#homeico {
     float: left;
     margin-right: 7px;
 }
 
 
-#homeico img,
-#homeico-tags img {
+#homeico img {
     border: none;
     padding-bottom: 2.3px;
-}
-
-#homeico-tags img {
-    margin-top: -1px;
 }
 
 #roamer-beta-warning {
