@@ -88,14 +88,23 @@ var Flyover = {
             elem = elems[i];
             
             // TODO: when attaching to flyover elements in lightboxes, the $(elem).click() functions do not work!!!  Only the direct HTML onclick() type handlers work...
-            elem.onmouseover = function() {
-                Flyover.show(this, options);
-            }
-            
+
             if ((!options || !('sticky' in options) || !options.sticky)) {
-                elem.onmouseout = function() {
-                    Flyover.onMouseOut();
-                }
+                $(elem).hoverIntent({
+                    sensitivity: 1,
+                    interval: 200,
+                    over: function() {Flyover.show(this, options);} ,
+                    timeout: 0,   
+                    out: function() {Flyover.onMouseOut();}    
+                });
+            } else {
+                $(elem).hoverIntent({
+                    sensitivity: 70,
+                    interval: 200,
+                    over: function() {Flyover.show(this, options);} ,
+                    timeout: 0,   
+                    out: null  
+                });
             }
             
             if ((options && 'showInitial' in options && options.showInitial) || ('showInitial' in $(elem).metadata() && $(elem).metadata().showInitial)) {
@@ -164,7 +173,7 @@ var Flyover = {
             height: null,
             shadows: true,
             customClass: null,
-            event: 'hover',
+            event: 'hoverIntent',
             arrow: true,
             content: null,
             content_html: null,
@@ -204,8 +213,8 @@ var Flyover = {
         } else if (typeof this.options.event != 'string') {
             alert('Flyover: event must be a string (' + this.options.event + ')');
             return;
-        } else if (this.options.event != 'hover' && this.options.event != 'click') {
-            alert('Flyover: event must be "hover" or "click" (' + this.options.event + ')');
+        } else if (this.options.event != 'hover' && this.options.event != 'hoverIntent' && this.options.event != 'click') {
+            alert('Flyover: event must be "hover", "hoverIntent", or "click" (' + this.options.event + ')');
             return;
         } else if (typeof this.options.arrow != 'boolean') {
             alert('Flyover: arrow must be a boolean (' + this.options.arrow + ')');
@@ -287,7 +296,7 @@ var Flyover = {
         // If sticky is on, we don't need this (since the flyover will be manually closed).
         // If closeOnMouseOutLink is on, we don't want this to delay hiding the flyover.
         if (!this.options.sticky && !this.options.closeOnMouseOutLink) {
-            this._flyover.hover(
+            this._flyover.hoverIntent(
                 function() {
                     Flyover.onMouseOver();
                 },
@@ -299,10 +308,10 @@ var Flyover = {
         
         var content;
         
+        var ar;
         if (this.options.url != null) {
             //console.log('using URL');
             this.content.load(this.options.url, function() { Flyover._reposition(); } );
-            
         } else if (this.options.content !== null) {
             // Use the given content
             this.content.html(htmlentities(this.options.content));
