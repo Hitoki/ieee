@@ -307,8 +307,6 @@ var Flyover = {
         }
         
         var content;
-        
-        var ar;
         if (this.options.url != null) {
             //console.log('using URL');
             this.content.load(this.options.url, function() { Flyover._reposition(); } );
