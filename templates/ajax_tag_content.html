@@ -22,7 +22,7 @@
 
                     <div id="resource-tabs" class="nootabs tag-resources-tabs { useCookies:false, defaultTab:2, useHash:false }">
                         <ul class="nootabs-menus">
-                            <li class="begin-group-menu"><a href="" class="two-word-menu">Industry <br />Sectors <span>({{ parent_nodes|length }})</span></a></li>
+                            <li id="industry-sectors-tab" class="begin-group-menu"><a href="" class="two-word-menu">Industry <br />Sectors <span>({{ parent_nodes|length }})</span></a></li>
 							{% comment %}
 							#TODO: Re-enable clusters
 							#<li><a href="">Sectors &amp; Clusters ({{ parent_nodes|length }})</a></li>
@@ -30,15 +30,15 @@
 							{% comment %}
                             #<li><a href="">Filters ({{ tag.filters.count }})</a></li>
 							{% endcomment %}
-                            <li class="middle-group-menu"><a href="" class="two-word-menu">IEEE<br /> Societies <span>({{ tag.societies.count }})</span></a></li>
-                            <li class="end-group-menu last-menu"><a href="" class="two-word-menu">Related <br />Tags <span>({{ tag.related_tags.count }})</span></a></li>
-                            <li class="begin-group-menu"><a href="" class="one-word-menu">Conferences <span>({{conferences|length}})</span></a></li>
-                            <li class="middle-group-menu"><a href="" class="one-word-menu">Periodicals <span>({{periodicals|length}})</span></a></li>
-                            <li class="end-group-menu last-menu"><a href="" class="one-word-menu">Standards <span>({{standards|length}})</span></a></li>
+                            <li id="ieee-societies-tab" class="middle-group-menu"><a href="" class="two-word-menu">IEEE<br /> Societies <span>({{ tag.societies.count }})</span></a></li>
+                            <li id="related-tags-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu">Related <br />Tags <span>({{ tag.related_tags.count }})</span></a></li>
+                            <li id="conferences-tab" class="begin-group-menu"><a href="" class="one-word-menu">Conferences <span>({{conferences|length}})</span></a></li>
+                            <li id="periodicals-tab" class="middle-group-menu"><a href="" class="one-word-menu">Periodicals <span>({{periodicals|length}})</span></a></li>
+                            <li id="standards-tab" class="end-group-menu last-menu"><a href="" class="one-word-menu">Standards <span>({{standards|length}})</span></a></li>
                             {% comment %}
                             #    <li><a href="">Experts <span>({{experts|length}})</span></a></li>
                             {% endcomment %}
-                            <li class="right-menu"><a href="" style="overflow:hidden; height: 16px;" class="one-word-menu"><span id="articles-tab">Articles <span id="num-xplore-results"><img src="{{ MEDIA_URL }}images/resource_popup_xplore_loader.gif" /></span></span><img src="{{ MEDIA_URL }}images/powered.png" id="powered-by"/></a></li>
+                            <li id="articles-tab-outter" class="right-menu"><a href="" style="overflow:hidden; height: 16px;" class="one-word-menu"><span id="articles-tab">Articles <span id="num-xplore-results"><img src="{{ MEDIA_URL }}images/resource_popup_xplore_loader.gif" /></span></span><img src="{{ MEDIA_URL }}images/powered.png" id="powered-by"/></a></li>
                         </ul>
                         
                         <!-- Sectors &amp; Clusters -->

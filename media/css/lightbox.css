@@ -190,6 +190,35 @@ input.text {
     margin: 1em 1em 0 24px;
 }
 
+/*Widths set for resource lightbox tabs, supports up to 2 numbers in tab count and 5 in article count safely*/
+#industry-sectors-tab {
+    width: 91px;
+}
+
+#ieee-societies-tab {
+    width: 101px;
+}
+
+#related-tags-tab {
+   width: 70px;
+}
+
+#conferences-tab {
+    width: 123px;
+}
+
+#periodicals-tab {
+    width: 112px;
+}
+
+#standards-tab {
+    width: 108px;
+}
+
+#articles-tab-outter {
+    width: 185px;
+}
+/*End set widths*/
 
 #lightbox .resources-lightbox-content ul.nootabs-menus li.right-menu {
     float: right;
@@ -205,7 +234,7 @@ input.text {
 }
 
 #lightbox .resources-lightbox-content ul.nootabs-menus li.end-group-menu {
-    margin-right: 45px;
+    margin-right: 10px;
 }
 
 
