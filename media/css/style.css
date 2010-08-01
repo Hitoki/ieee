@@ -730,9 +730,12 @@ span#roamer-beta-warning {
     -webkit-border-radius: 5px;
     padding: 5px 5px 2px 0;
     margin-right:34px;
-    background-color: #EAEDEF;
-}                            
+    background-color: white;
+}             
 
+#alternate-page .tag-galaxy-viewing {
+    background-color: #EAEDEF !important;
+}               
 
 #alternate-page #tag-galaxy .alt-box-pad {
     height: 96.5%;

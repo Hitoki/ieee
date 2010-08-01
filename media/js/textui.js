@@ -397,6 +397,7 @@ var Tags = {
             $('#sector-list-item-' + this.nodeId + ' a').addClass('active-sector');
             var tabs = $('#left-column-container').data('nootabs');
 			tabs.setTab('sectors-tab');
+			$('#tag-galaxy').addClass('tag-galaxy-viewing');
             
         /*
         } else if (this.nodeId != null && this.nodeType == 'tag_cluster') {
@@ -414,6 +415,7 @@ var Tags = {
             var tabs = $('#left-column-container').data('nootabs');
             tabs.setTab('societies-tab');
             $('#societies-tab').scrollTo($('#society-list-item-' + this.societyId), {offset: {top:-3, left:0}});
+            $('#tag-galaxy').addClass('tag-galaxy-viewing');
         } else {
             // No node selected
         }
@@ -559,6 +561,7 @@ var Tags = {
         this.nodeId = null;
         this.societyId = null;
         this.updateResults();
+        $('#tag-galaxy').removeClass('tag-galaxy-viewing');
     },
     
     showHome: function() {
