@@ -141,3 +141,6 @@ The content is just the contents of the flyover.
     width: 650px;
 }
 
+.textui-node-flyover-container .flyover-close-button {
+   margin-right: 3px;
+}
