@@ -413,7 +413,7 @@ var Tags = {
             $('#society-list-item-' + this.societyId + ' a').addClass('active-society');
             var tabs = $('#left-column-container').data('nootabs');
             tabs.setTab('societies-tab');
-            $('#societies-tab').scrollTo($('#society-list-item-' + this.societyId));
+            $('#societies-tab').scrollTo($('#society-list-item-' + this.societyId), {offset: {top:-3, left:0}});
         } else {
             // No node selected
         }
