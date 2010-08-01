@@ -731,6 +731,7 @@ span#roamer-beta-warning {
     -webkit-border-radius: 5px;
     padding: 5px 5px 2px 0;
     margin-right:34px;
+    background-color: #EAEDEF;
 }                            
 
 
@@ -766,10 +767,7 @@ span#roamer-beta-warning {
     float:left;
     margin:1em .5em;
     padding:.2em .5em;
-    border: 1px solid white;
-    background-color: #e9edf0;
-    border-bottom: 1px solid #37607d;
-    border-right: 1px solid #37607d;
+    background-color: #FFFFFF;
     height:18px;
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
