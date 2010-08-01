@@ -362,9 +362,8 @@ ul#view-header li {
 }
 
 #left-column-container .nootabs-menus li.nootabs-menu a:hover{
-    background-color: #EAEDEF;
-    text-decoration: underline !important;
-    color: orange;
+    background-color: orange;
+    color: white;
 }
 
 #left-column-container .nootabs-menus li.nootabs-selected-menu a:hover {
