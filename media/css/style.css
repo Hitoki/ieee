@@ -1859,7 +1859,7 @@ ul.errors {
 
 #textui-tags-search input {
     font-size:100%;
-    border:1px inset gray;
+    border:1px solid #006699;
     -moz-border-radius-topleft: 5px;
     -moz-border-radius-bottomleft: 5px;
     -webkit-border-top-left-radius: 5px;
