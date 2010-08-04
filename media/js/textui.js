@@ -655,6 +655,12 @@ var Tags = {
         if (zoom != 100 || (this.oldZoom != null && this.oldZoom != zoom)) {
             log('zooming to ' + zoom + '%');
             
+            if (zoom != 100) {
+                $('#textui-zoom-default-zoom').show();
+            } else {
+                $('#textui-zoom-default-zoom').hide();
+            }
+            
             $('#textui-zoom-value').text(zoom + '%');
             
             var defaultVertMargin = 13;
