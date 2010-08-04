@@ -5,14 +5,15 @@
         $(function() {
             
             var navTabsHeight = $('#galaxy-tabs .nootabs-menu').eq(0).height();
-            $('div#sectors-tab, div#societies-tab').css('min-height', 441-navTabsHeight);
+            $('div#sectors-tab, div#societies-tab').css('min-height', 477-navTabsHeight);
             
             var resizeTagGalaxy = function() {
                 
                 var windowHeight = $(window).height();
+                var tagBoxHeight = $('#tag-help-container').height() + 17;
                 
                 $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 180 - navTabsHeight);
-                $('div#tag-galaxy').css('height', windowHeight - 180);
+                $('div#tag-galaxy').css('height', windowHeight - tagBoxHeight - 180);
             };
             
             resizeTagGalaxy();
@@ -211,6 +212,24 @@
                                 <div id="textui-zoom-slider"></div>
                                 <div id="textui-zoom-value">100%</div>
                                 <span id="textui-zoom-default-zoom">Reset</span>
+                            </div>
+                            
+                            <div id="tag-help-container">
+                                <table style="width:98%" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td>
+                                            <div id="tag-help-box">
+                                                <div class="box-close-button"></div>
+                                                <div>
+                                                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur pellentesque rutrum velit eu tristique.
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td id="tag-box-check">
+                                            <input type="checkbox" id="no-show-box" name="no-show-box"><label for="no-show-box">Don't Show Again</label>
+                                        </td>
+                                    </tr>
+                                </table>
                             </div>
                             
                             <div id="tag-galaxy" class="alt-box">
