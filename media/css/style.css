@@ -121,6 +121,7 @@ table.main td.center .center-pad {
     position:absolute;
     right:0;
     top:0;
+    width: 158px;
 }
 
 p.admin-links {
@@ -131,17 +132,16 @@ p.admin-links {
 }
 
 #feedback-link {
-    height:18px;
-    font-size:.8em;
+    font-size: 80%;
     color:white;
-    width:111px;
-    background-image:url(../images/survey_button.png);
-    background-position: 0 0;
-    background-repeat: no-repeat;
+    background-color: #33CC00;
     display:block;
+    padding: .1em .3em;
     float:left;
     margin-right:1em;
     margin-bottom:.5em;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
 }
 
 #feedback-link:hover {
