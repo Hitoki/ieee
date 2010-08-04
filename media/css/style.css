@@ -765,6 +765,8 @@ span#roamer-beta-warning {
 }
 
 #alternate-page #tag-galaxy div.tag {
+    float:left;
+    margin:1em .5em;
 }
 
 #alternate-page #tag-galaxy div.tag_cluster {
@@ -804,8 +806,6 @@ span#roamer-beta-warning {
     text-decoration:none;
     font-weight:normal;
     white-space:nowrap;
-    float:left;
-    margin:1em .5em;
     padding:.2em .5em;
     color: #FFFFFF;
     height:18px;
