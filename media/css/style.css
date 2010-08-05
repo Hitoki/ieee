@@ -734,10 +734,6 @@ span#roamer-beta-warning {
     background-color: white;
 }             
 
-#alternate-page .tag-galaxy-viewing {
-    background-color: #EAEDEF !important;
-}               
-
 #alternate-page #tag-galaxy .alt-box-pad {
     height: 96.5%;
     min-height: 431px;
@@ -782,6 +778,10 @@ span#roamer-beta-warning {
     -webkit-border-radius:5px;
 }
 
+#alternate-page #tag-galaxy div.tag_cluster a {
+    border: 0 none !important;
+}
+
 #alternate-page #tag-galaxy div.node table {
     border-collapse:collapse;
 }
@@ -815,12 +815,9 @@ span#roamer-beta-warning {
     padding:.2em .5em;
     color: #FFFFFF;
     height:18px;
+    border: 1px solid #FFFFFF;
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
-}
-
-#alternate-page #tag-galaxy div.node a:hover {
-    text-decoration:underline;
 }
 
 #alternate-page #tag-galaxy div.tag_cluster a:hover {
@@ -856,12 +853,24 @@ span#roamer-beta-warning {
     background-color: #3087d5;
 }
 
+#alternate-page #tag-galaxy div.node a.level1:hover {
+    border: 1px solid #3087d5;
+    color: #3087d5;
+    background-color: #FFFFFF;
+}
+
 h3.level1 {
     color: #3087d5;
 }
 
 #alternate-page #tag-galaxy div.node a.level2 {
     background-color: #4153a3;
+}
+
+#alternate-page #tag-galaxy div.node a.level2:hover {
+    border: 1px solid #4153a3;
+    color: #4153a3;
+    background-color: #FFFFFF;
 }
 
 h3.level2 {
@@ -872,12 +881,24 @@ h3.level2 {
     background-color: #8e5590;
 }
 
+#alternate-page #tag-galaxy div.node a.level3:hover {
+    border: 1px solid #8e5590;
+    color: #8e5590;
+    background-color: #FFFFFF;
+}
+
 h3.level3 {
     color: #8e5590;
 }
 
 #alternate-page #tag-galaxy div.node a.level4 {
     background-color: #c24173;
+}
+
+#alternate-page #tag-galaxy div.node a.level4:hover {
+    border: 1px solid #c24173;
+    color: #c24173;
+    background-color: #FFFFFF;
 }
 
 h3.level4 {
@@ -888,12 +909,24 @@ h3.level4 {
     background-color: #de4238;
 }
 
+#alternate-page #tag-galaxy div.node a.level5:hover {
+    border: 1px solid #de4238;
+    color: #de4238;
+    background-color: #FFFFFF;
+}
+
 h3.level5 {
     color: #de4238;
 }
 
 #alternate-page #tag-galaxy div.node a.level6 {
     background-color: #ff3000;
+}
+
+#alternate-page #tag-galaxy div.node a.level6:hover {
+    border: 1px solid #ff3000;
+    color: #ff3000;
+    background-color: #FFFFFF;
 }
 
 h3.level6 {
