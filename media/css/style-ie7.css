@@ -123,3 +123,16 @@ p.admin-links {
 #help-overview-link {
    width: 200px;
 }
+
+#alternate-page #tag-galaxy div.tag {
+    padding: .7em;
+}
+
+#alternate-page #tag-galaxy div.node a {
+   padding: .2em .4em;
+}
+
+#alternate-page #tag-galaxy div.tag {
+    float:left;
+    margin:1em .1em;
+}
