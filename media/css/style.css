@@ -121,7 +121,8 @@ table.main td.center .center-pad {
     position:absolute;
     right:0;
     top:0;
-    width: 158px;
+    width: 165px;
+    text-align: right;
 }
 
 p.admin-links {
@@ -770,9 +771,15 @@ span#roamer-beta-warning {
 }
 
 #alternate-page #tag-galaxy div.tag_cluster {
+    float:left;
+    margin:.8em .5em;
     background-color: #006699;
-    border-bottom: 1px solid #navy;
-    border-right: 1px solid #navy;
+    text-decoration:none;
+    font-weight:normal;
+    white-space:nowrap;
+    padding:.2em .5em;
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
 }
 
 #alternate-page #tag-galaxy div.node table {
@@ -800,8 +807,7 @@ span#roamer-beta-warning {
     vertical-align:middle;
 }
 
-#alternate-page #tag-galaxy div.node a,
-#alternate-page #tag-galaxy div.tag_cluster {
+#alternate-page #tag-galaxy div.node a {
     font-size:110%;
     text-decoration:none;
     font-weight:normal;
@@ -815,14 +821,6 @@ span#roamer-beta-warning {
 
 #alternate-page #tag-galaxy div.node a:hover {
     text-decoration:underline;
-}
-
-#alternate-page #tag-galaxy div.tag_cluster a {
-    color:white;
-    float:none;
-    vertical-align:middle;
-    padding: 0 0 0 .3em;
-    margin: 0;
 }
 
 #alternate-page #tag-galaxy div.tag_cluster a:hover {
