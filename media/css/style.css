@@ -815,7 +815,7 @@ span#roamer-beta-warning {
     padding:.2em .5em;
     color: #FFFFFF;
     height:18px;
-    border: 1px solid #FFFFFF;
+    border: 1px solid transparent;
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
 }
@@ -1834,35 +1834,31 @@ ul.errors {
     -webkit-border-top-left-radius: 5px;
 }
 
-.print-resource #resource-print-link, a.resource-tab-print-link {
-    float: none !important;
-    margin-right: .5em !important;
-}
-
 .nootabs-selected-tab div.group {
-    margin-top: 30px;
     height: 100%;
     overflow: auto;
+}
+
+#xplore-results-container div.group {
+    margin-top: 30px;
 }
 
 #xplore-tab div.print-resource {
     margin-top: -30px;
 }
 
-#resource-print-link, a.resource-tab-print-link {
-    float:right;
-    margin:1.2em 1.5em 1.2em .5em;
-    font-size:80%;
+#resource-print-container {
+    float: right;
+    margin: 9px 0 0 0;
+}
+
+#resource-print-icon {
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    margin: 1px 5px 0 0;
+    float: left;
     background:url(../images/printer.png) no-repeat left;
-    padding-left:2em;
-}
-
-.print-resource a, #resource-print-link {
-    color: gray;
-}
-
-.print-resource a:hover, #resource-print-link:hover {
-   color: orange;
 }
 
 #powered-by {

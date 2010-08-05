@@ -8,7 +8,14 @@
     {% if is_ajax %}
         
         <a class="lightbox-close"></a>
-        <a id="resource-print-link" target="_blank" href="{% url print_resource tag.id "all" %}">Print all Tabs</a>
+        <div id="resource-print-container">
+            <span id="resource-print-icon"></span>
+            <select id="resource-print-choice">
+                <option>To print, choose one...</option>
+                <option>Print Current Tab</option>
+                <option>Print All Tabs</option>
+            </select>
+        </div>
         
         <h1><span id="tag-name">"{{ tag.name }}"</span> has <span id="num-related-items" class="{ number: {{ num_related_items }} }"><img src="{{ MEDIA_URL }}images/resource_popup_xplore_loader.gif" /></span> related items</h1>
         <div class="resources-pad">
@@ -43,7 +50,6 @@
                         
                         <!-- Sectors &amp; Clusters -->
                         <div id="sector-tab" class="sector-tab">
-                            <div class="print-resource"><a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "sectors" %}">Print this Tab</a></div>
                             <div class="group">
                                 {% if parent_nodes|length %}
                                     {% for parent_node in parent_nodes %}
@@ -85,7 +91,6 @@
                         
                         <!-- Societies -->
                         <div id="society-tab">
-                            <div class="print-resource"><a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "societies" %}">Print this Tab</a></div>
                             <div class="group">
                             {% if tag.societies.all %}
                                 <table class="society-images">
@@ -125,7 +130,6 @@
                         
                         <!-- Related Tags -->
                         <div id="related-tab">
-                            <div class="print-resource"><a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "related_tags" %}">Print this Tab</a></div>
                             <div class="group">
                                 {% if tag.related_tags.all %}
                                     {% for related_tag in tag.related_tags.all %}
@@ -147,7 +151,6 @@
                         
                         <div id="conference-tab">
                             <!-- Conferences -->
-                            <div class="print-resource"><a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "conferences" %}">Print this Tab</a></div>
                             <div class="group">
                                 {% if conferences|length %}
                                     {% for resource in conferences %}
@@ -205,7 +208,6 @@
                         
                         <div id="periodical-tab">
                             <!-- Periodicals -->
-                            <div class="print-resource"><a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "periodicals" %}">Print this Tab</a></div>
                             <div class="group">
                                 {% if periodicals|length %}
                                     {% for resource in periodicals %}
@@ -231,7 +233,6 @@
                         
                         <div id="standard-tab">
                             <!-- Standards -->
-                            <div class="print-resource"><a class="resource-tab-print-link" target="_blank" href="{% url print_resource tag.id "standards" %}">Print this Tab</a></div>
                             <div class="group">
                                 {% if standards|length %}
                                     {% for resource in standards %}
