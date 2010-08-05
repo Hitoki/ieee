@@ -121,7 +121,7 @@ table.main td.center .center-pad {
     position:absolute;
     right:0;
     top:0;
-    width: 165px;
+    width: 210px;
     text-align: right;
 }
 
@@ -677,7 +677,7 @@ span#roamer-beta-warning {
 #alternate-page #left-column ul#societies li a {
     color:#333333;
     margin:0px;
-    padding:.2em .4em;
+    padding:.4em;
 }
 
 #alternate-page #left-column ul#societies li.cluster-list-item a {
@@ -1202,7 +1202,7 @@ table.vert-center td {
 #sortmenu {
     vertical-align: middle;
     float: right; 
-    margin-right: 34px;
+    margin-right: 37px;
     padding-bottom: 3px;
     font-weight: bold;
 }
@@ -1899,7 +1899,7 @@ ul.errors {
     -moz-border-radius-bottomleft: 5px;
     -webkit-border-top-left-radius: 5px;
     -webkit-border-bottom-left-radius: 5px;
-    width: 200px;
+    width: 154px;
     padding: 2px 0 1px 2px;
     float: left;
     display: inline-block;

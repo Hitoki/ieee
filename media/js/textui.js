@@ -420,7 +420,7 @@ var Tags = {
             $('#society-list-item-' + this.societyId + ' a').addClass('active-society');
             var tabs = $('#left-column-container').data('nootabs');
             tabs.setTab('societies-tab');
-            $('#societies-tab').scrollTo($('#society-list-item-' + this.societyId), {offset: {top:-3, left:0}});
+            $('#societies-tab').scrollTo($('#society-list-item-' + this.societyId), {offset: {top:-6, left:0}});
             $('#tag-galaxy').addClass('tag-galaxy-viewing');
         } else {
             // No node selected
