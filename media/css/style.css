@@ -1458,6 +1458,15 @@ table.node-tooltip-grid td {
     margin-right: 10px;
 }
 
+.sector-block td,
+.related-tags-block td,
+.filter-block td,
+.societies-block td
+{
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;    
+}
+
 .sector-block {
     /*background:#fff200;*/
 }
