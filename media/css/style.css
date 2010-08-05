@@ -1943,6 +1943,13 @@ ul.errors {
     background-color: #D0E5F5 !important;
     background-image: url(/media/images/zoom-back.png) !important;
     background-repeat: no-repeat !important;
+    background-position: 0 0 !important;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default:hover {
+    background-position: 0 -16px !important;
+    background-color: #fedab6 !important;
+    border-color: #e4b88b;
 }
 
 .ui-slider .ui-slider-handle { /* overrides Jquery UI */
