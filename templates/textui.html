@@ -195,11 +195,10 @@
                                     <div id="sortmenu" class="feature_label">
                                         Sort by:
                                         <select id="tag-sort" onchange="Tags.updateSort();">
-                                            <option value="alphabetical">Alphabetical</option>
                                             {% if ENABLE_TEXTUI_SIMPLIFIED_COLORS %}
                                                 <option value="connectedness">Most Linkages</option>
                                             {% endif %}
-
+                                            <option value="alphabetical">Alphabetical</option>
                                             {% comment %}
                                             #TODO: Re-enable clusters
                                             #<option value="clusters_first_alpha">Clusters First</option>

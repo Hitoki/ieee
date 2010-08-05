@@ -663,9 +663,9 @@ var Tags = {
             log('zooming to ' + zoom + '%');
             
             if (zoom != 100) {
-                $('#textui-zoom-default-zoom').show();
+                $('#textui-zoom-default-zoom').css('display', 'block');
             } else {
-                $('#textui-zoom-default-zoom').hide();
+                $('#textui-zoom-default-zoom').css('display', 'none');
             }
             
             $('#textui-zoom-value').text(zoom + '%');

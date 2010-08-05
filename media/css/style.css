@@ -656,7 +656,7 @@ span#roamer-beta-warning {
 #alternate-page #left-column ul#societies li a {
     color:#333333;
     margin:0px;
-    padding:.2em .4em;
+    padding:.4em;
 }
 
 #alternate-page #left-column ul#sectors li.cluster-list-item a {
@@ -1116,7 +1116,7 @@ table.vert-center td {
 
 .feature_label {
     font-size: 10pt; 
-    font-weight: bold;
+    font-weight: normal;
     line-height: 1.5;
     height: 20px;
     padding: 0;
@@ -1204,7 +1204,7 @@ table.vert-center td {
     float: right; 
     margin-right: 37px;
     padding-bottom: 3px;
-    font-weight: bold;
+    font-weight: normal;
 }
 
 #sortmenu select {
