@@ -560,6 +560,7 @@ var Tags = {
     clearSectorSociety: function(setHash) {
         this.nodeId = null;
         this.societyId = null;
+        $('#tags-live-search').val('');
         this.updateResults();
         $('#tag-galaxy').removeClass('tag-galaxy-viewing');
     },
