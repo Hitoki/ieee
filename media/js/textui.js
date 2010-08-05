@@ -50,10 +50,10 @@ var Tags = {
             //log('  hash: ' + hash);
             
             // Matches "#/sector/123"
-            var sector_matches = hash.match(/^\/sector\/(\d+)$/);
+            var sector_matches = hash.match(/^\/sector\/(all|\d+)$/);
             
             // Matches "#/society/123"
-            var society_matches = hash.match(/^\/society\/(\d+)$/);
+            var society_matches = hash.match(/^\/society\/(all|\d+)$/);
             
             if (hash == '') {
                 // Home page
@@ -61,14 +61,20 @@ var Tags = {
                 
             } else if (sector_matches) {
                 // Sector
-                var sectorId = parseInt(sector_matches[1]);
+                var sectorId = sector_matches[1];
+                if (sectorId !== "all") {
+                    sectorId = parseInt(sectorId);
+                }
                 if (this.nodeId != sectorId) {
                     this.selectSector(sectorId, false);
                 }
             
             } else if (society_matches) {
                 // Society
-                var societyId = parseInt(society_matches[1]);
+                var societyId = society_matches[1];
+                if (societyId !== "all"){
+                    societyId = parseInt(societyId);
+                }
                 if (this.societyId != societyId) {
                     this.selectSociety(societyId, false);
                 }

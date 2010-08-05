@@ -538,12 +538,12 @@ def ajax_textui_nodes(request):
     #filterValues = request.GET.get('filterValues')
     ##log('filterValues: %s' % filterValues)
     
-    if sector_id is not None:
+    if sector_id is not None and sector_id != "all":
         sector = Node.objects.get(id=sector_id)
     else:
         sector = None
     
-    if society_id is not None:
+    if society_id is not None and society_id != "all":
         society = Society.objects.get(id=society_id)
     else:
         society = None
@@ -616,11 +616,11 @@ def ajax_textui_nodes(request):
                     else:
                         queries &= Q(name__icontains=word)
             
-            if sector_id is not None:
+            if sector_id is not None and sector_id != "all":
                 # Search within the sector
                 queries &= Q(parents__id=sector_id)
             
-            elif society_id is not None:
+            elif society_id is not None and society_id != "all":
                 # Search within the society
                 queries &= Q(societies__id=society_id)
             
@@ -653,7 +653,7 @@ def ajax_textui_nodes(request):
             else:
                 max_score = max(max_score, node.score1)
                 
-    elif sector_id is not None:
+    elif sector_id is not None and sector_id != "all":
         # Get a sector or cluster's child nodes
         node = Node.objects.get(id=sector_id)
         society = None
@@ -675,7 +675,7 @@ def ajax_textui_nodes(request):
         (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = Node.objects.get_sector_ranges(node)
         (min_score, max_score) = Node.objects.get_combined_sector_ranges(node)
 
-    elif society_id is not None:
+    elif society_id is not None and society_id != "all":
         # Get a society's nodes
         node = None
         society = Society.objects.get(id=society_id)
@@ -685,7 +685,12 @@ def ajax_textui_nodes(request):
         (min_score, max_score) = society.get_combined_ranges()
         
     else:
-        assert False
+        node = None
+        society = None
+        child_nodes = Node.objects.get_extra_info(Node.objects.filter(node_type=NodeType.objects.getFromName('tag')), extra_order_by, filterIds)
+        min_score = 0
+        max_score = 10000
+        #assert False
     
     # Get child tags & clusters
     #p.tick('Got child tags')
@@ -808,9 +813,9 @@ def ajax_textui_nodes(request):
     child_nodes = child_nodes2
     
     if search_for is not None:
-        if sector_id is not None:
+        if sector_id is not None and sector_id != "all":
             search_page_title = '%s results for "%s" in the %s sector:' % (len(child_nodes), search_for, sector.name)
-        elif society_id is not None:
+        elif society_id is not None and society_id != "all":
             search_page_title = '%s results for "%s" for the %s society:' % (len(child_nodes), search_for, society.name)
         
     
@@ -1012,17 +1017,17 @@ def tooltip(request, tag_id):
     'Returns the AJAX content for the tag tooltip/flyover in textui.'
     #print 'tooltip()'
     #p = Profiler('tooltip')
-    
+    #import ipdb; ipdb.set_trace()
     parent_id = request.GET.get('parent_id', None)
     society_id = request.GET.get('society_id', None)
     search_for = request.GET.get('search_for', None)
     
-    if parent_id == 'null':
+    if parent_id == 'null' or parent_id == 'all':
         parent_id = None
     else:
         parent_id = int(parent_id)
     
-    if society_id == 'null':
+    if society_id == 'null' or society_id == 'all':
         society_id = None
     else:
         society_id = int(society_id)
