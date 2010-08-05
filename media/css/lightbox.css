@@ -215,8 +215,8 @@ input.text {
     width: 108px;
 }
 
-#articles-tab-outter {
-    width: 185px;
+#articles-tab {
+    width: 130px;
 }
 /*End set widths*/
 
@@ -234,7 +234,7 @@ input.text {
 }
 
 #lightbox .resources-lightbox-content ul.nootabs-menus li.end-group-menu {
-    margin-right: 10px;
+    margin-right: 30px;
 }
 
 
