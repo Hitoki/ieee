@@ -1536,6 +1536,33 @@ p.export {
    -webkit-border-radius:5px 5px 5px 5px;
 }
 
+#linked-help-box {
+float: left;
+width: 250px;
+}
+
+#search-help-box {
+width: 250px;
+float: left;
+}
+
+#sort-help-box {
+float: right;
+width: 250px;
+}
+
+#choose-help-box {
+width: 260px;
+float: left;
+clear: left;
+margin-top: 15px;
+}
+
+#zoom-help-box {
+float: right;
+width: 264px;
+}
+
 .box-close-button {
     background: white url(../images/close.gif);
     display: inline-block;
