@@ -8,6 +8,21 @@ function getNode(parent, name) {
     return nodes[0];
 }
 
+$(document).ready(function(){
+    if ($.cookie("noShowHelpBox")){
+        $('#tag-help-container').hide();
+    }
+    
+    $('#help-close-button').click(function(){
+        $('#tag-help-container').hide();
+        if ($('#no-show-box').is(":checked")){
+            //set a cookie to show that the user hidden the help box
+            var options = { path: '/', expires: 7 };
+            $.cookie("noShowHelpBox", 'true', options);
+        }
+    })
+});
+
 var Tags = {
     
     PAGE_SECTOR: 'sector',

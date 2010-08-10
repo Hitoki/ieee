@@ -1523,6 +1523,32 @@ table.node-tooltip-grid td {
 p.export {
 }
 
+/* Tag Page Box */
+#tag-help-container {
+
+}
+
+#tag-help-box {
+   border:1px solid #006699;
+   padding: 5px;
+   margin: 2px 0 5px 0;
+   -moz-border-radius:5px 5px 5px 5px;
+   -webkit-border-radius:5px 5px 5px 5px;
+}
+
+.box-close-button {
+    background: white url(../images/close.gif);
+    display: inline-block;
+    height: 13px;
+    width: 14px;
+    float: right;
+    cursor: pointer;
+}
+
+#tag-box-check {
+
+}
+
 /* Help page */
 #help-container {
     width:100%;
@@ -1924,7 +1950,7 @@ ul.errors {
 #textui-zoom-container {
 	float:right;
     width:22px;
-    padding-top: 65px;
+    padding-top: 88px;
 }
 
 #textui-zoom-container .feature_label {
