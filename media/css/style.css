@@ -205,7 +205,6 @@ p.admin-links a:hover {
     height:40px;
     position:relative;
     z-index: 1;
-    margin-top: 20px;
 }
 
 #footer .leftCorner {
@@ -394,7 +393,7 @@ ul#view-header li {
 
 #right-column {
     float:left;
-    margin:10px 0px;
+    margin:10px 0 0 0;
 }
 
 #right-column-border {
@@ -646,7 +645,7 @@ span#roamer-beta-warning {
 
 #alternate-page .alt-box {
     border:1px solid #006699;
-    margin: .2em .2em 1em .2em;
+    margin: .2em .2em 0 .2em;
 }
 
 #alternate-page .alt-box .alt-box-pad {
