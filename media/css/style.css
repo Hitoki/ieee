@@ -121,7 +121,6 @@ table.main td.center .center-pad {
     position:absolute;
     right:0;
     top:0;
-    width: 210px;
     text-align: right;
 }
 
@@ -130,6 +129,7 @@ p.admin-links {
     color:gray;
     margin: 0;
     padding: 0;
+    display: inline-block;
 }
 
 #feedback-link {
@@ -141,6 +141,7 @@ p.admin-links {
     float:left;
     margin-right:1em;
     margin-bottom:.5em;
+    margin-top: 2px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
 }
