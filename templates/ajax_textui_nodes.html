@@ -4,11 +4,19 @@
     {% if search_for_too_short %}
         <h3>The search phrase "{{ search_for }}" is too short, please enter more characters.</h3>
     {% else %}
+        <h3>
+        {# If the view returned results summary, use it. If not (happens when "All Sectors" or "All Societies" are chosen), construct one. #}
         {% if search_page_title %}
-            <h3>{{ search_page_title }}</h3>
+            {{ search_page_title }}
         {% else %}
-            <h3>{{ child_nodes|length }} results for "{{ search_for }}":</h3>
+            {{ child_nodes|length }} results for "{{ search_for }}"{% ifnotequal child_nodes|length 0 %}:{% else %}.{% endifnotequal %}
         {% endif %}
+        
+        {# Extra message for when there are zero results #}
+        {% ifequal child_nodes|length 0 %}
+            &nbsp;You might try entering fewer characters.
+        {% endifequal %}
+        </h3>
     {% endif %}
 {% endif %}
 
