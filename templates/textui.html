@@ -7,7 +7,7 @@
             var navTabsHeight = $('#galaxy-tabs .nootabs-menu').eq(0).height();
             $('div#sectors-tab, div#societies-tab').css('min-height', 591 - navTabsHeight);
             var tagGalaxyWidth = $('#tag-galaxy').width();
-            $('#tag-help-box').css('width', tagGalaxyWidth);
+            $('#tag-help-box').css('width', tagGalaxyWidth - 4);
             
             var resizeTagGalaxy = function() {
                 
@@ -17,7 +17,7 @@
                 
                 $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 160 - navTabsHeight);
                 $('div#tag-galaxy').css('height', windowHeight - tagBoxHeight - 180);
-                $('#tag-help-box').css('width', tagGalaxyWidth);
+                $('#tag-help-box').css('width', tagGalaxyWidth - 4);
             };
             
             resizeTagGalaxy();

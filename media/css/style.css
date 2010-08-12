@@ -1539,8 +1539,8 @@ p.export {
 
 #tag-help-box {
    border:1px solid #006699;
-   padding: 5px 4px;
-   margin: 2px 0 5px 0;
+   padding: 5px;
+   margin: 2px 0 5px 0.2em;
    display: inline-block;
    -moz-border-radius:5px 5px 5px 5px;
    -webkit-border-radius:5px 5px 5px 5px;
