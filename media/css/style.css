@@ -1539,10 +1539,16 @@ p.export {
 
 #tag-help-box {
    border:1px solid #006699;
-   padding: 5px;
+   padding: 5px 4px;
    margin: 2px 0 5px 0;
+   display: inline-block;
    -moz-border-radius:5px 5px 5px 5px;
    -webkit-border-radius:5px 5px 5px 5px;
+}
+
+#no-show-container {
+    float: right;  
+    margin: -2px 5px 0 0; 
 }
 
 #linked-help-box {
@@ -1558,6 +1564,8 @@ float: left;
 #sort-help-box {
 float: right;
 width: 250px;
+clear: right;
+margin-top: 10px;
 }
 
 #choose-help-box {
@@ -1569,7 +1577,9 @@ margin-top: 15px;
 
 #zoom-help-box {
 float: right;
-width: 264px;
+width: 250px;
+clear: right;
+margin-top: 20px;
 }
 
 .box-close-button {
@@ -1579,10 +1589,6 @@ width: 264px;
     width: 14px;
     float: right;
     cursor: pointer;
-}
-
-#tag-box-check {
-
 }
 
 /* Help page */
