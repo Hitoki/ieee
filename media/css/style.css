@@ -217,6 +217,15 @@ p.admin-links a:hover {
     right:-13px;
 }
 
+#copyright {
+margin-top: 20px;
+display: inline-block;
+position: relative;
+width: 100%; 
+text-align: center;
+font-size: 0.9em;
+}
+
 .helpicon {
    background-image: url(/media/images/sm_help.png);
    background-position: 0 0;

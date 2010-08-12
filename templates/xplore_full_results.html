@@ -19,6 +19,7 @@
                         <a href="javascript:Tags.clearSectorSociety();" class="home"><img class="left-banner" src="{{MEDIA_URL}}images/technav_banner.png" width="139" height="57" /></a>
                         <span id="tagline">Connecting You to the IEEE Universe of Information</span>
                         <span id="links">
+                            <a id="feedback-link" href="{% url feedback %}" class="floating lightbox { customClass:'feedback' }">Feedback Survey</a>
                             {% if user %}
                             <p class="admin-links">                                
                                 {% ifequal user.get_profile.role "admin" %}
@@ -80,13 +81,9 @@
                         
                     </div>
                     
-                    <div id="footer">
-
-                        <div class="survey-button">
-                            <a id="feedback-link" href="{% url feedback %}" class="floating lightbox { customClass:'feedback' }">Feedback Survey</a>
-                        </div>
-                        
+                    <div id="footer">                        
                         <img class="leftCorner" src="{{MEDIA_URL}}images/mainBottomLeftCorner.png" width="26" height="40" />
+                        <div id="copyright">&copy; Copyright 2010 IEEE – All rights reserved. Use of this Web site signifies your agreement to the terms and conditions.</div>
                         <img class="rightCorner" src="{{MEDIA_URL}}images/mainBottomRightCorner.png" width="26" height="40" />
                     </div>
                     
