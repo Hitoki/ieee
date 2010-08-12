@@ -10,11 +10,16 @@ function getNode(parent, name) {
 
 $(document).ready(function(){
     if ($.cookie("noShowHelpBox")){
-        $('#tag-help-container').hide();
+        $('#tag-help-box').hide();
     }
     
     $('#help-close-button').click(function(){
-        $('#tag-help-container').hide();
+        var windowHeight = $(window).height();
+        var navTabsHeight = $('#galaxy-tabs .nootabs-menu').eq(0).height();
+        
+        $('#tag-help-box').hide();
+        $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 290 - navTabsHeight);
+        $('div#sectors-tab, div#societies-tab').css('min-height', 443 - navTabsHeight);
         if ($('#no-show-box').is(":checked")){
             //set a cookie to show that the user hidden the help box
             var options = { path: '/', expires: 7 };
