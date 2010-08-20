@@ -7,6 +7,7 @@
 ul.nootabs-menus {
     /* Trigger hasLayout bug in IE7 */
     min-height: 0;
+    float: left;
 }
 
 ul.nootabs-menus li {

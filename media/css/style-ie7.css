@@ -91,12 +91,8 @@ form.items-per-page {
     margin-top: 0;
 }
 
-#xplore-totals {
-    margin-top: -15px !important;
-}
-
 #lightbox .resources-lightbox-content ul.nootabs-menus li.end-group-menu {
-    margin-right: 35px !important;
+    margin-right: 25px !important;
 }
 
 div#connectedness-container {
@@ -107,17 +103,9 @@ div.survey-button {
     margin: -20px 33px 10px 0;
 }
 
-p.admin-links {
-    margin-top: -20px !important;
-}
-
 #textui-tags-search-clear {
     float: none;
     display: inline-block;
-}
-
-#header #links {
-    padding-top: 25px;
 }
 
 #help-overview-link {
@@ -135,4 +123,20 @@ p.admin-links {
 #alternate-page #tag-galaxy div.tag {
     float:left;
     margin:1em .1em;
+}
+
+#xplore-tab div.print-resource {
+margin-top: 0px;
+}
+
+p#xplore-totals {
+margin-top: 0px;
+}
+
+#header #links {
+float: right;   
+}
+
+#feedback-link {
+display: inline-block;   
 }
