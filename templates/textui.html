@@ -202,7 +202,8 @@
                                         <input id="tags-live-search" class="live-search { use_tags_callback: true }" /><span id="textui-tags-search-clear">&nbsp;</span>
                                     </div>
                                     
-                                    <div id="sortmenu" class="feature_label">
+                                    <!-- Old Sort Menu -->
+                                    <div id="sortmenu" class="feature_label" style="display:none">
                                         Sort by:
                                         <select id="tag-sort" onchange="Tags.updateSort();">
                                             {% if ENABLE_TEXTUI_SIMPLIFIED_COLORS %}
@@ -219,6 +220,31 @@
                                             <option value="num_related_tags">Related Tags</option>
                                             <option value="num_societies">Societies</option>
                                         </select>
+                                    </div>
+                                    <!-- End Old Sort Menu -->
+                                    
+                                    <div id="sortContainer_outter">
+                                        <div id="sortContainer_inner">
+                                            <span>&nbsp;</span>
+                                            <ul id="sortSelect_options" class="customSelectList">
+                                                {% if ENABLE_TEXTUI_SIMPLIFIED_COLORS %}
+                                                    <li data-value="connectedness"><span>Linkages</span></li>
+                                                {% endif %}
+                                                {% comment %}
+                                                    #TODO: Re-enable clusters
+                                                    <li data-value="clusters_first_alpha"><span>Clusters First</span></li>
+                                                    {% endcomment %}
+                                                <li data-value="alphabetical"><span>Alphabetical</span></li>
+                                                <li data-value="num_sectors" ><span>Resources</span></li>
+                                                <li data-value="100"><span>Sectors</span></li>
+                                                <li data-value="num_related_tags"><span>Related Tags</span></li>
+                                                <li data-value="num_societies"><span>Societies</span></li>
+                                            </ul>
+                                        </div>
+                                        <span id="sortSelect" class="customSelectContainer" tabindex="0">
+                                            <span class="selected"></span>
+                                            <span class="dropIcon" style="float:right;"></span>
+                                        </span>
                                     </div>
                                     
                                 <br style="clear: both;" />

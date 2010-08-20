@@ -1095,6 +1095,7 @@ table.vert-center td {
     /*margin-top: -6px;*/
     clear: right;
     overflow:auto;
+    height: 34px;
 }
 
 #frequencybar {
@@ -2091,3 +2092,143 @@ float: right;
 #overview-video-link a:hover span{
 	text-decoration: underline;
 }
+
+/*DropDowns*/
+#sortContainer_outter {
+    display: inline-block;
+    float: right;
+    margin-right: 32px;
+}
+
+#sortContainer_inner {
+position: absolute;
+display: inline;
+}
+
+#sortSelect_options li {
+width: 162px; 
+padding-left: 3px;
+}
+
+#sortSelect {
+width: 165px;
+}
+
+#sortSelect {
+font-weight:bold;
+padding:0;
+z-index:99;
+outline: none;
+}
+
+#sortSelect .selected {
+padding-left: 3px;   
+}
+
+.customSelectContainer {
+cursor: pointer;
+display: inline-block;
+height: 19px;
+vertical-align: bottom;
+background-color: #FFFFFF;
+border:1px solid #006699;
+-moz-border-radius:5px 5px 5px 5px;
+-webkit-border-radius:5px 5px 5px 5px;
+}
+
+.customSelectContainer .selected {
+display: inline-block;
+margin: 0;
+float: left;
+font-weight: normal;
+height: 19px;
+}
+
+.customSelectContainer .selected span {
+display: inline-block;
+margin-left: 4px;
+font-size: 10pt;
+}
+
+.customSelectList {
+display: none;
+background-color: #FFFFFF;
+position: relative;
+margin: 1px 0 0 0;
+padding: 0;
+border: 1px solid #FF932B;
+cursor: pointer;
+list-style-position: outside;
+margin-top: 4px;
+z-index: 999999; 
+-moz-border-radius-bottomright: 5px;
+-moz-border-radius-bottomleft: 5px;
+-webkit-border-bottom-right-radius: 5px;
+-webkit-border-bottom-left-radius: 5px;
+}
+
+.customSelectList span {
+margin-left: 4px;   
+}
+
+.customSelectList li {
+background-color: #FFFFFF;
+list-style-type: none;
+margin-left: 0px;
+font-size: 10pt;
+vertical-align: middle;
+cursor: pointer;
+text-align: left;
+padding: 2px 0;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+color: #9F9F9F;
+}
+
+.customSelectList li:hover {
+color: #FF932B !important;
+}
+
+.customSelectContainer:focus, .customSelectContainer:hover, .customSelectList:focus, .customSelectList:hover {
+cursor: pointer;
+border-color: #FF932B !important;   
+}
+
+.selected-hover, .selected-hover span {
+color: #FF932B !important;   
+}
+
+.customSelectIcon {
+width: 42px;
+text-align: center;  
+margin-right: 14px;
+margin-left: 12px !important;
+display: inline-block;
+float: left;
+}
+
+.squareDown {
+-moz-border-radius-bottomleft: 0px !important; 
+-moz-border-radius-bottomright: 0px !important;
+-webkit-border-bottom-left-radius: 0px !important;  
+-webkit-border-bottom-right-radius: 0px !important;  
+}
+
+.dropIcon {
+width: 20px;
+height: 19px;
+background: url(/media/images/drop_down.png) no-repeat 0px 0px;
+}
+
+.dropIcon.open {
+background: url(/media/images/drop_down_open.png) no-repeat 0px 0px;
+}
+
+.dropIcon.active {
+background: url(/media/images/drop_down_active.png) no-repeat 0px 0px;
+}
+
+.dropIcon.openActive {
+background: url(/media/images/drop_down_openactive.png) no-repeat 0px 0px;
+}
+
