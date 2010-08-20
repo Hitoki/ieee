@@ -2125,6 +2125,41 @@ outline: none;
 padding-left: 3px;   
 }
 
+#printContainer_outter {
+    display: inline-block;
+    float: right;
+    margin-top: 7px;
+}
+
+#printContainer_inner {
+position: absolute;
+display: inline;
+}
+
+#printSelect_options li {
+width: 162px; 
+padding-left: 3px;
+}
+
+#printSelect {
+width: 165px;
+}
+
+#printSelect {
+font-weight:bold;
+padding:0;
+z-index:99;
+outline: none;
+}
+
+#printSelect .selected {
+padding-left: 3px;   
+}
+
+#printSelect #resource-print-icon {
+margin-left: 3px;   
+}
+
 .customSelectContainer {
 cursor: pointer;
 display: inline-block;

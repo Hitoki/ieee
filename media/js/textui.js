@@ -27,7 +27,8 @@ $(document).ready(function(){
         }
     })
     
-    sortDropDown = $('#sortSelect').imageDropdown({'selectList': $("ul#sortSelect_options"), 'initialIndex': 0, 'changeHandler': null});
+    var sortDropDown = $('#sortSelect').imageDropdown({'selectList': $("ul#sortSelect_options"), 'initialIndex': 0, 'changeHandler': null});
+    var printDropDown = $('#printSelect').imageDropdown({'selectList': $("ul#printSelect_options"), 'initialIndex': 0, 'changeHandler': null});
     
     //Removes hover state from selected text when other option is chosen in dropdowns
     $(".customSelectList li").click(function() {

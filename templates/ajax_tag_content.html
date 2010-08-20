@@ -8,13 +8,28 @@
     {% if is_ajax %}
         
         <a class="lightbox-close"></a>
-        <div id="resource-print-container">
+        <div id="resource-print-container" style="display:none">
             <span id="resource-print-icon"></span>
             <select id="resource-print-choice">
                 <option>To print, choose one...</option>
                 <option>Print Current Tab</option>
                 <option>Print All Tabs</option>
             </select>
+        </div>
+        
+        <div id="printContainer_outter">
+            <div id="printContainer_inner">
+                <span>&nbsp;</span>
+                <ul id="printSelect_options" class="customSelectList">
+                    <li data-value="def"><span>To print, choose one...</span></li>
+                    <li data-value="cur" ><span>Print Current Tab</span></li>
+                    <li data-value="all"><span>Print All Tabs</span></li>
+                </ul>
+            </div>
+            <span id="printSelect" class="customSelectContainer" tabindex="0">
+                <span id="resource-print-icon"></span><span class="selected"></span>
+                <span class="dropIcon" style="float:right;"></span>
+            </span>
         </div>
         
         <h1><span id="tag-name">"{{ tag.name }}"</span> has <span id="num-related-items" class="{ number: {{ num_related_items }} }"><img src="{{ MEDIA_URL }}images/resource_popup_xplore_loader.gif" /></span> related items</h1>
