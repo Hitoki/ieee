@@ -1095,7 +1095,7 @@ table.vert-center td {
     /*margin-top: -6px;*/
     clear: right;
     overflow:auto;
-    height: 34px;
+    height: 24px;
 }
 
 #frequencybar {
@@ -1541,7 +1541,7 @@ p.export {
 #tag-help-box {
    border:1px solid #006699;
    padding: 5px;
-   margin: 2px 0 5px 0.2em;
+   margin: 2px 0 11px 0.2em;
    display: inline-block;
    background-color: #E8EAEC;
    -moz-border-radius:5px 5px 5px 5px;
