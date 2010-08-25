@@ -13,6 +13,8 @@ $(document).ready(function(){
         $('#tag-help-box').hide();
     }
     
+    $("#tags-live-search").focus();
+    
     $('#help-close-button').click(function(){
         var windowHeight = $(window).height();
         var navTabsHeight = $('#galaxy-tabs .nootabs-menu').eq(0).height();
@@ -598,6 +600,7 @@ var Tags = {
         $('#tags-live-search').val('');
         this.updateResults();
         $('#tag-galaxy').removeClass('tag-galaxy-viewing');
+        $("#tags-live-search").focus();
     },
     
     showHome: function() {
