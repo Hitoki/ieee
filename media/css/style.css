@@ -7,7 +7,7 @@ body {
     margin: 0px;
     font-family:verdana,tahoma,sans-serif;
     font-size:9pt;
-    background-color:#6f7985;
+    background-color:#333333;
 }
 
 h2 {
@@ -50,16 +50,16 @@ table.main {
 
 table.main td.left {
     width:100px;
-    background-image:url(../images/leftMainShadow.gif);
+    background-image:url(../images/leftMainShadow.png);
     background-position:right;
-    background-color: #6F7985;
+    background-color: #333333;
 }
 
 table.main td.right {
     width:100px;
-    background-image:url(../images/rightMainShadow.gif);
+    background-image:url(../images/rightMainShadow.png);
     background-position:left;
-    background-color: #6F7985;
+    background-color: #333333;
 }
 
 table.main td.center {
@@ -202,6 +202,7 @@ p.admin-links a:hover {
     background-image:url(../images/mainBottomBackground.png);
     background-repeat:repeat-x;
     background-position:top;
+    background-color:#333333;
     height:40px;
     position:relative;
     z-index: 1;
