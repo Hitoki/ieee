@@ -32,6 +32,7 @@
             // Attach event to tags-search clear button.
             $('#textui-tags-search-clear').click(function() {
                 Tags.clearSearchResults();
+                $("#tags-live-search").focus();
             });
             
             // Attach the zoom slider.

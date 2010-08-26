@@ -318,6 +318,13 @@ var Tags = {
         this._showWaitScreen();
         //var filterStr = implode(',', this.getFilters());
         
+            
+        if ($('#tags-live-search').val().length >= 1) {
+            $('#textui-tags-search-clear').show();
+        } else {
+            $('#textui-tags-search-clear').hide();
+        }
+        
         var search_for = $('#tags-live-search').val();
         
         if (this.nodeId != null) {
