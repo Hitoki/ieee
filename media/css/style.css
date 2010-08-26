@@ -1963,7 +1963,11 @@ ul.errors {
     display: inline-block;
     margin-top: 0;
     outline: none;
-    background: white url(../images/magnifyIcon.png) no-repeat 4px 2px;
+    background: #EFF9FF url(../images/magnifyIcon.png) no-repeat 4px 2px;
+}
+
+#textui-tags-search input:focus, #textui-tags-search input:hover {
+    border: 1px solid #FF932B;
 }
 
 
