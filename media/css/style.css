@@ -50,15 +50,11 @@ table.main {
 
 table.main td.left {
     width:100px;
-    background-image:url(../images/leftMainShadow.png);
-    background-position:right;
     background-color: #333333;
 }
 
 table.main td.right {
     width:100px;
-    background-image:url(../images/rightMainShadow.png);
-    background-position:left;
     background-color: #333333;
 }
 
@@ -73,7 +69,7 @@ table.main td.center .center-pad {
     background-image:url(../images/topMainShadow.png);
     background-repeat:repeat-x;
     background-position:top;
-    height:67px;
+    height:70px;
     text-align:left;
     position:relative;
 }
@@ -203,7 +199,7 @@ p.admin-links a:hover {
     background-repeat:repeat-x;
     background-position:top;
     background-color:#333333;
-    height:40px;
+    height:46px;
     position:relative;
     z-index: 1;
 }
