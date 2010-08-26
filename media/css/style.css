@@ -437,6 +437,8 @@ ul#view-header li {
 
 #content {
     clear: both;
+    margin-top: 16px;
+    display: inline-block;
 }
 
 #content .sc_img {
@@ -464,7 +466,7 @@ ul#view-header li {
 }
 
 #content table.society-images {
-    margin: 5px 5px 0 10spx;
+    margin: 10px 5px 0 10px;
 }
 
 #content table.society-images img {
