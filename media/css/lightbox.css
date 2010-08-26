@@ -149,7 +149,7 @@ input.text {
     cursor:pointer;
     top: 0px;
     right: 5px;
-    margin: 1em;
+    margin: 18px 6px 0;
     width:14px;
     height:13px;
     background:white url(../images/close.gif);
@@ -170,7 +170,7 @@ input.text {
 
 #lightbox .resources-lightbox-content .alt-box {
     clear:both;
-    padding: 5px 10px 0 10px;
+    padding: 0 10px 0 10px;
     margin: 0 15px 0 15px;
 }
 
@@ -187,7 +187,7 @@ input.text {
 
 #lightbox .resources-lightbox-content h1 {
     font-size:140%;
-    margin: 1em 1em 0 24px;
+    margin: 13px 1em 0 24px;
     font-weight: normal;
 }
 

@@ -464,7 +464,7 @@ ul#view-header li {
 }
 
 #content table.society-images {
-    margin: 5px 5px 0 25px;
+    margin: 5px 5px 0 10spx;
 }
 
 #content table.society-images img {
@@ -487,13 +487,13 @@ div.image-container {
 }
 
 #content p.item_even {
-    padding: 5px 5px 0 25px;
+    padding: 5px 5px 0 10px;
     margin: 0px;
     vertical-align: top;
 }
 
 #content p.item_odd {
-    padding: 5px 5px 0 25px;
+    padding: 5px 5px 0 10px;
     margin: 0px;
 }
 
@@ -525,27 +525,24 @@ div.image-container {
 }
 
 #content p.desc_even {
-    /* background-color: #BAD4F9; */
-    padding: 5px 5px 0 25px;
+    padding: 5px 5px 0 10px;
     margin: 0px;
 }
 
 #content p.desc_odd {
-    /* background-color: #CDE0FC; */
-    padding: 5px 5px 0 25px;
+    padding: 5px 5px 0 10px;
     margin: 0px;
 }
 
 #content p.pub_even {
-    /* background-color: #BAD4F9; */
     font-style: italic;
-    padding: 5px 5px 0 25px;
+    padding: 5px 5px 0 10px;
     margin: 0px;
 }
 
 #content p.pub_odd {
     font-style: italic;
-    padding: 5px 5px 0 25px;
+    padding: 5px 5px 0 10px;
     margin: 0px;
 }
 
@@ -616,7 +613,7 @@ span#roamer-beta-warning {
 }
 
 #left-column-container {
-    margin-top: 5px; 
+    margin-top: 10px; 
     position:absolute;
     /*height:437px;*/
     width: auto;
@@ -646,7 +643,7 @@ span#roamer-beta-warning {
 
 #alternate-page .alt-box {
     border:1px solid #006699;
-    margin: .2em .2em 0 .2em;
+    margin: 6px .2em 0 .2em;
 }
 
 #alternate-page .alt-box .alt-box-pad {
@@ -730,7 +727,7 @@ span#roamer-beta-warning {
     min-height: 441px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
-    padding: 5px 5px 2px 0;
+    padding: 0 5px 2px 0;
     margin-right:34px;
     background-color: white;
 }             
@@ -1535,7 +1532,7 @@ p.export {
 #tag-help-box {
    border:1px solid #006699;
    padding: 5px;
-   margin: 2px 0 11px 0.2em;
+   margin: 7px 0 5px 0.2em;
    display: inline-block;
    background-color: #E8EAEC;
    -moz-border-radius:5px 5px 5px 5px;
@@ -1882,7 +1879,7 @@ ul.errors {
 
 #xplore-totals {
     font-style:italic;
-    padding-left:20px;
+    padding-left:5px;
     float: left;
     margin: 0;
 }
@@ -2123,7 +2120,7 @@ padding-left: 3px;
 #printContainer_outter {
     display: inline-block;
     float: right;
-    margin-top: 7px;
+    margin-top: 15px;
 }
 
 #printContainer_inner {
@@ -2172,6 +2169,7 @@ margin: 0;
 float: left;
 font-weight: normal;
 height: 19px;
+padding-top: 1px;
 }
 
 .customSelectContainer .selected span {
