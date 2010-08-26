@@ -89,8 +89,8 @@
 .flyover-close-button {
     display:block;
     position:absolute !important;
-    top:3px;
-    right:3px;
+    top:10px;
+    right:10px;
     width:14px;
     height:13px;
     background:white url(../images/close.gif);

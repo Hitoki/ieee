@@ -464,7 +464,6 @@ ul#view-header li {
 }
 
 #content table.society-images {
-    font-weight: bold;
     margin: 5px 5px 0 25px;
 }
 
@@ -488,16 +487,12 @@ div.image-container {
 }
 
 #content p.item_even {
-    font-weight: bold;
-    /* background-color: #BAD4F9; */
     padding: 5px 5px 0 25px;
     margin: 0px;
     vertical-align: top;
 }
 
 #content p.item_odd {
-    font-weight: bold;
-    /* background-color: #CDE0FC; */
     padding: 5px 5px 0 25px;
     margin: 0px;
 }
@@ -854,6 +849,10 @@ span#roamer-beta-warning {
 }
 
 /* */
+
+.node-tooltip h3 {
+font-weight: normal;   
+}
 
 #alternate-page #tag-galaxy div.node a.level1 {
     background-color: #3087d5;
@@ -1503,7 +1502,6 @@ table.node-tooltip-grid td {
     text-decoration:underline;
     color:#006699;
     font-size:110%;
-    font-weight:bold;
     text-align: center;
 }
 

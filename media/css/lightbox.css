@@ -188,6 +188,7 @@ input.text {
 #lightbox .resources-lightbox-content h1 {
     font-size:140%;
     margin: 1em 1em 0 24px;
+    font-weight: normal;
 }
 
 /*Widths set for resource lightbox tabs, supports up to 2 numbers in tab count and 5 in article count safely*/
