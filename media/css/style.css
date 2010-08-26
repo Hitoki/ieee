@@ -749,6 +749,7 @@ span#roamer-beta-warning {
     font-size:100%;
     clear:left;
     margin:.5em .5em 0 .5em;
+    font-weight: normal;
 }
 
 #alternate-page #tag-galaxy #tags a.back-link {
@@ -1534,7 +1535,7 @@ p.export {
 #tag-help-box {
    border:1px solid #006699;
    padding: 5px;
-   margin: 7px 0 5px 0.2em;
+   margin: 6px 0 6px 0.2em;
    display: inline-block;
    background-color: #E8EAEC;
    -moz-border-radius:5px 5px 5px 5px;
