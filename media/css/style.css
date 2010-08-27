@@ -221,6 +221,7 @@ position: relative;
 width: 100%; 
 text-align: center;
 font-size: 0.9em;
+color: #FFFFFF;
 }
 
 .helpicon {
@@ -1555,6 +1556,7 @@ width: 250px;
 #search-help-box {
 width: 250px;
 float: left;
+margin-left: 41px;
 }
 
 #sort-help-box {
@@ -1575,7 +1577,13 @@ margin-top: 15px;
 float: right;
 width: 250px;
 clear: right;
-margin-top: 20px;
+margin-top: 15px;
+}
+
+#video-help-box {
+float: left;
+clear: left;
+margin-top: 15px;   
 }
 
 .box-close-button {
@@ -2073,6 +2081,7 @@ div#connectedness-container {
     /* NOTE:Make this non-float and add more left margin to center this on the right side*/
     margin:3.5em 1em 2em 2em;
     float:left;
+    font-size: 1.4em;
 }
 
 #roamer-help a:hover {
