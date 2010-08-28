@@ -842,6 +842,7 @@ class ResourceManager(models.Manager):
             WHERE conference_series <> ''
             AND resource_type_id = %s
             GROUP BY conference_series
+            LIMIT 100
             """, [conference_type.id])
         return cursor.fetchall()
     
