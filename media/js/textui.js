@@ -29,9 +29,8 @@ $(document).ready(function(){
         }
     })
     
-    var sortDropDown = $('#sortSelect').imageDropdown({'selectList': $("ul#sortSelect_options"), 'initialIndex': 0});
-	sortDropDown.bind('change', Tags.updateSort);
-    var printDropDown = $('#printSelect').imageDropdown({'selectList': $("ul#printSelect_options"), 'initialIndex': 0});
+    var sortDropDown = $('#sortSelect').imageDropdown({'selectList': $("ul#sortSelect_options"), 'initialIndex': 0, 'changeHandler': null});
+    var printDropDown = $('#printSelect').imageDropdown({'selectList': $("ul#printSelect_options"), 'initialIndex': 0, 'changeHandler': null});
     
     //Removes hover state from selected text when other option is chosen in dropdowns
     $(".customSelectList li").click(function() {
@@ -466,49 +465,49 @@ var Tags = {
         }
     },
     
-    selectCluster: function(id) {
-        //log("selectCluster()");
-        //log("  id: " + id);
-        
-        this.nodeId = id;
-        this.societyId = null;
-        this.nodeType = 'tag_cluster';
-        
-        var tagWindow = $("#tags");
-        tagWindow.empty();
-        tagWindow.html("<h1 id=\"wait\">Please wait...</h1>");
-        
-        var filterStr = implode(',', this.getFilters());
-        
-        this.updateChangedNode();
-        
-        // Hide any flyvoers so they don't persist when the node is gone.
-        Flyover.hide();
-        
-        $.getJSON(
-            '/ajax/textui_nodes',
-            {
-                nodeId:id,
-                filterValues:filterStr,
-                sort:this.getSort()
-            },
-            function(data) {
-                Tags.onLoadClusters(data);
-            }
-        );
-    },
-    
-    onLoadClusters: function(data) {
-        //log('onLoadClusters()');
-        //log('  data.node.sector.id: ' + data.node.sector.id);
-        
-        this.node = data.node;
-        this.node.sectorId = data.node.sector.id;
-        
-        this.updateChangedNode();
-        
-        this.renderTags(data);
-    },
+    //selectCluster: function(id) {
+    //    //log("selectCluster()");
+    //    //log("  id: " + id);
+    //    
+    //    this.nodeId = id;
+    //    this.societyId = null;
+    //    this.nodeType = 'tag_cluster';
+    //    
+    //    var tagWindow = $("#tags");
+    //    tagWindow.empty();
+    //    tagWindow.html("<h1 id=\"wait\">Please wait...</h1>");
+    //    
+    //    var filterStr = implode(',', this.getFilters());
+    //    
+    //    this.updateChangedNode();
+    //    
+    //    // Hide any flyvoers so they don't persist when the node is gone.
+    //    Flyover.hide();
+    //    
+    //    $.getJSON(
+    //        '/ajax/textui_nodes',
+    //        {
+    //            nodeId:id,
+    //            filterValues:filterStr,
+    //            sort:this.getSort()
+    //        },
+    //        function(data) {
+    //            Tags.onLoadClusters(data);
+    //        }
+    //    );
+    //},
+    //
+    //onLoadClusters: function(data) {
+    //    //log('onLoadClusters()');
+    //    //log('  data.node.sector.id: ' + data.node.sector.id);
+    //    
+    //    this.node = data.node;
+    //    this.node.sectorId = data.node.sector.id;
+    //    
+    //    this.updateChangedNode();
+    //    
+    //    this.renderTags(data);
+    //},
     
     getTagById: function(id) {
         for (var i=0; i<this.tags.length; i++) {
@@ -577,8 +576,7 @@ var Tags = {
     },
     
     getSort: function() {
-		return $('#sortSelect').val();
-        //return $('#tag-sort')[0].options[$('#tag-sort')[0].selectedIndex].value;
+        return $('#tag-sort')[0].options[$('#tag-sort')[0].selectedIndex].value;
     },
     
     updateSwitchLink: function() {

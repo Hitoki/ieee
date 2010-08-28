@@ -1,31 +1,31 @@
-from decorators import optional_login_required as login_required
-from django.core.mail import mail_admins, send_mail
+import cgi
+import datetime
+from django.core.mail import mail_admins
+from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect  
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils import simplejson as json
-from ieeetags.forms import *
-from ieeetags.models import single_row, Filter, Node, NodeType, Profile, \
-    Resource, ResourceType, Society
 from logging import debug as log
-from urllib import quote
-from widgets import make_display_only
-import cgi
-import datetime
 import os.path
 import re
-import settings
 import string
 import sys
 import time
 import traceback
+from urllib import quote
 import urllib
 import urllib2
-import util
 import xml.dom.minidom
+from decorators import optional_login_required as login_required
 
+from ieeetags.models import single_row, Filter, Node, NodeType, Profile, Resource, ResourceType, Society
+from ieeetags.forms import *
 #from profiler import Profiler
+import settings
+import util
+from widgets import make_display_only
 
 TOOLTIP_MAX_CHARS = 125
 
@@ -348,7 +348,6 @@ def _get_xplore_results(tag, highlight_search_term=True, show_all=False, offset=
         'rs': offset+1,
         'ti': tag.name,
     })
-    import ipdb; ipdb.set_trace()
     
     try:
         file1 = urllib2.urlopen(url)
@@ -395,8 +394,7 @@ def _get_xplore_results(tag, highlight_search_term=True, show_all=False, offset=
         
         xplore_results = []
         for document1 in xml1.documentElement.getElementsByTagName('document'):
-            #rank = getElementValueByTagName(document1, 'rank')
-            rank = document1.previousSibling.previousSibling.firstChild.nodeValue
+            rank = getElementValueByTagName(document1, 'rank')
             title = getElementValueByTagName(document1, 'title')
             abstract = getElementValueByTagName(document1, 'abstract')
             pdf = getElementValueByTagName(document1, 'pdf')

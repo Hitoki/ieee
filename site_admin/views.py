@@ -3842,7 +3842,6 @@ def conference_series_report(request):
     
     # Get the newest conference for each series
     for conference_series, num_in_series in serieses:
-        print '%s %s' % (conference_series, num_in_series)
         # Get most recent conference for the series
         resource = Resource.objects.get_current_conference_for_series(conference_series)
         
