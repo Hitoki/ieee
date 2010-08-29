@@ -45,13 +45,13 @@
                     <div id="resource-tabs" class="nootabs tag-resources-tabs { useCookies:false, defaultTab:2, useHash:false }">
                         <ul class="nootabs-menus">
                             <li id="industry-sectors-tab" class="begin-group-menu"><a href="" class="two-word-menu">Industry <br />Sectors <span>({{ parent_nodes|length }})</span></a></li>
-							{% comment %}
-							#TODO: Re-enable clusters
-							#<li><a href="">Sectors &amp; Clusters ({{ parent_nodes|length }})</a></li>
-							{% endcomment %}
-							{% comment %}
+                            {% comment %}
+                            #TODO: Re-enable clusters
+                            #<li><a href="">Sectors &amp; Clusters ({{ parent_nodes|length }})</a></li>
+                            {% endcomment %}
+                            {% comment %}
                             #<li><a href="">Filters ({{ tag.filters.count }})</a></li>
-							{% endcomment %}
+                            {% endcomment %}
                             <li id="ieee-societies-tab" class="middle-group-menu"><a href="" class="two-word-menu">IEEE<br /> Societies <span>({{ tag.societies.count }})</span></a></li>
                             <li id="related-tags-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu">Related <br />Tags <span>({{ tag.related_tags.count }})</span></a></li>
                             <li id="conferences-tab" class="begin-group-menu"><a href="" class="one-word-menu">Conferences <span>({{conferences|length}})</span></a></li>
@@ -64,7 +64,7 @@
                         </ul>
                         
                         <!-- Sectors &amp; Clusters -->
-                        <div id="sector-tab" class="sector-tab">
+                        <div id="sector-tab" class="sector-tab" data-printUrl='{% url print_resource tag.id "sectors" %}'>
                             <div class="group">
                                 {% if parent_nodes|length %}
                                     {% for parent_node in parent_nodes %}
@@ -90,8 +90,8 @@
                                 {% endif %}
                             </div>
                         </div>
-						
-						{% comment %}
+                        
+                        {% comment %}
                         <!-- Filters -->
                         <div>
                             <div class="group">
@@ -102,10 +102,10 @@
                                 {% endfor %}
                             </div>
                         </div>
-						{% endcomment %}
+                        {% endcomment %}
                         
                         <!-- Societies -->
-                        <div id="society-tab">
+                        <div id="society-tab" data-printUrl='{% url print_resource tag.id "societies" %}'>
                             <div class="group">
                             {% if tag.societies.all %}
                                 <table class="society-images">
@@ -144,7 +144,7 @@
                         </div>
                         
                         <!-- Related Tags -->
-                        <div id="related-tab">
+                        <div id="related-tab" data-printUrl='{% url print_resource tag.id "related_tags" %}'>
                             <div class="group">
                                 {% if tag.related_tags.all %}
                                     {% for related_tag in tag.related_tags.all %}
@@ -164,7 +164,7 @@
                             </div>
                         </div>
                         
-                        <div id="conference-tab">
+                        <div id="conference-tab" data-printUrl='{% url print_resource tag.id "conferences" %}'>
                             <!-- Conferences -->
                             <div class="group">
                                 {% if conferences|length %}
@@ -221,7 +221,7 @@
                             </div>
                         </div>
                         
-                        <div id="periodical-tab">
+                        <div id="periodical-tab" data-printUrl='{% url print_resource tag.id "periodicals" %}'>
                             <!-- Periodicals -->
                             <div class="group">
                                 {% if periodicals|length %}
@@ -246,7 +246,7 @@
                             </div>
                         </div>
                         
-                        <div id="standard-tab">
+                        <div id="standard-tab" data-printUrl='{% url print_resource tag.id "standards" %}'>
                             <!-- Standards -->
                             <div class="group">
                                 {% if standards|length %}
@@ -293,7 +293,7 @@
                         #    </div>
                         {% endcomment %}
 
-                        <div id="xplore-tab">
+                        <div id="xplore-tab" data-printUrl='{% url print_resource tag.id "xplore" %}'>
                             <!-- Xplore -->
                             <div id="xplore-results-container" class="{ tagId: {{ tag.id }} }">
                                 {# NOTE: This is replaced by ajax after page load. #}
@@ -303,6 +303,19 @@
                         
                         <script type="text/javascript">
                             $(function() {
+                                var printDropDown = $('#printSelect').imageDropdown({'selectList': $("ul#printSelect_options")});
+                                printDropDown.bind('change', function(){
+                                    var type = printDropDown.val();
+                                    if (type === "all"){
+                                        printWin = window.open("{% url print_resource tag.id 'all' %}", "printWindow");
+                                    } else if (type === "cur"){
+                                        var printUrl = $('.nootabs-selected-tab[data-printUrl]').eq(0).attr('data-printUrl');
+                                        printWin = window.open(printUrl, "printWindow");
+                                    }
+                                    printDropDown.close();
+                                    printDropDown.reset();
+                                })
+                                
                                 attachXploreResults('#xplore-results-container');
                             });
                         </script>
