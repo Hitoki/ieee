@@ -203,27 +203,6 @@
                                         <input id="tags-live-search" class="live-search { use_tags_callback: true }" /><span id="textui-tags-search-clear">&nbsp;</span>
                                     </div>
                                     
-                                    <!-- Old Sort Menu -->
-                                    <div id="sortmenu" class="feature_label" style="display:none">
-                                        Sort by:
-                                        <select id="tag-sort" onchange="Tags.updateSort();">
-                                            {% if ENABLE_TEXTUI_SIMPLIFIED_COLORS %}
-                                                <option value="connectedness">Linkages</option>
-                                            {% endif %}
-                                            <option value="alphabetical">Alphabetical</option>
-                                            {% comment %}
-                                            #TODO: Re-enable clusters
-                                            #<option value="clusters_first_alpha">Clusters First</option>
-                                            {% endcomment %}
-                                            
-                                            <option value="frequency">Resources</option>
-                                            <option value="num_sectors">Sectors</option>
-                                            <option value="num_related_tags">Related Tags</option>
-                                            <option value="num_societies">Societies</option>
-                                        </select>
-                                    </div>
-                                    <!-- End Old Sort Menu -->
-                                    
                                     <div id="sortContainer_outter">
                                         <div id="sortContainer_inner">
                                             <span>&nbsp;</span>
