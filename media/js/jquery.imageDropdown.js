@@ -129,11 +129,13 @@ jQuery.fn.imageDropdown = function(options) {
     }
     this.bindHover();
 
-    $(this).click(function(){
+	var clickHandler = function(){
         opts.selectList.show().focus();
         $(this).addClass("squareDown");
         self.find('.dropIcon').addClass('openActive');
-    });
+    };
+
+    $(this).click(clickHandler);
     
     opts.selectList.children('li').click(function(){
         if (closeTimeout){
@@ -171,7 +173,18 @@ jQuery.fn.imageDropdown = function(options) {
         self.removeClass("squareDown");
         self.find('.dropIcon').removeClass('openActive');
         self.trigger('close');        
-    }
+    };
+    
+    this.enable = function(){
+        this.enableKeys();
+        this.click(clickHandler);
+        this.bindHover();
+    };
+    
+    this.disable = function(){
+        this.disableKeys();
+        $(this).unbind('click mouseenter mouseleave');
+    };
     
     this.setSelectedIndex(opts.initialIndex);
 

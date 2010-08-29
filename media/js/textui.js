@@ -8,6 +8,7 @@ function getNode(parent, name) {
     return nodes[0];
 }
 
+var sortDropDown, printDropDown;
 $(document).ready(function(){
     if ($.cookie("noShowHelpBox")){
         $('#tag-help-box').hide();
@@ -29,8 +30,8 @@ $(document).ready(function(){
         }
     })
     
-    var sortDropDown = $('#sortSelect').imageDropdown({'selectList': $("ul#sortSelect_options"), 'initialIndex': 0});
-    var printDropDown = $('#printSelect').imageDropdown({'selectList': $("ul#printSelect_options"), 'initialIndex': 0});
+    sortDropDown = $('#sortSelect').imageDropdown({'selectList': $("ul#sortSelect_options"), 'initialIndex': 0});
+    printDropDown = $('#printSelect').imageDropdown({'selectList': $("ul#printSelect_options"), 'initialIndex': 0});
     
     //Removes hover state from selected text when other option is chosen in dropdowns
     $(".customSelectList li").click(function() {
@@ -136,8 +137,9 @@ var Tags = {
                 this.tagSortOverlayElem.remove();
                 this.tagSortOverlayElem = null;
             }
-            $('#tag-sort').attr('disabled', '');
-            Flyover.detach($('#tag-sort'));
+            sortDropDown.enable();
+
+            Flyover.detach(sortDropDown);
         } else {
             
             if (this.page == this.PAGE_HELP) {
@@ -156,18 +158,18 @@ var Tags = {
                 this.tagSortOverlayElem = $('<div id="tag-sort-overlay"></div>').appendTo('body');
                 this.tagSortOverlayElem.bgiframe();
                 
-                var pos = $('#tag-sort').position();
+                var pos = sortDropDown.position();
                 this.tagSortOverlayElem.css('top', pos.top);
                 this.tagSortOverlayElem.css('left', pos.left);
-                this.tagSortOverlayElem.css('width', $('#tag-sort').attr('offsetWidth'));
-                this.tagSortOverlayElem.css('height', $('#tag-sort').attr('offsetHeight'));
+                this.tagSortOverlayElem.css('width', sortDropDown.attr('offsetWidth'));
+                this.tagSortOverlayElem.css('height', sortDropDown.attr('offsetHeight'));
                 
                 Flyover.attach(this.tagSortOverlayElem, {
                     'content': 'Please start by selecting an Industry Sector or IEEE Society',
                     'position': 'bottom'
                 });
             }
-            $('#tag-sort').attr('disabled', 'disabled');
+            sortDropDown.disable();
         }
     },
     
@@ -576,7 +578,7 @@ var Tags = {
     },
     
     getSort: function() {
-        return $('#tag-sort')[0].options[$('#tag-sort')[0].selectedIndex].value;
+        return sortDropDown.val();
     },
     
     updateSwitchLink: function() {
