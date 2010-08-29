@@ -31,6 +31,9 @@ $(document).ready(function(){
     })
     
     sortDropDown = $('#sortSelect').imageDropdown({'selectList': $("ul#sortSelect_options"), 'initialIndex': 0});
+    sortDropDown.bind('change', function(){
+        Tags.updateSort();
+    });
     printDropDown = $('#printSelect').imageDropdown({'selectList': $("ul#printSelect_options"), 'initialIndex': 0});
     
     //Removes hover state from selected text when other option is chosen in dropdowns
