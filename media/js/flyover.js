@@ -88,24 +88,14 @@ var Flyover = {
             elem = elems[i];
             
             // TODO: when attaching to flyover elements in lightboxes, the $(elem).click() functions do not work!!!  Only the direct HTML onclick() type handlers work...
-
-            if ((!options || !('sticky' in options) || !options.sticky)) {
-                $(elem).hoverIntent({
-                    sensitivity: 1,
-                    interval: 200,
-                    over: function() {Flyover.show(this, options);} ,
-                    timeout: 0,   
-                    out: function() {Flyover.onMouseOut();}    
-                });
-            } else {
-                $(elem).hoverIntent({
-                    sensitivity: 70,
-                    interval: 200,
-                    over: function() {Flyover.show(this, options);} ,
-                    timeout: 0,   
-                    out: null  
-                });
-            }
+            
+            $(elem).hoverIntent({
+                sensitivity: 1,
+                interval: 200,
+                over: function() {Flyover.show(this, options);} ,
+                timeout: 0,   
+                out: function(){}  
+            });
             
             if ((options && 'showInitial' in options && options.showInitial) || ('showInitial' in $(elem).metadata() && $(elem).metadata().showInitial)) {
                 Flyover.show(elem, options);
