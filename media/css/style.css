@@ -2146,16 +2146,15 @@ display: inline;
 }
 
 #printSelect_options li {
-width: 162px; 
+width: 183px; 
 padding-left: 3px;
 }
 
 #printSelect {
-width: 165px;
+width: 186px;
 }
 
 #printSelect {
-font-weight:bold;
 padding:0;
 z-index:99;
 outline: none;
@@ -2167,6 +2166,12 @@ padding-left: 3px;
 
 #printSelect #resource-print-icon {
 margin-left: 3px;   
+}
+
+#resource-print-icon span {
+display:inline-block;
+padding-left:22px;
+width:136px;
 }
 
 .customSelectContainer {
