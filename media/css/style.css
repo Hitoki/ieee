@@ -2020,16 +2020,21 @@ ul.errors {
 }
 
 .ui-state-default, .ui-widget-content .ui-state-default { /* overrides Jquery UI */ 
-    background-color: #D0E5F5 !important;
+    background-color: #006699 !important;
     background-image: url(/media/images/zoom-back.png) !important;
     background-repeat: no-repeat !important;
     background-position: 0 0 !important;
+    border: 1px solid #006699 !important;
 }
 
-.ui-state-default, .ui-widget-content .ui-state-default:hover {
+.ui-state-default:hover, .ui-widget-content .ui-state-default:hover {
     background-position: 0 -16px !important;
-    background-color: #fedab6 !important;
-    border-color: #e4b88b;
+    background-color: #FFA500 !important;
+    border: 1px solid #FFA500 !important;
+}
+
+.ui-widget-content {
+    border: 1px solid #006699 !important;
 }
 
 .ui-slider .ui-slider-handle { /* overrides Jquery UI */
