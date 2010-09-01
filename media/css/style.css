@@ -1588,14 +1588,23 @@ clear: left;
 margin-top: 15px;   
 }
 
-.box-close-button {
-    background: white url(../images/close.gif);
+.close-help {
     display: inline-block;
-    height: 13px;
-    width: 14px;
     float: right;
     cursor: pointer;
+    color: #FFFFFF;
+    margin-left: 10px;
+    margin-top: 8px;
+    padding: 3px 8px;
+    background-color: #006699;
+    -moz-border-radius:5px 5px 5px 5px;
+    -webkit-border-radius:5px 5px 5px 5px;
 }
+
+.close-help:hover {
+    background-color: #FFA500;
+}
+
 
 /* Help page */
 #help-container {

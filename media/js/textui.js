@@ -16,19 +16,27 @@ $(document).ready(function(){
     
     $("#tags-live-search").focus();
     
-    $('#help-close-button').click(function(){
+    function hideHelpBox() {
         var windowHeight = $(window).height();
         var navTabsHeight = $('#galaxy-tabs .nootabs-menu').eq(0).height();
         
         $('#tag-help-box').hide();
         $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 324 - navTabsHeight);
         $('div#sectors-tab, div#societies-tab').css('min-height', 443 - navTabsHeight);
-        if ($('#no-show-box').is(":checked")){
-            //set a cookie to show that the user hidden the help box
-            var options = { path: '/', expires: 7 };
-            $.cookie("noShowHelpBox", 'true', options);
-        }
-    })
+    }
+    
+    $('#help-close-button').click(function(){
+        hideHelpBox();
+    });
+    
+    $('#no-show-box').click(function(){
+        //set a cookie to show that the user hidden the help box
+        var options = { path: '/', expires: 7 };
+        $.cookie("noShowHelpBox", 'true', options);
+        
+        hideHelpBox();
+        
+    });
     
     sortDropDown = $('#sortSelect').imageDropdown({'selectList': $("ul#sortSelect_options"), 'initialIndex': 0});
     sortDropDown.bind('change', function(){
