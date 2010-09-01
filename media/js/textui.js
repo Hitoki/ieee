@@ -607,7 +607,7 @@ var Tags = {
     },
     
     clearSectorSociety: function(setHash) {
-        this.nodeId = null;
+        this.nodeId = "all";
         this.societyId = null;
         $('#tags-live-search').val('');
         this.updateResults();
