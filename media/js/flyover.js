@@ -158,7 +158,7 @@ var Flyover = {
         // The default options
         this.options = {
             position: 'right-top',
-            hideDelay: 200,
+            hideDelay: 10,
             width: null,
             height: null,
             shadows: true,
@@ -169,10 +169,10 @@ var Flyover = {
             content_html: null,
             sticky: false,
             closeButton: false,
-            clickOffClose: false,
+            clickOffClose: true,
             showCallback: null,
             closeCallback: null,
-            closeOnMouseOutLink: false,
+            closeOnMouseOutLink: true,
             url: null,
             showInitial: false,
 			positionCursor: false
