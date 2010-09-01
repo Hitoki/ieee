@@ -1961,8 +1961,9 @@ ul.errors {
 }
 
 #textui-tags-search input {
+    color: #FFFFFF;
     font-size:100%;
-    border:1px solid #006699;
+    border:1px solid transparent;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     width: 155px;
@@ -1971,11 +1972,11 @@ ul.errors {
     display: inline-block;
     margin-top: 0;
     outline: none;
-    background: #EFF9FF url(../images/magnifyIcon.png) no-repeat 4px 2px;
+    background: #006699 url(../images/magnifyIcon.png) no-repeat 4px 2px;
 }
 
 #textui-tags-search input:focus, #textui-tags-search input:hover {
-    border: 1px solid #FF932B;
+    border: 1px solid transparent;
 }
 
 
@@ -2179,8 +2180,9 @@ cursor: pointer;
 display: inline-block;
 height: 19px;
 vertical-align: bottom;
-background-color: #FFFFFF;
-border:1px solid #006699;
+color: #FFFFFF;
+background-color: #006699;
+border:1px solid transparent;
 -moz-border-radius:5px 5px 5px 5px;
 -webkit-border-radius:5px 5px 5px 5px;
 }
@@ -2202,11 +2204,11 @@ font-size: 10pt;
 
 .customSelectList {
 display: none;
-background-color: #FFFFFF;
+background-color: #006699;
 position: relative;
 margin: 1px 0 0 0;
 padding: 0;
-border: 1px solid #FF932B;
+border: 1px solid transparent;
 cursor: pointer;
 list-style-position: outside;
 margin-top: 4px;
@@ -2222,7 +2224,6 @@ margin-left: 4px;
 }
 
 .customSelectList li {
-background-color: #FFFFFF;
 list-style-type: none;
 margin-left: 0px;
 font-size: 10pt;
@@ -2232,7 +2233,7 @@ text-align: left;
 padding: 2px 0;
 -moz-border-radius: 5px;
 -webkit-border-radius: 5px;
-color: #9F9F9F;
+color: #CFCFCF;
 }
 
 .customSelectList li:hover {
@@ -2241,7 +2242,6 @@ color: #FF932B !important;
 
 .customSelectContainer:focus, .customSelectContainer:hover, .customSelectList:focus, .customSelectList:hover {
 cursor: pointer;
-border-color: #FF932B !important;   
 }
 
 .selected-hover, .selected-hover span {
