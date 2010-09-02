@@ -815,9 +815,13 @@ def ajax_textui_nodes(request):
     if search_for is not None:
         final_punc =  ('.', ':')[len(child_nodes) > 0]
         if sector_id is not None and sector_id != "all":
-            search_page_title = '%s results for "%s" in the %s sector%s' % (len(child_nodes), search_for, sector.name, final_punc)
+            str = ' in the %s sector%s' % (sector.name, final_punc)
+            search_page_title = {"num": len(child_nodes), "search_for": search_for, "node_desc": str}
         elif society_id is not None and society_id != "all":
-            search_page_title = '%s results for "%s" for the %s society%s' % (len(child_nodes), search_for, society.name, final_punc)
+            str = ' for the %s society%s' % (society.name, final_punc)
+            search_page_title = {"num": len(child_nodes), "search_for": search_for, "node_desc": str};
+            
+        
         
     
     #print 'after loop'
