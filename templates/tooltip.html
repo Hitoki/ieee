@@ -17,13 +17,15 @@
             {% endcomment %}
             <tr>
                 <td>
-                    <table class="sector-block vert-center">
-                        <tr>
-                            <td class="{{sectorLevel}}">
-                                Industry Sectors
-                            </td>
-                        </tr>
-                    </table>
+                    <a href="javascript:Tags.selectTag({{tag.id}}, 'sector-tab');">
+                        <table class="sector-block vert-center">
+                            <tr>
+                                <td class="{{sectorLevel}}">
+                                    Industry Sectors
+                                </td>
+                            </tr>
+                        </table>
+                    </a>
                 </td>
                 <td>
                     {{ sectors|safe }}
@@ -31,13 +33,15 @@
             </tr>
             <tr>
                 <td>
-                    <table class="societies-block vert-center">
-                        <tr>
-                            <td class="{{societyLevel}}">
-                                IEEE Societies
-                            </td>
-                        </tr>
-                    </table>
+                    <a href="javascript:Tags.selectTag({{tag.id}}, 'society-tab');">
+                        <table class="societies-block vert-center">
+                            <tr>
+                                <td class="{{societyLevel}}">
+                                    IEEE Societies
+                                </td>
+                            </tr>
+                        </table>
+                    </a>
                 </td>
                 <td>
                     {{ societies|safe }}
@@ -45,13 +49,15 @@
             </tr>
             <tr>
                 <td>
-                    <table class="related-tags-block vert-center">
-                        <tr>
-                            <td class="{{relatedTagLevel}}">
-                                Related Tags
-                            </td>
-                        </tr>
-                    </table>
+                    <a href="javascript:Tags.selectTag({{tag.id}}, 'related-tab');">
+                        <table class="related-tags-block vert-center">
+                            <tr>
+                                <td class="{{relatedTagLevel}}">
+                                    Related Tags
+                                </td>
+                            </tr>
+                        </table>
+                    </a>
                 </td>
                 <td>
                     {{ related_tags|safe }}
