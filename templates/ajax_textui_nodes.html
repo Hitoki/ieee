@@ -2,7 +2,7 @@
 
 {% if search_for %}
     {% if search_for_too_short %}
-        <h3>The search phrase "{{ search_for }}" is too short, please enter more characters.</h3>
+        <h3>The filter string <b>{{ search_for }}</b> is too short, please enter more characters above OR <a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">clear the filter now</a>.</h3>
     {% else %}
         <h3>
         {# If the view returned results summary, use it. If not (happens when "All Sectors" or "All Societies" are chosen), construct one. #}
@@ -75,7 +75,7 @@
     $(function() {
         // Calling special function to avoid code bloat due to duplication. The string "tagid" in the url will be replaced with the
         // actual id.
-        attachTextUiFlyovers('#tags', {url: '/ajax/tooltip/tagid?parent_id={{ parent_id|default:"null" }}&society_id={{ society_id|default:"null" }}&search_for={{ search_for|urlencode }}', position: 'auto', customClass: 'textui-node', hideDelay: 400, positionCursor: true, closeButton: true });
+        attachTextUiFlyovers('#tags', {url: '/ajax/tooltip/tagid?parent_id={{ parent_id|default:"null" }}&society_id={{ society_id|default:"null" }}&search_for={{ search_for|urlencode }}', position: 'auto', customClass: 'textui-node', hideDelay: 400, positionCursor: false, closeButton: true });
     });
 </script>
 
