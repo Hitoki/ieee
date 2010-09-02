@@ -593,6 +593,10 @@ var Tags = {
     },
     
     updateSwitchLink: function() {
+		
+		// Roamer is disabled. No need for swith link.
+		return;
+		
         if (this.nodeId != null) {
             if (this.nodeType == 'sector') {
                 $('#switch-link').attr('href', '/roamer#/sector/' + this.nodeId);
