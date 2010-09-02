@@ -1582,16 +1582,15 @@ clear: right;
 margin-top: 15px;
 }
 
-#video-help-box {
-text-align: center;
-clear: both;
-display: block;
+#links-help-box {
+    text-align: center;
+    clear: both;
+    display: block;
+    line-height: 1.6;
 }
 
-#hide-help-box {
-text-align: center;
-clear: both;
-display: block;
+#video-help-box, #hide-help-box {
+    display: block;
 }
 
 .close-help {
