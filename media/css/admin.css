@@ -86,6 +86,7 @@ ul.nav {
     list-style:none;
     /* NOTE: This allows the UL to contain the floating LI's, IE7 & Fx3 */
     overflow:auto;
+    margin-top: 10px;
 }
 
 ul.nav li {

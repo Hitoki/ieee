@@ -112,7 +112,7 @@ table.main td.center .center-pad {
 
 #header #links {
     display:inline-block;
-    margin-right:12px;
+    margin-right:14px;
     margin-top:20px;
     position:absolute;
     right:0;
@@ -1537,7 +1537,7 @@ p.export {
 
 #tag-help-box {
    border:1px solid #006699;
-   padding: 5px;
+   padding: 12px;
    margin: 6px 0 6px 0.2em;
    display: inline-block;
    background-color: #EFF9FF;
@@ -1582,7 +1582,13 @@ clear: right;
 margin-top: 15px;
 }
 
-#video-help-box, #hide-help-box {
+#video-help-box {
+text-align: center;
+clear: both;
+display: block;
+}
+
+#hide-help-box {
 text-align: center;
 clear: both;
 display: block;
@@ -1592,9 +1598,6 @@ display: block;
     display: inline-block;
     cursor: pointer;
     color: blue;
-    margin-left: 5px;
-    margin-top: 8px;
-    padding: 3px 8px;
     text-decoration:underline;
 }
 

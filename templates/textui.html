@@ -27,7 +27,7 @@
                 //Set height for main window
                 $('div#tag-galaxy').css('height', windowHeight - tagBoxHeight - 180);
                 //Set height for help box
-                $('#tag-help-box').css('width', tagGalaxyWidth - 5);
+                $('#tag-help-box').css('width', tagGalaxyWidth - 19);
             };
             
             resizeTagGalaxy();
@@ -252,10 +252,10 @@
                                     <div id="linked-help-box"><img src="{{MEDIA_URL}}images/help-arrow.png"/> A tag's color shows how linked it is to sectors, to other tags, and to IEEE resources.</div>
                                     <div id="search-help-box"><img src="{{MEDIA_URL}}images/help-arrow.png"/> Narrow the results by searching for tags that contain your keyword.</div>
                                     <div id="sort-help-box">Order tags by alpha, overall linkages, <img src="{{MEDIA_URL}}images/help-arrow.png"/> or more detailed statistics.</div>
-                                    <div id="choose-help-box"><img src="{{MEDIA_URL}}images/help-arrow-left.png"/> Start here. See technology concepts(tags) by Industry Sector or IEEE Society. The matching tags will then appear.</div>
-                                    <div id="zoom-help-box">Zoom in or out to see more or fewer &nbsp;&nbsp;&nbsp;<img src="{{MEDIA_URL}}images/help-arrow-right.png"/> tags at once.</div>
-                                    <div id="video-help-box"><a href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}"><span class="{customClass: 'overview-video'}">Watch Overview Video</span></a></div>
-                                    <div id="hide-help-box"><div class="close-help" id="help-close-button">Hide</div> <div class="close-help" id="no-show-box">Hide and don't show again</div></div>
+                                    <div id="choose-help-box"><img src="{{MEDIA_URL}}images/help-arrow-left.png"/> Browse technology concepts (tags) Industry Sector or IEEE Society. The matching tags will then appear below.</div>
+                                    <div id="zoom-help-box">Zoom in or out to see more or fewer &nbsp;&nbsp;<img src="{{MEDIA_URL}}images/help-arrow-right.png"/> tags at once.</div>
+                                    <div id="video-help-box"><a href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}"><span class="{customClass: 'overview-video'}">Watch Overview Video</span></a><br/><a href="http://help.technav.systemicist.com/forums" target="zendesk">Help</a></div>
+                                    <div id="hide-help-box"><div class="close-help" id="help-close-button">Hide</div> &nbsp;&nbsp; <div class="close-help" id="no-show-box">Hide and don't show again</div></div>
                                 </div>
                             </div>
                             
