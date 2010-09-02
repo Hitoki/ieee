@@ -113,12 +113,12 @@ table.main td.center .center-pad {
 #header #links {
     display:inline-block;
     margin-right:12px;
-    margin-top:14px;
+    margin-top:20px;
     position:absolute;
     right:0;
     top:0;
     text-align: right;
-    min-width: 200px;
+    min-width: 370px;
 }
 
 p.admin-links {
@@ -1582,15 +1582,14 @@ clear: right;
 margin-top: 15px;
 }
 
-#video-help-box {
-float: left;
-clear: left;
-margin-top: 15px;   
+#video-help-box, #hide-help-box {
+text-align: center;
+clear: both;
+display: block;
 }
 
 .close-help {
     display: inline-block;
-    float: right;
     cursor: pointer;
     color: blue;
     margin-left: 5px;
@@ -2124,7 +2123,7 @@ float: right;
 #sortContainer_outter {
     display: inline-block;
     float: right;
-    margin-right: 32px;
+    margin-right: 34px;
 }
 
 #sortContainer_inner {
