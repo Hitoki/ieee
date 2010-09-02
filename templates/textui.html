@@ -16,18 +16,18 @@
                 
                 if ($('#tag-help-box').is(':visible')) {
                     //Set nav height to match main window
-                    $('div#sectors-tab, div#societies-tab').css('min-height', 717 - navTabsHeight);
+                    $('div#sectors-tab, div#societies-tab').css('min-height', 713 - navTabsHeight);
                     //Set nav height for when help box is visible
                     $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 146 - navTabsHeight);
                 } else {
                     //Set nav min-height to match main window (should match textui.js hideHelpBox function)
                     $('div#sectors-tab, div#societies-tab').css('min-height', 437 - navTabsHeight);
                     //Set nav height to match main window (should match textui.js hideHelpBox function)
-                    $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 426 - navTabsHeight);
+                    $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 427 - navTabsHeight);
                 };
                 //Set height for main window on initial load
                 $('div#tag-galaxy').css('height', windowHeight - tagBoxHeight - 180);
-                //Set height for help box
+                //Set width for help box
                 $('#tag-help-box').css('width', tagGalaxyWidth - 19);
             };
             
@@ -267,8 +267,8 @@
                                     </div>
                                 </div>
                                 <div id="help-col-right" class="help-col">
-                                    Order tags by alpha, overall linkages, <img src="{{MEDIA_URL}}images/help-arrow.png"/> or more detailed statistics.
-                                    <div>Zoom in or out to see more or fewer <img src="{{MEDIA_URL}}images/help-arrow-right.png" style="padding-left:4px"/> tags at once.</div>
+                                    Order tags by alpha, overall <img src="{{MEDIA_URL}}images/help-arrow.png" style="padding-left:5px"/> linkages, or more detailed statistics.
+                                    <div>Zoom in or out to see more or <img src="{{MEDIA_URL}}images/help-arrow-right.png" style="padding-left:5px"/> fewer  tags at once.</div>
                                 </div>
                             </div>
                             

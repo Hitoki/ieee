@@ -1542,6 +1542,7 @@ p.export {
    display: inline-block;
    text-align: center;
    background-color: #EFF9FF;
+   font-size: 10pt;
    -moz-border-radius:5px 5px 5px 5px;
    -webkit-border-radius:5px 5px 5px 5px;
 }
@@ -1561,7 +1562,7 @@ p.export {
 }
 
 #help-col-left div {
-margin-top: 141px;   
+margin-top: 124px;   
 }
 
 #help-col-mid {
@@ -1572,17 +1573,18 @@ margin-top: 141px;
 
 #help-col-right {
     float: right;
-    width: 250px;
+    width: 248px;
 }
 
 #help-col-right div {
-   margin-top: 173px;
+   margin-top: 158px;
+   padding-left: 20px;
 }
 
 #links-help-box {
     text-align: center;
     line-height: 1.6;
-    margin-top: 15px;
+    margin-top: 9px;
 }
 
 .video-image-hover {
@@ -1596,6 +1598,7 @@ margin-top: 141px;
     color: blue;
     text-decoration:underline;
     margin: 4px 5px;
+    font-size: 9pt;
 }
 
 .close-help:hover {
