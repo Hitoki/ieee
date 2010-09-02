@@ -1986,8 +1986,8 @@ ul.errors {
     background: #006699 url(../images/magnifyIcon.png) no-repeat 4px 2px;
 }
 
-#textui-tags-search input:focus, #textui-tags-search input:hover {
-    background-color: orange;
+.textui-tags-search-clear-hover {
+    background-color: orange !important;
 }
 
 

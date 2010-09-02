@@ -35,6 +35,12 @@
                 $("#tags-live-search").focus();
             });
             
+            $("#textui-tags-search-clear").hover(function(){
+                $("#tags-live-search").addClass("textui-tags-search-clear-hover");
+            }, function(){ 
+                $("#tags-live-search").removeClass("textui-tags-search-clear-hover");
+            });
+            
             // Attach the zoom slider.
             $("#textui-zoom-slider").slider({
                 min: 50,
