@@ -5,7 +5,7 @@
         $(function() {
             
             var navTabsHeight = $('#galaxy-tabs .nootabs-menu').eq(0).height();
-            $('div#sectors-tab, div#societies-tab').css('min-height', 602 - navTabsHeight);
+            $('div#sectors-tab, div#societies-tab').css('min-height', 634 - navTabsHeight);
             var tagGalaxyWidth = $('#tag-galaxy').width();
             $('#tag-help-box').css('width', tagGalaxyWidth - 5);
             
@@ -17,12 +17,12 @@
                 
                 if ($('#tag-help-box').is(':visible')) {
                     //Compensate nav height for when help box is visible
-                    $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 160 - navTabsHeight);
+                    $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 146 - navTabsHeight);
                 } else {
                     //Set nav min-height to match main window (should match textui.js hideHelpBox function)
                     $('div#sectors-tab, div#societies-tab').css('min-height', 437 - navTabsHeight);
                     //Set nav height to match main window (should match textui.js hideHelpBox function)
-                    $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 326 - navTabsHeight);
+                    $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 345 - navTabsHeight);
                 };
                 //Set height for main window
                 $('div#tag-galaxy').css('height', windowHeight - tagBoxHeight - 180);
