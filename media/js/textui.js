@@ -21,8 +21,8 @@ $(document).ready(function(){
         var navTabsHeight = $('#galaxy-tabs .nootabs-menu').eq(0).height();
         
         $('#tag-help-box').hide();
-        $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 324 - navTabsHeight);
-        $('div#sectors-tab, div#societies-tab').css('min-height', 443 - navTabsHeight);
+        $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 326 - navTabsHeight);
+        $('div#sectors-tab, div#societies-tab').css('min-height', 437 - navTabsHeight);
     }
     
     $('#help-close-button').click(function(){

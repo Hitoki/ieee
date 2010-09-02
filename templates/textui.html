@@ -16,12 +16,17 @@
                 var tagGalaxyWidth = $('#tag-galaxy').width();
                 
                 if ($('#tag-help-box').is(':visible')) {
-                    $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 159 - navTabsHeight);
+                    //Compensate nav height for when help box is visible
+                    $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 160 - navTabsHeight);
                 } else {
-                    $('div#sectors-tab, div#societies-tab').css('min-height', 443 - navTabsHeight);
-                    $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 324 - navTabsHeight);
+                    //Set nav min-height to match main window (should match textui.js hideHelpBox function)
+                    $('div#sectors-tab, div#societies-tab').css('min-height', 437 - navTabsHeight);
+                    //Set nav height to match main window (should match textui.js hideHelpBox function)
+                    $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 326 - navTabsHeight);
                 };
+                //Set height for main window
                 $('div#tag-galaxy').css('height', windowHeight - tagBoxHeight - 180);
+                //Set height for help box
                 $('#tag-help-box').css('width', tagGalaxyWidth - 5);
             };
             
