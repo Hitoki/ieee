@@ -4,8 +4,6 @@
     <script type="text/javascript">
         $(function() {
             
-            var navTabsHeight = $('#galaxy-tabs .nootabs-menu').eq(0).height();
-            $('div#sectors-tab, div#societies-tab').css('min-height', 634 - navTabsHeight);
             var tagGalaxyWidth = $('#tag-galaxy').width();
             $('#tag-help-box').css('width', tagGalaxyWidth - 5);
             
@@ -14,17 +12,20 @@
                 var windowHeight = $(window).height();
                 var tagBoxHeight = $('#tag-help-box').height();
                 var tagGalaxyWidth = $('#tag-galaxy').width();
+                var navTabsHeight = $('#galaxy-tabs .nootabs-menu').eq(0).height();
                 
                 if ($('#tag-help-box').is(':visible')) {
-                    //Compensate nav height for when help box is visible
+                    //Set nav height to match main window
+                    $('div#sectors-tab, div#societies-tab').css('min-height', 717 - navTabsHeight);
+                    //Set nav height for when help box is visible
                     $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 146 - navTabsHeight);
                 } else {
                     //Set nav min-height to match main window (should match textui.js hideHelpBox function)
                     $('div#sectors-tab, div#societies-tab').css('min-height', 437 - navTabsHeight);
                     //Set nav height to match main window (should match textui.js hideHelpBox function)
-                    $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 345 - navTabsHeight);
+                    $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 426 - navTabsHeight);
                 };
-                //Set height for main window
+                //Set height for main window on initial load
                 $('div#tag-galaxy').css('height', windowHeight - tagBoxHeight - 180);
                 //Set height for help box
                 $('#tag-help-box').css('width', tagGalaxyWidth - 19);
