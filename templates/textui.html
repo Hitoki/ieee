@@ -248,26 +248,26 @@
                             </div>
                             
                             <div id="tag-help-box">
-                                <div>
-                                    <div id="linked-help-box"><img src="{{MEDIA_URL}}images/help-arrow.png"/> A tag's color shows how linked it is to sectors, to other tags, and to IEEE resources.</div>
-                                    <div id="search-help-box"><img src="{{MEDIA_URL}}images/help-arrow.png"/> Narrow the results by searching for tags that contain your keyword.</div>
-                                    <div id="sort-help-box">Order tags by alpha, overall linkages, <img src="{{MEDIA_URL}}images/help-arrow.png"/> or more detailed statistics.</div>
-                                    <div id="choose-help-box"><img src="{{MEDIA_URL}}images/help-arrow-left.png"/> Browse technology concepts (tags) Industry Sector or IEEE Society. The matching tags will then appear below.</div>
-                                    <div id="zoom-help-box">Zoom in or out to see more or fewer <img src="{{MEDIA_URL}}images/help-arrow-right.png" style="padding-left:4px"/> tags at once.</div>
+                                <div id="help-col-left" class="help-col">
+                                    <img src="{{MEDIA_URL}}images/help-arrow.png"/> A tag's color shows how linked it is to sectors, to other tags, and to IEEE resources.
+                                    <div><img src="{{MEDIA_URL}}images/help-arrow-left.png"/> Browse technology concepts (tags) Industry Sector or IEEE Society. The matching tags will then appear below.</div>
+                                </div>
+                                <div id="help-col-mid" class="help-col">
+                                    <img src="{{MEDIA_URL}}images/help-arrow.png"/> Narrow the results by searching for tags that contain your keyword.
                                     <div id="links-help-box">
-                                        <div id="video-help-box">
-                                            <a id="video-image-link" href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}">
-                                                <img width="223" height="125" alt="IEEE Video Still" src="/media/images/video-still.png"><br/>
-                                            </a>
-                                            <a id="video-link" href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}">Watch Overview Video</a>
-                                            <br/>
-                                            <a href="http://help.technav.systemicist.com/forums" target="zendesk">Help</a>
-                                        </div>
+                                        <a id="video-image-link" href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}"><img width="223" height="125" alt="IEEE Video Still" src="/media/images/video-still.png"><br/></a>
+                                        <a id="video-link" href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}">Watch Overview Video</a>
+                                        <br/>
+                                        <a href="http://help.technav.systemicist.com/forums" target="zendesk">Help</a>
                                         <div id="hide-help-box">
                                             <div class="close-help" id="help-close-button">Hide</div> 
                                             <div class="close-help" id="no-show-box">Hide and don't show again</div>
                                         </div>
                                     </div>
+                                </div>
+                                <div id="help-col-right" class="help-col">
+                                    Order tags by alpha, overall linkages, <img src="{{MEDIA_URL}}images/help-arrow.png"/> or more detailed statistics.
+                                    <div>Zoom in or out to see more or fewer <img src="{{MEDIA_URL}}images/help-arrow-right.png" style="padding-left:4px"/> tags at once.</div>
                                 </div>
                             </div>
                             

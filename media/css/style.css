@@ -1540,6 +1540,7 @@ p.export {
    padding: 12px;
    margin: 6px 0 6px 0.2em;
    display: inline-block;
+   text-align: center;
    background-color: #EFF9FF;
    -moz-border-radius:5px 5px 5px 5px;
    -webkit-border-radius:5px 5px 5px 5px;
@@ -1550,53 +1551,38 @@ p.export {
     margin: -2px 5px 0 0; 
 }
 
-#linked-help-box {
-float: left;
-width: 250px;
+.help-col {
+    text-align: left;
 }
 
-#search-help-box {
-width: 250px;
-float: left;
-margin-left: 41px;
+#help-col-left {
+    float: left;
+    width: 250px;
 }
 
-#sort-help-box {
-float: right;
-width: 250px;
-clear: right;
-margin-top: 10px;
+#help-col-left div {
+margin-top: 141px;   
 }
 
-#choose-help-box {
-width: 260px;
-float: left;
-clear: left;
-margin-top: 86px;
-margin-bottom: -128px;
+#help-col-mid {
+    margin: 0 auto;
+    display: inline-block;
+    width: 300px;
 }
 
-#zoom-help-box {
-float: right;
-width: 250px;
-clear: right;
-margin-top: 102px;
-margin-bottom: -128px;
+#help-col-right {
+    float: right;
+    width: 250px;
+}
+
+#help-col-right div {
+   margin-top: 173px;
 }
 
 #links-help-box {
     text-align: center;
-    clear: both;
-    display: block;
     line-height: 1.6;
-}
-
-#video-help-box, #hide-help-box {
-    display: block;
-}
-
-#video-help-box img {
-   text-decoration: none !important;
+    margin-top: 15px;
 }
 
 .video-image-hover {
