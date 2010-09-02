@@ -44,6 +44,7 @@ else:
         url(r'^print/resource/(?P<tag_id>\d+)/(?P<resource_type>.+)$', views.print_resource, name='print_resource'),
         
         # Tag
+        url(r'^tags/', views.tags_list, name='tags_list'),
         url(r'^tag/(?P<tag_id>\d+)/[0-9a-zA-Z_-]*$', views.tag_landing, name='tag_landing'),
         
         # Single static SWF file, for Flash player bug

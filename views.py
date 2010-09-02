@@ -1184,13 +1184,20 @@ def tooltip(request, tag_id):
 def ajax_video(request):
     'Returns the HTML content for the flash video.'
     return render(request, 'ajax_video.html')
+
+def tags_list(request):
+    '''
+    Displays a list of links to the tag "wikipedia-style" pages (see views.tag_landing)
+    Mostly useful for spider link discovery and SEO.
+    '''
+    
+    return render_to_response('tags_list.html', {"tags": Node.objects.get_tags()}, context_instance=RequestContext(request));
     
 def tag_landing(request, tag_id):
     '''
     Displays a wikipedia-style "flat" view of the resource. No tabs or other fancy UI.
-    Simple uses the print_resource view passing in a different template name.
+    Simply uses the print_resource view passing in a different template name.
     '''
-    
     return print_resource(request, tag_id, 'all', template_name='tag_landing.html', create_links=True, toc=True)
 
 def print_resource(request, tag_id, resource_type, template_name='print_resource.html', create_links=False, toc=False):

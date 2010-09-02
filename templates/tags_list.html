@@ -1,0 +1,10 @@
+{% extends "base_table.html" %}
+
+{% block main_table_content %}
+<div style="padding: 2em">
+    {% for tag in tags %}
+        <a href="{% url tag_landing tag.pk %}{{tag.name|slugify}}">{{tag.name}}</a><br/>
+	{% endfor %}
+</div>
+
+{% endblock %}
