@@ -106,7 +106,7 @@ var Tags = {
             
             if (hash == '') {
                 // Home page
-                this.showHelp(false);
+                Tags.selectSector('all');
                 
             } else if (sector_matches) {
                 // Sector
@@ -130,7 +130,7 @@ var Tags = {
             
             } else {
                 // Catch all for bad hashes... especially "#tag-login-tab" leftover from login redirect...
-                this.showHelp(false);
+                Tags.selectSector('all');
                 
             }
             
@@ -210,7 +210,6 @@ var Tags = {
     
     _showWaitScreen: function() {
         this.hideHome();
-        this.hideHelp();
         
         // Hide the content lightbox if it's visible.
         Lightbox.hide();
@@ -398,7 +397,7 @@ var Tags = {
             
         } else {
             // Nothing selected
-            this.showHelp();
+            Tags.selectSector('all');
             
         }
         
@@ -665,53 +664,6 @@ var Tags = {
             $('.alt-box-pad').css('padding-right', this.homeOldPaddingRight);
             $('.alt-box-pad').css('padding-top', this.homeOldPaddingTop);
             $('.alt-box-pad').css('padding-bottom', this.homeOldPaddingBottom);
-        }
-    },
-    
-    showHelp: function(setHash) {
-        this.page = this.PAGE_HELP;
-        
-        if (setHash == undefined) {
-            setHash = true;
-        }
-        
-        if (setHash) {
-            //log('setting hash to ""');
-            $.historyLoad('');
-        }
-        
-        this.hideHelp();
-		
-		// Unselect any node
-		this.nodeId = null;
-		this.societyId = null;
-		this.nodeType = null;
-		this.node = null;
-
-        this.updateChangedNode();
-        
-        var tagsElem = $('#tags');
-        tagsElem.empty();
-        
-        this.helpOldPaddingLeft = $('.alt-box-pad').css('padding-left');
-        this.helpOldPaddingRight = $('.alt-box-pad').css('padding-right');
-        this.helpOldPaddingTop = $('.alt-box-pad').css('padding-top');
-        this.helpOldPaddingBottom = $('.alt-box-pad').css('padding-bottom');
-        $('.alt-box-pad').css('padding', '0px');
-        
-        this.helpScreenElem = $('<div class="textui-help"></div>').appendTo(tagsElem);
-        this.helpScreenElem.load(TEXTUI_HELP_URL);
-    },
-    
-    hideHelp: function() {
-        if (this.helpScreenElem) {
-            this.helpScreenElem.remove();
-            this.helpScreenElem = null;
-            
-            $('.alt-box-pad').css('padding-left', this.helpOldPaddingLeft);
-            $('.alt-box-pad').css('padding-right', this.helpOldPaddingRight);
-            $('.alt-box-pad').css('padding-top', this.helpOldPaddingTop);
-            $('.alt-box-pad').css('padding-bottom', this.helpOldPaddingBottom);
         }
     },
 	
