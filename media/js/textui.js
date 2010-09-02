@@ -49,6 +49,12 @@ $(document).ready(function(){
          $(".selected").removeClass("selected-hover");
     });
     
+    $("#video-image-link").hover(function() {
+        $("#video-link").addClass("video-image-hover");
+    }, function() {
+        $("#video-link").removeClass("video-image-hover");
+    });
+    
 });
 
 var Tags = {

@@ -1572,14 +1572,16 @@ margin-top: 10px;
 width: 260px;
 float: left;
 clear: left;
-margin-top: 15px;
+margin-top: 86px;
+margin-bottom: -128px;
 }
 
 #zoom-help-box {
 float: right;
 width: 250px;
 clear: right;
-margin-top: 15px;
+margin-top: 102px;
+margin-bottom: -128px;
 }
 
 #links-help-box {
@@ -1593,11 +1595,21 @@ margin-top: 15px;
     display: block;
 }
 
+#video-help-box img {
+   text-decoration: none !important;
+}
+
+.video-image-hover {
+   color: orange;
+   text-decoration: underline;
+}
+
 .close-help {
     display: inline-block;
     cursor: pointer;
     color: blue;
     text-decoration:underline;
+    margin: 4px 5px;
 }
 
 .close-help:hover {

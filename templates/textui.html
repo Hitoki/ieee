@@ -256,11 +256,13 @@
                                     <div id="zoom-help-box">Zoom in or out to see more or fewer <img src="{{MEDIA_URL}}images/help-arrow-right.png" style="padding-left:4px"/> tags at once.</div>
                                     <div id="links-help-box">
                                         <div id="video-help-box">
-                                            <a href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}">
-                                                <span class="{customClass: 'overview-video'}">Watch Overview Video</span>
+                                            <a id="video-image-link" href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}">
+                                                <img width="223" height="125" alt="IEEE Video Still" src="/media/images/video-still.png"><br/>
                                             </a>
+                                            <a id="video-link" href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}">Watch Overview Video</a>
                                             <br/>
-                                            <a href="http://help.technav.systemicist.com/forums" target="zendesk">Help</a></div>
+                                            <a href="http://help.technav.systemicist.com/forums" target="zendesk">Help</a>
+                                        </div>
                                         <div id="hide-help-box">
                                             <div class="close-help" id="help-close-button">Hide</div> 
                                             <div class="close-help" id="no-show-box">Hide and don't show again</div>
