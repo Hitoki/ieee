@@ -1592,17 +1592,15 @@ margin-top: 15px;
     display: inline-block;
     float: right;
     cursor: pointer;
-    color: #FFFFFF;
-    margin-left: 10px;
+    color: blue;
+    margin-left: 5px;
     margin-top: 8px;
     padding: 3px 8px;
-    background-color: #006699;
-    -moz-border-radius:5px 5px 5px 5px;
-    -webkit-border-radius:5px 5px 5px 5px;
+    text-decoration:underline;
 }
 
 .close-help:hover {
-    background-color: #FFA500;
+    color: #FFA500;
 }
 
 
