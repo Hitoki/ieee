@@ -55,6 +55,12 @@ $(document).ready(function(){
         $("#video-link").removeClass("video-image-hover");
     });
     
+    $("#help-image-link").hover(function() {
+        $("#help-link").addClass("video-image-hover");
+    }, function() {
+        $("#help-link").removeClass("video-image-hover");
+    });
+    
 });
 
 var Tags = {

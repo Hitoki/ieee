@@ -1562,7 +1562,7 @@ p.export {
 }
 
 #help-col-left div {
-    margin-top: 116px;   
+    margin-top: 57px;   
 }
 
 #help-col-mid {
@@ -1577,24 +1577,24 @@ p.export {
 }
 
 #help-col-right div {
-   margin-top: 167px;
+   margin-top: 108px;
    padding-left: 20px;
 }
 
 #links-help-box {
     text-align: center;
     line-height: 1.6;
-    margin-top: 102px;
+    margin-top: 20px;
 }
 
-#video-image-link {
+#video-image-link, #help-image-link {
    display: inline-block;
    vertical-align: middle;
 }
 
 .video-image-hover {
-   color: orange;
-   text-decoration: underline;
+   color: orange !important;
+   text-decoration: underline !important;
 }
 
 .close-help {
