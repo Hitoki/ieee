@@ -26,7 +26,6 @@
 .multi-search-selected-option {
     float:left;
     cursor:pointer;
-    font-size:90%;
     -moz-border-radius: 5px;
     border:1px solid #ccc;
     background:#eee url(/media/images/search_tag_x_off.png) right no-repeat;
@@ -126,7 +125,7 @@
 
 .multisearch-note {
     float:left;
-    font-size: 7pt;
+    font-size: 8pt;
     color: #AAA;
     width:10em;
 }

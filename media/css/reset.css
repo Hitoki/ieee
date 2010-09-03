@@ -20,7 +20,7 @@ caption,th {
     text-align:left;
 }
 h1,h2,h3,h4,h5,h6 {
-    font-size:100%;
+    font-size:10pt;
     font-weight:normal;
 }
 q:before,q:after {
@@ -30,5 +30,5 @@ abbr,acronym { border:0;
 }
 input, textarea, select {
     font-family:inherit;
-    font-size:100%;
+    font-size:10pt;
 }

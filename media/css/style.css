@@ -6,13 +6,12 @@ html {
 body {
     margin: 0px;
     font-family:verdana,tahoma,sans-serif;
-    font-size:9pt;
+    font-size:10pt;
     background-color:#333333;
 }
 
 h2 {
     margin: 0px;
-    font-size:100%;
     padding-left: .3em;
 }
 
@@ -95,7 +94,7 @@ table.main td.center .center-pad {
 #header #tagline {
     color:#006699;
     display:inline-block;
-    font-size:1.4em;
+    font-size:14pt;
     font-style:italic;
     margin:60px 0 0 5px;
 }
@@ -122,7 +121,7 @@ table.main td.center .center-pad {
 }
 
 p.admin-links {
-    font-size:80%;
+    font-size:8pt;
     color:gray;
     margin: 0;
     padding: 0;
@@ -130,8 +129,8 @@ p.admin-links {
 }
 
 #feedback-link {
-    font-size: 80%;
     color:white;
+    font-size: 8pt;
     background-color: #33CC00;
     display:block;
     padding: 2px 10px;
@@ -151,7 +150,6 @@ p.admin-links {
 .textui-switch {
     padding-left: 3em;
     background: transparent url(/media/images/roamer_icon.png) no-repeat scroll left center;
-    font-size:75%;
     height:16px;
     display:inline-block;
 }
@@ -164,7 +162,7 @@ p.admin-links {
 .roamer-switch {
     padding-left: 3em;
     background: transparent url(/media/images/tags_icon.png) no-repeat scroll left center;
-    font-size:75%;
+    font-size:8pt;
     height:15px;
     display:inline-block;
 }
@@ -222,8 +220,8 @@ display: inline-block;
 position: relative;
 width: 100%; 
 text-align: center;
-font-size: 0.9em;
 color: #FFFFFF;
+font-size: 8pt;
 }
 
 .helpicon {
@@ -456,7 +454,7 @@ ul#view-header li {
 #content .item_head {
     background-color: #006599;
     color: #ffffff;
-    font-size: 18px;
+    font-size: 14pt;
     font-weight: bold;
     margin: 0px 0 0 0;
     padding:0px;
@@ -571,7 +569,6 @@ div.image-container {
 }
 
 .feedback-bar {
-    font-size:80%;
     color:gray;
     clear: both;
     float: left;
@@ -595,7 +592,7 @@ span.roamer-note {
 }
 
 span#roamer-beta-warning {
-    font-size: 9pt;
+
 }
 
 /* Galaxy Interface */
@@ -701,7 +698,6 @@ span#roamer-beta-warning {
     color: #333333;
     margin:0px;
     /*padding: .05em 0em;*/
-    font-size:90%;
     padding:0 5px 0 0;
     cursor: pointer;
 }
@@ -744,19 +740,16 @@ span#roamer-beta-warning {
 }
 
 #alternate-page #tag-galaxy #tags h2 {
-    font-size:110%;
     color:#006699;
 }
 
 #alternate-page #tag-galaxy #tags h3 {
-    font-size:10pt;
     clear:left;
     margin:.5em .5em 0 .5em;
     font-weight: normal;
 }
 
 #alternate-page #tag-galaxy #tags a.back-link {
-    font-size:80%;
     margin:.5em;
 }
 
@@ -812,7 +805,6 @@ span#roamer-beta-warning {
 }
 
 #alternate-page #tag-galaxy div.node a {
-    font-size:110%;
     text-decoration:none;
     font-weight:normal;
     white-space:nowrap;
@@ -855,6 +847,7 @@ span#roamer-beta-warning {
 
 .node-tooltip h3 {
 font-weight: normal;   
+font-size: 20pt;
 }
 
 #alternate-page #tag-galaxy div.node a.level1 {
@@ -995,7 +988,6 @@ td.level6 {
     margin-top: -10px;
     line-height: 1.2em; 
     list-style-type: none; 
-    font-size: 11px; 
     margin-right: 5px;
 }
 
@@ -1038,7 +1030,6 @@ table.vert-center td {
 
 #choose-page h1 {
     color:#666;
-    font-size:150%;
 }
 
 .screenshot-container {
@@ -1050,7 +1041,6 @@ table.vert-center td {
 
 .screenshot-container h2 {
     margin-bottom:.3em;
-    font-size:130%;
 }
 
 .screenshot-container a img {
@@ -1080,7 +1070,6 @@ table.vert-center td {
     text-align:center;
     padding:.2em;
     font-weight:bold;
-    font-size:150%;
 }
 /* frequency and key styles */
 .helpbracket {
@@ -1117,14 +1106,12 @@ table.vert-center td {
 
 /* hidden for now, will note that it is a key on the galaxy help page
 #key-label {
-    font-size: 1.3em;
     padding: 0 0 0 5px;
     display:none;
 }
 */
 
 .feature_label {
-    font-size: 10pt; 
     font-weight: normal;
     line-height: 1.5;
     height: 20px;
@@ -1132,7 +1119,6 @@ table.vert-center td {
 }
 
 #galaxy-connectedness-help {
-    font-size: 8pt;
     padding-left: 5px;
     line-height: 15px;
 }
@@ -1149,7 +1135,6 @@ table.vert-center td {
 
 #tag-model-left,
 #tag-model-indicator {
-    font-size: .7em; 
     display: inline-block; 
     vertical-align: text-bottom;
     height: 18px;
@@ -1163,13 +1148,11 @@ table.vert-center td {
 
 #tag-model-left-img {
     height: 18px;
-    font-size: .7em;
     padding-top: 3px; 
     padding-left: 3px
 }
 
 #tag-model-right {
-    font-size: .7em; 
     display: inline-block
 }
 
@@ -1216,11 +1199,11 @@ table.vert-center td {
 }
 
 #sortmenu select {
-   font-size: 80%;
+
 }
 
 #tag-sort {
-    font-size: 100%;
+
 }
 
 #galaxy-sort-help {
@@ -1265,7 +1248,6 @@ table.vert-center td {
     width:75%;
     height:400px;
     margin-top:15%;
-    font-size:130%;
 }
 
 .browser-warning-content2 a {
@@ -1327,7 +1309,6 @@ table#login-table td {
 
 .tags-table-loading {
     text-align:center;
-    font-size:200%;
     font-weight:bold;
     padding:3em;
     color:white;
@@ -1438,13 +1419,13 @@ select.items-per-page {
 }
 
 .node-tooltip h3 {
-    font-size:220%;
     line-height:1em;
     margin:0;
 }
 
 table.node-tooltip-grid {
     margin-top: 10px;
+    font-size: 9pt;
 }
 
 table.node-tooltip-grid td {
@@ -1462,8 +1443,8 @@ table.node-tooltip-grid td {
     text-align:center;
     font-weight:bold;
     color: white;
-    font-size:85%;
     margin-right: 10px;
+    font-size: 8pt;
 }
 
 .sector-block td,
@@ -1491,7 +1472,6 @@ table.node-tooltip-grid td {
 
 .tooltip-filters, .filter-block {
     vertical-align: top;
-    font-size: 8pt;
     height: 30px;
 }
 
@@ -1504,7 +1484,6 @@ table.node-tooltip-grid td {
 .results-links a {     
     text-decoration:underline;
     color:#006699;
-    font-size:110%;
     text-align: center;
 }
 
@@ -1542,7 +1521,6 @@ p.export {
    display: inline-block;
    text-align: center;
    background-color: #EFF9FF;
-   font-size: 10pt;
    -moz-border-radius:5px 5px 5px 5px;
    -webkit-border-radius:5px 5px 5px 5px;
 }
@@ -1562,7 +1540,7 @@ p.export {
 }
 
 #help-col-left div {
-   padding-top: 35px;
+   padding-top: 37px;
 }
 
 #help-col-mid {
@@ -1596,6 +1574,7 @@ p.export {
 
 #hide-help-box {
    padding-top: 52px;
+   font-size: 9pt;
 }
 
 #links-help-box {
@@ -1629,7 +1608,6 @@ p.export {
     cursor: pointer;
     color: blue;
     text-decoration:underline;
-    font-size: 9pt;
 }
 
 #help-close-button {
@@ -1679,7 +1657,6 @@ p.export {
 
 #help-overview-link {
     text-align:center;
-    font-size:13pt;
     width:223px;
     float:right;
     margin-right: 15px;
@@ -1701,16 +1678,13 @@ p.export {
 
 #error-page {
     margin:1em;
-    font-size:100%;
 }
 
 #error-page h1 {
     color:maroon;
-    font-size:150%;
 }
 
 #error-page .big-link {
-    font-size:110%;
     font-weight:bold;
     color:#02659e;
     text-align:center;
@@ -1718,7 +1692,6 @@ p.export {
 
 #error-page .debug {
     color:silver;
-    font-size:9pt;
 }
 
 /* Login page */
@@ -1754,11 +1727,11 @@ p.export {
 }
 
 #login-message {
-    font-size: 19px; 
     letter-spacing: -1px; 
     color: #0070D5;
     margin-left: 5px;
     clear: both;
+    font-size: 14pt;
 }
 
 #logout-message {
@@ -1786,14 +1759,12 @@ p.export {
 #roamer-key-sector {
     color: #FF2D2D;
     margin-left: 10px;
-    font-size: 8pt;
     font-weight: bold;
 }
 
 #roamer-key-tag {
     margin-left: 10px;
     color: #1FFF1F;
-    font-size: 8pt;
     font-weight: bold;
     margin-right: 5px;
 }
@@ -1894,7 +1865,6 @@ div.error {
 }
 
 a.copy-tags-to-clipboard {
-    font-size:80%;
     color:gray;
     font-weight:normal;
     display:block;
@@ -1906,7 +1876,6 @@ a.copy-tags-to-clipboard img {
 }
 
 a.paste-tags {
-    font-size:80%;
     color:gray;
     font-weight:normal;
     display:block;
@@ -2006,7 +1975,6 @@ ul.errors {
 
 #textui-tags-search input {
     color: #FFFFFF;
-    font-size:10pt;
     border:1px solid transparent;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -2016,6 +1984,7 @@ ul.errors {
     display: inline-block;
     margin-top: 0;
     outline: none;
+    font-size: 10pt;
     background: #006699 url(../images/magnifyIcon.png) no-repeat 4px 2px;
 }
 
@@ -2088,9 +2057,9 @@ ul.errors {
 
 #textui-zoom-default-zoom {
 	cursor:pointer;
-	font-size: 7pt;
 	margin-left: -3px;
 	text-decoration: underline;
+	font-size: 7pt;
 }
 
 #textui-zoom-default-zoom:hover {
@@ -2103,10 +2072,10 @@ ul.errors {
 
 #textui-zoom-value {
     display:inline-block;
-    font-size:8pt;
     margin-left:-6px;
     text-align:center;
     width:32px;
+    font-size: 8pt;
 }
 
 div#connectedness-container {
@@ -2134,7 +2103,6 @@ div#connectedness-container {
     /* NOTE:Make this non-float and add more left margin to center this on the right side*/
     margin:3.5em 1em 2em 2em;
     float:left;
-    font-size: 1.4em;
 }
 
 #roamer-help a:hover {
@@ -2224,7 +2192,6 @@ margin-left: 5px;
 display:inline-block;
 padding-left:25px;
 width:155px;
-font-size:10pt;
 }
 
 .customSelectContainer {
@@ -2251,7 +2218,6 @@ padding-top: 1px;
 .customSelectContainer .selected span {
 display: inline-block;
 margin-left: 4px;
-font-size: 10pt;
 }
 
 .customSelectList {
@@ -2278,7 +2244,6 @@ margin-left: 4px;
 .customSelectList li {
 list-style-type: none;
 margin-left: 0px;
-font-size: 10pt;
 vertical-align: middle;
 cursor: pointer;
 text-align: left;

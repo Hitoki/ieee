@@ -18,11 +18,11 @@ h3
 }
 
 h1 {
-    font-size:130%;
+    font-size:14pt;
 }
 
 h2 {
-    font-size:110%;
+    font-size:12pt;
     color: black;
 }
 
@@ -74,7 +74,7 @@ strong {
 
 .simple-society-list a div.name {
     color:#016699;
-    font-size:130%;
+    font-size:14pt;
     font-weight:bold;
 }
 
@@ -147,7 +147,7 @@ ul.section-list li li {
     display: block;
     margin-top: 4px;
     float: left;
-    font-size: 7pt;
+    font-size: 8pt;
 }
 
 #id_sector {
@@ -293,7 +293,6 @@ table.tags th.left-text {
 
 table.resources td.count {
     color:gray;
-    font-size:80%;
 }
 
 .table-sort {
@@ -303,7 +302,6 @@ table.resources td.count {
 /* */
 
 .version {
-    font-size:80%;
     float:right;
     color:silver;
     text-align:right;
@@ -347,7 +345,7 @@ a.edit {
 
 .help_icon {
     font-weight: normal;
-    font-size: 7pt;
+    font-size: 8pt;
     margin-left: 2px;
     cursor: default;
 }
@@ -432,7 +430,6 @@ ul.checkbox-select-multiple-columns-3 {
 .society-login-banner {
     border:1px solid silver;
     background:#eee;
-    font-size:110%;
     margin:1em 0em;
     padding:.5em;
 }
@@ -517,7 +514,6 @@ input#id_username, input#id_password, input#id_email {
 }
 
 .batch-editing-note {
-    font-size: 10pt;
     color: #AAA;
     font-weight: normal;
     margin-left: 5px;
@@ -615,7 +611,6 @@ tr.form-row-highlight p.form-warning {
     font-weight:bold;
     margin-top:0px;
     color:orange;
-    font-size:80%;
     width: 150px;
     float: left;
 }
