@@ -250,14 +250,25 @@
                             
                             <div id="tag-help-box">
                                 <div id="help-col-left" class="help-col">
-                                    <img src="{{MEDIA_URL}}images/help-arrow.png"/> A tag's color shows how linked it is to sectors, to other tags, and to IEEE resources.
-                                    <div><img src="{{MEDIA_URL}}images/help-arrow-left.png"/> Browse technology concepts (tags) Industry Sector or IEEE Society. The matching tags will then appear below.</div>
+                                    <table><tr>
+                                        <td class="help-arrow-container"><img src="{{MEDIA_URL}}images/help-arrow.png"/></td>
+                                        <td>A tag's color shows how linked it is to sectors, to other tags, and to IEEE resources.</td>
+                                    </tr></table>
+                                    <div>
+                                        <table><tr>
+                                            <td class="help-arrow-container"><img src="{{MEDIA_URL}}images/help-arrow-left.png"/></td>
+                                            <td>Browse technology concepts (tags) Industry Sector or IEEE Society. The matching tags will then appear below.</td>
+                                        </tr></table>
+                                    </div>
                                 </div>
                                 <div id="help-col-mid" class="help-col">
-                                    <img src="{{MEDIA_URL}}images/help-arrow.png"/> Narrow the results by searching for tags that contain your keyword.
+                                    <table><tr>
+                                        <td class="help-arrow-container"><img src="{{MEDIA_URL}}images/help-arrow.png"/></td>
+                                        <td>Narrow the results by searching for tags that contain your keyword.</td>
+                                    </tr></table>
                                     <div id="links-help-box">
                                         <div style="text-align:left">
-                                            <a id="video-image-link" href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}"><img width="44" height="45" alt="IEEE Video Still" src="/media/images/video-icon.png"></a>
+                                            <a id="video-image-link" href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}"><img width="44" height="45" alt="IEEE Video Still" src="/media/images/video-icon.png"/></a>
                                             <a id="video-link" href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}">Watch Overview Video</a>
                                             <br/>
                                             <a id="help-image-link" href="http://help.technav.systemicist.com/forums" target="zendesk"><img width="44" height="45" alt="IEEE Video Still" src="/media/images/help-icon.png"/></a>
@@ -270,8 +281,16 @@
                                     </div>
                                 </div>
                                 <div id="help-col-right" class="help-col">
-                                    Order tags by alpha, overall <img src="{{MEDIA_URL}}images/help-arrow.png" style="padding-left:5px"/> linkages, or more detailed statistics.
-                                    <div>Zoom in or out to see more or <img src="{{MEDIA_URL}}images/help-arrow-right.png" style="padding-left:5px"/> fewer  tags at once.</div>
+                                    <table><tr>
+                                        <td>Order tags by alpha, overall linkages, or more detailed statistics.</td>
+                                        <td class="help-arrow-container-right"><img src="{{MEDIA_URL}}images/help-arrow.png" style="padding-left:5px"/></td>
+                                    </tr></table>
+                                    <div>
+                                        <table><tr>
+                                            <td>Zoom in or out to see more or fewer tags at once.</td>
+                                            <td class="help-arrow-container-right"><img src="{{MEDIA_URL}}images/help-arrow-right.png" style="padding-left:5px"/></td>
+                                        </tr></table>
+                                    </div>
                                 </div>
                             </div>
                             

@@ -1558,27 +1558,26 @@ p.export {
 
 #help-col-left {
     float: left;
-    width: 208px;
+    width: 220px;
 }
 
 #help-col-left div {
-    margin-top: 57px;   
+    margin-top: 56px;   
 }
 
 #help-col-mid {
     margin: 0 auto;
     display: inline-block;
-    width: 239px;
+    width: 257px;
 }
 
 #help-col-right {
     float: right;
-    width: 244px;
+    width: 207px;
 }
 
 #help-col-right div {
-   margin-top: 108px;
-   padding-left: 20px;
+   margin-top: 90px;
 }
 
 #links-help-box {
@@ -1587,9 +1586,19 @@ p.export {
     margin-top: 20px;
 }
 
+.help-arrow-container {
+   vertical-align: top;
+   padding-right: 5px;
+}
+
+.help-arrow-container-right {
+   vertical-align: top;
+}
+
 #video-image-link, #help-image-link {
    display: inline-block;
    vertical-align: middle;
+   padding-right: 10px;
 }
 
 .video-image-hover {
