@@ -1561,6 +1561,10 @@ p.export {
     width: 225px;
 }
 
+#help-col-left div {
+   padding-top: 35px;
+}
+
 #help-col-mid {
     margin: 0 auto;
     display: inline-block;
@@ -1573,12 +1577,11 @@ p.export {
 }
 
 #help-col-right div {
-   margin-top: 69px;
+   
 }
 
 #hide-help-box {
-   margin-top: 5px;
-   margin-left: 12px;
+   padding-top: 52px;
 }
 
 #links-help-box {
@@ -1612,8 +1615,11 @@ p.export {
     cursor: pointer;
     color: blue;
     text-decoration:underline;
-    margin: 4px 5px 0;
     font-size: 9pt;
+}
+
+#help-close-button {
+   margin-right: 15px;
 }
 
 .close-help:hover {
