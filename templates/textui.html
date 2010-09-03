@@ -269,11 +269,15 @@
                                     </tr></table>
                                     <div id="links-help-box">
                                         <div style="text-align:left">
-                                            <a id="video-image-link" href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}"><img width="34" height="35" alt="IEEE Video Still" src="/media/images/video-icon.png"/></a>
-                                            <a id="video-link" href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}">Watch Overview Video</a>
+                                            <span id="link-video">
+                                                <a id="video-image-link" href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}"><span id="video-icon"></span></a>
+                                                <a id="video-link" href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}">Watch Overview Video</a>
+                                            </span>
                                             <br/>
-                                            <a id="help-image-link" href="http://help.technav.systemicist.com/forums" target="zendesk"><img width="34" height="35" alt="IEEE Video Still" src="/media/images/help-icon.png"/></a>
-                                            <a id="help-link" href="http://help.technav.systemicist.com/forums" target="zendesk">Get More Help</a>
+                                            <span id="link-help">
+                                                <a id="help-image-link" href="http://help.technav.systemicist.com/forums" target="zendesk"><span id="help-icon"></span></a>
+                                                <a id="help-link" href="http://help.technav.systemicist.com/forums" target="zendesk">Get More Help</a>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>

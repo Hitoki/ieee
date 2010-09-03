@@ -1576,6 +1576,24 @@ p.export {
     width: 207px;
 }
 
+#help-icon {
+   background: url(/media/images/help-icon.png) no-repeat 0 0;
+   width: 35px;
+   height: 36px;
+   display: inline-block;
+}
+
+#video-icon {
+   background: url(/media/images/video-icon.png) no-repeat 0 0;
+   width: 35px;
+   height: 36px;
+   display: inline-block;
+}
+
+.help-icon-hover {
+    background-position: -0 -36px !important;
+}
+
 #hide-help-box {
    padding-top: 52px;
 }

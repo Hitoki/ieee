@@ -49,16 +49,20 @@ $(document).ready(function(){
          $(".selected").removeClass("selected-hover");
     });
     
-    $("#video-image-link").hover(function() {
+    $("#link-video").hover(function() {
         $("#video-link").addClass("video-image-hover");
+        $("#video-icon").addClass("help-icon-hover");
     }, function() {
         $("#video-link").removeClass("video-image-hover");
+        $("#video-icon").removeClass("help-icon-hover");
     });
     
-    $("#help-image-link").hover(function() {
+    $("#link-help").hover(function() {
         $("#help-link").addClass("video-image-hover");
+        $("#help-icon").addClass("help-icon-hover");
     }, function() {
         $("#help-link").removeClass("video-image-hover");
+        $("#help-icon").removeClass("help-icon-hover");
     });
     
 });
