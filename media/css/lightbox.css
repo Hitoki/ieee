@@ -143,21 +143,20 @@ input.text {
     background-color: #EFF9FF;
 }
 
-#lightbox .resources-lightbox-content a.lightbox-close {
-    display:block;
-    float:right;
-    cursor:pointer;
-    top: 0px;
-    right: 5px;
-    margin: 18px 6px 0 5px;
-    width:14px;
-    height:13px;
-    background: transparent url(../images/close.gif) no-repeat 0 0;
+#lightbox .resources-lightbox-content .lightbox-close,
+#lightbox .overview-video-lightbox-content .lightbox-close {
+    background: url(/media/images/close_button.png) no-repeat 0px 0px;
+    margin: -12px 0 0 862px;
+    height: 29px;
+    width: 29px;
+    z-index: 9999;
+    position: absolute;
 }
 
-#lightbox .resources-lightbox-content a.lightbox-close:hover,
-#lightbox .overview-video-lightbox-content a.lightbox-close:hover {
-    background:white url(../images/close-hover.gif);
+#lightbox .resources-lightbox-content .lightbox-close:hover,
+#lightbox .overview-video-lightbox-content .lightbox-close:hover {
+    background: url(/media/images/close_button.png) no-repeat 0px -33px;
+    cursor: pointer;
 }
 
 #lightbox .resources-lightbox-content .resources-pad {
@@ -300,16 +299,4 @@ input.text {
     width: 512px;
     min-width: 512px;
     padding: 2em;
-}
-
-#lightbox .overview-video-lightbox-content a.lightbox-close {
-    display:block;
-    float:right;
-    cursor:pointer;
-    top: 0px;
-    right: 5px;
-    width:14px;
-    height:13px;
-    background:white url(../images/close.gif);
-    margin: -18px -18px 0 0;
 }

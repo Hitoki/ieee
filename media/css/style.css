@@ -2158,6 +2158,7 @@ padding-left: 3px;
     display: inline-block;
     float: right;
     margin-top: 15px;
+    margin-right: 15px;
 }
 
 #printContainer_inner {
@@ -2299,4 +2300,3 @@ background: url(/media/images/drop_down_active.png) no-repeat 0px 0px;
 .dropIcon.openActive {
 background: url(/media/images/drop_down_openactive.png) no-repeat 0px 0px;
 }
-
