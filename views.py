@@ -683,13 +683,17 @@ def ajax_textui_nodes(request):
         
         (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = society.get_tag_ranges()
         (min_score, max_score) = society.get_combined_ranges()
-        
     else:
         node = None
         society = None
         child_nodes = Node.objects.get_extra_info(Node.objects.filter(node_type=NodeType.objects.getFromName('tag')), extra_order_by, filterIds)
-        min_score = 0
-        max_score = 10000
+
+        if sector_id == "all" or  society_id == "all":
+            node = Node.objects.get(node_type=Node.objects.getNodesForType(NodeType.ROOT))
+            (min_score, max_score) = Node.objects.get_combined_sector_ranges(node)
+        else:
+            min_score = 0
+            max_score = 10000
         #assert False
     
     # Get child tags & clusters
@@ -738,7 +742,6 @@ def ajax_textui_nodes(request):
         num_related_tags = child_node.num_related_tags1
         
         #p.tick('before levels')
-        
         if not settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
             # Old-style popularity colors with main color & two color blocks
             resourceLevel = _get_popularity_level(min_resources, max_resources, child_node.num_resources1)
