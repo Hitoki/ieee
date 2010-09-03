@@ -2198,12 +2198,12 @@ display: inline;
 }
 
 #printSelect_options li {
-width: 183px; 
+width: 200px; 
 padding-left: 3px;
 }
 
 #printSelect {
-width: 186px;
+width: 203px;
 }
 
 #printSelect {
@@ -2217,13 +2217,14 @@ padding-left: 3px;
 }
 
 #printSelect #resource-print-icon {
-margin-left: 3px;   
+margin-left: 5px;   
 }
 
 #resource-print-icon span {
 display:inline-block;
-padding-left:22px;
-width:136px;
+padding-left:25px;
+width:155px;
+font-size:10pt;
 }
 
 .customSelectContainer {
