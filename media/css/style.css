@@ -1520,7 +1520,7 @@ p.export {
    margin: 6px 0 6px 0.2em;
    display: inline-block;
    text-align: center;
-   background-color: #EFF9FF;
+   background-color: #FFFFFF; /*Old blue*/
    -moz-border-radius:5px 5px 5px 5px;
    -webkit-border-radius:5px 5px 5px 5px;
 }
@@ -2094,7 +2094,7 @@ div#connectedness-container {
 }
 
 #tag-name {
-    background-color: #EFF9FF;
+    background-color: #FFFFFF; /*Old blue*/
 }
 
 #show-video-link {

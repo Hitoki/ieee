@@ -140,7 +140,7 @@ input.text {
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border: 1px solid black;
-    background-color: #EFF9FF;
+    background-color: #FFFFFF; /*Old blue*/
 }
 
 #lightbox .resources-lightbox-content .lightbox-close,
@@ -294,7 +294,7 @@ input.text {
 #lightbox .overview-video-lightbox-content {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
-    background-color:#EFF9FF;
+    background-color: #FFFFFF; /*Old blue*/
     border:1px solid black;
     width: 512px;
     min-width: 512px;
