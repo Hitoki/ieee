@@ -1030,13 +1030,17 @@ def tooltip(request, tag_id):
     society_id = request.GET.get('society_id', None)
     search_for = request.GET.get('search_for', None)
     
-    if parent_id == 'null' or parent_id == 'all':
+    if parent_id == 'null':
         parent_id = None
+    elif parent_id == 'all':
+        pass
     else:
         parent_id = int(parent_id)
     
-    if society_id == 'null' or society_id == 'all':
+    if society_id == 'null':
         society_id = None
+    elif society_id == 'all':
+        pass
     else:
         society_id = int(society_id)
     
@@ -1058,7 +1062,10 @@ def tooltip(request, tag_id):
         tag = node
         
         if parent_id is not None:
-            parent = Node.objects.get(id=parent_id)
+            if (parent_id == "all"):
+                parent = Node.objects.get(node_type=Node.objects.getNodesForType(NodeType.ROOT))
+            else:
+                parent = Node.objects.get(id=parent_id)
             #p.tick('Getting max resources')
             (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = Node.objects.get_sector_ranges(parent)
             (min_score, max_score) = Node.objects.get_combined_sector_ranges(parent)
