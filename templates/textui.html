@@ -16,14 +16,14 @@
                 
                 if ($('#tag-help-box').is(':visible')) {
                     //Set nav height to match main window
-                    $('div#sectors-tab, div#societies-tab').css('min-height', 713 - navTabsHeight);
+                    $('div#sectors-tab, div#societies-tab').css('min-height', 657 - navTabsHeight);
                     //Set nav height for when help box is visible
                     $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 146 - navTabsHeight);
                 } else {
                     //Set nav min-height to match main window (should match textui.js hideHelpBox function)
                     $('div#sectors-tab, div#societies-tab').css('min-height', 437 - navTabsHeight);
                     //Set nav height to match main window (should match textui.js hideHelpBox function)
-                    $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 427 - navTabsHeight);
+                    $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 367 - navTabsHeight);
                 };
                 //Set height for main window on initial load
                 $('div#tag-galaxy').css('height', windowHeight - tagBoxHeight - 180);
