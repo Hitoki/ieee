@@ -1562,7 +1562,7 @@ p.export {
 }
 
 #help-col-left div {
-margin-top: 124px;   
+    margin-top: 116px;   
 }
 
 #help-col-mid {
@@ -1577,14 +1577,19 @@ margin-top: 124px;
 }
 
 #help-col-right div {
-   margin-top: 175px;
+   margin-top: 167px;
    padding-left: 20px;
 }
 
 #links-help-box {
     text-align: center;
     line-height: 1.6;
-    margin-top: 9px;
+    margin-top: 102px;
+}
+
+#video-image-link {
+   display: inline-block;
+   vertical-align: middle;
 }
 
 .video-image-hover {
