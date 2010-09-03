@@ -21,7 +21,7 @@ $(document).ready(function(){
         var navTabsHeight = $('#galaxy-tabs .nootabs-menu').eq(0).height();
         
         $('#tag-help-box').hide();
-        $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 367 - navTabsHeight);
+        $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 343 - navTabsHeight);
         $('div#sectors-tab, div#societies-tab').css('min-height', 437 - navTabsHeight);
     }
     

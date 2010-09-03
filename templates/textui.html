@@ -16,14 +16,14 @@
                 
                 if ($('#tag-help-box').is(':visible')) {
                     //Set nav height to match main window
-                    $('div#sectors-tab, div#societies-tab').css('min-height', 657 - navTabsHeight);
+                    $('div#sectors-tab, div#societies-tab').css('min-height', 633 - navTabsHeight);
                     //Set nav height for when help box is visible
                     $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 146 - navTabsHeight);
                 } else {
                     //Set nav min-height to match main window (should match textui.js hideHelpBox function)
                     $('div#sectors-tab, div#societies-tab').css('min-height', 437 - navTabsHeight);
                     //Set nav height to match main window (should match textui.js hideHelpBox function)
-                    $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 367 - navTabsHeight);
+                    $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 343 - navTabsHeight);
                 };
                 //Set height for main window on initial load
                 $('div#tag-galaxy').css('height', windowHeight - tagBoxHeight - 180);
@@ -254,11 +254,15 @@
                                         <td class="help-arrow-container"><img src="{{MEDIA_URL}}images/help-arrow.png"/></td>
                                         <td>A tag's color shows how linked it is to sectors, to other tags, and to IEEE resources.</td>
                                     </tr></table>
-                                    <div>
+                                    <div style="margin-top:10px">
                                         <table><tr>
                                             <td class="help-arrow-container"><img src="{{MEDIA_URL}}images/help-arrow-left.png"/></td>
                                             <td>Browse technology concepts (tags) Industry Sector or IEEE Society. The matching tags will then appear below.</td>
                                         </tr></table>
+                                        <div id="hide-help-box">
+                                            <div class="close-help" id="help-close-button">Hide</div> 
+                                            <div class="close-help" id="no-show-box">Hide and don't show again</div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div id="help-col-mid" class="help-col">
@@ -268,15 +272,11 @@
                                     </tr></table>
                                     <div id="links-help-box">
                                         <div style="text-align:left">
-                                            <a id="video-image-link" href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}"><img width="44" height="45" alt="IEEE Video Still" src="/media/images/video-icon.png"/></a>
+                                            <a id="video-image-link" href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}"><img width="34" height="35" alt="IEEE Video Still" src="/media/images/video-icon.png"/></a>
                                             <a id="video-link" href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}">Watch Overview Video</a>
                                             <br/>
-                                            <a id="help-image-link" href="http://help.technav.systemicist.com/forums" target="zendesk"><img width="44" height="45" alt="IEEE Video Still" src="/media/images/help-icon.png"/></a>
+                                            <a id="help-image-link" href="http://help.technav.systemicist.com/forums" target="zendesk"><img width="34" height="35" alt="IEEE Video Still" src="/media/images/help-icon.png"/></a>
                                             <a id="help-link" href="http://help.technav.systemicist.com/forums" target="zendesk">Get More Help</a>
-                                        </div>
-                                        <div id="hide-help-box">
-                                            <div class="close-help" id="help-close-button">Hide</div> 
-                                            <div class="close-help" id="no-show-box">Hide and don't show again</div>
                                         </div>
                                     </div>
                                 </div>

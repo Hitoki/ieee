@@ -1558,11 +1558,7 @@ p.export {
 
 #help-col-left {
     float: left;
-    width: 220px;
-}
-
-#help-col-left div {
-    margin-top: 56px;   
+    width: 225px;
 }
 
 #help-col-mid {
@@ -1577,13 +1573,18 @@ p.export {
 }
 
 #help-col-right div {
-   margin-top: 90px;
+   margin-top: 69px;
+}
+
+#hide-help-box {
+   margin-top: 5px;
+   margin-left: 12px;
 }
 
 #links-help-box {
     text-align: center;
     line-height: 1.6;
-    margin-top: 20px;
+    margin-top: 42px;
 }
 
 .help-arrow-container {
@@ -1611,7 +1612,7 @@ p.export {
     cursor: pointer;
     color: blue;
     text-decoration:underline;
-    margin: 4px 5px;
+    margin: 4px 5px 0;
     font-size: 9pt;
 }
 
