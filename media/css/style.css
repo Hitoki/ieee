@@ -1558,7 +1558,7 @@ p.export {
 
 #help-col-left {
     float: left;
-    width: 250px;
+    width: 208px;
 }
 
 #help-col-left div {
@@ -1568,16 +1568,16 @@ margin-top: 124px;
 #help-col-mid {
     margin: 0 auto;
     display: inline-block;
-    width: 300px;
+    width: 239px;
 }
 
 #help-col-right {
     float: right;
-    width: 248px;
+    width: 244px;
 }
 
 #help-col-right div {
-   margin-top: 158px;
+   margin-top: 175px;
    padding-left: 20px;
 }
 
