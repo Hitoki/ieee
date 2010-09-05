@@ -1574,7 +1574,7 @@ p.export {
 
 #help-col-right {
     float: right;
-    width: 207px;
+    width: 210px;
 }
 
 #help-icon {
@@ -1634,7 +1634,7 @@ p.export {
 }
 
 #help-close-button {
-   margin-right: 15px;
+   margin-right: 8px;
 }
 
 .close-help:hover {
