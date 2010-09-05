@@ -47,6 +47,7 @@ $(document).ready(function(){
     //Removes hover state from selected text when other option is chosen in dropdowns
     $(".customSelectList li").click(function() {
          $(".selected").removeClass("selected-hover");
+         $(".customSelectContainer").blur();
     });
     
     $("#link-video").hover(function() {
