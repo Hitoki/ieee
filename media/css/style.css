@@ -942,7 +942,7 @@ td.no-level {
 div.level1,
 span.level1,
 td.level1 {
-    color:#white;
+    color:white;
     background: #3087d5;
 }
 
@@ -1468,6 +1468,15 @@ table.node-tooltip-grid td {
 {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;    
+}
+
+.sector-block td:hover,
+.related-tags-block td:hover,
+.filter-block td:hover,
+.societies-block td:hover
+{
+    color: white;
+    background: #FFA500;
 }
 
 .sector-block {
