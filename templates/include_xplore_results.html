@@ -4,7 +4,7 @@
             {% if show_all %}
                 Showing all {{ totalfound|intcomma }} results
             {% else %}
-                Showing {{ xplore_results|length }} of {{ totalfound|intcomma }} results (<a href="{% url xplore_full_results tag.id %}" target="_blank"><span>View All</span> <img src="{{ MEDIA_URL }}images/popup.png" /></a>)
+                Showing {{ xplore_results|length }} of {{ totalfound|intcomma }} results (<a href="http://xploreuat.ieee.org/search/freesearchresult.jsp?newsearch=true&queryText={{ search_term }}&x=0&y=0" target="_blank"><span>Perform Search in Xplore</span> <img src="{{ MEDIA_URL }}images/popup.png" /></a>)
                 
                 <span>| </span><a id="xplore-view-previous" href="#"><span>View previous 10</span></a>
                 <span>| </span><a id="xplore-view-next" href="#"><span>View next <span id="nextCount"></span></span></a>

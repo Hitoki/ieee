@@ -435,7 +435,8 @@ def ajax_xplore_results(request):
     xplore_results, xplore_error, totalfound = _get_xplore_results(tag, show_all=show_all, offset=offset)
     
     return render(request, 'include_xplore_results.html', {
-        'tag':tag,
+        'tag': tag,
+        'search_term': tag.name.replace(' ', '+'),
         'xplore_error': xplore_error,
         'xplore_results': xplore_results,
         'totalfound': totalfound,
