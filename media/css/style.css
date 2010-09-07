@@ -2341,6 +2341,11 @@ color: #006699;
 display: inline-block;
 }
 
+#tag_technav {
+margin: 20px 0;
+width: 480px;
+}
+
 #tag_xplore {
 margin-top: -30px;
 }
@@ -2351,6 +2356,10 @@ margin-top: 30px;
 
 #tag_xplore p {
 margin: 10px 0;
+}
+
+#tag_xplore p.title, #tag_xplore p.pub-info {
+margin: 0;   
 }
 
 .topLink {
