@@ -66,6 +66,10 @@ $(document).ready(function(){
         $("#help-icon").removeClass("help-icon-hover");
     });
     
+	var matches = window.location.search.match('autoload=([0-9]*)');
+	if (matches){
+        setTimeout(function(){Tags.selectTag(matches[1]);}, 3000);
+    }
 });
 
 var Tags = {

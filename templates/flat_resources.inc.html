@@ -4,7 +4,10 @@ Include file used by both print_resource.html and tag_landing.html
 {% endcomment %}
         
         <h1>{{ related_items_count|intcomma }} Related Items for {{ tag.name }}</h1>
-        
+		
+		{% if create_links %}
+		<p><a href="/textui/?autoload={{ tag.id }}" target="_blank">View in IEEE Technology Navigator</a></p>
+        {% endif %}
         {% if toc %}
         <ul>
             {% if sectors %}<li><a href="#sectors">Sectors</a></li>{% endif %}
