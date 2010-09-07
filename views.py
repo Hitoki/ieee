@@ -1254,6 +1254,8 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     
     page_date = datetime.datetime.now()
     
+    related_items_count = sectors.count() + related_tags.count() + societies.count() + conferences.count() + periodicals.count() + totalfound
+        
     return render(request, template_name, {
         'page_date': page_date,
         'tag': tag,
@@ -1266,6 +1268,7 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
         'xplore_results': xplore_results,
         'toc': toc,
         'create_links': create_links,
+        'related_items_count': related_items_count
     })
 
 def debug_error(request):

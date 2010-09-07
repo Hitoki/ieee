@@ -1,8 +1,9 @@
+{% load humanize %}
 {% comment %}
 Include file used by both print_resource.html and tag_landing.html
 {% endcomment %}
         
-        <h1>{{ tag.societies.all.count }} Related Items for {{ tag.name }}</h1>
+        <h1>{{ related_items_count|intcomma }} Related Items for {{ tag.name }}</h1>
         
         {% if toc %}
         <ul>
