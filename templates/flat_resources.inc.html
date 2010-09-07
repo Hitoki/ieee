@@ -2,26 +2,30 @@
 {% comment %}
 Include file used by both print_resource.html and tag_landing.html
 {% endcomment %}
-        
+<a name="top">&nbsp;</a>
+<div id="tag_page">
         <h1>{{ related_items_count|intcomma }} Related Items for {{ tag.name }}</h1>
 		
 		{% if create_links %}
 		<p><a href="/textui/?autoload={{ tag.id }}" target="_blank">View in IEEE Technology Navigator</a></p>
         {% endif %}
         {% if toc %}
-        <ul>
-            {% if sectors %}<li><a href="#sectors">Sectors</a></li>{% endif %}
-            {% if related_tags %}<li><a href="#related_tags">Related Tags</a></li>{% endif %}
-            {% if societies %}<li><a href="#societies">Societies</a></li>{% endif %}
-            {% if conferences %}<li><a href="#conferences">Conferences</a></li>{% endif %}
-            {% if periodicals %}<li><a href="#periodicals">Periodicals</a></li>{% endif %}
-            {% if standards %}<li><a href="#standards">Standards</a></li>{% endif %}
-            {% if xplore_results %}<li><a href="#xplore">Xplore Articles</a></li>{% endif %}
-        </ul>
+        <div id="tag_contents">
+            <span>Contents</span>
+            <ul>
+                {% if sectors %}<li><a href="#sectors">Sectors</a></li>{% endif %}
+                {% if related_tags %}<li><a href="#related_tags">Related Tags</a></li>{% endif %}
+                {% if societies %}<li><a href="#societies">Societies</a></li>{% endif %}
+                {% if conferences %}<li><a href="#conferences">Conferences</a></li>{% endif %}
+                {% if periodicals %}<li><a href="#periodicals">Periodicals</a></li>{% endif %}
+                {% if standards %}<li><a href="#standards">Standards</a></li>{% endif %}
+                {% if xplore_results %}<li><a href="#xplore">Xplore Articles</a></li>{% endif %}
+            </ul>
+        </div>
         {% endif %}
         
         {% if sectors %}
-            <h3><a href="" name="sectors"></a>Sectors</h3>
+            <h3><a href="" name="sectors"></a>Sectors</h3><a href="#top" class="topLink">Back to Top</a>
             <ul>
                 {% for parent in sectors %}
                     <li>
@@ -36,7 +40,7 @@ Include file used by both print_resource.html and tag_landing.html
         {% endif %}
         
         {% if related_tags %}
-            <h3><a name="related_tags"></a>Related Tags</h3>
+            <h3><a name="related_tags"></a>Related Tags</h3><a href="#top" class="topLink">Back to Top</a>
             <ul>
                 {% for related_tag in related_tags %}
                     <li>
@@ -51,7 +55,7 @@ Include file used by both print_resource.html and tag_landing.html
         {% endif %}
         
         {% if societies %}
-            <h3><a name="societies"></a>Societies</h3>
+            <h3><a name="societies"></a>Societies</h3><a href="#top" class="topLink">Back to Top</a>
             <ul>
                 {% for society in societies %}
                     <li>
@@ -66,7 +70,7 @@ Include file used by both print_resource.html and tag_landing.html
         {% endif %}
             
         {% if conferences %}
-            <h3><a name="conferences"></a>Conferences</h3>
+            <h3><a name="conferences"></a>Conferences</h3><a href="#top" class="topLink">Back to Top</a>
             <ul>
                 {% for conference in conferences.all %}
                     <li>
@@ -86,7 +90,7 @@ Include file used by both print_resource.html and tag_landing.html
         {% endif %}
             
         {% if periodicals %}
-            <h3><a name="periodicals"></a>Periodicals</h3>
+            <h3><a name="periodicals"></a>Periodicals</h3><a href="#top" class="topLink">Back to Top</a>
             <ul>
                 {% for periodical in periodicals.all %}
                     <li>
@@ -106,7 +110,7 @@ Include file used by both print_resource.html and tag_landing.html
         {% endif %}
             
         {% if standards %}
-            <h3><a name="standards"></a>Standards</h3>
+            <h3><a name="standards"></a>Standards</h3><a href="#top" class="topLink">Back to Top</a>
             <ul>
                 {% for standard in standards.all %}
                     <li>
@@ -126,8 +130,8 @@ Include file used by both print_resource.html and tag_landing.html
         {% endif %}
             
         {% if xplore_results %}
-            <h3><a name="xplore"></a>Xplore</h3>
-            <ul>
+            <h3><a name="xplore"></a>Xplore</h3><a href="#top" class="topLink">Back to Top</a>
+            <ul id="tag_xplore">
                 {% for xplore_result in xplore_results %}
                     <li>
                         <p class="title">
@@ -147,3 +151,4 @@ Include file used by both print_resource.html and tag_landing.html
                 {% endfor %}
             </ul>
         {% endif %}
+</div>

@@ -10,10 +10,6 @@ body {
     background-color:#333333;
 }
 
-h1, h2, h3, h4 {
-   color: #006699;
-}
-
 h2 {
     margin: 0px;
     padding-left: .3em;
@@ -2327,4 +2323,55 @@ background: url(/media/images/drop_down_active.png) no-repeat 0px 0px;
 
 .dropIcon.openActive {
 background: url(/media/images/drop_down_openactive.png) no-repeat 0px 0px;
+}
+
+
+/* Tag Page Styling */
+#tag_page {
+font-size: 12pt;
+}
+
+#tag_page h1 {
+font-size: 20pt;
+margin: 0;
+}
+
+#tag_page h1, #tag_page h2, #tag_page h3, #tag_contents span {
+color: #006699;
+display: inline-block;
+}
+
+#tag_xplore {
+margin-top: -30px;
+}
+
+#tag_xplore li {
+margin-top: 30px;
+}
+
+#tag_xplore p {
+margin: 10px 0;
+}
+
+.topLink {
+background: transparent url(/media/images/topLink.png) no-repeat 83px 3px;
+float: right;
+font-size: 10pt;
+margin-top: 23px;
+padding-right: 18px;
+}
+
+.topLink:hover {
+background: transparent url(/media/images/topLink.png) no-repeat 83px -11px;
+}
+
+#tag_contents {
+font-size: 10pt;
+}
+
+#tag_contents span {
+font-size: 12pt;
+margin-bottom: 10px;
+font-weight: bold;
+display: inline-block;
 }
