@@ -1,13 +1,8 @@
 {% comment %}
 Include file used by both print_resource.html and tag_landing.html
 {% endcomment %}
-
-        <p class="page-date">
-            {{ page_date|date }} {{ page_date|time }}
-        </p>
         
-        <h1>IEEE Technical Activities - Technology Navigator</h1>
-        <h2>Resources for "{{ tag.name }}"</h2>
+        <h1>{{ tag.societies.all.count }} Related Items for {{ tag.name }}</h1>
         
         {% if toc %}
         <ul>
