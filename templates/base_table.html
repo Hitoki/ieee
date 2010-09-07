@@ -16,7 +16,7 @@
                     <a href="{% url index %}" class="home"><img class="left-banner" src="{{MEDIA_URL}}images/technav_banner.png" width="192" height="67" /></a>
                     <span id="tagline">Connecting You to the IEEE Universe of Information</span>
                     <span id="links">
-                            <a id="feedback-link" href="{% url feedback %}" class="floating lightbox { customClass:'feedback' }">Feedback Survey</a>
+                            {% block feedback %}<a id="feedback-link" href="{% url feedback %}" class="floating lightbox { customClass:'feedback' }">Feedback Survey</a>{% endblock %}
                             {% if user.is_authenticated %}
                             <p class="admin-links">                                
                                 {% ifequal user.get_profile.role "admin" %}
