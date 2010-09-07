@@ -2364,20 +2364,24 @@ text-decoration: none;
 background: #006699 url(/media/images/tag-technavlogo.png) no-repeat 335px -56px;
 }
 
-#tag_xplore {
+.tag_list {
 margin-top: -30px;
 }
 
-#tag_xplore li {
+.tag_list li {
 margin-top: 30px;
 }
 
-#tag_xplore p {
+.tag_list p {
 margin: 10px 0;
 }
 
-#tag_xplore p.title, #tag_xplore p.pub-info {
+.tag_list p.title, .tag_list p.description {
 margin: 0;   
+}
+
+.tag_list p.pub-info {
+margin: 0 0 10px 0;   
 }
 
 .topLink {

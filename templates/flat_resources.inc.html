@@ -73,7 +73,7 @@ Include file used by both print_resource.html and tag_landing.html
             
         {% if conferences %}
             <h3><a name="conferences"></a>Conferences</h3><a href="#top" class="topLink">Back to Top</a>
-            <ul>
+            <ul class="tag_list">
                 {% for conference in conferences.all %}
                     <li>
                         <p class="title">
@@ -93,7 +93,7 @@ Include file used by both print_resource.html and tag_landing.html
             
         {% if periodicals %}
             <h3><a name="periodicals"></a>Periodicals</h3><a href="#top" class="topLink">Back to Top</a>
-            <ul>
+            <ul class="tag_list">
                 {% for periodical in periodicals.all %}
                     <li>
                         <p class="title">
@@ -113,7 +113,7 @@ Include file used by both print_resource.html and tag_landing.html
             
         {% if standards %}
             <h3><a name="standards"></a>Standards</h3><a href="#top" class="topLink">Back to Top</a>
-            <ul>
+            <ul class="tag_list">
                 {% for standard in standards.all %}
                     <li>
                         <p class="title">
@@ -133,7 +133,7 @@ Include file used by both print_resource.html and tag_landing.html
             
         {% if xplore_results %}
             <h3><a name="xplore"></a>Xplore</h3><a href="#top" class="topLink">Back to Top</a>
-            <ul id="tag_xplore">
+            <ul class="tag_list">
                 {% for xplore_result in xplore_results %}
                     <li>
                         <p class="title">
