@@ -26,9 +26,11 @@ Include file used by both print_resource.html and tag_landing.html
                 {% endif %}
 		        {% if create_links %}
 		        <td>
-		            <a href="/textui/?autoload={{ tag.id }}" target="_blank" id="tag_technav">
-		                View <strong>{{ tag.name }}</strong><br/>inside of IEEE's Technology Navigator
-                    </a>
+		            <div id="tag_technav" onclick="location.href='/textui/?autoload={{ tag.id }}';">
+		                <span>
+		                    View <strong>{{ tag.name }}</strong><br/>inside of IEEE's Technology Navigator
+                        </span>
+                    </div>
                 </td>
                 {% endif %}
             </tr>
