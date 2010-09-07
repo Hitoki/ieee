@@ -6,26 +6,33 @@ Include file used by both print_resource.html and tag_landing.html
 <div id="tag_page">
         <div id="tag_header">{{ related_items_count|intcomma }} Related Items for <span>{{ tag.name }}</span></div>
 		
-		{% if create_links %}
-		<a href="/textui/?autoload={{ tag.id }}" target="_blank" id="tag_technav">
-		    View "{{ tag.name }}"<br/>inside of IEEE's Technology Navigator
-        </a>
-        {% endif %}
-        {% if toc %}
-        <div id="tag_contents">
-            <span>Contents</span>
-            <ul>
-                {% if sectors %}<li><a href="#sectors">Sectors</a></li>{% endif %}
-                {% if related_tags %}<li><a href="#related_tags">Related Tags</a></li>{% endif %}
-                {% if societies %}<li><a href="#societies">Societies</a></li>{% endif %}
-                {% if conferences %}<li><a href="#conferences">Conferences</a></li>{% endif %}
-                {% if periodicals %}<li><a href="#periodicals">Periodicals</a></li>{% endif %}
-                {% if standards %}<li><a href="#standards">Standards</a></li>{% endif %}
-                {% if xplore_results %}<li><a href="#xplore">Xplore Articles</a></li>{% endif %}
-            </ul>
-        </div>
-        {% endif %}
-        <br style="clear:both"/>
+        <table style="width:100%;margin-top:20px">
+            <tr>
+                {% if toc %}
+                <td>
+                    <div id="tag_contents">
+                        <span>Contents</span>
+                        <ul>
+                            {% if sectors %}<li><a href="#sectors">Sectors</a></li>{% endif %}
+                            {% if related_tags %}<li><a href="#related_tags">Related Tags</a></li>{% endif %}
+                            {% if societies %}<li><a href="#societies">Societies</a></li>{% endif %}
+                            {% if conferences %}<li><a href="#conferences">Conferences</a></li>{% endif %}
+                            {% if periodicals %}<li><a href="#periodicals">Periodicals</a></li>{% endif %}
+                            {% if standards %}<li><a href="#standards">Standards</a></li>{% endif %}
+                            {% if xplore_results %}<li><a href="#xplore">Xplore Articles</a></li>{% endif %}
+                        </ul>
+                    </div>
+                </td>
+                {% endif %}
+		        {% if create_links %}
+		        <td>
+		            <a href="/textui/?autoload={{ tag.id }}" target="_blank" id="tag_technav">
+		                View <strong>{{ tag.name }}</strong><br/>inside of IEEE's Technology Navigator
+                    </a>
+                </td>
+                {% endif %}
+            </tr>
+        </table>
         {% if sectors %}
             <h3><a href="" name="sectors"></a>Sectors</h3><a href="#top" class="topLink">Back to Top</a>
             <ul>

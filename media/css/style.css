@@ -2349,19 +2349,20 @@ display: inline-block;
 
 #tag_technav {
 background: #006699 url(/media/images/tag-technavlogo.png) no-repeat 335px 4px;
-margin: 25px 0;
 width: 450px;
 padding: 8px;
+float: right;
 -moz-border-radius: 10px;
 -webkit-border-radius: 10px;
 color: white;   
 display: inline-block;
+-moz-box-shadow: 1px 1px 5px #3F3F3F;
 }
 
 #tag_technav:hover {
-color: orange;
+color: white;
 text-decoration: none;
-background: #006699 url(/media/images/tag-technavlogo.png) no-repeat 335px -56px;
+background-color: orange;
 }
 
 .tag_list {
@@ -2399,8 +2400,10 @@ background: transparent url(/media/images/topLink.png) no-repeat 83px -11px;
 #tag_contents {
 font-size: 10pt;
 float: left;
-margin-top: 20px;
-margin-right: 40px;
+}
+
+#tag_contents ul {
+margin-left: 5px;   
 }
 
 #tag_contents span {
