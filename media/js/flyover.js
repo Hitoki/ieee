@@ -91,10 +91,12 @@ var Flyover = {
             
             $(elem).hoverIntent({
                 sensitivity: 1,
-                interval: 200,
+                interval: 100,
                 over: function() {Flyover.show(this, options);} ,
                 timeout: 0,   
-                out: function(){}  
+                out: function(event){
+					Flyover.onMouseOut();
+				}  
             });
             
             if ((options && 'showInitial' in options && options.showInitial) || ('showInitial' in $(elem).metadata() && $(elem).metadata().showInitial)) {
@@ -158,7 +160,7 @@ var Flyover = {
         // The default options
         this.options = {
             position: 'right-top',
-            hideDelay: 10,
+            hideDelay: 200,
             width: null,
             height: null,
             shadows: true,
@@ -169,10 +171,10 @@ var Flyover = {
             content_html: null,
             sticky: false,
             closeButton: false,
-            clickOffClose: true,
+            clickOffClose: false,
             showCallback: null,
             closeCallback: null,
-            closeOnMouseOutLink: true,
+            closeOnMouseOutLink: false,
             url: null,
             showInitial: false,
 			positionCursor: false
@@ -286,11 +288,15 @@ var Flyover = {
         // If sticky is on, we don't need this (since the flyover will be manually closed).
         // If closeOnMouseOutLink is on, we don't want this to delay hiding the flyover.
         if (!this.options.sticky && !this.options.closeOnMouseOutLink) {
-            this._flyover.hoverIntent(
-                function() {
-                    Flyover.onMouseOver();
+            this._flyover.hover(
+                function(event) {
+					// HACK delay slightly so the flyover mouseEnter happens after the link mouseLeave
+					// and the close timer gets cancelled.
+                    setTimeout(function(){
+						Flyover.onMouseOver();
+					}, 5);
                 },
-                function() {
+                function(event) {
                     Flyover.onMouseOut();
                 }
             );
@@ -384,6 +390,7 @@ var Flyover = {
     },
     
     onMouseOver: function() {
+		//log('onMouseOver');
         this._stopHideTimer();
     },
     
