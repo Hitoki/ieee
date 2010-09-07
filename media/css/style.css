@@ -10,6 +10,10 @@ body {
     background-color:#333333;
 }
 
+h1, h2, h3, h4 {
+   color: #006699;
+}
+
 h2 {
     margin: 0px;
     padding-left: .3em;
