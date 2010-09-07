@@ -2331,9 +2331,15 @@ background: url(/media/images/drop_down_openactive.png) no-repeat 0px 0px;
 font-size: 12pt;
 }
 
-#tag_page h1 {
-font-size: 20pt;
+#tag_header {
+font-size: 17pt;
 margin: 0;
+color: #006699;
+}
+
+#tag_header span {
+font-size: 20pt;
+font-weight: bold;   
 }
 
 #tag_page h1, #tag_page h2, #tag_page h3, #tag_contents span {

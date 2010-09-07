@@ -4,7 +4,7 @@ Include file used by both print_resource.html and tag_landing.html
 {% endcomment %}
 <a name="top">&nbsp;</a>
 <div id="tag_page">
-        <h1>{{ related_items_count|intcomma }} Related Items for {{ tag.name }}</h1>
+        <div id="tag_header">{{ related_items_count|intcomma }} Related Items for <span>{{ tag.name }}</span></div>
 		
 		{% if create_links %}
 		<table id="tag_technav">
