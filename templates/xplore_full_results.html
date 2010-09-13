@@ -31,12 +31,12 @@
                                 {% ifequal user.get_profile.role "society_manager" %}
                                     <a href="{% url admin_home %}">Society Manager</a> |
                                 {% endifequal %}
-                                <a href="{{ EXTERNAL_HELP_URL }}" target="zendesk">Help</a> | 
+                                <a href="{{ EXTERNAL_HELP_URL }}" target="zendesk">Help</a> <span style="display:none">| 
                                 {% if user.is_authenticated %}
                                     <a href="{% url admin_logout %}">Logout</a>
                                 {% else %}
                                     <a href="{% url admin_login %}">Login</a>
-                                {% endif %}
+                                {% endif %}</span>
                             </p>
                             {% endif %}
                         </span>
