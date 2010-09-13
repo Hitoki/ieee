@@ -13,7 +13,7 @@
                 
                 <div id="header">
                     <img class="leftCorner" src="{{MEDIA_URL}}images/mainTopLeftCorner.png" width="26" height="78" />
-                    <a href="{% url index %}" class="home"><img class="left-banner" src="{{MEDIA_URL}}images/technav_banner.png" width="192" height="67" /></a>
+                    <a href="{% block logo_href %}{% url index %}{% endblock %}" class="home"><img class="left-banner" src="{{MEDIA_URL}}images/technav_banner.png" width="192" height="67" /></a>
                     <span id="tagline">Connecting You to the IEEE Universe of Information</span>
                     <span id="links">
                             {% block feedback %}<a id="feedback-link" href="{% url feedback %}" class="floating lightbox { customClass:'feedback' }">Feedback Survey</a>{% endblock %}

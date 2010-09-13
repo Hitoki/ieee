@@ -1,5 +1,7 @@
 {% extends "base_table.html" %}
 
+
+{% block logo_href %}{% url tags_list %}{% endblock %}
 {% block feedback %}{% endblock %}{# hide feedback link using blank block #}
 {% block main_table_content %}
     <div class="">
