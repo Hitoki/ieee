@@ -1543,9 +1543,14 @@ p.export {
    margin: 6px 0 6px 0.2em;
    display: inline-block;
    text-align: center;
-   background-color: #FFFFFF; /*Old blue*/
+   color: white;
+   background-color: #006699;
    -moz-border-radius:5px 5px 5px 5px;
    -webkit-border-radius:5px 5px 5px 5px;
+}
+
+#tag-help-box a {
+    color: white;
 }
 
 #no-show-container {
@@ -1629,7 +1634,6 @@ p.export {
 .close-help {
     display: inline-block;
     cursor: pointer;
-    color: blue;
     text-decoration:underline;
 }
 
