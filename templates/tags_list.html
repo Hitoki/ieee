@@ -1,5 +1,6 @@
 {% extends "base_table.html" %}
 
+{% block feedback %}{% endblock %}{# hide feedback link using blank block #}
 {% block main_table_content %}
 <div style="padding: 2em">
     {% for tag in tags %}
