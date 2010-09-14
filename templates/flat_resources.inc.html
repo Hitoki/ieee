@@ -99,9 +99,6 @@ Include file used by both print_resource.html and tag_landing.html
                                     <a href="{{ other_conference.url }}" target="_blank">
                                 {% endif %}
                                     <span>{{other_conference.name}}</span>
-                                    {% if other_conference.url and other_conference.url_status != "bad" %}
-                                        <img src="{{ MEDIA_URL }}images/popup.png" />
-                                    {% endif %}
                                 {% if other_conference.url and other_conference.url_status != "bad" %}
                                     </a>
                                 {% endif %}
