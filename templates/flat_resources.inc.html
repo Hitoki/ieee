@@ -91,7 +91,7 @@ Include file used by both print_resource.html and tag_landing.html
                     {% if resource.url and resource.url_status != "bad" %}</a>{% endif %}
                     <p>{{resource.description}}</p>
                     {% if resource.is_current_conference and resource.other_conferences|length %}
-                        <ul style="background-color: #EEE">
+                        <ul class="conference-series">
                             {% for other_conference in resource.other_conferences %}
                                 <li>
                                 {% if other_conference.url and other_conference.url_status != "bad" %}

@@ -2503,3 +2503,10 @@ margin-top: 0;
 #tag-periodicals li {
 margin: 0 0 30px 17px !important;   
 }
+
+#tag-conferences .conference-series {
+background-color: #DFDFDF;
+padding: 10px;
+-moz-border-radius: 10px;
+-webkit-border-radius: 10px;   
+}
