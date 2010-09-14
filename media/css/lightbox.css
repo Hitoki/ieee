@@ -263,10 +263,12 @@ input.text {
 }
 
 #lightbox .resources-lightbox-content .other-conferences {
-    margin:1em 1em 1em 3em;
-    border:1px solid silver;
-    background:#eee;
-    display:none;
+    background-color: #DFDFDF;
+    padding: 10px;
+    margin-top: 15px;
+    display: none;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px; 
 }
 
 #lightbox .resources-lightbox-content .hide-other-conferences {
