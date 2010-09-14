@@ -2064,14 +2064,7 @@ div.group ul li {
     outline: none;
     font-size: 10pt;
     background: #FFFFFF url(../images/magnifyIcon.png) no-repeat 4px 3px;
-    -moz-box-shadow: 1px 1px 1px #3F3F3F;
-    -webkit-box-shadow: 1px 1px 1px #3F3F3F;
 }
-
-.textui-tags-search-clear-hover {
-    background-color: orange !important;
-}
-
 
 #textui-tags-search-clear {
     background-image:url(/media/images/clear-search.png);
@@ -2084,6 +2077,10 @@ div.group ul li {
     width:20px;
     float: right;
     display: none;
+}
+
+.textui-tags-search-clear-hover {
+    background-color: orange !important;
 }
 
 #textui-tags-search-clear:hover {
@@ -2410,7 +2407,11 @@ padding: 0;
 }
 
 #tag_page #tag_top {
-margin: 0 0 10px 0;
+margin: 0 0 15px 0;
+width: 100%;   
+}
+
+#tag_page #tag_middle {
 width: 100%;   
 }
 
@@ -2430,8 +2431,8 @@ display: inline-block;
 }
 
 #tag_technav {
-background: #33CC00 url(/media/images/tag-technavlogo.png) no-repeat 355px center;
-width: 470px;
+background: #33CC00 url(/media/images/tag-technavlogo.png) no-repeat 190px center;
+width: 303px;
 padding: 8px;
 float: right;
 -moz-border-radius: 10px;
@@ -2521,10 +2522,10 @@ margin-top: 5px;
 #tag_tagline {
 float: right;
 text-align: right;
-font-size: 15pt;
-letter-spacing: -1px;
-color: #006699;
-width: 485px;   
+font-size: 23pt;
+letter-spacing: -2px;
+color: orange;
+width: 500px;   
 }
 
 #tag_tagline a {

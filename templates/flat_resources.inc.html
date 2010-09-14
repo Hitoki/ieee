@@ -13,30 +13,38 @@ Include file used by both print_resource.html and tag_landing.html
             <td>
 		        {% if create_links %}
 		            <div id="tag_technav" onclick="location.href='/textui/?autoload={{ tag.id }}';">
-		                <span>View them<br/>inside of IEEE's Technology Navigator</span>
+		                <span>View them inside of<br/>Technology Navigator</span>
                     </div>
                 {% endif %}
             </td>
         </tr>
     </tbody></table>
-        {% if toc %}
-            <div id="tag_contents">
-                <span>Contents</span>
-                    <ol>
-                        {% if sectors %}<li><a href="#sectors">Sectors</a></li>{% endif %}
-                        {% if societies %}<li><a href="#societies">Societies</a></li>{% endif %}
-                        {% if related_tags %}<li><a href="#related_tags">Related Tags</a></li>{% endif %}
-                        {% if conferences %}<li><a href="#conferences">Conferences</a></li>{% endif %}
-                        {% if periodicals %}<li><a href="#periodicals">Periodicals</a></li>{% endif %}
-                        {% if standards %}<li><a href="#standards">Standards</a></li>{% endif %}
-                        {% if xplore_results %}<li><a href="#xplore">Xplore Articles</a></li>{% endif %}
-                    </ol>
-            </div>
-        {% endif %}
-        <div id="tag_tagline">
-            <span>Technology Navigator helps you discover connections across the IEEE universe of information.</span>
-            <a href="#">Learn more.</a>
-        </div>
+        <table id="tag_middle"><tbody>
+            <tr>
+                {% if toc %}
+                <td>
+                    <div id="tag_contents">
+                        <span>Contents</span>
+                        <ol>
+                            {% if sectors %}<li><a href="#sectors">Sectors</a></li>{% endif %}
+                            {% if societies %}<li><a href="#societies">Societies</a></li>{% endif %}
+                            {% if related_tags %}<li><a href="#related_tags">Related Tags</a></li>{% endif %}
+                            {% if conferences %}<li><a href="#conferences">Conferences</a></li>{% endif %}
+                            {% if periodicals %}<li><a href="#periodicals">Periodicals</a></li>{% endif %}
+                            {% if standards %}<li><a href="#standards">Standards</a></li>{% endif %}
+                            {% if xplore_results %}<li><a href="#xplore">Xplore Articles</a></li>{% endif %}
+                        </ol>
+                    </div>
+                </td>
+                {% endif %}
+                <td>
+                    <div id="tag_tagline">
+                        <span>Technology Navigator helps you discover connections across the IEEE universe of information.</span>
+                        <a href="#">Learn more.</a>
+                    </div>
+                </td>
+            </tr>
+        </tbody></table>
         {% if sectors %}
         <div id="tag-sectors">
             <h3><a href="" name="sectors"></a>Sectors</h3><a href="#top" class="topLink">Back to Top</a>
