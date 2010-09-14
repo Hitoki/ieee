@@ -300,3 +300,7 @@ input.text {
     min-width: 512px;
     padding: 2em;
 }
+
+#lightbox .overview-video-lightbox-content .lightbox-close {
+   margin: -39px 0 0 526px;
+}
