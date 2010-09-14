@@ -1113,9 +1113,8 @@ table.vert-center td {
 }
 
 #frequencybar-tags {
-    clear: right;
-    overflow:auto;
-    height: 24px;
+    display: inline-block;
+    height: 21px;
     width: 100%;
 }
 
@@ -2495,7 +2494,7 @@ display: inline-block;
 #tag-xplore h3,
 #tag-standards h3,
 #tag-periodicals h3 {
-margin-top: 0;   
+  
 }
 
 #tag-conferences li, 
@@ -2503,6 +2502,13 @@ margin-top: 0;
 #tag-standards li,
 #tag-periodicals li {
 margin: 0 0 30px 17px !important;   
+}
+
+#tag-conferences li:last-child, 
+#tag-xplore li:last-child,
+#tag-standards li:last-child,
+#tag-periodicals li:last-child {
+margin: 0 0 0 17px !important;   
 }
 
 #tag-conferences .conference-series {
