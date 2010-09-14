@@ -23,8 +23,10 @@
                 {{ xplore_error }}
             </p>
         {% else %}
+            <ul>
             {% if xplore_results|length %}
                 {% for result in xplore_results %}
+                <li>
                     {% if result.url %}
                         <a href="{{ result.url }}" target="_blank">
                     {% endif %}
@@ -39,10 +41,12 @@
                     {% endif %}
                     <p class="{% cycle 'pub_odd' 'pub_even' %}">{{ result.authors }} {{ result.pub_title }},  {{ result.pub_year }}</p>
                     <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{ result.description|default:"(no description)" }}</p>
+                </li>
                 {% endfor %}
             {% else %}
                <p class="no-resources">No xplore results are currently tagged "{{ tag.name }}"</p>
             {% endif %}
+            </ul>
         {% endif %}
         
     </div>
