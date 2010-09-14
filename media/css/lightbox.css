@@ -200,7 +200,7 @@ input.text {
 }
 
 #related-tags-tab {
-   width: 70px;
+   width: 74px;
 }
 
 #conferences-tab {
@@ -208,7 +208,7 @@ input.text {
 }
 
 #periodicals-tab {
-    width: 112px;
+    width: 118px;
 }
 
 #standards-tab {
@@ -234,7 +234,7 @@ input.text {
 }
 
 #lightbox .resources-lightbox-content ul.nootabs-menus li.end-group-menu {
-    margin-right: 41px;
+    margin-right: 36px;
 }
 
 
@@ -258,14 +258,14 @@ input.text {
 }
 
 #lightbox .resources-lightbox-content .group p.more-conferences {
-    margin:.5em 0 1em 3em;
+    margin:.5em 0 0.4em 3em;
     padding:0;
 }
 
 #lightbox .resources-lightbox-content .other-conferences {
     background-color: #DFDFDF;
     padding: 10px;
-    margin-top: 15px;
+    margin: 0 40px
     display: none;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px; 
