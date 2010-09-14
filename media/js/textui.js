@@ -14,6 +14,15 @@ $(document).ready(function(){
         $('#tag-help-box').hide();
     }
     
+	// When clicking the help link, if the help panel is not shown, show it and abort.
+	// Otherwise follow the link as normal
+    $('#right-help').click(function(){
+       if($('#tag-help-box').is(':hidden')){
+           $('#tag-help-box').show();
+           return false;
+       }
+       return true;
+    });
     $("#tags-live-search").focus();
     
     function hideHelpBox() {
