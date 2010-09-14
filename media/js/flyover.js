@@ -641,13 +641,13 @@ $(function() {
 function attachFlyovers(elem) {
     elem = $(elem);
     elem.find('span.flyover, div.flyover, a.flyover').each(function() {
-        Flyover.attach(this, {shadows:false});
+        Flyover.attach(this, {shadows:true});
     });
 }
 
 function attachTextUiFlyovers(elem, options) {
     elem = $(elem);
-    options = $.extend(options, {shadows:false});
+    options = $.extend(options, {shadows:true});
     elem.find('span.flyover, div.flyover, a.flyover').each(function() {
         // Clone the generic options.
         var tag_options = $.extend(true, {}, options)
@@ -659,7 +659,7 @@ function attachTextUiFlyovers(elem, options) {
 
 $(function() {
     $('span.flyover, div.flyover, a.flyover').each(function() {
-        Flyover.attach(this, {shadows:false});
+        Flyover.attach(this, {shadows:true});
     });
     
     /*
