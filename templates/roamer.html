@@ -37,16 +37,18 @@
                                 {% ifequal user.get_profile.role "society_manager" %}
                                     <a href="{% url admin_home %}">Society Manager</a> |
                                 {% endifequal %}
-                                <span id="roamer-help" class="flyover {content: 'Coming soon'}"<a href="#">Help</a></span> <span style="display:none">|
+                                <span style="display:none">
                                 {% if user.is_authenticated %}
                                     <a href="{% url admin_logout %}">Logout</a>
                                 {% else %}
                                     <a href="{% url admin_login %}">Login</a>
-                                {% endif %}</span>
+                                {% endif %}
+                                </span>
                             </p>
                             {% endif %}
                         </span>
                         <a href="http://ieee.org/index.html" class="home"><img class="right-banner" src="{{MEDIA_URL}}images/ieee_banner.png" width="95" height="28" /></a>
+                        <a href="{{ EXTERNAL_HELP_URL }}" id="right-help" target="zendesk">Help</a>
                         <img class="rightCorner" src="{{MEDIA_URL}}images/mainTopRightCorner.png" width="26" height="78" />
                     </div>
                                         

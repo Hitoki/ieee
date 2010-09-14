@@ -28,12 +28,14 @@
                                 {% ifequal user.get_profile.role "society_manager" %}
                                     <a href="{% url admin_home %}">Society Manager</a> |
                                 {% endifequal %}
-                                <a href="{{ EXTERNAL_HELP_URL }}" target="zendesk">Help</a><span style="display:none"> |
-                                <a href="{% url admin_logout %}">Logout</a></span>
+                                <span style="display:none">
+                                <a href="{% url admin_logout %}">Logout</a>
+                                </span>
                             </p>
                             {% endif %}
                     </span>
                     <a href="http://ieee.org/index.html" class="home"><img class="right-banner" src="{{MEDIA_URL}}images/ieee_banner.png" width="95" height="28" /></a>
+                    <a href="{{ EXTERNAL_HELP_URL }}" id="right-help" target="zendesk">Help</a>
                     <img class="rightCorner" src="{{MEDIA_URL}}images/mainTopRightCorner.png" width="26" height="78" />
                     {% block extra_header %}{% endblock %}
                 </div>
