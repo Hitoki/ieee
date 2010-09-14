@@ -1958,6 +1958,16 @@ ul.errors {
     margin-top: 30px;
 }
 
+div.group ul {
+   margin-top: -20px;
+}
+
+div.group ul li {
+    list-style-type: none;
+    margin: 20px 0;
+    padding: 0;
+}
+
 #xplore-tab div.print-resource {
     margin-top: -30px;
 }

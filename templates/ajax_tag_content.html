@@ -158,8 +158,10 @@
                         <div id="conference-tab" data-printUrl='{% url print_resource tag.id "conferences" %}'>
                             <!-- Conferences -->
                             <div class="group">
+                                <ul>
                                 {% if conferences|length %}
                                     {% for resource in conferences %}
+                                    <li>
                                         {% if resource.url and resource.url_status != "bad" %}
                                             <a href="{{ resource.url }}" target="_blank">
                                         {% endif %}
@@ -204,19 +206,22 @@
                                             </div>
                                             
                                         {% endif %}
-                                        
+                                    </li>    
                                     {% endfor %}
                                 {% else %}
                                     <p class="no-resources">No conferences are currently tagged "{{ tag.name }}"</p>
                                 {% endif %}
+                            </ul>
                             </div>
                         </div>
                         
                         <div id="periodical-tab" data-printUrl='{% url print_resource tag.id "periodicals" %}'>
                             <!-- Periodicals -->
                             <div class="group">
+                                <ul>
                                 {% if periodicals|length %}
                                     {% for resource in periodicals %}
+                                    <li>
                                         {% if resource.url and resource.url_status != "bad" %}
                                             <a href="{{ resource.url }}" target="_blank">
                                         {% endif %}
@@ -230,18 +235,22 @@
                                             </a>
                                         {% endif %}
                                         <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
+                                    </li>
                                     {% endfor %}
                                 {% else %}
                                     <p class="no-resources">No periodicals are currently tagged "{{ tag.name }}"</p>
                                 {% endif %}
+                            </ul>
                             </div>
                         </div>
                         
                         <div id="standard-tab" data-printUrl='{% url print_resource tag.id "standards" %}'>
                             <!-- Standards -->
                             <div class="group">
+                                <ul>
                                 {% if standards|length %}
                                     {% for resource in standards %}
+                                    <li>
                                         {% if resource.url and resource.url_status != "bad" %}
                                             <a href="{{ resource.url }}" target="_blank">
                                         {% endif %}
@@ -255,10 +264,13 @@
                                             </a>
                                         {% endif %}
                                         <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
+                                    </li>
                                     {% endfor %}
+                                
                                 {% else %}
                                     <p class="no-resources">No standards are currently tagged "{{ tag.name }}"</p>
                                 {% endif %}
+                            </ul>
                             </div>
                         </div>
                         
