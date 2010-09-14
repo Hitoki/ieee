@@ -2430,8 +2430,8 @@ display: inline-block;
 }
 
 #tag_technav {
-background: #33CC00 url(/media/images/tag-technavlogo.png) no-repeat 335px center;
-width: 450px;
+background: #33CC00 url(/media/images/tag-technavlogo.png) no-repeat 355px center;
+width: 470px;
 padding: 8px;
 float: right;
 -moz-border-radius: 10px;
@@ -2467,7 +2467,6 @@ background: transparent url(/media/images/topLink.png) no-repeat 83px -11px;
 
 #tag_contents {
 font-size: 10pt;
-margin-top: 15px;
 clear: both;
 display: inline-block;
 background-color: #DFDFDF;
@@ -2514,7 +2513,21 @@ margin: 0 0 0 17px !important;
 #tag-conferences .conference-series {
 background-color: #DFDFDF;
 padding: 10px;
-margin-top: 15px;
+margin-top: 5px;
 -moz-border-radius: 10px;
 -webkit-border-radius: 10px;   
+}
+
+#tag_tagline {
+float: right;
+text-align: right;
+font-size: 15pt;
+letter-spacing: -1px;
+color: #006699;
+width: 485px;   
+}
+
+#tag_tagline a {
+font-size: 10pt;
+letter-spacing: 0;
 }
