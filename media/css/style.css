@@ -2132,6 +2132,10 @@ div.group ul li {
     border: 1px solid #006699 !important;
 }
 
+.ui-widget-content-hover {
+    border-color: #FFA500 !important;
+}
+
 .ui-slider .ui-slider-handle { /* overrides Jquery UI */
    cursor: pointer !important;
 }

@@ -72,6 +72,12 @@ $(document).ready(function(){
         $(this).children("#resource-print-icon").removeClass("resource-print-icon-hover");
     });
     
+    $('#textui-zoom-container').live('mouseover',function(){
+        $(this).children("#textui-zoom-slider").addClass("ui-widget-content-hover");
+    }).live('mouseout', function(){
+        $(this).children("#textui-zoom-slider").removeClass("ui-widget-content-hover");
+    });
+    
 	var matches = window.location.search.match('autoload=([0-9]*)');
 	if (matches){
         setTimeout(function(){Tags.selectTag(matches[1]);}, 3000);
