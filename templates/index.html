@@ -10,12 +10,7 @@
                     
                     <!-- Begin center column -->
                     
-                    <div id="header">
-                        <img class="leftCorner" src="{{MEDIA_URL}}images/mainTopLeftCorner.png" width="26" height="78" />
-                        <a href="/" class="home"><img class="banner" src="{{MEDIA_URL}}images/technav_banner.png" width="192" height="67"/></a>
-                        <img class="rightCorner" src="{{MEDIA_URL}}images/mainTopRightCorner.png" width="26" height="67" />
- 
-                    </div>
+                    {% include "header.inc.html" %}
                     
                     <div class="center-pad">
                         <br/>
@@ -33,22 +28,6 @@
                                 <img src="{{MEDIA_URL}}images/galaxy_screenshot.png" width="300" height="229" />
                             </a>
                         </div>
-                        
-                        {% if user %}
-                            <p class="admin-links">
-                                {% ifequal user.get_profile.role "admin" %}
-                                    <a href="{% url admin_home %}">Admin</a> |
-                                {% endifequal %}
-                                {% ifequal user.get_profile.role "society_admin" %}
-                                    <a href="{% url admin_home %}">Society Admin</a> |
-                                {% endifequal %}
-                                {% ifequal user.get_profile.role "society_manager" %}
-                                    <a href="{% url admin_home %}">Society Manager</a> |
-                                {% endifequal %}
-                                <a href="{% url admin_logout %}">Logout</a>
-                            </p>
-                        {% endif %}
-                        
                     </div>
                         
                     <div id="footer">
@@ -57,11 +36,24 @@
                         <div id="copyright">
                             &copy; Copyright 2010 IEEE – All rights reserved. Use of this Web site signifies your agreement to the terms and conditions.
                             <span id="footer-login">
+                            {% if user %}
+                            <p class="admin-links">                                
+                                {% ifequal user.get_profile.role "admin" %}
+                                    <a href="{% url admin_home %}">Admin</a>
+                                {% endifequal %}
+                                {% ifequal user.get_profile.role "society_admin" %}
+                                    <a href="{% url admin_home %}">Society Admin</a>
+                                {% endifequal %}
+                                {% ifequal user.get_profile.role "society_manager" %}
+                                    <a href="{% url admin_home %}">Society Manager</a>
+                                {% endifequal %}
                                 {% if user.is_authenticated %}
                                     <a href="{% url admin_logout %}">*</a>
                                 {% else %}
                                     <a href="{% url admin_login %}">*</a>
                                 {% endif %}
+                            </p>
+                            {% endif %}
                             </span>
                         </div>
                     </div>
