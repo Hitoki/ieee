@@ -2491,11 +2491,15 @@ font-weight: bold;
 display: inline-block;
 }
 
-#tag-xplore h3 {
+#tag-xplore h3,
+#tag-standards h3,
+#tag-periodicals h3 {
 margin-top: 0;   
 }
 
 #tag-conferences li, 
-#tag-xplore li {
+#tag-xplore li,
+#tag-standards li,
+#tag-periodicals li {
 margin: 0 0 30px 17px !important;   
 }
