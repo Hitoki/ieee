@@ -280,7 +280,7 @@ font-size: 8pt;
 
 /* Reset Firefox & IE's lists */
 
-ul {
+ul, ol {
     margin:0px;
     padding:0px;
 }
@@ -2390,6 +2390,9 @@ font-size: 12pt;
 font-size: 17pt;
 margin: 0;
 color: #006699;
+float: left;
+margin-right: 30px;
+margin-top: 11px;
 }
 
 #tag_header span {
@@ -2403,10 +2406,10 @@ display: inline-block;
 }
 
 #tag_technav {
-background: #006699 url(/media/images/tag-technavlogo.png) no-repeat 335px center;
+background: #33CC00 url(/media/images/tag-technavlogo.png) no-repeat 335px center;
 width: 450px;
 padding: 8px;
-float: right;
+float: left;
 -moz-border-radius: 10px;
 -webkit-border-radius: 10px; 
 display: inline-block;
@@ -2459,7 +2462,17 @@ background: transparent url(/media/images/topLink.png) no-repeat 83px -11px;
 
 #tag_contents {
 font-size: 10pt;
-float: left;
+margin-top: 15px;
+clear: both;
+display: inline-block;
+background-color: #CFCFCF;
+padding: 10px 15px 10px 10px;
+-moz-border-radius: 10px;
+-webkit-border-radius: 10px;
+}
+
+#tag_contents ol {
+margin-left: 10px;   
 }
 
 #tag_contents ul {
