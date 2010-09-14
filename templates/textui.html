@@ -313,7 +313,16 @@
                     <div id="footer">
                         <img class="leftCorner" src="{{MEDIA_URL}}images/mainBottomLeftCorner.png" width="26" height="40" />
                         <img class="rightCorner" src="{{MEDIA_URL}}images/mainBottomRightCorner.png" width="26" height="40" />
-                        <div id="copyright">&copy; Copyright 2010 IEEE – All rights reserved. Use of this Web site signifies your agreement to the terms and conditions.</div>
+                        <div id="copyright">
+                            &copy; Copyright 2010 IEEE – All rights reserved. Use of this Web site signifies your agreement to the terms and conditions.
+                            <span id="footer-login">
+                                {% if user.is_authenticated %}
+                                    <a href="{% url admin_logout %}">*</a>
+                                {% else %}
+                                    <a href="{% url admin_login %}">*</a>
+                                {% endif %}
+                            </span>
+                        </div>
                     </div>
                     
                     <!-- End center column -->

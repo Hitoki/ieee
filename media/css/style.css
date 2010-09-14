@@ -226,6 +226,19 @@ p.admin-links a:hover {
     z-index: 1;
 }
 
+#footer-login {
+   float: right;
+}
+
+#footer-login a {
+   color: #4F4F4F
+}
+
+#footer-login a:hover {
+   color: #FFFFFF;
+   text-decoration: none;
+}
+
 #footer .leftCorner {
     position:absolute;
     left:-13px;
