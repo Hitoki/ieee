@@ -1225,12 +1225,13 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     
     tag = Node.objects.get(id=tag_id)
     
-    sectors = None
-    related_tags = None
-    societies = None
-    conferences = None
-    periodicals = None
-    standards = None
+    sectors = Node.objects.none()
+    related_tags = Node.objects.none()
+    societies = Society.objects.none()
+    conferences = Node.objects.none()
+    periodicals = Node.objects.none()
+    standards = Node.objects.none()
+    totalfound = 0
     xplore_results = None
     
     if resource_type not in ['all', 'sectors', 'related_tags', 'societies', 'conferences', 'periodicals', 'standards', 'xplore']:
@@ -1254,7 +1255,7 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     
     page_date = datetime.datetime.now()
     
-    related_items_count = sectors.count() + related_tags.count() + societies.count() + conferences.count() + periodicals.count() + totalfound
+    related_items_count = sectors.count() + related_tags.count() + societies.count() + conferences.count() + periodicals.count() + standards.count() + totalfound
         
     return render(request, template_name, {
         'page_date': page_date,
