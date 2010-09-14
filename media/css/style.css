@@ -2265,9 +2265,9 @@ cursor: pointer;
 display: inline-block;
 height: 19px;
 vertical-align: bottom;
-color: #FFFFFF;
-background-color: #006699;
-border:1px solid transparent;
+color: #006699;
+background-color: #FFFFFF;
+border:1px solid #006699;
 -moz-border-radius:5px 5px 5px 5px;
 -webkit-border-radius:5px 5px 5px 5px;
 }
@@ -2288,15 +2288,16 @@ margin-left: 4px;
 
 .customSelectList {
 display: none;
-background-color: #006699;
+background-color: #FFFFFF;
 position: relative;
 margin: 5px 0 0 0;
 padding: 0;
-border: 1px solid transparent;
+border: 1px solid #006699;
 cursor: pointer;
 list-style-position: outside;
 margin-top: 4px;
 z-index: 999999; 
+margin-top: 3px;
 -moz-border-radius-bottomright: 5px;
 -moz-border-radius-bottomleft: 5px;
 -webkit-border-bottom-right-radius: 5px;
@@ -2316,7 +2317,7 @@ text-align: left;
 padding: 2px 0;
 -moz-border-radius: 5px;
 -webkit-border-radius: 5px;
-color: #FFFFFF;
+color: #006699;
 }
 
 .customSelectList li:hover {
