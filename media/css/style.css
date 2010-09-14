@@ -1113,10 +1113,10 @@ table.vert-center td {
 }
 
 #frequencybar-tags {
-    /*margin-top: -6px;*/
     clear: right;
     overflow:auto;
     height: 24px;
+    width: 100%;
 }
 
 #frequencybar {

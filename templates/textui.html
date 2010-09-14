@@ -134,35 +134,29 @@
                         
                         <div id="right-column">
                             <div id="frequencybar-tags">
+                            {% comment %} We are hiding the word Key for now, will appear in galaxy help page
                                 <div id="galaxy-key">
-                                    {% comment %} We are hiding the word Key for now, will appear in galaxy help page
-                                    #<span id="key-label">Key:</span>
-                                    {% endcomment %}
-                                    {% comment %}
-                                    #<table id="tag-model-indicator">
-                                    #    <tr>
-                                    #        <td>
-                                    #            <span class="flyover helpbracket" id="tag-model-indicator-helpico" title="Color coding reflecting the # of each of the 3 variables to the right">[?]</span>
-                                    #        </td>
-                                    #    </tr>
-                                    #</table>
-                                    #
-                                    #    <table id="tag-model-left">
-                                    #        <tr>
-                                    #            <td>
-                                    #                # of Resources 
-                                    #            </td>
-                                    #            <td>
-                                    #                <span class="flyover helpbracket" title="The number of IEEE products or services mapped to this tag" style="margin-right: 3px;">[?]</span><img src="/media/images/arrow-right.png" class="tag-model-arrow" />
-                                    #            </td>
-                                    #        </tr>
-                                    #    </table>
-                                    {% endcomment %}
+                                    <span id="key-label">Key:</span>
+                                    <table id="tag-model-indicator">
+                                        <tr>
+                                            <td>
+                                                <span class="flyover helpbracket" id="tag-model-indicator-helpico" title="Color coding reflecting the # of each of the 3 variables to the right">[?]</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                        <table id="tag-model-left">
+                                            <tr>
+                                                <td>
+                                                    # of Resources 
+                                                </td>
+                                                <td>
+                                                    <span class="flyover helpbracket" title="The number of IEEE products or services mapped to this tag" style="margin-right: 3px;">[?]</span><img src="/media/images/arrow-right.png" class="tag-model-arrow" />
+                                                </td>
+                                            </tr>
+                                        </table>
                                     {% if ENABLE_TEXTUI_SIMPLIFIED_COLORS %}
-                                    {% comment %}
-                                    #    <img style="margin-top:-4px;" src="/media/images/model-tag-simplified.png"/>
-                                    {% endcomment %}
-                                    {% else %}
+                                        <img style="margin-top:-4px;" src="/media/images/model-tag-simplified.png"/>
+                                    {% else %}    
                                         <img style="margin-top:-4px;" src="/media/images/model-tag.png"/>
                                         <span id="tag-model-right">
                                             <ul style="line-height:10px;">
@@ -175,45 +169,43 @@
                                         <!--
                                         <h2 style="float: left;">42 Tags</h2>  
                                         -->
-                                    </div>
-                                    
-                                    
-                                <div style="width:100%">
-                                    <div id="connectedness-container">
-                                        <span id="frequency-indicator"><span class="small">Few</span>&nbsp;&#8592;&nbsp;Linkages&nbsp;&#8594;&nbsp;<span class="small">Many</span></span>
-                                        <span id="connectedness-help" class="helpicon flyover {width:300}" title="A tag's color shows how linked it is within Technology Navigator to other tags, industry sectors, IEEE societies, and IEEE resources.">&nbsp;</span>
-                                    </div>
-                                    
-                                    <div id="textui-tags-search">
-                                        <span class="feature_label">Show tags containing:</span>
-                                        <input id="tags-live-search" class="live-search { use_tags_callback: true }" /><span id="textui-tags-search-clear">&nbsp;</span>
-                                    </div>
-                                    
-                                    <div id="sortContainer_outter">
-                                        <div id="sortContainer_inner">
-                                            <span>&nbsp;</span>
-                                            <ul id="sortSelect_options" class="customSelectList">
-                                                {% if ENABLE_TEXTUI_SIMPLIFIED_COLORS %}
-                                                    <li data-value="connectedness"><span>Linkages</span></li>
-                                                {% endif %}
-                                                {% comment %}
-                                                    #TODO: Re-enable clusters
-                                                    <li data-value="clusters_first_alpha"><span>Clusters First</span></li>
-                                                    {% endcomment %}
-                                                <li data-value="alphabetical"><span>Alphabetical</span></li>
-                                                <li data-value="frequency" ><span>Resources</span></li>
-                                                <li data-value="num_sectors"><span>Sectors</span></li>
-                                                <li data-value="num_related_tags"><span>Related Tags</span></li>
-                                                <li data-value="num_societies"><span>Societies</span></li>
-                                            </ul>
-                                        </div>
-                                        <span id="sortSelect" class="customSelectContainer" tabindex="0">
-                                            <span class="selected"></span>
-                                            <span class="dropIcon" style="float:right;"></span>
-                                        </span>
-                                    </div>
                                 </div>
-                            </div>    
+                            {% endcomment %}
+                                <div id="connectedness-container">
+                                    <span id="frequency-indicator"><span class="small">Few</span>&nbsp;&#8592;&nbsp;Linkages&nbsp;&#8594;&nbsp;<span class="small">Many</span></span>
+                                    <span id="connectedness-help" class="helpicon flyover {width:300}" title="A tag's color shows how linked it is within Technology Navigator to other tags, industry sectors, IEEE societies, and IEEE resources.">&nbsp;</span>
+                                </div>
+                                    
+                                <div id="textui-tags-search">
+                                    <span class="feature_label">Show tags containing:</span>
+                                    <input id="tags-live-search" class="live-search { use_tags_callback: true }" />
+                                    <span id="textui-tags-search-clear">&nbsp;</span>
+                                </div>
+                                    
+                                <div id="sortContainer_outter">
+                                    <div id="sortContainer_inner">
+                                        <span>&nbsp;</span>
+                                        <ul id="sortSelect_options" class="customSelectList">
+                                            {% if ENABLE_TEXTUI_SIMPLIFIED_COLORS %}
+                                                <li data-value="connectedness"><span>Linkages</span></li>
+                                            {% endif %}
+                                            {% comment %}
+                                                #TODO: Re-enable clusters
+                                                <li data-value="clusters_first_alpha"><span>Clusters First</span></li>
+                                            {% endcomment %}
+                                            <li data-value="alphabetical"><span>Alphabetical</span></li>
+                                            <li data-value="frequency" ><span>Resources</span></li>
+                                            <li data-value="num_sectors"><span>Sectors</span></li>
+                                            <li data-value="num_related_tags"><span>Related Tags</span></li>
+                                            <li data-value="num_societies"><span>Societies</span></li>
+                                        </ul>
+                                    </div>
+                                    <span id="sortSelect" class="customSelectContainer" tabindex="0">
+                                        <span class="selected"></span>
+                                        <span class="dropIcon" style="float:right;"></span>
+                                    </span>
+                                </div>
+                            </div>
                             
                             <div id="textui-zoom-container">
                                 <div id="textui-zoom-slider"></div>
