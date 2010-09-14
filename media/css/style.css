@@ -2410,13 +2410,14 @@ margin: 0;
 padding: 0;   
 }
 
+#tag_page #tag_top {
+margin: 0 0 10px 0;
+width: 100%;   
+}
+
 #tag_header {
 font-size: 17pt;
-margin: 0;
 color: #006699;
-float: left;
-margin-right: 30px;
-margin-top: 11px;
 }
 
 #tag_header span {

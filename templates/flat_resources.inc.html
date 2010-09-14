@@ -3,15 +3,22 @@
 Include file used by both print_resource.html and tag_landing.html
 {% endcomment %}
 <div id="tag_page">
-        <div id="tag_header">
-            {{ related_items_count|intcomma }} Related Items for <span>{{ tag.name }}</span>
-        </div>
-		{% if create_links %}
-		    <div id="tag_technav" onclick="location.href='/textui/?autoload={{ tag.id }}';">
-		        <span>View them<br/>inside of IEEE's Technology Navigator</span>
-            </div>
-        {% endif %}
-        <br style="clear:both"/>
+    <table id="tag_top"><tbody>
+        <tr>
+            <td>
+                <div id="tag_header">
+                    {{ related_items_count|intcomma }} Related Items for <span>{{ tag.name }}</span>
+                </div>
+            </td>
+            <td>
+		        {% if create_links %}
+		            <div id="tag_technav" onclick="location.href='/textui/?autoload={{ tag.id }}';">
+		                <span>View them<br/>inside of IEEE's Technology Navigator</span>
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+    </tbody></table>
         {% if toc %}
             <div id="tag_contents">
                 <span>Contents</span>
@@ -26,7 +33,6 @@ Include file used by both print_resource.html and tag_landing.html
                     </ol>
             </div>
         {% endif %}
-        <br style="clear:both"/>
         {% if sectors %}
         <div id="tag-sectors">
             <h3><a href="" name="sectors"></a>Sectors</h3><a href="#top" class="topLink">Back to Top</a>

@@ -1,11 +1,14 @@
 
 body {
-    margin:1em;
+    margin:.5em 0 .5em 0;
+    font-family:verdana,tahoma,sans-serif;
+    font-size:10pt;
+    background-color:#FFFFFF;
+    margin: 1em;
 }
 
 h1, h2, h3 {
     font-weight:bold;
-    margin:.5em 0 .5em 0;
 }
 
 h1 {
@@ -20,16 +23,18 @@ h3 {
     font-size:120%;
 }
 
+li, ul, ol {
+margin: 0;
+padding: 0;   
+}
+
 .print-resource {
+    
 }
 
 .print-resource h1 {
     font-size:.8em;
     color:gray;
-}
-
-.print-resource ul {
-    margin-left:1em;
 }
 
 .print-resource .page-date {

@@ -265,7 +265,7 @@ input.text {
 #lightbox .resources-lightbox-content .other-conferences {
     background-color: #DFDFDF;
     padding: 10px;
-    margin: 0 40px
+    margin: 0 40px;
     display: none;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px; 
