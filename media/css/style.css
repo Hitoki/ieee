@@ -1977,7 +1977,7 @@ ul.errors {
 }
 
 .resource-print-icon-hover {
-    background: url(../images/printer.png) no-repeat 0 -19px;   
+    background: url(../images/printer.png) no-repeat 0 -19px !important;   
 }
 
 #powered-by {

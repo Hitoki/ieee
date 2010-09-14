@@ -66,6 +66,12 @@ $(document).ready(function(){
         $("#help-icon").removeClass("help-icon-hover");
     });
     
+    $('#printSelect').live('mouseover',function(){
+        $(this).children("#resource-print-icon").addClass("resource-print-icon-hover");
+    }).live('mouseout', function(){
+        $(this).children("#resource-print-icon").removeClass("resource-print-icon-hover");
+    });
+    
 	var matches = window.location.search.match('autoload=([0-9]*)');
 	if (matches){
         setTimeout(function(){Tags.selectTag(matches[1]);}, 3000);
