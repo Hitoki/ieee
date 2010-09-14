@@ -28,6 +28,7 @@ Include file used by both print_resource.html and tag_landing.html
         {% endif %}
         <br style="clear:both"/>
         {% if sectors %}
+        <div id="tag-sectors">
             <h3><a href="" name="sectors"></a>Sectors</h3><a href="#top" class="topLink">Back to Top</a>
             <ul>
                 {% for parent in sectors %}
@@ -40,9 +41,11 @@ Include file used by both print_resource.html and tag_landing.html
                     </li>
                 {% endfor %}
             </ul>
+        </div>
         {% endif %}
                 
         {% if societies %}
+        <div id="tag-societies">
             <h3><a name="societies"></a>Societies</h3><a href="#top" class="topLink">Back to Top</a>
             <ul>
                 {% for society in societies %}
@@ -55,9 +58,11 @@ Include file used by both print_resource.html and tag_landing.html
                     </li>
                 {% endfor %}
             </ul>
+        </div>
         {% endif %}
             
         {% if related_tags %}
+        <div id="tag-related-tags">
             <h3><a name="related_tags"></a>Related Tags</h3><a href="#top" class="topLink">Back to Top</a>
             <ul>
                 {% for related_tag in related_tags %}
@@ -70,9 +75,11 @@ Include file used by both print_resource.html and tag_landing.html
                     </li>
                 {% endfor %}
             </ul>
+        </div>
         {% endif %}
             
         {% if conferences %}
+        <div id="tag-conferences">
             <h3><a name="conferences"></a>Conferences</h3><a href="#top" class="topLink">Back to Top</a>
             <ul>
         {% if conferences|length %}
@@ -121,9 +128,11 @@ Include file used by both print_resource.html and tag_landing.html
                 </li>
             {% endfor %}
             </ul>
+        </div>
         {% endif %}
             
         {% if periodicals %}
+        <div id="tag-periodicals">
             <h3><a name="periodicals"></a>Periodicals</h3><a href="#top" class="topLink">Back to Top</a>
             <ul class="tag_list">
                 {% for periodical in periodicals.all %}
@@ -141,9 +150,11 @@ Include file used by both print_resource.html and tag_landing.html
                     </li>
                 {% endfor %}
             </ul>
+        </div>
         {% endif %}
             
         {% if standards %}
+        <div id="tag-standards">
             <h3><a name="standards"></a>Standards</h3><a href="#top" class="topLink">Back to Top</a>
             <ul class="tag_list">
                 {% for standard in standards.all %}
@@ -161,9 +172,11 @@ Include file used by both print_resource.html and tag_landing.html
                     </li>
                 {% endfor %}
             </ul>
+        </div>
         {% endif %}
             
         {% if xplore_results %}
+        <div id="tag-xplore">
             <h3><a name="xplore"></a>Xplore Articles</h3><a href="#top" class="topLink">Back to Top</a>
             <ul class="tag_list">
                 {% for xplore_result in xplore_results %}
@@ -184,5 +197,6 @@ Include file used by both print_resource.html and tag_landing.html
                     </li>
                 {% endfor %}
             </ul>
+        </div>
         {% endif %}
 </div>

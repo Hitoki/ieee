@@ -2392,6 +2392,22 @@ background: url(/media/images/drop_down_openactive.png) no-repeat 0px 0px;
 /* Tag Page Styling */
 #tag_page {
 font-size: 12pt;
+padding: 0 10px;
+}
+
+#tag_page ol li {
+margin: 0 0 0 10px;
+padding: 0;   
+}
+
+#tag_page ul li {
+margin: 0 0 0 17px;
+padding: 0;   
+}
+
+#tag_page p {
+margin: 0;
+padding: 0;   
 }
 
 #tag_header {
@@ -2417,12 +2433,13 @@ display: inline-block;
 background: #33CC00 url(/media/images/tag-technavlogo.png) no-repeat 335px center;
 width: 450px;
 padding: 8px;
-float: left;
+float: right;
 -moz-border-radius: 10px;
 -webkit-border-radius: 10px; 
 display: inline-block;
 cursor: pointer;
 -moz-box-shadow: 1px 1px 5px #3F3F3F;
+-webkit-box-shadow: 1px 1px 5px #3F3F3F;
 }
 
 #tag_technav:hover {
@@ -2434,26 +2451,6 @@ color: white;
 text-decoration: none;
 width: 305px;
 display: inline-block;
-}
-
-.tag_list {
-margin-top: -30px;
-}
-
-.tag_list li {
-margin-top: 30px;
-}
-
-.tag_list p {
-margin: 10px 0;
-}
-
-.tag_list p.title, .tag_list p.description {
-margin: 0;   
-}
-
-.tag_list p.pub-info {
-margin: 0 0 10px 0;   
 }
 
 .topLink {
@@ -2473,7 +2470,7 @@ font-size: 10pt;
 margin-top: 15px;
 clear: both;
 display: inline-block;
-background-color: #CFCFCF;
+background-color: #DFDFDF;
 padding: 10px 15px 10px 10px;
 -moz-border-radius: 10px;
 -webkit-border-radius: 10px;
@@ -2492,4 +2489,13 @@ font-size: 12pt;
 margin-bottom: 10px;
 font-weight: bold;
 display: inline-block;
+}
+
+#tag-xplore h3 {
+margin-top: 0;   
+}
+
+#tag-conferences li, 
+#tag-xplore li {
+margin: 0 0 30px 17px !important;   
 }
