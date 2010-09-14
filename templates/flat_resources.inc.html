@@ -1,4 +1,4 @@
-{% load humanize %}
+{% load humanize filters smartif %}
 {% comment %}
 Include file used by both print_resource.html and tag_landing.html
 {% endcomment %}
@@ -82,21 +82,55 @@ Include file used by both print_resource.html and tag_landing.html
             
         {% if conferences %}
             <h3><a name="conferences"></a>Conferences</h3><a href="#top" class="topLink">Back to Top</a>
-            <ul class="tag_list">
-                {% for conference in conferences.all %}
-                    <li>
-                        <p class="title">
-                        {% if create_links %}
-                            <a href="{{ conference.url }}">{{ conference.name }}</a>
-                        {% else %}
-                            {{ conference.name }}
-                        {% endif %}
-                        </p>
-                        <p class="description">
-                            {{ conference.description|truncatewords:60 }}
-                        </p>
-                    </li>
-                {% endfor %}
+            <ul>
+        {% if conferences|length %}
+            {% for resource in conferences %}
+                {# grouped conference displayed on the tag landing page #}
+                <li>
+                {% if resource.url and resource.url_status != "bad" %}<a href="{{ resource.url }}" target="_blank">{% endif %}
+                    <span>{{resource.name}}</span>
+                    {% if resource.url and resource.url_status != "bad" %}</a>{% endif %}
+                    <p>{{resource.description}}</p>
+                    {% if resource.is_current_conference and resource.other_conferences|length %}
+                        <ul>
+                            {% for other_conference in resource.other_conferences %}
+                                <li>
+                                {% if other_conference.url and other_conference.url_status != "bad" %}
+                                    <a href="{{ other_conference.url }}" target="_blank">
+                                {% endif %}
+                                    <span>{{other_conference.name}}</span>
+                                    {% if other_conference.url and other_conference.url_status != "bad" %}
+                                        <img src="{{ MEDIA_URL }}images/popup.png" />
+                                    {% endif %}
+                                {% if other_conference.url and other_conference.url_status != "bad" %}
+                                    </a>
+                                {% endif %}
+                                <p class="{% cycle 'desc_odd' 'desc_even' %} ">{{other_conference.description}}</p>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        
+                    {% endif %}
+                </li>
+            {% endfor %}
+        {% else %}
+            <p class="no-resources">No conferences are currently tagged "{{ tag.name }}"</p>
+        {% endif %}
+            {% for conference in conferences.all %}
+                {# ungrouped conference displayed on the print resource page #}
+                <li>
+                    <p class="title">
+                    {% if create_links %}
+                        <a href="{{ conference.url }}">{{ conference.name }}</a>
+                    {% else %}
+                        {{ conference.name }}
+                    {% endif %}
+                    </p>
+                    <p class="description">
+                        {{ conference.description|truncatewords:60 }}
+                    </p>
+                </li>
+            {% endfor %}
             </ul>
         {% endif %}
             

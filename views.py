@@ -1231,6 +1231,7 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     conferences = Node.objects.none()
     periodicals = Node.objects.none()
     standards = Node.objects.none()
+    conf_count = 0
     totalfound = 0
     xplore_results = None
     
@@ -1246,6 +1247,13 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
         societies = tag.societies.all()
     if resource_type == 'conferences' or resource_type == 'all':
         conferences = Resource.objects.getForNode(tag, resourceType=ResourceType.CONFERENCE)
+        if template_name == 'tag_landing.html':
+            # Sort the conferences by year latest to earliest.
+            conferences = list(sorted(conferences, key=lambda resource: resource.year, reverse=True))
+            conferences = util.group_conferences_by_series(conferences)
+            conf_count = len(conferences)
+        else:
+            conf_count = conferences.count()
     if resource_type == 'periodicals' or resource_type == 'all':
         periodicals = Resource.objects.getForNode(tag, resourceType=ResourceType.PERIODICAL)
     if resource_type == 'standards' or resource_type == 'all':
@@ -1255,7 +1263,8 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     
     page_date = datetime.datetime.now()
     
-    related_items_count = sectors.count() + related_tags.count() + societies.count() + conferences.count() + periodicals.count() + standards.count() + totalfound
+    related_items_count = sectors.count() + related_tags.count() + societies.count() + conf_count + periodicals.count() + standards.count() + totalfound
+        
         
     return render(request, template_name, {
         'page_date': page_date,
