@@ -59,5 +59,9 @@ padding: 0;
 }
 
 .topLink {
-display: none;   
+    display: none;   
+}
+
+#tag_middle {
+   display: none;
 }

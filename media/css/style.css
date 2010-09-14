@@ -2521,14 +2521,15 @@ margin-top: 5px;
 
 #tag_tagline {
 float: right;
-text-align: right;
-font-size: 23pt;
+text-align: left;
+font-size: 25pt;
 letter-spacing: -2px;
 color: orange;
-width: 500px;   
+width: 605px;   
+line-height: 1.3;
 }
 
 #tag_tagline a {
-font-size: 10pt;
+font-size: 13pt;
 letter-spacing: 0;
 }
