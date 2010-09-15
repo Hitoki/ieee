@@ -3,22 +3,10 @@
 Include file used by both print_resource.html and tag_landing.html
 {% endcomment %}
 <div id="tag_page">
-    <table id="tag_top"><tbody>
-        <tr>
-            <td>
-                <div id="tag_header">
-                    {{ related_items_count|intcomma }} Related resources for <span>{{ tag.name }}</span>
-                </div>
-            </td>
-            <td>
-		        {% if create_links %}
-		            <div id="tag_technav" onclick="location.href='/textui/?autoload={{ tag.id }}';">
-		                <span>View them inside of<br/>Technology Navigator</span>
-                    </div>
-                {% endif %}
-            </td>
-        </tr>
-    </tbody></table>
+
+        <div id="tag_header">
+            {{ related_items_count|intcomma }} Related resources for <span>{{ tag.name }}</span>
+        </div>
         <table id="tag_middle"><tbody>
             <tr>
                 {% if toc %}
@@ -38,10 +26,11 @@ Include file used by both print_resource.html and tag_landing.html
                 </td>
                 {% endif %}
                 <td>
-                    <div id="tag_tagline">
-                        <span>Technology Navigator helps you discover connections across the IEEE universe of information.</span>
-                        <a href="#">Learn more.</a>
+		        {% if create_links %}
+		            <div id="tag_technav" onclick="location.href='/textui/?autoload={{ tag.id }}';">
+		                <span>View them inside of<br/>Technology Navigator</span>
                     </div>
+                {% endif %}
                 </td>
             </tr>
         </tbody></table>
