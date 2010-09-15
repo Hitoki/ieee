@@ -90,7 +90,7 @@ var Flyover = {
             // TODO: when attaching to flyover elements in lightboxes, the $(elem).click() functions do not work!!!  Only the direct HTML onclick() type handlers work...
             
             $(elem).hoverIntent({
-                sensitivity: 1,
+                sensitivity: 7,
                 interval: 100,
                 over: function() {Flyover.show(this, options);} ,
                 timeout: 0,   
