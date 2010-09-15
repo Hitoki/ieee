@@ -2527,6 +2527,7 @@ letter-spacing: -2px;
 color: orange;
 width: 605px;   
 line-height: 1.3;
+display: none;
 }
 
 #tag_tagline a {
