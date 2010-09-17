@@ -82,11 +82,11 @@ strong {
 
 ul.nav {
     background:#555;
-    margin:0px;
     list-style:none;
     /* NOTE: This allows the UL to contain the floating LI's, IE7 & Fx3 */
     overflow:auto;
-    margin-top: 10px;
+    margin: 10px -10px 0;
+    padding: 0 10px;
 }
 
 ul.nav li {
@@ -491,10 +491,6 @@ ul.pages li a.selected
     margin-top: 1em;
 }
 
-#adminLogin {
-    margin: 20px 10px 10px 10px;
-}
-
 input#id_username, input#id_password, input#id_email {
     width: 230px;
 }
@@ -635,13 +631,4 @@ h1.no-resources-message {
 
 #tag-count {
     font-weight: bold;
-}
-
-#admin_footer #left {
-   float: left;
-   margin-left: 11px;
-}
-
-#admin_footer #right {
-   float: right;
 }

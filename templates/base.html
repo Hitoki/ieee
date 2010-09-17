@@ -48,14 +48,17 @@
     </head>
     <body {% block body_class %}{% endblock %} >
         <a name="top"></a>
-        {% if survey %}
-        {# Display a banner if user reached site using special survey url. #}
-        <div style="background-color: Yellow; text-align: center; padding: 5px; font-weight: bold"><a href="javascript:window.close();">Click here to close and return to the survey.</a></div>
-        {% endif %}
         {% block server_info %}{% endblock %}
+        <div id="page-container">
+            <div id="inner-container">
+                {% include "header.inc.html" %}
 {% endif %}
-        {% block content %}{% endblock %}
+                {% block content %}{% endblock %}
 {% if not is_ajax %}
+            </div>
+            {% include "footer.inc.html" %}
+        </div>
+
         <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));

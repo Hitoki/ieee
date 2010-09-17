@@ -73,71 +73,60 @@
 {% endblock %}
 
 {% block content %}
-    <div id="alternate-page" class="textui-page">
-        <table class="main alternate-page">
-            <tr>
-                <td class="left">
-                </td>
-                <td class="center">
+    <div id="alternate-page">
                     
-                    <!-- Begin center column -->
-                    
-                    <div id="page-min-width"></div>
-                    
-                    {% include "header.inc.html" %}
-                    
-                    <div class="center-pad">
+        <div class="center-pad">
                         
-                        <!-- Navigation links -->
-                        <div id="left-column">
-                            <span class="feature_label">Navigate by:</span>
-                            <div id="left-column-container" class="nootabs {useCookies:false, useHash:false}">
-                                <ul id="galaxy-tabs" class="nootabs-menus">
-                                    <li><a href="">Industry Sector</a></li>
-                                    <li class="last-menu"><a href="">IEEE Society</a></li>
-                                    <li style="display:none;"><a href="">&nbsp;</a></li> {# used to compensate for filters div #}
-                                </ul>
-                                <div id="sectors-tab" class="sectors-vert-box">
-                                    <ul id="sectors">          
-                                            <li id="sector-list-item-all"><a href="javascript:Tags.selectSector('all');">All Sectors</a></li>                        
-                                        {% for sector in sectors %}
-                                            <li id="sector-list-item-{{ sector.id }}"><a href="javascript:Tags.selectSector({{ sector.id }});">{{ sector.name }}</a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                                <div id="societies-tab">
-                                    <ul id="societies">
-                                            <li id="society-list-item-all"><a href="javascript:Tags.selectSociety('all');">All Societies</a></li>                         
-                                        {% for society in societies %}
-                                            <li id="society-list-item-{{ society.id }}"><a href="javascript:Tags.selectSociety({{ society.id }});">{{ society.name }}</a></li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
+        <!-- Navigation links -->
+            <div id="left-column">
+                <span class="feature_label">Navigate by:</span>
+                <div id="left-column-container" class="nootabs {useCookies:false, useHash:false}">
+                    <ul id="galaxy-tabs" class="nootabs-menus">
+                        <li><a href="">Industry Sector</a></li>
+                        <li class="last-menu"><a href="">IEEE Society</a></li>
+                        <li style="display:none;"><a href="">&nbsp;</a></li> {# used to compensate for filters div #}
+                    </ul>
+                    <div id="sectors-tab" class="sectors-vert-box">
+                        <ul id="sectors">          
+                            <li id="sector-list-item-all"><a href="javascript:Tags.selectSector('all');">All Sectors</a></li>                        
+                            {% for sector in sectors %}
+                                <li id="sector-list-item-{{ sector.id }}"><a href="javascript:Tags.selectSector({{ sector.id }});">{{ sector.name }}</a></li>
+                                {% endfor %}
+                        </ul>
+                    </div>
+                    <div id="societies-tab">
+                        <ul id="societies">
+                            <li id="society-list-item-all"><a href="javascript:Tags.selectSociety('all');">All Societies</a></li>                         
+                            {% for society in societies %}
+                                <li id="society-list-item-{{ society.id }}"><a href="javascript:Tags.selectSociety({{ society.id }});">{{ society.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                                 
-                                {# NOTE: Filters are hidden from end-user for now, but must still exist on page for JS to function #}
-                                <div style="display:none;">
-                                    <!-- Filters -->
-                                    <h2 class="feature_label">View Filters:</h2>
-                                    <div class="filters-vert-box alt-box">
-                                        <ul id="views">
-                                            {% for filter in filters %}
-                                                <li id="{{filter.value}}_highlight" class="filter_background">
-                                                    <input id="{{filter.value}}" value="{{filter.value}}" type="checkbox" onclick="Tags.refresh();" class="filter highlight-checkbox { highlightElem: '#{{filter.value}}_highlight' }" checked="checked" />
-                                                    <label for="{{filter.value}}">{{filter.name}}</label>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                    </div> 
-                                </div>
-                            </div>
+                    {# NOTE: Filters are hidden from end-user for now, but must still exist on page for JS to function #}
+                        <div style="display:none;">
+                            <!-- Filters -->
+                            <h2 class="feature_label">View Filters:</h2>
+                            <div class="filters-vert-box alt-box">
+                                <ul id="views">
+                                    {% for filter in filters %}
+                                        <li id="{{filter.value}}_highlight" class="filter_background">
+                                            <input id="{{filter.value}}" value="{{filter.value}}" type="checkbox" onclick="Tags.refresh();" class="filter highlight-checkbox { highlightElem: '#{{filter.value}}_highlight' }" checked="checked" />
+                                            <label for="{{filter.value}}">{{filter.name}}</label>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div> 
                         </div>
+                    </div>
+                </div>
                         
-                        <div id="right-column">
-                            <div id="frequencybar-tags">
-                            {% comment %} We are hiding the word Key for now, will appear in galaxy help page
-                                <div id="galaxy-key">
-                                    <span id="key-label">Key:</span>
-                                    <table id="tag-model-indicator">
+                <div id="right-column">
+                    <div id="frequencybar-tags">
+                    {% comment %} We are hiding the word Key for now, will appear in galaxy help page
+                        <div id="galaxy-key">
+                            <span id="key-label">Key:</span>
+                                <table id="tag-model-indicator">
                                         <tr>
                                             <td>
                                                 <span class="flyover helpbracket" id="tag-model-indicator-helpico" title="Color coding reflecting the # of each of the 3 variables to the right">[?]</span>
@@ -177,9 +166,11 @@
                                 </div>
                                     
                                 <div id="textui-tags-search">
-                                    <span class="feature_label">Show tags containing:</span>
-                                    <input id="tags-live-search" class="live-search { use_tags_callback: true }" />
-                                    <span id="textui-tags-search-clear">&nbsp;</span>
+                                    <div style="float:left">
+                                        <span class="feature_label">Show tags containing:</span>
+                                        <input id="tags-live-search" class="live-search { use_tags_callback: true }" />
+                                        <span id="textui-tags-search-clear">&nbsp;</span>
+                                    </div>
                                 </div>
                                     
                                 <div id="sortContainer_outter">
@@ -271,44 +262,7 @@
                         </div>
                         <!-- end of right-column -->
                     </div>
-                    
-                    <div id="footer">
-                        <img class="leftCorner" src="{{MEDIA_URL}}images/mainBottomLeftCorner.png" width="26" height="40" />
-                        <img class="rightCorner" src="{{MEDIA_URL}}images/mainBottomRightCorner.png" width="26" height="40" />
-                        <div id="copyright">
-                            &copy; Copyright 2010 IEEE – All rights reserved. Use of this Web site signifies your agreement to the terms and conditions.
-                            <span id="footer-login">
-                            {% if user %}
-                            <p class="admin-links">                                
-                                {% ifequal user.get_profile.role "admin" %}
-                                    <a href="{% url admin_home %}">Admin</a>
-                                {% endifequal %}
-                                {% ifequal user.get_profile.role "society_admin" %}
-                                    <a href="{% url admin_home %}">Society Admin</a>
-                                {% endifequal %}
-                                {% ifequal user.get_profile.role "society_manager" %}
-                                    <a href="{% url admin_home %}">Society Manager</a>
-                                {% endifequal %}
-                                {% if user.is_authenticated %}
-                                    <a href="{% url admin_logout %}">*</a>
-                                {% else %}
-                                    <a href="{% url admin_login %}">*</a>
-                                {% endif %}
-                            </p>
-                            {% endif %}
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <!-- End center column -->
-                    
-                </td>
-                <td class="right" rowspan="2">
-                </td>
-            </tr>
-        </table>
-        
-    </div>
+        </div>
     
 {% endblock %}
 
