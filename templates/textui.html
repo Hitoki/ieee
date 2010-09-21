@@ -88,7 +88,7 @@
                     </ul>
                     <div id="sectors-tab" class="sectors-vert-box">
                         <ul id="sectors">          
-                            <li id="sector-list-item-all"><a href="javascript:Tags.selectSector('all');">All Sectors</a></li>                        
+                            <li id="sector-list-item-all"><a href="javascript:Tags.selectSector('all');">All Industry Sectors</a></li>                        
                             {% for sector in sectors %}
                                 <li id="sector-list-item-{{ sector.id }}"><a href="javascript:Tags.selectSector({{ sector.id }});">{{ sector.name }}</a></li>
                                 {% endfor %}
@@ -96,7 +96,7 @@
                     </div>
                     <div id="societies-tab">
                         <ul id="societies">
-                            <li id="society-list-item-all"><a href="javascript:Tags.selectSociety('all');">All Societies</a></li>                         
+                            <li id="society-list-item-all"><a href="javascript:Tags.selectSociety('all');">All IEEE Societies</a></li>                         
                             {% for society in societies %}
                                 <li id="society-list-item-{{ society.id }}"><a href="javascript:Tags.selectSociety({{ society.id }});">{{ society.name }}</a></li>
                             {% endfor %}
@@ -186,9 +186,9 @@
                                             {% endcomment %}
                                             <li data-value="alphabetical"><span>Alphabetical</span></li>
                                             <li data-value="frequency" ><span>Resources</span></li>
-                                            <li data-value="num_sectors"><span>Sectors</span></li>
+                                            <li data-value="num_sectors"><span>Industry Sectors</span></li>
                                             <li data-value="num_related_tags"><span>Related Tags</span></li>
-                                            <li data-value="num_societies"><span>Societies</span></li>
+                                            <li data-value="num_societies"><span>IEEE Societies</span></li>
                                         </ul>
                                     </div>
                                     <span id="sortSelect" class="customSelectContainer" tabindex="0">
@@ -208,12 +208,12 @@
                                 <div id="help-col-left" class="help-col">
                                     <table><tr>
                                         <td class="help-arrow-container"><img src="{{MEDIA_URL}}images/help-arrow.png"/></td>
-                                        <td>A tag's color shows how linked it is to sectors, to other tags, and to IEEE resources.</td>
+                                        <td>A tag's color shows how linked it is to industry sectors, to other tags, and to IEEE resources.</td>
                                     </tr></table>
                                     <div>
                                         <table><tr>
                                             <td class="help-arrow-container"><img src="{{MEDIA_URL}}images/help-arrow-left.png"/></td>
-                                            <td>Browse technology concepts (tags) Industry Sector or IEEE Society. The matching tags will then appear below.</td>
+                                            <td>Browse technology concepts (tags), Industry Sector or IEEE Society. The matching tags will then appear below.</td>
                                         </tr></table>
                                     </div>
                                 </div>

@@ -16,9 +16,9 @@
         <li>
             Stats:
             <ul>
-                <li>{{ num_societies }} societies</li>
+                <li>{{ num_societies }} IEEE societies</li>
                 <li>{{ num_society_managers }} society managers</li>
-                <li>{{ num_sectors }} sectors</li>
+                <li>{{ num_sectors }} industry sectors</li>
                 <li>{{ num_tags }} tags</li>
                 <li>{{ num_resources }} resources</li>
             </ul>
@@ -88,7 +88,7 @@
                 <ul>
                     <li><a href="{% url admin_import_users %}">Import Users</a></li>
                     <li><a href="{% url admin_import_resources %}">Import Resources</a></li>
-                    <li><a href="{% url admin_import_societies %}">Import Societies</a></li>
+                    <li><a href="{% url admin_import_societies %}">Import IEEE Societies</a></li>
                     {% if DEBUG_ENABLE_CLUSTERS %}
                         <li><a href="{% url admin_import_clusters %}">Import Clusters</a></li>
                     {% endif %}

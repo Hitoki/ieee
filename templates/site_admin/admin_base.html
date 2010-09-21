@@ -23,10 +23,10 @@
                     <a href="{% url admin_users %}">Users</a>
                 </li>            
                 <li class="{% block nav_sectors %}{% endblock %}">
-                    <a href="{% url admin_list_sectors %}">Sectors</a>
+                    <a href="{% url admin_list_sectors %}">Industry Sectors</a>
                 </li>
                 <li class="{% block nav_societies %}{% endblock %}">
-                    <a href="{% url admin_societies %}">Societies</a>
+                    <a href="{% url admin_societies %}">IEEE Societies</a>
                 </li>
             {% endif %}
             {% if user.get_profile.role == "society_manager" or user.get_profile.role == "admin" %}
@@ -49,7 +49,7 @@
     {% if user.is_authenticated %}
         <div id="admin_footer">
             <span id="left">
-            Logged in as {{ user.username }} |<a href="{% url change_password %}?return_url=" class="changePassword live-url { varName:'return_url' }">Change Password</a> |<a href="{% url admin_logout %}" class="logout">Log Out</a>
+            Logged in as {{ user.username }} | <a href="{% url change_password %}?return_url=" class="changePassword live-url { varName:'return_url' }">Change Password</a> | <a href="{% url admin_logout %}" class="logout">Log Out</a>
         </span>
         </div>
     {% endif %}
