@@ -255,6 +255,11 @@ p.admin-links a:hover {
     font-size: 8pt;
 }
 
+#ieee-home {
+   color: white;
+   text-decoration: underline;
+}
+
 .helpicon {
    background-image: url(/media/images/sm_help.png);
    background-position: 0 0;
