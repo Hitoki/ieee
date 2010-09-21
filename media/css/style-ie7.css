@@ -95,23 +95,6 @@ form.items-per-page {
     margin-right: 25px !important;
 }
 
-div#connectedness-container {
-    margin: -20px 0 0 203px !important;
-}
-
-div.survey-button {
-    margin: -20px 33px 10px 0;
-}
-
-#textui-tags-search-clear {
-    float: none;
-    display: inline-block;
-}
-
-#help-overview-link {
-   width: 200px;
-}
-
 #alternate-page #tag-galaxy div.tag {
     padding: .7em;
 }
@@ -126,17 +109,65 @@ div.survey-button {
 }
 
 #xplore-tab div.print-resource {
-margin-top: 0px;
+    margin-top: 0px;
 }
 
 p#xplore-totals {
-margin-top: 0px;
+    margin-top: 0px;
 }
 
-#header #links {
-float: right;   
+#header #tagline {
+   margin-top: 50px;
+   margin-right: -25px;
 }
 
-#feedback-link {
-display: inline-block;   
+#left-column-container {
+   margin-top: 20px;
+   margin-left: -87px;
+}
+
+#sortContainer_outter {
+   margin-top: -21px;
+}
+
+#textui-tags-search {
+   margin-left: 0;
+}
+
+#connectedness-container {
+   margin-right: 30px;
+}
+
+#help-col-left {
+   width: 220px;
+   margin-right: 50px;
+}
+
+#help-col-mid {
+    margin-left: 0;
+    float: left;
+}
+
+#help-col-right {
+    display: inline-block;
+}
+
+#hide-help-box div {
+   float: left;
+}
+
+#tag-galaxy #tags {
+   margin-top: -5px;
+}
+
+#alternate-page #tag-galaxy div.tag {
+    margin: 0.5em 0.25em;
+}
+
+.nootabs-selected-tab div.group {
+   margin-top: 0;
+}
+
+#xplore-results-container div.group ul {
+   margin-top: 0;
 }
