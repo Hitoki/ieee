@@ -65,7 +65,7 @@ table.main td.center .center-pad {
 }
 
 #header {
-    height: 90px;
+    height: 75px;
     text-align: left;
     position: relative;
     margin-bottom: 10px;
@@ -116,7 +116,9 @@ table.main td.center .center-pad {
     display:inline-block;
     font-size:14pt;
     font-style:italic;
-    margin:58px 0 0 10px;
+    margin:-16px 34px 0 0;
+    float: right;
+    clear: left;
 }
 
 #header .leftCorner {
@@ -1160,7 +1162,7 @@ table.vert-center td {
     text-align: center;
     padding-top: 1px;
     margin-top: 1px;
-    margin-left: 3px;
+    margin-left: 2px;
     cursor: default;
     background: url(/media/images/frequency-bar.png) no-repeat 0 0;
 }
