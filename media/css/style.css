@@ -2525,6 +2525,7 @@ width: 100%;
 
 #inner-container {
 width: 85%;
+min-width: 950px;
 margin: 10px auto;
 padding: 0 10px 10px 10px;
 background-color: white;
