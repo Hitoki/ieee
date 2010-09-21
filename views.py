@@ -27,7 +27,7 @@ import settings
 import util
 from widgets import make_display_only
 
-TOOLTIP_MAX_CHARS = 125
+TOOLTIP_MAX_CHARS = 120
 
 def render(request, template, dictionary=None):
     "Use this instead of 'render_to_response' to enable custom context processors, which add things like MEDIA_URL to the page automatically."
@@ -62,7 +62,7 @@ def truncate_link_list(items, output_func, plain_output_func, max_chars, tag=Non
                 items_str += ' ... (%s more)' % (len(items) - i)
             else:
                 if tag is not None:
-                    items_str += ' ... <a href="javascript:Tags.selectTag(%s, &quot;%s&quot;);">(%s more)</a>' % (tag.id, tab_name, len(items) - i)
+                    items_str += ' ... (%s more - <a href="javascript:Tags.selectTag(%s, &quot;%s&quot;);">show all</a>)' % (len(items) - i, tag.id, tab_name)
                 else:
                     items_str += ' ... (%s more)' % (len(items) - i)
             break
