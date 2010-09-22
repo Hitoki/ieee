@@ -6,6 +6,14 @@ def media_url(request):
     from django.conf import settings
     return {'MEDIA_URL': settings.MEDIA_URL}
     
+def logo_href(request):
+    if '/admin/' in request.path:
+        return {'LOGO_HREF': '/admin/'}
+    elif '/textui/' in request.path:
+        return {'LOGO_HREF': 'javascript:Tags.clearSectorSociety();'}
+    else:
+        return {'LOGO_HREF': '/'}
+    
 def external_help_url(request):
     "Adds settings.EXTERNAL_HELP_URL to the context as EXTERNAL_HELP_URL."
     from django.conf import settings

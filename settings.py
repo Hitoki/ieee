@@ -121,6 +121,7 @@ INSTALLED_APPS = (
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.auth',
     'ieeetags.context_processors.media_url',
+    'ieeetags.context_processors.logo_href',
     'ieeetags.context_processors.external_help_url',
     'ieeetags.context_processors.user',
     'ieeetags.context_processors.current_url',
