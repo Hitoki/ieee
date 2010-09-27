@@ -1,10 +1,20 @@
-{% extends "base_table.html" %}
-
+{% extends "tag_base.html" %}
 
 {% block logo_href %}{% url tags_list %}{% endblock %}
 {% block feedback %}{% endblock %}{# hide feedback link using blank block #}
-{% block main_table_content %}
-    <div class="">
-        {% include 'flat_resources.inc.html' %}
-    </div>
+
+{% block content %}
+    {% block main_content_nopad %}    
+        {% if not is_ajax %}    
+            <div class="center-pad">
+        {% endif %}
+        {% block main_table_content %}
+            <div class="">
+                {% include 'flat_resources.inc.html' %}
+            </div>
+        {% endblock %}
+        {% if not is_ajax %}    
+            </div>
+        {% endif %}
+    {% endblock %}
 {% endblock %}
