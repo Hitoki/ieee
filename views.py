@@ -346,7 +346,7 @@ def _get_xplore_results(tag, highlight_search_term=True, show_all=False, offset=
         'hc': max_num_results,
         # Specifies the result # to start from
         'rs': offset+1,
-        'ti': tag.name,
+        'md': tag.name,
     })
     
     try:
