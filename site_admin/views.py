@@ -3805,7 +3805,10 @@ def society_logos_report(request):
         if os.path.exists(logo_filename):
             print 'found logo'
             
-            from PIL import Image
+            try:
+                import Image, ImageOps
+            except ImportError:
+                from PIL import Image, ImageOps
             import shutil
             
             MAX_WIDTH = 100

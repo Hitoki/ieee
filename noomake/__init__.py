@@ -6,8 +6,10 @@ Tools for building the project. Includes:
 import os
 import os.path
 import re
-from PIL import Image, ImageOps
-import Image
+try:
+	import Image, ImageOps
+except ImportError:
+	from PIL import Image, ImageOps
 from django.conf import settings
 from urlparse import urlparse, urlunparse 
 import cgi
