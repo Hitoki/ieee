@@ -127,6 +127,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'ieeetags.context_processors.current_url',
     'ieeetags.context_processors.is_ajax',
     'ieeetags.context_processors.survey',
+    'ieeetags.context_processors.settings',
 )
 
 # Application Settings ---------------------------------------------------------
@@ -179,6 +180,9 @@ DISABLE_SITE = False
 #ENABLE_TEXTUI_SIMPLIFIED_COLORS = False
 ENABLE_TEXTUI_SIMPLIFIED_COLORS = True
 'Enables a single tag color in textui.  Otherwise, two extra color blocks are shown for sector/related tag popularity.  This is on by default, and the alternate color blocks method should be removed at some point.'
+
+ENABLE_FIREBUG_LITE = False
+'Enales firebug lite JS.'
 
 # Local Settings ---------------------------------------------------------------
 

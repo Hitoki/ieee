@@ -267,6 +267,41 @@ var Tags = {
         
     },
     
+    // This is like _showWaitScreen(), but it shows the "Please wait" on top of the tags instead of replacing them.  Used for zooming.
+    // If specified, the "callback" function is fired after the wait screen is shown.
+    _showWaitScreenOver: function(callback) {
+        log('_showWaitScreenOver()');
+        this.hideHome();
+        
+        // Hide the content lightbox if it's visible.
+        Lightbox.hide();
+        
+        // Hide any flyvoers so they don't persist when the node is gone.
+        Flyover.hide();
+        
+        // Update the switch interfaces link
+        this.updateChangedNode();
+        
+        Lightbox.show(null, {
+            content:
+                '<h1>Please wait...</h1>'
+                + '<img src="' + MEDIA_URL + '/images/ajax-loader-bar.gif" />'
+            , useBackground: false
+            , onShowCallback: function() {
+                // NOTE: Use a small delay to make sure the loading screen shows before the browser gets busy.
+                setTimeout(callback, 1000);
+            }
+            , parentElement: $('#tags')
+            , customClass: 'lightbox-waiting-over'
+            , closeOnClickOutside: false
+        });
+    },
+    
+    _hideWaitScreenOver: function() {
+        log('_hideWaitScreenOver()');
+        Lightbox.hide();
+    },
+    
     selectSector: function(nodeId, setHash) {
         //log('selectSector()');
         //log('  nodeId: ' + nodeId);
@@ -713,18 +748,26 @@ var Tags = {
         this.defaultVertMargin = Math.round(parseInt($('#tags .node').css('margin-top')));
         this.defaultHorizMargin = Math.round(parseInt($('#tags .node').css('margin-left')));
         this.defaultTextSize = Math.round(parseInt($('#tags .node').css('font-size')));
-        this.defaultHeight = Math.round(parseInt($('#tags .node').css('height')));
+        
+		// In IE, the CSS 'height' is 'auto'.
+		var height = parseInt($('#tags .node').css('height'));
+		if (isNaN(height)) {
+			this.defaultHeight = $('#tags .node').attr('offsetHeight');
+		} else {
+			this.defaultHeight = Math.round(height);
+		}
+		
         this.defaultPadding = Math.round(parseInt($('#tags .node').css('padding-top')));
     },
     
     updateZoom: function() {
-        //log('resizeNodes()');
+        var tags = this;
 
+        // Save the initial sizes to use later.
         if (typeof this.defaultVertMargin == 'undefined'){
             this.setDefaultZoomValues();
         }
     
-
         var zoom = $('#textui-zoom-slider').slider('value');
         
         // Only zoom if necessary (either the zoom is not 100, or the zoom is 100 but wasn't before).
@@ -739,25 +782,32 @@ var Tags = {
             
             $('#textui-zoom-value').text(zoom + '%');
             
-            // Scales down the effect of this zoom.
-            function scaleZoom(zoom, scale) {
-                if (zoom >= 100) {
-                    return (zoom - 100) * scale + 100;
-                } else {
-                    return zoom;
+            this._showWaitScreenOver(function() {
+                // This function is called after the waiting screen is shown.
+                
+                // Scales down the effect of this zoom.
+                function scaleZoom(zoom, scale) {
+                    if (zoom >= 100) {
+                        return (zoom - 100) * scale + 100;
+                    } else {
+                        return zoom;
+                    }
                 }
-            }
+                
+                $('#tags .node').css('margin-top', (tags.defaultVertMargin * zoom / 100) + 'px');
+                $('#tags .node').css('margin-bottom', (tags.defaultVertMargin * zoom / 100) + 'px');
+                $('#tags .node').css('margin-left', (tags.defaultHorizMargin * zoom / 100) + 'px');
+                $('#tags .node').css('margin-right', (tags.defaultHorizMargin * zoom / 100) + 'px');
+                $('#tags .node').css('font-size', (tags.defaultTextSize * zoom / 100) + 'px');
+                $('#tags .node').css('height', (tags.defaultHeight * zoom / 100) + 'px');
+                $('#tags .node').css('padding-top', (tags.defaultPadding * scaleZoom(zoom, 2) / 100) + 'px');
+                $('#tags .node').css('padding-bottom', (tags.defaultPadding * scaleZoom(zoom, 2) / 100) + 'px');
+                $('#tags .node').css('padding-left', (tags.defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
+                $('#tags .node').css('padding-right', (tags.defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
+                
+                tags._hideWaitScreenOver();
+            });
             
-            $('#tags .node').css('margin-top', (this.defaultVertMargin * zoom / 100) + 'px');
-            $('#tags .node').css('margin-bottom', (this.defaultVertMargin * zoom / 100) + 'px');
-            $('#tags .node').css('margin-left', (this.defaultHorizMargin * zoom / 100) + 'px');
-            $('#tags .node').css('margin-right', (this.defaultHorizMargin * zoom / 100) + 'px');
-            $('#tags .node').css('font-size', (this.defaultTextSize * zoom / 100) + 'px');
-            $('#tags .node').css('height', (this.defaultHeight * zoom / 100) + 'px');
-            $('#tags .node').css('padding-top', (this.defaultPadding * scaleZoom(zoom, 2) / 100) + 'px');
-            $('#tags .node').css('padding-bottom', (this.defaultPadding * scaleZoom(zoom, 2) / 100) + 'px');
-            $('#tags .node').css('padding-left', (this.defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
-            $('#tags .node').css('padding-right', (this.defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
         }
         
         this.oldZoom = zoom;

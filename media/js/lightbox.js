@@ -24,18 +24,26 @@ var Lightbox = {
             // Options
             this.options = extendExisting(
                 {
-                    closeOnClickOutside: true,
-                    verticalCenter: true,
-                    customClass: null,
-                    content: null,
-                    onShowCallback: null
-                },
-                options
+                    closeOnClickOutside: true
+                    , verticalCenter: true
+                    , customClass: null
+                    , content: null
+                    , onShowCallback: null
+                    , useBackground: true
+                    , parentElement: 'body'
+                }
+                , options
             );
             
             // Create the lightbox
-            this.lightbox = $('<div id="lightbox"></div>').appendTo('body');
-            this.lightboxBackground = $('<div class="lightbox-background"></div>').appendTo('body');
+            this.lightbox = $('<div id="lightbox"></div>').appendTo(this.options.parentElement);
+            
+            if (this.options.useBackground) {
+                this.lightboxBackground = $('<div class="lightbox-background"></div>').appendTo(this.options.parentElement);
+            } else {
+                this.lightboxBackground = $('<div class="lightbox-background"></div>').appendTo(this.options.parentElement);
+                this.lightboxBackground.hide();
+            }
             
             // Create custom classes
             var customClassOuter;

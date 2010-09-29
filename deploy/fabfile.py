@@ -82,7 +82,7 @@ def install_webstack():
     run_multiline_script(script)
     
     script = """
-    # installl PIL and its requirements (for creating sprites images)
+    # install PIL and its requirements (for creating sprites images)
     sudo yum -y install zlib-devel
     sudo yum -y install gcc
     sudo pip install pil

@@ -10,40 +10,6 @@ function implode(glue, array) {
     return str;
 }
 
-/*
-function log(name, value, print, indent, first) {
-    if (print == undefined)
-        print = true;
-    if (indent == undefined)
-        indent = "";
-    if (first == undefined)
-        first = false;
-    
-    var result = "";
-    if (typeof value == 'object') {
-        result += indent + name + ": {\n";
-        var first = true;
-        for (var i in value) {
-            if (first)
-                result += log(i, value[i], false, indent + "  ", first) + "\n";
-            else
-                result += log(i, value[i], false, indent + "  ", first) + "\n";
-            first = false;
-        }
-        result += indent + "}";
-    } else if (typeof value == 'string') {
-        result += indent + name + ": \"" + value.replace('"', '\\"') + "\"";
-    } else {
-        result += indent + name + " (" + (typeof value) + "): " + value;
-    }
-    
-    if (print) 
-        console.log(result);
-    else
-        return result;
-}
-*/
-
 var logStartTime = null;
 
 function log(msg) {

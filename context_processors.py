@@ -40,3 +40,10 @@ def is_ajax(request):
 def survey(request):
     'Adds a flag value to the context if this user used the survey url to enter the site.'
     return {'survey': 'survey' in request.session}
+
+def settings(request):
+	'Adds various settings variables to the current context for all pages.'
+	import settings
+	return {
+		'ENABLE_FIREBUG_LITE': settings.ENABLE_FIREBUG_LITE,
+	}

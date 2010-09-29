@@ -756,6 +756,7 @@ span#roamer-beta-warning {
 #alternate-page #tags {
     height: 440px;
     overflow: hidden;
+    position:relative;
     /*line-height: 1.2em;*/
 }
 
@@ -2536,4 +2537,11 @@ padding: 0 10px 10px 10px;
 background-color: white;
 -moz-border-radius: 10px;
 -webkit-border-radius: 10px;
+}
+
+.lightbox-waiting-over-lightbox-content {
+    border:10px solid #ddd;
+    text-align:center;
+    color:#aaa;
+    padding:1em;
 }
