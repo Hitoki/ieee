@@ -248,7 +248,77 @@ def word_wrap(string, max_chars):
     result = '\n'.join(lines)
     return result
 
-
+def profiler(filename=None):
+    def _outter(func):
+        print '_outter()'
+        
+        def _inner(*args, **kwargs):
+            try:
+                # For Python 2.5:
+                import cProfile as profile
+            except ImportError:
+                # For Python 2.4:
+                import profile
+                
+            import settings
+            import time
+            
+            # NOTE: Must use this, or the 'filename' global/local var gets messed up.
+            filename2 = filename
+            
+            print '_inner()'
+            
+            if filename2 is None:
+                # Default to <function_name>_<time>.txt and .out
+                filename2 = '%s_%s' % (func.__name__, time.time())
+                
+            filename_full = os.path.join(settings.PROFILER_OUTPUT_ROOT, filename2)
+            print 'filename2: %r' %filename2
+            print 'filename_full: %r' %filename_full
+                
+            if settings.PROFILER_OUTPUT_ROOT is None:
+                raise Exception('settings.PROFILER_OUTPUT_ROOT must be set to save profiler output.')
+            elif not os.path.exists(settings.PROFILER_OUTPUT_ROOT):
+                raise Exception('The settings.PROFILER_OUTPUT_ROOT folder %r does not exist.' % settings.PROFILER_OUTPUT_ROOT)
+            
+            #print '  func: %r' % func
+            #print '  args: %s' % repr(args)
+            #print '  kwargs: %s' % repr(kwargs)
+            #print '  ----------'
+            #result = func(*args, **kwargs)
+            prof = profile.Profile()
+            result = prof.runcall(func, *args, **kwargs )
+            print 'result: %r' % result
+            
+            #prof.print_stats()
+            
+            # Save text output.
+            file1 = open(filename_full + '.txt', 'w')
+            old_stdout = sys.stdout
+            sys.stdout = file1
+            # Internal Time
+            #prof.print_stats(sort=1)
+            # Cumulative
+            prof.print_stats(sort=2)
+            sys.stdout = old_stdout
+            del file1
+            
+            # Save the binary output.
+            prof.dump_stats(filename_full + '.profile_out')
+            
+            # Save kcachegrind-compatible output.
+            if hasattr(prof, 'getstats'):
+                import lsprofcalltree
+                k = lsprofcalltree.KCacheGrind(prof)
+                file1 = open(filename_full + '.kcachegrind', 'w')
+                k.output(file1)
+                del file1
+            
+            #print '  ----------'
+            #print '~_inner()'
+            return result
+        return _inner
+    return _outter
 
 # Command line util functions --------------------------------------------------
 

@@ -184,6 +184,9 @@ ENABLE_TEXTUI_SIMPLIFIED_COLORS = True
 ENABLE_FIREBUG_LITE = False
 'Enales firebug lite JS.'
 
+PROFILER_OUTPUT_ROOT = None
+'Specifies the folder to store profiler output.'
+
 # Local Settings ---------------------------------------------------------------
 
 try:
