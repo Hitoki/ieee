@@ -651,7 +651,7 @@ function attachTextUiFlyovers(elem, options) {
     options = $.extend(options, {shadows:true});
     elem.find('.flyover').each(function() {
         // Clone the generic options.
-                var tag_options = $.extend(true, {}, options)
+        var tag_options = $.extend(true, {}, options)
         // Replace the "tagid" placeholder with the tag's actual id.
         tag_options["url"] = tag_options["url"].replace('tagid', $(this).attr("id").substr(4));
         Flyover.attach(this, tag_options);
