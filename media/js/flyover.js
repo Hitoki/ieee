@@ -645,7 +645,6 @@ function attachFlyovers(elem) {
     });
 }
 
-var tag_options;
 function attachTextUiFlyovers(elem, options) {
     elem = $(elem);
     options = $.extend(options, {shadows:true});
