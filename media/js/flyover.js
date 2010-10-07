@@ -640,25 +640,26 @@ $(function() {
 
 function attachFlyovers(elem) {
     elem = $(elem);
-    elem.find('span.flyover, div.flyover, a.flyover').each(function() {
+    elem.find('.flyover').each(function() {
         Flyover.attach(this, {shadows:true});
     });
 }
 
+var tag_options;
 function attachTextUiFlyovers(elem, options) {
     elem = $(elem);
     options = $.extend(options, {shadows:true});
-    elem.find('span.flyover, div.flyover, a.flyover').each(function() {
+	tag_options = $.extend(true, {}, options)
+    elem.find('.flyover').each(function() {
         // Clone the generic options.
-        var tag_options = $.extend(true, {}, options)
         // Replace the "tagid" placeholder with the tag's actual id.
         tag_options["url"] = tag_options["url"].replace('tagid', $(this).attr("id").substr(4));
         Flyover.attach(this, tag_options);
-    });   
+    });
 }
 
 $(function() {
-    $('span.flyover, div.flyover, a.flyover').each(function() {
+    $('.flyover').each(function() {
         Flyover.attach(this, {shadows:true});
     });
     
