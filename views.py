@@ -1072,9 +1072,47 @@ def tooltip(request, tag_id):
             (min_score, max_score) = Node.objects.get_combined_sector_ranges(parent)
         
         elif society_id is not None:
-            society = Society.objects.get(id=society_id)
-            (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = society.get_tag_ranges()
-            (min_score, max_score) = society.get_combined_ranges()
+            if society_id == 'all':
+                # For All Societies, check all tags to get mins/maxes.
+                from django.db.models import Count, Min, Max
+                tags = Node.objects.get_tags()
+                tags = Node.objects.get_extra_info(tags)
+                
+                min_resources = None
+                max_resources = None
+                min_sectors = None
+                max_sectors = None
+                min_related_tags = None
+                max_related_tags = None
+                min_societies = None
+                max_societies = None
+                min_score = None
+                max_score = None
+                for tag1 in tags.iterator():
+                    if min_resources is None or tag1.num_resources1 < min_resources:
+                        min_resources = tag1.num_resources1
+                    if max_resources is None or tag1.num_resources1 < max_resources:
+                        max_resources = tag1.num_resources1
+                    if min_sectors is None or tag1.num_sectors1 < min_sectors:
+                        min_sectors = tag1.num_sectors1
+                    if max_sectors is None or tag1.num_sectors1 < max_sectors:
+                        max_sectors = tag1.num_sectors1
+                    if min_related_tags is None or tag1.num_related_tags1 < min_related_tags:
+                        min_related_tags = tag1.num_related_tags1
+                    if max_related_tags is None or tag1.num_related_tags1 < max_related_tags:
+                        max_related_tags = tag1.num_related_tags1
+                    if min_societies is None or tag1.num_societies1 < min_societies:
+                        min_societies = tag1.num_societies1
+                    if max_societies is None or tag1.num_societies1 < max_societies:
+                        max_societies = tag1.num_societies1
+                    if min_score is None or tag1.score1 < min_score:
+                        min_score = tag1.score1
+                    if max_score is None or tag1.score1 < max_score:
+                        max_score = tag1.score1
+            else:
+                society = Society.objects.get(id=society_id)
+                (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = society.get_tag_ranges()
+                (min_score, max_score) = society.get_combined_ranges()
             
         elif search_for is not None:
             # Search for nodes with a phrase
@@ -1165,7 +1203,6 @@ def tooltip(request, tag_id):
         #print '~tooltip()'
         return render(request, 'tooltip.html', {
             'tag': tag,
-            'related_tags': related_tags,
             'tagLevel': tagLevel,
             'sectorLevel': sectorLevel,
             'relatedTagLevel': related_tag_level,
