@@ -1,21 +1,23 @@
 (function(jQuery){
 
 jQuery.fn.imageDropdown = function(options) {
-    
+
     // Handle multiple objects.
     if (this.length > 1){
         this.each(function() { $(this).imageDropdown(options) });
         return this;
     }
     
+    
     // Define default values for options.
-	var defaults = {
+    var defaults = {
         'selectList': undefined, // The list control that holds the options.
-        'initialIndex': 0 // the index of the option to select on initialization
-	};
-	
+        'initialIndex': 0, // the index of the option to select on initialization
+        'showSelectedItemInList': false
+    };
+    
     // Merge options and defaults.
-	var opts = $.extend(defaults, options);
+    var opts = $.extend(defaults, options);
     
     // Track the index of the currently selected item
     var _selectedIndex;
@@ -34,8 +36,16 @@ jQuery.fn.imageDropdown = function(options) {
         // The element that will display the selection when the menu closes
         var selectedDisplayElem = this.children("span:first");
         
+        var selectedElem = opts.selectList.children().eq(index);
+        
         // Copy the markup from the selected item to the display element.
-        selectedDisplayElem.html(opts.selectList.children().eq(index).html());
+        selectedDisplayElem.html(selectedElem.html());
+        
+        // If so configured, hide the already selected item in the list. Show all items first.
+        if (!opts.showSelectedItemInList) {
+            opts.selectList.children().show();
+            selectedElem.hide();
+        }
         
         // If the display element now contains hidden elements, show only those hidden elements.
         // This allows us to show, for example, "None" when menu is open and "Select One" when it's closed.
@@ -68,19 +78,19 @@ jQuery.fn.imageDropdown = function(options) {
         var menuOpen = opts.selectList.is(":visible");
         var curIndex = 0;
 
-        if (event.keyCode === 27) { // escape
+        if (event.keyCode == 27) { // escape
             if (menuOpen) {
                 self.close();
             }
         }
-        if (event.keyCode === 13) { // return
+        if (event.keyCode == 13) { // return
             if (menuOpen) {
             }
             else {
                 self.click();
             }
         }
-        if (event.keyCode === 38 || event.keyCode === 37)  // up
+        if (event.keyCode == 38 || event.keyCode == 37)  // up
         {
             if (menuOpen) {
                 if (curIndex > 0) {
@@ -92,7 +102,7 @@ jQuery.fn.imageDropdown = function(options) {
                 self.setSelectedIndex(Math.max(newIndex, 0));
             }
         }
-        else if (event.keyCode === 40 || event.keyCode === 39) // down
+        else if (event.keyCode == 40 || event.keyCode == 39) // down
         {
             if (menuOpen) {
                 
@@ -129,7 +139,7 @@ jQuery.fn.imageDropdown = function(options) {
     }
     this.bindHover();
 
-	var clickHandler = function(){
+    var clickHandler = function(){
         opts.selectList.show().focus();
         $(this).addClass("squareDown");
         self.find('.dropIcon').addClass('openActive');
@@ -189,7 +199,7 @@ jQuery.fn.imageDropdown = function(options) {
     this.setSelectedIndex(opts.initialIndex);
 
     var self = this;
-	return this;
+    return this;
 };          
 
 jQuery.fn.extend(  {
