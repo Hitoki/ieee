@@ -122,9 +122,11 @@ CALLS = Event("Calls", 0, add, times)
 SAMPLES = Event("Samples", 0, add)
 SAMPLES2 = Event("Samples", 0, add)
 
-TIME = Event("Time", 0.0, add, lambda x: '(' + str(x) + ')')
+#TIME = Event("Time", 0.0, add, lambda x: '(' + str(x) + ')')
+TIME = Event("Time", 0.0, add, lambda x: '(' + str(round(x, 2)) + ')')
 TIME_RATIO = Event("Time ratio", 0.0, add, lambda x: '(' + percentage(x) + ')')
-TOTAL_TIME = Event("Total time", 0.0, fail)
+#TOTAL_TIME = Event("Total time", 0.0, fail)
+TOTAL_TIME = Event("Total time", 0.0, fail, lambda x: str(round(x, 2)))
 TOTAL_TIME_RATIO = Event("Total time ratio", 0.0, fail, percentage)
 
 
@@ -2300,10 +2302,28 @@ class DotWriter:
             if function.module is not None:
                 labels.append(function.module)
             labels.append(function.name)
-            for event in TOTAL_TIME_RATIO, TIME_RATIO:
-                if event in function.events:
-                    label = event.format(function[event])
-                    labels.append(label)
+            
+            temp1 = []
+            if TOTAL_TIME in function.events:
+                temp1.append(TOTAL_TIME.format(function[TOTAL_TIME]))
+            if TOTAL_TIME_RATIO in function.events:
+                temp1.append(TOTAL_TIME_RATIO.format(function[TOTAL_TIME_RATIO]))
+            temp1 = ' - '.join(temp1)
+            labels.append(temp1)
+            
+            if TIME in function.events:
+                labels.append(TIME.format(function[TIME]))
+                
+            #for event in TOTAL_TIME, TIME:
+            #    if event in function.events:
+            #        label = event.format(function[event])
+            #        labels.append(label)
+            
+            #for event in TOTAL_TIME_RATIO, TIME_RATIO:
+            #    if event in function.events:
+            #        label = event.format(function[event])
+            #        labels.append(label)
+            
             if function.called is not None:
                 labels.append(u"%u\xd7" % (function.called,))
 
@@ -2324,10 +2344,24 @@ class DotWriter:
                 callee = profile.functions[call.callee_id]
 
                 labels = []
-                for event in TOTAL_TIME_RATIO, CALLS:
-                    if event in call.events:
-                        label = event.format(call[event])
-                        labels.append(label)
+                
+                temp1 = []
+                if TOTAL_TIME in call.events:
+                    label = TOTAL_TIME.format(call[TOTAL_TIME])
+                    temp1.append(label)
+                if TOTAL_TIME_RATIO in call.events:
+                    label = TOTAL_TIME_RATIO.format(call[TOTAL_TIME_RATIO])
+                    temp1.append(label)
+                labels.append(' - '.join(temp1))
+                
+                if CALLS in call.events:
+                    label = CALLS.format(call[CALLS])
+                    labels.append(label)
+                    
+                #for event in TOTAL_TIME_RATIO, CALLS:
+                #    if event in call.events:
+                #        label = event.format(call[event])
+                #        labels.append(label)
 
                 if call.weight is not None:
                     weight = call.weight

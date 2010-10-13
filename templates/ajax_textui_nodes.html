@@ -22,14 +22,13 @@
 
 {% spaceless %}
 {% for tag in child_nodes %}
-
-    <div id="tag-{{ tag.id }}" class="node {{ tag.node_type.name }} flyover">
+    <div id="tag-{{ tag.id }}" class="node {{ tag.node_type__name }} flyover">
         {# tag.level: {{ tag.level }}<br/> #}
                     
-        {% ifequal tag.node_type.name 'tag' %}
+        {% ifequal tag.node_type__name 'tag' %}
             <a href="javascript:Tags.selectTag({{ tag.id }});" class="{{ tag.level }}">{{ tag.name|truncatechars:30 }}</a>
         {% else %}
-            {% ifequal tag.node_type.name 'tag_cluster' %}
+            {% ifequal tag.node_type__name 'tag_cluster' %}
                 <img src="/media/images/icon_cluster_sm.png" />
                     <a href="javascript:Tags.selectCluster({{ tag.id }});" class="{{ tag.level }}">{{ tag.name|truncatechars:30 }}</a> 
             {% endifequal %}

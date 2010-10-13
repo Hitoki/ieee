@@ -285,14 +285,13 @@ class NodeManager(models.Manager):
         
         #p.tick('start loop')
         
-        for tag in tags:
+        for tag in tags.values('num_resources1', 'num_societies1', 'num_filters1', 'score1'):
             # Ignore all hidden tags
-            if tag.num_resources1 > 0 and tag.num_societies1 > 0 and tag.num_filters1 > 0:
-                if min_score is None or tag.score1 < min_score:
-                    min_score = tag.score1
-                
-                if max_score is None or tag.score1 > max_score:
-                    max_score = tag.score1
+            if tag['num_resources1'] > 0 and tag['num_societies1'] > 0 and tag['num_filters1'] > 0:
+                if min_score is None or tag['score1'] < min_score:
+                    min_score = tag['score1']
+                if max_score is None or tag['score1'] > max_score:
+                    max_score = tag['score1']
         
         #p.tick('end loop')
         

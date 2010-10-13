@@ -500,6 +500,7 @@ def _get_popularity_level(min, max, count):
     return 'level' + str(level)
 
 @login_required
+#@util.profiler
 def ajax_textui_nodes(request):
     '''
     Gets an AJAX list of tag/cluster info for the textui page.
@@ -510,9 +511,6 @@ def ajax_textui_nodes(request):
     @return: The HTML content for all results.
     '''
     #log('ajax_textui_nodes()')
-    
-    #from profiler import Profiler
-    #p = Profiler('ajax_textui_nodes')
     
     sector_id = request.GET.get('sector_id', None)
     society_id = request.GET.get('society_id', None)
@@ -558,21 +556,19 @@ def ajax_textui_nodes(request):
     elif sort == 'frequency':
         order_by = '-num_resources1'
     elif sort == 'num_sectors':
-        extra_order_by = ['-num_sectors1']
+        extra_order_by = ['-num_sectors1', 'name']
     elif sort == 'num_related_tags':
-        extra_order_by = ['-num_related_tags1']
-    elif sort == 'clusters_first_alpha':
-        # See below
-        pass
+        extra_order_by = ['-num_related_tags1', 'name']
+    #elif sort == 'clusters_first_alpha':
+    #    # See below
+    #    pass
     elif sort == 'connectedness':
-        # See below
-        pass
+        extra_order_by = ['-score1', 'name']
     elif sort == 'num_societies':
-        extra_order_by = ['num_societies1']
+        extra_order_by = ['num_societies1', 'name']
     else:
         raise Exception('Unrecognized sort "%s"' % sort)
     
-    #p.tick('filters')
     
     # TODO: Filters disabled for now
     #filterIds = []
@@ -582,7 +578,6 @@ def ajax_textui_nodes(request):
     # TODO: Just select all filters for now
     filterIds = [filter.id for filter in Filter.objects.all()]
     
-    #p.tick('Getting child_nodes')
     
     search_for_too_short = False
     
@@ -590,7 +585,6 @@ def ajax_textui_nodes(request):
         # Search for nodes with a phrase
         # NOTE: <= 2 char searches take a long time (2-3 seconds), vs 200ms average for anything longer
         
-        #p.tick('Searching for phrase...')
         
         # Require >= 3 chars for general search, or >= 2 chars for in-sector/in-society search.
         if len(search_for) >= 3 or (len(search_for) >= 2 and (sector_id is not None or society_id is not None)):
@@ -636,7 +630,6 @@ def ajax_textui_nodes(request):
             child_nodes = Node.objects.none()
             search_for_too_short = True
         
-        #p.tick('Done searching for phrase.')
         
         #print 'searching for phrase "%s"' % search_for
         #print 'child_nodes: %s' % child_nodes
@@ -698,96 +691,77 @@ def ajax_textui_nodes(request):
         #assert False
     
     # Get child tags & clusters
-    #p.tick('Got child tags')
     
-    if sort == 'clusters_first_alpha':
-        # Order clusters first, then tags; both sorted alphabetically
-        #print 'sorting by clusters, then alpha'
-        child_nodes = child_nodes.order_by('-node_type__name', 'name')
-    elif order_by is not None:
+    #if sort == 'clusters_first_alpha':
+    #    # Order clusters first, then tags; both sorted alphabetically
+    #    #print 'sorting by clusters, then alpha'
+    #    child_nodes = child_nodes.order_by('-node_type__name', 'name')
+    
+    if order_by is not None:
         # Sort by one of the non-extra columns
         #print 'sorting by a normal column "%s"' % order_by
         child_nodes = child_nodes.order_by(order_by)
     
-    #p.tick('Done sorting')
-    
     # This saves time when we check child_node.node_type later on (prevents DB hit for every single child_node)
     child_nodes = child_nodes.select_related('node_type')
-    #p.tick('done .select_related()')
     
-    if sort == 'connectedness':
-        # Sort by the combined score
-        #print 'sorting by connectedness'
-        assert settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS, 'settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS is not enabled.'
-        child_nodes = Node.objects.sort_queryset_by_score(child_nodes, False)
-    #p.tick('done sorting for connectedness')
-    
-    
-    #p.tick('done converting child_nodes to list')
-    #print 'before loop'
-    #print 'len(child_nodes): %s' % len(child_nodes)
-    
-    #p.start_loop()
     child_nodes2 = []
-    for child_node in child_nodes:
-        #p.tick('start')
-        
+    for child_node in child_nodes.values(
+        'id',
+        'name',
+        'node_type__name',
+        'num_related_tags1',
+        'num_resources1',
+        'num_sectors1',
+        'num_selected_filters1',
+        'num_societies1',
+        'score1',
+    ):
         filter_child_node = False
         
-        ##log('child_node.name: %s' % child_node.name)
-        ##log('  max_score: %s' % max_score)
-        ##log('  min_score: %s' % min_score)
-        
         # TODO: This is too slow, reenable later
-        #num_related_tags = child_node.get_filtered_related_tag_count()
-        num_related_tags = child_node.num_related_tags1
+        #num_related_tags = child_node['get_filtered_related_tag_count']()
+        num_related_tags = child_node['num_related_tags1']
         
-        #p.tick('before levels')
         if not settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
             # Old-style popularity colors with main color & two color blocks
-            resourceLevel = _get_popularity_level(min_resources, max_resources, child_node.num_resources1)
-            sectorLevel = _get_popularity_level(min_sectors, max_sectors, child_node.num_sectors1)
+            resourceLevel = _get_popularity_level(min_resources, max_resources, child_node['num_resources1'])
+            sectorLevel = _get_popularity_level(min_sectors, max_sectors, child_node['num_sectors1'])
             related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
         else:
             # New-style popularity colors - single color only
-            combinedLevel = _get_popularity_level(min_score, max_score, child_node.score1)
+            combinedLevel = _get_popularity_level(min_score, max_score, child_node['score1'])
                 
-        #p.tick('middle')
         
-        if child_node.node_type.name == NodeType.TAG:
+        if child_node['node_type__name'] == NodeType.TAG:
             
-            #p.tick('before filter ')
-            if child_node.num_selected_filters1 > 0 and child_node.num_societies1 > 0 and child_node.num_resources1 > 0:
-                
-                #p.tick('in filter loop')
+            if child_node['num_selected_filters1'] > 0 and child_node['num_societies1'] > 0 and child_node['num_resources1'] > 0:
                 
                 if not settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
                     # Separated color blocks
-                    child_node.level = resourceLevel
-                    child_node.sectorLevel = sectorLevel
-                    child_node.relatedTagLevel = related_tag_level
-                    child_node.num_related_tags = num_related_tags
+                    child_node['level'] = resourceLevel
+                    child_node['sectorLevel'] = sectorLevel
+                    child_node['relatedTagLevel'] = related_tag_level
+                    child_node['num_related_tags'] = num_related_tags
                 else:
                     # Combined scores
-                    child_node.score = child_node.score1
-                    child_node.level = combinedLevel
-                    #child_node.min_score = min_score
-                    #child_node.max_score = max_score
+                    child_node['score'] = child_node['score1']
+                    child_node['level'] = combinedLevel
+                    #child_node['min_score'] = min_score
+                    #child_node['max_score'] = max_score
                 
             else:
-                #print 'removing node %s' % child_node.name
-                #print '  child_node.num_selected_filters1: %s' % child_node.num_selected_filters1
-                #print '  child_node.num_societies1: %s' % child_node.num_societies1
-                #print '  child_node.num_resources1: %s' % child_node.num_resources1
+                #print 'removing node %s' % child_node['name']
+                #print '  child_node['num_selected_filters1']: %s' % child_node['num_selected_filters1']
+                #print '  child_node['num_societies1']: %s' % child_node['num_societies1']
+                #print '  child_node['num_resources1']: %s' % child_node['num_resources1']
                 filter_child_node = True
                 
-            #p.tick('after filter')
                 
-        elif child_node.node_type.name == NodeType.TAG_CLUSTER:
-            #p.tick('cluster')
+        elif child_node['node_type__name'] == NodeType.TAG_CLUSTER:
             # Only show clusters that have one of the selected filters
-            if child_node.filters.filter(id__in=filterIds).count():
-                cluster_child_tags = child_node.get_tags()
+            if child_node['filters'].filter(id__in=filterIds).count():
+                cluster_child_tags = child_node['get_tags']()
                 cluster_child_tags = Node.objects.get_extra_info(cluster_child_tags)
                 
                 # Find out how many of this cluster's child tags would show with the current filters
@@ -803,17 +777,11 @@ def ajax_textui_nodes(request):
                     filter_child_node = True
                 
         else:
-            raise Exception('Unknown child node type "%s" for node "%s"' % (child_node.node_type.name, child_node.name))
+            raise Exception('Unknown child node type "%s" for node "%s"' % (child_node['node_type__name'], child_node['name']))
         
-
         if not filter_child_node:
             child_nodes2.append(child_node)
 
-        #p.tick('end')
-    #p.end_loop()
-    
-    #p.tick('end loop')
-    
     child_nodes = child_nodes2
     
     if search_for is not None:
@@ -825,16 +793,6 @@ def ajax_textui_nodes(request):
             str = ' for the %s society%s' % (society.name, final_punc)
             search_page_title = {"num": len(child_nodes), "search_for": search_for, "node_desc": str};
             
-        
-        
-    
-    #print 'after loop'
-    #print 'len(child_nodes): %s' % len(child_nodes)
-    
-    #p.tick('after json')
-    #p.tick('Rendering html...')
-    ##log('~ajax_textui_nodes()')
-    
     return render(request, 'ajax_textui_nodes.html', {
         'child_nodes': child_nodes,
         'parent_id': sector_id,
@@ -843,7 +801,6 @@ def ajax_textui_nodes(request):
         'search_for_too_short': search_for_too_short,
         'search_page_title': search_page_title,
     })
-    
 
 @login_required
 def ajax_nodes_xml(request):
