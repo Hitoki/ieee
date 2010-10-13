@@ -272,6 +272,7 @@ def profiler(view_func):
             
         import settings
         import time
+        import sys
         
         # NOTE: Must use this, or the 'filename' global/local var gets messed up.
         #filename2 = filename
@@ -304,27 +305,38 @@ def profiler(view_func):
         
         #prof.print_stats()
         
-        # Save text output.
-        file1 = open(filename_full + '.txt', 'w')
-        old_stdout = sys.stdout
-        sys.stdout = file1
-        # Internal Time
-        #prof.print_stats(sort=1)
-        # Cumulative
-        prof.print_stats(sort=2)
-        sys.stdout = old_stdout
-        del file1
-        
-        # Save the binary output.
-        prof.dump_stats(filename_full + '.profile_out')
-        
-        # Save kcachegrind-compatible output.
-        if hasattr(prof, 'getstats'):
-            import lsprofcalltree
-            k = lsprofcalltree.KCacheGrind(prof)
-            file1 = open(filename_full + '.kcachegrind', 'w')
-            k.output(file1)
+        if hasattr(settings, 'PROFILER_OUTPUT_TXT') and settings.PROFILER_OUTPUT_TXT:
+            # Save text output.
+            file1 = open(filename_full + '.txt', 'w')
+            old_stdout = sys.stdout
+            sys.stdout = file1
+            # Internal Time
+            #prof.print_stats(sort=1)
+            # Cumulative
+            prof.print_stats(sort=2)
+            sys.stdout = old_stdout
             del file1
+        
+        if (hasattr(settings, 'PROFILER_OUTPUT_BINARY') and settings.PROFILER_OUTPUT_BINARY) or (hasattr(settings, 'PROFILER_OUTPUT_PNG') and settings.PROFILER_OUTPUT_PNG):
+            # Save the binary output.
+            prof.dump_stats(filename_full + '.profile_out')
+            
+            if hasattr(settings, 'PROFILER_OUTPUT_PNG') and settings.PROFILER_OUTPUT_PNG:
+                # Create the PNG callgraph image.
+                os.system('%s -f pstats %s | dot -Tpng -o %s 2>NUL' % (relpath(__file__, 'scripts/gprof2dot.py'), filename_full + '.profile_out', filename_full + '.png'))
+            
+            if not hasattr(settings, 'PROFILER_OUTPUT_BINARY') or not settings.PROFILER_OUTPUT_BINARY:
+                # We only wanted the PNG file, delete the binary file now that we're done with it.
+                os.remove(filename_full + '.profile_out')
+        
+        if hasattr(settings, 'PROFILER_OUTPUT_KCACHEGRIND') and settings.PROFILER_OUTPUT_KCACHEGRIND:
+            # Save kcachegrind-compatible output.
+            if hasattr(prof, 'getstats'):
+                import lsprofcalltree
+                k = lsprofcalltree.KCacheGrind(prof)
+                file1 = open(filename_full + '.kcachegrind', 'w')
+                k.output(file1)
+                del file1
         
         #print '  ----------'
         #print '~_inner()'

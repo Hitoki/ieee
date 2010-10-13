@@ -187,6 +187,18 @@ ENABLE_FIREBUG_LITE = False
 PROFILER_OUTPUT_ROOT = None
 'Specifies the folder to store profiler output.'
 
+PROFILER_OUTPUT_TXT = True
+'Saves a .txt summary file in the profiler output folder.'
+
+PROFILER_OUTPUT_BINARY = True
+'Saves a binary cProfile file in the profiler output folder.'
+
+PROFILER_OUTPUT_PNG = True
+'Saves a PNG callgraph in the profiler output folder.'
+
+PROFILER_OUTPUT_KCACHEGRIND = True
+'Saves a binary kCacheGrind file in the profiler output folder.'
+
 # Local Settings ---------------------------------------------------------------
 
 try:
