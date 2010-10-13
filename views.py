@@ -981,9 +981,6 @@ def ajax_nodes_xml(request):
 @login_required
 def tooltip(request, tag_id):
     'Returns the AJAX content for the tag tooltip/flyover in textui.'
-    #print 'tooltip()'
-    #p = Profiler('tooltip')
-    #import ipdb; ipdb.set_trace()
     parent_id = request.GET.get('parent_id', None)
     society_id = request.GET.get('society_id', None)
     search_for = request.GET.get('search_for', None)
@@ -1004,12 +1001,6 @@ def tooltip(request, tag_id):
     
     #assert parent_id is not None or society_id is not None, 'Must specify either parent_id or society_id.'
     #assert parent_id is None or society_id is None, 'Cannot specify both parent_id or society_id.'
-    
-    #print 'parent_id: %r' % parent_id
-    #print 'society_id: %r' % society_id
-    #print 'search_for: %r' % search_for
-    
-    #log('tooltip()')
     
     node = Node.objects.filter(id=tag_id)
     node = Node.objects.get_extra_info(node)
@@ -1055,27 +1046,33 @@ def tooltip(request, tag_id):
                 max_societies = None
                 min_score = None
                 max_score = None
-                for tag1 in tags.iterator():
-                    if min_resources is None or tag1.num_resources1 < min_resources:
-                        min_resources = tag1.num_resources1
-                    if max_resources is None or tag1.num_resources1 < max_resources:
-                        max_resources = tag1.num_resources1
-                    if min_sectors is None or tag1.num_sectors1 < min_sectors:
-                        min_sectors = tag1.num_sectors1
-                    if max_sectors is None or tag1.num_sectors1 < max_sectors:
-                        max_sectors = tag1.num_sectors1
-                    if min_related_tags is None or tag1.num_related_tags1 < min_related_tags:
-                        min_related_tags = tag1.num_related_tags1
-                    if max_related_tags is None or tag1.num_related_tags1 < max_related_tags:
-                        max_related_tags = tag1.num_related_tags1
-                    if min_societies is None or tag1.num_societies1 < min_societies:
-                        min_societies = tag1.num_societies1
-                    if max_societies is None or tag1.num_societies1 < max_societies:
-                        max_societies = tag1.num_societies1
-                    if min_score is None or tag1.score1 < min_score:
-                        min_score = tag1.score1
-                    if max_score is None or tag1.score1 < max_score:
-                        max_score = tag1.score1
+                for tag1 in tags.values(
+                    'num_resources1',
+                    'num_sectors1',
+                    'num_related_tags1',
+                    'num_societies1',
+                    'score1',
+                ):
+                    if min_resources is None or tag1['num_resources1'] < min_resources:
+                        min_resources = tag1['num_resources1']
+                    if max_resources is None or tag1['num_resources1'] < max_resources:
+                        max_resources = tag1['num_resources1']
+                    if min_sectors is None or tag1['num_sectors1'] < min_sectors:
+                        min_sectors = tag1['num_sectors1']
+                    if max_sectors is None or tag1['num_sectors1'] < max_sectors:
+                        max_sectors = tag1['num_sectors1']
+                    if min_related_tags is None or tag1['num_related_tags1'] < min_related_tags:
+                        min_related_tags = tag1['num_related_tags1']
+                    if max_related_tags is None or tag1['num_related_tags1'] < max_related_tags:
+                        max_related_tags = tag1['num_related_tags1']
+                    if min_societies is None or tag1['num_societies1'] < min_societies:
+                        min_societies = tag1['num_societies1']
+                    if max_societies is None or tag1['num_societies1'] < max_societies:
+                        max_societies = tag1['num_societies1']
+                    if min_score is None or tag1['score1'] < min_score:
+                        min_score = tag1['score1']
+                    if max_score is None or tag1['score1'] < max_score:
+                        max_score = tag1['score1']
             else:
                 society = Society.objects.get(id=society_id)
                 (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = society.get_tag_ranges()
@@ -1113,8 +1110,6 @@ def tooltip(request, tag_id):
         num_related_tags = tag.get_filtered_related_tag_count()
         num_societies = tag.societies.all()
         
-        #p.tick('Getting levels')
-        
         resourceLevel = _get_popularity_level(min_resources, max_resources, tag.num_resources1)
         sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.num_sectors1)
         related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
@@ -1122,12 +1117,10 @@ def tooltip(request, tag_id):
         
         if settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
             # New-style popularity colors - single color only
-            #p.tick('simplified ui max scores')
             tagLevel = _get_popularity_level(min_score, max_score, node.score1)
         else:
             tagLevel = resourceLevel
         
-        #p.tick('sector list')
         sectors_str = truncate_link_list(
             tag.get_sectors(),
             lambda item: '<a href="javascript:Tags.selectSector(%s);">%s</a>' % (item.id, item.name),
@@ -1137,7 +1130,6 @@ def tooltip(request, tag_id):
             'sector-tab'
         )
         
-        #p.tick('related tag list')
         related_tags_str = truncate_link_list(
             tag.related_tags.all(),
             lambda item: '<a href="javascript:Tags.selectTag(%s);">%s</a>' % (item.id, item.name),
@@ -1147,14 +1139,12 @@ def tooltip(request, tag_id):
             'related-tab'
         )
         
-        #p.tick('filtering out related tags')
         # Filter out related tags without filters (to match roamer)
         related_tags = []
         for related_tag in tag.related_tags.all():
             if related_tag.filters.count() > 0 and related_tag.resources.count() > 0:
                 related_tags.append(related_tag)
                 
-        #p.tick('sector list')
         societies_str = truncate_link_list(
             tag.societies.all(),
             lambda item: '<a href="javascript:Tags.selectSociety(%s);">%s</a>' % (item.id, item.name),
@@ -1166,8 +1156,6 @@ def tooltip(request, tag_id):
         
         show_edit_link = request.user.is_authenticated() and request.user.get_profile().role in (Profile.ROLE_SOCIETY_MANAGER, Profile.ROLE_ADMIN)
         
-        #p.tick('render')
-        #print '~tooltip()'
         return render(request, 'tooltip.html', {
             'tag': tag,
             'tagLevel': tagLevel,
@@ -1191,7 +1179,6 @@ def tooltip(request, tag_id):
             TOOLTIP_MAX_CHARS
         )
         
-        #print '~tooltip()'
         return render(request, 'tooltip_cluster.html', {
             'cluster': cluster,
             'tags': tags_str,
