@@ -792,7 +792,7 @@ def ajax_textui_nodes(request):
         elif society_id is not None and society_id != "all":
             str = ' for the %s society%s' % (society.name, final_punc)
             search_page_title = {"num": len(child_nodes), "search_for": search_for, "node_desc": str};
-            
+        
     return render(request, 'ajax_textui_nodes.html', {
         'child_nodes': child_nodes,
         'parent_id': sector_id,
@@ -1022,11 +1022,21 @@ def tooltip(request, tag_id):
         if parent_id is not None:
             if (parent_id == "all"):
                 parent = Node.objects.get(node_type=Node.objects.getNodesForType(NodeType.ROOT))
+                tags = Node.objects.get_tags()
             else:
                 parent = Node.objects.get(id=parent_id)
-            #p.tick('Getting max resources')
-            (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = Node.objects.get_sector_ranges(parent)
-            (min_score, max_score) = Node.objects.get_combined_sector_ranges(parent)
+                tags = parent.child_nodes
+            tags = Node.objects.get_extra_info(tags)
+            tags = tags.values(
+                'num_filters1',
+                'num_related_tags1',
+                'num_resources1',
+                'num_sectors1',
+                'num_societies1',
+                'score1',
+            )
+            (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = Node.objects.get_sector_ranges(parent, tags)
+            (min_score, max_score) = Node.objects.get_combined_sector_ranges(parent, tags)
         
         elif society_id is not None:
             if society_id == 'all':
