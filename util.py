@@ -299,44 +299,142 @@ def profiler(view_func):
         #print '  kwargs: %s' % repr(kwargs)
         #print '  ----------'
         #response = view_func(*args, **kwargs)
-        prof = profile.Profile()
-        response = prof.runcall(view_func, *args, **kwargs )
-        print 'response: %r' % response
         
-        #prof.print_stats()
         
-        if hasattr(settings, 'PROFILER_OUTPUT_TXT') and settings.PROFILER_OUTPUT_TXT:
-            # Save text output.
-            file1 = open(filename_full + '.txt', 'w')
-            old_stdout = sys.stdout
-            sys.stdout = file1
-            # Internal Time
-            #prof.print_stats(sort=1)
-            # Cumulative
-            prof.print_stats(sort=2)
-            sys.stdout = old_stdout
+        if settings.PROFILER_OUTPUT_LINEBYLINE:
+            import line_profiler
+            prof = line_profiler.LineProfiler(view_func)
+            
+            response = prof.runcall(view_func, *args, **kwargs )
+            print 'response: %r' % response
+            
+            # Line-by-line profiler
+            file1 = open(filename_full + '.lineprofiler.txt', 'w')
+            
+            #prof.print_stats(file1)
+            
+            stats = prof.get_stats()
+            #line_profiler.show_text(stats.timings, stats.unit, stream=file1)
+            
+            def show_text2(stats, unit, stream=None):
+                """ Show text for the given timings.
+                """
+                if stream is None:
+                    stream = sys.stdout
+                #print >>stream, 'Timer unit: %g s' % unit
+                #print >>stream, ''
+                for (fn, lineno, name), timings in sorted(stats.items()):
+                    show_func2(fn, lineno, name, stats[fn, lineno, name], unit, stream=stream)
+                
+            def show_func2(filename, start_lineno, func_name, timings, unit, stream=None):
+                """ Show results for a single function.
+                """
+                from line_profiler import linecache, inspect
+                
+                if stream is None:
+                    stream = sys.stdout
+                print >>stream, "File: %s" % filename
+                print >>stream, "Function: %s at line %s" % (func_name, start_lineno)
+                template = '%6s %9s %12s %8s %8s  %-s'
+                d = {}
+                total_time = 0.0
+                linenos = []
+                for lineno, nhits, time in timings:
+                    total_time += time
+                    linenos.append(lineno)
+                print >>stream, "Total time: %g s" % (total_time * unit)
+                if not os.path.exists(filename):
+                    print >>stream, ""
+                    print >>stream, "Could not find file %s" % filename
+                    print >>stream, "Are you sure you are running this program from the same directory"
+                    print >>stream, "that you ran the profiler from?"
+                    print >>stream, "Continuing without the function's contents."
+                    # Fake empty lines so we can see the timings, if not the code.
+                    nlines = max(linenos) - min(min(linenos), start_lineno) + 1
+                    sublines = [''] * nlines
+                else:
+                    all_lines = linecache.getlines(filename)
+                    sublines = inspect.getblock(all_lines[start_lineno-1:])
+                for lineno, nhits, time in timings:
+                    d[lineno] = (nhits, time, '%5.1f' % (float(time) / nhits),
+                        '%5.1f' % (100*time / total_time))
+                linenos = range(start_lineno, start_lineno + len(sublines))
+                empty = ('', '', '', '')
+                header = template % ('Line #', 'Hits', 'Time', 'Per Hit', '% Time', 
+                    'Line Contents')
+                print >>stream, ""
+                print >>stream, header
+                print >>stream, '=' * len(header)
+                
+                for lineno, line in zip(linenos, sublines):
+                    nhits, time, per_hit, percent = d.get(lineno, empty)
+                    
+                    if per_hit != '':
+                        per_hit = round(float(per_hit) * unit, 2)
+                        if per_hit == 0:
+                            per_hit = '-'
+                        else:
+                            per_hit = '%0.2f' % per_hit
+                        
+                    if time != '':
+                        time = round(float(time) * unit, 2)
+                        if time == 0:
+                            time = '-'
+                        else:
+                            time = '%0.2f' % time
+                    
+                    if percent != '' and float(percent) == 0:
+                        percent = '-'
+                    
+                    print >>stream, template % (lineno, nhits, time, per_hit, percent,
+                        line.rstrip('\n').rstrip('\r'))
+                print >>stream, ""
+            
+            show_text2(stats.timings, stats.unit, stream=file1)
+            
             del file1
         
-        if (hasattr(settings, 'PROFILER_OUTPUT_BINARY') and settings.PROFILER_OUTPUT_BINARY) or (hasattr(settings, 'PROFILER_OUTPUT_PNG') and settings.PROFILER_OUTPUT_PNG):
-            # Save the binary output.
-            prof.dump_stats(filename_full + '.profile_out')
+        else:
             
-            if hasattr(settings, 'PROFILER_OUTPUT_PNG') and settings.PROFILER_OUTPUT_PNG:
-                # Create the PNG callgraph image.
-                os.system('%s -f pstats %s | dot -Tpng -o %s 2>NUL' % (relpath(__file__, 'scripts/gprof2dot.py'), filename_full + '.profile_out', filename_full + '.png'))
+            # Other (not line-by-line) profilers.
             
-            if not hasattr(settings, 'PROFILER_OUTPUT_BINARY') or not settings.PROFILER_OUTPUT_BINARY:
-                # We only wanted the PNG file, delete the binary file now that we're done with it.
-                os.remove(filename_full + '.profile_out')
-        
-        if hasattr(settings, 'PROFILER_OUTPUT_KCACHEGRIND') and settings.PROFILER_OUTPUT_KCACHEGRIND:
-            # Save kcachegrind-compatible output.
-            if hasattr(prof, 'getstats'):
-                import lsprofcalltree
-                k = lsprofcalltree.KCacheGrind(prof)
-                file1 = open(filename_full + '.kcachegrind', 'w')
-                k.output(file1)
+            prof = profile.Profile()
+            
+            response = prof.runcall(view_func, *args, **kwargs )
+            print 'response: %r' % response
+            
+            if hasattr(settings, 'PROFILER_OUTPUT_TXT') and settings.PROFILER_OUTPUT_TXT:
+                # Save text output.
+                file1 = open(filename_full + '.txt', 'w')
+                old_stdout = sys.stdout
+                sys.stdout = file1
+                # Internal Time
+                #prof.print_stats(sort=1)
+                # Cumulative
+                prof.print_stats(sort=2)
+                sys.stdout = old_stdout
                 del file1
+            
+            if (hasattr(settings, 'PROFILER_OUTPUT_BINARY') and settings.PROFILER_OUTPUT_BINARY) or (hasattr(settings, 'PROFILER_OUTPUT_PNG') and settings.PROFILER_OUTPUT_PNG):
+                # Save the binary output.
+                prof.dump_stats(filename_full + '.profile_out')
+                
+                if hasattr(settings, 'PROFILER_OUTPUT_PNG') and settings.PROFILER_OUTPUT_PNG:
+                    # Create the PNG callgraph image.
+                    os.system('%s -f pstats %s | dot -Tpng -o %s 2>NUL' % (relpath(__file__, 'scripts/gprof2dot.py'), filename_full + '.profile_out', filename_full + '.png'))
+                
+                if not hasattr(settings, 'PROFILER_OUTPUT_BINARY') or not settings.PROFILER_OUTPUT_BINARY:
+                    # We only wanted the PNG file, delete the binary file now that we're done with it.
+                    os.remove(filename_full + '.profile_out')
+            
+            if hasattr(settings, 'PROFILER_OUTPUT_KCACHEGRIND') and settings.PROFILER_OUTPUT_KCACHEGRIND:
+                # Save kcachegrind-compatible output.
+                if hasattr(prof, 'getstats'):
+                    import lsprofcalltree
+                    k = lsprofcalltree.KCacheGrind(prof)
+                    file1 = open(filename_full + '.kcachegrind', 'w')
+                    k.output(file1)
+                    del file1
         
         #print '  ----------'
         #print '~_inner()'

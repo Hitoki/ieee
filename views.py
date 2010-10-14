@@ -500,7 +500,6 @@ def _get_popularity_level(min, max, count):
     return 'level' + str(level)
 
 @login_required
-#@util.profiler
 def ajax_textui_nodes(request):
     '''
     Gets an AJAX list of tag/cluster info for the textui page.
@@ -792,7 +791,7 @@ def ajax_textui_nodes(request):
         elif society_id is not None and society_id != "all":
             str = ' for the %s society%s' % (society.name, final_punc)
             search_page_title = {"num": len(child_nodes), "search_for": search_for, "node_desc": str};
-        
+    
     return render(request, 'ajax_textui_nodes.html', {
         'child_nodes': child_nodes,
         'parent_id': sector_id,

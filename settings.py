@@ -187,6 +187,9 @@ ENABLE_FIREBUG_LITE = False
 PROFILER_OUTPUT_ROOT = None
 'Specifies the folder to store profiler output.'
 
+PROFILER_OUTPUT_LINEBYLINE = False
+'Saves a line-by-line profiling summary.  This is mutually exclusive with all the other profiler output settings.'
+
 PROFILER_OUTPUT_TXT = True
 'Saves a .txt summary file in the profiler output folder.'
 
