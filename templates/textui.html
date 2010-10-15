@@ -87,7 +87,7 @@
                         <li style="display:none;"><a href="">&nbsp;</a></li> {# used to compensate for filters div #}
                     </ul>
                     <div id="sectors-tab" class="sectors-vert-box">
-                        <ul id="sectors">          
+                        <ul id="sectors">
                             <li id="sector-list-item-all"><a href="javascript:Tags.selectSector('all');">All Industry Sectors</a></li>                        
                             {% for sector in sectors %}
                                 <li id="sector-list-item-{{ sector.id }}"><a href="javascript:Tags.selectSector({{ sector.id }});">{{ sector.name }}</a></li>

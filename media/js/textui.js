@@ -98,7 +98,6 @@ var Tags = {
     PAGE_SECTOR: 'sector',
     PAGE_SOCIETY: 'society',
     PAGE_HELP: 'help',
-    PAGE_HOME: 'home',
     
     // The current page (sector/cluster, society, help, search, etc)
     page: null,
@@ -245,8 +244,6 @@ var Tags = {
     */
     
     _showWaitScreen: function() {
-        this.hideHome();
-        
         // Hide the content lightbox if it's visible.
         Lightbox.hide();
         
@@ -271,7 +268,6 @@ var Tags = {
     // If specified, the "callback" function is fired after the wait screen is shown.
     _showWaitScreenOver: function(callback) {
         log('_showWaitScreenOver()');
-        this.hideHome();
         
         // Hide the content lightbox if it's visible.
         Lightbox.hide();
@@ -363,44 +359,38 @@ var Tags = {
         
         this.updateHighlightedNode();
         
-        if (this.page == this.PAGE_HOME) {
-            this.page = this.PAGE_HELP;
-        }
-        
         this._showWaitScreen();
         
         log('  searching for "' + search_for + '"');
         
         this.updateResults(showSearchResultsCallback);
-        /*
-        var data = {
-            search_for: search_for
-        };
-        if (this.page == this.PAGE_SOCIETY) {
-            log('  was society, adding to data');
-            data.society_id = this.societyId;
-        } else if (this.page == this.PAGE_SECTOR) {
-            log('  was sector, adding to data');
-            data.sector_id = this.nodeId;
-        } else if (this.page == this.PAGE_HELP) {
-            log('  was help, doing nothing');
-            // Do nothing
-        } else {
-            alert('Tags.showSearchResults(): Error, unknown page ' + this.page);
-            return;
-        }
-        
-        $.ajax({
-            url: '/ajax/textui_nodes',
-            data: data,
-            success: function(data) {
-                Tags.onLoadResults(data);
-                if (showSearchResultsCallback) {
-                    showSearchResultsCallback(search_for, data);
-                }
-            }
-        });
-        */
+        //var data = {
+        //    search_for: search_for
+        //};
+        //if (this.page == this.PAGE_SOCIETY) {
+        //    log('  was society, adding to data');
+        //    data.society_id = this.societyId;
+        //} else if (this.page == this.PAGE_SECTOR) {
+        //    log('  was sector, adding to data');
+        //    data.node_id = this.sectorId;
+        //} else if (this.page == this.PAGE_HELP) {
+        //    log('  was help, doing nothing');
+        //    // Do nothing
+        //} else {
+        //    alert('Tags.showSearchResults(): Error, unknown page ' + this.page);
+        //    return;
+        //}
+        //
+        //$.ajax({
+        //    url: '/ajax/textui_nodes',
+        //    data: data,
+        //    success: function(data) {
+        //        Tags.onLoadResults(data);
+        //        if (showSearchResultsCallback) {
+        //            showSearchResultsCallback(search_for, data);
+        //        }
+        //    }
+        //});
     },
 	
     updateResults: function(showSearchResultsCallback) {
@@ -703,40 +693,6 @@ var Tags = {
         $("#tags-live-search").focus();
     },
     
-    showHome: function() {
-        this.page = this.PAGE_HOME;
-		
-        // Unselect any node
-		this.nodeId = null;
-		this.societyId = null;
-
-        this.updateChangedNode();
-        
-        var tagsElem = $('#tags');
-        tagsElem.empty();
-        
-        this.homeOldPaddingLeft = $('.alt-box-pad').css('padding-left');
-        this.homeOldPaddingRight = $('.alt-box-pad').css('padding-right');
-        this.homeOldPaddingTop = $('.alt-box-pad').css('padding-top');
-        this.homeOldPaddingBottom = $('.alt-box-pad').css('padding-bottom');
-        $('.alt-box-pad').css('padding', '0px');
-        
-        this.homeScreenElem = $('<div class="textui-home"></div>').appendTo(tagsElem);
-        this.homeScreenElem.load(TEXTUI_HOME_URL);
-        
-    },
-    
-    hideHome: function() {
-        if (this.homeScreenElem) {
-            this.homeScreenElem.remove();
-            this.homeScreenElem = null;
-            
-            $('.alt-box-pad').css('padding-left', this.homeOldPaddingLeft);
-            $('.alt-box-pad').css('padding-right', this.homeOldPaddingRight);
-            $('.alt-box-pad').css('padding-top', this.homeOldPaddingTop);
-            $('.alt-box-pad').css('padding-bottom', this.homeOldPaddingBottom);
-        }
-    },
     
     defaultVertMargin: undefined,
     defaultHorizMargin: undefined,
