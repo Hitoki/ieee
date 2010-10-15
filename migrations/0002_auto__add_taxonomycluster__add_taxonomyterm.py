@@ -8,6 +8,13 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         
+        # Adding model 'TaxonomyCluster'
+        db.create_table('ieeetags_taxonomycluster', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=500)),
+        ))
+        db.send_create_signal('ieeetags', ['TaxonomyCluster'])
+
         # Adding model 'TaxonomyTerm'
         db.create_table('ieeetags_taxonomyterm', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -15,11 +22,47 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('ieeetags', ['TaxonomyTerm'])
 
+        # Adding M2M table for field related_terms on 'TaxonomyTerm'
+        db.create_table('ieeetags_taxonomyterm_related_terms', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('from_taxonomyterm', models.ForeignKey(orm['ieeetags.taxonomyterm'], null=False)),
+            ('to_taxonomyterm', models.ForeignKey(orm['ieeetags.taxonomyterm'], null=False))
+        ))
+        db.create_unique('ieeetags_taxonomyterm_related_terms', ['from_taxonomyterm_id', 'to_taxonomyterm_id'])
+
+        # Adding M2M table for field related_nodes on 'TaxonomyTerm'
+        db.create_table('ieeetags_taxonomyterm_related_nodes', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('taxonomyterm', models.ForeignKey(orm['ieeetags.taxonomyterm'], null=False)),
+            ('node', models.ForeignKey(orm['ieeetags.node'], null=False))
+        ))
+        db.create_unique('ieeetags_taxonomyterm_related_nodes', ['taxonomyterm_id', 'node_id'])
+
+        # Adding M2M table for field taxonomy_clusters on 'TaxonomyTerm'
+        db.create_table('ieeetags_taxonomyterm_taxonomy_clusters', (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('taxonomyterm', models.ForeignKey(orm['ieeetags.taxonomyterm'], null=False)),
+            ('taxonomycluster', models.ForeignKey(orm['ieeetags.taxonomycluster'], null=False))
+        ))
+        db.create_unique('ieeetags_taxonomyterm_taxonomy_clusters', ['taxonomyterm_id', 'taxonomycluster_id'])
+
 
     def backwards(self, orm):
         
+        # Deleting model 'TaxonomyCluster'
+        db.delete_table('ieeetags_taxonomycluster')
+
         # Deleting model 'TaxonomyTerm'
         db.delete_table('ieeetags_taxonomyterm')
+
+        # Removing M2M table for field related_terms on 'TaxonomyTerm'
+        db.delete_table('ieeetags_taxonomyterm_related_terms')
+
+        # Removing M2M table for field related_nodes on 'TaxonomyTerm'
+        db.delete_table('ieeetags_taxonomyterm_related_nodes')
+
+        # Removing M2M table for field taxonomy_clusters on 'TaxonomyTerm'
+        db.delete_table('ieeetags_taxonomyterm_taxonomy_clusters')
 
 
     models = {
@@ -27,10 +70,10 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Group'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '80'}),
-            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'blank': 'True'})
+            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'})
         },
         'auth.permission': {
-            'Meta': {'ordering': "('content_type__app_label', 'codename')", 'unique_together': "(('content_type', 'codename'),)", 'object_name': 'Permission'},
+            'Meta': {'ordering': "('content_type__app_label', 'content_type__model', 'codename')", 'unique_together': "(('content_type', 'codename'),)", 'object_name': 'Permission'},
             'codename': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['contenttypes.ContentType']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -41,7 +84,7 @@ class Migration(SchemaMigration):
             'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Group']", 'blank': 'True'}),
+            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Group']", 'symmetrical': 'False', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
@@ -49,7 +92,7 @@ class Migration(SchemaMigration):
             'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'blank': 'True'}),
+            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
             'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
         },
         'contenttypes.contenttype': {
@@ -75,13 +118,13 @@ class Migration(SchemaMigration):
         },
         'ieeetags.node': {
             'Meta': {'ordering': "['name']", 'object_name': 'Node'},
-            'filters': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'nodes'", 'to': "orm['ieeetags.Filter']"}),
+            'filters': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'nodes'", 'symmetrical': 'False', 'to': "orm['ieeetags.Filter']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
             'node_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['ieeetags.NodeType']"}),
             'parents': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'child_nodes'", 'null': 'True', 'symmetrical': 'False', 'to': "orm['ieeetags.Node']"}),
             'related_tags': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'related_tags_rel_+'", 'null': 'True', 'to': "orm['ieeetags.Node']"}),
-            'societies': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'tags'", 'blank': 'True', 'to': "orm['ieeetags.Society']"})
+            'societies': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "'tags'", 'blank': 'True', 'to': "orm['ieeetags.Society']"})
         },
         'ieeetags.nodetype': {
             'Meta': {'object_name': 'NodeType'},
@@ -116,10 +159,10 @@ class Migration(SchemaMigration):
             'ieee_id': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
             'keywords': ('django.db.models.fields.CharField', [], {'max_length': '5000', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
-            'nodes': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'resources'", 'to': "orm['ieeetags.Node']"}),
+            'nodes': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'resources'", 'symmetrical': 'False', 'to': "orm['ieeetags.Node']"}),
             'priority_to_tag': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'resource_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['ieeetags.ResourceType']"}),
-            'societies': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'resources'", 'to': "orm['ieeetags.Society']"}),
+            'societies': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'resources'", 'symmetrical': 'False', 'to': "orm['ieeetags.Society']"}),
             'standard_status': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'url': ('django.db.models.fields.CharField', [], {'max_length': '1000', 'blank': 'True'}),
             'url_date_checked': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
@@ -140,14 +183,20 @@ class Migration(SchemaMigration):
             'logo_thumbnail': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
             'url': ('django.db.models.fields.CharField', [], {'max_length': '1000', 'blank': 'True'}),
-            'users': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'societies'", 'blank': 'True', 'to': "orm['auth.User']"})
+            'users': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "'societies'", 'blank': 'True', 'to': "orm['auth.User']"})
+        },
+        'ieeetags.taxonomycluster': {
+            'Meta': {'object_name': 'TaxonomyCluster'},
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '500'})
         },
         'ieeetags.taxonomyterm': {
             'Meta': {'object_name': 'TaxonomyTerm'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
-            'related_nodes': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'nodes'", 'blank': 'True', 'to': "orm['ieeetags.Node']"}),
-            'related_terms': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'terms'", 'null': 'True', 'to': "orm['ieeetags.TaxonomyTerm']"})
+            'related_nodes': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "'nodes'", 'blank': 'True', 'to': "orm['ieeetags.Node']"}),
+            'related_terms': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'related_terms_rel_+'", 'null': 'True', 'to': "orm['ieeetags.TaxonomyTerm']"}),
+            'taxonomy_clusters': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "'clusters'", 'blank': 'True', 'to': "orm['ieeetags.TaxonomyCluster']"})
         },
         'ieeetags.urlcheckerlog': {
             'Meta': {'object_name': 'UrlCheckerLog'},
