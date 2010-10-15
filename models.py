@@ -484,7 +484,7 @@ class NodeManager(models.Manager):
         list1 = list(queryset)
         list1.sort(key=sort_function)        
         return list1
-    
+        
 class Node(models.Model):
     '''
     This model can represent differen types of nodes (root, sector, cluter, tag).
@@ -599,6 +599,23 @@ class Node(models.Model):
         ordering = ['name']
 
 # ------------------------------------------------------------------------------
+
+class TaxonomyTermManager(models.Manager):
+    pass
+
+class TaxonomyTerm(models.Model):
+    name = models.CharField(max_length=500)
+    related_terms = models.ManyToManyField('self', related_name='terms', null=True, blank=True)
+    related_nodes = models.ManyToManyField('Node', related_name='nodes', blank=True)
+    taxonomy_clusters = models.ManyToManyField('TaxonomyCluster', related_name='clusters', blank=True)
+    
+    objects = TaxonomyTermManager()
+    
+class TaxonomyClusterManager(models.Manager):
+    pass
+
+class TaxonomyCluster(models.Model):
+    name = models.CharField(max_length=500)
 
 class SocietyManager(models.Manager):
     def getFromName(self, name):
