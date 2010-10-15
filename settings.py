@@ -112,7 +112,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.humanize',
-    'dmigrations',
+    'south',
     'ieeetags',
     'ieeetags.site_admin',
     'noomake',
