@@ -487,19 +487,19 @@ class NodeManager(models.Manager):
         
 class Node(models.Model):
     '''
-    This model can represent differen types of nodes (root, sector, cluter, tag).
+    This model can represent different types of nodes (root, sector, cluter, tag).
     
     There is only one root tag.
     
     Each sector is a child of the root tag, and can contain clusters and tags.
     
-    Each cluster is the child of a single cluster, and can contain tags.
+    Each cluster is the child of 1 or more sectors, and contain 0 or more tags.
     
     Each tag is a child of any number of sectors and clusters.  It contains no children.
     '''
     name = models.CharField(max_length=500)
     parents = models.ManyToManyField('self', symmetrical=False, related_name='child_nodes', null=True, blank=True)
-    'This shows child object this node is a child of.  The types of the parent nodes changes depending on the type of this node.'
+    'The parent nodes.  The type for this field can be vary depending on the type of this node.'
     node_type = models.ForeignKey(NodeType)
     'The type of node this is: root, sector, cluster, tag.'
     societies = models.ManyToManyField('Society', related_name='tags', blank=True)
@@ -557,11 +557,11 @@ class Node(models.Model):
         assert self.node_type.name == NodeType.SECTOR, 'get_tags_and_clusters() only works for sectors.'
         return self.child_nodes.exclude(parents__node_type__name=NodeType.TAG_CLUSTER)
     
-    def get_sector(self):
-        "Only valid for clusters.  Gets a cluster's parent sector, ensuring that there is exactly 1 parent."
-        assert self.node_type.name == NodeType.TAG_CLUSTER, 'Node "%s" is not a cluster' % self.name
-        assert self.parents.count() == 1, 'Node "%s" has %s parents' % (self.name, self.parents.count())
-        return self.parents.all()[0]
+    #def get_sector(self):
+    #    "Only valid for clusters.  Gets a cluster's parent sector, ensuring that there is exactly 1 parent."
+    #    assert self.node_type.name == NodeType.TAG_CLUSTER, 'Node "%s" is not a cluster' % self.name
+    #    assert self.parents.count() == 1, 'Node "%s" has %s parents' % (self.name, self.parents.count())
+    #    return self.parents.all()[0]
     
     def cluster_update_filters(self):
         'For clusters only.  Updates this cluster\'s filters to reflect all the current filters of its child tags.'
@@ -595,6 +595,35 @@ class Node(models.Model):
                 count += 1
         return count
     
+    def save(self, *args, **kwargs):
+        cluster_type = NodeType.objects.getFromName(NodeType.TAG_CLUSTER)
+        print 'self.node_type: %r' % self.node_type
+        print 'cluster_type: %r' % cluster_type
+        if self.node_type == cluster_type:
+            # If this is a cluster, customize the saving process.
+            
+            if self.id is None:
+                # Save the new cluster so we can use the relationship fields.
+                super(Node, self).save(*args, **kwargs)
+            
+            # Assign all the child_node's sectors to this cluster.
+            sectors = []
+            for child_node in self.child_nodes.all():
+                for sector in child_node.get_sectors():
+                    if sector not in sectors:
+                        sectors.append(sector)
+            self.parents = sectors
+            
+            # Assign all the child_node's sectors to this cluster.
+            filters = []
+            for child_node in self.child_nodes.all():
+                for filter in child_node.filters.all():
+                    if filter not in filters:
+                        filters.append(filter)
+            self.filters = filters
+            
+        super(Node, self).save(*args, **kwargs)
+            
     class Meta:
         ordering = ['name']
 

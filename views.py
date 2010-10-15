@@ -704,6 +704,7 @@ def ajax_textui_nodes(request):
     # This saves time when we check child_node.node_type later on (prevents DB hit for every single child_node)
     child_nodes = child_nodes.select_related('node_type')
     
+    clusters = []
     child_nodes2 = []
     for child_node in child_nodes.values(
         'id',
@@ -759,21 +760,28 @@ def ajax_textui_nodes(request):
                 
         elif child_node['node_type__name'] == NodeType.TAG_CLUSTER:
             # Only show clusters that have one of the selected filters
-            if child_node['filters'].filter(id__in=filterIds).count():
-                cluster_child_tags = child_node['get_tags']()
-                cluster_child_tags = Node.objects.get_extra_info(cluster_child_tags)
-                
-                # Find out how many of this cluster's child tags would show with the current filters
-                num_child_tags = 0
-                for cluster_child_tag in cluster_child_tags:
-                    if cluster_child_tag.num_resources1 > 0 and cluster_child_tag.num_societies1 > 0 and cluster_child_tag.num_filters1 > 0 and cluster_child_tag.filters.filter(id__in=filterIds).count() > 0:
-                        num_child_tags += 1
-                
-                if num_child_tags > 0:
-                    # do nothing
-                    pass
-                else:
-                    filter_child_node = True
+            #if child_node['filters'].filter(id__in=filterIds).count():
+            #    cluster_child_tags = child_node['get_tags']()
+            #    cluster_child_tags = Node.objects.get_extra_info(cluster_child_tags)
+            #    
+            #    # Find out how many of this cluster's child tags would show with the current filters
+            #    num_child_tags = 0
+            #    for cluster_child_tag in cluster_child_tags:
+            #        if cluster_child_tag.num_resources1 > 0 and cluster_child_tag.num_societies1 > 0 and cluster_child_tag.num_filters1 > 0 and cluster_child_tag.filters.filter(id__in=filterIds).count() > 0:
+            #            num_child_tags += 1
+            #    
+            #    if num_child_tags > 0:
+            #        # do nothing
+            #        pass
+            #    else:
+            #        filter_child_node = True
+            
+            #child_node['score'] = child_node['score1']
+            child_node['level'] = 'level1'
+            
+            # Make sure clusters show on top of the list.
+            filter_child_node = True
+            clusters.append(child_node)
                 
         else:
             raise Exception('Unknown child node type "%s" for node "%s"' % (child_node['node_type__name'], child_node['name']))
@@ -781,7 +789,7 @@ def ajax_textui_nodes(request):
         if not filter_child_node:
             child_nodes2.append(child_node)
 
-    child_nodes = child_nodes2
+    child_nodes = clusters + child_nodes2
     
     if search_for is not None:
         final_punc =  ('.', ':')[len(child_nodes) > 0]

@@ -223,11 +223,10 @@ class EditTagsForm(Form):
     market_areas_filter = ChoiceField(choices=TRISTATE_CHOICES_TAGS, widget=RadioSelect(), label='Market Areas')
 
 class EditClusterForm(ModelForm):
-    sector = ModelChoiceField(queryset=Node.objects.getSectors(), widget=DisplayOnlyWidget(ModelChoiceField, model=Node))
     tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from this Cluster', blur_text='Type a few characters to bring up matching tags'))
     class Meta:
         model = Node
-        fields = ['name', 'sector', 'child_nodes']
+        fields = ['name']
 
 class ItemsPerPageForm(Form):
     _ITEMS_PER_PAGE = [

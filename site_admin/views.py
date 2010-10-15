@@ -2142,40 +2142,27 @@ def edit_cluster(request, cluster_id=None):
     'Edit Cluster page.'
     if cluster_id is not None:
         cluster = Node.objects.get(id=cluster_id)
-        sector_id = cluster.get_sector().id
     else:
         cluster = None
-        sector_id = request.GET.get('sector_id')
     
     if request.method == 'GET':
         # Show the form
         if cluster is None:
-            if sector_id is None:
-                # Show 'Choose a sector' page
-                sectors = Node.objects.getSectors()
-                return render(request, 'site_admin/create_cluster_select_sector.html', {
-                    'sectors': sectors,
-                })
-            else:
-                # New cluster
-                sector = Node.objects.get(id=sector_id)
-                assert sector.node_type.name == NodeType.SECTOR, 'Node "%s" is not a sector' % sector.name
-                form = EditClusterForm(initial={
-                    #'sector': sector,
-                    'sector': sector_id,
-                })
+            # New cluster
+            form = EditClusterForm()
                 
         else:
             # Existing cluster
             tags = cluster.get_tags()
             form = EditClusterForm(instance=cluster, initial={
                 'tags': tags,
-                'sector': cluster.get_sector().id,
             })
     else:
         # Process the form
         form = EditClusterForm(request.POST, instance=cluster)
         if form.is_valid():
+            tags = form.cleaned_data['tags']
+            
             if cluster is not None:
                 # Updating an existing cluster
                 form.save()
@@ -2184,9 +2171,9 @@ def edit_cluster(request, cluster_id=None):
                 cluster = form.save(commit=False)
                 cluster.node_type = NodeType.objects.getFromName(NodeType.TAG_CLUSTER)
                 cluster.save()
-                cluster.parents.add(form.cleaned_data['sector'])
-            
-            tags = form.cleaned_data['tags']
+                
+                cluster.child_nodes = tags
+                cluster.save()
             
             # First remove all existing tags
             for tag in cluster.get_tags():
@@ -2199,9 +2186,6 @@ def edit_cluster(request, cluster_id=None):
                     Node.objects.add_tag_to_cluster(cluster, tag)
                     
             return HttpResponseRedirect(reverse('admin_view_cluster', args=[cluster.id]))
-        
-    # Limit tags to the selected sector
-    form.fields['tags'].widget.set_search_url(reverse('ajax_search_tags') + '?filter_sector_ids=%s' % sector_id)
         
     return render(request, 'site_admin/edit_cluster.html', {
         'cluster': cluster,
