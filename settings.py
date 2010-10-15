@@ -93,6 +93,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'ieeetags.middleware.ExceptionMiddleware.ExceptionMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     #'ieeetags.djangologging.middleware.LoggingMiddleware',
     #'ieeetags.middleware.ProfilingMiddleware.ProfileMiddleware',
 )
@@ -116,6 +117,7 @@ INSTALLED_APPS = (
     'ieeetags',
     'ieeetags.site_admin',
     'noomake',
+    'debug_toolbar',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
