@@ -96,8 +96,9 @@ $(document).ready(function(){
 var Tags = {
     
     PAGE_SECTOR: 'sector',
-    PAGE_CLUSTER: 'tag_cluster',
+    PAGE_SECTOR_CLUSTER: 'sector_cluster',
     PAGE_SOCIETY: 'society',
+    PAGE_SOCIETY_CLUSTER: 'society_cluster',
     PAGE_HELP: 'help',
     
     // The current page (sector, cluster, society, help, search, etc)
@@ -187,7 +188,7 @@ var Tags = {
         this.updateHighlightedNode();
         this.updateSwitchLink();
         
-        if (this.page == this.PAGE_SECTOR || this.page == this.PAGE_CLUSTER || this.page == this.PAGE_SOCIETY) {
+        if (this.page == this.PAGE_SECTOR || this.page == this.PAGE_SECTOR_CLUSTER || this.page == this.PAGE_SOCIETY) {
             // Enable the slider
             $('#textui-zoom-slider').slider('enable');
             
@@ -490,7 +491,7 @@ var Tags = {
 			tabs.setTab('sectors-tab');
 			$('#tag-galaxy').addClass('tag-galaxy-viewing');
             
-        } else if (this.page == this.PAGE_CLUSTER) {
+        } else if (this.page == this.PAGE_SECTOR_CLUSTER) {
             // Highlight the selected sector
             $('#sector-list-item-' + this.sectorId + ' a').addClass('active-sector');
             var tabs = $('#left-column-container').data('nootabs');
@@ -507,7 +508,7 @@ var Tags = {
                 clusterName = '...';
             }
             
-            var elem = $('<li id="cluster"><a href="javascript:Tags.selectCluster(' + this.clusterId + ', ' + this.sectorId + ');">' + clusterName + '</a></li>');
+            var elem = $('<li id="cluster"><a href="javascript:Tags.selectCluster(' + this.clusterId + ', ' + this.sectorId + ', null);">' + clusterName + '</a></li>');
             if (this.sectorId) {
                 $('#sector-list-item-' + this.sectorId).append(elem);
             } else {
@@ -542,13 +543,14 @@ var Tags = {
         }
     },
     
-    selectCluster: function(clusterId, sectorId) {
+    selectCluster: function(clusterId, sectorId, societyId) {
         var tags = this;
         log("selectCluster()");
         log("  clusterId: " + clusterId);
         log("  sectorId: " + sectorId);
+        log("  societyId: " + societyId);
         
-        this.page = this.PAGE_CLUSTER;
+        this.page = this.PAGE_SECTOR_CLUSTER;
         
         this.clusterId = clusterId;
         this.sectorId = sectorId;
@@ -692,8 +694,10 @@ var Tags = {
     updateSort: function() {
         if (this.page == this.PAGE_SECTOR) {
             this.selectSector(this.sectorId);
-        } else if (this.page == this.PAGE_CLUSTER) {
-            this.selectCluster(this.clusterId, this.sectorId);
+        } else if (this.page == this.PAGE_SECTOR_CLUSTER) {
+            this.selectCluster(this.clusterId, this.sectorId, null);
+        } else if (this.page == this.PAGE_SOCIETY_CLUSTER) {
+            this.selectCluster(this.clusterId, null, this.societyId);
         } else if (this.page == this.PAGE_SOCIETY) {
             this.selectSociety(this.societyId);
         } else {

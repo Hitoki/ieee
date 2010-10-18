@@ -19,6 +19,22 @@
                 <ul>
                     {% for sector in cluster.get_sectors.all %}
                         <li><a href="{% url admin_view_sector sector.id %}">{{ sector.name }}</a></li>
+                    {% empty %}
+                        <li>None</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Society
+            </th>
+            <td>
+                <ul>
+                    {% for society in cluster.societies.all %}
+                        <li><a href="{% url admin_view_society society.id %}">{{ society.name }}</a></li>
+                    {% empty %}
+                        <li>None</li>
                     {% endfor %}
                 </ul>
             </td>

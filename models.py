@@ -407,23 +407,7 @@ class NodeManager(models.Manager):
             )
         )
     
-    def add_tag_to_cluster(self, cluster, tag):
-        'Adds a tag to the given cluster.'
-        cluster.child_nodes.add(tag)
-        for filter in tag.filters.all():
-            cluster.filters.add(filter)
-        cluster.save()
-    
-    def remove_tag_from_cluster(self, cluster, tag):
-        'Removes a tag from the given cluster.'
-        cluster.child_nodes.remove(tag)
-        # Update the list of filters for this cluster
-        cluster.filters.clear()
-        for tag in cluster.get_tags():
-            for filter in tag.filters.all():
-                cluster.filters.add(filter)
-        cluster.save()
-    
+
     def get_extra_info(self, queryset, order_by=None, selected_filter_ids=None):
         """
         Returns the queryset with extra columns:
@@ -615,8 +599,9 @@ class Node(models.Model):
     
     def save(self, *args, **kwargs):
         cluster_type = NodeType.objects.getFromName(NodeType.TAG_CLUSTER)
-        print 'self.node_type: %r' % self.node_type
-        print 'cluster_type: %r' % cluster_type
+        print 'Node.save()'
+        print '  self.node_type: %r' % self.node_type
+        print '  cluster_type: %r' % cluster_type
         if self.node_type == cluster_type:
             # If this is a cluster, customize the saving process.
             
@@ -632,6 +617,15 @@ class Node(models.Model):
                         sectors.append(sector)
             self.parents = sectors
             
+            # Assign all the child_node's societies to this cluster.
+            societies = []
+            for child_node in self.child_nodes.all():
+                for society in child_node.societies.all():
+                    if society not in societies:
+                        societies.append(society)
+            self.societies = societies
+            print '  societies: %r' % societies
+            
             # Assign all the child_node's sectors to this cluster.
             filters = []
             for child_node in self.child_nodes.all():
@@ -641,6 +635,8 @@ class Node(models.Model):
             self.filters = filters
             
         super(Node, self).save(*args, **kwargs)
+        
+        print '  self.societies.all(): %r' % self.societies.all()
             
     class Meta:
         ordering = ['name']

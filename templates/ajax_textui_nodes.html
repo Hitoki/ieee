@@ -1,5 +1,8 @@
 {% load filters %}
 
+sector_id: {{ sector_id|pprint }}<br/>
+society_id: {{ society_id|pprint }}<br/>
+
 {% if search_for %}
     {% if search_for_too_short %}
         <h3>The filter string <b>{{ search_for }}</b> is too short. Please enter more characters above OR <a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">clear the filter now</a>.</h3>
@@ -27,7 +30,8 @@
             <a href="javascript:Tags.selectTag({{ tag.id }});" class="{{ tag.level }}">{{ tag.name|truncatechars:30 }}</a>
         {% else %}
             {% ifequal tag.node_type__name 'tag_cluster' %}
-                <a href="javascript:Tags.selectCluster({{ tag.id }}, {{ sector_id|default_if_none:"null" }});" class="{{ tag.level }}">
+                javascript:Tags.selectCluster({{ tag.id }}, {{ sector_id|default_if_none:"null"|safe }}, {{ society_id|default_if_none:"null"|safe }});<br/>
+                <a href="javascript:Tags.selectCluster({{ tag.id }}, {{ sector_id|default_if_none:"null"|safe }}, {{ society_id|default_if_none:"null"|safe }});" class="{{ tag.level }}">
                     <img src="/media/images/icon_cluster_sm.png" />
                     {{ tag.name|truncatechars:30 }}
                 </a> 

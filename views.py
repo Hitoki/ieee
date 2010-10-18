@@ -516,9 +516,20 @@ def ajax_textui_nodes(request):
     sector_id = request.GET.get('sector_id', None)
     if sector_id == '' or sector_id == 'null':
         sector_id = None
-    if sector_id is not None and sector_id != 'all':
+    try:
         sector_id = int(sector_id)
+    except (TypeError, ValueError):
+        pass
+    assert sector_id is None or sector_id == 'all' or type(sector_id) is int, 'Bad value for sector_id %r' % sector_id
+    
     society_id = request.GET.get('society_id', None)
+    if society_id == '' or society_id == 'null':
+        society_id = None
+    try:
+        society_id = int(society_id)
+    except (TypeError, ValueError):
+        pass
+        
     search_for = request.GET.get('search_for', None)
     
     log('  node_id: %s' % node_id)
@@ -534,6 +545,9 @@ def ajax_textui_nodes(request):
         society_id = None
     if search_for == 'null' or search_for == '':
         search_for = None
+    
+    if node_id == 'all':
+        sector_id = 'all'
     
     #assert society_id is not None or node_id is not None, 'Either society_id or node_id is required'
     #assert society_id is None or node_id is None, 'Cannot specify both society_id or node_id'
@@ -675,7 +689,7 @@ def ajax_textui_nodes(request):
             
         elif node.node_type.name == NodeType.TAG_CLUSTER:
             child_nodes = node.get_tags()
-            if sector_id is not None:
+            if sector_id is not None and sector_id != 'all':
                 child_nodes = child_nodes.filter(parents__id=sector_id)
                 
             if len(filterIds) > 0:
@@ -818,6 +832,12 @@ def ajax_textui_nodes(request):
         elif society_id is not None and society_id != "all":
             str = ' for the %s society%s' % (society.name, final_punc)
             search_page_title = {"num": len(child_nodes), "search_for": search_for, "node_desc": str};
+    
+    # Format the society/sector id vars for javascript:
+    if sector_id == 'all':
+        sector_id = "'all'"
+    if society_id == 'all':
+        society_id = "'all'"
     
     return render(request, 'ajax_textui_nodes.html', {
         'child_nodes': child_nodes,

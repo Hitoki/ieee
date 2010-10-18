@@ -1526,78 +1526,79 @@ def import_conference_series(request):
         })
 
 def _import_clusters(file):
-    start = time.time()
-    
-    row_count = 0
-    invalid_tags = 0
-    tags_added = 0
-    clusters_created = 0
-    duplicate_clusters = 0
-    errors = []
-    
-    reader = _open_unicode_csv_reader_for_file(file)
-    
-    for row in reader:
-        
-        # Cluster Name, Tag Names
-        cluster_name, sector_name, tag_names = row
-        
-        # Formatting
-        cluster_name = cluster_name.strip()
-        sector_name = sector_name.strip()
-        sector = Node.objects.get_sector_by_name(sector_name)
-        tag_names = [tag_names.strip() for tag_names in tag_names.split('|')]
-        tags = []
-        for tag_name in tag_names:
-            tag = Node.objects.get_tag_by_name(tag_name)
-            if tag is None:
-                errors.append('Unknown tag "%s"' % tag_name)
-                invalid_tags += 1
-            elif sector not in tag.parents.all():
-                errors.append('Tag "%s" is not in the "%s" sector.' % (tag_name, sector_name))
-            else:
-                tags.append(tag)
-                tags_added += 1
-        
-        if cluster_name == '':
-            errors.append('Cluster name cannot be blank.')
-        
-        if len(errors) == 0:
-            # Create the tag cluster
-            if Node.objects.get_cluster_by_name(cluster_name, sector_name) is not None:
-                # Duplicate cluster found
-                errors.append('Duplicate cluster "%s" found in sector "%s".' % (cluster_name, sector_name))
-                duplicate_clusters += 1
-            else:
-                cluster = Node.objects.create_cluster(cluster_name, sector)
-                for tag in tags:
-                    Node.objects.add_tag_to_cluster(cluster, tag)
-                
-                for tag in tags:
-                    Node.objects.add_tag_to_cluster(cluster, tag)
-                
-                cluster.save()
-                    
-                clusters_created += 1
-        
-        if not row_count % 50:
-            try:
-                logging.debug('    Parsing row %d, row/sec %f' % (row_count, row_count/(time.time()-start) ))
-            except Exception:
-                pass
-            
-        row_count += 1
-        
-    file.close()
-    
-    return {
-        'row_count': row_count,
-        'invalid_tags': invalid_tags,
-        'tags_added': tags_added,
-        'clusters_created': clusters_created,
-        'duplicate_clusters': duplicate_clusters,
-        'errors': errors,
-    }
+    assert False, 'TODO: Remove references to add_tag_to_cluster()'
+    #start = time.time()
+    #
+    #row_count = 0
+    #invalid_tags = 0
+    #tags_added = 0
+    #clusters_created = 0
+    #duplicate_clusters = 0
+    #errors = []
+    #
+    #reader = _open_unicode_csv_reader_for_file(file)
+    #
+    #for row in reader:
+    #    
+    #    # Cluster Name, Tag Names
+    #    cluster_name, sector_name, tag_names = row
+    #    
+    #    # Formatting
+    #    cluster_name = cluster_name.strip()
+    #    sector_name = sector_name.strip()
+    #    sector = Node.objects.get_sector_by_name(sector_name)
+    #    tag_names = [tag_names.strip() for tag_names in tag_names.split('|')]
+    #    tags = []
+    #    for tag_name in tag_names:
+    #        tag = Node.objects.get_tag_by_name(tag_name)
+    #        if tag is None:
+    #            errors.append('Unknown tag "%s"' % tag_name)
+    #            invalid_tags += 1
+    #        elif sector not in tag.parents.all():
+    #            errors.append('Tag "%s" is not in the "%s" sector.' % (tag_name, sector_name))
+    #        else:
+    #            tags.append(tag)
+    #            tags_added += 1
+    #    
+    #    if cluster_name == '':
+    #        errors.append('Cluster name cannot be blank.')
+    #    
+    #    if len(errors) == 0:
+    #        # Create the tag cluster
+    #        if Node.objects.get_cluster_by_name(cluster_name, sector_name) is not None:
+    #            # Duplicate cluster found
+    #            errors.append('Duplicate cluster "%s" found in sector "%s".' % (cluster_name, sector_name))
+    #            duplicate_clusters += 1
+    #        else:
+    #            cluster = Node.objects.create_cluster(cluster_name, sector)
+    #            for tag in tags:
+    #                Node.objects.add_tag_to_cluster(cluster, tag)
+    #            
+    #            for tag in tags:
+    #                Node.objects.add_tag_to_cluster(cluster, tag)
+    #            
+    #            cluster.save()
+    #                
+    #            clusters_created += 1
+    #    
+    #    if not row_count % 50:
+    #        try:
+    #            logging.debug('    Parsing row %d, row/sec %f' % (row_count, row_count/(time.time()-start) ))
+    #        except Exception:
+    #            pass
+    #        
+    #    row_count += 1
+    #    
+    #file.close()
+    #
+    #return {
+    #    'row_count': row_count,
+    #    'invalid_tags': invalid_tags,
+    #    'tags_added': tags_added,
+    #    'clusters_created': clusters_created,
+    #    'duplicate_clusters': duplicate_clusters,
+    #    'errors': errors,
+    #}
 
 
 @login_required
@@ -2311,17 +2312,7 @@ def edit_cluster(request, cluster_id=None):
                 
                 cluster.child_nodes = tags
                 cluster.save()
-            
-            # First remove all existing tags
-            for tag in cluster.get_tags():
-                if tag not in tags:
-                    Node.objects.remove_tag_from_cluster(cluster, tag)
-                    
-            # Now add any new tags
-            for tag in tags:
-                if tag not in cluster.get_tags():
-                    Node.objects.add_tag_to_cluster(cluster, tag)
-                    
+
             return HttpResponseRedirect(reverse('admin_view_cluster', args=[cluster.id]))
         
     return render(request, 'site_admin/edit_cluster.html', {
