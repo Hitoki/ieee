@@ -39,6 +39,8 @@ urlpatterns += patterns('',
     url(r'^import/clusters$', views.import_clusters, name='admin_import_clusters'),
     url(r'^import/conference_series$', views.import_conference_series, name='admin_import_conference_series'),
     
+    url(r'^import/taxonomy$', views.import_taxonomy, name='admin_import_taxonomy'),
+    
     url(r'^sectors$', views.list_sectors, name='admin_list_sectors'),
     url(r'^sector/(\d+)$', views.view_sector, name='admin_view_sector'),
     

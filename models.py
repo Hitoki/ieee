@@ -10,6 +10,7 @@ from logging import debug as log
 import time
 import string
 import settings
+import logging
 #from profiler import Profiler
 
 def single_row(results, message=None):
@@ -647,7 +648,23 @@ class Node(models.Model):
 # ------------------------------------------------------------------------------
 
 class TaxonomyTermManager(models.Manager):
-    pass
+    def create_for_clusters(self, name, cluster_names, tag_ids):
+        tax_term = TaxonomyTerm()
+        tax_term.name = name
+        tax_term.save()
+        for cluster_name in cluster_names:
+            try:
+                cluster = TaxonomyCluster.objects.get(name=cluster_name)
+                tax_term.taxonomy_clusters.add(cluster)
+            except TaxonomyCluster.DoesNotExist:
+                logging.debug("Cluster not found: %s" % cluster_name)
+        
+        for tag_id in tag_ids:
+            try:
+                tax_term.related_nodes.add(Node.objects.get(pk=tag_id))
+            except Node.DoesNotExist:
+                logging.debug("Node (tag) not found with id %s" % tag_id)
+        tax_term.save()
 
 class TaxonomyTerm(models.Model):
     name = models.CharField(max_length=500)

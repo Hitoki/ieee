@@ -34,6 +34,7 @@ from ieeetags import permissions
 from ieeetags import url_checker
 from ieeetags.util import *
 from ieeetags.models import Node, NodeType, Permission, Resource, ResourceType, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager, FailedLoginLog, UrlCheckerLog
+from ieeetags.models import TaxonomyTerm, TaxonomyCluster
 #from ieeetags.logger import log
 from ieeetags.views import render
 from ieeetags.widgets import DisplayOnlyWidget
@@ -1596,6 +1597,142 @@ def _import_clusters(file):
         'clusters_created': clusters_created,
         'duplicate_clusters': duplicate_clusters,
         'errors': errors,
+    }
+
+
+@login_required
+@admin_required
+@transaction.commit_on_success
+def import_taxonomy(request):
+    'Imports taxonomy from an import file.'
+    if request.method == 'GET':
+        # Display form
+        form = ImportFileForm()
+        return render(request, 'site_admin/import_file.html', {
+            'page_title': 'Import IEEE Taxonomy XML File',
+            'form': form,
+        })
+        
+    else:
+        
+        # DEBUG: delete all clusters first
+        #Node.objects.get_clusters().delete()
+        
+        # Import resources from the uploaded file
+        file = request.FILES['file']
+        results = _import_taxonomy(file)
+        
+        results['errors'] = list_to_html_list(results['errors'])
+        
+        return render(request, 'site_admin/import_file.html', {
+            'page_title': 'Import IEEE Taxonomy XML File',
+            'results': results,
+        })
+
+def get_element_text_value(elem):
+    'Returns the text value of a given XML element.  Combines all separate text nodes, strips all leading/trailing whitespace.'
+    assert elem.nodeType == elem.ELEMENT_NODE, 'get_element_text_value(): elem must be an ELEMENT_NODE, but is %r' % elem.nodeType
+    value = ''
+    for child_node in elem.childNodes:
+        if child_node.nodeType == child_node.TEXT_NODE:
+            value += child_node.nodeValue.strip()
+    return value
+
+def has_parent(node):
+    return len(node.getElementsByTagName('BT')) != 0
+
+def _import_taxonomy(file):
+    
+    # Walk up the tree (following BT tags) until the cluster tag is found
+    def find_clusters(parent_text, cluster_names):
+        
+        # find the node that matches the text
+        parent_node = None
+        terminfo_nodes = root.getElementsByTagName('TermInfo')
+        for i, node in enumerate(terminfo_nodes):
+            t = node.getElementsByTagName('T')[0]
+            if get_element_text_value(t) == parent_text:
+                parent_node = node
+                break
+        if parent_node == None:
+            return cluster_names
+        # there is not parent. this is the cluster
+        if not has_parent(parent_node) and not parent_text in cluster_names:
+            cluster_names.append(parent_text)
+        else:
+            grandparent_nodes = parent_node.getElementsByTagName('BT')
+            for i, grandparent_node in enumerate(grandparent_nodes):
+                find_clusters(get_element_text_value(grandparent_node), cluster_names)
+        return cluster_names
+    
+    from xml.dom.minidom import parse
+    errors = []
+    dom1 = parse(file)
+    root = dom1.documentElement
+    
+    total_term_count = 0
+    top_level_removed_count = 0
+    clusters_created_count = 0
+    terms_created_count = 0
+    
+    TaxonomyCluster.objects.all().delete()
+    TaxonomyTerm.objects.all().delete()
+    
+    # Delete all top-level terms (i.e. those with out a <BT> ("Broader Term") tag.
+    terminfo_nodes = root.getElementsByTagName('TermInfo')
+    total_term_count = len(terminfo_nodes)
+    top_level_names = []
+    for i, terminfo_node in enumerate(terminfo_nodes):
+        if not has_parent(terminfo_node):
+            termtext = get_element_text_value(terminfo_node.getElementsByTagName('T')[0])
+            top_level_names.append(termtext)
+            logging.debug("Removing top level tag: %s" % termtext)
+            root.removeChild(terminfo_node).unlink()
+            top_level_removed_count += 1
+    
+    # Delete all child references to the now-deleted top-level terms
+    for name in top_level_names:
+        logging.debug("delete parent refs to: %s" % name)
+        for i, parent_ref in enumerate(root.getElementsByTagName('BT')):
+            if get_element_text_value(parent_ref) == name:
+                parent_ref.parentNode.removeChild(parent_ref).unlink()
+    
+    # Create clusters for all the new top-level terms (level 2)
+    terminfo_nodes = root.getElementsByTagName('TermInfo')
+    for i, terminfo_node in enumerate(terminfo_nodes):
+        if not has_parent(terminfo_node):
+            logging.debug("Creating cluster: %s" % get_element_text_value(terminfo_node.getElementsByTagName('T')[0]))
+            tc = TaxonomyCluster()
+            tc.name = get_element_text_value(terminfo_node.getElementsByTagName('T')[0])
+            tc.save()
+            clusters_created_count += 1
+    
+    # Create term objects for all remaining terms (levels 3 and 4)
+    terminfo_nodes = root.getElementsByTagName('TermInfo')
+    for i, terminfo_node in enumerate(terminfo_nodes):
+        if has_parent(terminfo_node):
+            #import ipdb; ipdb.set_trace()
+            termtext = get_element_text_value(terminfo_node.getElementsByTagName('T')[0])
+            
+            cluster_names = []
+            for i, bt in enumerate(terminfo_node.getElementsByTagName('BT')):
+                cluster_names = find_clusters(get_element_text_value(bt), cluster_names) 
+            
+            logging.debug('Creating Term "%s" in clusters %s' % (termtext, cluster_names))
+            tag_ids = []
+            for i, tag_id_node in enumerate(terminfo_node.getElementsByTagName('TNT')):
+                tag_ids.append(get_element_text_value(tag_id_node))
+            TaxonomyTerm.objects.create_for_clusters(termtext, cluster_names, tag_ids)
+            terms_created_count += 1
+    
+    root = None
+    dom1 = None
+    return {
+        "total_term_count": total_term_count,
+        "top_level_removed_count": top_level_removed_count,
+        "clusters_created_count": clusters_created_count,
+        "terms_created_count": terms_created_count,
+        "errors": errors
     }
 
 @login_required
