@@ -4,7 +4,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import connection
 from django.db import models
 from django.db.models import Q
-from django.db.models import Q
 from django.db.models.signals import post_save
 from datetime import datetime
 from logging import debug as log
@@ -484,7 +483,25 @@ class NodeManager(models.Manager):
         list1 = list(queryset)
         list1.sort(key=sort_function)        
         return list1
+    
+    def get_tags_and_clusters(self):
+        "Returns all clusters & non-clustered tags."
         
+        tag_type = NodeType.objects.getFromName(NodeType.TAG)
+        cluster_type = NodeType.objects.getFromName(NodeType.TAG_CLUSTER)
+        
+        # Select tags & clusters.
+        child_nodes = self.filter(
+            Q(node_type=cluster_type.id)
+            |
+            Q(node_type=tag_type.id)
+        )
+        
+        # Exclude clustered tags.
+        child_nodes = child_nodes.exclude(parents__node_type__name=NodeType.TAG_CLUSTER)
+        
+        return child_nodes
+    
 class Node(models.Model):
     '''
     This model can represent different types of nodes (root, sector, cluter, tag).

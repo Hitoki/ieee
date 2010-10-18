@@ -144,6 +144,12 @@ USE_SITEMINDER_LOGIN = False
 REQUIRE_LOGIN_FOR_NON_ADMIN_VIEWS = False
 'If False the optional_login_required decorator will allow unauthenticated users.'
 
+# Django Debug Toolbar Settings ------------------------------------------------
+
+DEBUG_TOOLBAR_CONFIG = {
+	'INTERCEPT_REDIRECTS': False,
+}
+
 # Debug Settings ---------------------------------------------------------------
 
 # Used for the COMSOC demo to assign all tags to comsoc by default

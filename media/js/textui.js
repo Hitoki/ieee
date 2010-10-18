@@ -96,22 +96,30 @@ $(document).ready(function(){
 var Tags = {
     
     PAGE_SECTOR: 'sector',
+    PAGE_CLUSTER: 'tag_cluster',
     PAGE_SOCIETY: 'society',
     PAGE_HELP: 'help',
     
-    // The current page (sector/cluster, society, help, search, etc)
+    // The current page (sector, cluster, society, help, search, etc)
     page: null,
     isSearching: false,
     
-    nodeId: null,
+    sectorId: null,
     societyId: null,
     nodeType: null,
-    //selectedClusterId: null,
+    // This is used to store info about the current node.  Useful for cluster name, etc.
     node: null,
     helpScreenElem: null,
     tagSortOverlayElem: null,
     oldHash: null,
     oldZoom: null,
+    
+    // Stores the default/initial zoom CSS values.
+    defaultVertMargin: undefined,
+    defaultHorizMargin: undefined,
+    defaultTextSize: undefined,
+    defaultHeight: undefined,
+    defaultPadding: undefined,
     
     init: function() {
         var tags = this;
@@ -149,7 +157,7 @@ var Tags = {
                 if (sectorId !== "all") {
                     sectorId = parseInt(sectorId);
                 }
-                if (this.nodeId != sectorId) {
+                if (this.sectorId != sectorId) {
                     this.selectSector(sectorId, false);
                 }
             
@@ -179,7 +187,7 @@ var Tags = {
         this.updateHighlightedNode();
         this.updateSwitchLink();
         
-        if (this.page == this.PAGE_SECTOR || this.page == this.PAGE_SOCIETY) {
+        if (this.page == this.PAGE_SECTOR || this.page == this.PAGE_CLUSTER || this.page == this.PAGE_SOCIETY) {
             // Enable the slider
             $('#textui-zoom-slider').slider('enable');
             
@@ -228,8 +236,8 @@ var Tags = {
     /*
     updateDisabledFilters: function() {
 		//log('updateDisabledFilters()');
-		//log(' this.nodeId: ' + this.node);
-		if (this.nodeId == null) {
+		//log(' this.sectorId: ' + this.node);
+		if (this.sectorId == null) {
 			// No node selected, disable filters
 			$('#views input').attr('disabled', 'disabled');
 			Flyover.attach($('#views'), {
@@ -298,23 +306,23 @@ var Tags = {
         Lightbox.hide();
     },
     
-    selectSector: function(nodeId, setHash) {
+    selectSector: function(sectorId, setHash) {
         //log('selectSector()');
-        //log('  nodeId: ' + nodeId);
-        
-        this.page = this.PAGE_SECTOR;
-        
-        this.nodeId = nodeId;
-        this.societyId = null;
-        this.nodeType = 'sector';
-        
+        //log('  sectorId: ' + sectorId);
         if (setHash == undefined) {
             setHash = true;
         }
         
+        this.page = this.PAGE_SECTOR;
+        
+        this.sectorId = sectorId;
+        this.clusterId = null;
+        this.societyId = null;
+        this.nodeType = 'sector';
+        
         if (setHash) {
-            //log('setting hash to "' + '/sector/' + this.nodeId + '"');
-            $.historyLoad('/sector/' + this.nodeId);
+            //log('setting hash to "' + '/sector/' + this.sectorId + '"');
+            $.historyLoad('/sector/' + this.sectorId);
         }
         
         this.updateResults();
@@ -327,7 +335,8 @@ var Tags = {
         this.page = this.PAGE_SOCIETY
         
         this.societyId = societyId;
-        this.nodeId = null;
+        this.sectorId = null;
+        this.clusterId = null;
         this.nodeType = null;
         
         if (setHash == undefined) {
@@ -335,21 +344,11 @@ var Tags = {
         }
         
         if (setHash) {
-            //log('setting hash to "' + '/sector/' + this.nodeId + '"');
+            //log('setting hash to "' + '/sector/' + this.sectorId + '"');
             $.historyLoad('/society/' + this.societyId);
         }
         
         this.updateResults();
-    },
-    
-    updateSort: function() {
-        if (this.page == this.PAGE_SECTOR) {
-            this.selectSector(this.nodeId);
-        } else if (this.page == this.PAGE_SOCIETY) {
-            this.selectSociety(this.societyId);
-        } else {
-            alert('Tags.updateSort(): Error, page (' + this.page + ') must be "sector" or "society".');
-        }
     },
     
     showSearchResults: function(search_for, showSearchResultsCallback) {
@@ -406,12 +405,12 @@ var Tags = {
         
         var search_for = $('#tags-live-search').val();
         
-        if (this.nodeId != null) {
-            // Load the sector
+        if (this.sectorId != null) {
+            // Load the sector/cluster
             $.ajax({
                 url: '/ajax/textui_nodes',
                 data: {
-                    sector_id: this.nodeId,
+                    node_id: this.sectorId,
                     sort: this.getSort(),
                     search_for: search_for
                 },
@@ -442,7 +441,7 @@ var Tags = {
             var data = {
                 search_for: search_for,
                 society_id: this.societyId,
-                sector_id: this.nodeId
+                node_id: this.sectorId
             };
             
             $.ajax({
@@ -477,61 +476,60 @@ var Tags = {
     },
     
     updateHighlightedNode: function() {
-        //log('updateHighlightedNode()');
+        log('updateHighlightedNode()');
         
         // Remove any active sectors
         $('#sectors a.active-sector').removeClass('active-sector');
         $('#societies a.active-society').removeClass('active-society');
-        
-        // If a cluster was highlighted, remove it
-        /*
-        if (this.selectedClusterId != null && this.selectedClusterId != this.nodeId) {
-            // Remove all clusters, since they're no longer selected
-            var listItem = $('.cluster-list-item');
-            $('.cluster-list-item').fadeOut('slow', function() {
-                // Cluster list item is done fading out, remove it from the page
-                listItem.remove();
-                listItem = null;
-            });
-            this.selectedClusterId = null;
-        }
-        
-        // If a cluster was just selected, show & highlight it
-        if (this.nodeType == 'tag_cluster' && this.selectedClusterId == null) {
-            NOTE: This is disabled for now, just show the sector
-            
-            var sectorListItem = $('#sector-list-item-' + this.node.sectorId);
-            
-            var clusterListItem = $('<li id="cluster-list-item-' + this.nodeId + '" class="cluster-list-item"></li>');
-            clusterListItem.hide();
-            sectorListItem.after(clusterListItem);
-            clusterListItem.fadeIn('slow');
-            
-            var link = $('<a></a>').appendTo(clusterListItem);
-            link.text(this.node.label);
-            link.attr('href', 'javascript:Tags.selectCluster(' + this.nodeId + ');');
-            
-            this.selectedClusterId = this.nodeId;
-        }
-        */
+        $('#cluster').remove();
         
         if (this.page == this.PAGE_SECTOR) {
             // Highlight the selected sector
-            $('#sector-list-item-' + this.nodeId + ' a').addClass('active-sector');
+            $('#sector-list-item-' + this.sectorId + ' a').addClass('active-sector');
             var tabs = $('#left-column-container').data('nootabs');
 			tabs.setTab('sectors-tab');
 			$('#tag-galaxy').addClass('tag-galaxy-viewing');
             
-        /*
-        } else if (this.nodeId != null && this.nodeType == 'tag_cluster') {
-            // Highlight the selected cluster
-            //$('#cluster-list-item-' + this.nodeId + ' a').addClass('active-sector');
-            if (this.node) {
-                $('#sector-list-item-' + this.node.sectorId + ' a').addClass('active-sector');
-            }
+        } else if (this.page == this.PAGE_CLUSTER) {
+            // Highlight the selected sector
+            $('#sector-list-item-' + this.sectorId + ' a').addClass('active-sector');
             var tabs = $('#left-column-container').data('nootabs');
 			tabs.setTab('sectors-tab');
-        */
+			$('#tag-galaxy').addClass('tag-galaxy-viewing');
+            
+            // Highlight the selected cluster.
+            // Create the cluster nav element.
+            log('  creating cluster nav element.');
+            
+            if (this.node && this.node.id == this.clusterId) {
+                clusterName = this.node.name;
+            } else {
+                clusterName = '...';
+            }
+            
+            var elem = $('<li id="cluster"><a href="javascript:Tags.selectCluster(' + this.clusterId + ', ' + this.sectorId + ');">' + clusterName + '</a></li>');
+            if (this.sectorId) {
+                $('#sector-list-item-' + this.sectorId).append(elem);
+            } else {
+                $('#sector-list-item-all').append(elem);
+            }
+            
+            log('  this.node: ' + this.node);
+            log('  this.clusterId: ' + this.clusterId);
+            if (this.node) {
+                log('  this.node.id: ' + this.node.id);
+            }
+            
+            if (!this.node || this.node.id != this.clusterId) {
+                // Repeat this function until the node info is loaded, so we can show the cluster name.
+                setTimeout(
+                    function() {
+                        Tags.updateHighlightedNode();
+                    },
+                    300
+                );
+            }
+            
         } else if (this.page == this.PAGE_SOCIETY) {
             // Highlight the selected society
             $('#society-list-item-' + this.societyId + ' a').addClass('active-society');
@@ -544,49 +542,69 @@ var Tags = {
         }
     },
     
-    //selectCluster: function(id) {
-    //    //log("selectCluster()");
-    //    //log("  id: " + id);
-    //    
-    //    this.nodeId = id;
-    //    this.societyId = null;
-    //    this.nodeType = 'tag_cluster';
-    //    
-    //    var tagWindow = $("#tags");
-    //    tagWindow.empty();
-    //    tagWindow.html("<h1 id=\"wait\">Please wait...</h1>");
-    //    
-    //    var filterStr = implode(',', this.getFilters());
-    //    
-    //    this.updateChangedNode();
-    //    
-    //    // Hide any flyvoers so they don't persist when the node is gone.
-    //    Flyover.hide();
-    //    
-    //    $.getJSON(
-    //        '/ajax/textui_nodes',
-    //        {
-    //            nodeId:id,
-    //            filterValues:filterStr,
-    //            sort:this.getSort()
-    //        },
-    //        function(data) {
-    //            Tags.onLoadClusters(data);
-    //        }
-    //    );
-    //},
-    //
-    //onLoadClusters: function(data) {
-    //    //log('onLoadClusters()');
-    //    //log('  data.node.sector.id: ' + data.node.sector.id);
-    //    
-    //    this.node = data.node;
-    //    this.node.sectorId = data.node.sector.id;
-    //    
-    //    this.updateChangedNode();
-    //    
-    //    this.renderTags(data);
-    //},
+    selectCluster: function(clusterId, sectorId) {
+        var tags = this;
+        log("selectCluster()");
+        log("  clusterId: " + clusterId);
+        log("  sectorId: " + sectorId);
+        
+        this.page = this.PAGE_CLUSTER;
+        
+        this.clusterId = clusterId;
+        this.sectorId = sectorId;
+        
+        this.node = null;
+        this.societyId = null;
+        this.nodeType = 'tag_cluster';
+        this.updateChangedNode();
+        
+        var tagWindow = $("#tags");
+        tagWindow.empty();
+        tagWindow.html("<h1 id=\"wait\">Please wait...</h1>");
+        
+        var filterStr = implode(',', this.getFilters());
+        
+        // Hide any flyvoers so they don't persist when the node is gone.
+        Flyover.hide();
+        
+        $.get(
+            '/ajax/textui_nodes',
+            {
+                node_id: clusterId,
+                sector_id: sectorId,
+                filterValues: filterStr,
+                sort: this.getSort()
+            },
+            function(data) {
+                Tags.onLoadClusters(data);
+            }
+        );
+        
+        // Get the cluster node's info (to display the name).
+        log('Loading node info');
+        $.getJSON(
+            '/ajax/node',
+            {
+                nodeId: clusterId,
+            },
+            function(data) {
+                log('Got node info');
+                log('  tags.clusterId: ' + tags.clusterId);
+                log('  data.id: ' + data.id);
+                if (data.id == tags.clusterId) {
+                    log('node id matches.');
+                    tags.node = data;
+                }
+            }
+        );
+    },
+    
+    onLoadClusters: function(data) {
+        log('onLoadClusters()');
+        var tagWindow = $("#tags");
+        tagWindow.html(data);
+		this.updateZoom();
+    },
     
     getTagById: function(id) {
         for (var i=0; i<this.tags.length; i++) {
@@ -659,46 +677,40 @@ var Tags = {
     },
     
     updateSwitchLink: function() {
-		
-		// Roamer is disabled. No need for swith link.
-		return;
-		
-        if (this.nodeId != null) {
-            if (this.nodeType == 'sector') {
-                $('#switch-link').attr('href', '/roamer#/sector/' + this.nodeId);
-            } else {
-                alert('ERROR in updateSwitchLink(): Unrecognized nodeType "' + this.nodeType + '"');
-            }
-        } else {
-            $('#switch-link').attr('href', '/roamer');
-        }
+		// NOTE: Roamer is disabled. No need for switch link.
+        //if (this.sectorId != null) {
+        //    if (this.nodeType == 'sector') {
+        //        $('#switch-link').attr('href', '/roamer#/sector/' + this.sectorId);
+        //    } else {
+        //        alert('ERROR in updateSwitchLink(): Unrecognized nodeType "' + this.nodeType + '"');
+        //    }
+        //} else {
+        //    $('#switch-link').attr('href', '/roamer');
+        //}
     },
     
-    refresh: function() {
-		if (this.nodeType == 'sector') {
-            this.selectSector(this.nodeId);
-        } else if (this.nodeType == 'tag_cluster') {
-            this.selectCluster(this.nodeId);
+    updateSort: function() {
+        if (this.page == this.PAGE_SECTOR) {
+            this.selectSector(this.sectorId);
+        } else if (this.page == this.PAGE_CLUSTER) {
+            this.selectCluster(this.clusterId, this.sectorId);
+        } else if (this.page == this.PAGE_SOCIETY) {
+            this.selectSociety(this.societyId);
         } else {
-            alert('Textui.refresh(): ERROR: unrecognized nodeType "' + this.nodeType + '"');
+            alert('Tags.updateSort(): Error, page (' + this.page + ') must be "sector", "tag_cluster", or "society".');
         }
     },
     
     clearSectorSociety: function(setHash) {
-        this.nodeId = "all";
+        this.page = null;
+        this.sectorId = "all";
+        this.clusterId = null;
         this.societyId = null;
         $('#tags-live-search').val('');
         this.updateResults();
         $('#tag-galaxy').removeClass('tag-galaxy-viewing');
         $("#tags-live-search").focus();
     },
-    
-    
-    defaultVertMargin: undefined,
-    defaultHorizMargin: undefined,
-    defaultTextSize: undefined,
-    defaultHeight: undefined,
-    defaultPadding: undefined,
     
     setDefaultZoomValues: function(){
         this.defaultVertMargin = Math.round(parseInt($('#tags .node').css('margin-top')));

@@ -502,23 +502,32 @@ def _get_popularity_level(min, max, count):
 @login_required
 def ajax_textui_nodes(request):
     '''
-    Gets an AJAX list of tag/cluster info for the textui page.
-    @param sector_id: (Optional) The sector to filter results.
+    Returns HTML for the list of tags/clusters for the textui page.
+    @param node_id: (Optional) The sector to filter results.
+    @param sector_id: (Optional) The sector to filter results (for cluster).
     @param society_id: (Optional) The society to filter results.
     @param search_for: (Optional) A search phrase to filter results.
     @param sort: The sort method.
     @return: The HTML content for all results.
     '''
-    #log('ajax_textui_nodes()')
+    log('ajax_textui_nodes()')
     
+    node_id = request.GET.get('node_id', None)
     sector_id = request.GET.get('sector_id', None)
+    if sector_id == '' or sector_id == 'null':
+        sector_id = None
+    if sector_id is not None and sector_id != 'all':
+        sector_id = int(sector_id)
     society_id = request.GET.get('society_id', None)
     search_for = request.GET.get('search_for', None)
     
-    #log('  sector_id: %s' % sector_id)
-    #log('  society_id: %s' % society_id)
-    #log('  search_for: %s' % search_for)
+    log('  node_id: %s' % node_id)
+    log('  sector_id: %s' % sector_id)
+    log('  society_id: %s' % society_id)
+    log('  search_for: %s' % search_for)
     
+    if node_id == 'null':
+        node_id = None
     if sector_id == 'null':
         sector_id = None
     if society_id == 'null':
@@ -526,20 +535,21 @@ def ajax_textui_nodes(request):
     if search_for == 'null' or search_for == '':
         search_for = None
     
-    #assert society_id is not None or sector_id is not None, 'Either society_id or sector_id is required'
-    #assert society_id is None or sector_id is None, 'Cannot specify both society_id or sector_id'
+    #assert society_id is not None or node_id is not None, 'Either society_id or node_id is required'
+    #assert society_id is None or node_id is None, 'Cannot specify both society_id or node_id'
     
-    assert sector_id is None or society_id is None, 'Cannot specify both sector_id and society_id'
+    # TODO: Update this for clusters
+    assert node_id is None or society_id is None, 'Cannot specify both node_id and society_id'
     
     sort = request.GET.get('sort')
     ##log('  sort: %s' % sort)
     #filterValues = request.GET.get('filterValues')
     ##log('filterValues: %s' % filterValues)
     
-    if sector_id is not None and sector_id != "all":
-        sector = Node.objects.get(id=sector_id)
+    if node_id is not None and node_id != "all":
+        node = Node.objects.get(id=node_id)
     else:
-        sector = None
+        node = None
     
     if society_id is not None and society_id != "all":
         society = Society.objects.get(id=society_id)
@@ -568,7 +578,6 @@ def ajax_textui_nodes(request):
     else:
         raise Exception('Unrecognized sort "%s"' % sort)
     
-    
     # TODO: Filters disabled for now
     #filterIds = []
     #if filterValues != '' and filterValues is not None:
@@ -577,16 +586,14 @@ def ajax_textui_nodes(request):
     # TODO: Just select all filters for now
     filterIds = [filter.id for filter in Filter.objects.all()]
     
-    
     search_for_too_short = False
     
     if search_for is not None:
         # Search for nodes with a phrase
         # NOTE: <= 2 char searches take a long time (2-3 seconds), vs 200ms average for anything longer
         
-        
-        # Require >= 3 chars for general search, or >= 2 chars for in-sector/in-society search.
-        if len(search_for) >= 3 or (len(search_for) >= 2 and (sector_id is not None or society_id is not None)):
+        # Require >= 3 chars for general search, or >= 2 chars for in-node/in-society search.
+        if len(search_for) >= 3 or (len(search_for) >= 2 and (node_id is not None or society_id is not None)):
             
             search_words = re.split(r'\s', search_for)
             #print 'search_words: %s' % search_words
@@ -610,9 +617,11 @@ def ajax_textui_nodes(request):
                     else:
                         queries &= Q(name__icontains=word)
             
-            if sector_id is not None and sector_id != "all":
-                # Search within the sector
-                queries &= Q(parents__id=sector_id)
+            if node_id is not None and node_id != "all":
+                # Search within the node
+                queries &= Q(parents__id=node_id)
+                node = Node.objects.get(id=node_id)
+                
             
             elif society_id is not None and society_id != "all":
                 # Search within the society
@@ -646,15 +655,17 @@ def ajax_textui_nodes(request):
             else:
                 max_score = max(max_score, node.score1)
                 
-    elif sector_id is not None and sector_id != "all":
+    elif node_id is not None and node_id != "all":
         # Get a sector or cluster's child nodes
-        node = Node.objects.get(id=sector_id)
+        node = Node.objects.get(id=node_id)
         society = None
-        assert node.node_type.name in [NodeType.SECTOR, NodeType.TAG_CLUSTER], 'Node "%s" must be a sector or cluster' % node.name
-
+        assert node.node_type.name in [NodeType.SECTOR, NodeType.TAG_CLUSTER], 'Node "%s" must be a node or cluster' % node.name
+        
         if node.node_type.name == NodeType.SECTOR:
             ##log('Calling child_nodes.get_extra_info() with filter ids')
             child_nodes = node.get_tags_and_clusters()
+            
+            sector_id = node.id
             
             # The 'filteIds' allows us to get the selected filter count via the DB (much faster)
             if len(filterIds) > 0:
@@ -663,7 +674,14 @@ def ajax_textui_nodes(request):
                 child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, None)
             
         elif node.node_type.name == NodeType.TAG_CLUSTER:
-            child_nodes = Node.objects.get_extra_info(node.get_tags(), extra_order_by, filterIds)
+            child_nodes = node.get_tags()
+            if sector_id is not None:
+                child_nodes = child_nodes.filter(parents__id=sector_id)
+                
+            if len(filterIds) > 0:
+                child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, filterIds)
+            else:
+                child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, None)
         
         (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = Node.objects.get_sector_ranges(node)
         (min_score, max_score) = Node.objects.get_combined_sector_ranges(node)
@@ -679,9 +697,10 @@ def ajax_textui_nodes(request):
     else:
         node = None
         society = None
-        child_nodes = Node.objects.get_extra_info(Node.objects.filter(node_type=NodeType.objects.getFromName('tag')), extra_order_by, filterIds)
-
-        if sector_id == "all" or  society_id == "all":
+        child_nodes = Node.objects.get_tags_and_clusters()
+        child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, filterIds)
+        
+        if node_id == "all" or  society_id == "all":
             node = Node.objects.get(node_type=Node.objects.getNodesForType(NodeType.ROOT))
             (min_score, max_score) = Node.objects.get_combined_sector_ranges(node)
         else:
@@ -793,8 +812,8 @@ def ajax_textui_nodes(request):
     
     if search_for is not None:
         final_punc =  ('.', ':')[len(child_nodes) > 0]
-        if sector_id is not None and sector_id != "all":
-            str = ' in the %s sector%s' % (sector.name, final_punc)
+        if node_id is not None and node_id != "all":
+            str = ' in the %s node%s' % (node.name, final_punc)
             search_page_title = {"num": len(child_nodes), "search_for": search_for, "node_desc": str}
         elif society_id is not None and society_id != "all":
             str = ' for the %s society%s' % (society.name, final_punc)
@@ -802,11 +821,12 @@ def ajax_textui_nodes(request):
     
     return render(request, 'ajax_textui_nodes.html', {
         'child_nodes': child_nodes,
-        'parent_id': sector_id,
+        'parent_id': node_id,
         'society_id': society_id,
         'search_for': search_for,
         'search_for_too_short': search_for_too_short,
         'search_page_title': search_page_title,
+        'sector_id': sector_id,
     })
 
 @login_required
@@ -1178,8 +1198,13 @@ def tooltip(request, tag_id):
     elif node.node_type.name == NodeType.TAG_CLUSTER:
         cluster = node
         
+        tags = cluster.get_tags()
+        
+        if parent_id is not None and parent_id != 'all':
+            tags = tags.filter(parents__id=parent_id)
+        
         tags_str = truncate_link_list(
-            cluster.get_tags(),
+            tags,
             #lambda item: '<a href="javascript:Tags.selectTag(%s);">%s</a>' % (item.id, item.name),
             lambda item: '%s' % item.name,
             lambda item: '%s' % item.name,
@@ -1189,6 +1214,7 @@ def tooltip(request, tag_id):
         return render(request, 'tooltip_cluster.html', {
             'cluster': cluster,
             'tags': tags_str,
+            'sector_id': parent_id,
         })
         
     else:

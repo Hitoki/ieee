@@ -333,6 +333,11 @@ ul#view-header li {
     width: 174px;
 }
 
+#left-column ul#sectors li#cluster {
+    margin-left:15px;
+    width:159px;
+}
+
 #left-column ul#societies li {
     margin:0px;
     width: 160px;
@@ -695,17 +700,14 @@ span#roamer-beta-warning {
     padding:.3em;
 }
 
-#alternate-page #left-column ul#sectors li.cluster-list-item a {
-    padding-left:1.5em;
-}
-
 #alternate-page #left-column ul#sectors li a:hover,
 #alternate-page #left-column ul#societies li a:hover {
     background:orange !important;
     color: white;
 }
 
-#alternate-page #left-column ul#sectors li a.active-sector {
+#alternate-page #left-column ul#sectors li a.active-sector,
+#alternate-page #left-column ul#sectors li#cluster a {
     background:#006699;
     color: white;
 }
@@ -714,10 +716,6 @@ span#roamer-beta-warning {
     color:#333333;
     margin:0px;
     padding:.3em;
-}
-
-#alternate-page #left-column ul#societies li.cluster-list-item a {
-    padding-left:1.5em;
 }
 
 #alternate-page #left-column ul#societies li a:hover {
