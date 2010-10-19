@@ -4182,9 +4182,8 @@ def live_search_results(request):
 @login_required
 @admin_required
 def admin_taxonomy_report(request):
-    MAX = 200
-    clusters = TaxonomyCluster.objects.all().order_by('name')[:MAX]
-    terms = TaxonomyTerm.objects.all().order_by('name')[:MAX]
+    clusters = TaxonomyCluster.objects.all().order_by('name')
+    terms = TaxonomyTerm.objects.all().order_by('name')
     return render(request, 'site_admin/taxonomy_report.html', {
         'clusters': clusters,
         'terms': terms,
