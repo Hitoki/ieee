@@ -33,7 +33,7 @@
             </th>
             <td>
                 {% for cluster in tag.get_parent_clusters.all %}
-                    <a href="{% url admin_view_cluster cluster.id %}">{{ cluster.get_full_cluster_name }}</a>{% if not forloop.last %},{% endif %}
+                    <a href="{% url admin_view_cluster cluster.id %}">{{ cluster.name }}</a>{% if not forloop.last %},{% endif %}
                 {% endfor %}
             </td>
         </tr>

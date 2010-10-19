@@ -277,7 +277,7 @@ def ajax_tag_content(request, tag_id, ui=None):
     for sector in sectors1:
         clusters = []
         for cluster in clusters1:
-            if cluster.get_sector() == sector:
+            if sector in cluster.parents.all():
                 clusters.append(cluster)
         
         parent_nodes.append({
@@ -904,8 +904,10 @@ def ajax_nodes_xml(request):
     for cluster in node.get_parent_clusters():
         nodes.append(cluster)
         parent_nodes.append(cluster)
-        if cluster.get_sector() not in exclude_sectors:
-            exclude_sectors.append(cluster.get_sector())
+        
+        for sector in cluster.parents.all():
+            if sector not in exclude_sector:
+                exclude_sectors.append(sector)
     
     # The node's parent sectors
     for sector in node.get_sectors():
@@ -965,15 +967,7 @@ def ajax_nodes_xml(request):
         nodeElem = doc.createElement('node')
         nodeElem.setAttribute('id', str(node1.id))
         
-        if node1.node_type.name == NodeType.TAG_CLUSTER:
-            # For a cluster, show the short name "Cluster" if we're viewing the cluster or its parent.  Otherwise, show the full name "Cluster (Sector)".
-            if node.id != node1.id and node.id != node1.get_sector().id:
-                label = node1.get_full_cluster_name()
-            else:
-                label = node1.name
-        else:
-            # None-cluster
-            label = node1.name
+        label = node1.name
         
         nodeElem.setAttribute('label', util.word_wrap(label, 25))
         nodeElem.setAttribute('depth_loaded', str(2))
@@ -1032,14 +1026,14 @@ def tooltip(request, tag_id):
     society_id = request.GET.get('society_id', None)
     search_for = request.GET.get('search_for', None)
     
-    if parent_id == 'null':
+    if parent_id == 'null' or parent_id == '':
         parent_id = None
     elif parent_id == 'all':
         pass
     else:
         parent_id = int(parent_id)
     
-    if society_id == 'null':
+    if society_id == 'null' or society_id == '':
         society_id = None
     elif society_id == 'all':
         pass

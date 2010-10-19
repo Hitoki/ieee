@@ -525,10 +525,6 @@ class Node(models.Model):
         else:
             return self.name
     
-    def get_full_cluster_name(self):
-        assert self.node_type.name == NodeType.TAG_CLUSTER, 'Node "%s" is not a cluster' % self.name
-        return '%s (%s)' % (self.name, self.get_sector().name)
-    
     def get_sectors(self):
         'Returns all parent sectors for this node.'
         return self.parents.filter(node_type__name=NodeType.SECTOR)
@@ -558,12 +554,6 @@ class Node(models.Model):
         "Returns any child clusters and non-clustered child tags."
         assert self.node_type.name == NodeType.SECTOR, 'get_tags_and_clusters() only works for sectors.'
         return self.child_nodes.exclude(parents__node_type__name=NodeType.TAG_CLUSTER)
-    
-    #def get_sector(self):
-    #    "Only valid for clusters.  Gets a cluster's parent sector, ensuring that there is exactly 1 parent."
-    #    assert self.node_type.name == NodeType.TAG_CLUSTER, 'Node "%s" is not a cluster' % self.name
-    #    assert self.parents.count() == 1, 'Node "%s" has %s parents' % (self.name, self.parents.count())
-    #    return self.parents.all()[0]
     
     def cluster_update_filters(self):
         'For clusters only.  Updates this cluster\'s filters to reflect all the current filters of its child tags.'

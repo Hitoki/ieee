@@ -275,7 +275,7 @@ def checkout_site():
     run('rm -rf %(site_home)s/html/maintenance' % env)
     run('mv %(site_code)s/site_down %(site_home)s/html/maintenance' % env)
     
-    run('cd "%(site_home)s/python" && source bin/activate && [ ! -d "%(site_code)s/migrations" ] || python "%(site_code)s/manage.py" migrate ieeetags' % env)
+    #run('cd "%(site_home)s/python" && source bin/activate && [ ! -d "%(site_code)s/migrations" ] || python "%(site_code)s/manage.py" migrate ieeetags' % env)
     
     # Redirect the 'current' and 'previous' symlinks.
     run('cd "%(site_home)s/python/releases" && ( [ ! -d previous ] || rm previous ) && ( [ ! -d current ] || mv current previous )' % env)
