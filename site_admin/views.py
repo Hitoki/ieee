@@ -4178,7 +4178,18 @@ def live_search_results(request):
         mimetype='text/plain'
         #mimetype='text/html'
     )
-    
+
+@login_required
+@admin_required
+def admin_taxonomy_report(request):
+    MAX = 200
+    clusters = TaxonomyCluster.objects.all().order_by('name')[:MAX]
+    terms = TaxonomyTerm.objects.all().order_by('name')[:MAX]
+    return render(request, 'site_admin/taxonomy_report.html', {
+        'clusters': clusters,
+        'terms': terms,
+    })
+
 #def create_admin_login(request):
 #    "Create a test admin account."
 #    username = 'test'

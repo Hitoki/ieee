@@ -124,6 +124,7 @@ urlpatterns += patterns('',
     url(r'^report/broken_links/cancel$', views.broken_links_cancel, name='admin_broken_links_cancel'),
     url(r'^create_fake_tags$', views.create_fake_tags, name='admin_create_fake_tags'),
     url(r'^live_search/results$', views.live_search_results, name='admin_live_search_results'),
+    url(r'^admin_taxonomy_report$', views.admin_taxonomy_report, name='admin_taxonomy_report'),
     
     # Exports
     url(r'^export/tab_resources$', views.export_tab_resources, name='admin_export_tab_resources'),

@@ -599,9 +599,9 @@ class Node(models.Model):
     
     def save(self, *args, **kwargs):
         cluster_type = NodeType.objects.getFromName(NodeType.TAG_CLUSTER)
-        print 'Node.save()'
-        print '  self.node_type: %r' % self.node_type
-        print '  cluster_type: %r' % cluster_type
+        #print 'Node.save()'
+        #print '  self.node_type: %r' % self.node_type
+        #print '  cluster_type: %r' % cluster_type
         if self.node_type == cluster_type:
             # If this is a cluster, customize the saving process.
             
@@ -624,7 +624,7 @@ class Node(models.Model):
                     if society not in societies:
                         societies.append(society)
             self.societies = societies
-            print '  societies: %r' % societies
+            #print '  societies: %r' % societies
             
             # Assign all the child_node's sectors to this cluster.
             filters = []
@@ -636,7 +636,7 @@ class Node(models.Model):
             
         super(Node, self).save(*args, **kwargs)
         
-        print '  self.societies.all(): %r' % self.societies.all()
+        #print '  self.societies.all(): %r' % self.societies.all()
             
     class Meta:
         ordering = ['name']
@@ -666,15 +666,27 @@ class TaxonomyTerm(models.Model):
     name = models.CharField(max_length=500)
     related_terms = models.ManyToManyField('self', related_name='terms', null=True, blank=True)
     related_nodes = models.ManyToManyField('Node', related_name='nodes', blank=True)
-    taxonomy_clusters = models.ManyToManyField('TaxonomyCluster', related_name='clusters', blank=True)
+    taxonomy_clusters = models.ManyToManyField('TaxonomyCluster', related_name='terms', blank=True)
     
     objects = TaxonomyTermManager()
+    
+    def __str__(self):
+        return '<%s: %s>' % (self.__class__.__name__, self.name)
+    
+    def __repr__(self):
+        return str(self)
     
 class TaxonomyClusterManager(models.Manager):
     pass
 
 class TaxonomyCluster(models.Model):
     name = models.CharField(max_length=500)
+    
+    def __str__(self):
+        return '<%s: %s>' % (self.__class__.__name__, self.name)
+    
+    def __repr__(self):
+        return str(self)
 
 class SocietyManager(models.Manager):
     def getFromName(self, name):

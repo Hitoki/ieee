@@ -30,7 +30,7 @@ society_id: {{ society_id|pprint }}<br/>
             <a href="javascript:Tags.selectTag({{ tag.id }});" class="{{ tag.level }}">{{ tag.name|truncatechars:30 }}</a>
         {% else %}
             {% ifequal tag.node_type__name 'tag_cluster' %}
-                javascript:Tags.selectCluster({{ tag.id }}, {{ sector_id|default_if_none:"null"|safe }}, {{ society_id|default_if_none:"null"|safe }});<br/>
+                {# javascript:Tags.selectCluster({{ tag.id }}, {{ sector_id|default_if_none:"null"|safe }}, {{ society_id|default_if_none:"null"|safe }});<br/> #}
                 <a href="javascript:Tags.selectCluster({{ tag.id }}, {{ sector_id|default_if_none:"null"|safe }}, {{ society_id|default_if_none:"null"|safe }});" class="{{ tag.level }}">
                     <img src="/media/images/icon_cluster_sm.png" />
                     {{ tag.name|truncatechars:30 }}

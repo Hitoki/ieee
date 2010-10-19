@@ -1,0 +1,70 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>Taxonomy Report</h1>
+    
+    Total # clusters: {{ clusters.count }}<br/>
+    Total # terms: {{ terms.count }}<br/>
+    
+    <h2>Term</h2>
+    
+    <table class="grid">
+        <tr>
+            <th>
+                Name:
+            </th>
+            <th>
+                Clusters:
+            </th>
+            <th>
+                Tags:
+            </th>
+        </tr>
+        {% for term in terms %}
+            <tr>
+                <td>
+                    {{ term.name }}
+                </td>
+                <td>
+                    {% for cluster in term.taxonomy_clusters.all %}
+                        {{ cluster.name }}{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for tag in term.related_nodes.all %}
+                        {{ tag.name }}{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+    {% comment %}
+    <h2>Clusters</h2>
+    
+    <table class="grid">
+        <tr>
+            <th>
+                Cluster Name:
+            </th>
+            <th>
+                Tags:
+            </th>
+        </tr>
+        {% for cluster in clusters %}
+            <tr>
+                <td>
+                    {{ cluster.name }}
+                </td>
+                <td>
+                    {% for tag in cluster.terms.all %}
+                        {{ tag.name }}{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endcomment %}
+    
+{% endblock %}
