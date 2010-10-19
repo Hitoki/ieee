@@ -1,13 +1,11 @@
 'Adds models to the django admin page.'
 
 from django.contrib import admin
-from models import *
+import django.db.models
+import models
+import inspect
 
-admin.site.register(NodeType)
-admin.site.register(Node)
-admin.site.register(Permission)
-admin.site.register(Profile)
-admin.site.register(ResourceType)
-admin.site.register(Resource)
-admin.site.register(Society)
-admin.site.register(Filter)
+objects = inspect.getmembers(models)
+for name, value in objects:
+    if inspect.isclass(value) and issubclass(value, django.db.models.Model) and value.__module__ == 'ieeetags.models':
+        admin.site.register(value)
