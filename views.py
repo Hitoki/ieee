@@ -809,8 +809,8 @@ def ajax_textui_nodes(request):
             #    else:
             #        filter_child_node = True
             
-            #child_node['score'] = child_node['score1']
-            child_node['level'] = 'level1'
+            # TODO: Not using levels yet, so all clusters show as the same color.
+            child_node['level'] = ''
             
             # Make sure clusters show on top of the list.
             filter_child_node = True
@@ -842,11 +842,11 @@ def ajax_textui_nodes(request):
     return render(request, 'ajax_textui_nodes.html', {
         'child_nodes': child_nodes,
         'parent_id': node_id,
+        'sector_id': sector_id,
         'society_id': society_id,
         'search_for': search_for,
         'search_for_too_short': search_for_too_short,
         'search_page_title': search_page_title,
-        'sector_id': sector_id,
     })
 
 @login_required

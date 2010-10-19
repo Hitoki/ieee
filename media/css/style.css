@@ -706,10 +706,16 @@ span#roamer-beta-warning {
     color: white;
 }
 
-#alternate-page #left-column ul#sectors li a.active-sector,
-#alternate-page #left-column ul#sectors li#cluster a {
+#alternate-page #left-column ul#sectors li a.active-sector {
     background:#006699;
     color: white;
+}
+
+#alternate-page #left-column ul#sectors li#cluster a {
+    color:#006699;
+    border-left:1px solid #006699;
+    border-bottom:1px solid #006699;
+    background: white;
 }
 
 #alternate-page #left-column ul#societies li a {
@@ -834,6 +840,12 @@ span#roamer-beta-warning {
     border: 1px solid transparent;
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
+}
+
+#alternate-page #tag-galaxy div.node a.cluster {
+    border-color:#006699;
+    color:#004477;
+    background:white;
 }
 
 #alternate-page #tag-galaxy div.tag_cluster a:hover {
