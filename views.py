@@ -553,7 +553,7 @@ def ajax_textui_nodes(request):
     #assert society_id is None or node_id is None, 'Cannot specify both society_id or node_id'
     
     # TODO: Update this for clusters
-    assert node_id is None or society_id is None, 'Cannot specify both node_id and society_id'
+    #assert node_id is None or society_id is None, 'Cannot specify both node_id and society_id'
     
     sort = request.GET.get('sort')
     ##log('  sort: %s' % sort)
@@ -691,6 +691,8 @@ def ajax_textui_nodes(request):
             child_nodes = node.get_tags()
             if sector_id is not None and sector_id != 'all':
                 child_nodes = child_nodes.filter(parents__id=sector_id)
+            elif society_id is not None and society_id != 'all':
+                child_nodes = child_nodes.filter(societies__id=society_id)
                 
             if len(filterIds) > 0:
                 child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, filterIds)
@@ -832,12 +834,6 @@ def ajax_textui_nodes(request):
         elif society_id is not None and society_id != "all":
             str = ' for the %s society%s' % (society.name, final_punc)
             search_page_title = {"num": len(child_nodes), "search_for": search_for, "node_desc": str};
-    
-    # Format the society/sector id vars for javascript:
-    if sector_id == 'all':
-        sector_id = "'all'"
-    if society_id == 'all':
-        society_id = "'all'"
     
     return render(request, 'ajax_textui_nodes.html', {
         'child_nodes': child_nodes,
@@ -1026,26 +1022,42 @@ def tooltip(request, tag_id):
     society_id = request.GET.get('society_id', None)
     search_for = request.GET.get('search_for', None)
     
-    if parent_id == 'null' or parent_id == '':
-        parent_id = None
-    elif parent_id == 'all':
-        pass
-    else:
-        parent_id = int(parent_id)
+    def get_int_all_or_none(value):
+        '''
+        Converts the given value to an integer, the 'all' string, or None.
+        Raises a ValueException if no conversion can be made.
+        '''
+        try:
+            value = int(value)
+            return value
+        except (TypeError, ValueError):
+            pass
+        if hasattr(value, 'replace'):
+            value = value.replace('"', '')
+            value = value.replace("'", '')
+        if value is None or value == 'null' or value == '':
+            return None
+        if value == 'all':
+            return value
+        raise ValueException('Unable to convert value %r' % value)
     
-    if society_id == 'null' or society_id == '':
-        society_id = None
-    elif society_id == 'all':
-        pass
-    else:
-        society_id = int(society_id)
+    society_id = get_int_all_or_none(society_id)
+    parent_id = get_int_all_or_none(parent_id)
+    
     
     #assert parent_id is not None or society_id is not None, 'Must specify either parent_id or society_id.'
     #assert parent_id is None or society_id is None, 'Cannot specify both parent_id or society_id.'
     
+    print '  tag_id: %r' % tag_id
+    print '  parent_id: %r' % parent_id
+    print '  search_for: %r' % search_for
+    print '  society_id: %r' % society_id
+    
     node = Node.objects.filter(id=tag_id)
     node = Node.objects.get_extra_info(node)
     node = single_row(node)
+    
+    print '  node.node_type.name: %r' % node.node_type.name
     
     if node.node_type.name == NodeType.TAG:
         
@@ -1146,7 +1158,8 @@ def tooltip(request, tag_id):
             min_societies, max_societies = get_min_max(child_nodes, 'num_societies1')
             
         else:
-            assert False
+            # No sector/society/search phrase - could be in "All Sectors" or "All Societies"
+            assert False, "TODO"
         
         num_related_tags = tag.get_filtered_related_tag_count()
         num_societies = tag.societies.all()

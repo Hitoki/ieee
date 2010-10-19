@@ -40,3 +40,35 @@ def truncatechars(value, arg):
         return value[:char_count] + '...'
     else:
         return value
+
+@register.filter
+def reprjs(value):
+    'This outputs a python value in javascript-friendly format.'
+    
+    # None
+    if value is None:
+        return 'null'
+    
+    # Strings
+    if isinstance(value, basestring):
+        value = value.replace('"', '\\"')
+        value = '"' + value + '"'
+        return value
+    
+    # Boolean
+    if type(value) is bool:
+        if value:
+            return 'true'
+        else:
+            return 'false'
+    
+    # Integers/Longs
+    if type(value) is int or type(value) is long:
+        return value
+    
+    # Floats/Doubles
+    if type(value) is float:
+        return value
+    
+    raise ValueError('Could not convert value %r (type %r) to javascript.' % (value, type(value)))
+    

@@ -478,6 +478,9 @@ var Tags = {
     
     updateHighlightedNode: function() {
         log('updateHighlightedNode()');
+        log('  this.page: ' + this.page);
+        log('  this.clusterId: ' + this.clusterId);
+        log('  this.sectorId: ' + this.sectorId);
         
         // Remove any active sectors
         $('#sectors a.active-sector').removeClass('active-sector');
@@ -492,6 +495,7 @@ var Tags = {
 			$('#tag-galaxy').addClass('tag-galaxy-viewing');
             
         } else if (this.page == this.PAGE_SECTOR_CLUSTER) {
+            
             // Highlight the selected sector
             $('#sector-list-item-' + this.sectorId + ' a').addClass('active-sector');
             var tabs = $('#left-column-container').data('nootabs');
@@ -508,17 +512,88 @@ var Tags = {
                 clusterName = '...';
             }
             
-            var elem = $('<li id="cluster"><a href="javascript:Tags.selectCluster(' + this.clusterId + ', ' + this.sectorId + ', null);">' + clusterName + '</a></li>');
+            function repr(val) {
+                if (typeof(val) == 'string') {
+                    val = val.replace('"', '\\"');
+                    return '"' + val + '"';
+                } else {
+                    return val;
+                }
+            }
+            
+            // This formats the clusterId/sectorId values (since they can be "all" strings or numeric ID's)
+            function temp_format_value(val) {
+                if (val === null) {
+                    return val;
+                } else {
+                    return htmlentities(repr(val));
+                }
+            }
+            
+            var elem = $('<li id="cluster"><a href="javascript:Tags.selectCluster(' + temp_format_value(this.clusterId) + ', ' + temp_format_value(this.sectorId) + ', null);">' + clusterName + '</a></li>');
+            log('<li id="cluster"><a href="javascript:Tags.selectCluster(' + temp_format_value(this.clusterId) + ', ' + temp_format_value(this.sectorId) + ', null);">' + clusterName + '</a></li>');
+            
             if (this.sectorId) {
                 $('#sector-list-item-' + this.sectorId).append(elem);
             } else {
                 $('#sector-list-item-all').append(elem);
             }
             
-            log('  this.node: ' + this.node);
+            if (!this.node || this.node.id != this.clusterId) {
+                // Repeat this function until the node info is loaded, so we can show the cluster name.
+                setTimeout(
+                    function() {
+                        Tags.updateHighlightedNode();
+                    },
+                    300
+                );
+            }
+            
+        } else if (this.page == this.PAGE_SOCIETY_CLUSTER) {
+            
             log('  this.clusterId: ' + this.clusterId);
-            if (this.node) {
-                log('  this.node.id: ' + this.node.id);
+            
+            // Highlight the selected society
+            $('#society-list-item-' + this.societyId + ' a').addClass('active-society');
+            var tabs = $('#left-column-container').data('nootabs');
+			tabs.setTab('societies-tab');
+			$('#tag-galaxy').addClass('tag-galaxy-viewing');
+            
+            // Highlight the selected cluster.
+            // Create the cluster nav element.
+            log('  creating cluster nav element.');
+            
+            if (this.node && this.node.id == this.clusterId) {
+                clusterName = this.node.name;
+            } else {
+                clusterName = '...';
+            }
+            
+            function repr(val) {
+                if (typeof(val) == 'string') {
+                    val = val.replace('"', '\\"');
+                    return '"' + val + '"';
+                } else {
+                    return val;
+                }
+            }
+            
+            // This formats the clusterId/societyId values (since they can be "all" strings or numeric ID's)
+            function temp_format_value(val) {
+                if (val === null) {
+                    return val;
+                } else {
+                    return htmlentities(repr(val));
+                }
+            }
+            
+            var elem = $('<li id="cluster"><a href="javascript:Tags.selectCluster(' + temp_format_value(this.clusterId) + ', null, ' + temp_format_value(this.societyId) + ');">' + clusterName + '</a></li>');
+            log('<li id="cluster"><a href="javascript:Tags.selectCluster(' + temp_format_value(this.clusterId) + ', null, ' + temp_format_value(this.societyId) + ');">' + clusterName + '</a></li>');
+            
+            if (this.societyId) {
+                $('#society-list-item-' + this.societyId).append(elem);
+            } else {
+                $('#society-list-item-all').append(elem);
             }
             
             if (!this.node || this.node.id != this.clusterId) {
@@ -550,13 +625,17 @@ var Tags = {
         log("  sectorId: " + sectorId);
         log("  societyId: " + societyId);
         
-        this.page = this.PAGE_SECTOR_CLUSTER;
+        if (sectorId != null) {
+            this.page = this.PAGE_SECTOR_CLUSTER;
+        } else if (societyId != null) {
+            this.page = this.PAGE_SOCIETY_CLUSTER;
+        }
         
         this.clusterId = clusterId;
         this.sectorId = sectorId;
+        this.societyId = societyId;
         
         this.node = null;
-        this.societyId = null;
         this.nodeType = 'tag_cluster';
         this.updateChangedNode();
         
@@ -574,6 +653,7 @@ var Tags = {
             {
                 node_id: clusterId,
                 sector_id: sectorId,
+                society_id: societyId,
                 filterValues: filterStr,
                 sort: this.getSort()
             },

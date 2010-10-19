@@ -333,14 +333,23 @@ ul#view-header li {
     width: 174px;
 }
 
-#left-column ul#sectors li#cluster {
+#left-column ul#societies li {
+    margin:0px;
+    width: 160px;
+}
+
+#left-column ul#sectors li#cluster,
+#left-column ul#societies li#cluster {
     margin-left:15px;
     width:159px;
 }
 
-#left-column ul#societies li {
-    margin:0px;
-    width: 160px;
+#alternate-page #left-column ul#sectors li#cluster a,
+#alternate-page #left-column ul#societies li#cluster a {
+    color:#006699;
+    border-left:1px solid #006699;
+    border-bottom:1px solid #006699;
+    background: white;
 }
 
 #left-column ul li.all {
@@ -711,13 +720,6 @@ span#roamer-beta-warning {
     color: white;
 }
 
-#alternate-page #left-column ul#sectors li#cluster a {
-    color:#006699;
-    border-left:1px solid #006699;
-    border-bottom:1px solid #006699;
-    background: white;
-}
-
 #alternate-page #left-column ul#societies li a {
     color:#333333;
     margin:0px;
@@ -842,15 +844,14 @@ span#roamer-beta-warning {
     -webkit-border-radius:5px;
 }
 
-#alternate-page #tag-galaxy div.node a.cluster {
+#alternate-page #tag-galaxy div.tag_cluster a {
     border-color:#006699;
     color:#004477;
     background:white;
 }
 
 #alternate-page #tag-galaxy div.tag_cluster a:hover {
-    color:white;
-    text-decoration:underline;
+    background:#eef4ff;
 }
 
 
