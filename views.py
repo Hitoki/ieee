@@ -648,10 +648,8 @@ def ajax_textui_nodes(request):
             
         else:
             # Search phrase was too short, return empty results.
-            #search_page_title = 'Hi there'
             child_nodes = Node.objects.none()
             search_for_too_short = True
-        
         
         #print 'searching for phrase "%s"' % search_for
         #print 'child_nodes: %s' % child_nodes
@@ -659,15 +657,15 @@ def ajax_textui_nodes(request):
         # Get the min/max scores for these search results
         min_score = None
         max_score = None
-        for node in child_nodes:
+        for node1 in child_nodes:
             if min_score is None:
-                min_score = node.score1
+                min_score = node1.score1
             else:
-                min_score = min(min_score, node.score1)
+                min_score = min(min_score, node1.score1)
             if max_score is None:
-                max_score = node.score1
+                max_score = node1.score1
             else:
-                max_score = max(max_score, node.score1)
+                max_score = max(max_score, node1.score1)
                 
     elif node_id is not None and node_id != "all":
         # Get a sector or cluster's child nodes
@@ -833,8 +831,8 @@ def ajax_textui_nodes(request):
             search_page_title = {"num": len(child_nodes), "search_for": search_for, "node_desc": str}
         elif society_id is not None and society_id != "all":
             str = ' for the %s society%s' % (society.name, final_punc)
-            search_page_title = {"num": len(child_nodes), "search_for": search_for, "node_desc": str};
-    
+            search_page_title = {"num": len(child_nodes), "search_for": search_for, "node_desc": str}
+        
     return render(request, 'ajax_textui_nodes.html', {
         'child_nodes': child_nodes,
         'parent_id': node_id,
