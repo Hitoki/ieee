@@ -487,6 +487,12 @@ class NodeManager(models.Manager):
         
         return child_nodes
     
+    def get_tags_non_clustered(self):
+        "Returns all tags that are not clustered."
+        tags = self.filter(node_type__name=NodeType.TAG)
+        tags = tags.exclude(parents__node_type__name=NodeType.TAG_CLUSTER)
+        return tags
+    
 class Node(models.Model):
     '''
     This model can represent different types of nodes (root, sector, cluter, tag).
@@ -543,11 +549,8 @@ class Node(models.Model):
     
     def get_tags_non_clustered(self):
         "Returns all child tags that are not clustered for this node."
-        #print 'get_tags_non_clustered()'
         tags = self.child_nodes.filter(node_type__name=NodeType.TAG)
-        #print '  tags.count(): %s' % tags.count()
         tags = tags.exclude(parents__node_type__name=NodeType.TAG_CLUSTER)
-        #print '  tags.count(): %s' % tags.count()
         return tags
     
     def get_tags_and_clusters(self):

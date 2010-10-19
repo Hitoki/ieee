@@ -539,7 +539,10 @@ def home(request):
         num_societies = Society.objects.count()
         num_society_managers = UserManager.get_society_managers().count()
         num_sectors = Node.objects.getSectors().count()
+        num_clusters = Node.objects.get_clusters().count()
         num_tags = Node.objects.getTags().count()
+        num_unclustered_tags = Node.objects.get_tags_non_clustered().count()
+        num_clustered_tags = num_tags - num_unclustered_tags
         num_resources = Resource.objects.count()
         
         return render(request, 'site_admin/admin_home.html', {
@@ -549,7 +552,10 @@ def home(request):
             'num_societies': num_societies,
             'num_society_managers': num_society_managers,
             'num_sectors': num_sectors,
+            'num_clusters': num_clusters,
             'num_tags': num_tags,
+            'num_unclustered_tags': num_unclustered_tags,
+            'num_clustered_tags': num_clustered_tags,
             'num_resources': num_resources,
             'DEBUG_ENABLE_CLUSTERS': settings.DEBUG_ENABLE_CLUSTERS,
         })
