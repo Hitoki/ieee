@@ -28,12 +28,12 @@
         
             
             <div class="alt-box">
-                <div id="content" class="alt-box-pad">
+                <div id="content" class="alt-box-pad" width="100%">
     {% endif %}
                     
                     <div id="resource-tabs" class="nootabs term-resources-tabs { useCookies:false, defaultTab:2, useHash:false }">
                         <ul class="nootabs-menus">
-                            <li id="related-tags-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu">Related <br />Tags <span>({{ term.related_terms.count }})</span></a></li>
+                            <li id="related-tags-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu">Related <br />Tags <span>({{ term.related_nodes.count }})</span></a></li>
                             {% comment %}
                             #    <li id="ieee-societies-tab" class="middle-group-menu"><a href="" class="two-word-menu">IEEE<br /> Societies <span>({{ term.societies.count }})</span></a></li>
                             #    <li id="industry-sectors-tab" class="begin-group-menu"><a href="" class="two-word-menu">Industry <br />Sectors <span>({{ parent_nodes|length }})</span></a></li>
@@ -50,7 +50,7 @@
                                     {% for related_node in term.related_nodes.all %}
                                         <p class="{% cycle 'item_odd' 'item_even' %}">
                                             {% ifequal ui "textui" %}
-                                                <a href="javascript:Terms.selectNode({{ related_node.id }});">
+                                                <a href="javascript:Tags.selectTag({{ related_node.id }});">
                                                     <span>{{ related_node.name }}</span>
                                                 </a>
                                             {% else %}
