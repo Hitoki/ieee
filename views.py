@@ -327,7 +327,7 @@ def ajax_term_content(request, term_id, ui=None):
     assert ui in ['roamer', 'textui'], 'Unrecognized ui "%s"' % ui
     
     term = TaxonomyTerm.objects.get(id=term_id)
-    num_related_items = 0
+    num_related_items = term.related_nodes.count()
     
     return render(request, 'ajax_term_content.html', {
         'term':term,
