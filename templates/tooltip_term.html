@@ -1,0 +1,29 @@
+
+{% block content %}
+    <div class="node-tooltip">
+        <h3 class="{{ termLevel }}">{{ term.name }}</h3>
+        
+        {% comment %}
+        <table class="node-tooltip-grid">
+            <tr>
+                <td>
+                    <table class="sector-block vert-center">
+                        <tr>
+                            <td class="no-level">
+                                Tags
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    {{ tags|safe }}
+                </td>
+            </tr>
+        </table>
+        {% endcomment %}
+        
+        <p>
+            <a href="javascript:Tags.selectTerm({{ term.id }}, {{ sector_id|default_if_none:"null" }}, null);">View full details</a>
+        </p>
+    </div>
+{% endblock %}

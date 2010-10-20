@@ -1,4 +1,4 @@
-{% load filters %}
+{% load filters smartif %}
 
 {% if search_for %}
     {% if search_for_too_short %}
@@ -22,19 +22,22 @@
 
 {% spaceless %}
 {% for tag in child_nodes %}
-    <div id="tag-{{ tag.id }}" class="node {{ tag.node_type__name }} flyover">
-        {% ifequal tag.node_type__name 'tag' %}
+    <div id="tag-{{ tag.id }}" class="node {{ tag.node_type__name }} flyover { type:'{{ tag.node_type__name }}' }">
+        {% if tag.node_type__name == 'tag' %}
             {# Tag #}
             <a href="javascript:Tags.selectTag({{ tag.id }});" class="{{ tag.level }}">{{ tag.name|truncatechars:30 }}</a>
+        {% elif tag.node_type__name == 'tag_cluster' %}
+            {# Cluster #}
+            <a href="javascript:Tags.selectCluster({{ tag.id }}, {{ sector_id|reprjs }}, {{ society_id|reprjs}});" class="{{ tag.level }}">
+                <img src="/media/images/icon_cluster_sm.png" />
+                {{ tag.name|truncatechars:30 }}
+            </a> 
+        {% elif tag.node_type__name == 'term' %}
+            {# Term #}
+            <a href="javascript:Tags.selectTerm({{ tag.id }});" class="{{ tag.level }}">{{ tag.name|truncatechars:30 }}</a>
         {% else %}
-            {% ifequal tag.node_type__name 'tag_cluster' %}
-                {# Cluster #}
-                <a href="javascript:Tags.selectCluster({{ tag.id }}, {{ sector_id|reprjs }}, {{ society_id|reprjs}});" class="{{ tag.level }}">
-                    <img src="/media/images/icon_cluster_sm.png" />
-                    {{ tag.name|truncatechars:30 }}
-                </a> 
-            {% endifequal %}
-        {% endifequal %}
+            UNKNOWN NODE {{ tag.node_type__name }}
+        {% endif %}
     
         {% comment %}
         #if (!simplified) {
@@ -58,7 +61,7 @@
         attachTextUiFlyovers(
             '#tags',
             {
-                url: "/ajax/tooltip/tagid?parent_id={{ parent_id|default:"null"|safe }}&amp;society_id={{ society_id|default:"null"|safe }}&amp;search_for={{ search_for|urlencode }}"
+                url: "/ajax/tooltip/tagid?parent_id={{ parent_id|default:"null"|safe }}&society_id={{ society_id|default:"null"|safe }}&search_for={{ search_for|urlencode }}"
                 , position: 'auto'
                 , customClass: 'textui-node'
                 , hideDelay: 400

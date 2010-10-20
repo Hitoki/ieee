@@ -651,9 +651,23 @@ function attachTextUiFlyovers(elem, options) {
     elem.find('.flyover').each(function() {
         // Clone the generic options.
         var tag_options = $.extend(true, {}, options)
-        // Replace the "tagid" placeholder with the tag's actual id.
-        tag_options["url"] = tag_options["url"].replace('tagid', $(this).attr("id").substr(4));
-        Flyover.attach(this, tag_options);
+        
+        var data = $(this).metadata();
+        var tag_id = $(this).attr("id").substr(4);
+        
+        if (data.type == 'tag' || data.type == 'tag_cluster') {
+            // Replace the "tagid" placeholder with the tag's actual id.
+            tag_options["url"] = tag_options["url"].replace('tagid', tag_id);
+            Flyover.attach(this, tag_options);
+        } else if (data.type == 'term') {
+            // Replace the "tagid" placeholder with the tag's actual id.
+            tag_options["url"] = tag_options["url"].replace('/tagid', '');
+            tag_options["url"] = tag_options["url"] + '&term_id=' + tag_id;
+            Flyover.attach(this, tag_options);
+        } else { 
+            log('attachTextUiFlyovers(): ERROR: Unknown data.type "' + data.type + '"');
+        }
+        
     });
 }
 

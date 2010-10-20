@@ -349,11 +349,13 @@ function getXploreResults(elem, showAll, offset) {
     
     var elem2 = $(elem);
     var tagId = elem2.metadata().tagId;
+    var termId = elem2.metadata().termId;
     elem2.html('<div class="loading"><img src="/media/images/ajax-loader.gif" class="loading" /><br/>Loading Xplore results...</div>');
     var ajax = $.ajax({
         url: '/ajax/xplore_results',
         data: {
             tag_id: tagId,
+            term_id: termId,
             show_all: showAll,
             offset: offset
         },

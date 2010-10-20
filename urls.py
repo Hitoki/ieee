@@ -33,11 +33,13 @@ else:
         #url(r'^ajax/tag_content$', views.ajax_tag_content, name='ajax_tag_content'),
         url(r'^ajax/tag_content/(?P<tag_id>\d+)/(?P<ui>\S+)$', views.ajax_tag_content, name='ajax_tag_content'),
         url(r'^ajax/tag_content/(?P<tag_slug>\d+)/(?P<ui>\S+)$', views.ajax_tag_content, name='ajax_tag_content'),
+        url(r'^ajax/term_content/(?P<term_id>\d+)/(?P<ui>\S+)$', views.ajax_term_content, name='ajax_term_content'),
         url(r'^ajax/xplore_results$', views.ajax_xplore_results, name='ajax_xplore_results'),
         url(r'^ajax/node$', views.ajax_node, name='ajax_node'),
         url(r'^ajax/nodes_xml$', views.ajax_nodes_xml, name='ajax_nodes_xml'),
         url(r'^ajax/textui_nodes$', views.ajax_textui_nodes, name='ajax_textui_nodes'),
         url(r'^ajax/tooltip/(?P<tag_id>\d+)$', views.tooltip, name='tooltip'),
+        url(r'^ajax/tooltip$', views.tooltip, name='tooltip'),
         url(r'^ajax/video$', views.ajax_video, name='ajax_video'),
         
         # Print
