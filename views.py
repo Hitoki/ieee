@@ -20,7 +20,7 @@ import urllib2
 import xml.dom.minidom
 from decorators import optional_login_required as login_required
 
-from ieeetags.models import single_row, Filter, Node, NodeType, Profile, Resource, ResourceType, Society, TaxonomyTerm
+from ieeetags.models import single_row, Filter, Node, NodeType, Profile, Resource, ResourceType, Society, TaxonomyTerm, TaxonomyCluster
 from ieeetags.forms import *
 #from profiler import Profiler
 import settings
@@ -721,6 +721,14 @@ def ajax_textui_nodes(request):
             
         elif node.node_type.name == NodeType.TAG_CLUSTER:
             child_nodes = node.get_tags()
+            
+            try:
+                taxonomy_cluster = TaxonomyCluster.objects.get(name=node.name)
+                terms = taxonomy_cluster.terms.all()
+            except TaxonomyCluster.DoesNotExist:
+                pass
+                
+            
             if sector_id is not None and sector_id != 'all':
                 child_nodes = child_nodes.filter(parents__id=sector_id)
             elif society_id is not None and society_id != 'all':
