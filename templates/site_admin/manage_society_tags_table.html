@@ -108,7 +108,7 @@
                 </div>
             </th>
             <th>
-                Societies <span class="help_icon flyover" title="IEEE organizations that have associated Tag with their domain.">[?]</span>
+                Organizations <span class="help_icon flyover" title="IEEE organizations that have associated Tag with their domain.">[?]</span>
                 
                 <div class="table-sort">
                 <a href="{% url admin_manage_society society.id %}?tag_sort=num_societies_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
@@ -188,7 +188,7 @@
                 </div>
             </th>
             <th>
-                Remove <span class="help_icon flyover" title="Remove this tag from this society.">[?]</span>
+                Remove <span class="help_icon flyover" title="Remove this tag from this organization.">[?]</span>
             </th>
         </tr>
         {% for tag in tags %}
@@ -223,7 +223,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="javascript:$('#multisearch_tags').data('multisearch').removeSelectedOptionByValue({{ tag.id }});" onclick="return confirm('Remove this tag?');"><span class="flyover" title="Remove Tag from Society">[x]</span></a>
+                    <a href="javascript:$('#multisearch_tags').data('multisearch').removeSelectedOptionByValue({{ tag.id }});" onclick="return confirm('Remove this tag?');"><span class="flyover" title="Remove Tag from Organization">[x]</span></a>
                 </td>
             </tr>
         {% endfor %}

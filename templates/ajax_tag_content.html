@@ -43,7 +43,7 @@
                             {% comment %}
                             #<li><a href="">Filters ({{ tag.filters.count }})</a></li>
                             {% endcomment %}
-                            <li id="ieee-societies-tab" class="middle-group-menu"><a href="" class="two-word-menu">IEEE<br /> Societies <span>({{ tag.societies.count }})</span></a></li>
+                            <li id="ieee-societies-tab" class="middle-group-menu"><a href="" class="two-word-menu">IEEE<br /> Organizations <span>({{ tag.societies.count }})</span></a></li>
                             <li id="related-tags-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu">Related <br />Tags <span>({{ tag.related_tags.count }})</span></a></li>
                             <li id="conferences-tab" class="begin-group-menu"><a href="" class="one-word-menu">Conferences <span>({{conferences|length}})</span></a></li>
                             <li id="periodicals-tab" class="middle-group-menu"><a href="" class="one-word-menu">Periodicals <span>({{periodicals|length}})</span></a></li>
@@ -95,7 +95,7 @@
                         </div>
                         {% endcomment %}
                         
-                        <!-- Societies -->
+                        <!-- Organizations -->
                         <div id="society-tab" data-printUrl='{% url print_resource tag.id "societies" %}'>
                             <div class="group">
                             {% if tag.societies.all %}
@@ -129,7 +129,7 @@
                                     {% endfor %}
                                 </table>
                                 {% else %}
-                                    <p class="no-resources">No societies are currently tagged "{{ tag.name }}"</p>
+                                    <p class="no-resources">No organizations are currently tagged "{{ tag.name }}"</p>
                                 {% endif %}
                             </div>
                         </div>

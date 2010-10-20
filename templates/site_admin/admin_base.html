@@ -26,7 +26,7 @@
                     <a href="{% url admin_list_sectors %}">Industry Sectors</a>
                 </li>
                 <li class="{% block nav_societies %}{% endblock %}">
-                    <a href="{% url admin_societies %}">IEEE Societies</a>
+                    <a href="{% url admin_societies %}">IEEE Organizations</a>
                 </li>
             {% endif %}
             {% if user.get_profile.role == "society_manager" or user.get_profile.role == "admin" %}

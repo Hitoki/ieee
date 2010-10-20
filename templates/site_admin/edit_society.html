@@ -4,7 +4,7 @@
 
 {% block main_table_content %}
     
-    <h1>"{{ society.name }}" Society</h1>
+    <h1>"{{ society.name }}" Organization</h1>
     
     <form action="{% url admin_save_society %}?return_url={{ return_url|urlencode }}" method="post">
         
@@ -39,7 +39,7 @@
         <input type="submit" value="Save Changes" />
         
         {% if society and user.is_superuser %}
-            <input type="button" value="Delete" onclick="if (confirm('Delete this society?')) window.location='{% url admin_delete_society society.id %}';" />
+            <input type="button" value="Delete" onclick="if (confirm('Delete this organization?')) window.location='{% url admin_delete_society society.id %}';" />
         {% endif %}
     </form>
     

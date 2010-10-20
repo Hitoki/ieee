@@ -16,8 +16,8 @@
         <li>
             Stats:
             <ul>
-                <li>{{ num_societies }} IEEE societies</li>
-                <li>{{ num_society_managers }} society managers</li>
+                <li>{{ num_societies }} IEEE organizations</li>
+                <li>{{ num_society_managers }} organization managers</li>
                 <li>{{ num_sectors }} industry sectors</li>
                 <li>{{ num_clusters }} clusters</li>
                 <li>{{ num_tags }} tags</li>
@@ -38,7 +38,7 @@
                 {% endif %}
                 <li><a href="{% url admin_priority_report %}">Priority Report</a></li>
                 <li><a href="{% url admin_duplicate_tags_report %}">Duplicate Tags Report</a></li>
-                <li><a href="{% url admin_society_logos_report %}">Society Logos Report</a></li>
+                <li><a href="{% url admin_society_logos_report %}">Organization Logos Report</a></li>
                 <li><a href="{% url admin_conference_series_report %}">Conference Series Report</a></li>
                 <li><a href="{% url admin_broken_links_report %}">Broken Links Report</a></li>
                 <li><a href="{% url admin_create_fake_tags %}">Create Fake Tags</a></li>
@@ -62,8 +62,8 @@
                 <li><a href="{% url admin_users %}">Users</a></li>
                 <li><a href="{% url admin_send_email_all_users %}">Send email to all users</a></li>
                 <li><a href="{% url admin_list_sectors %}">Sectors</a></li>
-                <li><a href="{% url admin_societies %}">Societies</a></li>
-                <li><a href="{% url admin_search_societies %}">Search Societies</a></li>
+                <li><a href="{% url admin_societies %}">Organizations</a></li>
+                <li><a href="{% url admin_search_societies %}">Search Organizations</a></li>
             </ul>
         </li>
         <li>
@@ -92,7 +92,7 @@
                 <ul>
                     <li><a href="{% url admin_import_users %}">Import Users</a></li>
                     <li><a href="{% url admin_import_resources %}">Import Resources</a></li>
-                    <li><a href="{% url admin_import_societies %}">Import IEEE Societies</a></li>
+                    <li><a href="{% url admin_import_societies %}">Import IEEE Organizations</a></li>
                     {% if DEBUG_ENABLE_CLUSTERS %}
                         <li><a href="{% url admin_import_clusters %}">Import Clusters</a></li>
                     {% endif %}

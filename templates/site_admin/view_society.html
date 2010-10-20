@@ -5,10 +5,10 @@
 {% block main_table_content %}
     
     {% ifpermission "user_can_edit_society" society %}
-        <a href="{% url admin_edit_society society.id %}" class="edit">Edit Society</a>
+        <a href="{% url admin_edit_society society.id %}" class="edit">Edit Organization</a>
     {% endifpermission %}
     
-    <h1>{{ society.name }} ({{ society.abbreviation }}) Society</h1>
+    <h1>{{ society.name }} ({{ society.abbreviation }}) Organization</h1>
     
     <table class="full-grid">
         {% comment %}
@@ -57,7 +57,7 @@
                     </ul>
                     <div>
                         {% if not society.tags.all %}
-                            <em>No tags associated yet with this society.</em>
+                            <em>No tags associated yet with this organization.</em>
                         {% else %}
                             {% for tag in society.tags.all %}
                                 <a href="{% url admin_view_tag tag.id %}">{{ tag.name_with_sector }}</a><br/>
@@ -66,7 +66,7 @@
                     </div>
                     <div>
                         {% if not society.resources.all %}
-                            <em>No resources associated yet with this society.</em>
+                            <em>No resources associated yet with this organization.</em>
                         {% else %}
                             <table>
                                 {% for resource in society.resources.all %}

@@ -224,7 +224,7 @@
 
     {% comment %}
     #    {% ifpermission "user_can_edit_society" society %}
-    #        <a href="{% url admin_edit_society society.id %}?return_url={{ current_url|urlencode }}" class="edit">Edit Society</a>
+    #        <a href="{% url admin_edit_society society.id %}?return_url={{ current_url|urlencode }}" class="edit">Edit Organization</a>
     #    {% endifpermission %}
     {% endcomment %}
     
@@ -280,8 +280,8 @@
                     
                     <div id="society-resource-tabs" class="nootabs {useCookies:false, useHash:true}">
                         <ul class="nootabs-menus">
-                            <li><a href="">Manage this Society's Resources ({{ num_unfiltered_resources }})</a></li>
-                            <li {% if not DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB %}class="last-menu"{% endif %}><a href="">Manage this Society's Tags <span id="tag-count"></span></a></li>
+                            <li><a href="">Manage this Organization's Resources ({{ num_unfiltered_resources }})</a></li>
+                            <li {% if not DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB %}class="last-menu"{% endif %}><a href="">Manage this Organization's Tags <span id="tag-count"></span></a></li>
                             {% if DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB %}
                                 <li class="last-menu"><a href="">Help</a></li>
                             {% endif %}
@@ -307,7 +307,7 @@
                             
                             {% if not resources %}
                                 {% if  not num_unfiltered_resources %}
-                                    <h1 class="no-resources-message">There are no resources assigned to this society yet</h1>
+                                    <h1 class="no-resources-message">There are no resources assigned to this organization yet</h1>
                                 {% else %}
                                     <h1 class="no-resources-message">There were no matching resources, please try again or remove your filter</h1>
                                 {% endif %}
@@ -445,7 +445,7 @@
                                                 </div>
                                             </th>
                                             <th>
-                                                Societies <span class="help_icon flyover" title="IEEE organizations that sponsor this resource.">[?]</span>
+                                                Organizations <span class="help_icon flyover" title="IEEE organizations that sponsor this resource.">[?]</span>
                                             
                                                 <div class="table-sort">
                                                 <a href="{% url admin_manage_society society.id %}?resource_sort=num_societies_ascending" class="live-num_societies {hashOnly:true}">
@@ -674,8 +674,8 @@
                         <div id="tags-tab" class="nootabs-tab">
                             <input type="button" id="create-tag-float" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Tag" />
                             
-                            <!-- Show the "Associate Tags with this Society" input: -->
-                            <form autocomplete="off">{% eval form['tags'] %}<div class="multisearch-note">Type * to show all<br/>of this society's tags</div></form>
+                            <!-- Show the "Associate Tags with this Organization" input: -->
+                            <form autocomplete="off">{% eval form['tags'] %}<div class="multisearch-note">Type * to show all<br/>of this organization's tags</div></form>
                             
                             <div id="tags-table-content">
                                 {% manage_society_tags_table %}
