@@ -2545,3 +2545,11 @@ p#tag-and-cluster-counts {
     font-weight:bold;
     margin-bottom:.5em;
 }
+
+p#tag-and-cluster-counts-searching {
+    font-weight:bold;
+    margin-bottom:.5em;
+    position:absolute;
+    top:0;
+    right:0;
+}

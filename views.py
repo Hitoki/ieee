@@ -671,10 +671,8 @@ def ajax_textui_nodes(request):
                 # Search within the society
                 queries &= Q(societies__id=society_id)
             
-            child_nodes = Node.objects.filter(queries, node_type__name=NodeType.TAG)
+            child_nodes = Node.objects.filter(queries & (Q(node_type__name=NodeType.TAG) | Q(node_type__name=NodeType.TAG_CLUSTER)))
             child_nodes = Node.objects.get_extra_info(child_nodes, None, filterIds)
-            ##log('  child_nodes: %r' % child_nodes)
-            ##log('  child_nodes.count(): %r' % child_nodes.count())
             
             # TODO: societies, sectors, etc.
             

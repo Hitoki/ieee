@@ -18,15 +18,23 @@
         {% endifequal %}
         </h3>
     {% endif %}
+    
+    <p id="tag-and-cluster-counts-searching">
+        {{ num_tags }} tag{{ num_tags|pluralize }}
+        {% if num_clusters %}
+            , {{ num_clusters }} cluster{{ num_clusters|pluralize }}
+        {% endif %}
+    </p>
+{% else %}
+    <p id="tag-and-cluster-counts">
+        Showing {{ num_tags }} tag{{ num_tags|pluralize }}
+        {% if num_clusters %}
+            , {{ num_clusters }} cluster{{ num_clusters|pluralize }}
+        {% endif %}
+        .
+    </p>
 {% endif %}
 
-<p id="tag-and-cluster-counts">
-    Showing {{ num_tags }} tag{{ num_tags|pluralize }}
-    {% if num_clusters %}
-        , {{ num_clusters }} cluster{{ num_clusters|pluralize }}
-    {% endif %}
-    .
-</p>
 
 {% spaceless %}
 {% for tag in child_nodes %}
