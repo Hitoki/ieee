@@ -630,6 +630,8 @@ def ajax_textui_nodes(request):
     
     search_for_too_short = False
     terms = []
+    num_tags = 0
+    num_clusters = 0
     
     if search_for is not None:
         # Search for nodes with a phrase
@@ -880,7 +882,11 @@ def ajax_textui_nodes(request):
             'num_societies1': 0,
             'score1': 0,
         })
-
+    
+    num_clusters = len(clusters)
+    # TODO: Should this include terms?
+    num_tags = len(child_nodes2) + len(terms2)
+    
     child_nodes = clusters + child_nodes2 + terms2
     
     if search_for is not None:
@@ -900,6 +906,8 @@ def ajax_textui_nodes(request):
         'search_for': search_for,
         'search_for_too_short': search_for_too_short,
         'search_page_title': search_page_title,
+        'num_tags': num_tags,
+        'num_clusters': num_clusters,
     })
 
 @login_required

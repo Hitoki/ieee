@@ -2540,3 +2540,8 @@ background-color: white;
     color:#aaa;
     padding:1em;
 }
+
+p#tag-and-cluster-counts {
+    font-weight:bold;
+    margin-bottom:.5em;
+}
