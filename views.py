@@ -1,5 +1,6 @@
 import cgi
 import datetime
+from django.db.models import Count, Q
 from django.core.mail import mail_admins
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
@@ -528,75 +529,70 @@ def _get_popularity_level(min, max, count):
     return 'level' + str(level)
 
 @login_required
+#@util.profiler
 def ajax_textui_nodes(request):
     '''
     Returns HTML for the list of tags/clusters for the textui page.
-    @param node_id: (Optional) The sector to filter results.
-    @param sector_id: (Optional) The sector to filter results (for cluster).
+    @param sector_id: (Optional) The sector to filter results.
     @param society_id: (Optional) The society to filter results.
+    @param cluster_id: (Optional) The cluster to filter results, used to filter "search_for" results.
     @param search_for: (Optional) A search phrase to filter results.
     @param sort: The sort method.
     @return: The HTML content for all results.
     '''
     log('ajax_textui_nodes()')
     
-    node_id = request.GET.get('node_id', None)
     sector_id = request.GET.get('sector_id', None)
-    if sector_id == '' or sector_id == 'null':
+    if sector_id == '' or sector_id == 'null' or sector_id == 'all':
         sector_id = None
     try:
         sector_id = int(sector_id)
+        sector = Node.objects.get(id=sector_id, node_type__name=NodeType.SECTOR)
     except (TypeError, ValueError):
-        pass
-    assert sector_id is None or sector_id == 'all' or type(sector_id) is int, 'Bad value for sector_id %r' % sector_id
+        sector = None
+    assert sector_id is None or type(sector_id) is int, 'Bad value for sector_id %r' % sector_id
     
     society_id = request.GET.get('society_id', None)
-    if society_id == '' or society_id == 'null':
+    if society_id == '' or society_id == 'null' or society_id == 'all':
         society_id = None
     try:
         society_id = int(society_id)
+        society = Society.objects.get(id=society_id)
     except (TypeError, ValueError):
-        pass
+        society = None
+    assert society_id is None or type(society_id) is int, 'Bad value for society_id %r' % society_id
         
+    cluster_id = request.GET.get('cluster_id', None)
+    if cluster_id == '' or cluster_id == 'null':
+        cluster_id = None
+    try:
+        cluster_id = int(cluster_id)
+        cluster = Node.objects.get(id=cluster_id, node_type__name=NodeType.TAG_CLUSTER)
+    except (TypeError, ValueError):
+        cluster = None
+    assert cluster_id is None or type(cluster_id) is int, 'Bad value for cluster_id %r' % cluster_id
+    
     search_for = request.GET.get('search_for', None)
-    
-    log('  node_id: %s' % node_id)
-    log('  sector_id: %s' % sector_id)
-    log('  society_id: %s' % society_id)
-    log('  search_for: %s' % search_for)
-    
-    if node_id == 'null':
-        node_id = None
-    if sector_id == 'null':
-        sector_id = None
-    if society_id == 'null':
-        society_id = None
     if search_for == 'null' or search_for == '':
         search_for = None
     
-    if node_id == 'all':
-        sector_id = 'all'
+    log('  sector_id: %s' % sector_id)
+    log('  society_id: %s' % society_id)
+    log('  cluster_id: %s' % cluster_id)
+    log('  search_for: %s' % search_for)
     
-    #assert society_id is not None or node_id is not None, 'Either society_id or node_id is required'
-    #assert society_id is None or node_id is None, 'Cannot specify both society_id or node_id'
+    log('  sector: %s' % sector)
+    log('  society: %s' % society)
+    log('  cluster: %s' % cluster)
     
-    # TODO: Update this for clusters
-    #assert node_id is None or society_id is None, 'Cannot specify both node_id and society_id'
+    assert sector_id is None or society_id is None, 'Cannot specify both sector_id and society_id.'
     
     sort = request.GET.get('sort')
-    ##log('  sort: %s' % sort)
+    log('  sort: %s' % sort)
     #filterValues = request.GET.get('filterValues')
     ##log('filterValues: %s' % filterValues)
     
-    if node_id is not None and node_id != "all":
-        node = Node.objects.get(id=node_id)
-    else:
-        node = None
-    
-    if society_id is not None and society_id != "all":
-        society = Society.objects.get(id=society_id)
-    else:
-        society = None
+    log('')
     
     order_by = None
     extra_order_by = None
@@ -629,65 +625,116 @@ def ajax_textui_nodes(request):
     filterIds = [filter.id for filter in Filter.objects.all()]
     
     search_for_too_short = False
+    
     terms = []
     num_tags = 0
     num_clusters = 0
     
+    def and_query(query1, query2):
+        if query1 is not None:
+            return query1 & query2
+        else:
+            return query2
+    
+    def or_query(query1, query2):
+        if query1 is not None:
+            return query1 | query2
+        else:
+            return query2
+    
+    word_queries = None
     if search_for is not None:
         # Search for nodes with a phrase
         # NOTE: <= 2 char searches take a long time (2-3 seconds), vs 200ms average for anything longer
         
         # Require >= 3 chars for general search, or >= 2 chars for in-node/in-society search.
-        if len(search_for) >= 3 or (len(search_for) >= 2 and (node_id is not None or society_id is not None)):
+        if len(search_for) >= 3 or (len(search_for) >= 2 and (sector_id is not None or society_id is not None)):
+            # Search phrase was long enough.
+            log('  Searching by keyword %r' % search_for)
             
             search_words = re.split(r'\s', search_for)
-            #print 'search_words: %s' % search_words
+            #log('search_words: %s' % search_words)
             
-            from django.db.models import Q
-            
-            queries = None
             or_flag = False
             for word in search_words:
-                ##log('  word: %r' % word)
-                if word == 'OR':
-                    or_flag = True
-                    continue
-                
-                if queries is None:
-                    queries = Q(name__icontains=word)
-                else:
+                if word != '':
+                    #log('  word: %r' % word)
+                    log('  word: %r' % word)
+                    if word == 'OR':
+                        or_flag = True
+                        continue
+                    
                     if or_flag:
-                        queries |= Q(name__icontains=word)
+                        word_queries = or_query(word_queries, Q(name__icontains=word))
                         or_flag = False
                     else:
-                        queries &= Q(name__icontains=word)
-            
-            if node_id is not None and node_id != "all":
-                # Search within the node
-                queries &= Q(parents__id=node_id)
-                node = Node.objects.get(id=node_id)
-            
-            elif society_id is not None and society_id != "all":
-                # Search within the society
-                queries &= Q(societies__id=society_id)
-            
-            child_nodes = Node.objects.filter(queries & (Q(node_type__name=NodeType.TAG) | Q(node_type__name=NodeType.TAG_CLUSTER)))
-            child_nodes = Node.objects.get_extra_info(child_nodes, None, filterIds)
-            
-            # TODO: societies, sectors, etc.
-            
-            terms = TaxonomyTerm.objects.filter(name__icontains=search_for)
-            print 'terms: %r' % terms
-            print 'terms.count(): %r' % terms.count()
-            
+                        word_queries = and_query(word_queries, Q(name__icontains=word))
+                
+            # Only add terms if search is:
+            #   - within a cluster.
+            #   - in all sectors.
+            #   - in all societies.
+            # Otherwise we can't show anything, since terms are not associated with societies/sectors, only clusters.
+            if sector_id is None and society_id is None:
+                log('  adding terms for search phrase')
+                terms = TaxonomyTerm.objects.all()
+                
+                # Search for keywords.
+                terms = terms.filter(word_queries)
+                #log('  terms.count(): %r' % terms.count())
+                
+                # Filter by cluster
+                if cluster_id is not None:
+                    cluster = Node.objects.get(id=cluster_id, node_type__name=NodeType.TAG_CLUSTER)
+                    taxonomy_cluster = TaxonomyCluster.objects.get(name=cluster.name)
+                    terms = terms.filter(taxonomy_clusters__id=taxonomy_cluster.id)
+                    #log('  terms.count(): %r' % terms.count())
+                
+                # Filter out any terms matched to existing tags.
+                terms = terms.annotate(num_related_nodes=Count('related_nodes')).filter(num_related_nodes=0)
+                #log('  terms.count(): %r' % terms.count())
+                
         else:
             # Search phrase was too short, return empty results.
             child_nodes = Node.objects.none()
             search_for_too_short = True
+    
+    # Start filtering the nodes.
+    child_nodes = Node.objects.all()
+    
+    if word_queries:
+        child_nodes = child_nodes.filter(word_queries)
+    
+    if sector:
+        # Search within a sector.
+        #log('  searching by sector %r' % sector_id)
+        child_nodes = child_nodes.filter(parents__id=sector_id)
+    
+    elif society:
+        # Search within a society.
+        #log('  searching by society %r' % society_id)
+        child_nodes = child_nodes.filter(societies__id=society_id)
+    
+    if cluster:
+        # Search within a cluster (in addition to any sector/society filtering above).
+        #log('  searching by cluster %r' % cluster_id)
+        child_nodes = child_nodes.filter(parents__id=cluster_id)
         
-        #print 'searching for phrase "%s"' % search_for
-        #print 'child_nodes: %s' % child_nodes
-        
+        # Only show terms from the cluster here if we're not in a sector or society.
+        if not word_queries and sector is None and society is None:
+            log('  adding terms for cluster.')
+            taxonomy_cluster = TaxonomyCluster.objects.get(name=cluster.name)
+            terms = taxonomy_cluster.terms.all()
+            
+            # Filter out any terms matched to existing tags.
+            terms = terms.annotate(num_related_nodes=Count('related_nodes')).filter(num_related_nodes=0)
+    
+    # Restrict to only tags & clusters.
+    child_nodes = child_nodes.filter(Q(node_type__name=NodeType.TAG) | Q(node_type__name=NodeType.TAG_CLUSTER))
+    child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, filterIds)
+    
+    if word_queries:
+        log('  using min/max for all results.')
         # Get the min/max scores for these search results
         min_score = None
         max_score = None
@@ -700,80 +747,43 @@ def ajax_textui_nodes(request):
                 max_score = node1.score1
             else:
                 max_score = max(max_score, node1.score1)
-                
-    elif node_id is not None and node_id != "all":
-        # Get a sector or cluster's child nodes
-        node = Node.objects.get(id=node_id)
-        society = None
-        assert node.node_type.name in [NodeType.SECTOR, NodeType.TAG_CLUSTER], 'Node "%s" must be a node or cluster' % node.name
-        
-        if node.node_type.name == NodeType.SECTOR:
-            ##log('Calling child_nodes.get_extra_info() with filter ids')
-            child_nodes = node.get_tags_and_clusters()
-            
-            sector_id = node.id
-            
-            # The 'filteIds' allows us to get the selected filter count via the DB (much faster)
-            if len(filterIds) > 0:
-                child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, filterIds)
-            else:
-                child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, None)
-            
-        elif node.node_type.name == NodeType.TAG_CLUSTER:
-            child_nodes = node.get_tags()
-            
-            try:
-                taxonomy_cluster = TaxonomyCluster.objects.get(name=node.name)
-                terms = taxonomy_cluster.terms.all()
-            except TaxonomyCluster.DoesNotExist:
-                pass
-                
-            
-            if sector_id is not None and sector_id != 'all':
-                child_nodes = child_nodes.filter(parents__id=sector_id)
-            elif society_id is not None and society_id != 'all':
-                child_nodes = child_nodes.filter(societies__id=society_id)
-                
-            if len(filterIds) > 0:
-                child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, filterIds)
-            else:
-                child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, None)
-        
-        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = Node.objects.get_sector_ranges(node)
-        (min_score, max_score) = Node.objects.get_combined_sector_ranges(node)
-
-    elif society_id is not None and society_id != "all":
-        # Get a society's nodes
-        node = None
-        society = Society.objects.get(id=society_id)
-        child_nodes = Node.objects.get_extra_info(society.tags, extra_order_by, filterIds)
-        
+    if cluster:
+        # Get min/max scores for this cluster.
+        #log('  getting min/max for this cluster.')
+        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = cluster.get_sector_ranges()
+        (min_score, max_score) = cluster.get_combined_sector_ranges()
+    elif sector:
+        # Get min/max scores for this sector.
+        #log('  getting min/max for this sector.')
+        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = sector.get_sector_ranges()
+        (min_score, max_score) = sector.get_combined_sector_ranges()
+    elif society:
+        # Get min/max scores for this society.
+        #log('  getting min/max for this society.')
         (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = society.get_tag_ranges()
         (min_score, max_score) = society.get_combined_ranges()
     else:
-        node = None
-        society = None
-        child_nodes = Node.objects.get_tags_and_clusters()
-        child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, filterIds)
-        
-        if node_id == "all" or  society_id == "all":
-            node = Node.objects.get(node_type=Node.objects.getNodesForType(NodeType.ROOT))
-            (min_score, max_score) = Node.objects.get_combined_sector_ranges(node)
+        # Get min/max scores for all tags/clusters (root node).
+        #log('  getting min/max for root node.')
+        if sector_id is None and society_id is None:
+            root_node = Node.objects.get(node_type__name=NodeType.ROOT)
+            (min_score, max_score) = root_node.get_combined_sector_ranges()
         else:
             min_score = 0
             max_score = 10000
-        #assert False
     
-    # Get child tags & clusters
+    #log('  min_resources: %s' % min_resources)
+    #log('  max_resources: %s' % max_resources)
+    #log('  min_score: %s' % min_score)
+    #log('  max_score: %s' % max_score)
     
-    #if sort == 'clusters_first_alpha':
-    #    # Order clusters first, then tags; both sorted alphabetically
-    #    #print 'sorting by clusters, then alpha'
-    #    child_nodes = child_nodes.order_by('-node_type__name', 'name')
+    if cluster is None and not word_queries:
+        # Exclude clustered tags.
+        log('  Excluding clustered tags.')
+        child_nodes = child_nodes.exclude(parents__node_type__name=NodeType.TAG_CLUSTER)
     
     if order_by is not None:
         # Sort by one of the non-extra columns
-        #print 'sorting by a normal column "%s"' % order_by
         child_nodes = child_nodes.order_by(order_by)
     
     # This saves time when we check child_node.node_type later on (prevents DB hit for every single child_node)
@@ -826,10 +836,10 @@ def ajax_textui_nodes(request):
                     #child_node['max_score'] = max_score
                 
             else:
-                #print 'removing node %s' % child_node['name']
-                #print '  child_node['num_selected_filters1']: %s' % child_node['num_selected_filters1']
-                #print '  child_node['num_societies1']: %s' % child_node['num_societies1']
-                #print '  child_node['num_resources1']: %s' % child_node['num_resources1']
+                #log('removing node %s' % child_node['name'])
+                #log('  child_node['num_selected_filters1']: %s' % child_node['num_selected_filters1'])
+                #log('  child_node['num_societies1']: %s' % child_node['num_societies1'])
+                #log('  child_node['num_resources1']: %s' % child_node['num_resources1'])
                 filter_child_node = True
                 
                 
@@ -889,16 +899,20 @@ def ajax_textui_nodes(request):
     
     if search_for is not None:
         final_punc =  ('.', ':')[len(child_nodes) > 0]
-        if node_id is not None and node_id != "all":
-            str = ' in the %s node%s' % (node.name, final_punc)
+        if sector_id is not None:
+            str = ' in the %s node%s' % (sector.name, final_punc)
             search_page_title = {"num": len(child_nodes), "search_for": search_for, "node_desc": str}
-        elif society_id is not None and society_id != "all":
+        elif society_id is not None:
             str = ' for the %s society%s' % (society.name, final_punc)
             search_page_title = {"num": len(child_nodes), "search_for": search_for, "node_desc": str}
-        
+    
+    #log('  num_clusters: %s' % num_clusters)
+    #log('  num_tags: %s' % num_tags)
+    #log('    # real tags: %s' % len(child_nodes2))
+    #log('    # terms: %s' % len(terms2))
+    
     return render(request, 'ajax_textui_nodes.html', {
         'child_nodes': child_nodes,
-        'parent_id': node_id,
         'sector_id': sector_id,
         'society_id': society_id,
         'search_for': search_for,
@@ -906,6 +920,7 @@ def ajax_textui_nodes(request):
         'search_page_title': search_page_title,
         'num_tags': num_tags,
         'num_clusters': num_clusters,
+        'cluster_id': cluster_id,
     })
 
 @login_required
@@ -1145,8 +1160,8 @@ def tooltip(request, tag_id=None):
                     'num_societies1',
                     'score1',
                 )
-                (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = Node.objects.get_sector_ranges(parent, tags)
-                (min_score, max_score) = Node.objects.get_combined_sector_ranges(parent, tags)
+                (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = parent.get_sector_ranges(tags)
+                (min_score, max_score) = parent.get_combined_sector_ranges(tags)
             
             elif society_id is not None:
                 if society_id == 'all':

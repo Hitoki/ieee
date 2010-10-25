@@ -107,6 +107,7 @@ var Tags = {
     
     sectorId: null,
     societyId: null,
+    clusterId: null,
     nodeType: null,
     // This is used to store info about the current node.  Useful for cluster name, etc.
     node: null,
@@ -373,44 +374,10 @@ var Tags = {
     },
     
     showSearchResults: function(search_for, showSearchResultsCallback) {
-        log('showSearchResults()');
-        
         this.isSearching = true;
-        
         this.updateHighlightedNode();
-        
         this._showWaitScreen();
-        
-        log('  searching for "' + search_for + '"');
-        
         this.updateResults(showSearchResultsCallback);
-        //var data = {
-        //    search_for: search_for
-        //};
-        //if (this.page == this.PAGE_SOCIETY) {
-        //    log('  was society, adding to data');
-        //    data.society_id = this.societyId;
-        //} else if (this.page == this.PAGE_SECTOR) {
-        //    log('  was sector, adding to data');
-        //    data.node_id = this.sectorId;
-        //} else if (this.page == this.PAGE_HELP) {
-        //    log('  was help, doing nothing');
-        //    // Do nothing
-        //} else {
-        //    alert('Tags.showSearchResults(): Error, unknown page ' + this.page);
-        //    return;
-        //}
-        //
-        //$.ajax({
-        //    url: '/ajax/textui_nodes',
-        //    data: data,
-        //    success: function(data) {
-        //        Tags.onLoadResults(data);
-        //        if (showSearchResultsCallback) {
-        //            showSearchResultsCallback(search_for, data);
-        //        }
-        //    }
-        //});
     },
 	
     updateResults: function(showSearchResultsCallback) {
@@ -431,7 +398,8 @@ var Tags = {
             $.ajax({
                 url: '/ajax/textui_nodes',
                 data: {
-                    node_id: this.sectorId,
+                    sector_id: this.sectorId,
+                    cluster_id: this.clusterId,
                     sort: this.getSort(),
                     search_for: search_for
                 },
@@ -447,6 +415,7 @@ var Tags = {
                 url: '/ajax/textui_nodes',
                 data: {
                     society_id: this.societyId,
+                    cluster_id: this.clusterId,
                     sort: this.getSort(),
                     search_for: search_for
                 },
@@ -457,12 +426,13 @@ var Tags = {
             this.updateHighlightedNode();
         
         } else if (search_for != '') {
-            // Search for tags
+            // Search for tags in all societies/sectors.
             
             var data = {
                 search_for: search_for,
                 society_id: this.societyId,
-                node_id: this.sectorId
+                node_id: this.sectorId,
+                cluster_id: this.clusterId
             };
             
             $.ajax({
@@ -650,15 +620,26 @@ var Tags = {
             setHash = true;
         }
         
+        if (sectorId != null && societyId != null) {
+            alert('Tags.selectCluster(): ERROR: Cannot specify both sectorId and societyId.');
+            return;
+        }
+        
         if (sectorId != null) {
             this.page = this.PAGE_SECTOR_CLUSTER;
+            this.sectorId = sectorId;
+            this.societyId = null;
         } else if (societyId != null) {
+            this.page = this.PAGE_SOCIETY_CLUSTER;
+            this.societyId = societyId;
+            this.sectorId = null;
+        } else if (this.page == this.PAGE_SECTOR) {
+            this.page = this.PAGE_SECTOR_CLUSTER;
+        } else if (this.page == this.PAGE_SOCIETY) {
             this.page = this.PAGE_SOCIETY_CLUSTER;
         }
         
         this.clusterId = clusterId;
-        this.sectorId = sectorId;
-        this.societyId = societyId;
         
         this.node = null;
         this.nodeType = 'tag_cluster';
@@ -676,7 +657,7 @@ var Tags = {
         $.get(
             '/ajax/textui_nodes',
             {
-                node_id: clusterId,
+                cluster_id: clusterId,
                 sector_id: sectorId,
                 society_id: societyId,
                 filterValues: filterStr,
@@ -706,11 +687,11 @@ var Tags = {
         );
         
         if (setHash) {
-            if (sectorId) {
+            if (this.sectorId) {
                 var hash = '/sector/' + this.sectorId + '/cluster/' + this.clusterId;
                 log('setting hash to "' + hash + '"');
                 $.historyLoad(hash);
-            } else if (societyId) {
+            } else if (this.societyId) {
                 var hash = '/society/' + this.societyId + '/cluster/' + this.clusterId;
                 log('setting hash to "' + hash + '"');
                 $.historyLoad(hash);
