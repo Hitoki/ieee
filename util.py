@@ -441,6 +441,60 @@ def profiler(view_func):
         return response
     return _inner
 
+def truncate_link_list(items, output_func, plain_output_func, max_chars, tag=None, tab_name=None):
+    """
+    Takes a list of items and outputs links.  If the list is > max_chars, the list is truncated with '...(10 more)' appended.
+    @param items: the list of items
+    @param output_func: the HTML output formatting function, takes one item as its argument
+    @param output_func: the Plaintext output formatting function, takes one item as its argument.  This is used to determine the content length (w/o HTML markup tags)
+    @param max_chars: the maximum length of the output, not including the '... (X more)' if necessary
+    """
+    print 'truncate_link_list()'
+    print '  tag: %r' % tag
+    items_str = ''
+    items_plaintext = ''
+    
+    for i in range(len(items)):
+        item = items[i]
+        if items_str != '':
+            items_plaintext += ', '
+            
+        str1 = output_func(item)
+        items_plaintext += plain_output_func(item)
+        
+        if len(items_plaintext) > max_chars:
+            # check if tab_name exists as to not mess up clusters
+            if tab_name is None:
+                items_str += ' ... (%s more)' % (len(items) - i)
+            else:
+                if tag is not None:
+                    items_str += ' ... (%s more - <a href="javascript:Tags.selectTag(%s, &quot;%s&quot;);">show all</a>)' % (len(items) - i, tag.id, tab_name)
+                else:
+                    items_str += ' ... (%s more)' % (len(items) - i)
+            break
+        else:
+            if items_str != '':
+                items_str += ', '
+            items_str += str1
+    
+    return items_str
+
+def get_min_max(list, attr):
+    '''
+    Finds the min and max value of the attr attribute of each item in the list.
+    @param list: the list of items.
+    @param attr: the name of the attribute to check the value.
+    @return: A 2-tuple (min, max).
+    '''
+    min1 = None
+    max1 = None
+    for item in list:
+        if min1 is None or getattr(item, attr) < min1:
+            min1 = getattr(item, attr)
+        if max1 is None or getattr(item, attr) > max1:
+            max1 = getattr(item, attr)
+    return (min1, max1)
+    
 # Command line util functions --------------------------------------------------
 
 import subprocess

@@ -34,62 +34,6 @@ def render(request, template, dictionary=None):
     "Use this instead of 'render_to_response' to enable custom context processors, which add things like MEDIA_URL to the page automatically."
     return render_to_response(template, dictionary=dictionary, context_instance=RequestContext(request))
 
-def truncate_link_list(items, output_func, plain_output_func, max_chars, tag=None, tab_name=None):
-    """
-    Takes a list of items and outputs links.  If the list is > max_chars, the list is truncated with '...(10 more)' appended.
-    @param items: the list of items
-    @param output_func: the HTML output formatting function, takes one item as its argument
-    @param output_func: the Plaintext output formatting function, takes one item as its argument.  This is used to determine the content length (w/o HTML markup tags)
-    @param max_chars: the maximum length of the output, not including the '... (X more)' if necessary
-    """
-    items_str = ''
-    items_plaintext = ''
-    
-    for i in range(len(items)):
-        item = items[i]
-        if items_str != '':
-            items_plaintext += ', '
-            
-        str1 = output_func(item)
-        #'<a href="%s">%s</a>' % (reverse('textui') + '?nodeId=%s' % item.id, item.name)
-        items_plaintext += plain_output_func(item)
-        
-        #log('items_plaintext: %s' % items_plaintext)
-        #log('len(items_plaintext): %s' % len(items_plaintext))
-        
-        if len(items_plaintext) > max_chars:
-            # check if tab_name exists as to not mess up clusters
-            if tab_name is None:
-                items_str += ' ... (%s more)' % (len(items) - i)
-            else:
-                if tag is not None:
-                    items_str += ' ... (%s more - <a href="javascript:Tags.selectTag(%s, &quot;%s&quot;);">show all</a>)' % (len(items) - i, tag.id, tab_name)
-                else:
-                    items_str += ' ... (%s more)' % (len(items) - i)
-            break
-        else:
-            if items_str != '':
-                items_str += ', '
-            items_str += str1
-    
-    return items_str
-
-def get_min_max(list, attr):
-    '''
-    Finds the min and max value of the attr attribute of each item in the list.
-    @param list: the list of items.
-    @param attr: the name of the attribute to check the value.
-    @return: A 2-tuple (min, max).
-    '''
-    min1 = None
-    max1 = None
-    for item in list:
-        if min1 is None or getattr(item, attr) < min1:
-            min1 = getattr(item, attr)
-        if max1 is None or getattr(item, attr) > max1:
-            max1 = getattr(item, attr)
-    return (min1, max1)
-    
 # ------------------------------------------------------------------------------
 
 def error_view(request):
@@ -538,6 +482,7 @@ def ajax_textui_nodes(request):
     @param cluster_id: (Optional) The cluster to filter results, used to filter "search_for" results.
     @param search_for: (Optional) A search phrase to filter results.
     @param sort: The sort method.
+    @param page: The current tab/page ("sector" or "society").
     @return: The HTML content for all results.
     '''
     log('ajax_textui_nodes()')
@@ -589,6 +534,12 @@ def ajax_textui_nodes(request):
     
     sort = request.GET.get('sort')
     log('  sort: %s' % sort)
+    
+    page = request.GET['page']
+    log('  page: %s' % page)
+    if page != 'sector' and page != 'society':
+        raise Exception('page (%r) should be "sector" or "society"' % page)
+    
     #filterValues = request.GET.get('filterValues')
     ##log('filterValues: %s' % filterValues)
     
@@ -921,6 +872,7 @@ def ajax_textui_nodes(request):
         'num_tags': num_tags,
         'num_clusters': num_clusters,
         'cluster_id': cluster_id,
+        'page': page,
     })
 
 @login_required
@@ -1100,6 +1052,7 @@ def tooltip(request, tag_id=None):
     society_id = request.GET.get('society_id', None)
     search_for = request.GET.get('search_for', None)
     term_id = request.GET.get('term_id', None)
+    page = request.GET.get('page', None)
     
     if tag_id is None and term_id is None:
         raise Exception('Must specify either "tag_id" or "term_id".')
@@ -1232,11 +1185,11 @@ def tooltip(request, tag_id=None):
                 
                 # Get the min/max for these search results
                 # TODO: These don't account for filter==0, num_resources1==0, etc.
-                min_score, max_score = get_min_max(child_nodes, 'score1')
-                min_resources, max_resources = get_min_max(child_nodes, 'num_resources1')
-                min_sectors, max_sectors = get_min_max(child_nodes, 'num_sectors1')
-                min_related_tags, max_related_tags = get_min_max(child_nodes, 'num_related_tags1')
-                min_societies, max_societies = get_min_max(child_nodes, 'num_societies1')
+                min_score, max_score = util.get_min_max(child_nodes, 'score1')
+                min_resources, max_resources = util.get_min_max(child_nodes, 'num_resources1')
+                min_sectors, max_sectors = util.get_min_max(child_nodes, 'num_sectors1')
+                min_related_tags, max_related_tags = util.get_min_max(child_nodes, 'num_related_tags1')
+                min_societies, max_societies = util.get_min_max(child_nodes, 'num_societies1')
                 
             else:
                 # No sector/society/search phrase - could be in "All Sectors" or "All Societies"
@@ -1256,7 +1209,7 @@ def tooltip(request, tag_id=None):
             else:
                 tagLevel = resourceLevel
             
-            sectors_str = truncate_link_list(
+            sectors_str = util.truncate_link_list(
                 tag.get_sectors(),
                 lambda item: '<a href="javascript:Tags.selectSector(%s);">%s</a>' % (item.id, item.name),
                 lambda item: '%s' % item.name,
@@ -1265,7 +1218,7 @@ def tooltip(request, tag_id=None):
                 'sector-tab'
             )
             
-            related_tags_str = truncate_link_list(
+            related_tags_str = util.truncate_link_list(
                 tag.related_tags.all(),
                 lambda item: '<a href="javascript:Tags.selectTag(%s);">%s</a>' % (item.id, item.name),
                 lambda item: '%s' % item.name,
@@ -1280,7 +1233,7 @@ def tooltip(request, tag_id=None):
                 if related_tag.filters.count() > 0 and related_tag.resources.count() > 0:
                     related_tags.append(related_tag)
                     
-            societies_str = truncate_link_list(
+            societies_str = util.truncate_link_list(
                 tag.societies.all(),
                 lambda item: '<a href="javascript:Tags.selectSociety(%s);">%s</a>' % (item.id, item.name),
                 lambda item: '%s' % item.name,
@@ -1311,12 +1264,21 @@ def tooltip(request, tag_id=None):
             if parent_id is not None and parent_id != 'all':
                 tags = tags.filter(parents__id=parent_id)
             
-            tags_str = truncate_link_list(
+            if page == 'sector':
+                tab = 'sector-tab'
+            elif page == 'society':
+                tab = 'society-tab'
+            else:
+                raise Exception('Unknown page (%r)' % page)
+            
+            tags_str = util.truncate_link_list(
                 tags,
                 #lambda item: '<a href="javascript:Tags.selectTag(%s);">%s</a>' % (item.id, item.name),
                 lambda item: '%s' % item.name,
                 lambda item: '%s' % item.name,
-                TOOLTIP_MAX_CHARS
+                TOOLTIP_MAX_CHARS,
+                cluster,
+                tab,
             )
             
             return render(request, 'tooltip_cluster.html', {
@@ -1335,7 +1297,7 @@ def tooltip(request, tag_id=None):
         
         tags = term.related_nodes.all()
         
-        tags_str = truncate_link_list(
+        tags_str = util.truncate_link_list(
             tags,
             lambda item: '%s' % item.name,
             lambda item: '%s' % item.name,

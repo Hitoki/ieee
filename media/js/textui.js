@@ -407,7 +407,8 @@ var Tags = {
                     sector_id: this.sectorId,
                     cluster_id: this.clusterId,
                     sort: this.getSort(),
-                    search_for: search_for
+                    search_for: search_for,
+                    page: 'sector'
                 },
                 success: function(data) {
                     Tags.onLoadResults(data);
@@ -423,7 +424,8 @@ var Tags = {
                     society_id: this.societyId,
                     cluster_id: this.clusterId,
                     sort: this.getSort(),
-                    search_for: search_for
+                    search_for: search_for,
+                    page: 'society'
                 },
                 success: function(data) {
                     Tags.onLoadResults(data);
@@ -434,11 +436,22 @@ var Tags = {
         } else if (search_for != '') {
             // Search for tags in all societies/sectors.
             
+            var page;
+            if (this.page == PAGE_SECTOR || this.page == PAGE_SECTOR_CLUSTER) {
+                page = 'sector';
+            } else if (this.page == PAGE_SOCIETY || this.page == PAGE_SOCIETY_CLUSTER) {
+                page = 'society';
+            } else {
+                alert('Tags.updateResults(): ERROR: Unknown page ' + this.page);
+                return;
+            }
+            
             var data = {
                 search_for: search_for,
                 society_id: this.societyId,
                 node_id: this.sectorId,
-                cluster_id: this.clusterId
+                cluster_id: this.clusterId,
+                page: page
             };
             
             $.ajax({
@@ -631,18 +644,23 @@ var Tags = {
             return;
         }
         
+        var page;
         if (sectorId != null) {
             this.page = this.PAGE_SECTOR_CLUSTER;
             this.sectorId = sectorId;
             this.societyId = null;
+            page = 'sector';
         } else if (societyId != null) {
             this.page = this.PAGE_SOCIETY_CLUSTER;
             this.societyId = societyId;
             this.sectorId = null;
+            page = 'society';
         } else if (this.page == this.PAGE_SECTOR) {
             this.page = this.PAGE_SECTOR_CLUSTER;
+            page = 'sector';
         } else if (this.page == this.PAGE_SOCIETY) {
             this.page = this.PAGE_SOCIETY_CLUSTER;
+            page = 'society';
         }
         
         this.clusterId = clusterId;
@@ -667,7 +685,8 @@ var Tags = {
                 sector_id: sectorId,
                 society_id: societyId,
                 filterValues: filterStr,
-                sort: this.getSort()
+                sort: this.getSort(),
+                page: page
             },
             function(data) {
                 Tags.onLoadClusters(data);
