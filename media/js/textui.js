@@ -142,6 +142,7 @@ var Tags = {
         //log('onChangeHash()');
         if (this.oldHash != hash) {
             //log('  hash: ' + hash);
+            //log('  this.oldHash: ' + this.oldHash);
             
             // Matches "#/sector/123"
             var sector_matches = hash.match(/^\/sector\/(all|\d+)$/);
@@ -160,6 +161,11 @@ var Tags = {
                 Tags.selectSector('all');
                 
             } else if (sector_matches) {
+                // Special case: when first loading the http://host/textui/ page, the hash will be changed to http://host/textui/#/sector/all.  This prevents the second/extraneous AJAX reload:
+                if (hash == '/sector/all' && this.oldHash == null) {
+                    return;
+                }
+                
                 // Sector
                 var sectorId = sector_matches[1];
                 if (sectorId !== "all") {
