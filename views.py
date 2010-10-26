@@ -1228,11 +1228,13 @@ def tooltip(request, tag_id=None):
             )
             
             # Filter out related tags without filters (to match roamer)
+            related_tags2 = tag.related_tags.all()
+            related_tags2 = Node.objects.get_extra_info(related_tags2)
             related_tags = []
-            for related_tag in tag.related_tags.all():
-                if related_tag.filters.count() > 0 and related_tag.resources.count() > 0:
+            for related_tag in related_tags2:
+                if related_tag.num_filters1 > 0 and related_tag.num_resources1 > 0:
                     related_tags.append(related_tag)
-                    
+            
             societies_str = util.truncate_link_list(
                 tag.societies.all(),
                 lambda item: '<a href="javascript:Tags.selectSociety(%s);">%s</a>' % (item.id, item.name),

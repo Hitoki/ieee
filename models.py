@@ -470,7 +470,7 @@ class Node(models.Model):
             for filter in tag.filters.all():
                 if filter not in self.filters.all():
                     self.filters.add(filter)
-                    
+    
     def get_filtered_related_tag_count(self):
         "Returns the number of related tags that have filters/resources (ie. are not hidden)"
         
@@ -479,8 +479,12 @@ class Node(models.Model):
         
         # TODO: This is very slow!
         count = 0
-        for related_tag in self.related_tags.all():
-            if related_tag.filters.count() > 0 and related_tag.resources.count() > 0:
+        
+        related_tags = self.related_tags.all()
+        related_tags = Node.objects.get_extra_info(related_tags)
+        
+        for related_tag in related_tags:
+            if related_tag.num_filters1 > 0 and related_tag.num_resources1 > 0:
                 count += 1
         return count
     
