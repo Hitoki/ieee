@@ -650,8 +650,11 @@ def ajax_textui_nodes(request):
             child_nodes = Node.objects.none()
             search_for_too_short = True
     
-    # Start filtering the nodes.
-    child_nodes = Node.objects.all()
+    if search_for_too_short:
+        child_nodes = Node.objects.none()
+    else:
+        # Start filtering the nodes.
+        child_nodes = Node.objects.all()
     
     if word_queries:
         child_nodes = child_nodes.filter(word_queries)
