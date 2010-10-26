@@ -162,7 +162,7 @@ var Tags = {
                 
             } else if (sector_matches) {
                 // Special case: when first loading the http://host/textui/ page, the hash will be changed to http://host/textui/#/sector/all.  This prevents the second/extraneous AJAX reload:
-                if (hash == '/sector/all' && this.oldHash == null) {
+                if (hash == '/sector/all' && this.oldHash == null && this.sectorId == 'all') {
                     return;
                 }
                 
