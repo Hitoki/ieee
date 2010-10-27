@@ -1,7 +1,9 @@
 (function(jQuery){
 
 jQuery.fn.imageDropdown = function(options) {
-
+    if (this.length == 0){
+        return null;
+    }
     // Handle multiple objects.
     if (this.length > 1){
         this.each(function() { $(this).imageDropdown(options) });
@@ -140,6 +142,9 @@ jQuery.fn.imageDropdown = function(options) {
     this.bindHover();
 
     var clickHandler = function(){
+        if ($.browser['msie']) {
+            $(this).focus();
+        }
         opts.selectList.show().focus();
         $(this).addClass("squareDown");
         self.find('.dropIcon').addClass('openActive');
@@ -165,24 +170,32 @@ jQuery.fn.imageDropdown = function(options) {
         self.find('.dropIcon').addClass('active');
     });
     
+    // In IE clicks to the children of the main element triggers
+    // the blur event which starts the close timeout.
+    // This cancels that timeout.
+    if ($.browser['msie']){
+        $(this).find('*').click(function(e){
+            if (closeTimeout){
+                clearTimeout(closeTimeout);
+            }
+        })
+    }
+    
     var closeTimeout;
     $(this).blur(function(event){
-        closeTimeout = setTimeout(
-            function(){
-                if (opts.selectList.is(":visibile"));
-                    self.close();
-                self.find('.dropIcon').removeClass('active openActive');
-                // Renable hovering behavior.
-                self.bindHover();
-            }
-        , 150);
+        closeTimeout = setTimeout(function(){
+            self.close();
+            self.find('.dropIcon').removeClass('active openActive');
+            // Renable hovering behavior.
+            self.bindHover();
+        }, 150);
     });
     
     this.close = function(){
         opts.selectList.hide();
         self.removeClass("squareDown");
         self.find('.dropIcon').removeClass('openActive');
-        self.trigger('close');        
+        self.trigger('close');
     };
     
     this.enable = function(){
