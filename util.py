@@ -261,7 +261,7 @@ def profiler(view_func):
         .profile_out - binary python profiler output.
         .kcachegrind - kchachegrind-compatible output.
     '''
-    print 'profiler()'
+    #print 'profiler()'
     def _inner(*args, **kwargs):
         try:
             # For Python 2.5+:
@@ -278,15 +278,15 @@ def profiler(view_func):
         #filename2 = filename
         filename2 = None
         
-        print '_inner()'
+        #print '_inner()'
         
         if filename2 is None:
             # Default to <function_name>_<time>.txt and .out
             filename2 = '%s_%s' % (view_func.__name__, time.time())
             
         filename_full = os.path.join(settings.PROFILER_OUTPUT_ROOT, filename2)
-        print 'filename2: %r' %filename2
-        print 'filename_full: %r' %filename_full
+        #print 'filename2: %r' %filename2
+        #print 'filename_full: %r' %filename_full
             
         if settings.PROFILER_OUTPUT_ROOT is None:
             raise Exception('settings.PROFILER_OUTPUT_ROOT must be set to save profiler output.')
@@ -306,7 +306,7 @@ def profiler(view_func):
             prof = line_profiler.LineProfiler(view_func)
             
             response = prof.runcall(view_func, *args, **kwargs )
-            print 'response: %r' % response
+            #print 'response: %r' % response
             
             # Line-by-line profiler
             file1 = open(filename_full + '.lineprofiler.txt', 'w')
@@ -401,7 +401,7 @@ def profiler(view_func):
             prof = profile.Profile()
             
             response = prof.runcall(view_func, *args, **kwargs )
-            print 'response: %r' % response
+            #print 'response: %r' % response
             
             if hasattr(settings, 'PROFILER_OUTPUT_TXT') and settings.PROFILER_OUTPUT_TXT:
                 # Save text output.
