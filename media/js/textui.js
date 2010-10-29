@@ -401,36 +401,38 @@ var Tags = {
         
         if (this.sectorId != null) {
             // Load the sector/cluster
-            $.ajax({
-                url: '/ajax/textui_nodes',
-                data: {
+            $.get(
+                '/ajax/textui_nodes',
+                {
                     sector_id: this.sectorId,
                     cluster_id: this.clusterId,
                     sort: this.getSort(),
                     search_for: search_for,
                     page: 'sector'
                 },
-                success: function(data) {
+                function(data) {
                     Tags.onLoadResults(data);
-                }
-            });
+                },
+                'json'
+            );
             this.updateHighlightedNode();
             
         } else if (this.societyId != null) {
             // Load the society
-            $.ajax({
-                url: '/ajax/textui_nodes',
-                data: {
+            $.get(
+                '/ajax/textui_nodes',
+                {
                     society_id: this.societyId,
                     cluster_id: this.clusterId,
                     sort: this.getSort(),
                     search_for: search_for,
                     page: 'society'
                 },
-                success: function(data) {
+                function(data) {
                     Tags.onLoadResults(data);
-                }
-            });
+                },
+                'json'
+            );
             this.updateHighlightedNode();
         
         } else if (search_for != '') {
@@ -454,16 +456,17 @@ var Tags = {
                 page: page
             };
             
-            $.ajax({
-                url: '/ajax/textui_nodes',
-                data: data,
-                success: function(data) {
+            $.get(
+                '/ajax/textui_nodes',
+                data,
+                function(data) {
                     Tags.onLoadResults(data);
                     if (showSearchResultsCallback) {
                         showSearchResultsCallback(search_for, data);
                     }
-                }
-            });            
+                },
+                'json'
+            );            
             
         } else {
             // Nothing selected
@@ -480,9 +483,16 @@ var Tags = {
 	},
     
     onLoadResults: function(data) {
-        var tagWindow = $("#tags");
-        tagWindow.html(data);
-		this.updateZoom();
+        var search_for = $('#tags-live-search').val();
+        if (data.search_for == null) {
+            data.search_for = '';
+        }
+        // Only update the results if this is the current search (ignore out-of-date searches during live-type).
+        if (data.search_for == search_for) {
+            var tagWindow = $("#tags");
+            tagWindow.html(data.content);
+            this.updateZoom();
+        }
     },
     
     updateHighlightedNode: function() {
@@ -689,8 +699,9 @@ var Tags = {
                 page: page
             },
             function(data) {
-                Tags.onLoadClusters(data);
-            }
+                Tags.onLoadResults(data);
+            },
+            'json'
         );
         
         // Get the cluster node's info (to display the name).
@@ -725,13 +736,6 @@ var Tags = {
                 log('Tags.selectCluster(): ERROR: Neither sectorId or societyId are set.');
             }
         }
-    },
-    
-    onLoadClusters: function(data) {
-        log('onLoadClusters()');
-        var tagWindow = $("#tags");
-        tagWindow.html(data);
-		this.updateZoom();
     },
     
     getTagById: function(id) {

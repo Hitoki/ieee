@@ -865,7 +865,8 @@ def ajax_textui_nodes(request):
     #log('    # real tags: %s' % len(child_nodes2))
     #log('    # terms: %s' % len(terms2))
     
-    return render(request, 'ajax_textui_nodes.html', {
+    from django.template.loader import render_to_string
+    content = render_to_string('ajax_textui_nodes.html', {
         'child_nodes': child_nodes,
         'sector_id': sector_id,
         'society_id': society_id,
@@ -877,7 +878,12 @@ def ajax_textui_nodes(request):
         'cluster_id': cluster_id,
         'page': page,
     })
-
+    
+    return HttpResponse(json.dumps({
+        'search_for': search_for,
+        'content': content,
+    }), 'text/plain')
+    
 @login_required
 def ajax_nodes_xml(request):
     "Creates an XML list of nodes & connections for Asterisq Constellation Roamer."
