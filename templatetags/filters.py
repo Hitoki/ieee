@@ -37,7 +37,7 @@ def truncatechars(value, arg):
     'Like truncatewords, except it works by char count.'
     char_count = int(arg)
     if len(value) > char_count:
-        return value[:char_count] + '...'
+        return value[:char_count-3] + '...'
     else:
         return value
 
