@@ -45,7 +45,7 @@
             {% elif tag.node_type__name == 'tag_cluster' %}
                 {# Cluster #}
                 <a href="javascript:Tags.selectCluster({{ tag.id }}, {{ sector_id|reprjs }}, {{ society_id|reprjs}});" class="{{ tag.level }}">
-                    <img src="/media/images/icon_cluster_sm.png" />
+                    <img src="/media/images/icon_cluster_sm.png" class="cluster-icon" />
                     {{ tag.name|truncatechars:30 }}
                 </a> 
             {% elif tag.node_type__name == 'term' %}
