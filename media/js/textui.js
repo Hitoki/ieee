@@ -711,7 +711,7 @@ var Tags = {
         $.getJSON(
             '/ajax/node',
             {
-                nodeId: clusterId,
+                nodeId: clusterId
             },
             function(data) {
                 log('Got node info');
