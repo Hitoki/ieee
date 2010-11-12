@@ -217,7 +217,7 @@ var Tags = {
         this.updateHighlightedNode();
         this.updateSwitchLink();
         
-        if (this.page == this.PAGE_SECTOR || this.page == this.PAGE_SECTOR_CLUSTER || this.page == this.PAGE_SOCIETY) {
+        if (this.page == this.PAGE_SECTOR || this.page == this.PAGE_SECTOR_CLUSTER || this.page == this.PAGE_SOCIETY || this.page == this.PAGE_SOCIETY_CLUSTER) {
             // Enable the slider
             $('#textui-zoom-slider').slider('enable');
             
@@ -493,6 +493,7 @@ var Tags = {
         if (data.search_for == search_for) {
             var tagWindow = $("#tags");
             tagWindow.html(data.content);
+            this.setDefaultZoomValues();
             this.updateZoom();
         }
     },
@@ -893,16 +894,19 @@ var Tags = {
 		}
 		
         this.defaultPadding = Math.round(parseInt($('#tags .node').css('padding-top')));
+        
+        if ($('.cluster-icon').length) {
+            this.defaultClusterIconWidth = $('.cluster-icon')[0].offsetWidth;
+            this.defaultClusterIconHeight = $('.cluster-icon')[0].offsetHeight;
+        } else {
+            this.defaultClusterIconWidth = null;
+            this.defaultClusterIconHeight = null;
+        }
     },
     
     updateZoom: function() {
         var tags = this;
 
-        // Save the initial sizes to use later.
-        if (typeof this.defaultVertMargin == 'undefined'){
-            this.setDefaultZoomValues();
-        }
-    
         var zoom = $('#textui-zoom-slider').slider('value');
         
         // Only zoom if necessary (either the zoom is not 100, or the zoom is 100 but wasn't before).
@@ -939,6 +943,13 @@ var Tags = {
                 $('#tags .node').css('padding-bottom', (tags.defaultPadding * scaleZoom(zoom, 2) / 100) + 'px');
                 $('#tags .node').css('padding-left', (tags.defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
                 $('#tags .node').css('padding-right', (tags.defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
+                
+                if (tags.defaultClusterIconWidth) {
+                    $('.cluster-icon').css({
+                        width: (tags.defaultClusterIconWidth * scaleZoom(zoom, 1) / 100) + 'px'
+                        , height: (tags.defaultClusterIconHeight * scaleZoom(zoom, 1) / 100) + 'px'
+                    });
+                }
                 
                 tags._hideWaitScreenOver();
             });
