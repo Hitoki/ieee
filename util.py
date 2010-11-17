@@ -494,6 +494,18 @@ def get_min_max(list, attr):
         if max1 is None or getattr(item, attr) > max1:
             max1 = getattr(item, attr)
     return (min1, max1)
+
+def send_admin_email(subject, body):
+    'Sends an email to the admins.'
+    import settings
+    from django.core.mail import send_mail
+    
+    emails = [temp[1] for temp in settings.ADMINS]
+    try:
+        send_mail(subject, message, settings.SERVER_EMAIL, emails)
+    except Exception, e:
+        # Silent fail.
+        pass
     
 # Command line util functions --------------------------------------------------
 
