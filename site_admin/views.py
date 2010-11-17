@@ -1534,8 +1534,11 @@ def import_conference_series(request):
             'results': results,
         })
 
+@login_required
+@admin_required
 def update_resources_from_xplore(request):
     return _update_periodical_from_xplore()
+
 
 @transaction.commit_manually
 def _update_periodical_from_xplore():
@@ -1612,8 +1615,8 @@ def _update_periodical_from_xplore():
                         #tag.save()
                 except Resource.DoesNotExist:
                     xplore_logger.warn('%s: No TechNav Resource found.' % issn)
-        finally:
-            file.close()
+        # TODO add finally block to close file once python is updated past 2.4
+        
     xplore_logger.removeHandler(handler)
     transaction.rollback()
     
