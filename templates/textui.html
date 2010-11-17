@@ -2,7 +2,30 @@
 
 {% block extra_head %}
     <script type="text/javascript">
+        
+        var start, end;
+        var tags_callback = null;
+        
         $(function() {
+            
+            Flyover.attach(
+                $('#test-link')
+                , {
+                    content: 'HI THERE'
+                    , closeOnMouseOutLink: false
+                }
+            );
+            
+            Flyover.attach(
+                $('#test-flyover-link')
+                , {
+                    content: 'HI THERE'
+                    , closeOnMouseOutLink: false
+                }
+            );
+            
+            start = new Date();
+            log('Starting at ' + start);
             
             var tagGalaxyWidth = $('#tag-galaxy').width();
             $('#tag-help-box').css('width', tagGalaxyWidth - 5);
@@ -66,6 +89,29 @@
             $('#textui-zoom-default-zoom').click(function() {
                 $('#textui-zoom-slider').slider('value', 100);
             });
+            
+			function callback() {
+                // This should execute when the new data is loaded and the zoom is done.
+                log('Done!');
+                end = new Date();
+                log('Ending at ' + end);
+                var elapsed = (end - start) / 1000;
+                log('Elapsed ' + elapsed);
+                //alert('Elapsed ' + elapsed);
+                
+                
+                $.post(
+                    '/ajax/profile_log'
+                    , {
+                        url: '{{ current_url }}'
+                        , elapsed_time: elapsed
+                    }
+                );
+                
+                tags_callback = null;
+            }
+            
+            tags_callback = callback;
             
             Tags.init();
         });

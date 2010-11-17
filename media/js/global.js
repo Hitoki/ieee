@@ -440,6 +440,11 @@ function openIEEEtv(URL){
 	newWindow.focus();
 }
 
+// Add a custom outerHTML function to all jQuery objects.
+jQuery.fn.outerHTML = function() {
+    return $('<div>').append( this.eq(0).clone() ).html();
+};
+
 var mouseX = null;
 var mouseY = null;
 

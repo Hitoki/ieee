@@ -2553,3 +2553,14 @@ p#tag-and-cluster-counts-searching {
     top:0;
     right:0;
 }
+
+#tags-chunk-loading {
+    display:block;
+    clear:both;
+    bborder:1px solid black;
+    bbackground:white;
+    padding:1em 1em;
+    text-align:center;
+    font-size:150%;
+    font-weight:bold;
+}

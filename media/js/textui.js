@@ -95,6 +95,20 @@ $(document).ready(function(){
     }
 });
 
+function splitContent(content, len) {
+    var splitStr = '<!--SPLIT-->';
+    var index = content.lastIndexOf(splitStr, len);
+    if (index == -1) {
+        index = content.length;
+    }
+    return [
+        content.substr(0, index + splitStr.length)
+        , content.substr(index + splitStr.length)
+    ]
+}
+
+var CONTENT_CHUNK_SIZE = 40000;
+
 var Tags = {
     
     PAGE_SECTOR: 'sector',
@@ -125,6 +139,9 @@ var Tags = {
     defaultHeight: undefined,
     defaultPadding: undefined,
     
+    // This holds any remainder of the nodes/content, after we've loaded the intiial portion.  Used for progressive loading.
+    remainingContent: null,
+    
     init: function() {
         var tags = this;
         
@@ -136,6 +153,10 @@ var Tags = {
         if (window.location.hash == '' || window.location.hash == '#') {
             this.onChangeHash(window.location.hash);
         }
+        
+        $('#tags').scroll(function() {
+            tags.onScroll();
+        });
         
         this.updateChangedNode();
     },
@@ -392,7 +413,6 @@ var Tags = {
         this._showWaitScreen();
         //var filterStr = implode(',', this.getFilters());
         
-            
         if ($('#tags-live-search').val().length >= 1) {
             $('#textui-tags-search-clear').show();
         } else {
@@ -491,10 +511,9 @@ var Tags = {
         }
         // Only update the results if this is the current search (ignore out-of-date searches during live-type).
         if (data.search_for == search_for) {
-            var tagWindow = $("#tags");
-            tagWindow.html(data.content);
-            this.setDefaultZoomValues();
-            this.updateZoom();
+            this.remainingContent = data.content;
+            $('#tags').empty();
+            this.loadContentChunk();
         }
     },
     
@@ -715,11 +734,11 @@ var Tags = {
                 nodeId: clusterId
             },
             function(data) {
-                log('Got node info');
-                log('  tags.clusterId: ' + tags.clusterId);
-                log('  data.id: ' + data.id);
+                //log('Got node info');
+                //log('  tags.clusterId: ' + tags.clusterId);
+                //log('  data.id: ' + data.id);
                 if (data.id == tags.clusterId) {
-                    log('node id matches.');
+                    //log('node id matches.');
                     tags.node = data;
                 }
             }
@@ -952,13 +971,117 @@ var Tags = {
                 }
                 
                 tags._hideWaitScreenOver();
+                
+                if (tags_callback) {
+                    tags_callback();
+                }
             });
             
+        } else {
+            if (tags_callback) {
+                tags_callback();
+            }
         }
         
         this.oldZoom = zoom;
         
 		//log('~resizeNodes()');
-	}
+	},
+    
+    onScroll: function() {
+        var scrollBottom = $('#tags').attr('scrollHeight') - $('#tags').scrollTop() - $('#tags').outerHeight();
+        log('onScroll(), scrollBottom: ' + scrollBottom);
+        //var minScrollBottom = 200;
+        var minScrollBottom = 10;
+        if (scrollBottom <= minScrollBottom) {
+            this.loadContentChunk();
+        }
+    },
+    
+    loadContentChunk: function() {
+        log('loadContentChunk()');
+        
+        // Hide the loading banner.
+        $('#tags-chunk-loading').remove();
+        
+        var tagWindow = $("#tags");
+        
+        // Get the next chunk of contents.
+        var results = splitContent(this.remainingContent, CONTENT_CHUNK_SIZE);
+        var chunk = results[0];
+        this.remainingContent = results[1];
+        
+        //log('  chunk.length: ' + chunk.length);
+        //log('  this.remainingContent.length: ' + this.remainingContent.length);
+        
+        // Load the next chunk of content into the tags div.
+        tagWindow[0].innerHTML += chunk;
+        
+        // TODO: Need to attach flyover events here.
+        
+        var url = $('#textui-flyovers-url').text();
+        log('url: ' + url);
+        
+        // Calling special function to avoid code bloat due to duplication. The string "tagid" in the url will be replaced with the
+        // actual id.
+        /*
+        attachTextUiFlyovers(
+            '#tags',
+            {
+                url: url
+                , position: 'auto'
+                , customClass: 'textui-node'
+                , hideDelay: 400
+                , positionCursor: false
+                , closeButton: true
+            }
+        );
+        */
+        
+        log('Num of flyovers: ' + $('#tags').find('.flyover').length);
+        if ($('#tags').find('.flyover').length > 0) {
+            var node = $('#tags').find('.flyover')[0];
+            log('node: ' + node);
+            log('node.innerHTML: ' + node.innerHTML);
+            log('$(node).outerHTML(): ' + $(node).outerHTML());
+            log("$(node).children('a').length: " + $(node).children('a').length);
+            $(node).mouseover(function() {
+                log('mouseover');
+            });
+            $(node).children('a').mouseover(function() {
+                log('a mouseover');
+            });
+            //$(node).attr('href', '#');
+            $(node).children('a').attr('href', '#');
+            $(node).click(function(e) {
+                log('click');
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            });
+            $(node).children('a').click(function(e) {
+                log('a click');
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            });
+        }
+        
+        if (this.remainingContent.length > 0) {
+            // Show the loading banner if there is still remaining content.
+            log('  Show the loading banner.');
+            tagWindow[0].innerHTML += '\
+                <div id="tags-chunk-loading">\
+                    <p>Loading...</p>\
+                    <img src="/media/images/ajax-loader.gif" />\
+                </div>\
+            ';
+        }
+        
+        this.setDefaultZoomValues();
+        this.updateZoom();
+        
+        
+    }
     
 };
