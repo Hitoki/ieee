@@ -241,3 +241,6 @@ class SendEmailAllUsersForm(Form):
     subject = CharField()
     body = CharField(widget=Textarea())
     send_email = BooleanField(widget=HiddenInput(), required=False)
+
+class AssignProfilingCategoryForm(Form):
+    category = CharField(required=False)

@@ -131,6 +131,9 @@ urlpatterns += patterns('',
     # Exports
     url(r'^export/tab_resources$', views.export_tab_resources, name='admin_export_tab_resources'),
     
+    # Profiling
+    url(r'^profiling$', views.profiling, name='admin_profiling'),
+    
     # Server Admin
     #url(r'^server/update_svn$', views.server_update_svn, name='admin_server_update_svn'),
     

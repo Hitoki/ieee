@@ -1,6 +1,6 @@
 
 function LiveSearch(inputElem) {
-    log('LiveSearch()');
+    //log('LiveSearch()');
     var liveSearch = this;
     inputElem = $(inputElem);
     

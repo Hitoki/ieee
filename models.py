@@ -1236,3 +1236,34 @@ class UrlCheckerLog(models.Model):
     status = models.CharField(max_length=1000)
 
 # ------------------------------------------------------------------------------
+
+class ProfileLog(models.Model):
+    'Debugging class, used to keep track of profiling pages.'
+    url = models.CharField(max_length=1000)
+    elapsed_time = models.FloatField()
+    user_agent = models.CharField(max_length=1000)
+    category = models.CharField(max_length=100, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    
+    def short_user_agent(self):
+        short_user_agent1 = self.user_agent
+        import re
+        match = re.search(r'Chrome/([\d.]+)', self.user_agent)
+        if match:
+            short_user_agent1 = 'Chrome %s' % (match.group(1))
+        else:
+            match = re.search(r'Safari/([\d.]+)', self.user_agent)
+            if match:
+                short_user_agent1 = 'Safari %s' % (match.group(1))
+            else:
+                match = re.search(r'Firefox/([\d.]+)', self.user_agent)
+                if match:
+                    short_user_agent1 = 'Firefox %s' % (match.group(1))
+                else:
+                    match = re.search(r'MSIE ([\d.]+)', self.user_agent)
+                    if match:
+                        short_user_agent1 = 'MSIE %s' % (match.group(1))
+        return short_user_agent1
+        
+    def __str__(self):
+        return '<%s: %s, %s, %s>' % (self.__class__.__name__, self.url, self.elapsed_time, self.short_user_agent())

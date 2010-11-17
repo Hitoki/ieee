@@ -34,9 +34,7 @@ from ieeetags import settings
 from ieeetags import permissions
 from ieeetags import url_checker
 from ieeetags.util import *
-from ieeetags.models import Node, NodeType, Permission, Resource, ResourceType, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager, FailedLoginLog, UrlCheckerLog
-from ieeetags.models import TaxonomyTerm, TaxonomyCluster
-#from ieeetags.logger import log
+from ieeetags.models import Node, NodeType, Permission, Resource, ResourceType, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager, FailedLoginLog, UrlCheckerLog, TaxonomyTerm, TaxonomyCluster, ProfileLog
 from ieeetags.views import render
 from ieeetags.widgets import DisplayOnlyWidget
 from forms import *
@@ -4370,6 +4368,50 @@ def export_tab_resources(request):
     file.close()
     
     return HttpResponse(contents, 'text/plain')
+
+@society_manager_or_admin_required
+def profiling(request):
+    from django.utils.datastructures import SortedDict
+    
+    if request.method == 'GET':
+        form = AssignProfilingCategoryForm()
+    else:
+        if 'delete_button' in request.POST:
+            # User pressed delete button
+            log_ids = request.POST.getlist('log_ids')
+            for log_id in log_ids:
+                log1 = ProfileLog.objects.get(id=log_id)
+                log1.delete()
+            return HttpResponseRedirect(reverse('admin_profiling'))
+        elif 'save_button' in request.POST:
+            # User pressed save button.
+            
+            form = AssignProfilingCategoryForm(request.POST)
+            if form.is_valid():
+                category = form.cleaned_data['category']
+                log_ids = request.POST.getlist('log_ids')
+                for log_id in log_ids:
+                    log1 = ProfileLog.objects.get(id=log_id)
+                    log1.category = category
+                    log1.save()
+                return HttpResponseRedirect(reverse('admin_profiling'))
+        else:
+            raise Exception('Must press Save or Delete buttons.')
+    
+    # Create list of logs grouped by category.
+    logs1 = ProfileLog.objects.all().order_by('-date_created')
+    categories_logs = SortedDict()
+    for log in logs1:
+        if log.category not in categories_logs:
+            categories_logs[log.category] = [log]
+        else:
+            categories_logs[log.category].append(log)
+        
+    
+    return render(request, 'site_admin/profiling.html', {
+        'categories_logs': categories_logs,
+        'form': form,
+    })
 
 # NOTE: This doesn't work due to apache user permissions
 #@admin_required

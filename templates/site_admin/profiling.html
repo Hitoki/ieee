@@ -1,0 +1,49 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block nav_home %}highlight{% endblock %}
+
+{% block main_table_content %}
+    
+    <h1>Profiling</h1>
+    
+    <form action="{% url admin_profiling %}" method="post">
+        Category: {{ form.category }}
+        <input type="submit" name="save_button" value="Save" />
+        
+        <input type="submit" name="delete_button" value="Delete" />
+        <br/>
+        <br/>
+        
+        <table class="grid">
+            {% for category, logs in categories_logs.items %}
+                <tr>
+                    <th colspan="5">
+                        {{ category|default:"<i>None</i>" }}
+                    </th>
+                </tr>
+                {% for log in logs %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" id="log_id_{{ log.id }}" name="log_ids" value="{{ log.id }}" />
+                        </td>
+                        <td>
+                            <label for="log_id_{{ log.id }}">{{ log.url }}</label>
+                        </td>
+                        <td>
+                            {{ log.elapsed_time }}
+                        </td>
+                        <td>
+                            {{ log.short_user_agent }}
+                        </td>
+                        <td>
+                            {{ log.date_created|date }}
+                            {{ log.date_created|time }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        </table>
+    
+    </form>
+    
+{% endblock %}

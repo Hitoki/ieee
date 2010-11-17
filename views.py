@@ -21,7 +21,7 @@ import urllib2
 import xml.dom.minidom
 from decorators import optional_login_required as login_required
 
-from ieeetags.models import single_row, Filter, Node, NodeType, Profile, Resource, ResourceType, Society, TaxonomyTerm, TaxonomyCluster
+from ieeetags.models import single_row, Filter, Node, NodeType, Profile, Resource, ResourceType, Society, TaxonomyTerm, TaxonomyCluster, ProfileLog
 from ieeetags.forms import *
 #from profiler import Profiler
 import settings
@@ -1328,6 +1328,17 @@ def tooltip(request, tag_id=None):
 def ajax_video(request):
     'Returns the HTML content for the flash video.'
     return render(request, 'ajax_video.html')
+
+def ajax_profile_log(request):
+    url = request.REQUEST['url']
+    elapsed_time = request.REQUEST['elapsed_time']
+    user_agent = request.META['HTTP_USER_AGENT']
+    plog = ProfileLog()
+    plog.url = url
+    plog.elapsed_time = elapsed_time
+    plog.user_agent = user_agent
+    plog.save()
+    return HttpResponse('success')
 
 def tags_list(request):
     '''
