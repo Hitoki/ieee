@@ -12,6 +12,7 @@ import StringIO
 import threading
 import time
 import urllib
+import urllib2
 from urllib import quote, urlencode
 import warnings
 from Queue import Empty, Queue
@@ -1532,6 +1533,97 @@ def import_conference_series(request):
             'submit_url': reverse('admin_import_conference_series'),
             'results': results,
         })
+
+def update_resources_from_xplore(request):
+    return _update_periodical_from_xplore()
+
+@transaction.commit_manually
+def _update_periodical_from_xplore():
+    #import ipdb; ipdb.set_trace()
+    import logging.handlers
+    
+    now = datetime.now()
+    
+    log_dirname = os.path.join(os.path.dirname(settings.LOG_FILENAME), 'xplore_imports')
+    if not os.path.exists(log_dirname):
+        os.makedirs(log_dirname)
+    
+    log_filename = 'periodical_xplore_import_log_%s.txt' % now.strftime('%Y%m%d%H%M%S')
+    log_filename = os.path.join(log_dirname, log_filename)
+    xplore_logger = logging.getLogger('XploreImportLogger')
+    xplore_logger.setLevel(logging.DEBUG)
+    handler = logging.FileHandler(log_filename, 'ab')
+    xplore_logger.addHandler(handler)
+    
+    xplore_logger.info('Import Xplore Results into Resource')
+    xplore_logger.info('Started at %s' % now)
+    
+    resource_type = ResourceType.objects.getFromName('periodical')
+    node_type = NodeType.objects.getFromName('tag')
+    tags = Node.objects.filter(node_type=node_type)[:5]
+    for tag in tags:
+        xplore_logger.info('Querying Xplore for Tag: %s' % tag.name)
+        xplore_query_url = 'http://xploreuat.ieee.org/gateway/ipsSearch.jsp?' + urllib.urlencode({
+            # Number of results
+            'hc': 5,
+            'md': tag.name,
+            'ctype' : 'Journals'
+        })
+        xplore_logger.info('Calling %s' % xplore_query_url)
+        try:
+            file = urllib2.urlopen(xplore_query_url)
+        except urllib2.URLError:
+            xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
+            xplore_results = []
+            totalfound = None
+        else:
+            from xml.dom.minidom import parse
+            errors = []
+            dom1 = parse(file)
+            xhits = dom1.documentElement.getElementsByTagName('document')
+            distinct_issns = {}
+            for i, xhit in enumerate(xhits):
+                issn = xhit.getElementsByTagName('issn')
+                xhit_title = xhit.getElementsByTagName('title')[0].firstChild.nodeValue
+                if not len(issn):
+                    xplore_logger.warning('No ISSN node found in Xplore result with title "%s"' % xhit_title)
+                elif not issn[0].firstChild.nodeValue in distinct_issns:
+                    distinct_issns[issn[0].firstChild.nodeValue] = xhit_title
+            
+            xplore_logger.info("Found %d unique ISSNs:" % len(distinct_issns))
+            #import ipdb; ipdb.set_trace()
+            for issn, xhit_title in distinct_issns.iteritems():
+                xplore_logger.info('%s: "%s"' % (
+                    issn,
+                    xhit_title)
+                )
+            xplore_logger.info("Looking for matching TechNav Resources...")
+            for issn, xhit_title in distinct_issns.iteritems():
+                try:
+                    per = Resource.objects.get(ieee_id=issn)
+                    xplore_logger.info('%s: Found TechNav Resource titled "%s".' % (issn, per.name))
+                    #if issn == '0162-8828':
+                    #    import ipdb; ipdb.set_trace()
+                    if per in tag.resources.all():
+                        xplore_logger.info('Relationship already exists.')
+                    else:
+                        xplore_logger.info('Creating relationship.')
+                        tag.resources.add(per)
+                        #tag.save()
+                except Resource.DoesNotExist:
+                    xplore_logger.warn('%s: No TechNav Resource found.' % issn)
+        finally:
+            file.close()
+    xplore_logger.removeHandler(handler)
+    transaction.rollback()
+    
+    response = HttpResponse()
+    response.write('<pre>')
+    f = open(log_filename)
+    response.write(f.read())
+    f.close()
+    response.write('</pre>')
+    return response
 
 def _import_clusters(file):
     assert False, 'TODO: Remove references to add_tag_to_cluster()'
