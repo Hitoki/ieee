@@ -956,9 +956,21 @@ var Tags = {
         */
     },
     
-    updateZoom: function() {
+    updateZoom: function(elem) {
         var tags = this;
-
+        
+        //log('updateZoom()');
+        //log('  elem: ' + elem);
+        if (elem == undefined) {
+            // Search all nodes on the page.
+            //log('Search all nodes on the page.');
+            elem = $('#tags');
+        } else {
+            //log('  elem.length: ' + elem.length);
+            //log('  elem[0]: ' + elem[0]);
+        }
+        //log('  Found ' + elem.find('.node').length + ' nodes.');
+        
         var zoom = $('#textui-zoom-slider').slider('value');
         
         // Only zoom if necessary (either the zoom is not 100, or the zoom is 100 but wasn't before).
@@ -985,23 +997,21 @@ var Tags = {
                     }
                 }
                 
-                $('#tags .node').css('margin-top', (tags.defaultVertMargin * zoom / 100) + 'px');
-                $('#tags .node').css('margin-bottom', (tags.defaultVertMargin * zoom / 100) + 'px');
-                $('#tags .node').css('margin-left', (tags.defaultHorizMargin * zoom / 100) + 'px');
-                $('#tags .node').css('margin-right', (tags.defaultHorizMargin * zoom / 100) + 'px');
-                $('#tags .node').css('font-size', (tags.defaultTextSize * zoom / 100) + 'px');
-                $('#tags .node').css('height', (tags.defaultHeight * zoom / 100) + 'px');
-                $('#tags .node').css('padding-top', (tags.defaultPadding * scaleZoom(zoom, 2) / 100) + 'px');
-                $('#tags .node').css('padding-bottom', (tags.defaultPadding * scaleZoom(zoom, 2) / 100) + 'px');
-                $('#tags .node').css('padding-left', (tags.defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
-                $('#tags .node').css('padding-right', (tags.defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
+                elem.find('.node').css('margin-top', (tags.defaultVertMargin * zoom / 100) + 'px');
+                elem.find('.node').css('margin-bottom', (tags.defaultVertMargin * zoom / 100) + 'px');
+                elem.find('.node').css('margin-left', (tags.defaultHorizMargin * zoom / 100) + 'px');
+                elem.find('.node').css('margin-right', (tags.defaultHorizMargin * zoom / 100) + 'px');
+                elem.find('.node').css('font-size', (tags.defaultTextSize * zoom / 100) + 'px');
+                elem.find('.node').css('height', (tags.defaultHeight * zoom / 100) + 'px');
+                elem.find('.node').css('padding-top', (tags.defaultPadding * scaleZoom(zoom, 2) / 100) + 'px');
+                elem.find('.node').css('padding-bottom', (tags.defaultPadding * scaleZoom(zoom, 2) / 100) + 'px');
+                elem.find('.node').css('padding-left', (tags.defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
+                elem.find('.node').css('padding-right', (tags.defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
                 
-                if (tags.defaultClusterIconWidth) {
-                    $('.cluster-icon').css({
-                        width: (tags.defaultClusterIconWidth * scaleZoom(zoom, 1) / 100) + 'px'
-                        , height: (tags.defaultClusterIconHeight * scaleZoom(zoom, 1) / 100) + 'px'
-                    });
-                }
+                elem.find('.cluster-icon').css({
+                    width: (tags.defaultClusterIconWidth * scaleZoom(zoom, 1) / 100) + 'px'
+                    , height: (tags.defaultClusterIconHeight * scaleZoom(zoom, 1) / 100) + 'px'
+                });
                 
                 tags._hideWaitScreenOver();
                 
@@ -1044,48 +1054,57 @@ var Tags = {
         var chunk = results[0];
         this.remainingContent = results[1];
         
-        //log('  chunk.length: ' + chunk.length);
-        //log('  this.remainingContent.length: ' + this.remainingContent.length);
-        //log('  chunk: ' + chunk);
-        //log('  this.remainingContent: ' + this.remainingContent);
+        //log('  -chunk.length: ' + chunk.length);
+        //log('  -this.remainingContent.length: ' + this.remainingContent.length);
         
-        // Load the next chunk of content into the tags div.
-        //tagWindow.html(tagWindow.html() + chunk);
-        var chunkElem = $(chunk);
-        tagWindow.append(chunkElem);
-        
-        // TODO: Need to attach flyover events here.
-		if ($('#textui-flyovers-url').length == 0) {
-			alert('ERROR: Could not find #textui-flyovers-url element.');
-			return;
-		}
-		
-        // Calling special function to avoid code bloat due to duplication. The string "tagid" in the url will be replaced with the
-        // actual id.
-        attachTextUiFlyovers(
-            '#tags',
-            {
-                url: this.textui_flyovers_url
-                , position: 'auto'
-                , customClass: 'textui-node'
-                , hideDelay: 400
-                , positionCursor: false
-                , closeButton: true
+        if (chunk.length > 0) {
+            //log('  chunk: ' + chunk);
+            //log('  this.remainingContent: ' + this.remainingContent);
+            
+            // Load the next chunk of content into the tags div.
+            //tagWindow.html(tagWindow.html() + chunk);
+            //log('chunk.substr(0, 100): ' + chunk.substr(0, 100));
+            
+            var chunkElem = $('<span>' + chunk + '</span>');
+            
+            //log('chunkElem: ');
+            //console.log(chunkElem);
+            //log('chunkElem.length: ' + chunkElem.length);
+            
+            // Zoom the nodes before they're shown.
+            this.updateZoom(chunkElem);
+            
+            tagWindow.append(chunkElem);
+            
+            if ($('#textui-flyovers-url').length == 0) {
+                alert('ERROR: Could not find #textui-flyovers-url element.');
+                return;
             }
-        );
-        
-        if (this.remainingContent.length > 0) {
-			// Show the loading banner if there is still remaining content.
-			tagWindow.append($('\
-				<div id="tags-chunk-loading">\
-					<p>Loading...</p>\
-					<img src="/media/images/ajax-loader.gif" />\
-				</div>\
-			'));
+            
+            // Calling special function to avoid code bloat due to duplication. The string "tagid" in the url will be replaced with the
+            // actual id.
+            attachTextUiFlyovers(
+                '#tags',
+                {
+                    url: this.textui_flyovers_url
+                    , position: 'auto'
+                    , customClass: 'textui-node'
+                    , hideDelay: 400
+                    , positionCursor: false
+                    , closeButton: true
+                }
+            );
+            
+            if (this.remainingContent.length > 0) {
+                // Show the loading banner if there is still remaining content.
+                tagWindow.append($('\
+                    <div id="tags-chunk-loading">\
+                        <p>Loading...</p>\
+                        <img src="/media/images/ajax-loader.gif" />\
+                    </div>\
+                '));
+            }
         }
-        
-        this.updateZoom();
-        
         
     }
     
