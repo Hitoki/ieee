@@ -2564,3 +2564,8 @@ p#tag-and-cluster-counts-searching {
     font-size:150%;
     font-weight:bold;
 }
+
+#default-height-tag {
+    position:absolute;
+    visibility:hidden;
+}

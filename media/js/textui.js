@@ -148,6 +148,8 @@ var Tags = {
     init: function() {
         var tags = this;
         
+        this.setDefaultZoomValues();
+        
         $.historyInit(function(hash) {
             tags.onChangeHash(hash);
         });
@@ -908,28 +910,50 @@ var Tags = {
         $("#tags-live-search").focus();
     },
     
-    setDefaultZoomValues: function(){
-        this.defaultVertMargin = Math.round(parseInt($('#tags .node').css('margin-top')));
-        this.defaultHorizMargin = Math.round(parseInt($('#tags .node').css('margin-left')));
-        this.defaultTextSize = Math.round(parseInt($('#tags .node').css('font-size')));
+    setDefaultZoomValues: function() {
+        var tag = $('#default-height-tag');
+        if (tag.length == 0) {
+            alert('ERROR: In setDefaultZoomValues(), could not find #default-height-tag element.');
+            return;
+        }
+        
+        var clusterIcon = tag.find('.cluster-icon')
+        if (clusterIcon.length == 0) {
+            alert('ERROR: In setDefaultZoomValues(), could not find #default-height-tag .cluster-icon element.');
+            return;
+        }
+        
+        this.defaultVertMargin = Math.round(parseInt(tag.css('margin-top')));
+        this.defaultHorizMargin = Math.round(parseInt(tag.css('margin-left')));
+        this.defaultTextSize = Math.round(parseInt(tag.css('font-size')));
         
 		// In IE, the CSS 'height' is 'auto'.
-		var height = parseInt($('#tags .node').css('height'));
+		var height = parseInt(tag.css('height'));
 		if (isNaN(height)) {
-			this.defaultHeight = $('#tags .node').attr('offsetHeight');
+			this.defaultHeight = tag.attr('offsetHeight');
 		} else {
 			this.defaultHeight = Math.round(height);
 		}
 		
-        this.defaultPadding = Math.round(parseInt($('#tags .node').css('padding-top')));
+        this.defaultPadding = Math.round(parseInt(tag.css('padding-top')));
         
-        if ($('.cluster-icon').length) {
-            this.defaultClusterIconWidth = $('.cluster-icon')[0].offsetWidth;
-            this.defaultClusterIconHeight = $('.cluster-icon')[0].offsetHeight;
+        if (clusterIcon.length) {
+            this.defaultClusterIconWidth = clusterIcon[0].offsetWidth;
+            this.defaultClusterIconHeight = clusterIcon[0].offsetHeight;
         } else {
             this.defaultClusterIconWidth = null;
             this.defaultClusterIconHeight = null;
         }
+        
+        /*
+        log('  this.defaultVertMargin: ' + this.defaultVertMargin);
+        log('  this.defaultHorizMargin: ' + this.defaultHorizMargin);
+        log('  this.defaultTextSize: ' + this.defaultTextSize);
+        log('  this.defaultHeight: ' + this.defaultHeight);
+        log('  this.defaultPadding: ' + this.defaultPadding);
+        log('  this.defaultClusterIconWidth: ' + this.defaultClusterIconWidth);
+        log('  this.defaultClusterIconHeight: ' + this.defaultClusterIconHeight);
+        */
     },
     
     updateZoom: function() {
@@ -1027,7 +1051,8 @@ var Tags = {
         
         // Load the next chunk of content into the tags div.
         //tagWindow.html(tagWindow.html() + chunk);
-        tagWindow.append(chunk);
+        var chunkElem = $(chunk);
+        tagWindow.append(chunkElem);
         
         // TODO: Need to attach flyover events here.
 		if ($('#textui-flyovers-url').length == 0) {
@@ -1059,7 +1084,6 @@ var Tags = {
 			'));
         }
         
-        this.setDefaultZoomValues();
         this.updateZoom();
         
         
