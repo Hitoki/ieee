@@ -516,9 +516,11 @@ var Tags = {
         if (data.search_for == null) {
             data.search_for = '';
         }
+        
         // Only update the results if this is the current search (ignore out-of-date searches during live-type).
         if (data.search_for == search_for) {
             this.remainingContent = data.content;
+            this.textui_flyovers_url = data.textui_flyovers_url;
             $('#tags').empty();
             this.loadContentChunk();
         }
@@ -1033,15 +1035,12 @@ var Tags = {
 			return;
 		}
 		
-        var url = $('#textui-flyovers-url').text();
-        log('url: ' + url);
-        
         // Calling special function to avoid code bloat due to duplication. The string "tagid" in the url will be replaced with the
         // actual id.
         attachTextUiFlyovers(
             '#tags',
             {
-                url: url
+                url: this.textui_flyovers_url
                 , position: 'auto'
                 , customClass: 'textui-node'
                 , hideDelay: 400

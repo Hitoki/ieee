@@ -879,9 +879,25 @@ def ajax_textui_nodes(request):
         'page': page,
     })
     
+    # Build the textui_flyover_url var.
+    params = {}
+    if sector_id is None:
+        params['parent_id'] = 'null'
+    else:
+        params['parent_id'] = sector_id
+    if society_id is None:
+        params['society_id'] = 'null'
+    else:
+        params['society_id'] = society_id
+    params['search_for'] = search_for
+    params['page'] = page
+    
+    textui_flyovers_url = reverse('tooltip') + '/tagid?' + urllib.urlencode(params)
+    
     return HttpResponse(json.dumps({
         'search_for': search_for,
         'content': content,
+        'textui_flyovers_url': textui_flyovers_url,
     }), 'text/plain')
     
 @login_required
