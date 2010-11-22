@@ -197,7 +197,11 @@ var Tags = {
                 if (sectorId !== "all") {
                     sectorId = parseInt(sectorId);
                 }
-                this.selectSector(sectorId, false);
+                
+                // Make sure we don't load the same URL twice in a row.
+                if (this.page != this.PAGE_SECTOR || this.sectorId != sectorId) {
+                    this.selectSector(sectorId, false);
+                }
             
             } else if (cluster_sector_matches) {
                 // Cluster within a Sector
@@ -993,7 +997,7 @@ var Tags = {
     
     onScroll: function() {
         var scrollBottom = $('#tags').attr('scrollHeight') - $('#tags').scrollTop() - $('#tags').outerHeight();
-        log('onScroll(), scrollBottom: ' + scrollBottom);
+        //log('onScroll(), scrollBottom: ' + scrollBottom);
         //var minScrollBottom = 200;
         var minScrollBottom = 10;
         if (scrollBottom <= minScrollBottom) {
@@ -1020,10 +1024,10 @@ var Tags = {
         //log('  this.remainingContent: ' + this.remainingContent);
         
         // Load the next chunk of content into the tags div.
-        tagWindow.html(tagWindow.html() + chunk);
+        //tagWindow.html(tagWindow.html() + chunk);
+        tagWindow.append(chunk);
         
         // TODO: Need to attach flyover events here.
-        
 		if ($('#textui-flyovers-url').length == 0) {
 			alert('ERROR: Could not find #textui-flyovers-url element.');
 			return;
