@@ -96,6 +96,9 @@ $(document).ready(function(){
 });
 
 function splitContent(content, len) {
+    if (content.length <= len) {
+        return [content, ''];
+    }
     var splitStr = '<!--SPLIT-->';
     var index = content.lastIndexOf(splitStr, len);
     if (index == -1) {
@@ -1013,18 +1016,24 @@ var Tags = {
         
         //log('  chunk.length: ' + chunk.length);
         //log('  this.remainingContent.length: ' + this.remainingContent.length);
+        //log('  chunk: ' + chunk);
+        //log('  this.remainingContent: ' + this.remainingContent);
         
         // Load the next chunk of content into the tags div.
-        tagWindow[0].innerHTML += chunk;
+        tagWindow.html(tagWindow.html() + chunk);
         
         // TODO: Need to attach flyover events here.
         
+		if ($('#textui-flyovers-url').length == 0) {
+			alert('ERROR: Could not find #textui-flyovers-url element.');
+			return;
+		}
+		
         var url = $('#textui-flyovers-url').text();
         log('url: ' + url);
         
         // Calling special function to avoid code bloat due to duplication. The string "tagid" in the url will be replaced with the
         // actual id.
-        /*
         attachTextUiFlyovers(
             '#tags',
             {
@@ -1036,46 +1045,15 @@ var Tags = {
                 , closeButton: true
             }
         );
-        */
-        
-        log('Num of flyovers: ' + $('#tags').find('.flyover').length);
-        if ($('#tags').find('.flyover').length > 0) {
-            var node = $('#tags').find('.flyover')[0];
-            log('node: ' + node);
-            log('node.innerHTML: ' + node.innerHTML);
-            log('$(node).outerHTML(): ' + $(node).outerHTML());
-            log("$(node).children('a').length: " + $(node).children('a').length);
-            $(node).mouseover(function() {
-                log('mouseover');
-            });
-            $(node).children('a').mouseover(function() {
-                log('a mouseover');
-            });
-            //$(node).attr('href', '#');
-            $(node).children('a').attr('href', '#');
-            $(node).click(function(e) {
-                log('click');
-                e.preventDefault();
-                e.stopPropagation();
-                return false;
-            });
-            $(node).children('a').click(function(e) {
-                log('a click');
-                e.preventDefault();
-                e.stopPropagation();
-                return false;
-            });
-        }
         
         if (this.remainingContent.length > 0) {
-            // Show the loading banner if there is still remaining content.
-            log('  Show the loading banner.');
-            tagWindow[0].innerHTML += '\
-                <div id="tags-chunk-loading">\
-                    <p>Loading...</p>\
-                    <img src="/media/images/ajax-loader.gif" />\
-                </div>\
-            ';
+			// Show the loading banner if there is still remaining content.
+			tagWindow.append($('\
+				<div id="tags-chunk-loading">\
+					<p>Loading...</p>\
+					<img src="/media/images/ajax-loader.gif" />\
+				</div>\
+			'));
         }
         
         this.setDefaultZoomValues();

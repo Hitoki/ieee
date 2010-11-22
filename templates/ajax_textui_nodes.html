@@ -1,6 +1,6 @@
 {% load filters smartif %}
 
-<span id="textui-flyovers-url" style="display:none;">/ajax/tooltip/tagid?parent_id={{ sector_id|default:"null"|safe }}&amp;society_id={{ society_id|default:"null"|safe }}&amp;search_for={{ search_for|urlencode }}&amp;page={{ page }}"</span>
+<span id="textui-flyovers-url" style="display:none;">/ajax/tooltip/tagid?parent_id={{ sector_id|default:"null"|safe }}&amp;society_id={{ society_id|default:"null"|safe }}&amp;search_for={{ search_for|urlencode }}&amp;page={{ page }}</span>
 
 {% if search_for %}
     {% if search_for_too_short %}
@@ -72,26 +72,3 @@
         <!--SPLIT-->
     {% endfor %}
 {% endspaceless %}
-
-{% comment %}
-    <script>
-        /*
-        $(function() {
-            // Calling special function to avoid code bloat due to duplication. The string "tagid" in the url will be replaced with the
-            // actual id.
-            attachTextUiFlyovers(
-                '#tags',
-                {
-                    url: "/ajax/tooltip/tagid?parent_id={{ sector_id|default:"null"|safe }}&society_id={{ society_id|default:"null"|safe }}&search_for={{ search_for|urlencode }}&page={{ page }}"
-                    , position: 'auto'
-                    , customClass: 'textui-node'
-                    , hideDelay: 400
-                    , positionCursor: false
-                    , closeButton: true
-                }
-            );
-        });
-        */
-    </script>
-{% endcomment %}
-
