@@ -894,9 +894,19 @@ def ajax_textui_nodes(request):
     
     textui_flyovers_url = reverse('tooltip') + '/tagid?' + urllib.urlencode(params)
     
+    node_count_content = render_to_string('ajax_textui_node_count.inc.html', {
+        'child_nodes': child_nodes,
+        'num_clusters': num_clusters,
+        'num_tags': num_tags,
+        'search_for': search_for,
+        'search_for_too_short': search_for_too_short,
+        'search_page_title': search_page_title,
+    })
+    
     return HttpResponse(json.dumps({
         'search_for': search_for,
         'content': content,
+        'node_count_content': node_count_content,
         'textui_flyovers_url': textui_flyovers_url,
     }), 'text/plain')
     

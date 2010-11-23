@@ -524,6 +524,7 @@ var Tags = {
     
     onLoadResults: function(data) {
         var search_for = $('#tags-live-search').val();
+        
         if (data.search_for == null) {
             data.search_for = '';
         }
@@ -532,6 +533,24 @@ var Tags = {
         if (data.search_for == search_for) {
             this.remainingContent = data.content;
             this.textui_flyovers_url = data.textui_flyovers_url;
+            
+            $('#tag-counts').html(data.node_count_content);
+            var height = $('#tag-counts').outerHeight();
+            
+            if ($('#tag-galaxy').data('original_min_height') == undefined) {
+                $('#tag-galaxy').data('original_min_height', parseInt($('#tag-galaxy').css('min-height')));
+            }
+            var minHeight = $('#tag-galaxy').data('original_min_height') - height;
+            $('#tag-galaxy').css('min-height', minHeight + 'px');
+            
+            if ($('#tag-galaxy .alt-box-pad').data('original_min_height') == undefined) {
+                $('#tag-galaxy .alt-box-pad').data('original_min_height', parseInt($('#tag-galaxy .alt-box-pad').css('min-height')));
+            }
+            var minHeight = $('#tag-galaxy .alt-box-pad').data('original_min_height') - height;
+            $('#tag-galaxy .alt-box-pad').css('min-height', minHeight + 'px');
+            
+            $(window).resize();
+            
             $('#tags').empty();
             this.loadContentChunk();
         }

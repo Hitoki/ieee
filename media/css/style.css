@@ -767,7 +767,8 @@ span#roamer-beta-warning {
 }
 
 #alternate-page #tag-galaxy {
-    height: 441px;
+    /* NOTE: height is set by javascript. */
+    /*height: 441px;*/
     min-height: 441px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -782,12 +783,12 @@ span#roamer-beta-warning {
     overflow: auto;
 }
 
-#alternate-page #tag-galaxy #tags h2 {
+#tag-counts h2 {
     color:#006699;
 }
 
-#alternate-page #tag-galaxy #tags h3 {
-    clear:left;
+#tag-counts h3 {
+    /*clear:left;*/
     margin:.5em .5em 0 .5em;
     font-weight: normal;
 }
@@ -2568,4 +2569,8 @@ p#tag-and-cluster-counts-searching {
 #default-height-tag {
     position:absolute;
     visibility:hidden;
+}
+
+#tag-counts {
+    padding:1px;
 }

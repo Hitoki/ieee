@@ -1,41 +1,5 @@
 {% load filters smartif %}
 
-{% if search_for %}
-    {% if search_for_too_short %}
-        <h3>The filter phrase <b>{{ search_for }}</b> is too short. Please enter more characters above OR <a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">clear the filter now</a>.</h3>
-    {% else %}
-        <h3>
-        {# If the view returned results summary, use it. If not (happens when "All Sectors" or "All Organizations" are chosen), construct one. #}
-        {% if search_page_title %}
-			{{ search_page_title.num }} results for <b>{{ search_page_title.search_for }}</b> {{search_page_title.node_desc }}
-        {% else %}
-            {{ child_nodes|length }} result{{ child_nodes|length|pluralize }} for "{{ search_for }}"{% ifnotequal child_nodes|length 0 %}:{% else %}.{% endifnotequal %}
-        {% endif %}
-        
-        {# Extra message for when there are zero results #}
-        {% ifequal child_nodes|length 0 %}
-            &nbsp;You might try entering fewer characters above or <a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">clearing the filter phrase now</a>.
-        {% endifequal %}
-        </h3>
-    {% endif %}
-    
-    <p id="tag-and-cluster-counts-searching">
-        {{ num_tags }} tag{{ num_tags|pluralize }}
-        {% if num_clusters %}
-            , {{ num_clusters }} cluster{{ num_clusters|pluralize }}
-        {% endif %}
-    </p>
-{% else %}
-    <p id="tag-and-cluster-counts">
-        Showing {{ num_tags }} tag{{ num_tags|pluralize }}
-        {% if num_clusters %}
-            , {{ num_clusters }} cluster{{ num_clusters|pluralize }}
-        {% endif %}
-        .
-    </p>
-{% endif %}
-
-
 {% spaceless %}
     {% for tag in child_nodes %}
         <div id="tag-{{ tag.id }}" class="node {{ tag.node_type__name }} flyover { type:'{{ tag.node_type__name }}' }">
