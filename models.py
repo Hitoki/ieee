@@ -1007,7 +1007,7 @@ class Resource(models.Model):
     url_error = models.CharField(null=True, blank=True, max_length=1000)
     'The error (if any) that occured when checking this URL.'
     
-    nodes = models.ManyToManyField(Node, related_name='resources')
+    nodes = models.ManyToManyField(Node, related_name='resources', through='ResourceNodes')
     societies = models.ManyToManyField(Society, related_name='resources')
     
     objects = ResourceManager()
@@ -1016,6 +1016,15 @@ class Resource(models.Model):
     
     class Meta:
         ordering = ['resource_type__name', 'name']
+        
+class ResourceNodes(models.Model):
+    resource = models.ForeignKey(Resource)
+    node = models.ForeignKey(Node)
+    date_created = models.DateTimeField(blank=True, null=True, default=None)
+    is_machine_generated = models.BooleanField(default=False)
+    
+    class Meta:
+        db_table = 'ieeetags_resource_nodes'
 
 # ------------------------------------------------------------------------------
 
