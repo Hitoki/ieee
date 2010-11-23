@@ -1,0 +1,21 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>{{ page_title }}</h1>
+    
+	<h2>New Update</h2>
+	<a href="{% url admin_update_resources_from_xplore_perform%}">Perform Update</a>
+	
+	<br/>
+	<h2>Logs from Previous Updates</h2>
+	<select size="5" id="logList">
+		{% for file in logs %}
+		  <option>{{ file }}</option>
+		{% endfor %}
+	</select>
+	<p><a href="javascript:document.location='update_resources_from_xplore_log/' + $('#logList').val();">Download selected log</a></p>
+    
+    <p><a href="{% url admin_home %}">home</a></p>
+    
+{% endblock %}

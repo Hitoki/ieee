@@ -34,7 +34,7 @@ from ieeetags import settings
 from ieeetags import permissions
 from ieeetags import url_checker
 from ieeetags.util import *
-from ieeetags.models import Node, NodeType, Permission, Resource, ResourceType, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager, FailedLoginLog, UrlCheckerLog, TaxonomyTerm, TaxonomyCluster, ProfileLog
+from ieeetags.models import Node, NodeType, Permission, Resource, ResourceType, ResourceNodes, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager, FailedLoginLog, UrlCheckerLog, TaxonomyTerm, TaxonomyCluster, ProfileLog
 from ieeetags.views import render
 from ieeetags.widgets import DisplayOnlyWidget
 from forms import *
@@ -1534,22 +1534,59 @@ def import_conference_series(request):
 
 @login_required
 @admin_required
-def update_resources_from_xplore(request):
-    return _update_periodical_from_xplore()
+def update_resources_from_xplore_index(request):
+    
+    log_dirname = os.path.join(os.path.dirname(settings.LOG_FILENAME), 'xplore_imports')
+    logs = os.listdir(log_dirname)
+    logs.reverse()
+    context = {
+        'page_title': "Update Node Resource's from Xplore",
+        'logs': logs
+    }
+    return render(request, 'site_admin/update_resources_from_xplore_index.html', context)
+    
+
+#login_required
+@admin_required
+def update_resource_from_xplore_log(request, filename):
+    response = HttpResponse()
+    response.write('<pre>')
+    log_dirname = os.path.join(os.path.dirname(settings.LOG_FILENAME), 'xplore_imports')
+    log_filename = os.path.join(log_dirname, filename)
+    f = open(log_filename)
+    response.write(f.read())
+    f.close()
+    response.write('</pre>')
+    return response
+
+class XploreUpdateResultsSummary():
+    tags_processed = 0
+    xplore_connection_errors = 0
+    xplore_hits_without_id = 0
+    existing_relationship_count = 0
+    relationships_created = 0
+    resources_not_found = 0
+
+@login_required
+@admin_required
+def update_resources_from_xplore_perform(request):
+    return _update_periodical_from_xplore(request)
 
 
 @transaction.commit_manually
-def _update_periodical_from_xplore():
+def _update_periodical_from_xplore(request):
     #import ipdb; ipdb.set_trace()
     import logging.handlers
     
     now = datetime.now()
+        
+    resSum = XploreUpdateResultsSummary()
     
     log_dirname = os.path.join(os.path.dirname(settings.LOG_FILENAME), 'xplore_imports')
     if not os.path.exists(log_dirname):
         os.makedirs(log_dirname)
     
-    log_filename = 'periodical_xplore_import_log_%s.txt' % now.strftime('%Y%m%d%H%M%S')
+    log_filename = 'xplore_resource_import_log_%s.txt' % now.strftime('%Y%m%d%H%M%S')
     log_filename = os.path.join(log_dirname, log_filename)
     xplore_logger = logging.getLogger('XploreImportLogger')
     xplore_logger.setLevel(logging.DEBUG)
@@ -1563,6 +1600,7 @@ def _update_periodical_from_xplore():
     node_type = NodeType.objects.getFromName('tag')
     tags = Node.objects.filter(node_type=node_type)[:5]
     for tag in tags:
+        resSum.tags_processed += 1
         xplore_logger.info('Querying Xplore for Tag: %s' % tag.name)
         xplore_query_url = 'http://xploreuat.ieee.org/gateway/ipsSearch.jsp?' + urllib.urlencode({
             # Number of results
@@ -1574,9 +1612,9 @@ def _update_periodical_from_xplore():
         try:
             file = urllib2.urlopen(xplore_query_url)
         except urllib2.URLError:
-            xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
-            xplore_results = []
-            totalfound = None
+            xplore_logger.error('Could not connect to the IEEE Xplore site to perform search.')
+            resSum.xplore_connection_errors += 1
+            continue
         else:
             from xml.dom.minidom import parse
             errors = []
@@ -1588,6 +1626,7 @@ def _update_periodical_from_xplore():
                 xhit_title = xhit.getElementsByTagName('title')[0].firstChild.nodeValue
                 if not len(issn):
                     xplore_logger.warning('No ISSN node found in Xplore result with title "%s"' % xhit_title)
+                    resSum.xplore_hits_without_id += 1
                 elif not issn[0].firstChild.nodeValue in distinct_issns:
                     distinct_issns[issn[0].firstChild.nodeValue] = xhit_title
             
@@ -1607,24 +1646,34 @@ def _update_periodical_from_xplore():
                     #    import ipdb; ipdb.set_trace()
                     if per in tag.resources.all():
                         xplore_logger.info('Relationship already exists.')
+                        resSum.existing_relationship_count += 1
                     else:
                         xplore_logger.info('Creating relationship.')
-                        tag.resources.add(per)
-                        #tag.save()
+                        resSum.relationships_created += 1
+                        xref = ResourceNodes(
+                            node = tag,
+                            resource = per,
+                            date_created = now,
+                            is_machine_generated = True
+                        )
+                        xref.save()
                 except Resource.DoesNotExist:
                     xplore_logger.warn('%s: No TechNav Resource found.' % issn)
+                    resSum.resources_not_found += 1
         # TODO add finally block to close file once python is updated past 2.4
         
+    xplore_logger.info('\nSummary:')
+    xplore_logger.info('Tags Processed: %d' % resSum.tags_processed)
+
+    xplore_logger.info('Xplore Connection Errors: %d' % resSum.xplore_connection_errors)
+    xplore_logger.info('Xplore Hits without IDs: %d' % resSum.xplore_hits_without_id)
+    xplore_logger.info('Pre-existing Relationships: %d' % resSum.existing_relationship_count)
+    xplore_logger.info('Relationships Created: %d' % resSum.relationships_created)
+    xplore_logger.info('Xplore Hits with no Matching Technav Tag: %d' % resSum.resources_not_found)
     xplore_logger.removeHandler(handler)
     transaction.rollback()
     
-    response = HttpResponse()
-    response.write('<pre>')
-    f = open(log_filename)
-    response.write(f.read())
-    f.close()
-    response.write('</pre>')
-    return response
+    return render(request, 'site_admin/update_resources_from_xplore_results.html', {'resSum': resSum})
 
 def _import_clusters(file):
     assert False, 'TODO: Remove references to add_tag_to_cluster()'
