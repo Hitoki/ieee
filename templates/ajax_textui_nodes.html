@@ -1,7 +1,5 @@
 {% load filters smartif %}
 
-<span id="textui-flyovers-url" style="display:none;">/ajax/tooltip/tagid?parent_id={{ sector_id|default:"null"|safe }}&amp;society_id={{ society_id|default:"null"|safe }}&amp;search_for={{ search_for|urlencode }}&amp;page={{ page }}</span>
-
 {% if search_for %}
     {% if search_for_too_short %}
         <h3>The filter phrase <b>{{ search_for }}</b> is too short. Please enter more characters above OR <a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">clear the filter now</a>.</h3>

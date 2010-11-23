@@ -8,14 +8,23 @@ function getNode(parent, name) {
     return nodes[0];
 }
 
+// Scales down the effect of the zoom.
+function scaleZoom(zoom, scale) {
+    if (zoom >= 100) {
+        return (zoom - 100) * scale + 100;
+    } else {
+        return zoom;
+    }
+}
+
 var sortDropDown, printDropDown;
 $(document).ready(function(){
     if ($.cookie("noShowHelpBox")){
         $('#tag-help-box').hide();
     }
     
-	// When clicking the help link, if the help panel is not shown, show it and abort.
-	// Otherwise follow the link as normal
+    // When clicking the help link, if the help panel is not shown, show it and abort.
+    // Otherwise follow the link as normal
     $('#right-help').click(function(){
        if($('#tag-help-box').is(':hidden')){
            $('#tag-help-box').show();
@@ -48,11 +57,11 @@ $(document).ready(function(){
     });
     
     sortDropDown = $('#sortSelect').imageDropdown({'selectList': $("ul#sortSelect_options"), 'initialIndex': 0});
-	if (sortDropDown) {
-		sortDropDown.bind('change', function(){
-			Tags.updateSort();
-		});
-	}
+    if (sortDropDown) {
+        sortDropDown.bind('change', function(){
+            Tags.updateSort();
+        });
+    }
     printDropDown = $('#printSelect').imageDropdown({'selectList': $("ul#printSelect_options"), 'initialIndex': 0});
     
     //Removes hover state from selected text when other option is chosen in dropdowns
@@ -89,8 +98,8 @@ $(document).ready(function(){
         $(this).children("#textui-zoom-slider").removeClass("ui-widget-content-hover");
     });
     
-	var matches = window.location.search.match('autoload=([0-9]*)');
-	if (matches){
+    var matches = window.location.search.match('autoload=([0-9]*)');
+    if (matches){
         setTimeout(function(){Tags.selectTag(matches[1]);}, 3000);
     }
 });
@@ -295,19 +304,19 @@ var Tags = {
     
     /*
     updateDisabledFilters: function() {
-		//log('updateDisabledFilters()');
-		//log(' this.sectorId: ' + this.node);
-		if (this.sectorId == null) {
-			// No node selected, disable filters
-			$('#views input').attr('disabled', 'disabled');
-			Flyover.attach($('#views'), {
-				'content': 'Please start by selecting an Industry Section or IEEE Society'
-			});
-		} else {
-			// Node selected, enable filters
-			$('#views input').attr('disabled', '');
-			Flyover.detach($('#views'));
-		}
+        //log('updateDisabledFilters()');
+        //log(' this.sectorId: ' + this.node);
+        if (this.sectorId == null) {
+            // No node selected, disable filters
+            $('#views input').attr('disabled', 'disabled');
+            Flyover.attach($('#views'), {
+                'content': 'Please start by selecting an Industry Section or IEEE Society'
+            });
+        } else {
+            // Node selected, enable filters
+            $('#views input').attr('disabled', '');
+            Flyover.detach($('#views'));
+        }
     },
     */
     
@@ -417,7 +426,7 @@ var Tags = {
         this._showWaitScreen();
         this.updateResults(showSearchResultsCallback);
     },
-	
+    
     updateResults: function(showSearchResultsCallback) {
         this._showWaitScreen();
         //var filterStr = implode(',', this.getFilters());
@@ -507,11 +516,11 @@ var Tags = {
         
     },
     
-	clearSearchResults: function() {
+    clearSearchResults: function() {
         log('clearSearchResults()');
         $('#tags-live-search').val('');
         this.updateResults();
-	},
+    },
     
     onLoadResults: function(data) {
         var search_for = $('#tags-live-search').val();
@@ -543,16 +552,16 @@ var Tags = {
             // Highlight the selected sector
             $('#sector-list-item-' + this.sectorId + ' a').addClass('active-sector');
             var tabs = $('#left-column-container').data('nootabs');
-			tabs.setTab('sectors-tab');
-			$('#tag-galaxy').addClass('tag-galaxy-viewing');
+            tabs.setTab('sectors-tab');
+            $('#tag-galaxy').addClass('tag-galaxy-viewing');
             
         } else if (this.page == this.PAGE_SECTOR_CLUSTER) {
             
             // Highlight the selected sector
             $('#sector-list-item-' + this.sectorId + ' a').addClass('active-sector');
             var tabs = $('#left-column-container').data('nootabs');
-			tabs.setTab('sectors-tab');
-			$('#tag-galaxy').addClass('tag-galaxy-viewing');
+            tabs.setTab('sectors-tab');
+            $('#tag-galaxy').addClass('tag-galaxy-viewing');
             
             // Highlight the selected cluster.
             // Create the cluster nav element.
@@ -608,8 +617,8 @@ var Tags = {
             // Highlight the selected society
             $('#society-list-item-' + this.societyId + ' a').addClass('active-society');
             var tabs = $('#left-column-container').data('nootabs');
-			tabs.setTab('societies-tab');
-			$('#tag-galaxy').addClass('tag-galaxy-viewing');
+            tabs.setTab('societies-tab');
+            $('#tag-galaxy').addClass('tag-galaxy-viewing');
             
             // Highlight the selected cluster.
             // Create the cluster nav element.
@@ -873,7 +882,7 @@ var Tags = {
     },
     
     updateSwitchLink: function() {
-		// NOTE: Roamer is disabled. No need for switch link.
+        // NOTE: Roamer is disabled. No need for switch link.
         //if (this.sectorId != null) {
         //    if (this.nodeType == 'sector') {
         //        $('#switch-link').attr('href', '/roamer#/sector/' + this.sectorId);
@@ -927,14 +936,14 @@ var Tags = {
         this.defaultHorizMargin = Math.round(parseInt(tag.css('margin-left')));
         this.defaultTextSize = Math.round(parseInt(tag.css('font-size')));
         
-		// In IE, the CSS 'height' is 'auto'.
-		var height = parseInt(tag.css('height'));
-		if (isNaN(height)) {
-			this.defaultHeight = tag.attr('offsetHeight');
-		} else {
-			this.defaultHeight = Math.round(height);
-		}
-		
+        // In IE, the CSS 'height' is 'auto'.
+        var height = parseInt(tag.css('height'));
+        if (isNaN(height)) {
+            this.defaultHeight = tag.attr('offsetHeight');
+        } else {
+            this.defaultHeight = Math.round(height);
+        }
+        
         this.defaultPadding = Math.round(parseInt(tag.css('padding-top')));
         
         if (clusterIcon.length) {
@@ -987,16 +996,6 @@ var Tags = {
             
             this._showWaitScreenOver(function() {
                 // This function is called after the waiting screen is shown.
-                
-                // Scales down the effect of this zoom.
-                function scaleZoom(zoom, scale) {
-                    if (zoom >= 100) {
-                        return (zoom - 100) * scale + 100;
-                    } else {
-                        return zoom;
-                    }
-                }
-                
                 elem.find('.node').css('margin-top', (tags.defaultVertMargin * zoom / 100) + 'px');
                 elem.find('.node').css('margin-bottom', (tags.defaultVertMargin * zoom / 100) + 'px');
                 elem.find('.node').css('margin-left', (tags.defaultHorizMargin * zoom / 100) + 'px');
@@ -1028,8 +1027,8 @@ var Tags = {
         
         this.oldZoom = zoom;
         
-		//log('~resizeNodes()');
-	},
+        //log('~resizeNodes()');
+    },
     
     onScroll: function() {
         var scrollBottom = $('#tags').attr('scrollHeight') - $('#tags').scrollTop() - $('#tags').outerHeight();
@@ -1065,21 +1064,43 @@ var Tags = {
             //tagWindow.html(tagWindow.html() + chunk);
             //log('chunk.substr(0, 100): ' + chunk.substr(0, 100));
             
+            var zoom = $('#textui-zoom-slider').slider('value');
+            
+            if (zoom != 100) {
+                
+                // Add inline style="" to all DIV's, to prevent nodes from briefly showing up full-size.
+                log('adding STYLE attrs.');
+                
+                // Add zoom styles to nodes.
+                var s = [];
+                s.push('margin-top:' + (this.defaultVertMargin * zoom / 100) + 'px');
+                s.push('margin-bottom:' + (this.defaultVertMargin * zoom / 100) + 'px');
+                s.push('margin-left:' + (this.defaultHorizMargin * zoom / 100) + 'px');
+                s.push('margin-right:' + (this.defaultHorizMargin * zoom / 100) + 'px');
+                s.push('font-size:' + (this.defaultTextSize * zoom / 100) + 'px');
+                s.push('height:' + (this.defaultHeight * zoom / 100) + 'px');
+                s.push('padding-top:' + (this.defaultPadding * scaleZoom(zoom, 2) / 100) + 'px');
+                s.push('padding-bottom:' + (this.defaultPadding * scaleZoom(zoom, 2) / 100) + 'px');
+                s.push('padding-left:' + (this.defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
+                s.push('padding-right:' + (this.defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
+                s = s.join('; ');
+                chunk = chunk.replace(/(<div [^>]+)(>)/gi, '$1 style="' + s + '" $2')
+                
+                // Add zoom styles to cluster icons.
+                var s = [];
+                s.push('width:' + (this.defaultClusterIconWidth * scaleZoom(zoom, 1) / 100) + 'px');
+                s.push('height:' + (this.defaultClusterIconHeight * scaleZoom(zoom, 1) / 100) + 'px');
+                s = s.join('; ');
+                chunk = chunk.replace(/(<img [^>]+ class="cluster-icon")\s*(\/>)/gi, '$1 style="' + s + '" $2')
+            }
+            
             var chunkElem = $('<span>' + chunk + '</span>');
             
             //log('chunkElem: ');
             //console.log(chunkElem);
             //log('chunkElem.length: ' + chunkElem.length);
             
-            // Zoom the nodes before they're shown.
-            this.updateZoom(chunkElem);
-            
             tagWindow.append(chunkElem);
-            
-            if ($('#textui-flyovers-url').length == 0) {
-                alert('ERROR: Could not find #textui-flyovers-url element.');
-                return;
-            }
             
             // Calling special function to avoid code bloat due to duplication. The string "tagid" in the url will be replaced with the
             // actual id.
