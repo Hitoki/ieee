@@ -1559,14 +1559,6 @@ def update_resource_from_xplore_log(request, filename):
     response.write('</pre>')
     return response
 
-class XploreUpdateResultsSummary():
-    tags_processed = 0
-    xplore_connection_errors = 0
-    xplore_hits_without_id = 0
-    existing_relationship_count = 0
-    relationships_created = 0
-    resources_not_found = 0
-
 @login_required
 @admin_required
 def update_resources_from_xplore_perform(request):
@@ -1575,6 +1567,15 @@ def update_resources_from_xplore_perform(request):
 
 @transaction.commit_manually
 def _update_periodical_from_xplore(request):
+    
+    class XploreUpdateResultsSummary():
+        tags_processed = 0
+        xplore_connection_errors = 0
+        xplore_hits_without_id = 0
+        existing_relationship_count = 0
+        relationships_created = 0
+        resources_not_found = 0
+    
     #import ipdb; ipdb.set_trace()
     import logging.handlers
     
