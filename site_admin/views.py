@@ -1589,31 +1589,28 @@ def _update_periodical_from_xplore(request):
     
     log_filename = 'xplore_resource_import_log_%s.txt' % now.strftime('%Y%m%d%H%M%S')
     log_filename = os.path.join(log_dirname, log_filename)
-    xplore_logger = logging.getLogger('XploreImportLogger')
-    xplore_logger.setLevel(logging.DEBUG)
-    handler = logging.FileHandler(log_filename, 'ab')
-    xplore_logger.addHandler(handler)
+    xplore_logger = open(log_filename, 'ab')
     
-    xplore_logger.info('Import Xplore Results into Resource')
-    xplore_logger.info('Started at %s' % now)
+    xplore_logger.write('Import Xplore Results into Resource' + os.linesep)
+    xplore_logger.write('Started at %s' % now + os.linesep)
     
     resource_type = ResourceType.objects.getFromName('periodical')
     node_type = NodeType.objects.getFromName('tag')
     tags = Node.objects.filter(node_type=node_type)[:5]
     for tag in tags:
         resSum['tags_processed'] += 1
-        xplore_logger.info('Querying Xplore for Tag: %s' % tag.name)
+        xplore_logger.write('Querying Xplore for Tag: %s' % tag.name + os.linesep)
         xplore_query_url = 'http://xploreuat.ieee.org/gateway/ipsSearch.jsp?' + urllib.urlencode({
             # Number of results
             'hc': 5,
             'md': tag.name,
             'ctype' : 'Journals'
         })
-        xplore_logger.info('Calling %s' % xplore_query_url)
+        xplore_logger.write('Calling %s' % xplore_query_url + os.linesep)
         try:
             file = urllib2.urlopen(xplore_query_url)
         except urllib2.URLError:
-            xplore_logger.error('Could not connect to the IEEE Xplore site to perform search.')
+            xplore_logger.write('Could not connect to the IEEE Xplore site to perform search.')
             resSum['xplore_connection_errors'] += 1
             continue
         else:
@@ -1626,28 +1623,28 @@ def _update_periodical_from_xplore(request):
                 issn = xhit.getElementsByTagName('issn')
                 xhit_title = xhit.getElementsByTagName('title')[0].firstChild.nodeValue
                 if not len(issn):
-                    xplore_logger.warning('No ISSN node found in Xplore result with title "%s"' % xhit_title)
+                    xplore_logger.write('No ISSN node found in Xplore result with title "%s"' % xhit_title + os.linesep)
                     resSum['xplore_hits_without_id'] += 1
                 elif not issn[0].firstChild.nodeValue in distinct_issns:
                     distinct_issns[issn[0].firstChild.nodeValue] = xhit_title
             
-            xplore_logger.info("Found %d unique ISSNs:" % len(distinct_issns))
+            xplore_logger.write("Found %d unique ISSNs:" % len(distinct_issns) + os.linesep)
             for issn, xhit_title in distinct_issns.iteritems():
-                xplore_logger.info('%s: "%s"' % (
+                xplore_logger.write('%s: "%s"' % (
                     issn,
-                    xhit_title)
+                    xhit_title) + os.linesep
                 )
-            xplore_logger.info("Looking for matching TechNav Resources...")
+            xplore_logger.write("Looking for matching TechNav Resources..." + os.linesep)
             for issn, xhit_title in distinct_issns.iteritems():
                 try:
                     per = Resource.objects.get(ieee_id=issn)
-                    xplore_logger.info('%s: Found TechNav Resource titled "%s".' % (issn, per.name))
+                    xplore_logger.write('%s: Found TechNav Resource titled "%s".' % (issn, per.name) + os.linesep)
 
                     if per in tag.resources.all():
-                        xplore_logger.info('Relationship already exists.')
+                        xplore_logger.write('Relationship already exists.' + os.linesep)
                         resSum['existing_relationship_count'] += 1
                     else:
-                        xplore_logger.info('Creating relationship.')
+                        xplore_logger.write('Creating relationship.' + os.linesep)
                         resSum['relationships_created'] += 1
                         xref = ResourceNodes(
                             node = tag,
@@ -1657,19 +1654,19 @@ def _update_periodical_from_xplore(request):
                         )
                         xref.save()
                 except Resource.DoesNotExist:
-                    xplore_logger.warn('%s: No TechNav Resource found.' % issn)
+                    xplore_logger.write('%s: No TechNav Resource found.' % issn + os.linesep)
                     resSum['resources_not_found'] += 1
         # TODO add finally block to close file once python is updated past 2.4
         
-    xplore_logger.info('\nSummary:')
-    xplore_logger.info('Tags Processed: %d' % resSum['tags_processed'])
+    xplore_logger.write('\nSummary:' + os.linesep)
+    xplore_logger.write('Tags Processed: %d' % resSum['tags_processed'] + os.linesep)
 
-    xplore_logger.info('Xplore Connection Errors: %d' % resSum['xplore_connection_errors'])
-    xplore_logger.info('Xplore Hits without IDs: %d' % resSum['xplore_hits_without_id'])
-    xplore_logger.info('Pre-existing Relationships: %d' % resSum['existing_relationship_count'])
-    xplore_logger.info('Relationships Created: %d' % resSum['relationships_created'])
-    xplore_logger.info('Xplore Hits with no Matching Technav Tag: %d' % resSum['resources_not_found'])
-    xplore_logger.removeHandler(handler)
+    xplore_logger.write('Xplore Connection Errors: %d' % resSum['xplore_connection_errors'] + os.linesep)
+    xplore_logger.write('Xplore Hits without IDs: %d' % resSum['xplore_hits_without_id'] + os.linesep)
+    xplore_logger.write('Pre-existing Relationships: %d' % resSum['existing_relationship_count'] + os.linesep)
+    xplore_logger.write('Relationships Created: %d' % resSum['relationships_created'] + os.linesep)
+    xplore_logger.write('Xplore Hits with no Matching Technav Tag: %d' % resSum['resources_not_found'] + os.linesep)
+    xplore_logger.close()
     transaction.rollback()
     
     return render(request, 'site_admin/update_resources_from_xplore_results.html', {'resSum': resSum})
