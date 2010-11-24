@@ -1567,7 +1567,7 @@ def update_resources_from_xplore_perform(request):
 
 @transaction.commit_manually
 def _update_periodical_from_xplore(request):
-    
+
     XploreUpdateResultsSummary = {
         'tags_processed' : 0,
         'xplore_connection_errors' : 0,
@@ -1577,7 +1577,6 @@ def _update_periodical_from_xplore(request):
         'resources_not_found' : 0
     }
     
-    #import ipdb; ipdb.set_trace()
     import logging.handlers
     
     now = datetime.now()
@@ -1633,7 +1632,6 @@ def _update_periodical_from_xplore(request):
                     distinct_issns[issn[0].firstChild.nodeValue] = xhit_title
             
             xplore_logger.info("Found %d unique ISSNs:" % len(distinct_issns))
-            #import ipdb; ipdb.set_trace()
             for issn, xhit_title in distinct_issns.iteritems():
                 xplore_logger.info('%s: "%s"' % (
                     issn,
@@ -1644,8 +1642,7 @@ def _update_periodical_from_xplore(request):
                 try:
                     per = Resource.objects.get(ieee_id=issn)
                     xplore_logger.info('%s: Found TechNav Resource titled "%s".' % (issn, per.name))
-                    #if issn == '0162-8828':
-                    #    import ipdb; ipdb.set_trace()
+
                     if per in tag.resources.all():
                         xplore_logger.info('Relationship already exists.')
                         resSum['existing_relationship_count'] += 1
@@ -1665,7 +1662,7 @@ def _update_periodical_from_xplore(request):
         # TODO add finally block to close file once python is updated past 2.4
         
     xplore_logger.info('\nSummary:')
-    xplore_logger.info('Tags Processed: %d' % resSum.tags_processed)
+    xplore_logger.info('Tags Processed: %d' % resSum['tags_processed'])
 
     xplore_logger.info('Xplore Connection Errors: %d' % resSum['xplore_connection_errors'])
     xplore_logger.info('Xplore Hits without IDs: %d' % resSum['xplore_hits_without_id'])
