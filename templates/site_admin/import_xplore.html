@@ -1,0 +1,93 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% load smartif %}
+
+{% block main_table_content %}
+    
+    <h1>Import Xplore</h1>
+    
+    <h2>Status</h2>
+    
+    {% if not process %}
+        <p>
+            <i>No process running.</i>
+        </p>
+        <p>
+            <a href="{% url admin_import_xplore %}?action=launch">Launch the Import Process</a>
+        </p>
+    {% else %}
+        <table class="grid">
+            <tr>
+                <th>
+                    Status
+                </th>
+                <td>
+                    {{ process.status }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Is_alive
+                </th>
+                <td>
+                    {{ process.is_alive }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    PID
+                </th>
+                <td>
+                    {{ process.pid }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Date Created
+                </th>
+                <td>
+                    {{ process.date_created }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Date Updated
+                </th>
+                <td>
+                    {{ process.date_updated }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Log
+                </th>
+                <td>
+                    {{ process.log|linebreaksbr }}
+                </td>
+            </tr>
+        </table>
+        
+        {% if process.status == "RUNNING" %}
+            <p>
+                <a href="{% url admin_import_xplore %}?action=stop">Stop the Import Process</a>
+            </p>
+        {% endif %}
+        
+        <p>
+            <a href="{% url admin_import_xplore %}?action=force_clear">(DEBUG) Force Clear</a>
+        </p>
+        
+        {% if process.status != "RUNNING" %}
+            <p>
+                <a href="{% url admin_import_xplore %}?action=clear">Clear this entry</a>
+            </p>
+        {% endif %}
+    {% endif %}
+    
+    
+    <br/>
+    <br/>
+    <br/>
+    
+    
+{% endblock %}

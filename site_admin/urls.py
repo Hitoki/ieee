@@ -38,12 +38,11 @@ urlpatterns += patterns('',
     url(r'^import_resources$', views.import_resources, name='admin_import_resources'),
     url(r'^import/clusters$', views.import_clusters, name='admin_import_clusters'),
     url(r'^import/conference_series$', views.import_conference_series, name='admin_import_conference_series'),
-    
     url(r'^import/update_resources_from_xplore$', views.update_resources_from_xplore_index, name='admin_update_resources_from_xplore_index'),
     url(r'^import/update_resources_from_xplore_perform$', views.update_resources_from_xplore_perform, name='admin_update_resources_from_xplore_perform'),
     url(r'^import/update_resources_from_xplore_log/(?P<filename>.+)$', views.update_resource_from_xplore_log, name='admin_update_resource_from_xplore_log'),
-    
     url(r'^import/taxonomy$', views.import_taxonomy, name='admin_import_taxonomy'),
+    url(r'^import/import_xplore$', views.import_xplore, name='admin_import_xplore'),
     
     url(r'^sectors$', views.list_sectors, name='admin_list_sectors'),
     url(r'^sector/(\d+)$', views.view_sector, name='admin_view_sector'),

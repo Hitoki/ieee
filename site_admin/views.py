@@ -34,7 +34,7 @@ from ieeetags import settings
 from ieeetags import permissions
 from ieeetags import url_checker
 from ieeetags.util import *
-from ieeetags.models import Node, NodeType, Permission, Resource, ResourceType, ResourceNodes, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager, FailedLoginLog, UrlCheckerLog, TaxonomyTerm, TaxonomyCluster, ProfileLog
+from ieeetags.models import Node, NodeType, Permission, Resource, ResourceType, ResourceNodes, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager, FailedLoginLog, UrlCheckerLog, TaxonomyTerm, TaxonomyCluster, ProfileLog, ProcessControl, PROCESS_CONTROL_TYPES, PROCESS_CONTROL_STATUSES
 from ieeetags.views import render
 from ieeetags.widgets import DisplayOnlyWidget
 from forms import *
@@ -1055,7 +1055,21 @@ def _import_resources(file, batch_commits=False):
         #Type, ID, Name, Description, URL, Tags, Society Abbreviations, Year, Standard Status, Technical Committees, Keywords, Priority, Completed, Project Code, Date
         type1, ieee_id, name, description, url, tag_names, society_abbreviations, year, standard_status, technical_committees, keywords, priority_to_tag, completed, project_code, date1 = row
         
+        #logging.debug('    type1: %s' % type1)
+        #logging.debug('    ieee_id: %s' % ieee_id)
         #logging.debug('    name: %s' % name)
+        #logging.debug('    description: %s' % description)
+        #logging.debug('    url: %s' % url)
+        #logging.debug('    tag_names: %s' % tag_names)
+        #logging.debug('    society_abbreviations: %s' % society_abbreviations)
+        #logging.debug('    year: %s' % year)
+        #logging.debug('    standard_status: %s' % standard_status)
+        #logging.debug('    technical_committees: %s' % technical_committees)
+        #logging.debug('    keywords: %s' % keywords)
+        #logging.debug('    priority_to_tag: %s' % priority_to_tag)
+        #logging.debug('    completed: %s' % completed)
+        #logging.debug('    project_code: %s' % project_code)
+        #logging.debug('    date1: %s' % date1)
         
         # Fix formatting
         if year == '':
@@ -1095,7 +1109,7 @@ def _import_resources(file, batch_commits=False):
         elif completed.lower() == 'no':
             completed = False
         else:
-            raise Exception('Unknown priority "%s"' % completed)
+            raise Exception('Unknown completed "%s"' % completed)
         
         # Validate input
         if name.strip() == '':
@@ -1580,7 +1594,7 @@ def _update_periodical_from_xplore(request):
     import logging.handlers
     
     now = datetime.now()
-        
+    
     resSum = XploreUpdateResultsSummary
     
     log_dirname = os.path.join(os.path.dirname(settings.LOG_FILENAME), 'xplore_imports')
@@ -1746,7 +1760,6 @@ def _import_clusters(file):
     #    'errors': errors,
     #}
 
-
 @login_required
 @admin_required
 @transaction.commit_on_success
@@ -1775,6 +1788,85 @@ def import_taxonomy(request):
             'page_title': 'Import IEEE Taxonomy XML File',
             'results': results,
         })
+
+@login_required
+@admin_required
+@transaction.commit_on_success
+def import_xplore(request):
+    'Manages the separate xplore import process.'
+    
+    action = request.REQUEST.get('action', '')
+    try:
+        process = ProcessControl.objects.get(type=PROCESS_CONTROL_TYPES.XPLORE_IMPORT)
+    except ProcessControl.DoesNotExist:
+        process = None
+    
+    if action == 'launch':
+        if process is not None:
+            if process.status != str(PROCESS_CONTROL_STATUSES.RUNNING):
+                process.delete()
+            else:
+                raise Exception('Must stop the current process before you can start another.')
+            
+        process = ProcessControl()
+        process.type = PROCESS_CONTROL_TYPES.XPLORE_IMPORT
+        process.save()
+        
+        def start_process(process):
+            print 'start_process()'
+            
+            scripts_path = relpath(__file__, '../scripts')
+            script_path = os.path.join(scripts_path, 'update_resources_from_xplore.py')
+            
+            in_null = get_devnull()
+            out_null = get_devnull('w+b')
+            
+            # NOTE: Need to sleep here, or the current view hangs.
+            print '  Sleeping 2s'
+            time.sleep(2)
+            
+            print '  Launching process %r' % script_path
+            proc = subprocess.Popen(
+                [sys.executable, script_path],
+                cwd=scripts_path,
+                stdin=in_null,
+                stdout=out_null,
+            )
+            process.pid = proc.pid
+            process.save()
+            
+            print '~start_process()'
+        
+        thread = threading.Thread(target=start_process, args=[process])
+        thread.setDaemon(True)
+        thread.start()
+        
+        print 'Done launching process.'
+        
+        print 'Returning redirect.'
+        return HttpResponseRedirect(reverse('admin_import_xplore'))
+    
+    elif action == 'stop':
+        if process is not None and process.status == str(PROCESS_CONTROL_STATUSES.RUNNING):
+            process.is_alive = False
+            process.save()
+        return HttpResponseRedirect(reverse('admin_import_xplore'))
+    
+    elif action == 'clear':
+        if process is not None and process.status != str(PROCESS_CONTROL_STATUSES.RUNNING):
+            process.delete()
+        return HttpResponseRedirect(reverse('admin_import_xplore'))
+    
+    elif action == 'force_clear':
+        process.delete()
+        return HttpResponseRedirect(reverse('admin_import_xplore'))
+    
+    
+    
+    print 'rendering'
+    return render(request, 'site_admin/import_xplore.html', {
+        'process': process,
+    })
 
 def get_element_text_value(elem):
     'Returns the text value of a given XML element.  Combines all separate text nodes, strips all leading/trailing whitespace.'

@@ -12,6 +12,8 @@ import string
 import settings
 import logging
 #from profiler import Profiler
+from enum import Enum
+import util
 
 def single_row(results, message=None):
     '''
@@ -1276,3 +1278,23 @@ class ProfileLog(models.Model):
         
     def __str__(self):
         return '<%s: %s, %s, %s>' % (self.__class__.__name__, self.url, self.elapsed_time, self.short_user_agent())
+
+PROCESS_CONTROL_TYPES = Enum(
+    'XPLORE_IMPORT',
+)
+
+PROCESS_CONTROL_STATUSES = Enum(
+    'RUNNING',
+    'DIED',
+    'COMPLETED',
+)
+
+class ProcessControl(models.Model):
+    'Controls and stores information for a long-running process.'
+    type = models.CharField(max_length=100, choices=util.make_choices(PROCESS_CONTROL_TYPES))
+    status = models.CharField(max_length=100, choices=util.make_choices(PROCESS_CONTROL_STATUSES), default=str(PROCESS_CONTROL_STATUSES.RUNNING))
+    log = models.CharField(max_length=1000, blank=True)
+    is_alive = models.BooleanField(default=True)
+    pid = models.IntegerField(null=True, blank=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(null=True, blank=True)
