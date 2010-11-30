@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import codecs
 import csv
 import hashlib
@@ -39,12 +39,6 @@ from ieeetags.views import render
 from ieeetags.widgets import DisplayOnlyWidget
 from forms import *
 from widgets import make_display_only
-
-
-_IMPORT_SOURCES = [
-    'comsoc',
-    'v.7',
-]
 
 def _get_version():
     'Gets the current code version from the version.txt file, or the SVN working copy properties.'
@@ -1027,7 +1021,8 @@ def fix_societies_import(request):
         'row_count': row_count,
         'page_time': time.time()-start,
     })
-    
+
+#@profiler    
 def _import_resources(file, batch_commits=False):
     #logging.debug('_import_resources()')
     
@@ -1050,6 +1045,18 @@ def _import_resources(file, batch_commits=False):
     tab_society = Society.objects.getFromAbbreviation('TAB')
     assert tab_society is not None, 'Cant find TAB society.'
     
+    # Cache the resource types.
+    resource_types = {}
+    for resource_type in ResourceType.objects.all():
+        resource_types[resource_type.name] = resource_type
+        
+    # Cache the existing resources.
+    resource_ieee_ids = Resource.objects.all().values_list('ieee_id')
+    resource_ieee_ids = set([temp[0] for temp in resource_ieee_ids])
+
+    start_rows = time.time()
+    last_update_time = None
+    
     for row in reader:
         
         #Type, ID, Name, Description, URL, Tags, Society Abbreviations, Year, Standard Status, Technical Committees, Keywords, Priority, Completed, Project Code, Date
@@ -1071,90 +1078,91 @@ def _import_resources(file, batch_commits=False):
         #logging.debug('    project_code: %s' % project_code)
         #logging.debug('    date1: %s' % date1)
         
-        # Fix formatting
-        if year == '':
-            year = None
-        else:
-            year = int(year)
-        name = name.strip()
-        url = url.strip()
-        society_abbreviations = [society_abbreviations.strip() for society_abbreviations in society_abbreviations.split('|')]
-        standard_status = standard_status.strip()
-        if date1.strip() == '':
-            date1 = None
-        else:
-            date1 = datetime.strptime(date1, '%m/%d/%Y')
+        #num_existing = Resource.objects.filter(resource_type=resource_type, ieee_id=ieee_id).count()
+        #num_existing = Resource.objects.filter(resource_type=resource_type, ieee_id=ieee_id).exists()
+        #num_existing = Resource.objects.filter(ieee_id=ieee_id).exists()
+        num_existing = (ieee_id in resource_ieee_ids)
         
-        resource_type = ResourceType.objects.getFromName(type1)
-        
-        if standard_status == '':
-            standard_status = ''
-        elif standard_status.lower() in Resource.STANDARD_STATUSES:
-            standard_status = standard_status.lower()
-        else:
-            raise Exception('Unknown standard status "%s"' % standard_status)
-        
-        # Truncate keywords to 1000 chars
-        keywords = keywords[:1000]
-        
-        if priority_to_tag.lower() == 'yes':
-            priority_to_tag = True
-        elif priority_to_tag.lower() == 'no':
-            priority_to_tag = False
-        else:
-            raise Exception('Unknown priority "%s"' % priority_to_tag)
-        
-        if completed.lower() == 'yes':
-            completed = True
-        elif completed.lower() == 'no':
-            completed = False
-        else:
-            raise Exception('Unknown completed "%s"' % completed)
-        
-        # Validate input
-        if name.strip() == '':
-            raise Exception('Resource name is blank for row: %s' % row)
-        
-        societies = []
-        
-        # Search by society abbreviation only
-        for society_abbreviation in society_abbreviations:
-            if society_abbreviation != '':
-                society = Society.objects.getFromAbbreviation(society_abbreviation)
-                if society is None:
-                    if society_abbreviation not in invalid_societies:
-                        invalid_societies[society_abbreviation] = 1
-                    else:
-                        invalid_societies[society_abbreviation] += 1
-                    num_invalid_societies += 1
-                    #logging.error('    Invalid society abbreviation "%s".' % society_abbreviation)
-                else:
-                    if society_abbreviation not in valid_societies:
-                        valid_societies[society_abbreviation] = 1
-                    else:
-                        valid_societies[society_abbreviation] += 1
-                    societies_assigned += 1
-                    societies.append(society)
-        
-        # DEBUG:
-        if len(societies) == 0:
-            # No valid societies - assign this resource to the TAB society
-            societies.append(tab_society)
-            
-        #if len(societies) == 0:
-        #    # No valid societies, skip this resource
-        #    resources_skipped += 1
-        #
-        #else:
-        
-        # Resource has valid societies, insert it
-        num_existing = Resource.objects.filter(resource_type=resource_type, ieee_id=ieee_id).count()
-        if num_existing > 0:
+        if num_existing:
             # Skip over existing resources
             #logging.debug('  DUPLICATE: resource "%s" already exists.' % name)
             duplicate_resources += 1
         
         else:
+            # New resource, import it.
+            
+            # Fix formatting
+            if year == '':
+                year = None
+            else:
+                year = int(year)
+            name = name.strip()
+            url = url.strip()
+            society_abbreviations = [society_abbreviations.strip() for society_abbreviations in society_abbreviations.split('|')]
+            standard_status = standard_status.strip()
+            if date1.strip() == '':
+                date1 = None
+            else:
+                date1 = datetime.strptime(date1, '%m/%d/%Y')
+            
+            #resource_type = ResourceType.objects.getFromName(type1)
+            #resource_type = resource_types[type1]
+            resource_type = resource_types[type1]
+            
+            if standard_status == '':
+                standard_status = ''
+            elif standard_status.lower() in Resource.STANDARD_STATUSES:
+                standard_status = standard_status.lower()
+            else:
+                raise Exception('Unknown standard status "%s"' % standard_status)
+            
+            # Truncate keywords to 1000 chars
+            keywords = keywords[:1000]
+            
+            if priority_to_tag.lower() == 'yes':
+                priority_to_tag = True
+            elif priority_to_tag.lower() == 'no':
+                priority_to_tag = False
+            else:
+                raise Exception('Unknown priority "%s"' % priority_to_tag)
+            
+            if completed.lower() == 'yes':
+                completed = True
+            elif completed.lower() == 'no':
+                completed = False
+            else:
+                raise Exception('Unknown completed "%s"' % completed)
+            
+            # Validate input
+            if name.strip() == '':
+                raise Exception('Resource name is blank for row: %s' % row)
+            
+            societies = []
+            
+            # Search by society abbreviation only
+            for society_abbreviation in society_abbreviations:
+                if society_abbreviation != '':
+                    society = Society.objects.getFromAbbreviation(society_abbreviation)
+                    if society is None:
+                        if society_abbreviation not in invalid_societies:
+                            invalid_societies[society_abbreviation] = 1
+                        else:
+                            invalid_societies[society_abbreviation] += 1
+                        num_invalid_societies += 1
+                        #logging.error('    Invalid society abbreviation "%s".' % society_abbreviation)
+                    else:
+                        if society_abbreviation not in valid_societies:
+                            valid_societies[society_abbreviation] = 1
+                        else:
+                            valid_societies[society_abbreviation] += 1
+                        societies_assigned += 1
+                        societies.append(society)
+            
+            # DEBUG:
+            if len(societies) == 0:
+                # No valid societies - assign this resource to the TAB society
+                societies.append(tab_society)
+                
             #logging.debug('  Adding resource "%s"' % name)
             #logging.debug('  project_code: %s' % project_code)
             
@@ -1176,17 +1184,23 @@ def _import_resources(file, batch_commits=False):
             resource.save()
             resources_created += 1
                     
-        if not row_count % 50:
+        
+        if not last_update_time or time.time() - last_update_time > 1:
             try:
                 logging.debug('    Parsing row %d, row/sec %f' % (row_count, row_count/(time.time()-start) ))
             except Exception:
                 pass
+            last_update_time = time.time()
             
         row_count += 1
         
         if batch_commits and not row_count % 300:
             #logging.debug('    committing transaction.')
             transaction.commit()
+        
+        # DEBUG: run for 1 s only.
+        #if time.time() - start_rows > 1:
+        #    break
 
     file.close()
     
@@ -1222,87 +1236,6 @@ def _import_resources(file, batch_commits=False):
         'invalid_societies': invalid_societies,
         'resources_skipped': resources_skipped,
     }
-
-#@login_required
-#@transaction.commit_manually
-#def import_conferences(request, source):
-#    permissions.require_superuser(request)
-#    
-#    start = time.time()
-#    
-#    if source not in _IMPORT_SOURCES:
-#        raise Exception('Unknown import source "%s"' % source)
-#    
-#    if source == 'comsoc':
-#        filename = relpath(__file__, '../data/comsoc/conferences.csv')
-#    elif source == 'v.7':
-#        filename = relpath(__file__, '../data/v.7/2009-04-21 - conferences.csv')
-#
-#    # Delete all conferences
-#    Resource.objects.get_conferences().delete()
-#    transaction.commit()
-#    
-#    # Import conferences
-#    results = _import_resources(filename, batch_commits=True)
-#    
-#    results['page_time'] = time.time()-start
-#    
-#    return render(request, 'site_admin/import_results.html', {
-#        'page_title': 'Import Conferences',
-#        'results': results,
-#    })
-
-#@login_required
-#@transaction.commit_on_success
-#def import_periodicals(request, source):
-#    permissions.require_superuser(request)
-#    
-#    start = time.time()
-#    
-#    if source not in _IMPORT_SOURCES:
-#        raise Exception('Unknown import source "%s"' % source)
-#    
-#    if source == 'comsoc':
-#        raise Exception('There is no periodicals file for COMSOC')
-#    elif source == 'v.7':
-#        filename = relpath(__file__, '../data/v.7/2009-04-23c - publications.csv')
-#
-#    # Delete all periodicals
-#    Resource.objects.get_periodicals().delete()
-#    
-#    # Import periodicals
-#    results = _import_resources(filename)
-#    
-#    return render(request, 'site_admin/import_resources.html', {
-#        'page_title': 'Import Periodicals',
-#        'page_time': time.time()-start,
-#        'results': results,
-#    })
-
-#@login_required
-#@transaction.commit_on_success
-#def import_standards(request, source):
-#    permissions.require_superuser(request)
-#    
-#    start = time.time()
-#    
-#    #filename = relpath(__file__, '../data/comsoc/standards.csv')
-#    if source == 'v.7':
-#        filename = relpath(__file__, '../data/v.7/2009-04-23b - standards.csv')
-#    else:
-#        raise Exception('Unknown source "%s".' % source)
-#    
-#    # Delete all standards
-#    Resource.objects.get_standards().delete()
-#    
-#    # Import standards
-#    results = _import_resources(filename)
-#    
-#    return render(request, 'site_admin/import_resources.html', {
-#        'page_title': 'Import Standards',
-#        'page_time': time.time()-start,
-#        'results': results,
-#    })
 
 def _get_random_from_sequence(seq, num):
     results = []
