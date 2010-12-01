@@ -125,16 +125,25 @@ def main(*args):
                     issn = xhit.getElementsByTagName('issn')
                     xhit_title = xhit.getElementsByTagName('title')[0].firstChild.nodeValue
                     if not len(issn):
-                        print 'No ISSN node found in Xplore result with title "%s"' % xhit_title
-                        resSum['xplore_hits_without_id'] += 1
+                        try:
+                            print 'No ISSN node found in Xplore result with title "%s"' % xhit_title
+                            resSum['xplore_hits_without_id'] += 1
+                        except UnicodeEncodeError, e:
+                            print 'No ISSN node found in Xplore result with UNPRINTABLE TITLE. See error.'
+                            print e
+                            continue
                     elif not issn[0].firstChild.nodeValue in distinct_issns:
                         distinct_issns[issn[0].firstChild.nodeValue] = xhit_title
                 
                 print "Found %d unique ISSNs:" % len(distinct_issns)
                 for issn, xhit_title in distinct_issns.iteritems():
-                    print '%s: "%s"' % (
-                        issn,
-                        xhit_title)
+                    try:
+                        print '%s: "%s"' % (
+                            issn,
+                            xhit_title)
+                    except UnicodeEncodeError, e:
+                        print e
+                        continue
                 print "Looking for matching TechNav Resources..."
                 for issn, xhit_title in distinct_issns.iteritems():
                     try:
