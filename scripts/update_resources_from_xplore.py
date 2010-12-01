@@ -145,9 +145,7 @@ def main(*args):
                 log("Found %d unique ISSNs:" % len(distinct_issns))
                 for issn, xhit_title in distinct_issns.iteritems():
                     try:
-                        log('%s: "%s"' % ()
-                            issn,
-                            xhit_title)
+                        log('%s: "%s"' % (issn, xhit_title))
                     except UnicodeEncodeError, e:
                         log(e)
                         continue
