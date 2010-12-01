@@ -18,6 +18,10 @@ import time
 import datetime
 import re
 
+def log(str):
+    'Automatically encode as UTF8 to avoid unicode encoding errors.'
+    print >>sys.stdout, str.encode('utf-8')
+
 #@transaction.commit_manually
 def main(*args):
     
@@ -31,6 +35,9 @@ def main(*args):
         else:
             raise Exception('Unrecognized argument %r' % arg)
 
+    #log('use_logfile: %r' % use_logfile)
+    #log('use_processcontrol: %r' % use_processcontrol)
+    
     if use_logfile:
         # Set stdout/stderr to a logfile in the current directory.
         root = os.path.dirname(__file__)
@@ -67,8 +74,8 @@ def main(*args):
             
         resSum = XploreUpdateResultsSummary
         
-        print 'Import Xplore Results into Resource'
-        print 'Started at %s' % now
+        log('Import Xplore Results into Resource')
+        log('Started at %s' % now)
         
         resource_type = ResourceType.objects.getFromName('periodical')
         node_type = NodeType.objects.getFromName('tag')
@@ -97,22 +104,22 @@ def main(*args):
             
                 if not process_control.is_alive:
                     # The database has signalled for this to quit now.
-                    print 'is_alive is false, quitting.'
+                    log('is_alive is false, quitting.')
                     break
             
             resSum['tags_processed'] += 1
-            print 'Querying Xplore for Tag: %s' % tag.name
+            log('Querying Xplore for Tag: %s' % tag.name)
             xplore_query_url = 'http://xploreuat.ieee.org/gateway/ipsSearch.jsp?' + urllib.urlencode({
                 # Number of results
                 'hc': 5,
                 'md': tag.name,
                 'ctype' : 'Journals'
             })
-            print 'Calling %s' % xplore_query_url
+            log('Calling %s' % xplore_query_url)
             try:
                 file = urllib2.urlopen(xplore_query_url)
             except (urllib2.URLError, httplib.BadStatusLine):
-                print 'Could not connect to the IEEE Xplore site to perform search.'
+                log('Could not connect to the IEEE Xplore site to perform search.')
                 resSum['xplore_connection_errors'] += 1
                 continue
             else:
@@ -126,35 +133,35 @@ def main(*args):
                     xhit_title = xhit.getElementsByTagName('title')[0].firstChild.nodeValue
                     if not len(issn):
                         try:
-                            print 'No ISSN node found in Xplore result with title "%s"' % xhit_title
+                            log('No ISSN node found in Xplore result with title "%s"' % xhit_title)
                             resSum['xplore_hits_without_id'] += 1
                         except UnicodeEncodeError, e:
-                            print 'No ISSN node found in Xplore result with UNPRINTABLE TITLE. See error.'
-                            print e
+                            log('No ISSN node found in Xplore result with UNPRINTABLE TITLE. See error.')
+                            log(e)
                             continue
                     elif not issn[0].firstChild.nodeValue in distinct_issns:
                         distinct_issns[issn[0].firstChild.nodeValue] = xhit_title
                 
-                print "Found %d unique ISSNs:" % len(distinct_issns)
+                log("Found %d unique ISSNs:" % len(distinct_issns))
                 for issn, xhit_title in distinct_issns.iteritems():
                     try:
-                        print '%s: "%s"' % (
+                        log('%s: "%s"' % ()
                             issn,
                             xhit_title)
                     except UnicodeEncodeError, e:
-                        print e
+                        log(e)
                         continue
-                print "Looking for matching TechNav Resources..."
+                log("Looking for matching TechNav Resources...")
                 for issn, xhit_title in distinct_issns.iteritems():
                     try:
                         per = Resource.objects.get(ieee_id=issn)
-                        print '%s: Found TechNav Resource titled "%s".' % (issn, per.name)
+                        log('%s: Found TechNav Resource titled "%s".' % (issn, per.name))
                         
                         if per in tag.resources.all():
-                            print 'Relationship already exists.'
+                            log('Relationship already exists.')
                             resSum['existing_relationship_count'] += 1
                         else:
-                            print 'Creating relationship.'
+                            log('Creating relationship.')
                             resSum['relationships_created'] += 1
                             xref = ResourceNodes(
                                 node = tag,
@@ -164,22 +171,22 @@ def main(*args):
                             )
                             xref.save()
                     except Resource.DoesNotExist:
-                        print '%s: No TechNav Resource found.' % issn
+                        log('%s: No TechNav Resource found.' % issn)
                         resSum['resources_not_found'] += 1
             
             # TODO add finally block to close file once python is updated past 2.4
             
             # DEBUG:
-            print 'Quitting after one tag.'
+            log('Quitting after one tag.')
             
-        print '\nSummary:'
-        print 'Tags Processed: %d' % resSum['tags_processed']
+        log('\nSummary:')
+        log('Tags Processed: %d' % resSum['tags_processed'])
 
-        print 'Xplore Connection Errors: %d' % resSum['xplore_connection_errors']
-        print 'Xplore Hits without IDs: %d' % resSum['xplore_hits_without_id']
-        print 'Pre-existing Relationships: %d' % resSum['existing_relationship_count']
-        print 'Relationships Created: %d' % resSum['relationships_created']
-        print 'Xplore Hits with no Matching Technav Tag: %d' % resSum['resources_not_found']
+        log('Xplore Connection Errors: %d' % resSum['xplore_connection_errors'])
+        log('Xplore Hits without IDs: %d' % resSum['xplore_hits_without_id'])
+        log('Pre-existing Relationships: %d' % resSum['existing_relationship_count'])
+        log('Relationships Created: %d' % resSum['relationships_created'])
+        log('Xplore Hits with no Matching Technav Tag: %d' % resSum['resources_not_found'])
         
         # DEBUG: Don't really commit any changes till this script is more debugged.
         #transaction.rollback()
@@ -194,14 +201,14 @@ def main(*args):
     
     except Exception, e:
         # Catch any errors that occurred in main(), write to stdout and save to DB.
-        print '*****'
-        print 'Exception: %r' % e
-        print 'Args: %s' % repr(e.args)
+        log('*****')
+        log('Exception: %r' % e)
+        log('Args: %s' % repr(e.args))
         
         import traceback
         traceback.print_exc()
         
-        print '*****'
+        log('*****')
         
         try:
             if use_processcontrol:
@@ -220,3 +227,4 @@ def main(*args):
 
 if __name__ == "__main__":
     sys.exit(main(*sys.argv))
+    
