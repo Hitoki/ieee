@@ -1,0 +1,11 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% load smartif %}
+
+{% block main_table_content %}
+    
+    <h1>Show Import Xplore Log</h1>
+    
+    <pre style="margin:1em; border:1px dotted black;">{{ log_contents|linebreaksbr }}</pre>
+    
+{% endblock %}

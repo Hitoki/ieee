@@ -1283,18 +1283,16 @@ PROCESS_CONTROL_TYPES = Enum(
     'XPLORE_IMPORT',
 )
 
-PROCESS_CONTROL_STATUSES = Enum(
-    'RUNNING',
-    'DIED',
-    'COMPLETED',
-)
-
 class ProcessControl(models.Model):
     'Controls and stores information for a long-running process.'
+    
+    'The type (ie. name) of process.  Should only be one per name at any given time.'
     type = models.CharField(max_length=100, choices=util.make_choices(PROCESS_CONTROL_TYPES))
-    status = models.CharField(max_length=100, choices=util.make_choices(PROCESS_CONTROL_STATUSES), default=str(PROCESS_CONTROL_STATUSES.RUNNING))
+    'Log written by the process.'
     log = models.CharField(max_length=1000, blank=True)
+    'Signal the process to quit.'
     is_alive = models.BooleanField(default=True)
-    pid = models.IntegerField(null=True, blank=True)
-    date_created = models.DateTimeField(auto_now_add=True)
+    'Process will update periodically to the current time.'
     date_updated = models.DateTimeField(null=True, blank=True)
+
+    date_created = models.DateTimeField(auto_now_add=True)

@@ -34,7 +34,7 @@ from ieeetags import settings
 from ieeetags import permissions
 from ieeetags import url_checker
 from ieeetags.util import *
-from ieeetags.models import Node, NodeType, Permission, Resource, ResourceType, ResourceNodes, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager, FailedLoginLog, UrlCheckerLog, TaxonomyTerm, TaxonomyCluster, ProfileLog, ProcessControl, PROCESS_CONTROL_TYPES, PROCESS_CONTROL_STATUSES
+from ieeetags.models import Node, NodeType, Permission, Resource, ResourceType, ResourceNodes, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager, FailedLoginLog, UrlCheckerLog, TaxonomyTerm, TaxonomyCluster, ProfileLog, ProcessControl, PROCESS_CONTROL_TYPES
 from ieeetags.views import render
 from ieeetags.widgets import DisplayOnlyWidget
 from forms import *
@@ -1728,77 +1728,125 @@ def import_taxonomy(request):
 def import_xplore(request):
     'Manages the separate xplore import process.'
     
+    pidfilename = relpath(__file__, '../scripts/update_resources_from_xplore.pid.txt')
+    logfilename = relpath(__file__, '../scripts/update_resources_from_xplore.log.txt')
+    
     action = request.REQUEST.get('action', '')
     try:
         process = ProcessControl.objects.get(type=PROCESS_CONTROL_TYPES.XPLORE_IMPORT)
     except ProcessControl.DoesNotExist:
         process = None
     
+    # Get the pidfile, if any.
+    if os.path.exists(pidfilename):
+        pid = open(pidfilename).read().strip()
+    else:
+        pid = None
+    
     if action == 'launch':
         if process is not None:
-            if process.status != str(PROCESS_CONTROL_STATUSES.RUNNING):
+            if not pid:
                 process.delete()
             else:
-                raise Exception('Must stop the current process before you can start another.')
+                raise Exception('PID file still exists, cannot remove previous process object.')
             
         process = ProcessControl()
         process.type = PROCESS_CONTROL_TYPES.XPLORE_IMPORT
         process.save()
         
-        def start_process(process):
-            print 'start_process()'
-            
-            scripts_path = relpath(__file__, '../scripts')
-            script_path = os.path.join(scripts_path, 'update_resources_from_xplore.py')
-            
-            in_null = get_devnull()
-            out_null = get_devnull('w+b')
-            
-            # NOTE: Need to sleep here, or the current view hangs.
-            print '  Sleeping 2s'
-            time.sleep(2)
-            
-            print '  Launching process %r' % script_path
-            proc = subprocess.Popen(
-                [sys.executable, script_path],
-                cwd=scripts_path,
-                stdin=in_null,
-                stdout=out_null,
-            )
-            process.pid = proc.pid
-            process.save()
-            
-            print '~start_process()'
+        # NOTE: Windows only:
+        #def start_process(process):
+        #    print 'start_process()'
+        #    
+        #    scripts_path = relpath(__file__, '../scripts')
+        #    script_path = os.path.join(scripts_path, 'update_resources_from_xplore.py')
+        #    
+        #    # NOTE: Need to sleep here, or the current view hangs.
+        #    print '  Sleeping 2s'
+        #    time.sleep(2)
+        #    
+        #    print '  Launching process %r' % script_path
+        #    proc = subprocess.Popen(
+        #        [sys.executable, script_path, '--pid=%s' % pidfilename, '--log=%s' % logfilename],
+        #        cwd=scripts_path,
+        #        stdout=subprocess.PIPE,
+        #        stderr=subprocess.PIPE,
+        #    )
+        #    out, err = proc.communicate()
+        #    
+        #    print '  out: %s' % out
+        #    print '  err: %s' % err
+        #    
+        #    print '~start_process()'
+        #
+        #thread = threading.Thread(target=start_process, args=[process])
+        #thread.setDaemon(True)
+        #thread.start()
         
-        thread = threading.Thread(target=start_process, args=[process])
-        thread.setDaemon(True)
-        thread.start()
+        # NOTE: Unix only.
         
-        print 'Done launching process.'
+        scripts_path = relpath(__file__, '../scripts')
+        script_path = os.path.join(scripts_path, 'update_resources_from_xplore.py')
+
+        print '  Launching process %r' % script_path
+        proc = subprocess.Popen(
+            [sys.executable, script_path, '--pid=%s' % pidfilename, '--log=%s' % logfilename],
+            cwd=scripts_path,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        out, err = proc.communicate()
+
+        print '  out: %s' % out
+        print '  err: %s' % err
         
-        print 'Returning redirect.'
+        if out != '' or err != '':
+            # Some error happened while running the script, show the output.
+            return HttpResponse('Error while launching script:\n\nstdout:\n%s\nstderr:\n%s' % (out, err), 'text/plain')
+        
         return HttpResponseRedirect(reverse('admin_import_xplore'))
     
     elif action == 'stop':
-        if process is not None and process.status == str(PROCESS_CONTROL_STATUSES.RUNNING):
+        if process is not None:
             process.is_alive = False
             process.save()
         return HttpResponseRedirect(reverse('admin_import_xplore'))
     
     elif action == 'clear':
-        if process is not None and process.status != str(PROCESS_CONTROL_STATUSES.RUNNING):
+        if not pid:
             process.delete()
+        else:
+            raise Exception('PID file still exists, cannot remove process object.')
         return HttpResponseRedirect(reverse('admin_import_xplore'))
     
     elif action == 'force_clear':
         process.delete()
         return HttpResponseRedirect(reverse('admin_import_xplore'))
     
-    
+    if os.path.exists(logfilename):
+        log_exists = True
+    else:
+        log_exists = False
     
     print 'rendering'
     return render(request, 'site_admin/import_xplore.html', {
         'process': process,
+        'pid': pid,
+        'log_exists': log_exists,
+    })
+
+@login_required
+@admin_required
+def import_xplore_log(request):
+    logfilename = relpath(__file__, '../scripts/update_resources_from_xplore.log.txt')
+    if os.path.exists(logfilename):
+        log_contents = open(logfilename, 'r').read()
+    else:
+        log_contents = 'ERROR: Could not open logfile.'
+    
+    print 'rendering'
+    return render(request, 'site_admin/import_xplore_log.html', {
+        'log_contents': log_contents,
     })
 
 def get_element_text_value(elem):

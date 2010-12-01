@@ -8,23 +8,34 @@
     
     <h2>Status</h2>
     
-    {% if not process %}
-        <p>
-            <i>No process running.</i>
-        </p>
-        <p>
-            <a href="{% url admin_import_xplore %}?action=launch">Launch the Import Process</a>
-        </p>
-    {% else %}
-        <table class="grid">
-            <tr>
-                <th>
-                    Status
-                </th>
-                <td>
-                    {{ process.status }}
-                </td>
-            </tr>
+    <table class="grid">
+        <tr>
+            <th>
+                PID (from file)
+            </th>
+            <td>
+                {{ pid|default:"No pidfile found" }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Log file
+            </th>
+            <td>
+                {% if log_exists %}
+                    <a href="{% url admin_import_xplore_log %}">View process log file</a>
+                {% endif %}
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="2">
+                &nbsp;
+            </td>
+        </tr>
+        
+        {% if process %}
+            <!--
             <tr>
                 <th>
                     Is_alive
@@ -33,14 +44,7 @@
                     {{ process.is_alive }}
                 </td>
             </tr>
-            <tr>
-                <th>
-                    PID
-                </th>
-                <td>
-                    {{ process.pid }}
-                </td>
-            </tr>
+            -->
             <tr>
                 <th>
                     Date Created
@@ -65,19 +69,38 @@
                     {{ process.log|linebreaksbr }}
                 </td>
             </tr>
-        </table>
+        {% endif %}
+    </table>
+    
+    {% if not process %}
+        <p>
+            <i>No process running.</i>
+        </p>
+        <p>
+            <a href="{% url admin_import_xplore %}?action=launch">Launch the Import Process</a>
+        </p>
+    {% else %}
         
-        {% if process.status == "RUNNING" %}
-            <p>
-                <a href="{% url admin_import_xplore %}?action=stop">Stop the Import Process</a>
-            </p>
+        {% if pid %}
+            {% if process.is_alive %}
+                <p>
+                    <a href="{% url admin_import_xplore %}?action=stop">Stop the Import Process</a>
+                </p>
+            {% endif %}
+            {% if not process.is_alive %}
+                <p>
+                    Signaling process to stop...
+                </p>
+            {% endif %}
         {% endif %}
         
-        <p>
-            <a href="{% url admin_import_xplore %}?action=force_clear">(DEBUG) Force Clear</a>
-        </p>
+        {% comment %}
+        #<p>
+        #    <a href="{% url admin_import_xplore %}?action=force_clear">(DEBUG) Force Clear</a>
+        #</p>
+        {% endcomment %}
         
-        {% if process.status != "RUNNING" %}
+        {% if not pid %}
             <p>
                 <a href="{% url admin_import_xplore %}?action=clear">Clear this entry</a>
             </p>

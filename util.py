@@ -511,20 +511,10 @@ def make_choices(values):
     for value in values:
         yield (str(value), str(value))
 
-def get_devnull(mode='r+b'):
-    import os
-    if os.name == 'nt':
-        nullfilename = 'nul'
-    else:
-        nullfilename = '/dev/null'
-    nullfile = file(nullfilename, mode)
-    return nullfile
-    
 # Command line util functions --------------------------------------------------
 
 import subprocess
 import settings
-from getopt import getopt
 from getopt import getopt
 import settings
 import subprocess
