@@ -4,24 +4,19 @@ import sys
 # NOTE: These must be absolute paths, since after daemonizing the process the working directory will change.
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-import ieeetags.settings
-from django.core.management import setup_environ
-setup_environ(ieeetags.settings)
 
 # ------------------------------------------------------------------------------
 
 import httplib
 import urllib
 import urllib2
-#from django.db import transaction
-from ieeetags import models
 import time
 import datetime
 import re
 # NOTE: This is the system-level python-daemon library (not used here, requires python 2.5).
 #import daemon
-import simple_daemon
 import getopt
+import simple_daemon
 
 def log(msg):
     print >>sys.stdout, msg.encode('utf-8')
@@ -41,6 +36,7 @@ def main(*args):
         'pid=',
         'processcontrol=',
         'daemon=',
+        'path=',
     ])
     
     def get_bool_arg(value):
@@ -68,11 +64,28 @@ def main(*args):
                 use_daemon = temp
             else:
                 raise Exception('Unknown value for --nodaemon %r, must be "yes", "no", 1, or 0' % value)
+        elif name == '--path':
+            # NOTE: It looks like daemons don't inherit the environment of the spawning WSGI process?
+            # Add all paths in the --path arg to the current sys.path.
+            paths = value.split(':')
+            for path in paths:
+                print 'Got path %r' % path
+                if path not in sys.path:
+                    sys.path.insert(0, path)
+                    print 'Inserting path %r' % path
         else:
             raise Exception('Unknown argument %r' % name)
-        
+    
     if len(args) > 0:
         raise Exception('Unknown arguments %r' % args)
+    
+    # NOTE: setup django import here, since we may have added more paths to sys.path.
+    import ieeetags.settings
+    from django.core.management import setup_environ
+    setup_environ(ieeetags.settings)
+    
+    # Now our django imports.
+    from ieeetags import models
     
     print 'logfilename: %r' % logfilename
     print 'use_processcontrol: %r' % use_processcontrol
@@ -216,7 +229,7 @@ def main(*args):
                             else:
                                 log('Creating relationship.')
                                 resSum['relationships_created'] += 1
-                                xref = ResourceNodes(
+                                xref = models.ResourceNodes(
                                     node = tag,
                                     resource = per,
                                     date_created = now,

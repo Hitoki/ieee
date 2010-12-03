@@ -1795,9 +1795,11 @@ def import_xplore(request):
             print '  Sleeping 2s'
             time.sleep(2)
             
+            paths = ':'.join(sys.path)
+            
             print '  Launching process %r' % script_path
             proc = subprocess.Popen(
-                [sys.executable, script_path, '--pid=%s' % pidfilename, '--log=%s' % logfilename],
+                [sys.executable, script_path, '--pid=%s' % pidfilename, '--log=%s' % logfilename, '--path=%s' % paths],
                 cwd=scripts_path,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
