@@ -1,0 +1,45 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>Machine Generated Data Report</h1>
+    
+    Total machine-generated links: {{ num_links }}<br/>
+    Number of tags used: {{ num_nodes }}<br/>
+    Number of resources used: {{ num_resources }}<br/>
+    
+    <h2>Tags:</h2>
+    
+    <p style="font-style:italic;">
+        (Showing {{ NUM_RECENT_LINKS }} most recently-generated tags)
+    </p>
+    
+    <table class="grid">
+        <tr>
+            <th>
+                Tag Name:
+            </th>
+            <th>
+                Resources Added:
+            </th>
+        </tr>
+        {% for id, temp in nodes.items %}
+            <tr>
+                <td>
+                    <a href="{% url admin_view_tag temp.node.id %}">{{ temp.node.name }}</a>
+                </td>
+                <td>
+                    <ul>
+                        {% for resource in temp.resources %}
+                            <li>
+                                {{ resource.name }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+    
+{% endblock %}

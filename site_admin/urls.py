@@ -130,6 +130,7 @@ urlpatterns += patterns('',
     url(r'^create_fake_tags$', views.create_fake_tags, name='admin_create_fake_tags'),
     url(r'^live_search/results$', views.live_search_results, name='admin_live_search_results'),
     url(r'^admin_taxonomy_report$', views.admin_taxonomy_report, name='admin_taxonomy_report'),
+    url(r'^report/machine_generated_data$', views.admin_machine_generated_data_report, name='admin_machine_generated_data_report'),
     
     # Exports
     url(r'^export/tab_resources$', views.export_tab_resources, name='admin_export_tab_resources'),

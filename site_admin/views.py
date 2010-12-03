@@ -2140,8 +2140,12 @@ def view_tag(request, tag_id):
             tag_id,
             None
         )
+    
+    resource_nodes = tag.resource_nodes.all()
+    
     return render(request, 'site_admin/view_tag.html', {
         'tag': tag,
+        'resource_nodes': resource_nodes,
     })
 
 @login_required
@@ -4438,6 +4442,37 @@ def admin_taxonomy_report(request):
     return render(request, 'site_admin/taxonomy_report.html', {
         'clusters': clusters,
         'terms': terms,
+    })
+
+@login_required
+@admin_required
+def admin_machine_generated_data_report(request):
+    NUM_RECENT_LINKS = 100
+    resource_nodes = ResourceNodes.objects.filter(is_machine_generated=True).order_by('-date_created')
+    
+    num_links = resource_nodes.count()
+    
+    num_nodes = resource_nodes.values('node').distinct().count()
+    num_resources = resource_nodes.values('resource').distinct().count()
+    
+    recent_resource_nodes = resource_nodes[:NUM_RECENT_LINKS]
+    
+    nodes = {}
+    for resource_node in recent_resource_nodes:
+        if resource_node.node.id not in nodes:
+            nodes[resource_node.node.id] = {
+                'node': resource_node.node,
+                'resources': [],
+            }
+        nodes[resource_node.node.id]['resources'].append(resource_node.resource)
+        
+    return render(request, 'site_admin/machine_generated_data_report.html', {
+        'resource_nodes': resource_nodes,
+        'nodes': nodes,
+        'num_links': num_links,
+        'num_nodes': num_nodes,
+        'num_resources': num_resources,
+        'NUM_RECENT_LINKS': NUM_RECENT_LINKS,
     })
 
 #def create_admin_login(request):

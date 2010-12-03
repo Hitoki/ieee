@@ -1020,13 +1020,14 @@ class Resource(models.Model):
         ordering = ['resource_type__name', 'name']
         
 class ResourceNodes(models.Model):
-    resource = models.ForeignKey(Resource)
-    node = models.ForeignKey(Node)
+    resource = models.ForeignKey(Resource, related_name='resource_nodes')
+    node = models.ForeignKey(Node, related_name='resource_nodes')
     date_created = models.DateTimeField(blank=True, null=True, default=None)
     is_machine_generated = models.BooleanField(default=False)
     
     class Meta:
         db_table = 'ieeetags_resource_nodes'
+        ordering = ['node__name', 'resource__name']
 
 # ------------------------------------------------------------------------------
 
