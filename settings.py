@@ -147,6 +147,9 @@ DEBUG_TOOLBAR_CONFIG = {
 	'INTERCEPT_REDIRECTS': False,
 }
 
+#XPLORE_IMPORT_LOG_PATH = None
+#'Must be set in local_settings.py.  The path wherein to save the xplore import process log files.'
+
 # Debug Settings ---------------------------------------------------------------
 
 # Used for the COMSOC demo to assign all tags to comsoc by default
@@ -224,6 +227,7 @@ MANDATORY_VARS = [
     'EMAIL_HOST',
     'SERVER_EMAIL',
     'DEFAULT_FROM_EMAIL',
+    'XPLORE_IMPORT_LOG_PATH',
 ]
 
 for varname in MANDATORY_VARS:

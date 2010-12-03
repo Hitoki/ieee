@@ -1727,8 +1727,11 @@ def import_taxonomy(request):
 def import_xplore(request):
     'Manages the separate xplore import process.'
     
-    pidfilename = relpath(__file__, '../scripts/update_resources_from_xplore.pid.txt')
-    logfilename = relpath(__file__, '../scripts/update_resources_from_xplore.log.txt')
+    if not os.path.exists(settings.XPLORE_IMPORT_LOG_PATH):
+        raise Exception('The settings.XPLORE_IMPORT_LOG_PATH directory (%r) does not exist.' % settings.XPLORE_IMPORT_LOG_PATH)
+    
+    pidfilename = os.path.join(settings.XPLORE_IMPORT_LOG_PATH, 'update_resources_from_xplore.pid')
+    logfilename = os.path.join(settings.XPLORE_IMPORT_LOG_PATH, 'update_resources_from_xplore.log.txt')
     
     action = request.REQUEST.get('action', '')
     try:
@@ -1783,25 +1786,38 @@ def import_xplore(request):
         #thread.start()
         
         # NOTE: Unix only.
-        
-        scripts_path = relpath(__file__, '../scripts')
-        script_path = os.path.join(scripts_path, 'update_resources_from_xplore.py')
-
-        print '  Launching process %r' % script_path
-        proc = subprocess.Popen(
-            [sys.executable, script_path, '--pid=%s' % pidfilename, '--log=%s' % logfilename],
-            cwd=scripts_path,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-        out, err = proc.communicate()
-
-        print '  out: %s' % out
-        print '  err: %s' % err
-        
-        if out != '' or err != '':
-            # Some error happened while running the script, show the output.
-            return HttpResponse('Error while launching script:\n\nstdout:\n%s\nstderr:\n%s' % (out, err), 'text/plain')
+        def start_process(process):
+            print 'start_process()'
+            scripts_path = relpath(__file__, '../scripts')
+            script_path = os.path.join(scripts_path, 'update_resources_from_xplore.py')
+            
+            # NOTE: Need to sleep here, or the current view hangs.
+            print '  Sleeping 2s'
+            time.sleep(2)
+            
+            print '  Launching process %r' % script_path
+            proc = subprocess.Popen(
+                [sys.executable, script_path, '--pid=%s' % pidfilename, '--log=%s' % logfilename],
+                cwd=scripts_path,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+            out, err = proc.communicate()
+            
+            print '  out: %s' % out
+            print '  err: %s' % err
+            
+            #if out != '' or err != '':
+            #if err != '':
+            #    # Some error happened while running the script, show the output.
+            #    #return HttpResponse('Error while launching script:\n\nstdout:\n%s\nstderr:\n%s' % (out, err), 'text/plain')
+            #    pass
+            
+            print '~start_process()'
+            
+        thread = threading.Thread(target=start_process, args=[process])
+        thread.setDaemon(True)
+        thread.start()
         
         return HttpResponseRedirect(reverse('admin_import_xplore'))
     
@@ -1837,7 +1853,7 @@ def import_xplore(request):
 @login_required
 @admin_required
 def import_xplore_log(request):
-    logfilename = relpath(__file__, '../scripts/update_resources_from_xplore.log.txt')
+    logfilename = os.path.join(settings.XPLORE_IMPORT_LOG_PATH, 'update_resources_from_xplore.log.txt')
     if os.path.exists(logfilename):
         log_contents = open(logfilename, 'r').read()
     else:

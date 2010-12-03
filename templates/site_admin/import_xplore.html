@@ -59,6 +59,7 @@
                 </th>
                 <td>
                     {{ process.date_updated }}
+                    ({{ process.date_updated|timesince }} ago)
                 </td>
             </tr>
             <tr>
@@ -72,10 +73,18 @@
         {% endif %}
     </table>
     
+    
     {% if not process %}
         <p>
             <i>No process running.</i>
         </p>
+    {% endif %}
+    
+    <p>
+        <a href="{% url admin_import_xplore %}">Refresh page</a>
+    </p>
+    
+    {% if not process %}
         <p>
             <a href="{% url admin_import_xplore %}?action=launch">Launch the Import Process</a>
         </p>

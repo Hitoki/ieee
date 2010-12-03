@@ -1,8 +1,9 @@
 # Setup django.
 import os
 import sys
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+# NOTE: These must be absolute paths, since after daemonizing the process the working directory will change.
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import ieeetags.settings
 from django.core.management import setup_environ
 setup_environ(ieeetags.settings)
@@ -17,7 +18,9 @@ from ieeetags import models
 import time
 import datetime
 import re
-import daemon
+# NOTE: This is the system-level python-daemon library (not used here, requires python 2.5).
+#import daemon
+import simple_daemon
 import getopt
 
 def log(msg):
@@ -29,12 +32,24 @@ def main(*args):
     logfilename = None
     pidfilename = None
     use_processcontrol = True
+    use_daemon = True
+    
+    #print 'sys.argv[1:]: %r' % sys.argv[1:]
     
     opts, args = getopt.getopt(sys.argv[1:], '', [
         'log=',
         'pid=',
         'processcontrol=',
+        'daemon=',
     ])
+    
+    def get_bool_arg(value):
+        if value.lower() == 'yes' or value.lower() == '1':
+            return True
+        elif value.lower() == 'no' or value.lower() == '0':
+            return False
+        else:
+            return None
     
     for name, value in opts:
         if name == '--log':
@@ -42,12 +57,17 @@ def main(*args):
         elif name == '--pid':
             pidfilename = os.path.abspath(value)
         elif name == '--processcontrol':
-            if value.lower() == 'yes' or value.lower() == '1':
-                use_processcontrol = True
-            elif value.lower() == 'no' or value.lower() == '0':
-                use_processcontrol = False
+            temp = get_bool_arg(value)
+            if temp is not None:
+                use_processcontrol = temp
             else:
                 raise Exception('Unknown value for --processcontrol %r, must be "yes", "no", 1, or 0' % value)
+        elif name == '--daemon':
+            temp = get_bool_arg(value)
+            if temp is not None:
+                use_daemon = temp
+            else:
+                raise Exception('Unknown value for --nodaemon %r, must be "yes", "no", 1, or 0' % value)
         else:
             raise Exception('Unknown argument %r' % name)
         
@@ -58,24 +78,36 @@ def main(*args):
     print 'use_processcontrol: %r' % use_processcontrol
     print 'pidfilename: %r' % pidfilename
     
-    if logfilename is not None:
-        logfile = open(logfilename, 'w+', 0)
-    else:
-        logfile = None
+    #if logfilename is not None:
+    #    logfile = open(logfilename, 'w+', 0)
+    #else:
+    #    #logfile = None
+    #    logfile = '/dev/null'
     
-    if pidfilename is not None:
-        from lockfile.pidlockfile import PIDLockFile
-        
-        pidfile = PIDLockFile(pidfilename)
-    else:
-        pidfile = None
+    if logfilename is None:
+        logfilename = '/dev/null'
+    
+    #if pidfilename is not None:
+    #    from lockfile.pidlockfile import PIDLockFile
+    #    pidfile = PIDLockFile(pidfilename)
+    #else:
+    #    pidfile = None
     
     log('logging started.')
     
-    log('Starting daemon.')
+    if use_daemon:
+        daemon = simple_daemon.Daemon(pidfilename, stdout=logfilename, stderr=logfilename)
     
-    #if True:
-    with daemon.DaemonContext(stdout=logfile, stderr=logfile, pidfile=pidfile):
+    # NOTE: Cannot use 'with' syntax in python 2.4.
+    #with daemon.DaemonContext(stdout=logfile, stderr=logfile, pidfile=pidfile):
+    
+    if use_daemon:
+        log('Starting daemon.')
+        daemon.daemonize()
+    else:
+        log('Running as non-daemon.')
+    
+    try:
         try:
             if use_processcontrol:
                 # Update the log.
@@ -247,7 +279,9 @@ def main(*args):
         log('Done.')
         log('')
         log('')
-
+    
+    finally:
+        pass
     #return resSum
 
 if __name__ == "__main__":
