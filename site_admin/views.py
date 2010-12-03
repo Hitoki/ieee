@@ -364,7 +364,6 @@ def login(request):
     return render(request, 'site_admin/login.html', {
         'error': error,
         'next': next,
-        'show_society_login_banner': settings.SHOW_SOCIETY_LOGIN_BANNER,
         'form': form,
         'feedback': feedback,
     })

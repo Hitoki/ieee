@@ -135,9 +135,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 # Application Settings ---------------------------------------------------------
 
-SHOW_SOCIETY_LOGIN_BANNER = False
-'OBSOLETE: Shows a "Welcome" banner on the login page.'
-
 USE_SITEMINDER_LOGIN = False
 'If True application authorizes users against IEEE SiteMinder database. Otherwise use local database.'
 

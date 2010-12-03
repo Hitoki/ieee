@@ -25,12 +25,6 @@
     
         <!-- Login tab -->
         <div id="login-tab" class="nootabs-tab">
-            {% if show_society_login_banner %}
-                <p class="society-login-banner">
-                    Welcome, IEEE Organization &amp; Council Leaders. You will be receiving via email a username and password shortly.
-                </p>
-            {% endif %}
-            
             <form action="{% url admin_login %}" method="post">
                 {# NOTE: We need to use a hidden field for "next" and use javascript to add the #hash, otherwise the #hash is lost by django. #}
                 <input type="hidden" id="full_url" name="next" value="{{ next }}" />
