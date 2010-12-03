@@ -3,6 +3,24 @@
 {% load smartif %}
 
 {% block main_table_content %}
+    <script>
+        function updateLog() {
+            $.getJSON(
+                '{% url ajax_get_xplore_import_log %}'
+                , function(data) {
+                    var s = data.log;
+                    s = s.replace('\n', '<br/>\n');
+                    s += '<br/><p id="process-log-autoupdate">Auto-updating...</p>';
+                    $('#process-log').html(s);
+                }
+            );
+            setTimeout(function() { updateLog() }, 2000);
+        }
+        
+        $(function() {
+            updateLog();
+        });
+    </script>
     
     <h1>Import Xplore</h1>
     
@@ -66,7 +84,7 @@
                 <th>
                     Log
                 </th>
-                <td>
+                <td id="process-log">
                     {{ process.log|linebreaksbr }}
                 </td>
             </tr>

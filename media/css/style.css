@@ -2569,3 +2569,8 @@ p#tag-and-cluster-counts-searching {
 #tag-counts {
     padding:1px;
 }
+
+#process-log-autoupdate {
+    font-size:80%;
+    color:gray;
+}

@@ -1799,7 +1799,7 @@ def import_xplore(request):
             
             print '  Launching process %r' % script_path
             proc = subprocess.Popen(
-                [sys.executable, script_path, '--pid=%s' % pidfilename, '--log=%s' % logfilename, '--path=%s' % paths],
+                [sys.executable, '-u', script_path, '--pid=%s' % pidfilename, '--log=%s' % logfilename, '--path=%s' % paths],
                 cwd=scripts_path,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
@@ -1851,6 +1851,21 @@ def import_xplore(request):
         'pid': pid,
         'log_exists': log_exists,
     })
+
+@login_required
+@admin_required
+def ajax_get_xplore_import_log(request):
+    try:
+        process = ProcessControl.objects.get(type=PROCESS_CONTROL_TYPES.XPLORE_IMPORT)
+        log = process.log
+    except ProcessControl.DoesNotExist:
+        process = None
+        log = None
+    
+    data = {
+        'log': log,
+    }
+    return HttpResponse(json.dumps(data), 'application/javascript')
 
 @login_required
 @admin_required

@@ -161,8 +161,8 @@ def main(*args):
                     # Update the log.
                     process_control = models.ProcessControl.objects.get(type=models.PROCESS_CONTROL_TYPES.XPLORE_IMPORT)
                     
-                    # Update the 'Processing...' log every 10 seconds.
-                    if last_updated is None or datetime.datetime.now() - last_updated > datetime.timedelta(seconds=10):
+                    # Update the 'Processing...' log every 1 seconds.
+                    if last_updated is None or datetime.datetime.now() - last_updated > datetime.timedelta(seconds=1):
                         process_control.log = re.sub(r'(?m)^Processing tag .+\n', '', process_control.log)
                         process_control.log += 'Processing tag %r (%s/%s).\n' % (tag.name, i, num_tags)
                         last_updated = datetime.datetime.now()
@@ -183,7 +183,7 @@ def main(*args):
                     'md': tag.name,
                     'ctype' : 'Journals'
                 })
-                log('Calling %s' % xplore_query_url)
+                #log('Calling %s' % xplore_query_url)
                 try:
                     file = urllib2.urlopen(xplore_query_url)
                 except (urllib2.URLError, httplib.BadStatusLine):
@@ -201,7 +201,7 @@ def main(*args):
                         xhit_title = xhit.getElementsByTagName('title')[0].firstChild.nodeValue
                         if not len(issn):
                             try:
-                                log('No ISSN node found in Xplore result with title "%s"' % xhit_title)
+                                #log('No ISSN node found in Xplore result with title "%s"' % xhit_title)
                                 resSum['xplore_hits_without_id'] += 1
                             except UnicodeEncodeError, e:
                                 log('No ISSN node found in Xplore result with UNPRINTABLE TITLE. See error.')
@@ -210,24 +210,25 @@ def main(*args):
                         elif not issn[0].firstChild.nodeValue in distinct_issns:
                             distinct_issns[issn[0].firstChild.nodeValue] = xhit_title
                     
-                    log("Found %d unique ISSNs:" % len(distinct_issns))
+                    #log("Found %d unique ISSNs:" % len(distinct_issns))
                     for issn, xhit_title in distinct_issns.iteritems():
                         try:
-                            log('%s: "%s"' % (issn, xhit_title))
+                            #log('%s: "%s"' % (issn, xhit_title))
+                            pass
                         except UnicodeEncodeError, e:
-                            log(e)
+                            #log(e)
                             continue
-                    log("Looking for matching TechNav Resources...")
+                    #log("Looking for matching TechNav Resources...")
                     for issn, xhit_title in distinct_issns.iteritems():
                         try:
                             per = models.Resource.objects.get(ieee_id=issn)
-                            log('%s: Found TechNav Resource titled "%s".' % (issn, per.name))
+                            #log('%s: Found TechNav Resource titled "%s".' % (issn, per.name))
                             
                             if per in tag.resources.all():
-                                log('Relationship already exists.')
+                                #log('Relationship already exists.')
                                 resSum['existing_relationship_count'] += 1
                             else:
-                                log('Creating relationship.')
+                                log('*** Creating relationship.')
                                 resSum['relationships_created'] += 1
                                 xref = models.ResourceNodes(
                                     node = tag,
@@ -237,7 +238,7 @@ def main(*args):
                                 )
                                 xref.save()
                         except models.Resource.DoesNotExist:
-                            log('%s: No TechNav Resource found.' % issn)
+                            #log('%s: No TechNav Resource found.' % issn)
                             resSum['resources_not_found'] += 1
                 
                 # TODO add finally block to close file once python is updated past 2.4
