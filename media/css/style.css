@@ -834,10 +834,6 @@ span#roamer-beta-warning {
     border-color:#006699;
     color:#004477;
     background:white;
-	height:21px;
-	overflow:hidden;
-	padding-top:2px;
-	padding-bottom:0;
 }
 
 #alternate-page #tag-galaxy div.tag_cluster a:hover {
