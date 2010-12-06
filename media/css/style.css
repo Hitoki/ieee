@@ -1080,6 +1080,8 @@ table.vert-center td {
     margin:0px auto;
     text-align:center;
     color:#aaa;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
 }
 
 .please-wait {
