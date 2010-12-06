@@ -2528,8 +2528,8 @@ background-color: white;
     text-align:center;
     color:#aaa;
     padding:1em;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
+    -moz-border-radius: 18px;
+    -webkit-border-radius: 18px;
 }
 
 p#tag-and-cluster-counts {
