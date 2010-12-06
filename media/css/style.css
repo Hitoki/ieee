@@ -350,6 +350,8 @@ ul#view-header li {
     border-left:1px solid #006699;
     border-bottom:1px solid #006699;
     background: white;
+    -moz-border-radius: 0 0 0 5px;
+    -webkit-border-radius: 0 0 0 5px;
 }
 
 #left-column ul li.all {
