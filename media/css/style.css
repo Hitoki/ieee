@@ -2420,9 +2420,10 @@ display: inline-block;
 }
 
 #tag_technav {
-background: #33CC00 url(/media/images/tag-technavlogo.png) no-repeat 190px center;
-width: 303px;
-padding: 8px;
+background: #33CC00 url(/media/images/tag-technavlogo.png) no-repeat 80px 5px;
+width: 380px;
+height: 35px;
+padding: 20px 8px 8px 8px;
 float: right;
 -moz-border-radius: 10px;
 -webkit-border-radius: 10px; 
@@ -2433,7 +2434,7 @@ cursor: pointer;
 }
 
 #tag_technav:hover {
-background-color: orange;
+background: orange url(/media/images/tag-technavlogo.png) no-repeat 80px -65px;
 }
 
 #tag_technav span {
