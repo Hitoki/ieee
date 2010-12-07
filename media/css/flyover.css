@@ -5,7 +5,7 @@
     position: absolute;
     z-index: 200;
     min-height: 10px;
-    background-color: #FFFFFF; /*Old blue*/
+    background-color: #EEEEEE; /*Old blue*/
     border: 1px solid #6F7985;
     padding: 8px;
     /* NOTE: Set initial position so the page doesn't 'skip' when first positioning this DIV */
