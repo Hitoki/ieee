@@ -521,16 +521,22 @@ def ajax_textui_nodes(request):
     if search_for == 'null' or search_for == '':
         search_for = None
     
+    disable_clusters = request.GET.get('disable_clusters', 'false')
+    assert disable_clusters in ['true', 'false'], 'disable_clusters (%r) was not "true" or "false".' % (disable_clusters)
+    disable_clusters = (disable_clusters == 'true')
+    
     log('  sector_id: %s' % sector_id)
     log('  society_id: %s' % society_id)
     log('  cluster_id: %s' % cluster_id)
     log('  search_for: %s' % search_for)
+    log('  disable_clusters: %s' % disable_clusters)
     
     log('  sector: %s' % sector)
     log('  society: %s' % society)
     log('  cluster: %s' % cluster)
     
     assert sector_id is None or society_id is None, 'Cannot specify both sector_id and society_id.'
+    assert not disable_clusters or cluster_id is None, 'Cannot specify cluster_id and disable_clusters.'
     
     sort = request.GET.get('sort')
     log('  sort: %s' % sort)
@@ -683,8 +689,12 @@ def ajax_textui_nodes(request):
             # Filter out any terms matched to existing tags.
             terms = terms.annotate(num_related_nodes=Count('related_nodes')).filter(num_related_nodes=0)
     
-    # Restrict to only tags & clusters.
-    child_nodes = child_nodes.filter(Q(node_type__name=NodeType.TAG) | Q(node_type__name=NodeType.TAG_CLUSTER))
+    if disable_clusters:
+        # Restrict to only tags.
+        child_nodes = child_nodes.filter(node_type__name=NodeType.TAG)
+    else:
+        # Restrict to only tags & clusters.
+        child_nodes = child_nodes.filter(Q(node_type__name=NodeType.TAG) | Q(node_type__name=NodeType.TAG_CLUSTER))
     child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, filterIds)
     
     if word_queries:
@@ -731,10 +741,11 @@ def ajax_textui_nodes(request):
     #log('  min_score: %s' % min_score)
     #log('  max_score: %s' % max_score)
     
-    if cluster is None and not word_queries:
-        # Exclude clustered tags.
-        log('  Excluding clustered tags.')
-        child_nodes = child_nodes.exclude(parents__node_type__name=NodeType.TAG_CLUSTER)
+    if not disable_clusters:
+        if cluster is None and not word_queries:
+            # Exclude clustered tags.
+            log('  Excluding clustered tags.')
+            child_nodes = child_nodes.exclude(parents__node_type__name=NodeType.TAG_CLUSTER)
     
     if order_by is not None:
         # Sort by one of the non-extra columns

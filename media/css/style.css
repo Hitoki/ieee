@@ -785,16 +785,6 @@ span#roamer-beta-warning {
     overflow: auto;
 }
 
-#tag-counts h2 {
-    color:#006699;
-}
-
-#tag-counts h3 {
-    /*clear:left;*/
-    margin:.5em .5em 0 .5em;
-    font-weight: normal;
-}
-
 #alternate-page #tag-galaxy #tags a.back-link {
     margin:.5em;
 }
@@ -2533,19 +2523,6 @@ background-color: white;
     -webkit-border-radius: 18px;
 }
 
-p#tag-and-cluster-counts {
-    font-weight:bold;
-    margin-bottom:.5em;
-}
-
-p#tag-and-cluster-counts-searching {
-    font-weight:bold;
-    margin-bottom:.5em;
-    position:absolute;
-    top:0;
-    right:0;
-}
-
 #tags-chunk-loading {
     display:block;
     clear:both;
@@ -2560,6 +2537,45 @@ p#tag-and-cluster-counts-searching {
 #default-height-tag {
     position:absolute;
     visibility:hidden;
+}
+
+#misc-bar {
+	overflow:auto;
+	margin-right:34px;
+}
+
+#tag-counts {
+	float:left;
+}
+
+#tag-counts h2 {
+    color:#006699;
+}
+
+#tag-counts h3 {
+    margin:.5em .5em 0 .5em;
+    font-weight: normal;
+}
+
+p#tag-and-cluster-counts {
+    font-weight:bold;
+    margin-bottom:.5em;
+}
+
+p#tag-and-cluster-counts-searching {
+    font-weight:bold;
+    margin-bottom:.5em;
+    position:absolute;
+    top:0;
+    right:0;
+}
+
+#disable-clusters-box {
+	float:right;
+}
+
+#disable-clusters-box p {
+    margin-bottom:.5em;
 }
 
 #tag-counts {

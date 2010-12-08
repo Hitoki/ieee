@@ -439,16 +439,19 @@ var Tags = {
         
         var search_for = $('#tags-live-search').val();
         
+		var disableClusters = $('#disable-clusters').attr('checked');
+        
         if (this.sectorId != null) {
             // Load the sector/cluster
             $.get(
                 '/ajax/textui_nodes',
                 {
-                    sector_id: this.sectorId,
-                    cluster_id: this.clusterId,
-                    sort: this.getSort(),
-                    search_for: search_for,
-                    page: 'sector'
+                    sector_id: this.sectorId
+                    , cluster_id: this.clusterId
+                    , sort: this.getSort()
+                    , search_for: search_for
+                    , page: 'sector'
+					, disable_clusters: disableClusters
                 },
                 function(data) {
                     Tags.onLoadResults(data);
@@ -462,11 +465,12 @@ var Tags = {
             $.get(
                 '/ajax/textui_nodes',
                 {
-                    society_id: this.societyId,
-                    cluster_id: this.clusterId,
-                    sort: this.getSort(),
-                    search_for: search_for,
-                    page: 'society'
+                    society_id: this.societyId
+                    , cluster_id: this.clusterId
+                    , sort: this.getSort()
+                    , search_for: search_for
+                    , page: 'society'
+					, disable_clusters: disableClusters
                 },
                 function(data) {
                     Tags.onLoadResults(data);
@@ -488,17 +492,16 @@ var Tags = {
                 return;
             }
             
-            var data = {
-                search_for: search_for,
-                society_id: this.societyId,
-                node_id: this.sectorId,
-                cluster_id: this.clusterId,
-                page: page
-            };
-            
             $.get(
                 '/ajax/textui_nodes',
-                data,
+                {
+					search_for: search_for
+					, society_id: this.societyId
+					, node_id: this.sectorId
+					, cluster_id: this.clusterId
+					, page: page
+					, disable_clusters: disableClusters
+				},
                 function(data) {
                     Tags.onLoadResults(data);
                     if (showSearchResultsCallback) {
@@ -748,16 +751,19 @@ var Tags = {
         
         // Hide any flyvoers so they don't persist when the node is gone.
         Flyover.hide();
+		
+		var disableClusters = $('#disable-clusters').attr('checked');
         
         $.get(
             '/ajax/textui_nodes',
             {
-                cluster_id: clusterId,
-                sector_id: sectorId,
-                society_id: societyId,
-                filterValues: filterStr,
-                sort: this.getSort(),
-                page: page
+                cluster_id: clusterId
+                , sector_id: sectorId
+                , society_id: societyId
+                , filterValues: filterStr
+                , sort: this.getSort()
+                , page: page
+                , disable_clusters: disableClusters
             },
             function(data) {
                 Tags.onLoadResults(data);

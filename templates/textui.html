@@ -7,6 +7,13 @@
         var tags_callback = null;
         
         $(function() {
+			
+            // NOTE: .change() doesn't fire in IE till the checkbox loses focus.
+			//$('#disable-clusters').change(function() {
+			$('#disable-clusters').bind($.browser.msie ? 'propertychange': 'change', function() {
+				log('this.checked: ' + this.checked);
+				Tags.updateResults();
+			});
             
             start = new Date();
             log('Starting at ' + start);
@@ -77,6 +84,7 @@
                 $('#textui-zoom-slider').slider('value', 100);
             });
             
+			/*
 			function callback() {
                 // This should execute when the new data is loaded and the zoom is done.
                 log('Done!');
@@ -99,6 +107,7 @@
             }
             
             tags_callback = callback;
+			*/
             
             Tags.init();
         });
@@ -285,8 +294,19 @@
                         </div>
                     </div>
                     
-                    <div id="tag-counts"></div>
-                    
+					<div id="misc-bar">
+						<div id="tag-counts">
+						</div>
+						
+						<div id="disable-clusters-box">
+							<p>
+								<input id="disable-clusters" type="checkbox" /> <label for="disable-clusters">Disable Clusters</label>
+							</p>
+						</div>
+						
+						<br style="clear:both;" />
+					</div>
+					
                     <div id="tag-galaxy" class="alt-box">
                         
                         <!-- NOTE: This is only used by javascript to get the default height/padding/margin/etc. -->
