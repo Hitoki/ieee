@@ -8,11 +8,10 @@
         
         $(function() {
 			
-            // NOTE: .change() doesn't fire in IE till the checkbox loses focus.
-			//$('#disable-clusters').change(function() {
+            // NOTE: .change() doesn't fire in IE till the checkbox loses focus, must use 'propertychange' for IE.
 			$('#disable-clusters').bind($.browser.msie ? 'propertychange': 'change', function() {
-				log('this.checked: ' + this.checked);
 				Tags.updateResults();
+                $.cookie('disable_clusters', this.checked, { expires: 100 });
 			});
             
             start = new Date();
@@ -108,6 +107,16 @@
             
             tags_callback = callback;
 			*/
+            
+            var disable_clusters = $.cookie('disable_clusters');
+            if (disable_clusters == null) {
+                // Set the default.
+                $.cookie('disable_clusters', false, { expires: 100 });
+                disable_clusters = false;
+            } else {
+                disable_clusters = (disable_clusters == 'true')
+            }
+            $('#disable-clusters').attr('checked', disable_clusters);
             
             Tags.init();
         });
