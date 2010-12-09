@@ -800,6 +800,7 @@ span#roamer-beta-warning {
     float:left;
     margin:4px .5em;
 	padding:5px 0px;
+	height: 25px;
 }
 
 #alternate-page #tag-galaxy div.tag_cluster img {
@@ -824,6 +825,7 @@ span#roamer-beta-warning {
     border-color:#006699;
     color:#004477;
     background:white;
+    padding:0.4em 0.5em;
 }
 
 #alternate-page #tag-galaxy div.tag_cluster a:hover {
