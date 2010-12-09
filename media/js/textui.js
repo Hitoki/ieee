@@ -439,7 +439,13 @@ var Tags = {
         
         var search_for = $('#tags-live-search').val();
         
-		var disableClusters = $('#disable-clusters').attr('checked');
+        var disableClusters;
+        if ($('#disable-clusters').length) {
+            disableClusters = $('#disable-clusters').attr('checked');
+        } else {
+            // Default in case ENABLE_DISABLE_CLUSTERS_CHECKBOX is false.
+            disableClusters = false;
+        }
         
         if (this.sectorId != null) {
             // Load the sector/cluster
@@ -752,7 +758,13 @@ var Tags = {
         // Hide any flyvoers so they don't persist when the node is gone.
         Flyover.hide();
 		
-		var disableClusters = $('#disable-clusters').attr('checked');
+        var disableClusters;
+        if ($('#disable-clusters').length) {
+            disableClusters = $('#disable-clusters').attr('checked');
+        } else {
+            // Default in case ENABLE_DISABLE_CLUSTERS_CHECKBOX is false.
+            disableClusters = false;
+        }
         
         $.get(
             '/ajax/textui_nodes',

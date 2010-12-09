@@ -211,6 +211,9 @@ PROFILER_OUTPUT_PNG = True
 PROFILER_OUTPUT_KCACHEGRIND = True
 'Saves a binary kCacheGrind file in the profiler output folder.'
 
+ENABLE_DISABLE_CLUSTERS_CHECKBOX = False
+'Enables the "Disable Clusters" link on textui page.'
+
 # Local Settings ---------------------------------------------------------------
 
 try:

@@ -131,6 +131,7 @@ def textui(request, survey=False):
         'filters':filters,
         'societies':societies,
         'ENABLE_TEXTUI_SIMPLIFIED_COLORS': settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS,
+        'ENABLE_DISABLE_CLUSTERS_CHECKBOX': settings.ENABLE_DISABLE_CLUSTERS_CHECKBOX,
     })
 
 @login_required
@@ -524,6 +525,8 @@ def ajax_textui_nodes(request):
     disable_clusters = request.GET.get('disable_clusters', 'false')
     assert disable_clusters in ['true', 'false'], 'disable_clusters (%r) was not "true" or "false".' % (disable_clusters)
     disable_clusters = (disable_clusters == 'true')
+    
+    assert not disable_clusters or settings.ENABLE_DISABLE_CLUSTERS_CHECKBOX, 'Cannot set disable_clusters if ENABLE_DISABLE_CLUSTERS_CHECKBOX is not set.'
     
     log('  sector_id: %s' % sector_id)
     log('  society_id: %s' % society_id)

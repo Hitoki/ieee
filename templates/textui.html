@@ -307,11 +307,13 @@
 						<div id="tag-counts">
 						</div>
 						
-						<div id="disable-clusters-box">
-							<p>
-								<input id="disable-clusters" type="checkbox" /> <label for="disable-clusters">Disable Clusters</label>
-							</p>
-						</div>
+                        {% if ENABLE_DISABLE_CLUSTERS_CHECKBOX %}
+                            <div id="disable-clusters-box">
+                                <p>
+                                    <input id="disable-clusters" type="checkbox" /> <label for="disable-clusters">Disable Clusters</label>
+                                </p>
+                            </div>
+                        {% endif %}
 						
 						<br style="clear:both;" />
 					</div>
