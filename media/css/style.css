@@ -2572,11 +2572,11 @@ p#tag-and-cluster-counts-searching {
     right:0;
 }
 
-#disable-clusters-box {
+#disable-clusters-terms-box {
 	float:right;
 }
 
-#disable-clusters-box p {
+#disable-clusters-terms-box p {
     margin-bottom:.5em;
 }
 

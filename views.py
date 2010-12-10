@@ -132,6 +132,7 @@ def textui(request, survey=False):
         'societies':societies,
         'ENABLE_TEXTUI_SIMPLIFIED_COLORS': settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS,
         'ENABLE_DISABLE_CLUSTERS_CHECKBOX': settings.ENABLE_DISABLE_CLUSTERS_CHECKBOX,
+        'ENABLE_DISABLE_TERMS_CHECKBOX': settings.ENABLE_DISABLE_TERMS_CHECKBOX,
     })
 
 @login_required
@@ -528,6 +529,12 @@ def ajax_textui_nodes(request):
     
     assert not disable_clusters or settings.ENABLE_DISABLE_CLUSTERS_CHECKBOX, 'Cannot set disable_clusters if ENABLE_DISABLE_CLUSTERS_CHECKBOX is not set.'
     
+    disable_terms = request.GET.get('disable_terms', 'false')
+    assert disable_terms in ['true', 'false'], 'disable_terms (%r) was not "true" or "false".' % (disable_terms)
+    disable_terms = (disable_terms == 'true')
+    
+    assert not disable_terms or settings.ENABLE_DISABLE_TERMS_CHECKBOX, 'Cannot set disable_terms if ENABLE_DISABLE_TERMS_CHECKBOX is not set.'
+    
     log('  sector_id: %s' % sector_id)
     log('  society_id: %s' % society_id)
     log('  cluster_id: %s' % cluster_id)
@@ -635,7 +642,7 @@ def ajax_textui_nodes(request):
             #   - in all sectors.
             #   - in all societies.
             # Otherwise we can't show anything, since terms are not associated with societies/sectors, only clusters.
-            if sector_id is None and society_id is None:
+            if not disable_terms and sector_id is None and society_id is None:
                 log('  adding terms for search phrase')
                 terms = TaxonomyTerm.objects.all()
                 
@@ -684,7 +691,7 @@ def ajax_textui_nodes(request):
         child_nodes = child_nodes.filter(parents__id=cluster_id)
         
         # Only show terms from the cluster here if we're not in a sector or society.
-        if not word_queries and sector is None and society is None:
+        if not disable_terms and not word_queries and sector is None and society is None:
             log('  adding terms for cluster.')
             taxonomy_cluster = TaxonomyCluster.objects.get(name=cluster.name)
             terms = taxonomy_cluster.terms.all()

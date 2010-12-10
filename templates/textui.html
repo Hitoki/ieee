@@ -14,6 +14,11 @@
                 $.cookie('disable_clusters', this.checked, { expires: 100 });
 			});
             
+			$('#disable-terms').bind($.browser.msie ? 'propertychange': 'change', function() {
+				Tags.updateResults();
+                $.cookie('disable_terms', this.checked, { expires: 100 });
+			});
+            
             start = new Date();
             log('Starting at ' + start);
             
@@ -117,6 +122,16 @@
                 disable_clusters = (disable_clusters == 'true')
             }
             $('#disable-clusters').attr('checked', disable_clusters);
+            
+            var disable_terms = $.cookie('disable_terms');
+            if (disable_terms == null) {
+                // Set the default.
+                $.cookie('disable_terms', false, { expires: 100 });
+                disable_terms = false;
+            } else {
+                disable_terms = (disable_terms == 'true')
+            }
+            $('#disable-terms').attr('checked', disable_terms);
             
             Tags.init();
         });
@@ -307,13 +322,19 @@
 						<div id="tag-counts">
 						</div>
 						
-                        {% if ENABLE_DISABLE_CLUSTERS_CHECKBOX %}
-                            <div id="disable-clusters-box">
+                        <div id="disable-clusters-terms-box">
+                            {% if ENABLE_DISABLE_CLUSTERS_CHECKBOX %}
                                 <p>
                                     <input id="disable-clusters" type="checkbox" /> <label for="disable-clusters">Disable Clusters</label>
                                 </p>
-                            </div>
-                        {% endif %}
+                            {% endif %}
+                            
+                            {% if ENABLE_DISABLE_TERMS_CHECKBOX %}
+                                <p>
+                                    <input id="disable-terms" type="checkbox" /> <label for="disable-terms">Disable Terms</label>
+                                </p>
+                            {% endif %}
+                        </div>
 						
 						<br style="clear:both;" />
 					</div>

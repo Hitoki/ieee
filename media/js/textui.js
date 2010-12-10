@@ -447,6 +447,14 @@ var Tags = {
             disableClusters = false;
         }
         
+        var disableTerms;
+        if ($('#disable-terms').length) {
+            disableTerms = $('#disable-terms').attr('checked');
+        } else {
+            // Default in case ENABLE_DISABLE_TERMS_CHECKBOX is false.
+            disableTerms = false;
+        }
+        
         if (this.sectorId != null) {
             // Load the sector/cluster
             $.get(
@@ -458,6 +466,7 @@ var Tags = {
                     , search_for: search_for
                     , page: 'sector'
 					, disable_clusters: disableClusters
+					, disable_terms: disableTerms
                 },
                 function(data) {
                     Tags.onLoadResults(data);
@@ -477,6 +486,7 @@ var Tags = {
                     , search_for: search_for
                     , page: 'society'
 					, disable_clusters: disableClusters
+					, disable_terms: disableTerms
                 },
                 function(data) {
                     Tags.onLoadResults(data);
@@ -507,6 +517,7 @@ var Tags = {
 					, cluster_id: this.clusterId
 					, page: page
 					, disable_clusters: disableClusters
+					, disable_terms: disableTerms
 				},
                 function(data) {
                     Tags.onLoadResults(data);
@@ -766,6 +777,14 @@ var Tags = {
             disableClusters = false;
         }
         
+        var disableTerms;
+        if ($('#disable-terms').length) {
+            disableTerms = $('#disable-terms').attr('checked');
+        } else {
+            // Default in case ENABLE_DISABLE_TERMS_CHECKBOX is false.
+            disableTerms = false;
+        }
+        
         $.get(
             '/ajax/textui_nodes',
             {
@@ -776,6 +795,7 @@ var Tags = {
                 , sort: this.getSort()
                 , page: page
                 , disable_clusters: disableClusters
+                , disable_terms: disableTerms
             },
             function(data) {
                 Tags.onLoadResults(data);

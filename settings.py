@@ -214,6 +214,9 @@ PROFILER_OUTPUT_KCACHEGRIND = True
 ENABLE_DISABLE_CLUSTERS_CHECKBOX = False
 'Enables the "Disable Clusters" link on textui page.'
 
+ENABLE_DISABLE_TERMS_CHECKBOX = False
+'Enables the "Disable Terms" link on textui page.'
+
 # Local Settings ---------------------------------------------------------------
 
 try:
