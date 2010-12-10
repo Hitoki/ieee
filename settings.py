@@ -88,16 +88,15 @@ TEMPLATE_LOADERS = (
 #	 'django.template.loaders.eggs.load_template_source',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE_CLASSES = [
     #'django.middleware.gzip.GZipMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'ieeetags.middleware.ExceptionMiddleware.ExceptionMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     #'ieeetags.djangologging.middleware.LoggingMiddleware',
     #'ieeetags.middleware.ProfilingMiddleware.ProfileMiddleware',
-)
+]
 
 INTERNAL_IPS = ('127.0.0.1',)
 
@@ -107,7 +106,7 @@ TEMPLATE_DIRS = (
     relpath(__file__, 'templates'),
 )
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -118,8 +117,7 @@ INSTALLED_APPS = (
     'ieeetags',
     'ieeetags.site_admin',
     'noomake',
-    'debug_toolbar',
-)
+]
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.auth',
@@ -217,6 +215,8 @@ ENABLE_SHOW_CLUSTERS_CHECKBOX = False
 ENABLE_SHOW_TERMS_CHECKBOX = False
 'Enables the "Show Terms" link on textui page.'
 
+ENABLE_DEBUG_TOOLBAR = False
+
 # Local Settings ---------------------------------------------------------------
 
 try:
@@ -266,3 +266,8 @@ if not hasattr(logging, "is_setup"):
         logging.getLogger().addHandler(file_logger)
     
     logging.is_setup = True
+
+if ENABLE_DEBUG_TOOLBAR:
+    MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+    INSTALLED_APPS.append('debug_toolbar')
+
