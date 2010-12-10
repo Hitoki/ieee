@@ -827,8 +827,9 @@ var Tags = {
     },
     
     selectTag: function(id, tabName) {
-        //console.log("selectTag()");
-        //console.log("id: " + id);
+        //log('selectTag()');
+        //log('  id: ' + id);
+        //log('  tabName: ' + tabName);
         this.updateChangedNode();
         
         //$('.tag').removeClass('activeTag');
@@ -841,27 +842,20 @@ var Tags = {
         Flyover.hide();
 
         // Show resource results in a lightbox
-        // if there was no tab name given, use the default tab
-        if (tabName == undefined) {
-            Lightbox.show('/ajax/tag_content/' + id + '/textui', {
-                verticalCenter: false,
-                customClass: 'resources',
-                onShowCallback: function() {
-                    $('#tag-name').effect("highlight", {}, 2000);
-                    $(document).trigger('onShowLightboxTab');
-                }
-            });
-        } else {
-            Lightbox.show('/ajax/tag_content/' + id + '/textui', {
-                verticalCenter: false,
-                customClass: 'resources',
-                onShowCallback: function() {
+        Lightbox.show('/ajax/tag_content/' + id + '/textui', {
+            verticalCenter: false
+            , customClass: 'resources'
+            , onShowCallback: function() {
+                if (tabName != undefined) {
+                    // if there was no tab name given, use the default tab
+                    log('  calling Tags.onSelectTag()');
                     Tags.onSelectTag(tabName);
-                    $('#tag-name').effect("highlight", {}, 2000);
-                    $(document).trigger('onShowLightboxTab');
                 }
-            });
-        }
+                $('#tag-name').effect("highlight", {}, 2000);
+                $(document).trigger('onShowLightboxTab');
+            }
+            , showCloseButton: true
+        });
     },
     
     onSelectTag: function(tabName) {

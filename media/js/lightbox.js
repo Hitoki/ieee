@@ -31,6 +31,7 @@ var Lightbox = {
                     , onShowCallback: null
                     , useBackground: true
                     , parentElement: 'body'
+                    , showCloseButton: false
                 }
                 , options
             );
@@ -92,7 +93,13 @@ var Lightbox = {
             var scrollLeft = $(window).scrollLeft();
             this.lightbox.css('top', scrollTop);
             this.lightbox.css('left', scrollLeft);
-
+            
+            if (this.options.showCloseButton) {
+                var closeButton = $('<span class="lightbox-close"></span>').appendTo(this.lightboxContent);
+                closeButton.click(function(e) {
+                    lightbox.hide();
+                });
+            }
         }
         
         if (this.options.content) {
@@ -159,6 +166,15 @@ var Lightbox = {
                         e.preventDefault();
                         $.post(form[0].action, form.serializeArray(), function(data){ lightbox.onFormResults(data); } );
                     });
+                }
+                
+                if (this.options.showCloseButton) {
+                    // Add back any close buttons that were overwritten by the html content.
+                    var closeButton = $('<span class="lightbox-close"></span>').appendTo(this.lightboxContent);
+                    if (this.lightboxContent.children().length > 0) {
+                        // Make sure the close button is the first element in the lightbox (for positioning).
+                        $(this.lightboxContent.children()[0]).before(closeButton);
+                    }
                 }
                 
                 // Hook into any close buttons
