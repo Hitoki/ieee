@@ -1881,6 +1881,138 @@ def import_xplore_log(request):
         'log_contents': log_contents,
     })
 
+def _import_standards(file):
+    start = time.time()
+    
+    row_count = 0
+    num_duplicate_standards = 0
+    num_new_standards = 0
+    num_truncated_names = 0
+    num_standards_with_valid_organization = 0
+    num_standards_without_valid_organization = 0
+    valid_organizations = set()
+    invalid_organizations = set()
+    
+    reader = UnicodeReader(file)
+    # Get rid of header line
+    reader.next()
+    
+    start_rows = time.time()
+    last_update_time = None
+    
+    standard_type = ResourceType.objects.getFromName(ResourceType.STANDARD)
+    
+    standards = Resource.objects.filter(resource_type=standard_type)
+    standards = standards.values('ieee_id')
+    
+    standard_ids = set()
+    for standard in standards:
+        standard_ids.add(standard['ieee_id'])
+        
+    for row in reader:
+        
+        # StdNo, BD App Date, PAR App Date,  BD Reaff Date, Sponsor, Working Group Chair, Title
+        standard_number, bd_app_date, par_app_date, bd_reaff_date, sponsor_abbreviations, working_group_chair_name, title = row
+        
+        standard_number = standard_number.strip()
+        
+        #logging.debug('  standard_number: %s' % standard_number)
+        #logging.debug('  bd_app_date: %s' % bd_app_date)
+        #logging.debug('  par_app_date: %s' % par_app_date)
+        #logging.debug('  bd_reaff_date: %s' % bd_reaff_date)
+        #logging.debug('  sponsor_abbreviations: %s' % sponsor_abbreviations)
+        #logging.debug('  working_group_chair_name: %s' % working_group_chair_name)
+        #logging.debug('  title: %s' % title)
+        
+        if standard_number in standard_ids:
+            num_duplicate_standards += 1
+        else:
+            sponsor_abbreviations = sponsor_abbreviations.strip()
+            sponsor_abbreviations = re.split('[/&]', sponsor_abbreviations)
+            sponsors = []
+            for abbr in sponsor_abbreviations:
+                abbr = abbr.strip()
+                society = Society.objects.getFromAbbreviation(abbr)
+                if society is not None:
+                    sponsors.append(society)
+                    valid_organizations.add(abbr)
+                else:
+                    invalid_organizations.add(abbr)
+            
+            if len(sponsors) > 0:
+                num_standards_with_valid_organization += 1
+            else:
+                num_standards_without_valid_organization += 1
+                
+            if len(title) > 500:
+                title = title[:500]
+                num_truncated_names += 1
+            
+            standard = Resource()
+            standard.resource_type = standard_type
+            standard.ieee_id = standard_number
+            standard.name = title
+            # TODO: Do we need this?
+            #standard.standard_status = ???
+            standard.save()
+            
+            num_new_standards += 1
+        
+        if not last_update_time or time.time() - last_update_time > 1:
+            try:
+                logging.debug('    Parsing row %d, row/sec %f' % (row_count, row_count/(time.time()-start) ))
+            except Exception:
+                pass
+            last_update_time = time.time()
+            
+        row_count += 1
+    
+    valid_organizations = sorted(valid_organizations)
+    invalid_organizations = sorted(invalid_organizations)
+    
+    return {
+        'row_count': row_count,
+        'num_duplicate_standards': num_duplicate_standards,
+        'num_new_standards': num_new_standards,
+        'valid_organizations': valid_organizations,
+        'invalid_organizations': invalid_organizations,
+        'num_standards_with_valid_organization': num_standards_with_valid_organization,
+        'num_standards_without_valid_organization': num_standards_without_valid_organization,
+    }
+
+@login_required
+@admin_required
+@transaction.commit_on_success
+#@transaction.commit_manually
+def import_standards(request):
+    if request.method == 'GET':
+        # Display form
+        form = ImportFileForm()
+        
+    else:
+        form = ImportFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = form.cleaned_data['file']
+            
+            #try:
+            results = _import_standards(file)
+            #finally:
+            #    # DEBUG: Prevent changes for now.
+            #    transaction.rollback()
+            
+            results['valid_organizations'] = list_to_html_list(results['valid_organizations'])
+            results['invalid_organizations'] = list_to_html_list(results['invalid_organizations'])
+            
+            return render(request, 'site_admin/import_file.html', {
+                'page_title': 'Import Standards File',
+                'results': results,
+            })
+    
+    return render(request, 'site_admin/import_file.html', {
+        'page_title': 'Import Standards File',
+        'form': form,
+    })
+
 def get_element_text_value(elem):
     'Returns the text value of a given XML element.  Combines all separate text nodes, strips all leading/trailing whitespace.'
     assert elem.nodeType == elem.ELEMENT_NODE, 'get_element_text_value(): elem must be an ELEMENT_NODE, but is %r' % elem.nodeType
