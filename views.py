@@ -131,8 +131,8 @@ def textui(request, survey=False):
         'filters':filters,
         'societies':societies,
         'ENABLE_TEXTUI_SIMPLIFIED_COLORS': settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS,
-        'ENABLE_DISABLE_CLUSTERS_CHECKBOX': settings.ENABLE_DISABLE_CLUSTERS_CHECKBOX,
-        'ENABLE_DISABLE_TERMS_CHECKBOX': settings.ENABLE_DISABLE_TERMS_CHECKBOX,
+        'ENABLE_SHOW_CLUSTERS_CHECKBOX': settings.ENABLE_SHOW_CLUSTERS_CHECKBOX,
+        'ENABLE_SHOW_TERMS_CHECKBOX': settings.ENABLE_SHOW_TERMS_CHECKBOX,
     })
 
 @login_required
@@ -523,30 +523,31 @@ def ajax_textui_nodes(request):
     if search_for == 'null' or search_for == '':
         search_for = None
     
-    disable_clusters = request.GET.get('disable_clusters', 'false')
-    assert disable_clusters in ['true', 'false'], 'disable_clusters (%r) was not "true" or "false".' % (disable_clusters)
-    disable_clusters = (disable_clusters == 'true')
+    show_clusters = request.GET.get('show_clusters', 'false')
+    assert show_clusters in ['true', 'false'], 'show_clusters (%r) was not "true" or "false".' % (show_clusters)
+    show_clusters = (show_clusters == 'true')
     
-    assert not disable_clusters or settings.ENABLE_DISABLE_CLUSTERS_CHECKBOX, 'Cannot set disable_clusters if ENABLE_DISABLE_CLUSTERS_CHECKBOX is not set.'
+    assert show_clusters or settings.ENABLE_SHOW_CLUSTERS_CHECKBOX, 'Cannot show_clusters=false if ENABLE_SHOW_CLUSTERS_CHECKBOX is not set.'
     
-    disable_terms = request.GET.get('disable_terms', 'false')
-    assert disable_terms in ['true', 'false'], 'disable_terms (%r) was not "true" or "false".' % (disable_terms)
-    disable_terms = (disable_terms == 'true')
+    show_terms = request.GET.get('show_terms', 'false')
+    assert show_terms in ['true', 'false'], 'show_terms (%r) was not "true" or "false".' % (show_terms)
+    show_terms = (show_terms == 'true')
     
-    assert not disable_terms or settings.ENABLE_DISABLE_TERMS_CHECKBOX, 'Cannot set disable_terms if ENABLE_DISABLE_TERMS_CHECKBOX is not set.'
+    assert show_terms or settings.ENABLE_SHOW_TERMS_CHECKBOX, 'Cannot set show_terms=false if ENABLE_SHOW_TERMS_CHECKBOX is not set.'
     
     log('  sector_id: %s' % sector_id)
     log('  society_id: %s' % society_id)
     log('  cluster_id: %s' % cluster_id)
     log('  search_for: %s' % search_for)
-    log('  disable_clusters: %s' % disable_clusters)
+    log('  show_clusters: %s' % show_clusters)
+    log('  show_terms: %s' % show_terms)
     
     log('  sector: %s' % sector)
     log('  society: %s' % society)
     log('  cluster: %s' % cluster)
     
     assert sector_id is None or society_id is None, 'Cannot specify both sector_id and society_id.'
-    assert not disable_clusters or cluster_id is None, 'Cannot specify cluster_id and disable_clusters.'
+    assert show_clusters or cluster_id is None, 'Cannot specify cluster_id and show_clusters=false.'
     
     sort = request.GET.get('sort')
     log('  sort: %s' % sort)
@@ -642,7 +643,7 @@ def ajax_textui_nodes(request):
             #   - in all sectors.
             #   - in all societies.
             # Otherwise we can't show anything, since terms are not associated with societies/sectors, only clusters.
-            if not disable_terms and sector_id is None and society_id is None:
+            if show_terms and sector_id is None and society_id is None:
                 log('  adding terms for search phrase')
                 terms = TaxonomyTerm.objects.all()
                 
@@ -691,7 +692,7 @@ def ajax_textui_nodes(request):
         child_nodes = child_nodes.filter(parents__id=cluster_id)
         
         # Only show terms from the cluster here if we're not in a sector or society.
-        if not disable_terms and not word_queries and sector is None and society is None:
+        if show_terms and not word_queries and sector is None and society is None:
             log('  adding terms for cluster.')
             taxonomy_cluster = TaxonomyCluster.objects.get(name=cluster.name)
             terms = taxonomy_cluster.terms.all()
@@ -699,12 +700,12 @@ def ajax_textui_nodes(request):
             # Filter out any terms matched to existing tags.
             terms = terms.annotate(num_related_nodes=Count('related_nodes')).filter(num_related_nodes=0)
     
-    if disable_clusters:
-        # Restrict to only tags.
-        child_nodes = child_nodes.filter(node_type__name=NodeType.TAG)
-    else:
+    if show_clusters:
         # Restrict to only tags & clusters.
         child_nodes = child_nodes.filter(Q(node_type__name=NodeType.TAG) | Q(node_type__name=NodeType.TAG_CLUSTER))
+    else:
+        # Restrict to only tags.
+        child_nodes = child_nodes.filter(node_type__name=NodeType.TAG)
     child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, filterIds)
     
     if word_queries:
@@ -751,7 +752,7 @@ def ajax_textui_nodes(request):
     #log('  min_score: %s' % min_score)
     #log('  max_score: %s' % max_score)
     
-    if not disable_clusters:
+    if show_clusters:
         if cluster is None and not word_queries:
             # Exclude clustered tags.
             log('  Excluding clustered tags.')

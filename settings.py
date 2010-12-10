@@ -211,11 +211,11 @@ PROFILER_OUTPUT_PNG = True
 PROFILER_OUTPUT_KCACHEGRIND = True
 'Saves a binary kCacheGrind file in the profiler output folder.'
 
-ENABLE_DISABLE_CLUSTERS_CHECKBOX = False
-'Enables the "Disable Clusters" link on textui page.'
+ENABLE_SHOW_CLUSTERS_CHECKBOX = False
+'Enables the "Show Clusters" link on textui page.'
 
-ENABLE_DISABLE_TERMS_CHECKBOX = False
-'Enables the "Disable Terms" link on textui page.'
+ENABLE_SHOW_TERMS_CHECKBOX = False
+'Enables the "Show Terms" link on textui page.'
 
 # Local Settings ---------------------------------------------------------------
 

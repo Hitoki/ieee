@@ -439,20 +439,20 @@ var Tags = {
         
         var search_for = $('#tags-live-search').val();
         
-        var disableClusters;
-        if ($('#disable-clusters').length) {
-            disableClusters = $('#disable-clusters').attr('checked');
+        var showClusters;
+        if ($('#show-clusters').length) {
+            showClusters = $('#show-clusters').attr('checked');
         } else {
-            // Default in case ENABLE_DISABLE_CLUSTERS_CHECKBOX is false.
-            disableClusters = false;
+            // Default in case ENABLE_SHOW_CLUSTERS_CHECKBOX is false.
+            showClusters = true;
         }
         
-        var disableTerms;
-        if ($('#disable-terms').length) {
-            disableTerms = $('#disable-terms').attr('checked');
+        var showTerms;
+        if ($('#show-terms').length) {
+            showTerms = $('#show-terms').attr('checked');
         } else {
-            // Default in case ENABLE_DISABLE_TERMS_CHECKBOX is false.
-            disableTerms = false;
+            // Default in case ENABLE_SHOW_TERMS_CHECKBOX is false.
+            showTerms = true;
         }
         
         if (this.sectorId != null) {
@@ -465,8 +465,8 @@ var Tags = {
                     , sort: this.getSort()
                     , search_for: search_for
                     , page: 'sector'
-					, disable_clusters: disableClusters
-					, disable_terms: disableTerms
+					, show_clusters: showClusters
+					, show_terms: showTerms
                 },
                 function(data) {
                     Tags.onLoadResults(data);
@@ -485,8 +485,8 @@ var Tags = {
                     , sort: this.getSort()
                     , search_for: search_for
                     , page: 'society'
-					, disable_clusters: disableClusters
-					, disable_terms: disableTerms
+					, show_clusters: showClusters
+					, show_terms: showTerms
                 },
                 function(data) {
                     Tags.onLoadResults(data);
@@ -516,8 +516,8 @@ var Tags = {
 					, node_id: this.sectorId
 					, cluster_id: this.clusterId
 					, page: page
-					, disable_clusters: disableClusters
-					, disable_terms: disableTerms
+					, show_clusters: showClusters
+					, show_terms: showTerms
 				},
                 function(data) {
                     Tags.onLoadResults(data);
@@ -769,20 +769,20 @@ var Tags = {
         // Hide any flyvoers so they don't persist when the node is gone.
         Flyover.hide();
 		
-        var disableClusters;
-        if ($('#disable-clusters').length) {
-            disableClusters = $('#disable-clusters').attr('checked');
+        var showClusters;
+        if ($('#show-clusters').length) {
+            showClusters = $('#show-clusters').attr('checked');
         } else {
-            // Default in case ENABLE_DISABLE_CLUSTERS_CHECKBOX is false.
-            disableClusters = false;
+            // Default in case ENABLE_SHOW_CLUSTERS_CHECKBOX is false.
+            showClusters = true;
         }
         
-        var disableTerms;
-        if ($('#disable-terms').length) {
-            disableTerms = $('#disable-terms').attr('checked');
+        var showTerms;
+        if ($('#show-terms').length) {
+            showTerms = $('#show-terms').attr('checked');
         } else {
-            // Default in case ENABLE_DISABLE_TERMS_CHECKBOX is false.
-            disableTerms = false;
+            // Default in case ENABLE_SHOW_TERMS_CHECKBOX is false.
+            showTerms = true;
         }
         
         $.get(
@@ -794,8 +794,8 @@ var Tags = {
                 , filterValues: filterStr
                 , sort: this.getSort()
                 , page: page
-                , disable_clusters: disableClusters
-                , disable_terms: disableTerms
+                , show_clusters: showClusters
+                , show_terms: showTerms
             },
             function(data) {
                 Tags.onLoadResults(data);

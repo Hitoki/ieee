@@ -9,14 +9,14 @@
         $(function() {
 			
             // NOTE: .change() doesn't fire in IE till the checkbox loses focus, must use 'propertychange' for IE.
-			$('#disable-clusters').bind($.browser.msie ? 'propertychange': 'change', function() {
+			$('#show-clusters').bind($.browser.msie ? 'propertychange': 'change', function() {
 				Tags.updateResults();
-                $.cookie('disable_clusters', this.checked, { expires: 100 });
+                $.cookie('show_clusters', this.checked, { expires: 100 });
 			});
             
-			$('#disable-terms').bind($.browser.msie ? 'propertychange': 'change', function() {
+			$('#show-terms').bind($.browser.msie ? 'propertychange': 'change', function() {
 				Tags.updateResults();
-                $.cookie('disable_terms', this.checked, { expires: 100 });
+                $.cookie('show_terms', this.checked, { expires: 100 });
 			});
             
             start = new Date();
@@ -113,25 +113,25 @@
             tags_callback = callback;
 			*/
             
-            var disable_clusters = $.cookie('disable_clusters');
-            if (disable_clusters == null) {
+            var show_clusters = $.cookie('show_clusters');
+            if (show_clusters == null) {
                 // Set the default.
-                $.cookie('disable_clusters', false, { expires: 100 });
-                disable_clusters = false;
+                show_clusters = true;
+                $.cookie('show_clusters', show_clusters, { expires: 100 });
             } else {
-                disable_clusters = (disable_clusters == 'true')
+                show_clusters = (show_clusters == 'true')
             }
-            $('#disable-clusters').attr('checked', disable_clusters);
+            $('#show-clusters').attr('checked', show_clusters);
             
-            var disable_terms = $.cookie('disable_terms');
-            if (disable_terms == null) {
+            var show_terms = $.cookie('show_terms');
+            if (show_terms == null) {
                 // Set the default.
-                $.cookie('disable_terms', false, { expires: 100 });
-                disable_terms = false;
+                show_terms = true;
+                $.cookie('show_terms', show_terms, { expires: 100 });
             } else {
-                disable_terms = (disable_terms == 'true')
+                show_terms = (show_terms == 'true')
             }
-            $('#disable-terms').attr('checked', disable_terms);
+            $('#show-terms').attr('checked', show_terms);
             
             Tags.init();
         });
@@ -322,19 +322,15 @@
 						<div id="tag-counts">
 						</div>
 						
-                        <div id="disable-clusters-terms-box">
-                            {% if ENABLE_DISABLE_CLUSTERS_CHECKBOX %}
-                                <p>
-                                    <input id="disable-clusters" type="checkbox" /> <label for="disable-clusters">Disable Clusters</label>
-                                </p>
+                        <p id="show-clusters-terms-box">
+                            {% if ENABLE_SHOW_CLUSTERS_CHECKBOX %}
+                                <input id="show-clusters" type="checkbox" /> <label for="show-clusters">Show Clusters</label>
                             {% endif %}
                             
-                            {% if ENABLE_DISABLE_TERMS_CHECKBOX %}
-                                <p>
-                                    <input id="disable-terms" type="checkbox" /> <label for="disable-terms">Disable Terms</label>
-                                </p>
+                            {% if ENABLE_SHOW_TERMS_CHECKBOX %}
+                                <input id="show-terms" type="checkbox" /> <label for="show-terms">Show Terms</label>
                             {% endif %}
-                        </div>
+                        </p>
 						
 						<br style="clear:both;" />
 					</div>
