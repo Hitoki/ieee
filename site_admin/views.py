@@ -2013,6 +2013,172 @@ def import_standards(request):
         'form': form,
     })
 
+def _import_mai(file):
+    '''
+    Imports keywords for certain conferences, given the output from the MAI tool.
+    The XLS file must be converted to CSV.
+    There are 5 columns.  Only the first & last (IEEE ID and Tags) are used.
+    '''
+    start = time.time()
+    
+    row_count = 0
+    num_db_duplicate_ieee_ids = 0
+    num_db_duplicate_tag_names = 0
+    num_resources_valid = 0
+    num_resources_invalid = 0
+    num_tags_valid = 0
+    num_tags_invalid = 0
+    num_tags_assigned = 0
+    num_tags_already_assigned = 0
+    
+    invalid_ieee_ids = set()
+    duplicate_ieee_ids = set()
+    invalid_tags = set()
+    duplicate_tags = set()
+
+    reader = UnicodeReader(file)
+    # Get rid of header line
+    reader.next()
+    
+    start_rows = time.time()
+    last_update_time = None
+    
+    # NOTE: Limit to conferences.
+    resources = Resource.objects.get_conferences()
+    resources2 = {}
+    for resource in resources:
+        if resource.ieee_id in resources2:
+            #print 'Duplicate ieee_id %r found in DB.' % resource.ieee_id
+            num_db_duplicate_ieee_ids += 1
+            duplicate_ieee_ids.add(resource.ieee_id)
+        else:
+            resources2[resource.ieee_id] = resource
+    
+    tags = Node.objects.get_tags()
+    tags2 = {}
+    for tag in tags:
+        if tag.name in tags2:
+            #print 'Duplicate tag name %r found in DB.' % tag.name
+            num_db_duplicate_tag_names += 1
+            duplicate_tags.add(tag.name)
+        else:
+            tags2[tag.name] = tag
+    
+    for row in reader:
+        # IEEE ID, Keywords, Description, (blank), Tags
+        ieee_id, keywords, description, not_used, tag_names = row
+        
+        ieee_id = ieee_id.strip()
+        tag_names = tag_names.split('!')
+        
+        #logging.debug('  ieee_id: %s' % ieee_id)
+        #logging.debug('  keywords: %s' % keywords)
+        #logging.debug('  description: %s' % description)
+        #logging.debug('  not_used: %s' % not_used)
+        #logging.debug('  tags: %s' % tags)
+        
+        if ieee_id in resources2:
+            resource = resources2[ieee_id]
+            num_resources_valid += 1
+            
+            tags = []
+            
+            for tag_name in tag_names:
+                if tag_name.strip() != '':
+                    if tag_name in tags2:
+                        tags.append(tags2[tag_name])
+                        num_tags_valid += 1
+                    else:
+                        num_tags_invalid += 1
+                        invalid_tags.add(tag_name)
+            
+            if len(tags) > 0:
+                for tag in tags:
+                    #print 'Adding tag %r to resource %r' % (tag.name, resource.name)
+                    
+                    if tag not in resource.nodes.all():
+                        resource_nodes = ResourceNodes()
+                        resource_nodes.resource = resource
+                        resource_nodes.node = tag
+                        resource_nodes.save()
+                        num_tags_assigned += 1
+                    else:
+                        num_tags_already_assigned += 1
+                    
+                    #resource.nodes.add(tag)
+                
+        else:
+            num_resources_invalid += 1
+            invalid_ieee_ids.add(ieee_id)
+        
+        if not last_update_time or time.time() - last_update_time > 1:
+            try:
+                logging.debug('    Parsing row %d, row/sec %f' % (row_count, row_count/(time.time()-start) ))
+            except Exception:
+                pass
+            last_update_time = time.time()
+            
+        row_count += 1
+    
+    def num_sort_cmp(val):
+        try:
+            return int(val)
+        except Exception:
+            return val
+    
+    invalid_ieee_ids = sorted(invalid_ieee_ids, key=num_sort_cmp)
+    duplicate_ieee_ids = sorted(duplicate_ieee_ids, key=num_sort_cmp)
+    invalid_tags = sorted(invalid_tags)
+    duplicate_tags = sorted(duplicate_tags)
+    
+    from django.utils.datastructures import SortedDict
+    
+    data = SortedDict()
+    data['row_count'] = row_count
+    data['num_db_duplicate_ieee_ids'] = num_db_duplicate_ieee_ids
+    data['num_db_duplicate_tag_names'] = num_db_duplicate_tag_names
+    data['num_resources_valid'] = num_resources_valid
+    data['num_resources_invalid'] = num_resources_invalid
+    data['num_tags_valid'] = num_tags_valid
+    data['num_tags_invalid'] = num_tags_invalid
+    data['num_tags_assigned'] = num_tags_assigned
+    data['num_tags_already_assigned'] = num_tags_already_assigned
+
+    data['invalid_ieee_ids'] = invalid_ieee_ids
+    data['duplicate_ieee_ids'] = duplicate_ieee_ids
+    data['invalid_tags'] = invalid_tags
+    data['duplicate_tags'] = duplicate_tags
+    return data
+    
+@login_required
+@admin_required
+@transaction.commit_on_success
+def import_mai(request):
+    if request.method == 'GET':
+        # Display form
+        form = ImportFileForm()
+    else:
+        form = ImportFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = form.cleaned_data['file']
+            
+            results = _import_mai(file)
+            
+            results['invalid_ieee_ids'] = list_to_html_list(results['invalid_ieee_ids'])
+            results['duplicate_ieee_ids'] = list_to_html_list(results['duplicate_ieee_ids'])
+            results['invalid_tags'] = list_to_html_list(results['invalid_tags'])
+            results['duplicate_tags'] = list_to_html_list(results['duplicate_tags'])
+            
+            return render(request, 'site_admin/import_file.html', {
+                'page_title': 'Import MAI Conferences File',
+                'results': results,
+            })
+    
+    return render(request, 'site_admin/import_file.html', {
+        'page_title': 'Import MAI Conferences File',
+        'form': form,
+    })
+
 def get_element_text_value(elem):
     'Returns the text value of a given XML element.  Combines all separate text nodes, strips all leading/trailing whitespace.'
     assert elem.nodeType == elem.ELEMENT_NODE, 'get_element_text_value(): elem must be an ELEMENT_NODE, but is %r' % elem.nodeType

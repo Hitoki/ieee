@@ -46,6 +46,7 @@ urlpatterns += patterns('',
     url(r'^import/ajax_get_xplore_log$', views.ajax_get_xplore_import_log, name='ajax_get_xplore_import_log'),
     url(r'^import/xplore_log$', views.import_xplore_log, name='admin_import_xplore_log'),
     url(r'^import/standards$', views.import_standards, name='admin_import_standards'),
+    url(r'^import/mai$', views.import_mai, name='admin_import_mai'),
     
     url(r'^sectors$', views.list_sectors, name='admin_list_sectors'),
     url(r'^sector/(\d+)$', views.view_sector, name='admin_view_sector'),
