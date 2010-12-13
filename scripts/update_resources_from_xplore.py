@@ -28,6 +28,7 @@ def main(*args):
     pidfilename = None
     use_processcontrol = True
     use_daemon = True
+    use_resume = False
     
     #print 'sys.argv[1:]: %r' % sys.argv[1:]
     
@@ -37,12 +38,13 @@ def main(*args):
         'processcontrol=',
         'daemon=',
         'path=',
+        'resume=',
     ])
     
     def get_bool_arg(value):
-        if value.lower() == 'yes' or value.lower() == '1':
+        if value.lower() == 'true' or value.lower() == 'yes' or value.lower() == '1':
             return True
-        elif value.lower() == 'no' or value.lower() == '0':
+        elif value.lower() == 'false' or value.lower() == 'no' or value.lower() == '0':
             return False
         else:
             return None
@@ -57,13 +59,13 @@ def main(*args):
             if temp is not None:
                 use_processcontrol = temp
             else:
-                raise Exception('Unknown value for --processcontrol %r, must be "yes", "no", 1, or 0' % value)
+                raise Exception('Unknown value for --processcontrol %r, must be "true", "false", "yes", "no", 1, or 0' % value)
         elif name == '--daemon':
             temp = get_bool_arg(value)
             if temp is not None:
                 use_daemon = temp
             else:
-                raise Exception('Unknown value for --nodaemon %r, must be "yes", "no", 1, or 0' % value)
+                raise Exception('Unknown value for --daemon %r, must be "true", "false", "yes", "no", 1, or 0' % value)
         elif name == '--path':
             # NOTE: It looks like daemons don't inherit the environment of the spawning WSGI process?
             # Add all paths in the --path arg to the current sys.path.
@@ -73,11 +75,20 @@ def main(*args):
                 if path not in sys.path:
                     sys.path.insert(0, path)
                     print 'Inserting path %r' % path
+        elif name == '--resume':
+            temp = get_bool_arg(value)
+            if temp is not None:
+                use_resume = temp
+            else:
+                raise Exception('Unknown value for --resume %r, must be "true", "false", "yes", "no", 1, or 0' % value)
         else:
             raise Exception('Unknown argument %r' % name)
     
     if len(args) > 0:
         raise Exception('Unknown arguments %r' % args)
+    
+    if use_resume and not use_processcontrol:
+        raise Exception('Cannot use --resume when --processcontrol is false.')
     
     # NOTE: setup django import here, since we may have added more paths to sys.path.
     import ieeetags.settings
@@ -99,6 +110,10 @@ def main(*args):
     
     if logfilename is None:
         logfilename = '/dev/null'
+    else:
+        if os.path.exists(logfilename):
+            # TODO: This should not be needed when log files use different names (w/ timestamps).
+            os.remove(logfilename)
     
     #if pidfilename is not None:
     #    from lockfile.pidlockfile import PIDLockFile
@@ -146,15 +161,29 @@ def main(*args):
             log('Started at %s' % now)
             
             resource_type = models.ResourceType.objects.getFromName('periodical')
-            node_type = models.NodeType.objects.getFromName('tag')
+            tag_type = models.NodeType.objects.getFromName('tag')
             
-            # DEBUG:
-            #tags = models.Node.objects.filter(node_type=node_type)[:5]
-            tags = models.Node.objects.filter(node_type=node_type)
+            tags = models.Node.objects.filter(node_type=tag_type).order_by('name')
+            
+            if use_resume:
+                # Filter out all tags up to and including the last processed tag so we can resume where we left off.
+                process_control = models.ProcessControl.objects.get(type=models.PROCESS_CONTROL_TYPES.XPLORE_IMPORT)
+                last_processed_tag = process_control.last_processed_tag
+                
+                log('Resuming from tag %r.' % last_processed_tag)
+                
+                assert last_processed_tag is not None, 'Trying to resume, but last_processed_tag (%r) is None.' % last_processed_tag
+                
+                old_tags_count = tags.count()
+                #log('Resuming from tag %r.' % last_processed_tag.name)
+                tags = tags.filter(name__gt=last_processed_tag.name)
+                new_tags_count = tags.count()
+                log('  Found %s tags (filtered out %s).' % (new_tags_count, old_tags_count - new_tags_count))
             
             num_tags = tags.count()
             
             last_updated = None
+            last_tag = None
             
             for i, tag in enumerate(tags):
                 if use_processcontrol:
@@ -167,6 +196,10 @@ def main(*args):
                         process_control.log += 'Processing tag %r (%s/%s).\n' % (tag.name, i, num_tags)
                         last_updated = datetime.datetime.now()
                         
+                    if last_tag is not None:
+                        # Record the last-updated tag name, in case we want to resume.
+                        #log('setting last_processed_tag to %r' % last_tag)
+                        process_control.last_processed_tag = last_tag
                     process_control.date_updated = datetime.datetime.now()
                     process_control.save()
                 
@@ -242,6 +275,8 @@ def main(*args):
                             resSum['resources_not_found'] += 1
                 
                 # TODO add finally block to close file once python is updated past 2.4
+                
+                last_tag = tag
                 
                 # DEBUG:
                 #log('Quitting after one tag.')

@@ -1745,7 +1745,8 @@ def import_xplore(request):
     else:
         pid = None
     
-    if action == 'launch':
+    if action in ['launch', 'launch_resume']:
+        last_processed_tag = process.last_processed_tag
         if process is not None:
             if not pid:
                 process.delete()
@@ -1754,6 +1755,7 @@ def import_xplore(request):
             
         process = ProcessControl()
         process.type = PROCESS_CONTROL_TYPES.XPLORE_IMPORT
+        process.last_processed_tag = last_processed_tag
         process.save()
         
         # NOTE: Windows only:
@@ -1797,9 +1799,14 @@ def import_xplore(request):
             
             paths = ':'.join(sys.path)
             
+            if action == 'launch_resume':
+                resume = 1
+            else:
+                resume = 0
+            
             print '  Launching process %r' % script_path
             proc = subprocess.Popen(
-                [sys.executable, '-u', script_path, '--pid=%s' % pidfilename, '--log=%s' % logfilename, '--path=%s' % paths],
+                [sys.executable, '-u', script_path, '--pid=%s' % pidfilename, '--log=%s' % logfilename, '--path=%s' % paths, '--resume=%s' % resume],
                 cwd=scripts_path,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
@@ -1858,12 +1865,18 @@ def ajax_get_xplore_import_log(request):
     try:
         process = ProcessControl.objects.get(type=PROCESS_CONTROL_TYPES.XPLORE_IMPORT)
         log = process.log
+        if process.last_processed_tag is not None:
+            last_processed_tag_name = process.last_processed_tag.name
+        else:
+            last_processed_tag_name = None
     except ProcessControl.DoesNotExist:
         process = None
         log = None
+        last_processed_tag_name = None
     
     data = {
         'log': log,
+        'last_processed_tag_name': last_processed_tag_name,
     }
     return HttpResponse(json.dumps(data), 'application/javascript')
 

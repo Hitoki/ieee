@@ -1295,5 +1295,10 @@ class ProcessControl(models.Model):
     is_alive = models.BooleanField(default=True)
     'Process will update periodically to the current time.'
     date_updated = models.DateTimeField(null=True, blank=True)
+    
+    # Process-type specific fields.
+    'This is updated the most-recently processed tag by the Xplore Import script, allows resuming.'
+    last_processed_tag = models.ForeignKey(Node, null=True, blank=True, default=None)
 
     date_created = models.DateTimeField(auto_now_add=True)
+    

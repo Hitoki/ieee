@@ -12,6 +12,7 @@
                     s = s.replace('\n', '<br/>\n');
                     s += '<br/><p id="process-log-autoupdate">Auto-updating...</p>';
                     $('#process-log').html(s);
+                    $('#last-processed-tag').text(data.last_processed_tag_name);
                 }
             );
             setTimeout(function() { updateLog() }, 2000);
@@ -65,6 +66,14 @@
             -->
             <tr>
                 <th>
+                    Last Processed Tag
+                </th>
+                <td id="last-processed-tag">
+                    {{ process.last_processed_tag }}
+                </td>
+            </tr>
+            <tr>
+                <th>
                     Date Created
                 </th>
                 <td>
@@ -101,7 +110,7 @@
     <p>
         <a href="{% url admin_import_xplore %}">Refresh page</a>
     </p>
-    
+
     {% if not process %}
         <p>
             <a href="{% url admin_import_xplore %}?action=launch">Launch the Import Process</a>
@@ -134,6 +143,12 @@
             <p>
                 <a href="{% url admin_import_xplore %}?action=launch">Launch the Import Process</a>
             </p>
+            {% if process.last_processed_tag %}
+                <!-- Resume -->
+                <p>
+                    <a href="{% url admin_import_xplore %}?action=launch_resume">Resume the Import Process from the "{{ process.last_processed_tag.name }}" tag.</a>
+                </p>
+            {% endif %}
         {% endif %}
     {% endif %}
     
