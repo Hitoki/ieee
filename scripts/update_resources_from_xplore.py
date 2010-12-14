@@ -198,7 +198,6 @@ def main(*args):
                         
                     if last_tag is not None:
                         # Record the last-updated tag name, in case we want to resume.
-                        #log('setting last_processed_tag to %r' % last_tag)
                         process_control.last_processed_tag = last_tag
                     process_control.date_updated = datetime.datetime.now()
                     process_control.save()
@@ -213,7 +212,8 @@ def main(*args):
                 xplore_query_url = 'http://xploreuat.ieee.org/gateway/ipsSearch.jsp?' + urllib.urlencode({
                     # Number of results
                     'hc': 5,
-                    'md': tag.name,
+                    # NOTE: Must UTF8 encode here, otherwise urlencode() fails with non-ASCII names.
+                    'md': tag.name.encode('utf-8'),
                     'ctype' : 'Journals'
                 })
                 #log('Calling %s' % xplore_query_url)
@@ -224,9 +224,16 @@ def main(*args):
                     resSum['xplore_connection_errors'] += 1
                     continue
                 else:
-                    from xml.dom.minidom import parse
+                    
+                    from xml.dom.minidom import parseString
+                    
                     errors = []
-                    dom1 = parse(file)
+                    
+                    # Need to correctly handle UTF8 responses from urlopen() above, avoid UnicodeEncodeError.
+                    encoding = file.headers['content-type'].split('charset=')[-1]
+                    ucontents = unicode(file.read(), encoding)
+                    dom1 = parseString(ucontents.encode('utf-8'))
+                    
                     xhits = dom1.documentElement.getElementsByTagName('document')
                     distinct_issns = {}
                     for i, xhit in enumerate(xhits):
@@ -298,6 +305,9 @@ def main(*args):
                 log('Updating model with exit status.')
                 # Update the model to show that this has quit normally.
                 process_control = models.ProcessControl.objects.get(type=models.PROCESS_CONTROL_TYPES.XPLORE_IMPORT)
+                if last_tag is not None:
+                    # Record the last-updated tag name, in case we want to resume.
+                    process_control.last_processed_tag = last_tag
                 process_control.log += 'Quitting.\n'
                 process_control.date_updated = datetime.datetime.now()
                 process_control.save()

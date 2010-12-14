@@ -18,7 +18,12 @@ except ImportError:
 
 import django.core.handlers.wsgi
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+# Add application paths to the python path to avoid "missing settings module" errors.
+sys.path.insert(0, os.path.dirname(__file__))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'ieeetags.settings'
+
 DEBUG = os.environ.get('DEBUG', False)
 sys.stdout = sys.stderr # in case there are any errant 'print' statements
 
