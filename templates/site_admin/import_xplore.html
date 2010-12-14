@@ -4,22 +4,15 @@
 
 {% block main_table_content %}
     <script>
-        function updateLog() {
-            $.getJSON(
-                '{% url ajax_get_xplore_import_log %}'
-                , function(data) {
-                    var s = data.log;
-                    s = s.replace('\n', '<br/>\n');
-                    s += '<br/><p id="process-log-autoupdate">Auto-updating...</p>';
-                    $('#process-log').html(s);
-                    $('#last-processed-tag').text(data.last_processed_tag_name);
-                }
-            );
-            setTimeout(function() { updateLog() }, 2000);
+        var pageReloadDelay = 5000;
+        
+        function reloadPage() {
+            window.location.reload();
+            setTimeout('reloadPage();', pageReloadDelay);
         }
         
         $(function() {
-            updateLog();
+            setTimeout('reloadPage();', pageReloadDelay);
         });
     </script>
     
@@ -34,6 +27,14 @@
             </th>
             <td>
                 {{ pid|default:"No pidfile found" }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Process Is Running
+            </th>
+            <td>
+                {{ is_process_running }}
             </td>
         </tr>
         <tr>
@@ -68,7 +69,7 @@
                 <th>
                     Last Processed Tag
                 </th>
-                <td id="last-processed-tag">
+                <td>
                     {{ process.last_processed_tag }}
                 </td>
             </tr>
@@ -93,7 +94,7 @@
                 <th>
                     Log
                 </th>
-                <td id="process-log">
+                <td>
                     {{ process.log|linebreaksbr }}
                 </td>
             </tr>
@@ -107,10 +108,6 @@
         </p>
     {% endif %}
     
-    <p>
-        <a href="{% url admin_import_xplore %}">Refresh page</a>
-    </p>
-
     {% if not process %}
         <p>
             <a href="{% url admin_import_xplore %}?action=launch">Launch the Import Process</a>

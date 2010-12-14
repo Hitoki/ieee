@@ -1745,6 +1745,20 @@ def import_xplore(request):
     else:
         pid = None
     
+    # Check if the process is running.
+    is_process_running = False
+    if pid is not None:
+        command_line = get_process_info(pid)
+        if command_line is None or command_line.find('update_resources_from_xplore.py') == -1:
+            # Process does not exist, or it is the wrong process - remove the PID file.
+            print 'Process %r does not exist - removing PID file.' % pid
+            if os.path.exists(pidfilename):
+                os.remove(pidfilename)
+                pid = None
+        else:
+            # Process is running.
+            is_process_running = True
+    
     if action in ['launch', 'launch_resume']:
         last_processed_tag = process.last_processed_tag
         if process is not None:
@@ -1857,28 +1871,8 @@ def import_xplore(request):
         'process': process,
         'pid': pid,
         'log_exists': log_exists,
+        'is_process_running': is_process_running,
     })
-
-@login_required
-@admin_required
-def ajax_get_xplore_import_log(request):
-    try:
-        process = ProcessControl.objects.get(type=PROCESS_CONTROL_TYPES.XPLORE_IMPORT)
-        log = process.log
-        if process.last_processed_tag is not None:
-            last_processed_tag_name = process.last_processed_tag.name
-        else:
-            last_processed_tag_name = None
-    except ProcessControl.DoesNotExist:
-        process = None
-        log = None
-        last_processed_tag_name = None
-    
-    data = {
-        'log': log,
-        'last_processed_tag_name': last_processed_tag_name,
-    }
-    return HttpResponse(json.dumps(data), 'application/javascript')
 
 @login_required
 @admin_required
