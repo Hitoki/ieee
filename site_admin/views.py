@@ -1760,7 +1760,11 @@ def import_xplore(request):
             is_process_running = True
     
     if action in ['launch', 'launch_resume']:
-        last_processed_tag = process.last_processed_tag
+        if process is not None:
+            last_processed_tag = process.last_processed_tag
+        else:
+            last_processed_tag = None
+            
         if process is not None:
             if not pid:
                 process.delete()
