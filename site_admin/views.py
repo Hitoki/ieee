@@ -1805,46 +1805,33 @@ def import_xplore(request):
         #thread.setDaemon(True)
         #thread.start()
         
-        # NOTE: Unix only.
-        def start_process(process):
-            print 'start_process()'
-            scripts_path = relpath(__file__, '../scripts')
-            script_path = os.path.join(scripts_path, 'update_resources_from_xplore.py')
-            
-            # NOTE: Need to sleep here, or the current view hangs.
-            print '  Sleeping 2s'
-            time.sleep(2)
-            
-            paths = ':'.join(sys.path)
-            
-            if action == 'launch_resume':
-                resume = 1
-            else:
-                resume = 0
-            
-            print '  Launching process %r' % script_path
-            proc = subprocess.Popen(
-                [sys.executable, '-u', script_path, '--pid=%s' % pidfilename, '--log=%s' % logfilename, '--path=%s' % paths, '--resume=%s' % resume],
-                cwd=scripts_path,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-            out, err = proc.communicate()
-            
-            print '  out: %s' % out
-            print '  err: %s' % err
-            
-            #if out != '' or err != '':
-            #if err != '':
-            #    # Some error happened while running the script, show the output.
-            #    #return HttpResponse('Error while launching script:\n\nstdout:\n%s\nstderr:\n%s' % (out, err), 'text/plain')
-            #    pass
-            
-            print '~start_process()'
-            
-        thread = threading.Thread(target=start_process, args=[process])
-        thread.setDaemon(True)
-        thread.start()
+        
+        # Immediate start of daemon (UNIX-only):
+        
+        scripts_path = relpath(__file__, '../scripts')
+        script_path = os.path.join(scripts_path, 'update_resources_from_xplore.py')
+        
+        paths = ':'.join(sys.path)
+        
+        if action == 'launch_resume':
+            resume = 1
+        else:
+            resume = 0
+        
+        print '  Launching process %r' % script_path
+        proc = subprocess.Popen(
+            [sys.executable, '-u', script_path, '--pid=%s' % pidfilename, '--log=%s' % logfilename, '--path=%s' % paths, '--resume=%s' % resume],
+            cwd=scripts_path,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        out, err = proc.communicate()
+        
+        print '    out: %s' % out
+        print '    err: %s' % err
+        print '  Done launching daemon.'
+        
+        ######
         
         return HttpResponseRedirect(reverse('admin_import_xplore'))
     

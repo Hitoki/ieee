@@ -13,10 +13,8 @@ import urllib2
 import time
 import datetime
 import re
-# NOTE: This is the system-level python-daemon library (not used here, requires python 2.5).
-#import daemon
 import getopt
-import simple_daemon
+import daemonize
 
 def log(msg):
     print >>sys.stdout, msg.encode('utf-8')
@@ -102,18 +100,12 @@ def main(*args):
     print 'use_processcontrol: %r' % use_processcontrol
     print 'pidfilename: %r' % pidfilename
     
-    #if logfilename is not None:
-    #    logfile = open(logfilename, 'w+', 0)
-    #else:
-    #    #logfile = None
-    #    logfile = '/dev/null'
-    
-    if logfilename is None:
-        logfilename = '/dev/null'
+    if logfilename is not None:
+        # NOTE: Overwrites existing file.
+        logfile = open(logfilename, 'w', 0)
+        print >>logfile, '----------------------------------------'
     else:
-        if os.path.exists(logfilename):
-            # TODO: This should not be needed when log files use different names (w/ timestamps).
-            os.remove(logfilename)
+        logfile = None
     
     #if pidfilename is not None:
     #    from lockfile.pidlockfile import PIDLockFile
@@ -124,14 +116,8 @@ def main(*args):
     log('logging started.')
     
     if use_daemon:
-        daemon = simple_daemon.Daemon(pidfilename, stdout=logfilename, stderr=logfilename)
-    
-    # NOTE: Cannot use 'with' syntax in python 2.4.
-    #with daemon.DaemonContext(stdout=logfile, stderr=logfile, pidfile=pidfile):
-    
-    if use_daemon:
         log('Starting daemon.')
-        daemon.daemonize()
+        daemonize.daemonize(stdout=logfile, stderr=logfile, pidfilename=pidfilename, exclude_files=[logfile.fileno()])
     else:
         log('Running as non-daemon.')
     
