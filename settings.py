@@ -148,6 +148,10 @@ DEBUG_TOOLBAR_CONFIG = {
 #XPLORE_IMPORT_LOG_PATH = None
 #'Must be set in local_settings.py.  The path wherein to save the xplore import process log files.'
 
+# Disable south logging.
+import south.logger
+logging.getLogger('south').setLevel(logging.CRITICAL)
+
 # Debug Settings ---------------------------------------------------------------
 
 # Used for the COMSOC demo to assign all tags to comsoc by default
@@ -223,6 +227,19 @@ try:
     from local_settings import *
 except ImportError, e:
     print 'ERROR: "local_settings.py" file not found'
+
+# Setup testing database -------------------------------------------------------
+
+import sys
+if 'test' in sys.argv:
+    print 'Using test database.'
+    DATABASE_ENGINE = 'sqlite3'
+    DATABASE_NAME = ':memory:'
+    DATABASE_USER = ''
+    DATABASE_PASSWORD = ''
+    DATABASE_HOST = ''
+    DATABASE_PORT = ''
+    TEST_DATABASE_NAME = ":memory:"
 
 # Check for mandatory settings -------------------------------------------------
 

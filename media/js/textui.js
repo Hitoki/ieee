@@ -1169,12 +1169,12 @@ var Tags = {
             
             if (this.remainingContent.length > 0) {
                 // Show the loading banner if there is still remaining content.
-                tagWindow.append($('\
-                    <div id="tags-chunk-loading">\
-                        <p>Loading...</p>\
-                        <img src="/media/images/ajax-loader.gif" />\
-                    </div>\
-                '));
+                tagWindow.append($(''
+                    + '<div id="tags-chunk-loading">'
+                        + '<p>Loading...</p>'
+                        + '<img src="/media/images/ajax-loader.gif" />'
+                    + '</div>'
+                ));
             }
         }
         
