@@ -235,9 +235,16 @@ def ajax_tag_content(request, tag_id, ui=None):
     num_resources = Resource.objects.getForNode(tag).count()
     conferences = Resource.objects.getForNode(tag, resourceType=ResourceType.CONFERENCE)
     experts = Resource.objects.getForNode(tag, resourceType=ResourceType.EXPERT)
-    periodicals = Resource.objects.getForNode(tag, resourceType=ResourceType.PERIODICAL)
     standards = Resource.objects.getForNode(tag, resourceType=ResourceType.STANDARD)
     
+    # Grab periodicals with is_machine_generated field.
+    periodicals_resource_nodes = tag.resource_nodes.filter(resource__resource_type__name=ResourceType.PERIODICAL)
+    periodicals = []
+    for periodicals_resource_node in periodicals_resource_nodes:
+        periodical = periodicals_resource_node.resource
+        periodical.is_machine_generated = periodicals_resource_node.is_machine_generated
+        periodicals.append(periodical)
+        
     # Sort the conferences by year latest to earliest.
     conferences = list(sorted(conferences, key=lambda resource: resource.year, reverse=True))
     conferences = util.group_conferences_by_series(conferences)
@@ -249,7 +256,7 @@ def ajax_tag_content(request, tag_id, ui=None):
         + tag.related_tags.count() \
         + len(conferences) \
         + experts.count() \
-        + periodicals.count() \
+        + len(periodicals) \
         + standards.count() \
     
     return render(request, 'ajax_tag_content.html', {
