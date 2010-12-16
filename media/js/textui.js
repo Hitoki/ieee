@@ -735,6 +735,8 @@ var Tags = {
             return;
         }
         
+        var search_for = $('#tags-live-search').val();
+        
         var page;
         if (sectorId != null) {
             this.page = this.PAGE_SECTOR_CLUSTER;
@@ -796,6 +798,7 @@ var Tags = {
                 , page: page
                 , show_clusters: showClusters
                 , show_terms: showTerms
+                , search_for: search_for
             },
             function(data) {
                 Tags.onLoadResults(data);
