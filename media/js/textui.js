@@ -1099,10 +1099,16 @@ var Tags = {
         
         var tagWindow = $("#tags");
         
-        // Get the next chunk of contents.
-        var results = splitContent(this.remainingContent, CONTENT_CHUNK_SIZE);
-        var chunk = results[0];
-        this.remainingContent = results[1];
+        if (ENABLE_PROGRESSIVE_LOADING) {
+            // Get the next chunk of contents.
+            var results = splitContent(this.remainingContent, CONTENT_CHUNK_SIZE);
+            var chunk = results[0];
+            this.remainingContent = results[1];
+        } else {
+            // Load the entire contents at once.
+            var chunk = this.remainingContent;
+            this.remainingContent = '';
+        }
         
         //log('  -chunk.length: ' + chunk.length);
         //log('  -this.remainingContent.length: ' + this.remainingContent.length);
