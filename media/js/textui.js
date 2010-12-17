@@ -886,37 +886,7 @@ var Tags = {
         tabs.setTab(tabName);
     },
     
-    selectTerm: function(id, tabName) {
-        this.updateChangedNode();
-        
-        // Hide the flyover so it doesn't overlap with the lightbox
-        Flyover.hide();
 
-        // Show resource results in a lightbox
-        // if there was no tab name given, use the default tab
-        if (tabName == undefined) {
-            Lightbox.show('/ajax/term_content/' + id + '/textui', {
-                verticalCenter: false,
-                customClass: 'resources',
-                onShowCallback: function() {
-                    $('#term-name').effect("highlight", {}, 2000);
-                    $(document).trigger('onShowLightboxTab');
-                }
-            });
-        } else {
-            Lightbox.show('/ajax/term_content/' + id + '/textui', {
-                verticalCenter: false,
-                customClass: 'resources',
-                onShowCallback: function() {
-                    var tabs = $('#resource-tabs').data('nootabs');
-                    tabs.setTab(tabName);
-                    $('#term-name').effect("highlight", {}, 2000);
-                    $(document).trigger('onShowLightboxTab');
-                }
-            });
-        }
-    },
-    
     getFilters: function() {
         var result = [];
         var filters = $('.filter');

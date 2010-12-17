@@ -410,6 +410,9 @@ class Node(models.Model):
     filters = models.ManyToManyField('Filter', related_name='nodes')
     related_tags = models.ManyToManyField('self', null=True, blank=True)
     
+    is_taxonomy_term = models.BooleanField(default=False)
+    'Marks tags that have originated from the IEEE taxonomy.'
+    
     objects = NodeManager()
     
     def __unicode__(self):

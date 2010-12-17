@@ -21,7 +21,7 @@ import urllib2
 import xml.dom.minidom
 from decorators import optional_login_required as login_required
 
-from ieeetags.models import single_row, Filter, Node, NodeType, Profile, Resource, ResourceType, Society, TaxonomyTerm, TaxonomyCluster, ProfileLog
+from ieeetags.models import single_row, Filter, Node, NodeType, Profile, Resource, ResourceType, Society, ProfileLog
 from ieeetags.forms import *
 #from profiler import Profiler
 import settings
@@ -273,21 +273,21 @@ def ajax_tag_content(request, tag_id, ui=None):
         #'xplore_results': xplore_results,
     })
 
-@login_required
-def ajax_term_content(request, term_id, ui=None):
-    'The AJAX resource results popup for taxonomy terms.'
-    if ui is None:
-        ui = 'textui'
-    assert ui in ['roamer', 'textui'], 'Unrecognized ui "%s"' % ui
-    
-    term = TaxonomyTerm.objects.get(id=term_id)
-    num_related_items = term.related_nodes.count()
-    
-    return render(request, 'ajax_term_content.html', {
-        'term':term,
-        'num_related_items': num_related_items,
-        'ui': ui,
-    })
+#@login_required
+#def ajax_term_content(request, term_id, ui=None):
+#    'The AJAX resource results popup for taxonomy terms.'
+#    if ui is None:
+#        ui = 'textui'
+#    assert ui in ['roamer', 'textui'], 'Unrecognized ui "%s"' % ui
+#    
+#    term = TaxonomyTerm.objects.get(id=term_id)
+#    num_related_items = term.related_nodes.count()
+#    
+#    return render(request, 'ajax_term_content.html', {
+#        'term':term,
+#        'num_related_items': num_related_items,
+#        'ui': ui,
+#    })
 
 def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, offset=0):
     '''
@@ -397,18 +397,20 @@ def ajax_xplore_results(request):
     @return: HTML output of results.
     '''
     tag_id = request.POST.get('tag_id')
-    term_id = request.POST.get('term_id')
+    #term_id = request.POST.get('term_id')
     
     if tag_id is not None and tag_id != 'undefined':
         tag = Node.objects.get(id=tag_id)
         term = None
         name = tag.name
-    elif term_id is not None and term_id != 'undefined':
-        term = TaxonomyTerm.objects.get(id=term_id)
-        tag = None
-        name = term.name
+    #elif term_id is not None and term_id != 'undefined':
+    #    term = TaxonomyTerm.objects.get(id=term_id)
+    #    tag = None
+    #    name = term.name
+    #else:
+    #    assert False, 'Must specify either tag_id or term_id.'
     else:
-        assert False, 'Must specify either tag_id or term_id.'
+        assert False, 'Must specify either tag_id.'
     
     show_all = (request.POST['show_all'] == 'true')
     offset = int(request.POST.get('offset', 0))
@@ -601,7 +603,7 @@ def ajax_textui_nodes(request):
     
     search_for_too_short = False
     
-    terms = []
+    #terms = []
     num_tags = 0
     num_clusters = 0
     
@@ -650,24 +652,24 @@ def ajax_textui_nodes(request):
             #   - in all sectors.
             #   - in all societies.
             # Otherwise we can't show anything, since terms are not associated with societies/sectors, only clusters.
-            if show_terms and sector_id is None and society_id is None:
-                log('  adding terms for search phrase')
-                terms = TaxonomyTerm.objects.all()
-                
-                # Search for keywords.
-                terms = terms.filter(word_queries)
-                #log('  terms.count(): %r' % terms.count())
-                
-                # Filter by cluster
-                if cluster_id is not None:
-                    cluster = Node.objects.get(id=cluster_id, node_type__name=NodeType.TAG_CLUSTER)
-                    taxonomy_cluster = TaxonomyCluster.objects.get(name=cluster.name)
-                    terms = terms.filter(taxonomy_clusters__id=taxonomy_cluster.id)
-                    #log('  terms.count(): %r' % terms.count())
-                
-                # Filter out any terms matched to existing tags.
-                terms = terms.annotate(num_related_nodes=Count('related_nodes')).filter(num_related_nodes=0)
-                #log('  terms.count(): %r' % terms.count())
+            #if show_terms and sector_id is None and society_id is None:
+            #    log('  adding terms for search phrase')
+            #    terms = TaxonomyTerm.objects.all()
+            #    
+            #    # Search for keywords.
+            #    terms = terms.filter(word_queries)
+            #    #log('  terms.count(): %r' % terms.count())
+            #    
+            #    # Filter by cluster
+            #    if cluster_id is not None:
+            #        cluster = Node.objects.get(id=cluster_id, node_type__name=NodeType.TAG_CLUSTER)
+            #        taxonomy_cluster = TaxonomyCluster.objects.get(name=cluster.name)
+            #        terms = terms.filter(taxonomy_clusters__id=taxonomy_cluster.id)
+            #        #log('  terms.count(): %r' % terms.count())
+            #    
+            #    # Filter out any terms matched to existing tags.
+            #    terms = terms.annotate(num_related_nodes=Count('related_nodes')).filter(num_related_nodes=0)
+            #    #log('  terms.count(): %r' % terms.count())
                 
         else:
             # Search phrase was too short, return empty results.
@@ -699,13 +701,13 @@ def ajax_textui_nodes(request):
         child_nodes = child_nodes.filter(parents__id=cluster_id)
         
         # Only show terms from the cluster here if we're not in a sector or society.
-        if show_terms and not word_queries and sector is None and society is None:
-            log('  adding terms for cluster.')
-            taxonomy_cluster = TaxonomyCluster.objects.get(name=cluster.name)
-            terms = taxonomy_cluster.terms.all()
-            
-            # Filter out any terms matched to existing tags.
-            terms = terms.annotate(num_related_nodes=Count('related_nodes')).filter(num_related_nodes=0)
+        #if show_terms and not word_queries and sector is None and society is None:
+        #    log('  adding terms for cluster.')
+        #    taxonomy_cluster = TaxonomyCluster.objects.get(name=cluster.name)
+        #    terms = taxonomy_cluster.terms.all()
+        #    
+        #    # Filter out any terms matched to existing tags.
+        #    terms = terms.annotate(num_related_nodes=Count('related_nodes')).filter(num_related_nodes=0)
     
     if show_clusters:
         # Restrict to only tags & clusters.
@@ -772,6 +774,14 @@ def ajax_textui_nodes(request):
     # This saves time when we check child_node.node_type later on (prevents DB hit for every single child_node)
     child_nodes = child_nodes.select_related('node_type')
     
+    if show_terms and (word_queries or (cluster and show_terms and not word_queries and sector is None and society is None)):
+        # Show empty terms if we're:
+        # 1. Searching by phrase, or
+        # 2. Searching within a cluster, but not in any sector/society.
+        show_empty_terms = True
+    else:
+        show_empty_terms = False
+    
     clusters = []
     child_nodes2 = []
     for child_node in child_nodes.values(
@@ -784,6 +794,7 @@ def ajax_textui_nodes(request):
         'num_selected_filters1',
         'num_societies1',
         'score1',
+        'is_taxonomy_term',
     ):
         filter_child_node = False
         
@@ -803,7 +814,8 @@ def ajax_textui_nodes(request):
         
         if child_node['node_type__name'] == NodeType.TAG:
             
-            if child_node['num_selected_filters1'] > 0 and child_node['num_societies1'] > 0 and child_node['num_resources1'] > 0:
+            # Show all terms, and all tags with content.
+            if (show_empty_terms and child_node['is_taxonomy_term']) or (child_node['num_selected_filters1'] > 0 and child_node['num_societies1'] > 0 and child_node['num_resources1'] > 0):
                 
                 if not settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
                     # Separated color blocks
@@ -858,27 +870,29 @@ def ajax_textui_nodes(request):
             child_nodes2.append(child_node)
     
     # Add any matching taxonomy terms to the results.
-    terms2 = []
-    for term in terms:
-        terms2.append({
-            'name': term.name,
-            'level': '',
-            'num_related_tags1': 0,
-            'num_sectors1': 0,
-            'score': 0,
-            'num_resources1': 0,
-            'node_type__name': 'term',
-            'num_selected_filters1': 0,
-            'id': term.id,
-            'num_societies1': 0,
-            'score1': 0,
-        })
+    #terms2 = []
+    #for term in terms:
+    #    terms2.append({
+    #        'name': term.name,
+    #        'level': '',
+    #        'num_related_tags1': 0,
+    #        'num_sectors1': 0,
+    #        'score': 0,
+    #        'num_resources1': 0,
+    #        'node_type__name': 'term',
+    #        'num_selected_filters1': 0,
+    #        'id': term.id,
+    #        'num_societies1': 0,
+    #        'score1': 0,
+    #    })
     
     num_clusters = len(clusters)
     # TODO: Should this include terms?
-    num_tags = len(child_nodes2) + len(terms2)
+    #num_tags = len(child_nodes2) + len(terms2)
+    num_tags = len(child_nodes2)
     
-    child_nodes = clusters + child_nodes2 + terms2
+    #child_nodes = clusters + child_nodes2 + terms2
+    child_nodes = clusters + child_nodes2
     
     if search_for is not None:
         final_punc =  ('.', ':')[len(child_nodes) > 0]
@@ -1115,11 +1129,13 @@ def tooltip(request, tag_id=None):
     parent_id = request.GET.get('parent_id', None)
     society_id = request.GET.get('society_id', None)
     search_for = request.GET.get('search_for', None)
-    term_id = request.GET.get('term_id', None)
+    #term_id = request.GET.get('term_id', None)
     page = request.GET.get('page', None)
     
-    if tag_id is None and term_id is None:
-        raise Exception('Must specify either "tag_id" or "term_id".')
+    #if tag_id is None and term_id is None:
+    #    raise Exception('Must specify either "tag_id" or "term_id".')
+    if tag_id is None:
+        raise Exception('Must specify "tag_id".')
     
     def get_int_all_or_none(value):
         '''
@@ -1147,7 +1163,7 @@ def tooltip(request, tag_id=None):
     print '  parent_id: %r' % parent_id
     print '  search_for: %r' % search_for
     print '  society_id: %r' % society_id
-    print '  term_id: %r' % term_id
+    #print '  term_id: %r' % term_id
     
     if tag_id is not None:
         
@@ -1161,166 +1177,188 @@ def tooltip(request, tag_id=None):
             
             tag = node
             
-            if parent_id is not None:
-                if (parent_id == "all"):
-                    parent = Node.objects.get(node_type=Node.objects.getNodesForType(NodeType.ROOT))
-                    tags = Node.objects.get_tags()
-                else:
-                    parent = Node.objects.get(id=parent_id)
-                    tags = parent.child_nodes
-                tags = Node.objects.get_extra_info(tags)
-                tags = tags.values(
-                    'num_filters1',
-                    'num_related_tags1',
-                    'num_resources1',
-                    'num_sectors1',
-                    'num_societies1',
-                    'score1',
+            if node.is_taxonomy_term:
+                
+                # Taxonomy Term Tag
+                
+                tags = tag.related_tags.all()
+                
+                tags_str = util.truncate_link_list(
+                    tags,
+                    lambda item: '%s' % item.name,
+                    lambda item: '%s' % item.name,
+                    TOOLTIP_MAX_CHARS
                 )
-                (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = parent.get_sector_ranges(tags)
-                (min_score, max_score) = parent.get_combined_sector_ranges(tags)
+                
+                return render(request, 'tooltip_term.html', {
+                    'tag': tag,
+                    'sector_id': None,
+                })
             
-            elif society_id is not None:
-                if society_id == 'all':
-                    # For All Societies, check all tags to get mins/maxes.
-                    from django.db.models import Count, Min, Max
-                    tags = Node.objects.get_tags()
+            else:
+                
+                # Normal Tag
+                
+                if parent_id is not None:
+                    if (parent_id == "all"):
+                        parent = Node.objects.get(node_type=Node.objects.getNodesForType(NodeType.ROOT))
+                        tags = Node.objects.get_tags()
+                    else:
+                        parent = Node.objects.get(id=parent_id)
+                        tags = parent.child_nodes
                     tags = Node.objects.get_extra_info(tags)
-                    
-                    min_resources = None
-                    max_resources = None
-                    min_sectors = None
-                    max_sectors = None
-                    min_related_tags = None
-                    max_related_tags = None
-                    min_societies = None
-                    max_societies = None
-                    min_score = None
-                    max_score = None
-                    for tag1 in tags.values(
+                    tags = tags.values(
+                        'num_filters1',
+                        'num_related_tags1',
                         'num_resources1',
                         'num_sectors1',
-                        'num_related_tags1',
                         'num_societies1',
                         'score1',
-                    ):
-                        if min_resources is None or tag1['num_resources1'] < min_resources:
-                            min_resources = tag1['num_resources1']
-                        if max_resources is None or tag1['num_resources1'] < max_resources:
-                            max_resources = tag1['num_resources1']
-                        if min_sectors is None or tag1['num_sectors1'] < min_sectors:
-                            min_sectors = tag1['num_sectors1']
-                        if max_sectors is None or tag1['num_sectors1'] < max_sectors:
-                            max_sectors = tag1['num_sectors1']
-                        if min_related_tags is None or tag1['num_related_tags1'] < min_related_tags:
-                            min_related_tags = tag1['num_related_tags1']
-                        if max_related_tags is None or tag1['num_related_tags1'] < max_related_tags:
-                            max_related_tags = tag1['num_related_tags1']
-                        if min_societies is None or tag1['num_societies1'] < min_societies:
-                            min_societies = tag1['num_societies1']
-                        if max_societies is None or tag1['num_societies1'] < max_societies:
-                            max_societies = tag1['num_societies1']
-                        if min_score is None or tag1['score1'] < min_score:
-                            min_score = tag1['score1']
-                        if max_score is None or tag1['score1'] < max_score:
-                            max_score = tag1['score1']
+                    )
+                    (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = parent.get_sector_ranges(tags)
+                    (min_score, max_score) = parent.get_combined_sector_ranges(tags)
+                
+                elif society_id is not None:
+                    if society_id == 'all':
+                        # For All Societies, check all tags to get mins/maxes.
+                        from django.db.models import Count, Min, Max
+                        tags = Node.objects.get_tags()
+                        tags = Node.objects.get_extra_info(tags)
+                        
+                        min_resources = None
+                        max_resources = None
+                        min_sectors = None
+                        max_sectors = None
+                        min_related_tags = None
+                        max_related_tags = None
+                        min_societies = None
+                        max_societies = None
+                        min_score = None
+                        max_score = None
+                        for tag1 in tags.values(
+                            'num_resources1',
+                            'num_sectors1',
+                            'num_related_tags1',
+                            'num_societies1',
+                            'score1',
+                        ):
+                            if min_resources is None or tag1['num_resources1'] < min_resources:
+                                min_resources = tag1['num_resources1']
+                            if max_resources is None or tag1['num_resources1'] < max_resources:
+                                max_resources = tag1['num_resources1']
+                            if min_sectors is None or tag1['num_sectors1'] < min_sectors:
+                                min_sectors = tag1['num_sectors1']
+                            if max_sectors is None or tag1['num_sectors1'] < max_sectors:
+                                max_sectors = tag1['num_sectors1']
+                            if min_related_tags is None or tag1['num_related_tags1'] < min_related_tags:
+                                min_related_tags = tag1['num_related_tags1']
+                            if max_related_tags is None or tag1['num_related_tags1'] < max_related_tags:
+                                max_related_tags = tag1['num_related_tags1']
+                            if min_societies is None or tag1['num_societies1'] < min_societies:
+                                min_societies = tag1['num_societies1']
+                            if max_societies is None or tag1['num_societies1'] < max_societies:
+                                max_societies = tag1['num_societies1']
+                            if min_score is None or tag1['score1'] < min_score:
+                                min_score = tag1['score1']
+                            if max_score is None or tag1['score1'] < max_score:
+                                max_score = tag1['score1']
+                    else:
+                        society = Society.objects.get(id=society_id)
+                        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = society.get_tag_ranges()
+                        (min_score, max_score) = society.get_combined_ranges()
+                    
+                elif search_for is not None:
+                    # Search for nodes with a phrase
+                    if len(search_for) >= 2:
+                        search_words = re.split(r'\s', search_for)
+                        from django.db.models import Q
+                        queries = None
+                        for word in search_words:
+                            if queries is None:
+                                queries = Q(name__icontains=word)
+                            else:
+                                queries &= Q(name__icontains=word)
+                        #child_nodes = Node.objects.filter(name__icontains=search_for, node_type__name=NodeType.TAG)
+                        child_nodes = Node.objects.filter(queries, node_type__name=NodeType.TAG)
+                        filterIds = [filter.id for filter in Filter.objects.all()]
+                        child_nodes = Node.objects.get_extra_info(child_nodes, None, filterIds)
+                    else:
+                        child_nodes = Node.objects.none()
+                    
+                    # Get the min/max for these search results
+                    # TODO: These don't account for filter==0, num_resources1==0, etc.
+                    min_score, max_score = util.get_min_max(child_nodes, 'score1')
+                    min_resources, max_resources = util.get_min_max(child_nodes, 'num_resources1')
+                    min_sectors, max_sectors = util.get_min_max(child_nodes, 'num_sectors1')
+                    min_related_tags, max_related_tags = util.get_min_max(child_nodes, 'num_related_tags1')
+                    min_societies, max_societies = util.get_min_max(child_nodes, 'num_societies1')
+                    
                 else:
-                    society = Society.objects.get(id=society_id)
-                    (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = society.get_tag_ranges()
-                    (min_score, max_score) = society.get_combined_ranges()
+                    # No sector/society/search phrase - could be in "All Sectors" or "All Societies"
+                    assert False, "TODO"
                 
-            elif search_for is not None:
-                # Search for nodes with a phrase
-                if len(search_for) >= 2:
-                    search_words = re.split(r'\s', search_for)
-                    from django.db.models import Q
-                    queries = None
-                    for word in search_words:
-                        if queries is None:
-                            queries = Q(name__icontains=word)
-                        else:
-                            queries &= Q(name__icontains=word)
-                    #child_nodes = Node.objects.filter(name__icontains=search_for, node_type__name=NodeType.TAG)
-                    child_nodes = Node.objects.filter(queries, node_type__name=NodeType.TAG)
-                    filterIds = [filter.id for filter in Filter.objects.all()]
-                    child_nodes = Node.objects.get_extra_info(child_nodes, None, filterIds)
+                num_related_tags = tag.get_filtered_related_tag_count()
+                num_societies = tag.societies.all()
+                
+                resourceLevel = _get_popularity_level(min_resources, max_resources, tag.num_resources1)
+                sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.num_sectors1)
+                related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
+                society_level = _get_popularity_level(min_societies, max_societies, tag.num_societies1)
+                
+                if settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
+                    # New-style popularity colors - single color only
+                    tagLevel = _get_popularity_level(min_score, max_score, node.score1)
                 else:
-                    child_nodes = Node.objects.none()
+                    tagLevel = resourceLevel
                 
-                # Get the min/max for these search results
-                # TODO: These don't account for filter==0, num_resources1==0, etc.
-                min_score, max_score = util.get_min_max(child_nodes, 'score1')
-                min_resources, max_resources = util.get_min_max(child_nodes, 'num_resources1')
-                min_sectors, max_sectors = util.get_min_max(child_nodes, 'num_sectors1')
-                min_related_tags, max_related_tags = util.get_min_max(child_nodes, 'num_related_tags1')
-                min_societies, max_societies = util.get_min_max(child_nodes, 'num_societies1')
+                sectors_str = util.truncate_link_list(
+                    tag.get_sectors(),
+                    lambda item: '<a href="javascript:Tags.selectSector(%s);">%s</a>' % (item.id, item.name),
+                    lambda item: '%s' % item.name,
+                    TOOLTIP_MAX_CHARS,
+                    tag,
+                    'sector-tab'
+                )
                 
-            else:
-                # No sector/society/search phrase - could be in "All Sectors" or "All Societies"
-                assert False, "TODO"
-            
-            num_related_tags = tag.get_filtered_related_tag_count()
-            num_societies = tag.societies.all()
-            
-            resourceLevel = _get_popularity_level(min_resources, max_resources, tag.num_resources1)
-            sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.num_sectors1)
-            related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
-            society_level = _get_popularity_level(min_societies, max_societies, tag.num_societies1)
-            
-            if settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
-                # New-style popularity colors - single color only
-                tagLevel = _get_popularity_level(min_score, max_score, node.score1)
-            else:
-                tagLevel = resourceLevel
-            
-            sectors_str = util.truncate_link_list(
-                tag.get_sectors(),
-                lambda item: '<a href="javascript:Tags.selectSector(%s);">%s</a>' % (item.id, item.name),
-                lambda item: '%s' % item.name,
-                TOOLTIP_MAX_CHARS,
-                tag,
-                'sector-tab'
-            )
-            
-            related_tags_str = util.truncate_link_list(
-                tag.related_tags.all(),
-                lambda item: '<a href="javascript:Tags.selectTag(%s);">%s</a>' % (item.id, item.name),
-                lambda item: '%s' % item.name,
-                TOOLTIP_MAX_CHARS,
-                tag,
-                'related-tab'
-            )
-            
-            # Filter out related tags without filters (to match roamer)
-            related_tags2 = tag.related_tags.all()
-            related_tags2 = Node.objects.get_extra_info(related_tags2)
-            related_tags = []
-            for related_tag in related_tags2:
-                if related_tag.num_filters1 > 0 and related_tag.num_resources1 > 0:
-                    related_tags.append(related_tag)
-            
-            societies_str = util.truncate_link_list(
-                tag.societies.all(),
-                lambda item: '<a href="javascript:Tags.selectSociety(%s);">%s</a>' % (item.id, item.name),
-                lambda item: '%s' % item.name,
-                TOOLTIP_MAX_CHARS,
-                tag,
-                'society-tab'
-            )
-            
-            show_edit_link = request.user.is_authenticated() and request.user.get_profile().role in (Profile.ROLE_SOCIETY_MANAGER, Profile.ROLE_ADMIN)
-            
-            return render(request, 'tooltip.html', {
-                'tag': tag,
-                'tagLevel': tagLevel,
-                'sectorLevel': sectorLevel,
-                'relatedTagLevel': related_tag_level,
-                'societyLevel' : society_level,
-                'sectors': sectors_str,
-                'related_tags': related_tags_str,
-                'societies': societies_str,
-                'showEditLink': show_edit_link,
-            })
+                related_tags_str = util.truncate_link_list(
+                    tag.related_tags.all(),
+                    lambda item: '<a href="javascript:Tags.selectTag(%s);">%s</a>' % (item.id, item.name),
+                    lambda item: '%s' % item.name,
+                    TOOLTIP_MAX_CHARS,
+                    tag,
+                    'related-tab'
+                )
+                
+                # Filter out related tags without filters (to match roamer)
+                related_tags2 = tag.related_tags.all()
+                related_tags2 = Node.objects.get_extra_info(related_tags2)
+                related_tags = []
+                for related_tag in related_tags2:
+                    if related_tag.num_filters1 > 0 and related_tag.num_resources1 > 0:
+                        related_tags.append(related_tag)
+                
+                societies_str = util.truncate_link_list(
+                    tag.societies.all(),
+                    lambda item: '<a href="javascript:Tags.selectSociety(%s);">%s</a>' % (item.id, item.name),
+                    lambda item: '%s' % item.name,
+                    TOOLTIP_MAX_CHARS,
+                    tag,
+                    'society-tab'
+                )
+                
+                show_edit_link = request.user.is_authenticated() and request.user.get_profile().role in (Profile.ROLE_SOCIETY_MANAGER, Profile.ROLE_ADMIN)
+                
+                return render(request, 'tooltip.html', {
+                    'tag': tag,
+                    'tagLevel': tagLevel,
+                    'sectorLevel': sectorLevel,
+                    'relatedTagLevel': related_tag_level,
+                    'societyLevel' : society_level,
+                    'sectors': sectors_str,
+                    'related_tags': related_tags_str,
+                    'societies': societies_str,
+                    'showEditLink': show_edit_link,
+                })
         
         elif node.node_type.name == NodeType.TAG_CLUSTER:
             cluster = node
@@ -1356,27 +1394,6 @@ def tooltip(request, tag_id=None):
         else:
             raise Exception('Unknown node type "%s" for node "%s"' % (node.node_type.name, node.name))
     
-    elif term_id is not None:
-        term = TaxonomyTerm.objects.get(id=term_id)
-        print 'term.name: %r' % term.name
-        print 'term.related_nodes.count(): %r' % term.related_nodes.count()
-        
-        tags = term.related_nodes.all()
-        
-        tags_str = util.truncate_link_list(
-            tags,
-            lambda item: '%s' % item.name,
-            lambda item: '%s' % item.name,
-            TOOLTIP_MAX_CHARS
-        )
-        
-        return render(request, 'tooltip_term.html', {
-            'term': term,
-            #'tags': tags_str,
-            #'sector_id': parent_id,
-        })
-        
-        
     else:
         assert False
 

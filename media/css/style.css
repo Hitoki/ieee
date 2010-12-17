@@ -831,10 +831,14 @@ span#roamer-beta-warning {
     background:#eef4ff;
 }
 
-#alternate-page #tag-galaxy div.term a {
+#alternate-page #tag-galaxy div.node-taxonomy-term a {
     border:1px solid silver;
     background:#eee;
     color:gray;
+}
+
+#alternate-page #tag-galaxy div.node-taxonomy-term a.level1 {
+    background:#eee !important;
 }
 
 #alternate-page #tag-galaxy div.node .tag-block-container {

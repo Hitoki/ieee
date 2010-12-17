@@ -2,8 +2,12 @@
 
 {% spaceless %}
     {% for tag in child_nodes %}
-        <div id="tag-{{ tag.id }}" class="node {{ tag.node_type__name }} flyover { type:'{{ tag.node_type__name }}' }">
-            {% if tag.node_type__name == 'tag' %}
+        <div id="tag-{{ tag.id }}" class="node {{ tag.node_type__name }} {% if not tag.score1 and tag.is_taxonomy_term %}node-taxonomy-term{% endif %} flyover { type:'{{ tag.node_type__name }}' }">
+
+            {% if tag.is_taxonomy_term %}
+                {# Term #}
+                <a href="javascript:Tags.selectTag({{ tag.id }});" class="{{ tag.level }}">{{ tag.name|truncatechars:30 }}</a>
+            {% elif tag.node_type__name == 'tag' %}
                 {# Tag #}
                 <a href="javascript:Tags.selectTag({{ tag.id }});" class="{{ tag.level }}">{{ tag.name|truncatechars:30 }}</a>
             {% elif tag.node_type__name == 'tag_cluster' %}
@@ -12,9 +16,6 @@
                     <img src="/media/images/icon_cluster_sm.png" class="cluster-icon" />
                     {{ tag.name|truncatechars:30 }}
                 </a> 
-            {% elif tag.node_type__name == 'term' %}
-                {# Term #}
-                <a href="javascript:Tags.selectTerm({{ tag.id }});" class="{{ tag.level }}">{{ tag.name|truncatechars:30 }}</a>
             {% else %}
                 UNKNOWN NODE {{ tag.node_type__name }}
             {% endif %}
