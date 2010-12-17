@@ -258,20 +258,29 @@ def ajax_tag_content(request, tag_id, ui=None):
         + experts.count() \
         + len(periodicals) \
         + standards.count() \
-    
-    return render(request, 'ajax_tag_content.html', {
-        'tag':tag,
-        'conferences': conferences,
-        'experts': experts,
-        'periodicals': periodicals,
-        'standards': standards,
-        'num_resources': num_resources,
-        'num_related_items': num_related_items,
-        'parent_nodes': parent_nodes,
-        'ui': ui,
-        #'xplore_error': xplore_error,
-        #'xplore_results': xplore_results,
-    })
+        
+    if tag.is_taxonomy_term and ((sectors1.count() + tag.societies.count() + len(conferences) + experts.count() + len(periodicals) + standards.count()) == 0):
+        # This is a term with no resources (except Related Tags), just show the abbreviated content popup.
+        return render(request, 'ajax_term_content.html', {
+            'tag':tag,
+            'num_related_items': num_related_items,
+            'ui': ui,
+        })
+    else:
+        # Show the normal tag content popup.
+        return render(request, 'ajax_tag_content.html', {
+            'tag':tag,
+            'conferences': conferences,
+            'experts': experts,
+            'periodicals': periodicals,
+            'standards': standards,
+            'num_resources': num_resources,
+            'num_related_items': num_related_items,
+            'parent_nodes': parent_nodes,
+            'ui': ui,
+            #'xplore_error': xplore_error,
+            #'xplore_results': xplore_results,
+        })
 
 #@login_required
 #def ajax_term_content(request, term_id, ui=None):

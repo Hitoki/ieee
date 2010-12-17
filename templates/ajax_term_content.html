@@ -23,7 +23,7 @@
             </span>
         </div>
         
-        <h1><span id="term-name">"{{ term.name }}"</span> has <span id="num-related-items" class="{ number: {{ num_related_items }} }"><img src="{{ MEDIA_URL }}images/resource_popup_xplore_loader.gif" /></span> related resources</h1>
+        <h1><span id="term-name">"{{ tag.name }}"</span> has <span id="num-related-items" class="{ number: {{ num_related_items }} }"><img src="{{ MEDIA_URL }}images/resource_popup_xplore_loader.gif" /></span> related resources</h1>
         <div class="resources-pad">
         
             
@@ -33,15 +33,15 @@
                     
                     <div id="resource-tabs" class="nootabs term-resources-tabs { useCookies:false, defaultTab:2, useHash:false }">
                         <ul class="nootabs-menus">
-                            <li id="related-tags-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu">Related <br />Tags <span>({{ term.related_nodes.count }})</span></a></li>
+                            <li id="related-tags-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu">Related <br />Tags <span>({{ tag.related_tags.count }})</span></a></li>
                             <li id="articles-tab" class="right-menu"><a href="" class="two-word-menu">IEEE Xplore<br/>Articles <span id="num-xplore-results"></span></a></li>
                         </ul>
                         
-                        <!-- Related Terms -->
-                        <div id="related-tab" data-printUrl='{% url print_resource term.id "related_nodes" %}'>
+                        <!-- Related Tags -->
+                        <div id="related-tab" data-printUrl='{% url print_resource tag.id "related_tags" %}'>
                             <div class="group">
-                                {% if term.related_nodes.all %}
-                                    {% for related_node in term.related_nodes.all %}
+                                {% if tag.related_tags.all %}
+                                    {% for related_node in tag.related_tags.all %}
                                         <p class="{% cycle 'item_odd' 'item_even' %}">
                                             {% ifequal ui "textui" %}
                                                 <a href="javascript:Tags.selectTag({{ related_node.id }});">
@@ -53,14 +53,14 @@
                                         </p>
                                     {% endfor %}
                                 {% else %}
-                                    <p class="no-resources">No related tags are currently tagged "{{ term.name }}"</p>
+                                    <p class="no-resources">No related tags are currently tagged "{{ tag.name }}"</p>
                                 {% endif %}
                             </div>
                         </div>
                         
                         <!-- Xplore Results -->
-                        <div id="xplore-tab" data-printUrl='{% url print_resource term.id "xplore" %}'>
-                            <div id="xplore-results-container" class="{ termId: {{ term.id }} }">
+                        <div id="xplore-tab" data-printUrl='{% url print_resource tag.id "xplore" %}'>
+                            <div id="xplore-results-container" class="{ tagId: {{ tag.id }} }">
                                 {# NOTE: This is replaced by ajax after page load. #}
                             </div>
                         </div>
@@ -71,7 +71,7 @@
                                 printDropDown.bind('change', function(){
                                     var type = printDropDown.val();
                                     if (type === "all") {
-                                        printWin = window.open("{% url print_resource term.id 'all' %}", "printWindow");
+                                        printWin = window.open("{% url print_resource tag.id 'all' %}", "printWindow");
                                     } else if (type === "cur"){
                                         var printUrl = $('.nootabs-selected-tab[data-printUrl]').eq(0).attr('data-printUrl');
                                         printWin = window.open(printUrl, "printWindow");
