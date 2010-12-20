@@ -1820,7 +1820,7 @@ def import_xplore(request):
         
         print '  Launching process %r' % script_path
         proc = subprocess.Popen(
-            [sys.executable, '-u', script_path, '--pid=%s' % pidfilename, '--log=%s' % logfilename, '--path=%s' % paths, '--resume=%s' % resume],
+            [sys.executable, '-u', script_path, '--pid=%s' % pidfilename, '--log=%s' % logfilename, '--xplore_hc=%d' % settings.XPLORE_IMPORT_MAX_QUERY_RESULTS, '--path=%s' % paths, '--resume=%s' % resume],
             cwd=scripts_path,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,

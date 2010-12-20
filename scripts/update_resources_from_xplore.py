@@ -26,6 +26,7 @@ def main(*args):
     pidfilename = None
     use_processcontrol = True
     use_daemon = True
+    xplore_hc = 5
     use_resume = False
     
     #print 'sys.argv[1:]: %r' % sys.argv[1:]
@@ -35,6 +36,7 @@ def main(*args):
         'pid=',
         'processcontrol=',
         'daemon=',
+        'xplore_hc=',
         'path=',
         'resume=',
     ])
@@ -64,6 +66,11 @@ def main(*args):
                 use_daemon = temp
             else:
                 raise Exception('Unknown value for --daemon %r, must be "true", "false", "yes", "no", 1, or 0' % value)
+        elif name == '--xplore_hc':
+            try:
+                xplore_hc = int(value)
+            except ValueError:
+                raise Exception('Unknown value for --xplore_hc %r, must be a positive integer.' % value) 
         elif name == '--path':
             # NOTE: It looks like daemons don't inherit the environment of the spawning WSGI process?
             # Add all paths in the --path arg to the current sys.path.
@@ -197,7 +204,7 @@ def main(*args):
                 log('Querying Xplore for Tag: %s' % tag.name)
                 xplore_query_url = 'http://xploreuat.ieee.org/gateway/ipsSearch.jsp?' + urllib.urlencode({
                     # Number of results
-                    'hc': 5,
+                    'hc': xplore_hc,
                     # NOTE: Must UTF8 encode here, otherwise urlencode() fails with non-ASCII names.
                     'md': tag.name.encode('utf-8'),
                     'ctype' : 'Journals'
