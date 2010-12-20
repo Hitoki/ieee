@@ -148,6 +148,7 @@ DEBUG_TOOLBAR_CONFIG = {
 #XPLORE_IMPORT_LOG_PATH = None
 #'Must be set in local_settings.py.  The path wherein to save the xplore import process log files.'
 XPLORE_IMPORT_MAX_QUERY_RESULTS = 10
+'Will be used for the "hc" parameter when querying xplore. Controls the max number of results returned.' 
 
 # Disable south logging.
 import south.logger
