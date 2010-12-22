@@ -953,6 +953,7 @@ def ajax_textui_nodes(request):
         'search_for': search_for,
         'search_for_too_short': search_for_too_short,
         'search_page_title': search_page_title,
+        'cluster': cluster,
     })
     
     return HttpResponse(json.dumps({

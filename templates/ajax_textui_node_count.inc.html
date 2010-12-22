@@ -8,7 +8,7 @@
         {% if search_page_title %}
             {{ search_page_title.num }} results for <b>{{ search_page_title.search_for }}</b> {{search_page_title.node_desc }}
         {% else %}
-            {{ child_nodes|length }} result{{ child_nodes|length|pluralize }} for "{{ search_for }}"{% ifnotequal child_nodes|length 0 %}:{% else %}.{% endifnotequal %}
+            {{ child_nodes|length }} result{{ child_nodes|length|pluralize }} for "{{ search_for }}"{% if cluster %} in the "{{ cluster.name }}" cluster{% endif %}{% ifnotequal child_nodes|length 0 %}:{% else %}.{% endifnotequal %}
         {% endif %}
         
         {# Extra message for when there are zero results #}
