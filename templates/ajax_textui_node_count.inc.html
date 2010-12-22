@@ -23,6 +23,6 @@
     </p>
 {% else %}
     <p id="tag-and-cluster-counts">
-        Showing {{ num_tags }} tag{{ num_tags|pluralize }}{% if num_clusters %}, {{ num_clusters }} cluster{{ num_clusters|pluralize }}{% endif %}.
+        Showing {{ num_tags }} tag{{ num_tags|pluralize }}{% if num_clusters %}, {{ num_clusters }} cluster{{ num_clusters|pluralize }}{% endif %}{% if cluster %} within the "{{ cluster.name }}" cluster{% endif %}.
     </p>
 {% endif %}
