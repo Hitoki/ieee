@@ -15,14 +15,21 @@
         {% ifequal child_nodes|length 0 %}
             &nbsp;You might try entering fewer characters above or <a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">clearing the filter phrase now</a>.
         {% endifequal %}
+        
+        {% if num_terms %}
+            ({{ num_terms }} terms)
+        {% endif %}
         </h3>
     {% endif %}
     
-    <p id="tag-and-cluster-counts-searching">
-        {{ num_tags }} tag{{ num_tags|pluralize }}{% if num_clusters %}, {{ num_clusters }} cluster{{ num_clusters|pluralize }}{% endif %}
-    </p>
+    {% comment %}
+    #<p id="tag-and-cluster-counts-searching">
+    #    {{ num_tags }} tag{{ num_tags|pluralize }}{% if num_clusters %}, {{ num_clusters }} cluster{{ num_clusters|pluralize }}{% endif %}
+    #</p>
+    {% endcomment %}
 {% else %}
     <p id="tag-and-cluster-counts">
-        Showing {{ num_tags }} tag{{ num_tags|pluralize }}{% if num_clusters %}, {{ num_clusters }} cluster{{ num_clusters|pluralize }}{% endif %}{% if cluster %} within the "{{ cluster.name }}" cluster{% endif %}.
+        Showing {{ num_tags }} tag{{ num_tags|pluralize }}{% if num_terms %} ({{ num_terms }} terms){% endif %}{% if num_clusters %}, {{ num_clusters }} cluster{{ num_clusters|pluralize }}{% endif %}{% if cluster %} within the "{{ cluster.name }}" cluster{% endif %}.
+        
     </p>
 {% endif %}

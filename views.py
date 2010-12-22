@@ -791,6 +791,11 @@ def ajax_textui_nodes(request):
     else:
         show_empty_terms = False
     
+    if request.user.is_staff:
+        num_terms = child_nodes.filter(is_taxonomy_term=True).count()
+    else:
+        num_terms = None
+    
     clusters = []
     child_nodes2 = []
     for child_node in child_nodes.values(
@@ -878,29 +883,9 @@ def ajax_textui_nodes(request):
         if not filter_child_node:
             child_nodes2.append(child_node)
     
-    # Add any matching taxonomy terms to the results.
-    #terms2 = []
-    #for term in terms:
-    #    terms2.append({
-    #        'name': term.name,
-    #        'level': '',
-    #        'num_related_tags1': 0,
-    #        'num_sectors1': 0,
-    #        'score': 0,
-    #        'num_resources1': 0,
-    #        'node_type__name': 'term',
-    #        'num_selected_filters1': 0,
-    #        'id': term.id,
-    #        'num_societies1': 0,
-    #        'score1': 0,
-    #    })
-    
     num_clusters = len(clusters)
-    # TODO: Should this include terms?
-    #num_tags = len(child_nodes2) + len(terms2)
     num_tags = len(child_nodes2)
     
-    #child_nodes = clusters + child_nodes2 + terms2
     child_nodes = clusters + child_nodes2
     
     if search_for is not None:
@@ -915,7 +900,6 @@ def ajax_textui_nodes(request):
     #log('  num_clusters: %s' % num_clusters)
     #log('  num_tags: %s' % num_tags)
     #log('    # real tags: %s' % len(child_nodes2))
-    #log('    # terms: %s' % len(terms2))
     
     from django.template.loader import render_to_string
     content = render_to_string('ajax_textui_nodes.html', {
@@ -954,6 +938,7 @@ def ajax_textui_nodes(request):
         'search_for_too_short': search_for_too_short,
         'search_page_title': search_page_title,
         'cluster': cluster,
+        'num_terms': num_terms,
     })
     
     return HttpResponse(json.dumps({
