@@ -329,7 +329,9 @@ var Tags = {
         
         // Update the switch interfaces link
         this.updateChangedNode();
-    
+		
+		$('#tag-counts').empty();
+		
         var tagWindow = $("#tags");
         tagWindow.empty();
         tagWindow.html(
