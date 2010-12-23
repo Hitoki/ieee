@@ -487,9 +487,18 @@ def _get_popularity_level(min, max, count):
     @param count: The count for this specific item.
     @return: A text label 'level1' through 'level6'.
     '''
+    
+    #if count < min or count > max:
+    #    raise Exception('count %r is out side of the min/max range (%r, %r)' % (count, min, max))
+    
     if min == max:
         return _POPULARITY_LEVELS[len(_POPULARITY_LEVELS)-1]
     level = int(round((count-min) / float(max-min) * float(len(_POPULARITY_LEVELS)-1))) + 1
+    
+    # TODO: This fixes invisible terms where the count is < min.  Is this a hack?
+    if level == 0:
+        level = 1
+    
     return 'level' + str(level)
 
 @login_required
@@ -823,7 +832,11 @@ def ajax_textui_nodes(request):
             related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
         else:
             # New-style popularity colors - single color only
-            combinedLevel = _get_popularity_level(min_score, max_score, child_node['score1'])
+            try:
+                combinedLevel = _get_popularity_level(min_score, max_score, child_node['score1'])
+            except Exception:
+                print 'Exception during _get_popularity_level() for node %r' % child_node['name']
+                raise
                 
         
         if child_node['node_type__name'] == NodeType.TAG:
@@ -841,6 +854,9 @@ def ajax_textui_nodes(request):
                     # Combined scores
                     child_node['score'] = child_node['score1']
                     child_node['level'] = combinedLevel
+                    
+                    print 'combinedLevel: %s' % combinedLevel
+                    
                     #child_node['min_score'] = min_score
                     #child_node['max_score'] = max_score
                 
