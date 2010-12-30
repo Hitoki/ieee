@@ -36,7 +36,7 @@ def close_all_open_files(exclude=set()):
         close.
 
         """
-    print 'close_all_open_files()'
+    #print 'close_all_open_files()'
     maxfd = get_maximum_file_descriptors()
     for fd in reversed(range(maxfd)):
         #print '  fd: %r' % fd
@@ -112,13 +112,13 @@ def daemonize(stdout=None, stderr=None, stdin=None, pidfilename=None, exclude_fi
     if stdin is None:
         stdin = open(os.devnull, 'r')
     
-    print '  sys.stdout.fileno(): %s' % sys.stdout.fileno()
-    print '  sys.stderr.fileno(): %s' % sys.stderr.fileno()
-    print '  sys.stdin.fileno(): %s' % sys.stdin.fileno()
+    #print '  sys.stdout.fileno(): %s' % sys.stdout.fileno()
+    #print '  sys.stderr.fileno(): %s' % sys.stderr.fileno()
+    #print '  sys.stdin.fileno(): %s' % sys.stdin.fileno()
     
-    print '  stdout.fileno(): %s' % stdout.fileno()
-    print '  stderr.fileno(): %s' % stderr.fileno()
-    print '  stdin.fileno(): %s' % stdin.fileno()
+    #print '  stdout.fileno(): %s' % stdout.fileno()
+    #print '  stderr.fileno(): %s' % stderr.fileno()
+    #print '  stdin.fileno(): %s' % stdin.fileno()
     
     # Write the pidfile.
     if pidfilename is not None:
@@ -130,7 +130,7 @@ def daemonize(stdout=None, stderr=None, stdin=None, pidfilename=None, exclude_fi
         
         atexit.register(undaemonize, pidfilename)
     
-    print 'closing files...'
+    #print 'closing files...'
     
     # Close any open files.
     exclude_files = set(exclude_files)
@@ -138,8 +138,8 @@ def daemonize(stdout=None, stderr=None, stdin=None, pidfilename=None, exclude_fi
     exclude_files.add(stderr.fileno())
     exclude_files.add(stdin.fileno())
     
-    for f in exclude_files:
-        print '  excluding %r' % f
+    #for f in exclude_files:
+    #    print '  excluding %r' % f
     close_all_open_files(exclude_files)
     
     # Redirect system streams.
@@ -148,7 +148,7 @@ def daemonize(stdout=None, stderr=None, stdin=None, pidfilename=None, exclude_fi
     os.dup2(stdin.fileno(), sys.stdin.fileno())
     
     
-    print 'done closing files.'
+    #print 'done closing files.'
     
 def undaemonize(pidfilename):
     'Remove the pidfile if it exists.'

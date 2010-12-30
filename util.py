@@ -525,6 +525,27 @@ def get_process_info(pid):
         return None
     return out.strip()
 
+def safejoin(a, b):
+    'Works like os.path.join(a, b) - but insures that the result is within the "a" folder.'
+    import os
+    #print 'safejoin()'
+    #print '  a: %r' % a
+    a = os.path.abspath(a)
+    if a[-1:] != os.sep:
+        a += os.sep
+    #print '  a: %r' % a
+    #print '  b: %r' % b
+    c = os.path.abspath(os.path.join(a, b))
+    
+    if len(c) < len(a):
+        # Special case - c is a directory, but does not yet end with /
+        if c[-1:] != os.sep:
+            c += os.sep
+    #print '  c: %r' % c
+    if c[:len(a)] != a:
+        raise Exception('Resulting path %r is not within parent path %r' % (c, a))
+    return os.path.abspath(c)
+
 ## Command line util functions --------------------------------------------------
 
 # NOTE: Cannot remove these yet, since they're included by default into any file that does "from util import *".  Need to fix all those first.

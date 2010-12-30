@@ -1294,8 +1294,10 @@ class ProcessControl(models.Model):
     
     'The type (ie. name) of process.  Should only be one per name at any given time.'
     type = models.CharField(max_length=100, choices=util.make_choices(PROCESS_CONTROL_TYPES))
-    'Log written by the process.'
+    'Log messages output by the process (stored in this DB field only).'
     log = models.CharField(max_length=1000, blank=True)
+    'Filename for the logfile written by the process.'
+    log_filename = models.CharField(max_length=1000, blank=True, default='')
     'Signal the process to quit.'
     is_alive = models.BooleanField(default=True)
     'Process will update periodically to the current time.'

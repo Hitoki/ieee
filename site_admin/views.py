@@ -1731,7 +1731,6 @@ def import_xplore(request):
         raise Exception('The settings.XPLORE_IMPORT_LOG_PATH directory (%r) does not exist.' % settings.XPLORE_IMPORT_LOG_PATH)
     
     pidfilename = os.path.join(settings.XPLORE_IMPORT_LOG_PATH, 'update_resources_from_xplore.pid')
-    logfilename = os.path.join(settings.XPLORE_IMPORT_LOG_PATH, 'update_resources_from_xplore.log.txt')
     
     action = request.REQUEST.get('action', '')
     try:
@@ -1770,10 +1769,13 @@ def import_xplore(request):
                 process.delete()
             else:
                 raise Exception('PID file still exists, cannot remove previous process object.')
-            
+        
+        log_filename_abs = os.path.join(settings.XPLORE_IMPORT_LOG_PATH, 'update_resources_from_xplore_%s.log' % datetime.now().strftime('%Y%m%d-%H%M%S'))
+        
         process = ProcessControl()
         process.type = PROCESS_CONTROL_TYPES.XPLORE_IMPORT
         process.last_processed_tag = last_processed_tag
+        process.log_filename = os.path.basename(log_filename_abs)
         process.save()
         
         # NOTE: Windows only:
@@ -1820,7 +1822,7 @@ def import_xplore(request):
         
         print '  Launching process %r' % script_path
         proc = subprocess.Popen(
-            [sys.executable, '-u', script_path, '--pid=%s' % pidfilename, '--log=%s' % logfilename, '--xplore_hc=%d' % settings.XPLORE_IMPORT_MAX_QUERY_RESULTS, '--path=%s' % paths, '--resume=%s' % resume],
+            [sys.executable, '-u', script_path, '--pid=%s' % pidfilename, '--log=%s' % log_filename_abs, '--xplore_hc=%d' % settings.XPLORE_IMPORT_MAX_QUERY_RESULTS, '--path=%s' % paths, '--resume=%s' % resume],
             cwd=scripts_path,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -1852,32 +1854,50 @@ def import_xplore(request):
         process.delete()
         return HttpResponseRedirect(reverse('admin_import_xplore'))
     
-    if os.path.exists(logfilename):
-        log_exists = True
-    else:
-        log_exists = False
+    
+    # Get list of log files.
+    filenames2 = os.listdir(settings.XPLORE_IMPORT_LOG_PATH)
+    filenames2.sort()
+    
+    import fnmatch
+    filenames = []
+    for filename in filenames2:
+        print 'filename: %s' % filename
+        if fnmatch.fnmatch(filename, '*.log'):
+            print '  match'
+            filenames.append(filename)
     
     print 'rendering'
     return render(request, 'site_admin/import_xplore.html', {
         'process': process,
         'pid': pid,
-        'log_exists': log_exists,
         'is_process_running': is_process_running,
+        'filenames': filenames,
     })
 
 @login_required
 @admin_required
-def import_xplore_log(request):
-    logfilename = os.path.join(settings.XPLORE_IMPORT_LOG_PATH, 'update_resources_from_xplore.log.txt')
-    if os.path.exists(logfilename):
-        log_contents = open(logfilename, 'r').read()
+def import_xplore_log(request, filename):
+    filename_abs = safejoin(settings.XPLORE_IMPORT_LOG_PATH, filename)
+    if os.path.exists(filename_abs):
+        log_contents = open(filename_abs, 'r').read()
     else:
         log_contents = 'ERROR: Could not open logfile.'
     
     print 'rendering'
     return render(request, 'site_admin/import_xplore_log.html', {
+        'filename_abs': filename_abs,
+        'filename': filename,
         'log_contents': log_contents,
     })
+
+@login_required
+@admin_required
+def import_xplore_delete_log(request, filename):
+    filename = safejoin(settings.XPLORE_IMPORT_LOG_PATH, filename)
+    if os.path.exists(filename):
+        os.remove(filename)
+    return HttpResponseRedirect(reverse('admin_import_xplore'))
 
 def _import_standards(file):
     start = time.time()
