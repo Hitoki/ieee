@@ -1005,6 +1005,8 @@ class Resource(models.Model):
     conference_series = models.CharField(max_length=100, blank=True)
     'Optional.  All conferences with the same "conference_series" are grouped together as a series.'
     date = models.DateField(null=True, blank=True)
+    pub_id = models.CharField(max_length=1000, blank=True)
+    'Used for Conferences and Standards (optional).  Matches IEEE Xpore PubID field for matching resources during xplore import.'
     
     url_status = models.CharField(blank=True, max_length=100, choices=URL_STATUS_CHOICES)
     'Reflects the status of this URL.  Can be "good", "bad", or None (not yet checked).'

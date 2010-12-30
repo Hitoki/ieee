@@ -855,7 +855,7 @@ def ajax_textui_nodes(request):
                     child_node['score'] = child_node['score1']
                     child_node['level'] = combinedLevel
                     
-                    print 'combinedLevel: %s' % combinedLevel
+                    #print 'combinedLevel: %s' % combinedLevel
                     
                     #child_node['min_score'] = min_score
                     #child_node['max_score'] = max_score
