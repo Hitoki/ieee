@@ -163,12 +163,11 @@ def main(*args):
                 process_control = models.ProcessControl.objects.get(type=models.PROCESS_CONTROL_TYPES.XPLORE_IMPORT)
                 last_processed_tag = process_control.last_processed_tag
                 
-                log('Resuming from tag %r.' % last_processed_tag)
+                log('Resuming from tag %r.' % last_processed_tag.name)
                 
                 assert last_processed_tag is not None, 'Trying to resume, but last_processed_tag (%r) is None.' % last_processed_tag
                 
                 old_tags_count = tags.count()
-                #log('Resuming from tag %r.' % last_processed_tag.name)
                 tags = tags.filter(name__gt=last_processed_tag.name)
                 new_tags_count = tags.count()
                 log('  Found %s tags (filtered out %s).' % (new_tags_count, old_tags_count - new_tags_count))
@@ -209,7 +208,7 @@ def main(*args):
                     'md': tag.name.encode('utf-8'),
                     'ctype' : 'Journals'
                 })
-                #log('Calling %s' % xplore_query_url)
+                log('Calling %s' % xplore_query_url)
                 try:
                     file = urllib2.urlopen(xplore_query_url)
                 except (urllib2.URLError, httplib.BadStatusLine):
@@ -234,7 +233,7 @@ def main(*args):
                         xhit_title = xhit.getElementsByTagName('title')[0].firstChild.nodeValue
                         if not len(issn):
                             try:
-                                #log('No ISSN node found in Xplore result with title "%s"' % xhit_title)
+                                log('No ISSN node found in Xplore result with title "%s"' % xhit_title)
                                 resSum['xplore_hits_without_id'] += 1
                             except UnicodeEncodeError, e:
                                 log('No ISSN node found in Xplore result with UNPRINTABLE TITLE. See error.')
@@ -243,22 +242,22 @@ def main(*args):
                         elif not issn[0].firstChild.nodeValue in distinct_issns:
                             distinct_issns[issn[0].firstChild.nodeValue] = xhit_title
                     
-                    #log("Found %d unique ISSNs:" % len(distinct_issns))
+                    log("Found %d unique ISSNs:" % len(distinct_issns))
                     for issn, xhit_title in distinct_issns.iteritems():
                         try:
-                            #log('%s: "%s"' % (issn, xhit_title))
+                            log('%s: "%s"' % (issn, xhit_title))
                             pass
                         except UnicodeEncodeError, e:
-                            #log(e)
+                            log(e)
                             continue
-                    #log("Looking for matching TechNav Resources...")
+                    log("Looking for matching TechNav Resources...")
                     for issn, xhit_title in distinct_issns.iteritems():
                         try:
                             per = models.Resource.objects.get(ieee_id=issn)
-                            #log('%s: Found TechNav Resource titled "%s".' % (issn, per.name))
+                            log('%s: Found TechNav Resource titled "%s".' % (issn, per.name))
                             
                             if per in tag.resources.all():
-                                #log('Relationship already exists.')
+                                log('Relationship already exists.')
                                 resSum['existing_relationship_count'] += 1
                             else:
                                 log('*** Creating relationship.')
@@ -271,16 +270,12 @@ def main(*args):
                                 )
                                 xref.save()
                         except models.Resource.DoesNotExist:
-                            #log('%s: No TechNav Resource found.' % issn)
+                            log('%s: No TechNav Resource found.' % issn)
                             resSum['resources_not_found'] += 1
                 
                 # TODO add finally block to close file once python is updated past 2.4
                 
                 last_tag = tag
-                
-                # DEBUG:
-                #log('Quitting after one tag.')
-                #break
                 
             log('\nSummary:')
             log('Tags Processed: %d' % resSum['tags_processed'])

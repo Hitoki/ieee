@@ -1860,19 +1860,23 @@ def import_xplore(request):
     filenames2.sort()
     
     import fnmatch
-    filenames = []
+    files = []
     for filename in filenames2:
         print 'filename: %s' % filename
         if fnmatch.fnmatch(filename, '*.log'):
             print '  match'
-            filenames.append(filename)
+            size = os.path.getsize(os.path.join(settings.XPLORE_IMPORT_LOG_PATH, filename))
+            files.append({
+                'filename': filename,
+                'size': size,
+            })
     
     print 'rendering'
     return render(request, 'site_admin/import_xplore.html', {
         'process': process,
         'pid': pid,
         'is_process_running': is_process_running,
-        'filenames': filenames,
+        'files': files,
     })
 
 @login_required
@@ -1890,6 +1894,22 @@ def import_xplore_log(request, filename):
         'filename': filename,
         'log_contents': log_contents,
     })
+
+@login_required
+@admin_required
+def import_xplore_download_log(request, filename):
+    filename_abs = safejoin(settings.XPLORE_IMPORT_LOG_PATH, filename)
+    if not os.path.exists(filename_abs):
+        return HttpResponse('The log file %r does not exist.' % filename_abs)
+
+    from django.core.servers.basehttp import FileWrapper
+    
+    wrapper = FileWrapper(file(filename_abs))
+    response = HttpResponse(wrapper, content_type='text/plain')
+    response['Content-Length'] = os.path.getsize(filename_abs)
+    response['Content-Disposition'] = 'attachment; filename=%s' % filename
+
+    return response
 
 @login_required
 @admin_required

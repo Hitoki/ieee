@@ -155,23 +155,48 @@
     
     <h2>Log Files</h2>
     
-    <ul>
-        {% for filename in filenames %}
-            <li>
-                <a href="{% url admin_import_xplore_log filename %}">
-                    {{ filename }}
-                </a>
-                -
-                <a href="{% url admin_import_xplore_delete_log filename %}">
-                    [delete]
-                </a>
-            </li>
+    <table class="grid">
+        <tr>
+            <th>
+                Filename
+            </th>
+            <th>
+                Size
+            </th>
+            <th>
+                
+            </th>
+        </tr>
+        {% for file in files %}
+            <tr>
+                <td>
+                    {{ file.filename }}
+                </td>
+                <td style="text-align:right;">
+                    {{ file.size|filesizeformat }}
+                </td>
+                <td>
+                    <a href="{% url admin_import_xplore_log file.filename %}">
+                        view
+                    </a>
+                    |
+                    <a href="{% url admin_import_xplore_download_log file.filename %}">
+                        download
+                    </a>
+                    |
+                    <a href="{% url admin_import_xplore_delete_log file.filename %}">
+                        delete
+                    </a>
+                </td>
+            </tr>
         {% empty %}
-            <li>
-                (None)
-            </li>
+            <tr>
+                <td>
+                    (None)
+                </td>
+            </tr>
         {% endfor %}
-    </ul>
+    </table>
     
     <br/>
     <br/>
