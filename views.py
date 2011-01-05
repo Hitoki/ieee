@@ -872,12 +872,18 @@ def ajax_textui_nodes(request):
     
     if search_for is not None:
         final_punc =  ('.', ':')[len(child_nodes) > 0]
+        str = ''
         if sector_id is not None:
-            str = ' in the %s node%s' % (sector.name, final_punc)
-            search_page_title = {"num": len(child_nodes), "search_for": search_for, "node_desc": str}
+            str += ' in the industry sector "%s"' % (sector.name)
         elif society_id is not None:
-            str = ' for the %s society%s' % (society.name, final_punc)
-            search_page_title = {"num": len(child_nodes), "search_for": search_for, "node_desc": str}
+            str += ' for the society "%s"' % (society.name)
+        
+        if cluster_id is not None:
+            str += ' in the cluster "%s"' % (cluster.name)
+        
+        str += final_punc
+        
+        search_page_title = {"num": len(child_nodes), "search_for": search_for, "node_desc": str}
     
     #log('  num_clusters: %s' % num_clusters)
     #log('  num_tags: %s' % num_tags)
@@ -921,6 +927,7 @@ def ajax_textui_nodes(request):
         'search_page_title': search_page_title,
         'cluster': cluster,
         'num_terms': num_terms,
+        'sector': sector,
     })
     
     return HttpResponse(json.dumps({
