@@ -621,7 +621,6 @@ def ajax_textui_nodes(request):
     
     search_for_too_short = False
     
-    #terms = []
     num_tags = 0
     num_clusters = 0
     
@@ -665,30 +664,6 @@ def ajax_textui_nodes(request):
                     else:
                         word_queries = and_query(word_queries, Q(name__icontains=word))
                 
-            # Only add terms if search is:
-            #   - within a cluster.
-            #   - in all sectors.
-            #   - in all societies.
-            # Otherwise we can't show anything, since terms are not associated with societies/sectors, only clusters.
-            #if show_terms and sector_id is None and society_id is None:
-            #    log('  adding terms for search phrase')
-            #    terms = TaxonomyTerm.objects.all()
-            #    
-            #    # Search for keywords.
-            #    terms = terms.filter(word_queries)
-            #    #log('  terms.count(): %r' % terms.count())
-            #    
-            #    # Filter by cluster
-            #    if cluster_id is not None:
-            #        cluster = Node.objects.get(id=cluster_id, node_type__name=NodeType.TAG_CLUSTER)
-            #        taxonomy_cluster = TaxonomyCluster.objects.get(name=cluster.name)
-            #        terms = terms.filter(taxonomy_clusters__id=taxonomy_cluster.id)
-            #        #log('  terms.count(): %r' % terms.count())
-            #    
-            #    # Filter out any terms matched to existing tags.
-            #    terms = terms.annotate(num_related_nodes=Count('related_nodes')).filter(num_related_nodes=0)
-            #    #log('  terms.count(): %r' % terms.count())
-                
         else:
             # Search phrase was too short, return empty results.
             child_nodes = Node.objects.none()
@@ -718,15 +693,6 @@ def ajax_textui_nodes(request):
         #log('  searching by cluster %r' % cluster_id)
         child_nodes = child_nodes.filter(parents__id=cluster_id)
         
-        # Only show terms from the cluster here if we're not in a sector or society.
-        #if show_terms and not word_queries and sector is None and society is None:
-        #    log('  adding terms for cluster.')
-        #    taxonomy_cluster = TaxonomyCluster.objects.get(name=cluster.name)
-        #    terms = taxonomy_cluster.terms.all()
-        #    
-        #    # Filter out any terms matched to existing tags.
-        #    terms = terms.annotate(num_related_nodes=Count('related_nodes')).filter(num_related_nodes=0)
-    
     if show_clusters:
         # Restrict to only tags & clusters.
         child_nodes = child_nodes.filter(Q(node_type__name=NodeType.TAG) | Q(node_type__name=NodeType.TAG_CLUSTER))

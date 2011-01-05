@@ -9,8 +9,11 @@
 function Nootab(container, options) {
     //console.log("Nootab()");
     //console.log("container: " + container);
-    if (container)
+    //console.log("options:");
+    //console.log(options);
+    if (container) {
         this.setContainer(container, options);
+    }
 }
 
 // Sets the container for this Nootab.
@@ -34,14 +37,15 @@ Nootab.prototype.setContainer = function(container, options) {
         
         this.options = {
             //bookmark: false,
-            event: 'click',
-            reloadPage: false,
-            useCookies: true,
-            useHash: true,
-            fullWidthMenus: false,
-            fillerLine: false,
-            disable: false,
-			defaultTab: 1
+            event: 'click'
+            , reloadPage: false
+            , useCookies: true
+            , useHash: true
+            , fullWidthMenus: false
+            , fillerLine: false
+            , disable: false
+			, defaultTab: 1
+			, onChangeTab: null
         };
         
         // Parse options
@@ -66,6 +70,8 @@ Nootab.prototype.setContainer = function(container, options) {
             this.options.defaultTab = options.defaultTab;
         if ('useHash' in options)
             this.options.useHash = options.useHash;
+        if ('onChangeTab' in options)
+            this.options.onChangeTab = options.onChangeTab;
         
         //for (i in data)
             //console.log("data["+i+"]: " + data[i]);
@@ -247,11 +253,16 @@ Nootab.prototype.addTab = function(menu, tab) {
 // Params:
 //   index - integer for an index, or string for the tab id.
 // 
-Nootab.prototype.setTab = function(index) {
-    if (typeof index == "string")
+Nootab.prototype.setTab = function(index, isUserClick) {
+    if (typeof index == "string") {
         index = this.getTabFromId(index);
+    }
     
-    if (index !== null) {
+    if (isUserClick == undefined) {
+        isUserClick = false;
+    }
+    
+    if (index !== null && index != this.selectedTab) {
         if (this.selectedTab != null) {
             this.tabs[this.selectedTab].menu.removeClass('nootabs-selected-menu');
             this.tabs[this.selectedTab].tab.removeClass('nootabs-selected-tab');
@@ -281,6 +292,11 @@ Nootab.prototype.setTab = function(index) {
         //    var hash = 'tab-' + this.id + "-" + this.tabs[this.selectedTab].id;
         //    AjaxHistory.setHash(hash);
         //}
+        
+        if (this.options.onChangeTab && isUserClick) {
+            // Fire the onChangeTab callback only when the user explicitly changes the tab.
+            this.options.onChangeTab(this);
+        }
     }
 }
 
@@ -324,9 +340,17 @@ Nootab.prototype.onSelectLink = function(link) {
         window.location = nohash + "#" + hash;
     } else {
         var i = this.getMenuFromObj(link.parentNode);
-        this.setTab(i);
+        this.setTab(i, true);
     }
     $(document).trigger('onShowLightboxTab');
+}
+
+Nootab.prototype.getCurrentTabIndex = function() {
+    return this.selectedTab;
+}
+
+Nootab.prototype.getCurrentTab = function() {
+    return this.tabs[this.selectedTab];
 }
 
 ////////////////////////////////////////////////////////////////////////////////
