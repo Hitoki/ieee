@@ -773,97 +773,99 @@ def ajax_textui_nodes(request):
     
     clusters = []
     child_nodes2 = []
-    for child_node in child_nodes.values(
-        'id',
-        'name',
-        'node_type__name',
-        'num_related_tags1',
-        'num_resources1',
-        'num_sectors1',
-        'num_selected_filters1',
-        'num_societies1',
-        'score1',
-        'is_taxonomy_term',
-    ):
-        filter_child_node = False
-        
-        # TODO: This is too slow, reenable later
-        #num_related_tags = child_node['get_filtered_related_tag_count']()
-        num_related_tags = child_node['num_related_tags1']
-        
-        if not settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
-            # Old-style popularity colors with main color & two color blocks
-            resourceLevel = _get_popularity_level(min_resources, max_resources, child_node['num_resources1'])
-            sectorLevel = _get_popularity_level(min_sectors, max_sectors, child_node['num_sectors1'])
-            related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
-        else:
-            # New-style popularity colors - single color only
-            try:
-                combinedLevel = _get_popularity_level(min_score, max_score, child_node['score1'])
-            except Exception:
-                print 'Exception during _get_popularity_level() for node %r' % child_node['name']
-                raise
-                
-        
-        if child_node['node_type__name'] == NodeType.TAG:
+    
+    if child_nodes.count() > 0:
+        for child_node in child_nodes.values(
+            'id',
+            'name',
+            'node_type__name',
+            'num_related_tags1',
+            'num_resources1',
+            'num_sectors1',
+            'num_selected_filters1',
+            'num_societies1',
+            'score1',
+            'is_taxonomy_term',
+        ):
+            filter_child_node = False
             
-            # Show all terms, and all tags with content.
-            if (show_empty_terms and child_node['is_taxonomy_term']) or (child_node['num_selected_filters1'] > 0 and child_node['num_societies1'] > 0 and child_node['num_resources1'] > 0):
-                
-                if not settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
-                    # Separated color blocks
-                    child_node['level'] = resourceLevel
-                    child_node['sectorLevel'] = sectorLevel
-                    child_node['relatedTagLevel'] = related_tag_level
-                    child_node['num_related_tags'] = num_related_tags
-                else:
-                    # Combined scores
-                    child_node['score'] = child_node['score1']
-                    child_node['level'] = combinedLevel
-                    
-                    #print 'combinedLevel: %s' % combinedLevel
-                    
-                    #child_node['min_score'] = min_score
-                    #child_node['max_score'] = max_score
-                
+            # TODO: This is too slow, reenable later
+            #num_related_tags = child_node['get_filtered_related_tag_count']()
+            num_related_tags = child_node['num_related_tags1']
+            
+            if not settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
+                # Old-style popularity colors with main color & two color blocks
+                resourceLevel = _get_popularity_level(min_resources, max_resources, child_node['num_resources1'])
+                sectorLevel = _get_popularity_level(min_sectors, max_sectors, child_node['num_sectors1'])
+                related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
             else:
-                #log('removing node %s' % child_node['name'])
-                #log('  child_node['num_selected_filters1']: %s' % child_node['num_selected_filters1'])
-                #log('  child_node['num_societies1']: %s' % child_node['num_societies1'])
-                #log('  child_node['num_resources1']: %s' % child_node['num_resources1'])
+                # New-style popularity colors - single color only
+                try:
+                    combinedLevel = _get_popularity_level(min_score, max_score, child_node['score1'])
+                except Exception:
+                    print 'Exception during _get_popularity_level() for node %r' % child_node['name']
+                    raise
+                    
+            
+            if child_node['node_type__name'] == NodeType.TAG:
+                
+                # Show all terms, and all tags with content.
+                if (show_empty_terms and child_node['is_taxonomy_term']) or (child_node['num_selected_filters1'] > 0 and child_node['num_societies1'] > 0 and child_node['num_resources1'] > 0):
+                    
+                    if not settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
+                        # Separated color blocks
+                        child_node['level'] = resourceLevel
+                        child_node['sectorLevel'] = sectorLevel
+                        child_node['relatedTagLevel'] = related_tag_level
+                        child_node['num_related_tags'] = num_related_tags
+                    else:
+                        # Combined scores
+                        child_node['score'] = child_node['score1']
+                        child_node['level'] = combinedLevel
+                        
+                        #print 'combinedLevel: %s' % combinedLevel
+                        
+                        #child_node['min_score'] = min_score
+                        #child_node['max_score'] = max_score
+                    
+                else:
+                    #log('removing node %s' % child_node['name'])
+                    #log('  child_node['num_selected_filters1']: %s' % child_node['num_selected_filters1'])
+                    #log('  child_node['num_societies1']: %s' % child_node['num_societies1'])
+                    #log('  child_node['num_resources1']: %s' % child_node['num_resources1'])
+                    filter_child_node = True
+                    
+                    
+            elif child_node['node_type__name'] == NodeType.TAG_CLUSTER:
+                # Only show clusters that have one of the selected filters
+                #if child_node['filters'].filter(id__in=filterIds).count():
+                #    cluster_child_tags = child_node['get_tags']()
+                #    cluster_child_tags = Node.objects.get_extra_info(cluster_child_tags)
+                #    
+                #    # Find out how many of this cluster's child tags would show with the current filters
+                #    num_child_tags = 0
+                #    for cluster_child_tag in cluster_child_tags:
+                #        if cluster_child_tag.num_resources1 > 0 and cluster_child_tag.num_societies1 > 0 and cluster_child_tag.num_filters1 > 0 and cluster_child_tag.filters.filter(id__in=filterIds).count() > 0:
+                #            num_child_tags += 1
+                #    
+                #    if num_child_tags > 0:
+                #        # do nothing
+                #        pass
+                #    else:
+                #        filter_child_node = True
+                
+                # TODO: Not using levels yet, so all clusters show as the same color.
+                child_node['level'] = ''
+                
+                # Make sure clusters show on top of the list.
                 filter_child_node = True
-                
-                
-        elif child_node['node_type__name'] == NodeType.TAG_CLUSTER:
-            # Only show clusters that have one of the selected filters
-            #if child_node['filters'].filter(id__in=filterIds).count():
-            #    cluster_child_tags = child_node['get_tags']()
-            #    cluster_child_tags = Node.objects.get_extra_info(cluster_child_tags)
-            #    
-            #    # Find out how many of this cluster's child tags would show with the current filters
-            #    num_child_tags = 0
-            #    for cluster_child_tag in cluster_child_tags:
-            #        if cluster_child_tag.num_resources1 > 0 and cluster_child_tag.num_societies1 > 0 and cluster_child_tag.num_filters1 > 0 and cluster_child_tag.filters.filter(id__in=filterIds).count() > 0:
-            #            num_child_tags += 1
-            #    
-            #    if num_child_tags > 0:
-            #        # do nothing
-            #        pass
-            #    else:
-            #        filter_child_node = True
+                clusters.append(child_node)
+                    
+            else:
+                raise Exception('Unknown child node type "%s" for node "%s"' % (child_node['node_type__name'], child_node['name']))
             
-            # TODO: Not using levels yet, so all clusters show as the same color.
-            child_node['level'] = ''
-            
-            # Make sure clusters show on top of the list.
-            filter_child_node = True
-            clusters.append(child_node)
-                
-        else:
-            raise Exception('Unknown child node type "%s" for node "%s"' % (child_node['node_type__name'], child_node['name']))
-        
-        if not filter_child_node:
-            child_nodes2.append(child_node)
+            if not filter_child_node:
+                child_nodes2.append(child_node)
     
     num_clusters = len(clusters)
     num_tags = len(child_nodes2)
