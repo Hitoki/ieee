@@ -24,6 +24,12 @@ Nootab.prototype.setContainer = function(container, options) {
     if (container) {
         //console.log("container: " + container);
         this.container = $(container);
+        
+        if (this.container.length != 1) {
+            alert('Error in Nootab.setContainer(): container.length (' + this.container.length + ') should be 1.');
+            return;
+        }
+        
         $(container).data('nootabs', this);
         
         if (!this.container[0].id)

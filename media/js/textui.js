@@ -104,19 +104,21 @@ $(document).ready(function(){
     }
     
     // Handle nootabs.
-    var tabs = new Nootab($('#left-column-container'), {
-        onChangeTab: function(tabs) {
-            // Select the first item in the list ("All")
-            var tab = tabs.getCurrentTab();
-            if (tab.tab[0].id == 'sectors-tab') {
-                Tags.selectSector('all');
-            } else if (tab.tab[0].id == 'societies-tab') {
-                Tags.selectSociety('all');
-            } else {
-                alert('onChangeTab(): Error: unknown tab id "' + tab.tab[0].id + '"');
+    if ($('#left-column-container').length > 0) {
+        var tabs = new Nootab($('#left-column-container'), {
+            onChangeTab: function(tabs) {
+                // Select the first item in the list ("All")
+                var tab = tabs.getCurrentTab();
+                if (tab.tab[0].id == 'sectors-tab') {
+                    Tags.selectSector('all');
+                } else if (tab.tab[0].id == 'societies-tab') {
+                    Tags.selectSociety('all');
+                } else {
+                    alert('onChangeTab(): Error: unknown tab id "' + tab.tab[0].id + '"');
+                }
             }
-        }
-    });
+        });
+    }
 });
 
 function splitContent(content, len) {
