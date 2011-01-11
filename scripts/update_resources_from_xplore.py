@@ -15,7 +15,7 @@ import datetime
 import re
 import getopt
 import daemonize
-from sets import Set()
+from sets import Set
 
 def log(msg):
     print >>sys.stdout, msg.encode('utf-8')
