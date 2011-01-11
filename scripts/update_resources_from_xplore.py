@@ -284,7 +284,7 @@ def main(*args):
                             resSum['resources_not_found'] += 1
                 
                 # Loop thru all the unique societies and create relationships where they are missing.
-                log("Found %d unique societ%s related to all periodicals.", (len(society_set), ['ies', 'y'](len(society_set) == 1)))
+                log("Found %d unique societ%s related to all periodicals." % (len(society_set), ['ies', 'y'](len(society_set) == 1)))
                 for society in society_set:
                     log('Society: %s' % society.name)
                     if tag.societies.filter(id=society.id).count() == 0:
