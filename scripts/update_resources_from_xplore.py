@@ -287,10 +287,9 @@ def main(*args):
                 log("Found %d unique societ%s related to all periodicals.", (len(society_set), ['ies', 'y'](len(society_set) == 1)))
                 for society in society_set:
                     log('Society: %s' % society.name)
-                    if node.societies.filter(id=society.id).count() == 0:
+                    if tag.societies.filter(id=society.id).count() == 0:
                         log('*** Creating relationship to Society.')
                         resSum['society_relationships_created'] += 1
-                        society_relationships_created
                         xref = models.NodeSocieties(
                             node = tag,
                             society = society,
