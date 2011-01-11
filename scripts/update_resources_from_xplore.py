@@ -15,6 +15,7 @@ import datetime
 import re
 import getopt
 import daemonize
+from sets import Set()
 
 def log(msg):
     print >>sys.stdout, msg.encode('utf-8')
@@ -143,6 +144,7 @@ def main(*args):
                 'xplore_hits_without_id' : 0,
                 'existing_relationship_count' : 0,
                 'relationships_created' : 0,
+                'society_relationships_created' : 0,
                 'resources_not_found' : 0
             }
             
@@ -176,6 +178,7 @@ def main(*args):
             
             last_updated = None
             last_tag = None
+            society_set = None
             
             for i, tag in enumerate(tags):
                 if use_processcontrol:
@@ -250,6 +253,9 @@ def main(*args):
                         except UnicodeEncodeError, e:
                             log(e)
                             continue
+                    
+                    # Create a unique set of the resources' related societies    
+                    society_set = Set()
                     log("Looking for matching TechNav Resources...")
                     for issn, xhit_title in distinct_issns.iteritems():
                         try:
@@ -269,9 +275,32 @@ def main(*args):
                                     is_machine_generated = True
                                 )
                                 xref.save()
+                            
+                            for society in per.societies:
+                                society_set.add(society)
+                                
                         except models.Resource.DoesNotExist:
                             log('%s: No TechNav Resource found.' % issn)
                             resSum['resources_not_found'] += 1
+                
+                # Loop thru all the unique societies and create relationships where they are missing.
+                log("Found %d unique societ%s related to all periodicals.", (len(society_set), ['ies', 'y'](len(society_set) == 1)))
+                for society in society_set:
+                    log('Society: %s' % society.name)
+                    if node.societies.filter(id=society.id).count() == 0:
+                        log('*** Creating relationship to Society.')
+                        resSum['society_relationships_created'] += 1
+                        society_relationships_created
+                        xref = models.NodeSocieties(
+                            node = tag,
+                            society = society,
+                            date_created = now,
+                            is_machine_generated = True
+                        )
+                        xref.save()
+                    else:
+                        log('Relationship to society already exists.')
+                    
                 
                 # TODO add finally block to close file once python is updated past 2.4
                 
