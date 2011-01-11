@@ -406,7 +406,7 @@ class Node(models.Model):
     'The parent nodes.  The type for this field can be vary depending on the type of this node.'
     node_type = models.ForeignKey(NodeType)
     'The type of node this is: root, sector, cluster, tag.'
-    societies = models.ManyToManyField('Society', related_name='tags', blank=True)
+    societies= models.ManyToManyField('Society', related_name='tags', blank=True, through='NodeSocieties')
     filters = models.ManyToManyField('Filter', related_name='nodes')
     related_tags = models.ManyToManyField('self', null=True, blank=True)
     
@@ -642,6 +642,16 @@ class Node(models.Model):
         
     class Meta:
         ordering = ['name']
+        
+class NodeSocieties(models.Model):
+    node = models.ForeignKey('Node', related_name='node_societies')
+    society = models.ForeignKey('Society', related_name='node_societies')
+    date_created = models.DateTimeField(blank=True, null=True, default=None)
+    is_machine_generated = models.BooleanField(default=False)
+    
+    class Meta:
+        db_table = 'ieeetags_node_societies'
+        ordering = ['node__name', 'society__name']
 
 # ------------------------------------------------------------------------------
 
