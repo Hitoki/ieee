@@ -2592,3 +2592,7 @@ em.none {
     font-style:italic;
     color:gray;
 }
+
+td.machine-generated-column {
+    padding:1em;
+}

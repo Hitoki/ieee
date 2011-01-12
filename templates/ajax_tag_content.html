@@ -97,14 +97,14 @@
                         <!-- Organizations -->
                         <div id="society-tab" data-printUrl='{% url print_resource tag.id "societies" %}'>
                             <div class="group">
-                            {% if tag.societies.all %}
+                            {% if tag.node_societies.all %}
                                 <table class="society-images">
-                                    {% for society in tag.societies.all %}
+                                    {% for node_society in tag.node_societies.all %}
                                         <tr>
                                             <td class="society-logo">
-                                                {% if society.logo_thumbnail %}
+                                                {% if node_society.society.logo_thumbnail %}
                                                     <div class="image-container">
-                                                        <img src="{{ society.logo_thumbnail.url }}" />
+                                                        <img src="{{ node_society.society.logo_thumbnail.url }}" />
                                                     </div>
                                                 {% else %}
                                                     <div class="image-container">
@@ -112,15 +112,20 @@
                                                     </div>
                                                 {% endif %}
                                             </td>
-                                            <td>
-                                                {% if society.url %}
-                                                    <a href="{{ society.url }}" target="_blank">
+                                            <td class="machine-generated-column">
+                                                {% if node_society.is_machine_generated %}
+                                                    <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated link" title="Machine-generated link" style="vertical-align:middle;" />
                                                 {% endif %}
-                                                <span>{{ society.name }} ({{ society.abbreviation }})</span>
-                                                {% if society.url %}
+                                            </td>
+                                            <td>
+                                                {% if node_society.society.url %}
+                                                    <a href="{{ node_society.society.url }}" target="_blank">
+                                                {% endif %}
+                                                <span>{{ node_society.society.name }} ({{ node_society.society.abbreviation }})</span>
+                                                {% if node_society.society.url %}
                                                     <img src="{{ MEDIA_URL }}images/popup.png" />
                                                 {% endif %}
-                                                {% if society.url %}
+                                                {% if node_society.society.url %}
                                                     </a>
                                                 {% endif %}
                                             </td>
