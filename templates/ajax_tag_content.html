@@ -112,11 +112,6 @@
                                                     </div>
                                                 {% endif %}
                                             </td>
-                                            <td class="machine-generated-column">
-                                                {% if node_society.is_machine_generated %}
-                                                    <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated link" title="Machine-generated link" style="vertical-align:middle;" />
-                                                {% endif %}
-                                            </td>
                                             <td>
                                                 {% if node_society.society.url %}
                                                     <a href="{{ node_society.society.url }}" target="_blank">
@@ -127,6 +122,9 @@
                                                 {% endif %}
                                                 {% if node_society.society.url %}
                                                     </a>
+                                                {% endif %}
+                                                {% if node_society.is_machine_generated %}
+                                                    <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated link" title="Machine-generated link" style="vertical-align:middle;" />
                                                 {% endif %}
                                             </td>
                                         </tr>    
