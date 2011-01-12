@@ -4,16 +4,16 @@
         <h3 class="{{ tagLevel }}">{{ tag.name }}</h3>
         <table class="node-tooltip-grid">
             {% comment %}
-            <tr>
-                <td class="filter-block">
-                    Filters:
-                </td>
-                <td class="tooltip-filters">
-                    {% for filter in tag.filters.all %}
-                        {{ filter.name }}{% if not forloop.last %}, {% endif %}
-                    {% endfor %}
-                </td>
-            </tr>
+            #<tr>
+            #    <td class="filter-block">
+            #        Filters:
+            #    </td>
+            #    <td class="tooltip-filters">
+            #        {% for filter in tag.filters.all %}
+            #            {{ filter.name }}{% if not forloop.last %}, {% endif %}
+            #        {% endfor %}
+            #    </td>
+            #</tr>
             {% endcomment %}
             <tr>
                 <td>

@@ -449,8 +449,8 @@ def truncate_link_list(items, output_func, plain_output_func, max_chars, tag=Non
     @param output_func: the Plaintext output formatting function, takes one item as its argument.  This is used to determine the content length (w/o HTML markup tags)
     @param max_chars: the maximum length of the output, not including the '... (X more)' if necessary
     """
-    print 'truncate_link_list()'
-    print '  tag: %r' % tag
+    #print 'truncate_link_list()'
+    #print '  tag: %r' % tag
     items_str = ''
     items_plaintext = ''
     
