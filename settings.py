@@ -72,14 +72,18 @@ DEFAULT_CHARSET = 'utf-8'
 
 # Outgoing Email Settings
 
-EMAIL_HOST = None
-EMAIL_PORT = None
-EMAIL_HOST_USER = None
-EMAIL_HOST_PASSWORD = None
-EMAIL_USE_TLS = None
+#EMAIL_HOST = None
+#EMAIL_PORT = None
+#EMAIL_HOST_USER = None
+#EMAIL_HOST_PASSWORD = None
+#EMAIL_USE_TLS = None
 
 SERVER_EMAIL = None
-DEFAULT_FROM_EMAIL = None
+
+# Postmark email service setting
+EMAIL_BACKEND = 'postmark.django_backend.EmailBackend'
+POSTMARK_SENDER = 'IEEE Technology Navigator <technav_admin@systemicist.com>'
+DEFAULT_FROM_EMAIL = 'IEEE Technology Navigator <technav_admin@systemicist.com>' # Address from which non-error emails will be sent
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -252,8 +256,8 @@ MANDATORY_VARS = [
     'DATABASE_NAME',
     'DATABASE_USER',
     'DATABASE_PASSWORD',
-    'EMAIL_HOST',
-    'SERVER_EMAIL',
+    #'EMAIL_HOST',
+    #'SERVER_EMAIL',
     'DEFAULT_FROM_EMAIL',
     'XPLORE_IMPORT_LOG_PATH',
 ]
