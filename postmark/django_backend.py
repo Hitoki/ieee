@@ -10,7 +10,6 @@ class EmailBackend(BaseEmailBackend):
         """
         Initialize the backend.
         """
-        import ipdb; ipdb.set_trace()
         super(EmailBackend, self).__init__(**kwargs)
         self.api_key = getattr(settings, 'POSTMARK_API_KEY', api_key)
         if not self.api_key:
