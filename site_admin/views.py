@@ -1033,8 +1033,11 @@ def _import_resources(file, batch_commits=False):
     societies_assigned = 0
     num_invalid_societies = 0
     resources_skipped = 0
+    resources_pub_id_updated = 0
+    new_resource_with_pub_id = 0
     
     reader = UnicodeReader(file)
+    
     # Get rid of header line
     reader.next()
     
@@ -1050,16 +1053,23 @@ def _import_resources(file, batch_commits=False):
         resource_types[resource_type.name] = resource_type
         
     # Cache the existing resources.
-    resource_ieee_ids = Resource.objects.all().values_list('ieee_id')
-    resource_ieee_ids = set([temp[0] for temp in resource_ieee_ids])
+    #resource_ieee_ids = Resource.objects.all().values_list('ieee_id')
+    #resource_ieee_ids = set([temp[0] for temp in resource_ieee_ids])
+
+    print 'Getting resource cache.'
+    resources_cache = {}
+    for resource in Resource.objects.all():
+        resources_cache[resource.ieee_id] = resource
 
     start_rows = time.time()
     last_update_time = None
     
+    count = 0
     for row in reader:
         
-        #Type, ID, Name, Description, URL, Tags, Society Abbreviations, Year, Standard Status, Technical Committees, Keywords, Priority, Completed, Project Code, Date
-        type1, ieee_id, name, description, url, tag_names, society_abbreviations, year, standard_status, technical_committees, keywords, priority_to_tag, completed, project_code, date1 = row
+            
+        #Type, ID, Name, Description, URL, Tags, Society Abbreviations, Conference Year, Standard Status, Technical Committees, Keywords, Priority, Completed, Project Code, PubID, Date
+        type1, ieee_id, name, description, url, tag_names, society_abbreviations, year, standard_status, technical_committees, keywords, priority_to_tag, completed, project_code, pub_id, date1 = row
         
         #logging.debug('    type1: %s' % type1)
         #logging.debug('    ieee_id: %s' % ieee_id)
@@ -1075,19 +1085,32 @@ def _import_resources(file, batch_commits=False):
         #logging.debug('    priority_to_tag: %s' % priority_to_tag)
         #logging.debug('    completed: %s' % completed)
         #logging.debug('    project_code: %s' % project_code)
+        #logging.debug('    pub_id: %s' % pub_id)
         #logging.debug('    date1: %s' % date1)
         
         #num_existing = Resource.objects.filter(resource_type=resource_type, ieee_id=ieee_id).count()
         #num_existing = Resource.objects.filter(resource_type=resource_type, ieee_id=ieee_id).exists()
         #num_existing = Resource.objects.filter(ieee_id=ieee_id).exists()
-        num_existing = (ieee_id in resource_ieee_ids)
+        #num_existing = (ieee_id in resource_ieee_ids)
+        num_existing = (ieee_id in resources_cache)
+        
+        pub_id = pub_id.strip()
         
         if num_existing:
             # Skip over existing resources
-            #logging.debug('  DUPLICATE: resource "%s" already exists.' % name)
+            #logging.debug('  DUPLICATE: resource %s "%s" already exists.' % (ieee_id, name))
             duplicate_resources += 1
+            
+            if pub_id != '':
+                #logging.debug('    Updating pub_id.')
+                resource = resources_cache[ieee_id]
+                resource.pub_id = pub_id
+                resource.save()
+                
+                resources_pub_id_updated += 1
         
         else:
+            #logging.debug('  New resource %s "%s".' % (ieee_id, name))
             # New resource, import it.
             
             # Fix formatting
@@ -1177,12 +1200,15 @@ def _import_resources(file, batch_commits=False):
                 standard_status=standard_status,
                 completed=completed,
                 conference_series=project_code,
+                pub_id=pub_id,
                 date=date1,
             )
             resource.societies = societies
             resource.save()
             resources_created += 1
-                    
+            
+            if pub_id != '':
+                new_resource_with_pub_id += 1
         
         if not last_update_time or time.time() - last_update_time > 1:
             try:
@@ -1234,6 +1260,8 @@ def _import_resources(file, batch_commits=False):
         'valid_societies': valid_societies,
         'invalid_societies': invalid_societies,
         'resources_skipped': resources_skipped,
+        'resources_pub_id_updated': resources_pub_id_updated,
+        'new_resource_with_pub_id': new_resource_with_pub_id,
     }
 
 def _get_random_from_sequence(seq, num):
