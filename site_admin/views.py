@@ -1035,6 +1035,9 @@ def _import_resources(file, batch_commits=False):
     resources_skipped = 0
     resources_pub_id_updated = 0
     new_resource_with_pub_id = 0
+    num_new_mga_societies = 0
+    num_existing_mga_societies = 0
+    mga_replacements = {}
     
     reader = UnicodeReader(file)
     
@@ -1046,6 +1049,9 @@ def _import_resources(file, batch_commits=False):
     
     tab_society = Society.objects.getFromAbbreviation('TAB')
     assert tab_society is not None, 'Cant find TAB society.'
+    
+    mga_society = Society.objects.getFromAbbreviation('MGA')
+    assert mga_society is not None, 'Cant find MGA society.'
     
     # Cache the resource types.
     resource_types = {}
@@ -1067,7 +1073,6 @@ def _import_resources(file, batch_commits=False):
     count = 0
     for row in reader:
         
-            
         #Type, ID, Name, Description, URL, Tags, Society Abbreviations, Conference Year, Standard Status, Technical Committees, Keywords, Priority, Completed, Project Code, PubID, Date
         type1, ieee_id, name, description, url, tag_names, society_abbreviations, year, standard_status, technical_committees, keywords, priority_to_tag, completed, project_code, pub_id, date1 = row
         
@@ -1096,6 +1101,40 @@ def _import_resources(file, batch_commits=False):
         
         pub_id = pub_id.strip()
         
+        # Societies
+        societies = []
+        has_mga_society = False
+        society_abbreviations = [society_abbreviations.strip() for society_abbreviations in society_abbreviations.split('|')]
+        for society_abbreviation in society_abbreviations:
+            if society_abbreviation != '':
+                society = Society.objects.getFromAbbreviation(society_abbreviation)
+                if society is None:
+                    # Check for MGA societies:
+                    if society_abbreviation.lower().count('chapter') or society_abbreviation.lower().count('council') or society_abbreviation.lower().count('region') or society_abbreviation.lower().count('section'):
+                        # Replace any mention of these with the "MGA" society.
+                        society = mga_society
+                        has_mga_society = True
+                        if society_abbreviation not in mga_replacements:
+                            mga_replacements[society_abbreviation] = 1
+                        else:
+                            mga_replacements[society_abbreviation] += 1
+                        
+                    else:
+                        if society_abbreviation not in invalid_societies:
+                            invalid_societies[society_abbreviation] = 1
+                        else:
+                            invalid_societies[society_abbreviation] += 1
+                        num_invalid_societies += 1
+                        #logging.error('    Invalid society abbreviation "%s".' % society_abbreviation)
+                
+                if society is not None:
+                    if society_abbreviation not in valid_societies:
+                        valid_societies[society_abbreviation] = 1
+                    else:
+                        valid_societies[society_abbreviation] += 1
+                    societies_assigned += 1
+                    societies.append(society)
+        
         if num_existing:
             # Skip over existing resources
             #logging.debug('  DUPLICATE: resource %s "%s" already exists.' % (ieee_id, name))
@@ -1104,11 +1143,19 @@ def _import_resources(file, batch_commits=False):
             if pub_id != '':
                 #logging.debug('    Updating pub_id.')
                 resource = resources_cache[ieee_id]
+                
+                # Update the PubID of existing resources.
                 resource.pub_id = pub_id
+                
+                # Update the societies for existing resources (one-time, to catch MGA replacements).
+                if has_mga_society:
+                    resource.societies.add(mga_society)
+                    num_existing_mga_societies += 1
+                
                 resource.save()
                 
                 resources_pub_id_updated += 1
-        
+            
         else:
             #logging.debug('  New resource %s "%s".' % (ieee_id, name))
             # New resource, import it.
@@ -1120,7 +1167,6 @@ def _import_resources(file, batch_commits=False):
                 year = int(year)
             name = name.strip()
             url = url.strip()
-            society_abbreviations = [society_abbreviations.strip() for society_abbreviations in society_abbreviations.split('|')]
             standard_status = standard_status.strip()
             if date1.strip() == '':
                 date1 = None
@@ -1159,28 +1205,10 @@ def _import_resources(file, batch_commits=False):
             if name.strip() == '':
                 raise Exception('Resource name is blank for row: %s' % row)
             
-            societies = []
+            # Societies
+            if has_mga_society:
+                num_new_mga_societies += 1
             
-            # Search by society abbreviation only
-            for society_abbreviation in society_abbreviations:
-                if society_abbreviation != '':
-                    society = Society.objects.getFromAbbreviation(society_abbreviation)
-                    if society is None:
-                        if society_abbreviation not in invalid_societies:
-                            invalid_societies[society_abbreviation] = 1
-                        else:
-                            invalid_societies[society_abbreviation] += 1
-                        num_invalid_societies += 1
-                        #logging.error('    Invalid society abbreviation "%s".' % society_abbreviation)
-                    else:
-                        if society_abbreviation not in valid_societies:
-                            valid_societies[society_abbreviation] = 1
-                        else:
-                            valid_societies[society_abbreviation] += 1
-                        societies_assigned += 1
-                        societies.append(society)
-            
-            # DEBUG:
             if len(societies) == 0:
                 # No valid societies - assign this resource to the TAB society
                 societies.append(tab_society)
@@ -1262,6 +1290,9 @@ def _import_resources(file, batch_commits=False):
         'resources_skipped': resources_skipped,
         'resources_pub_id_updated': resources_pub_id_updated,
         'new_resource_with_pub_id': new_resource_with_pub_id,
+        'num_new_mga_societies': num_new_mga_societies,
+        'num_existing_mga_societies': num_existing_mga_societies,
+        'mga_replacements': mga_replacements,
     }
 
 def _get_random_from_sequence(seq, num):
