@@ -536,6 +536,11 @@ def home(request):
         num_unclustered_tags = Node.objects.get_tags_non_clustered().count()
         num_clustered_tags = num_tags - num_unclustered_tags
         num_resources = Resource.objects.count()
+        
+        num_conferences = Resource.objects.filter(resource_type=ResourceType.objects.getFromName(ResourceType.CONFERENCE)).count()
+        num_standards = Resource.objects.filter(resource_type=ResourceType.objects.getFromName(ResourceType.STANDARD)).count()
+        num_periodicals = Resource.objects.filter(resource_type=ResourceType.objects.getFromName(ResourceType.PERIODICAL)).count()
+        
         num_terms = TaxonomyTerm.objects.count()
         
         return render(request, 'site_admin/admin_home.html', {
@@ -550,6 +555,9 @@ def home(request):
             'num_unclustered_tags': num_unclustered_tags,
             'num_clustered_tags': num_clustered_tags,
             'num_resources': num_resources,
+            'num_conferences': num_conferences,
+            'num_standards': num_standards,
+            'num_periodicals': num_periodicals,
             'num_terms': num_terms,
             'DEBUG_ENABLE_CLUSTERS': settings.DEBUG_ENABLE_CLUSTERS,
         })
