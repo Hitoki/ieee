@@ -40,6 +40,8 @@
         {% block server_info %}{% endblock %}
         <div id="page-container">
             <div id="inner-container">
+                {% include "utility_links.inc.html" %}
+                
                 {% include "header.inc.html" %}
 {% endif %}
                 {% block content %}{% endblock %}
