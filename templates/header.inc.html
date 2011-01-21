@@ -1,11 +1,15 @@
 <div id="header">
-    <a href="{{ LOGO_HREF }}" class="home">
-        <img class="left-banner" src="{{MEDIA_URL}}images/technav_banner.png" width="387" height="65"/>
-    </a>
-    {% if user.is_superuser %}
-        <a href="{% url admin_home %}" id="right-admin">Admin</a>
-    {% endif %}
-    
-    <a href="{{ EXTERNAL_HELP_URL }}" id="right-help" target="zendesk">Help</a>
-    <span id="tagline">Connecting You to the IEEE Universe of Information</span>
+    <span id="header-links">
+        {% if user.is_superuser %}
+            <a href="{% url admin_home %}" id="right-admin">Admin</a>
+        {% endif %}
+        <a href="{{ EXTERNAL_HELP_URL }}" id="right-help" target="zendesk">Help</a>
+        <img src="{{MEDIA_URL}}images/sm-logo.png" width="106" height="32"/>
+    </span>
+    <div id="header-logo">
+        <a href="{{ LOGO_HREF }}" class="home">
+            <img src="{{MEDIA_URL}}images/technav_banner.png" width="364" height="65"/>
+        </a>
+         <span id="tagline">Connecting You to the IEEE Universe of Information</span>
+    </div>
 </div>

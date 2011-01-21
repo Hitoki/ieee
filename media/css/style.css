@@ -73,17 +73,29 @@ table.main td.center .center-pad {
     -webkit-border-radius: 10px 10px 0 0;
 }
 
-#header .left-banner {
-    float: left;
-    position:relative;
-    top:8px;
-    left:0px;
+#header-links {
+    float: right;
+    position: absolute;
+    white-space: nowrap;
+    right: 0;
+    top: 0;
 }
 
-#header .right-banner {
-    float: right;
-    margin-right: 7px;
-    margin-top: 18px;
+#header-links img {
+   margin: 11px 33px 0 0;
+   float: right;
+   clear: both;
+}
+
+#header-logo {
+   float: left;
+}
+
+#header-logo img {
+    float: left;
+    position:relative;
+    top:5px;
+    left:0px;
 }
 
 #header #right-help {
@@ -94,6 +106,7 @@ table.main td.center .center-pad {
    background-color: #33CC00;
    padding: 2px 10px;
    margin: 9px 35px 0 0;
+   border: 1px solid transparent;
    -moz-box-shadow: 1px 1px 5px #3F3F3F;
    -webkit-box-shadow: 1px 1px 5px #3F3F3F;
    -moz-border-radius: 3px;
@@ -113,11 +126,19 @@ table.main td.center .center-pad {
    font-size: 8pt;
    background-color: red;
    padding: 2px 10px;
-   margin: 9px 7px 0 0;
+   margin: 9px 35px 0 0;
+   border: 1px solid transparent;
    -moz-box-shadow: 1px 1px 5px #3F3F3F;
    -webkit-box-shadow: 1px 1px 5px #3F3F3F;
    -moz-border-radius: 3px;
    -webkit-border-radius: 3px;
+}
+
+#header #right-admin:hover {
+   text-decoration: none;
+   background-color: white;
+   color: red;
+   border: 1px solid red;
 }
 
 #header a.home img {
@@ -126,12 +147,12 @@ table.main td.center .center-pad {
 
 #header #tagline {
     color:#006699;
-    display:inline-block;
-    font-size:14pt;
+    float: left;
+    font-size:13pt;
     font-style:italic;
-    margin:-16px 34px 0 0;
-    float: right;
-    clear: left;
+    margin:49px 34px 0 0;
+    position: relative;
+    white-space: nowrap;
 }
 
 #header .leftCorner {
@@ -2518,6 +2539,17 @@ margin-top: 5px;
 }
 
 /*New Laytout*/
+#utility-links {
+float: right;
+margin: -23px 35px 0 0; 
+color: #FFFFFF; 
+}
+
+#utility-links a {
+color: #FFFFFF; 
+font-size: 9pt;  
+}
+
 #page-container {
 width: 100%;   
 }
@@ -2525,7 +2557,7 @@ width: 100%;
 #inner-container {
 width: 85%;
 min-width: 950px;
-margin: 10px auto;
+margin: 30px auto;
 padding: 0 10px 10px 10px;
 background: #FFFFFF url(/media/images/inner-top.png) no-repeat top right;
 -moz-border-radius: 10px 0 10px 10px;
