@@ -99,13 +99,11 @@ table.main td.center .center-pad {
 }
 
 #right-help {
-   float: right;
-   /*clear: right;*/
    color:white;
    font-size: 8pt !important;
    background-color: #33CC00;
    padding: 1px 8px;
-   margin: 0 0 0 10px;
+   margin: 0 0 0 8px;
    border: 1px solid transparent;
    -moz-border-radius: 3px;
    -webkit-border-radius: 3px;
