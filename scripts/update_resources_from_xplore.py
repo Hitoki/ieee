@@ -209,8 +209,7 @@ def main(*args):
                     # Number of results
                     'hc': xplore_hc,
                     # NOTE: Must UTF8 encode here, otherwise urlencode() fails with non-ASCII names.
-                    'md': tag.name.encode('utf-8'),
-                    'ctype' : 'Journals'
+                    'md': tag.name.encode('utf-8')
                 })
                 log('Calling %s' % xplore_query_url)
                 try:
