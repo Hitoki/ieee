@@ -103,6 +103,7 @@ def main(*args):
     
     # Now our django imports.
     from ieeetags import models
+    from ieeetags.models import ResourceType
     
     print 'logfilename: %r' % logfilename
     print 'use_processcontrol: %r' % use_processcontrol
@@ -312,7 +313,7 @@ def main(*args):
                             
                     for punumber, xhit_title in distinct_conference_punumbers.iteritems():
                         try:
-                            conf = models.Resource.objects.get(pub_id=punumber, resourceType=ResourceType.CONFERENCE)
+                            conf = models.Resource.objects.get(pub_id=punumber, resource_type__name=ResourceType.CONFERENCE)
                             log('%s: Found TechNav Resource titled "%s".' % (punumber, conf.name))
                             
                             if conf in tag.resources.all():
