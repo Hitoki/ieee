@@ -1616,8 +1616,7 @@ def _update_periodical_from_xplore(request):
         xplore_query_url = 'http://xploreuat.ieee.org/gateway/ipsSearch.jsp?' + urllib.urlencode({
             # Number of results
             'hc': 5,
-            'md': tag.name,
-            'ctype' : 'Journals'
+            'md': tag.name
         })
         xplore_logger.write('Calling %s' % xplore_query_url + os.linesep)
         try:
