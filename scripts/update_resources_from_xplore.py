@@ -143,7 +143,8 @@ def main(*args):
                 'xplore_connection_errors' : 0,
                 'xplore_hits_without_id' : 0,
                 'existing_relationship_count' : 0,
-                'relationships_created' : 0,
+                'relationships_to_periodicals_created' : 0,
+                'relationships_to_conferences_created' : 0,
                 'society_relationships_created' : 0,
                 'resources_not_found' : 0
             }
@@ -231,24 +232,51 @@ def main(*args):
                     
                     xhits = dom1.documentElement.getElementsByTagName('document')
                     distinct_issns = {}
+                    distinct_conference_punumbers = {}
                     for i, xhit in enumerate(xhits):
-                        issn = xhit.getElementsByTagName('issn')
                         xhit_title = xhit.getElementsByTagName('title')[0].firstChild.nodeValue
-                        if not len(issn):
-                            try:
-                                log('No ISSN node found in Xplore result with title "%s"' % xhit_title)
-                                resSum['xplore_hits_without_id'] += 1
-                            except UnicodeEncodeError, e:
-                                log('No ISSN node found in Xplore result with UNPRINTABLE TITLE. See error.')
-                                log(e)
-                                continue
-                        elif not issn[0].firstChild.nodeValue in distinct_issns:
-                            distinct_issns[issn[0].firstChild.nodeValue] = xhit_title
+                        xhit_pubtype = xhit.getElementsByTagName('pubtype')[0].firstChild.nodeValue
+                        
+                        if xhit_pubtype == "Journals":
+                            issn = xhit.getElementsByTagName('issn')
+                            
+                            if not len(issn):
+                                try:
+                                    log('No ISSN node found in Xplore result with title "%s"' % xhit_title)
+                                    resSum['xplore_hits_without_id'] += 1
+                                except UnicodeEncodeError, e:
+                                    log('No ISSN node found in Xplore result with UNPRINTABLE TITLE. See error.')
+                                    log(e)
+                                    continue
+                            elif not issn[0].firstChild.nodeValue in distinct_issns:
+                                distinct_issns[issn[0].firstChild.nodeValue] = xhit_title
+                        elif xhit_pubtype == "Conferences":
+                            punumber = xhit.getElementsByTagName('punumber')
+                            
+                            if not len(punumber):
+                                try:
+                                    log('No punumber node found in Xplore result with title "%s"' % xhit_title)
+                                    resSum['xplore_hits_without_id'] += 1
+                                except UnicodeEncodeError, e:
+                                    log('No punumber node found in Xplore result with UNPRINTABLE TITLE. See error.')
+                                    log(e)
+                                    continue
+                            elif not punumber[0].firstChild.nodeValue in distinct_conference_punumbers:
+                                distinct_conference_punumbers[punumber[0].firstChild.nodeValue] = xhit_title 
                     
                     log("Found %d unique ISSNs:" % len(distinct_issns))
                     for issn, xhit_title in distinct_issns.iteritems():
                         try:
                             log('%s: "%s"' % (issn, xhit_title))
+                            pass
+                        except UnicodeEncodeError, e:
+                            log(e)
+                            continue
+                        
+                    log("Found %d unique PU Numbers for Conferences:" % len(distinct_conference_punumbers))
+                    for punumber, xhit_title in distinct_conference_punumbers.iteritems():
+                        try:
+                            log('%s: "%s"' % (punumber, xhit_title))
                             pass
                         except UnicodeEncodeError, e:
                             log(e)
@@ -266,8 +294,8 @@ def main(*args):
                                 log('Relationship already exists.')
                                 resSum['existing_relationship_count'] += 1
                             else:
-                                log('*** Creating relationship.')
-                                resSum['relationships_created'] += 1
+                                log('*** Creating relationship to Periodical.')
+                                resSum['relationships_to_periodicals_created'] += 1
                                 xref = models.ResourceNodes(
                                     node = tag,
                                     resource = per,
@@ -281,10 +309,36 @@ def main(*args):
                                 
                         except models.Resource.DoesNotExist:
                             log('%s: No TechNav Resource found.' % issn)
+                            resSum['resources_not_found'] += 1\
+                            
+                    for punumber, xhit_title in distinct_conference_punumbers.iteritems():
+                        try:
+                            conf = models.Resource.objects.get(pub_id=punumber, resourceType=ResourceType.CONFERENCE)
+                            log('%s: Found TechNav Resource titled "%s".' % (punumber, conf.name))
+                            
+                            if conf in tag.resources.all():
+                                log('Relationship already exists.')
+                                resSum['existing_relationship_count'] += 1
+                            else:
+                                log('*** Creating relationship to Conference.')
+                                resSum['relationships_to_conferences_created'] += 1
+                                xref = models.ResourceNodes(
+                                    node = tag,
+                                    resource = conf,
+                                    date_created = now,
+                                    is_machine_generated = True
+                                )
+                                xref.save()
+                            
+                            for society in conf.societies.iterator():
+                                society_set.add(society)
+                                
+                        except models.Resource.DoesNotExist:
+                            log('%s: No TechNav Resource found.' % punumber)
                             resSum['resources_not_found'] += 1
                 
                 # Loop thru all the unique societies and create relationships where they are missing.
-                log("Found %d unique societ%s related to all periodicals." % (len(society_set), ('ies', 'y')[len(society_set) == 1]))
+                log("Found %d unique societ%s related to all resources." % (len(society_set), ('ies', 'y')[len(society_set) == 1]))
                 for society in society_set:
                     log('Society: %s' % society.name)
                     if tag.societies.filter(id=society.id).count() == 0:
@@ -311,7 +365,8 @@ def main(*args):
             log('Xplore Connection Errors: %d' % resSum['xplore_connection_errors'])
             log('Xplore Hits without IDs: %d' % resSum['xplore_hits_without_id'])
             log('Pre-existing Relationships: %d' % resSum['existing_relationship_count'])
-            log('Relationships Created: %d' % resSum['relationships_created'])
+            log('Relationships to Periodicals Created: %d' % resSum['relationships_to_periodicals_created'])
+            log('Relationships to Conferences Created: %d' % resSum['relationships_to_conferences_created'])
             log('Xplore Hits with no Matching Technav Tag: %d' % resSum['resources_not_found'])
             
             # DEBUG: Don't really commit any changes till this script is more debugged.
