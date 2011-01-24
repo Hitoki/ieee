@@ -1174,12 +1174,15 @@ def _import_resources(file, batch_commits=False):
             else:
                 year = int(year)
             name = name.strip()
+            name = name[:500]
             url = url.strip()
             standard_status = standard_status.strip()
             if date1.strip() == '':
                 date1 = None
             else:
-                date1 = datetime.strptime(date1, '%m/%d/%Y')
+                # NOTE: datetime.strptime() is not available in Python 2.4.
+                #date1 = datetime.strptime(date1, '%m/%d/%Y')
+                date1 = datetime(*(time.strptime(date1, '%m/%d/%Y')[0:6]))
             
             #resource_type = ResourceType.objects.getFromName(type1)
             #resource_type = resource_types[type1]
