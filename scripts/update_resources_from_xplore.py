@@ -146,6 +146,7 @@ def main(*args):
                 'existing_relationship_count' : 0,
                 'relationships_to_periodicals_created' : 0,
                 'relationships_to_conferences_created' : 0,
+                'relationships_to_standards_created' : 0,
                 'society_relationships_created' : 0,
                 'resources_not_found' : 0
             }
@@ -262,7 +263,20 @@ def main(*args):
                                     log(e)
                                     continue
                             elif not punumber[0].firstChild.nodeValue in distinct_conference_punumbers:
-                                distinct_conference_punumbers[punumber[0].firstChild.nodeValue] = xhit_title 
+                                distinct_conference_punumbers[punumber[0].firstChild.nodeValue] = xhit_title
+                        elif xhit_pubtype == "Standards":
+                            punumber = xhit.getElementsByTagName('punumber')
+                            
+                            if not len(punumber):
+                                try:
+                                    log('No punumber node found in Xplore result with title "%s"' % xhit_title)
+                                    resSum['xplore_hits_without_id'] += 1
+                                except UnicodeEncodeError, e:
+                                    log('No punumber node found in Xplore result with UNPRINTABLE TITLE. See error.')
+                                    log(e)
+                                    continue
+                            elif not punumber[0].firstChild.nodeValue in distinct_standard_punumbers:
+                                distinct_standar_punumbers[punumber[0].firstChild.nodeValue] = xhit_title 
                     
                     log("Found %d unique ISSNs:" % len(distinct_issns))
                     for issn, xhit_title in distinct_issns.iteritems():
@@ -281,10 +295,21 @@ def main(*args):
                         except UnicodeEncodeError, e:
                             log(e)
                             continue
+                        
+                    log("Found %d unique PU Numbers for Standards:" % len(distinct_standard_punumbers))
+                    for punumber, xhit_title in distinct_standard_punumbers.iteritems():
+                        try:
+                            log('%s: "%s"' % (punumber, xhit_title))
+                            pass
+                        except UnicodeEncodeError, e:
+                            log(e)
+                            continue
                     
                     # Create a unique set of the resources' related societies    
                     society_set = Set()
                     log("Looking for matching TechNav Resources...")
+                    
+                    # Iterate thru PERIODICALS creating a relationship to the current tag if non-existent.
                     for issn, xhit_title in distinct_issns.iteritems():
                         try:
                             per = models.Resource.objects.get(ieee_id=issn)
@@ -311,6 +336,7 @@ def main(*args):
                             log('%s: No TechNav Resource found.' % issn)
                             resSum['resources_not_found'] += 1\
                             
+                    # Iterate thru CONFERENCES creating a relationship to the current tag if non-existent.
                     for punumber, xhit_title in distinct_conference_punumbers.iteritems():
                         try:
                             conf = models.Resource.objects.get(pub_id=punumber, resource_type__name=ResourceType.CONFERENCE)
@@ -336,6 +362,35 @@ def main(*args):
                         except models.Resource.DoesNotExist:
                             log('%s: No TechNav Resource found.' % punumber)
                             resSum['resources_not_found'] += 1
+                            
+                    # Iterate thru STANDARDS creating a relationship to the current tag if non-existent.
+                    # NOTE: Yes, there is a lot of code duplication between this and the previous two blocks.
+                    for punumber, xhit_title in distinct_standard_punumbers.iteritems():
+                        try:
+                            standard = models.Resource.objects.get(pub_id=punumber, resource_type__name=ResourceType.STANDARD)
+                            log('%s: Found TechNav Resource titled "%s".' % (punumber, standard.name))
+                            
+                            if standard in tag.resources.all():
+                                log('Relationship already exists.')
+                                resSum['existing_relationship_count'] += 1
+                            else:
+                                log('*** Creating relationship to Standard.')
+                                resSum['relationships_to_standards_created'] += 1
+                                xref = models.ResourceNodes(
+                                    node = tag,
+                                    resource = standard,
+                                    date_created = now,
+                                    is_machine_generated = True
+                                )
+                                xref.save()
+                            
+                            for society in standard.societies.iterator():
+                                society_set.add(society)
+                                
+                        except models.Resource.DoesNotExist:
+                            log('%s: No TechNav Resource found.' % punumber)
+                            resSum['resources_not_found'] += 1
+                    
                 
                 # Loop thru all the unique societies and create relationships where they are missing.
                 log("Found %d unique societ%s related to all resources." % (len(society_set), ('ies', 'y')[len(society_set) == 1]))

@@ -234,7 +234,13 @@ def ajax_tag_content(request, tag_id, ui=None):
     
     num_resources = Resource.objects.getForNode(tag).count()
     experts = Resource.objects.getForNode(tag, resourceType=ResourceType.EXPERT)
-    standards = Resource.objects.getForNode(tag, resourceType=ResourceType.STANDARD)
+    # Grab standards with is_machine_generated field.
+    standards_resource_nodes = tag.resource_nodes.filter(resource__resource_type__name=ResourceType.STANDARD)
+    standards = []
+    for standards_resource_node in standards_resource_nodes:
+        standard = standards_resource_node.resource
+        standard.is_machine_generated = standards_resource_node.is_machine_generated
+        standards.append(standard)
     
     # Grab periodicals with is_machine_generated field.
     periodicals_resource_nodes = tag.resource_nodes.filter(resource__resource_type__name=ResourceType.PERIODICAL)
@@ -263,7 +269,7 @@ def ajax_tag_content(request, tag_id, ui=None):
         + len(conferences) \
         + experts.count() \
         + len(periodicals) \
-        + standards.count() \
+        + len(standards) \
         
     if tag.is_taxonomy_term and ((sectors1.count() + tag.societies.count() + len(conferences) + experts.count() + len(periodicals) + standards.count()) == 0):
         # This is a term with no resources (except Related Tags), just show the abbreviated content popup.
