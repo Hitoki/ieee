@@ -172,6 +172,9 @@
                                             {% if resource.url and resource.url_status != "bad" %}
                                                 <img src="{{ MEDIA_URL }}images/popup.png" />
                                             {% endif %}
+                                            {% if resource.is_machine_generated %}
+                                                <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated link" title="Machine-generated link" style="vertical-align:middle;" />
+                                            {% endif %}
                                         </p>
                                         {% if resource.url and resource.url_status != "bad" %}
                                             </a>
@@ -198,6 +201,9 @@
                                                         <span>{{other_conference.name}}</span>
                                                         {% if other_conference.url and other_conference.url_status != "bad" %}
                                                             <img src="{{ MEDIA_URL }}images/popup.png" />
+                                                        {% endif %}
+                                                        {% if other_conference.is_machine_generated %}
+                                                            <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated link" title="Machine-generated link" style="vertical-align:middle;" />
                                                         {% endif %}
                                                     </p>
                                                     {% if other_conference.url and other_conference.url_status != "bad" %}
