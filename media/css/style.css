@@ -833,9 +833,13 @@ span#roamer-beta-warning {
 	height: 25px;
 }
 
-#alternate-page #tag-galaxy div.tag_cluster img {
+#alternate-page #tag-galaxy div.tag_cluster .cluster-icon {
     margin:0 0 -3px 0;
     vertical-align:top;
+}
+
+#alternate-page #tag-galaxy div.tag .tag-icon {
+   vertical-align: middle;
 }
 
 #alternate-page #tag-galaxy div.node a {
