@@ -6,7 +6,7 @@
 
             {% if tag.is_taxonomy_term %}
                 {# Term #}
-                <a href="javascript:Tags.selectTag({{ tag.id }});" class="{{ tag.level }}">{{ tag.name|truncatechars:30 }}</a>
+                <a href="javascript:Tags.selectTag({{ tag.id }});" class="{{ tag.level }}"><img src="/media/images/tag_icon.png" class="tag-icon" /> {{ tag.name|truncatechars:30 }}</a>
             {% elif tag.node_type__name == 'tag' %}
                 {# Tag #}
                 <a href="javascript:Tags.selectTag({{ tag.id }});" class="{{ tag.level }}"><img src="/media/images/tag_icon.png" class="tag-icon" /> {{ tag.name|truncatechars:30 }}</a>
