@@ -271,7 +271,7 @@ def ajax_tag_content(request, tag_id, ui=None):
         + len(periodicals) \
         + len(standards) \
         
-    if tag.is_taxonomy_term and ((sectors1.count() + tag.societies.count() + len(conferences) + experts.count() + len(periodicals) + standards.count()) == 0):
+    if tag.is_taxonomy_term and ((sectors1.count() + tag.societies.count() + len(conferences) + experts.count() + len(periodicals) + len(standards)) == 0):
         # This is a term with no resources (except Related Tags), just show the abbreviated content popup.
         return render(request, 'ajax_term_content.html', {
             'tag':tag,
