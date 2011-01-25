@@ -234,6 +234,7 @@ def main(*args):
                     xhits = dom1.documentElement.getElementsByTagName('document')
                     distinct_issns = {}
                     distinct_conference_punumbers = {}
+                    distinct_standard_punumbers = {}
                     for i, xhit in enumerate(xhits):
                         xhit_title = xhit.getElementsByTagName('title')[0].firstChild.nodeValue
                         xhit_pubtype = xhit.getElementsByTagName('pubtype')[0].firstChild.nodeValue
