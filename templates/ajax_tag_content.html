@@ -124,7 +124,7 @@
                                                     </a>
                                                 {% endif %}
                                                 {% if node_society.is_machine_generated %}
-                                                    <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated link" title="Machine-generated link" style="vertical-align:middle;" />
+                                                    <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
                                                 {% endif %}
                                             </td>
                                         </tr>    
@@ -173,7 +173,7 @@
                                                 <img src="{{ MEDIA_URL }}images/popup.png" />
                                             {% endif %}
                                             {% if resource.is_machine_generated %}
-                                                <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated link" title="Machine-generated link" style="vertical-align:middle;" />
+                                                <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
                                             {% endif %}
                                         </p>
                                         {% if resource.url and resource.url_status != "bad" %}
@@ -203,7 +203,7 @@
                                                             <img src="{{ MEDIA_URL }}images/popup.png" />
                                                         {% endif %}
                                                         {% if other_conference.is_machine_generated %}
-                                                            <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated link" title="Machine-generated link" style="vertical-align:middle;" />
+                                                            <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
                                                         {% endif %}
                                                     </p>
                                                     {% if other_conference.url and other_conference.url_status != "bad" %}
@@ -243,7 +243,7 @@
                                             {% endif %}
                                             
                                             {% if resource.is_machine_generated %}
-                                                <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated link" title="Machine-generated link" style="vertical-align:middle;" />
+                                                <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
                                             {% endif %}
                                         </p>
                                         <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
@@ -275,7 +275,7 @@
                                             </a>
                                         {% endif %}
                                         {% if resource.is_machine_generated %}
-                                                <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated link" title="Machine-generated link" style="vertical-align:middle;" />
+                                                <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
                                         {% endif %}
                                         </p> 
                                         <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
