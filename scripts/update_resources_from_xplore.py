@@ -277,7 +277,7 @@ def main(*args):
                                     log(e)
                                     continue
                             elif not punumber[0].firstChild.nodeValue in distinct_standard_punumbers:
-                                distinct_standar_punumbers[punumber[0].firstChild.nodeValue] = xhit_title 
+                                distinct_standard_punumbers[punumber[0].firstChild.nodeValue] = xhit_title 
                     
                     log("Found %d unique ISSNs:" % len(distinct_issns))
                     for issn, xhit_title in distinct_issns.iteritems():
