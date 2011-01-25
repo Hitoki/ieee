@@ -275,6 +275,9 @@
                                         {% if resource.url and resource.url_status != "bad" %}
                                             </a>
                                         {% endif %}
+                                        {% if resource.is_machine_generated %}
+                                                <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated link" title="Machine-generated link" style="vertical-align:middle;" />
+                                            {% endif %}
                                         <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
                                     </li>
                                     {% endfor %}
