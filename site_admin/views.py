@@ -2287,111 +2287,317 @@ def import_mai(request):
         'form': form,
     })
 
-def get_element_text_value(elem):
-    'Returns the text value of a given XML element.  Combines all separate text nodes, strips all leading/trailing whitespace.'
-    assert elem.nodeType == elem.ELEMENT_NODE, 'get_element_text_value(): elem must be an ELEMENT_NODE, but is %r' % elem.nodeType
-    value = ''
-    for child_node in elem.childNodes:
-        if child_node.nodeType == child_node.TEXT_NODE:
-            value += child_node.nodeValue.strip()
-    return value
-
-def has_parent(node):
-    return len(node.getElementsByTagName('BT')) != 0
-
 def _import_taxonomy(file):
+    'Import the IEEE taxonomy XML file, creating TaxonomyCluster and TaxonomyTerm objects.'
+    logging.debug('_import_taxonomy()')
     
-    # Walk up the tree (following BT tags) until the cluster tag is found
-    def find_clusters(parent_text, cluster_names):
-        
-        # find the node that matches the text
-        parent_node = None
-        terminfo_nodes = root.getElementsByTagName('TermInfo')
-        for i, node in enumerate(terminfo_nodes):
-            t = node.getElementsByTagName('T')[0]
-            if get_element_text_value(t) == parent_text:
-                parent_node = node
-                break
-        if parent_node == None:
-            return cluster_names
-        # there is not parent. this is the cluster
-        if not has_parent(parent_node) and not parent_text in cluster_names:
-            cluster_names.append(parent_text)
-        else:
-            grandparent_nodes = parent_node.getElementsByTagName('BT')
-            for i, grandparent_node in enumerate(grandparent_nodes):
-                find_clusters(get_element_text_value(grandparent_node), cluster_names)
-        return cluster_names
+    # XML Nodes:
+    #   <T> the term itself
+    #   <TNT> the id of the technav tag match by MAI
+    #   <BT> its parent terms
+    #   <RT> relate terms
     
     from xml.dom.minidom import parse
-    errors = []
-    dom1 = parse(file)
-    root = dom1.documentElement
     
-    total_term_count = 0
-    top_level_removed_count = 0
-    clusters_created_count = 0
-    terms_created_count = 0
+    class XmlError(Exception):
+        pass
+    class XmlNodeNotFoundError(XmlError):
+        pass
+    class XmlTooManyNodesError(XmlError):
+        pass
+        
+    def _get_child_by_name(node, name):
+        child_nodes = node.getElementsByTagName(name)
+        if len(child_nodes) == 0:
+            raise XmlNodeNotFoundError('Could not find child %r for node %r' % (name, node.nodeName))
+        elif len(child_nodes) > 1:
+            raise XmlTooManyNodesError('Found too many nodes (%s) for node %r' % (len(child_nodes), name))
+        return child_nodes[0]
+        
+    def _get_child_text_by_name(node, name):
+        child = _get_child_by_name(node, name)
+        return _get_element_text_value(child)
+        
+    def _get_element_text_value(elem):
+        'Returns the text value of a given XML element.  Combines all separate text nodes, strips all leading/trailing whitespace.'
+        assert elem.nodeType == elem.ELEMENT_NODE, '_get_element_text_value(): elem must be an ELEMENT_NODE, but is %r' % elem.nodeType
+        value = ''
+        for child_node in elem.childNodes:
+            if child_node.nodeType == child_node.TEXT_NODE:
+                value += child_node.nodeValue.strip()
+        return value
+
+    def _has_parent(node):
+        return len(node.getElementsByTagName('BT')) != 0
     
-    TaxonomyCluster.objects.all().delete()
+    # NOTE: Delete all previously imported data.
     TaxonomyTerm.objects.all().delete()
+    TaxonomyCluster.objects.all().delete()
     
-    # Delete all top-level terms (i.e. those with out a <BT> ("Broader Term") tag.
-    terminfo_nodes = root.getElementsByTagName('TermInfo')
-    total_term_count = len(terminfo_nodes)
-    top_level_names = []
-    for i, terminfo_node in enumerate(terminfo_nodes):
-        if not has_parent(terminfo_node):
-            termtext = get_element_text_value(terminfo_node.getElementsByTagName('T')[0])
-            top_level_names.append(termtext)
-            logging.debug("Removing top level tag: %s" % termtext)
-            root.removeChild(terminfo_node).unlink()
-            top_level_removed_count += 1
+    logging.debug('  parsing file')
+    doc = parse(file)
+    logging.debug('  done parsing file')
+    root = doc.documentElement
     
-    # Delete all child references to the now-deleted top-level terms
-    for name in top_level_names:
-        logging.debug("delete parent refs to: %s" % name)
-        for i, parent_ref in enumerate(root.getElementsByTagName('BT')):
-            if get_element_text_value(parent_ref) == name:
-                parent_ref.parentNode.removeChild(parent_ref).unlink()
+    term_info_nodes = root.getElementsByTagName('TermInfo')
+    logging.debug('Found %s TermInfo nodes.' % term_info_nodes.length)
     
-    # Create clusters for all the new top-level terms (level 2)
-    terminfo_nodes = root.getElementsByTagName('TermInfo')
-    for i, terminfo_node in enumerate(terminfo_nodes):
-        if not has_parent(terminfo_node):
-            logging.debug("Creating cluster: %s" % get_element_text_value(terminfo_node.getElementsByTagName('T')[0]))
-            tc = TaxonomyCluster()
-            tc.name = get_element_text_value(terminfo_node.getElementsByTagName('T')[0])
-            tc.save()
-            clusters_created_count += 1
+    num_nodes = term_info_nodes.length
     
-    # Create term objects for all remaining terms (levels 3 and 4)
-    terminfo_nodes = root.getElementsByTagName('TermInfo')
-    for i, terminfo_node in enumerate(terminfo_nodes):
-        if has_parent(terminfo_node):
-            #import ipdb; ipdb.set_trace()
-            termtext = get_element_text_value(terminfo_node.getElementsByTagName('T')[0])
+    term_infos = {}
+    
+    start = time.time()
+    last_update = start
+    for i, term_info_node in enumerate(term_info_nodes):
+        #logging.debug('  term_info_node: %s' % term_info_node)
+        
+        t_text = _get_child_text_by_name(term_info_node, 'T')
+        #logging.debug('    t_text: %s' % t_text)
+    
+        tnt_nodes = term_info_node.getElementsByTagName('TNT')
+        tnt_texts = []
+        for tnt_node in tnt_nodes:
+            tnt_text = _get_element_text_value(tnt_node)
+            tnt_texts.append(tnt_text)
+        
+        bt_nodes = term_info_node.getElementsByTagName('BT')
+        bt_texts = []
+        for bt_node in bt_nodes:
+            bt_text = _get_element_text_value(bt_node)
+            bt_texts.append(bt_text)
+        
+        rt_nodes = term_info_node.getElementsByTagName('RT')
+        rt_texts = []
+        for rt_node in rt_nodes:
+            rt_text = _get_element_text_value(rt_node)
+            rt_texts.append(rt_text)
             
-            cluster_names = []
-            for i, bt in enumerate(terminfo_node.getElementsByTagName('BT')):
-                cluster_names = find_clusters(get_element_text_value(bt), cluster_names) 
+        assert t_text not in term_infos
+        
+        term_infos[t_text] = {
+            'name': t_text,
+            'related_term_names': rt_texts,
+            'related_node_ids': tnt_texts,
+            'parent_names': bt_texts,
+        }
+        
+        if time.time() - last_update > 1 and i > 0:
+            last_update = time.time()
+            if last_update - start > 0:
+                logging.debug('i: %s, %s/s' % (i, i / (last_update - start)))
             
-            logging.debug('Creating Term "%s" in clusters %s' % (termtext, cluster_names))
-            tag_ids = []
-            for i, tag_id_node in enumerate(terminfo_node.getElementsByTagName('TNT')):
-                tag_ids.append(get_element_text_value(tag_id_node))
-            TaxonomyTerm.objects.create_for_clusters(termtext, cluster_names, tag_ids)
-            terms_created_count += 1
+    import copy
     
-    root = None
-    dom1 = None
+    # Find top-level nodes...
+    
+    top_level_nodes = {}
+    for name, node in copy.deepcopy(term_infos).items():
+        if len(node['parent_names']) == 0:
+            logging.debug('Found top level %r' % name)
+            assert name not in top_level_nodes
+            top_level_nodes[name] = node
+            del term_infos[name]
+    
+    # Find clusters
+    
+    cluster_nodes = {}
+    clusters = []
+    for name, node in copy.deepcopy(term_infos).items():
+        is_cluster = False
+        for parent_name in node['parent_names']:
+            if parent_name in top_level_nodes:
+                is_cluster = True
+                break
+        
+        if is_cluster:
+            logging.debug('Found cluster %r' % name)
+            assert name not in cluster_nodes
+            cluster_nodes[name] = node
+            del term_infos[name]
+            
+            # Create cluster
+            cluster = TaxonomyCluster()
+            cluster.name = name
+            cluster.save()
+    
+    logging.debug('There are %s clusters.' % TaxonomyCluster.objects.all().count())
+    
+    # Create terms, assign clusters and related nodes.
+    logging.debug('Create terms, assign clusters and related nodes.')
+    
+    num_clusters_not_found = 0
+    num_nodes_not_found = 0
+    num_related_terms_not_found = 0
+    
+    start = time.time()
+    last_time = start
+    for i, (name, node) in enumerate(term_infos.items()):
+        term = TaxonomyTerm()
+        term.name = name
+        term.save()
+        
+        for cluster_name in node['parent_names']:
+            try:
+                cluster = TaxonomyCluster.objects.get(name=cluster_name)
+            except TaxonomyCluster.DoesNotExist:
+                logging.debug('Cluster %r not found.' % cluster_name)
+                num_clusters_not_found += 1
+            else:
+                term.taxonomy_clusters.add(cluster)
+        
+        for node_id in node['related_node_ids']:
+            try:
+                node = Node.objects.get(id=node_id)
+            except Node.DoesNotExist:
+                logging.debug('Related node %r not found.' % node_id)
+                num_nodes_not_found += 1
+            else:
+                term.related_nodes.add(node)
+        
+        term.save()
+    
+        if time.time() - last_update > 1 and i > 0:
+            last_update = time.time()
+            if last_update - start > 0:
+                logging.debug('i: %s, %s/s' % (i, i / (last_update - start)))
+    
+    # Assign related terms.
+    logging.debug('Assigning related terms.')
+    
+    start = time.time()
+    last_time = start
+    for i, (name, node) in enumerate(term_infos.items()):
+        term = TaxonomyTerm.objects.get(name=name)
+        
+        for related_term_name in node['related_term_names']:
+            try:
+                related_term = TaxonomyTerm.objects.get(name=related_term_name)
+            except TaxonomyTerm.DoesNotExist:
+                logging.debug('Related term %r not found.' % related_term_name)
+                num_related_terms_not_found += 1
+            else:
+                term.related_terms.add(related_term)
+        term.save()
+    
+        if time.time() - last_update > 1 and i > 0:
+            last_update = time.time()
+            if last_update - start > 0:
+                logging.debug('i: %s, %s/s' % (i, i / (last_update - start)))
+    
     return {
-        "total_term_count": total_term_count,
-        "top_level_removed_count": top_level_removed_count,
-        "clusters_created_count": clusters_created_count,
-        "terms_created_count": terms_created_count,
-        "errors": errors
+        'num_nodes': num_nodes,
+        'top_level_nodes': len(top_level_nodes),
+        'cluster_nodes': len(cluster_nodes),
+        'errors': [],
+        'term_nodes': len(term_infos),
+        'num_clusters_not_found': num_clusters_not_found,
+        'num_nodes_not_found': num_nodes_not_found,
+        'num_related_terms_not_found': num_related_terms_not_found,
     }
+    
+    ## Walk up the tree (following BT tags) until the cluster tag is found
+    #def find_clusters(parent_text, cluster_names):
+    #    
+    #    # find the node that matches the text
+    #    parent_node = None
+    #    terminfo_nodes = root.getElementsByTagName('TermInfo')
+    #    for i, node in enumerate(terminfo_nodes):
+    #        t = node.getElementsByTagName('T')[0]
+    #        if _get_element_text_value(t) == parent_text:
+    #            parent_node = node
+    #            break
+    #    if parent_node == None:
+    #        return cluster_names
+    #    # there is not parent. this is the cluster
+    #    if not _has_parent(parent_node) and not parent_text in cluster_names:
+    #        cluster_names.append(parent_text)
+    #    else:
+    #        grandparent_nodes = parent_node.getElementsByTagName('BT')
+    #        for i, grandparent_node in enumerate(grandparent_nodes):
+    #            find_clusters(_get_element_text_value(grandparent_node), cluster_names)
+    #    return cluster_names
+    #
+    #from xml.dom.minidom import parse
+    #errors = []
+    #
+    #logging.debug('parsing file')
+    #dom1 = parse(file)
+    #logging.debug('done parsing file')
+    #root = dom1.documentElement
+    #
+    #total_term_count = 0
+    #top_level_removed_count = 0
+    #clusters_created_count = 0
+    #terms_created_count = 0
+    #
+    #TaxonomyCluster.objects.all().delete()
+    #TaxonomyTerm.objects.all().delete()
+    #
+    ## Delete all top-level terms (i.e. those with out a <BT> ("Broader Term") tag.
+    #logging.debug('Delete all top-level terms (i.e. those with out a <BT> ("Broader Term") tag.')
+    #terminfo_nodes = root.getElementsByTagName('TermInfo')
+    #total_term_count = len(terminfo_nodes)
+    #top_level_names = []
+    #for i, terminfo_node in enumerate(terminfo_nodes):
+    #    if not _has_parent(terminfo_node):
+    #        termtext = _get_element_text_value(terminfo_node.getElementsByTagName('T')[0])
+    #        top_level_names.append(termtext)
+    #        logging.debug("Removing top level tag: %s" % termtext)
+    #        root.removeChild(terminfo_node).unlink()
+    #        top_level_removed_count += 1
+    #
+    ## Delete all child references to the now-deleted top-level terms
+    #logging.debug('Delete all child references to the now-deleted top-level terms.')
+    #for name in top_level_names:
+    #    logging.debug("delete parent refs to: %s" % name)
+    #    for i, parent_ref in enumerate(root.getElementsByTagName('BT')):
+    #        if _get_element_text_value(parent_ref) == name:
+    #            parent_ref.parentNode.removeChild(parent_ref).unlink()
+    #
+    ## Create clusters for all the new top-level terms (level 2)
+    #logging.debug('Create clusters for all the new top-level terms (level 2)')
+    #terminfo_nodes = root.getElementsByTagName('TermInfo')
+    #for i, terminfo_node in enumerate(terminfo_nodes):
+    #    if not _has_parent(terminfo_node):
+    #        logging.debug("Creating cluster: %s" % _get_element_text_value(terminfo_node.getElementsByTagName('T')[0]))
+    #        tc = TaxonomyCluster()
+    #        tc.name = _get_element_text_value(terminfo_node.getElementsByTagName('T')[0])
+    #        tc.save()
+    #        clusters_created_count += 1
+    #
+    ## Create term objects for all remaining terms (levels 3 and 4)
+    #logging.debug('Create term objects for all remaining terms (levels 3 and 4)')
+    #terminfo_nodes = root.getElementsByTagName('TermInfo')
+    #for i, terminfo_node in enumerate(terminfo_nodes):
+    #    if _has_parent(terminfo_node):
+    #        #import ipdb; ipdb.set_trace()
+    #        termtext = _get_element_text_value(terminfo_node.getElementsByTagName('T')[0])
+    #        
+    #        cluster_names = []
+    #        for i, bt in enumerate(terminfo_node.getElementsByTagName('BT')):
+    #            cluster_names = find_clusters(_get_element_text_value(bt), cluster_names) 
+    #        
+    #        logging.debug('Creating Term "%s" in clusters %s' % (termtext, cluster_names))
+    #        tag_ids = []
+    #        for i, tag_id_node in enumerate(terminfo_node.getElementsByTagName('TNT')):
+    #            tag_ids.append(_get_element_text_value(tag_id_node))
+    #        TaxonomyTerm.objects.create_for_clusters(termtext, cluster_names, tag_ids)
+    #        terms_created_count += 1
+    #        
+    #        # DEBUG:
+    #        if terms_created_count > 5:
+    #            break
+    #
+    #logging.debug('Done.')
+    #root = None
+    #dom1 = None
+    #return {
+    #    "total_term_count": total_term_count,
+    #    "top_level_removed_count": top_level_removed_count,
+    #    "clusters_created_count": clusters_created_count,
+    #    "terms_created_count": terms_created_count,
+    #    "errors": errors
+    #}
 
 @login_required
 @admin_required
