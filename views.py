@@ -337,7 +337,7 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
         'hc': max_num_results,
         # Specifies the result # to start from
         'rs': offset+1,
-        'md': tag_name,
+        'md': tag_name.encode('utf-8'),
     })
     
     try:
@@ -927,7 +927,7 @@ def ajax_textui_nodes(request):
         params['society_id'] = 'null'
     else:
         params['society_id'] = society_id
-    params['search_for'] = search_for
+    params['search_for'] = search_for.encode('utf-8')
     params['page'] = page
     
     textui_flyovers_url = reverse('tooltip') + '/tagid?' + urllib.urlencode(params)
