@@ -28,14 +28,14 @@ def drop_all_tables():
     while len(table_names) > 0 and count < MAX_ITERATIONS:
         cmd = 'SHOW TABLES;'
         result = _run_mysql_cmd(cmd)
-        print 'result:', result
+        #print 'result:', result
         table_names = result.strip().split('\n')
         del table_names[0]
 
         drop_cmd = ''
-        print 'There are %d tables' % len(table_names)
+        #print 'There are %d tables' % len(table_names)
         for table_name in table_names:
-            print 'Dropping table %s' % table_name
+            #print 'Dropping table %s' % table_name
             drop_cmd = 'DROP TABLE %s;\n' % table_name
             _run_mysql_cmd(drop_cmd)
         
@@ -45,8 +45,9 @@ def drop_all_tables():
     result = _run_mysql_cmd(cmd).strip()
     
     if result != '':
-        print 'Tables remaining:'
-        print result
+        #print 'Tables remaining:'
+        #print result
+        pass
 
 def main():
     drop_all_tables()
