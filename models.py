@@ -493,7 +493,7 @@ class Node(models.Model):
                 count += 1
         return count
     
-    def save(self, *args, **kwargs):
+    def save(self, add_child_info=True, *args, **kwargs):
         cluster_type = NodeType.objects.getFromName(NodeType.TAG_CLUSTER)
         #print 'Node.save()'
         #print '  self.node_type: %r' % self.node_type
@@ -505,30 +505,32 @@ class Node(models.Model):
                 # Save the new cluster so we can use the relationship fields.
                 super(Node, self).save(*args, **kwargs)
             
-            # Assign all the child_node's sectors to this cluster.
-            sectors = []
-            for child_node in self.child_nodes.all():
-                for sector in child_node.get_sectors():
-                    if sector not in sectors:
-                        sectors.append(sector)
-            self.parents = sectors
-            
-            # Assign all the child_node's societies to this cluster.
-            societies = []
-            for child_node in self.child_nodes.all():
-                for society in child_node.societies.all():
-                    if society not in societies:
-                        societies.append(society)
-            self.societies = societies
-            #print '  societies: %r' % societies
-            
-            # Assign all the child_node's sectors to this cluster.
-            filters = []
-            for child_node in self.child_nodes.all():
-                for filter in child_node.filters.all():
-                    if filter not in filters:
-                        filters.append(filter)
-            self.filters = filters
+            if add_child_info:
+                # Assign all the child_node's sectors to this cluster.
+                sectors = []
+                for child_node in self.child_nodes.all():
+                    for sector in child_node.get_sectors():
+                        if sector not in sectors:
+                            sectors.append(sector)
+                self.parents = sectors
+                
+                # Assign all the child_node's societies to this cluster.
+                societies = []
+                for child_node in self.child_nodes.all():
+                    for society in child_node.societies.all():
+                        if not NodeSocieties.objects.filter(node=self, society=society).exists():
+                            node_societies = NodeSocieties()
+                            node_societies.node = self
+                            node_societies.society = society
+                            node_societies.save()
+                
+                # Assign all the child_node's sectors to this cluster.
+                filters = []
+                for child_node in self.child_nodes.all():
+                    for filter in child_node.filters.all():
+                        if filter not in filters:
+                            filters.append(filter)
+                self.filters = filters
             
         super(Node, self).save(*args, **kwargs)
         

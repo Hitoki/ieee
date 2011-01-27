@@ -12,8 +12,9 @@ setup_environ(ieeetags.settings)
 
 import time
 from ieeetags.models import *
+from ieeetags.util import profiler
 
-if 1:
+def main():
 
     # Delete all clusters first.
     Node.objects.get_clusters().delete()
@@ -29,6 +30,7 @@ if 1:
     print 'Taxonomy clusters: %s' % num_tax_clusters
     
     start = time.time()
+    last_update = start
 
     num_clusters = 0
     for i, taxonomy_cluster in enumerate(TaxonomyCluster.objects.all().order_by('name')[:MAX]):
@@ -40,42 +42,64 @@ if 1:
         
         num_clusters += 1
         
+        def _add_tag_info_to_cluster(tag, cluster):
+            'This is an optimized version of Node.save().'
+            
+            # Assign all the tag's sectors to this cluster.
+            for sector in tag.get_sectors():
+                if sector not in cluster.parents.all():
+                    cluster.parents.add(sector)
+            
+            # Assign all the tag's societies to this cluster.
+            for society in tag.societies.all():
+                if not NodeSocieties.objects.filter(node=cluster, society=society).exists():
+                    node_societies = NodeSocieties()
+                    node_societies.node = cluster
+                    node_societies.society = society
+                    node_societies.save()
+            
+            # Assign all the tag's sectors to this cluster.
+            for filter in tag.filters.all():
+                if filter not in cluster.filters.all():
+                    cluster.filters.add(filter)
+        
+        tags = []
         for term in taxonomy_cluster.terms.all():
             for tag in term.related_nodes.all():
                 #print '  related: %s' % tag.name
                 tag.parents.add(cluster)
                 tag.save()
-        
+                
+                # NOTE: Use this optimized function to save time, need to save after.
+                _add_tag_info_to_cluster(tag, cluster)
+                
         # Save again, to pick up all the sectors/filters/etc from child-tags.
-        cluster.save()
+        cluster.save(add_child_info=False)
         
-        if not (i % 20):
-            elapsed = time.time() - start
-            if elapsed > 0:
-                per_second = round(i / elapsed, 1)
-            else:
-                per_second = i
-            #print 'i: %s' % i
-            #print 'elapsed: %s' % elapsed
+        if time.time() - last_update > 1:
+            last_update = time.time()
+            per_second = i / (last_update - start)
             print 'Cluster %s/%s\t%s/s' % (i, num_tax_clusters, per_second)
-        
         
     elapsed = time.time() - start
     print 'Total time: %s' % elapsed
     print 'Clusters converted from taxonomy: %s' % num_clusters
 
-num_empty_clusters = 0
+    num_empty_clusters = 0
 
-# Remove any empty clusters.
-for cluster in Node.objects.get_clusters():
-    #print '%s: %s' % (cluster.name, cluster.get_tags().count())
-    if cluster.get_tags().count() == 0:
-        #print '  Empty cluster: %s' % cluster.name
-        cluster.delete()
-        num_empty_clusters += 1
+    # Remove any empty clusters.
+    for cluster in Node.objects.get_clusters():
+        #print '%s: %s' % (cluster.name, cluster.get_tags().count())
+        if cluster.get_tags().count() == 0:
+            #print '  Empty cluster: %s' % cluster.name
+            cluster.delete()
+            num_empty_clusters += 1
 
-print 'Empty(removed) clusters: %s' % num_empty_clusters
+    print 'Empty(removed) clusters: %s' % num_empty_clusters
 
-print 'Net clusters: %s' % Node.objects.get_clusters().count()
+    print 'Net clusters: %s' % Node.objects.get_clusters().count()
 
-# Assign matching tags to clusters.
+    # Assign matching tags to clusters.
+
+if __name__ == '__main__':
+    main()
