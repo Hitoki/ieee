@@ -927,7 +927,10 @@ def ajax_textui_nodes(request):
         params['society_id'] = 'null'
     else:
         params['society_id'] = society_id
-    params['search_for'] = search_for.encode('utf-8')
+    if search_for is not None:
+        params['search_for'] = search_for.encode('utf-8')
+    else:
+        params['search_for'] = search_for
     params['page'] = page
     
     textui_flyovers_url = reverse('tooltip') + '/tagid?' + urllib.urlencode(params)
