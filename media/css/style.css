@@ -143,6 +143,7 @@ table.main td.center .center-pad {
 
 #header #tagline {
     color:#006699;
+	display: none;
     float: left;
     font-size:13pt;
     font-style:italic;
