@@ -333,6 +333,8 @@ input.text {
     height: 350px;
     min-width: 512px;
     padding: 2em;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 #lightbox .tester-survey-lightbox-content .lightbox-close {
