@@ -939,12 +939,6 @@ def ajax_textui_nodes(request):
     
     textui_flyovers_url = reverse('tooltip') + '/tagid?' + urllib.urlencode(params)
     
-    # NOTE: This may not be necessary, since the "search_for" results have a different output for the "Showing # out of #" text.
-    if search_for is None:
-        is_showing_all = True
-    else:
-        is_showing_all = False
-    
     node_count_content = render_to_string('ajax_textui_node_count.inc.html', {
         'child_nodes': child_nodes,
         'num_clusters': num_clusters,
@@ -955,7 +949,6 @@ def ajax_textui_nodes(request):
         'cluster': cluster,
         'num_terms': num_terms,
         'sector': sector,
-        'is_showing_all': is_showing_all,
     })
     
     return HttpResponse(json.dumps({

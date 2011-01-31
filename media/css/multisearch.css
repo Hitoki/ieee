@@ -115,10 +115,9 @@
     height:32px;
 }
 
-#multisearch_related_tags,
-#multisearch_nodes,
-#multisearch_assign_tags,
-#multisearch_tags {
+#multisearch_related_tags
+, #multisearch_nodes
+, #multisearch_assign_tags {
     float: left;
     margin-right: 10px;
 }

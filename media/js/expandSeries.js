@@ -17,7 +17,7 @@ function getPositionRelativeTo(node, parent) {
 }
 
 function ExpandSeries(rowElem) {
-    log('ExpandSeries()');
+    //log('ExpandSeries()');
 	var expandSeries = this;
     
 	this.isExpanded = false;

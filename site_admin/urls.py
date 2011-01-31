@@ -109,6 +109,9 @@ urlpatterns += patterns('',
     
     # AJAX
     url(r'^ajax/search_tags$', views.ajax_search_tags, name='ajax_search_tags'),
+    url(r'^ajax/search_tags_new$', views.ajax_search_tags_new, name='ajax_search_tags_new'),
+    url(r'^ajax/society_add_tags$', views.ajax_society_add_tags, name='ajax_society_add_tags'),
+    url(r'^ajax/society_remove_tags$', views.ajax_society_remove_tags, name='ajax_society_remove_tags'),
     url(r'^ajax/search_resources$', views.ajax_search_resources, name='ajax_search_resources'),
     url(r'^ajax/search_societies$', views.ajax_search_societies, name='ajax_search_societies'),
     url(r'^ajax/update_society$', views.ajax_update_society, name='ajax_update_society'),

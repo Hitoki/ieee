@@ -215,7 +215,7 @@ class NodeManager(models.Manager):
         
         return (min_related_tags, max_related_tags)
     
-    def searchTagsByNameSubstring(self, substring, sector_ids=None, exclude_tag_id=None, society_id=None):
+    def searchTagsByNameSubstring(self, substring, sector_ids=None, exclude_tag_id=None, society_id=None, exclude_society_id=None):
         """
         Search for tags matching the given substring.  Optionally limit to only the list of sectors given.
         @param substring name substring to search for.  Can also be * to show all tags.
@@ -245,6 +245,9 @@ class NodeManager(models.Manager):
         
         if exclude_tag_id is not None:
             results = results.exclude(id=exclude_tag_id)
+        
+        if exclude_society_id is not None:
+            results = results.exclude(societies__id=exclude_society_id)
         
         return results
     
@@ -406,7 +409,7 @@ class Node(models.Model):
     'The parent nodes.  The type for this field can be vary depending on the type of this node.'
     node_type = models.ForeignKey(NodeType)
     'The type of node this is: root, sector, cluster, tag.'
-    societies= models.ManyToManyField('Society', related_name='tags', blank=True, through='NodeSocieties')
+    societies = models.ManyToManyField('Society', related_name='tags', blank=True, through='NodeSocieties')
     filters = models.ManyToManyField('Filter', related_name='nodes')
     related_tags = models.ManyToManyField('self', null=True, blank=True)
     

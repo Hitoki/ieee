@@ -6,11 +6,6 @@
     
     <script type="text/javascript">
         
-        function updateTagCount() {
-            var count = $('#multisearch_tags').data('multisearch').getNumSelectedOptions();
-            $('#tag-count').html('(' + count + ')');
-        }
-        
         function CreateOverShadow(elem, html) {
             elem = $(elem);
             if (elem.data('overShadow')) {
@@ -61,127 +56,66 @@
         //////////
         
         function refreshTagsTable() {
-            //log('refreshTagsTable()');
             CreateOverShadow($('#tags-table-content'), '<div class="tags-table-loading">Loading...</div>');
             $('#tags-table-content').load("{% url admin_manage_society_tags_table society.id tag_sort tag_page items_per_page %}", refreshTagsTable2);
         }
         
         function refreshTagsTable2() {
-            //log('refreshTagsTable2()');
+            // Called from refreshTagsTable() after content has been loaded.
             if ($('#tags-table-content').length && $('#tags-table-content').data('overShadow'))
                 $('#tags-table-content').data('overShadow').hide();
             // Reattach any JS to the new content
             attachScripts($('#tags-table-content'));
         }
         
-        window.notify = function(action, data) {
-            if (action == 'created_tag') {
-                // Just created a tag, add it to the field
-                var multisearch = $('#multisearch_tags').data('multisearch');
-                
-                // Add the newly created tag to the list of options
-                multisearch.addSelectedOption({
-                    name: data.tag.name,
-                    name_link: data.tag.name_link,
-                    value: data.tag.value,
-                    tag_name: data.tag.tag_name,
-                    sector_names: data.tag.sector_names,
-                    num_societies: data.tag.num_societies.toString(),
-                    num_related_tags: data.tag.num_related_tags.toString(),
-                    num_filters: data.tag.num_filters.toString(),
-                    num_resources: data.tag.num_resources.toString()
-                });
-                
-                // Trigger a refresh of the popup
-                multisearch.updatePopup();
-                
-                // Update the tags table
-                refreshTagsTable();
-                
-            } else if (action == 'added_multisearch_option') {
-                // Ignore this event
-                //log('event added_multisearch_option ignored');
-                
-            } else if (action == 'preloaded_multisearch_option') {
-                // Ignore this event
-                //log('event preloaded_multisearch_option ignored');
-                
-            } else if (action == 'removed_multisearch_option') {
-                // Ignore this event
-                //log('event removed_multisearch_option ignored');
-                
-            } else if (action == 'multisearch_create_new_tag') {
-                Lightbox.show('{% url admin_create_tag %}?default_tag_name=' + escape(data.tag_name) + '&society_id=' + {{ society.id }}, {
-                    closeOnClickOutside: false
-                });
-                
-                
-            } else {
-                alert('notify(): unknown action "' + action + '"');
-            }
-        
-        }
-        
-        
-        function attachMultisearch() {
-            // Find the tag multisearch
-            var multisearch_tags = $('#multisearch_tags').data('multisearch');
-            
-            // Preloading might already be done, update the tag count now
-            updateTagCount();
-            
-            if (multisearch_tags != undefined)  {
-                // Multisearch is ready, attach events
-                
-                multisearch_tags.subscribe('added_option', function(multisearch, event, data) {
-                    // NOTE: This needs to be syncronous, otherwise the table gets refreshed before the deletion is complete.
-                    $.ajax({
-                        async: false,
-                        url: '{% url ajax_update_society %}',
-                        data: {
-                            action: 'add_tag',
-                            society_id: {{ society.id }},
-                            tag_id: data.option.value
-                        },
-                        type: 'POST'
-                    });
-                    updateTagCount()
-                    
-                    // Update the tags table
-                    refreshTagsTable();
-                });
-                
-                // NOTE: By the time this gets fired, preloading will probably already be done.
-                multisearch_tags.subscribe('preloaded_option', function(multisearch, event, data) {
-                    updateTagCount();
-                });
-                
-                multisearch_tags.subscribe('removed_option', function(multisearch, event, data) {
-                    //log('event removed_option');
-                    // NOTE: This needs to be syncronous, otherwise the table gets refreshed before the deletion is complete.
-                    $.ajax({
-                        async: false,
-                        url: '{% url ajax_update_society %}',
-                        data: {
-                            action: 'remove_tag',
-                            society_id: {{ society.id }},
-                            tag_id: data.option.value
-                        },
-                        type: 'POST'
-                    });
-                    
-                    updateTagCount()
-                    
-                    // Update the tags table
-                    refreshTagsTable();
-                });
-                
-            } else {
-                // Multisearch is not ready yet, wait and try again
-                setTimeout(attachMultisearch, 50);
-            }
-        }
-        
+        //window.notify = function(action, data) {
+        //    if (action == 'created_tag') {
+        //        // Just created a tag, add it to the field
+        //        var multisearch = $('#multisearch_tags').data('multisearch');
+        //        
+        //        // Add the newly created tag to the list of options
+        //        multisearch.addSelectedOption({
+        //            name: data.tag.name,
+        //            name_link: data.tag.name_link,
+        //            value: data.tag.value,
+        //            tag_name: data.tag.tag_name,
+        //            sector_names: data.tag.sector_names,
+        //            num_societies: data.tag.num_societies.toString(),
+        //            num_related_tags: data.tag.num_related_tags.toString(),
+        //            num_filters: data.tag.num_filters.toString(),
+        //            num_resources: data.tag.num_resources.toString()
+        //        });
+        //        
+        //        // Trigger a refresh of the popup
+        //        multisearch.updatePopup();
+        //        
+        //        // Update the tags table
+        //        refreshTagsTable();
+        //        
+        //    } else if (action == 'added_multisearch_option') {
+        //        // Ignore this event
+        //        //log('event added_multisearch_option ignored');
+        //        
+        //    } else if (action == 'preloaded_multisearch_option') {
+        //        // Ignore this event
+        //        //log('event preloaded_multisearch_option ignored');
+        //        
+        //    } else if (action == 'removed_multisearch_option') {
+        //        // Ignore this event
+        //        //log('event removed_multisearch_option ignored');
+        //        
+        //    } else if (action == 'multisearch_create_new_tag') {
+        //        Lightbox.show('{% url admin_create_tag %}?default_tag_name=' + escape(data.tag_name) + '&society_id=' + {{ society.id }}, {
+        //            closeOnClickOutside: false
+        //        });
+        //        
+        //        
+        //    } else {
+        //        alert('notify(): unknown action "' + action + '"');
+        //    }
+        //
+        //}
+		
         // Only enable the batch edit button when 2 or more items are selected
         function updateBatchEditResourcesButtons() {
             var num_selected = 0;
@@ -206,10 +140,136 @@
             }
             
         }
+		
+		function AddWidget(elem, resultsElem) {
+			var addWidget = this;
+			
+			this.elem = $(elem);
+			this.resultsElem = $(resultsElem);
+			this.resultsElem.hide();
+			this.searching_for = null;
+			
+			this.elem.change(function(e) {
+				addWidget.onChange();
+			});
+			
+			this.elem.keyup(function(e) {
+				addWidget.onChange();
+			});
+            
+            addWidget.onChange();
+		}
+		
+		AddWidget.prototype.onChange = function(force) {
+			var addWidget = this;
+			log('onChange()');
+			log('  this.elem.val(): ' + this.elem.val());
+			log('  this.searching_for: ' + this.searching_for);
+			if (force || this.elem.val() != this.searching_for) {
+				this.searching_for = this.elem.val();
+                
+                // Clear all options.
+                this.resultsElem.find('option').remove();
+                
+                if (this.searching_for != '' && this.searching_for.length >= 2) {
+                    this.resultsElem.show();
+                    
+                    var child = $('<option></option>').appendTo(this.resultsElem);
+                    child.text('Searching...');
+                    
+                    $.post(
+                        '{% url ajax_search_tags_new %}'
+                        , {
+                            society_id: {{ society.id }}
+                            , search_for: this.searching_for
+                        }
+                        , function(data) {
+                            addWidget.onGetTags(data);
+                        }
+                        , 'json'
+                    );
+                }
+			}
+		}
+		
+		AddWidget.prototype.onGetTags = function(data) {
+            log('onGetTags()');
+            //log('  data:');
+            //log(data);
+            log('data.search_for:');
+            log(data.search_for);
+            log('this.searching_for:');
+            log(this.searching_for);
+			if (data.search_for == this.searching_for) {
+                log('  Adding options');
+				// Clear all options.
+				this.resultsElem.find('option').remove();
+                
+				
+				for (var i in data.options) {
+					var option = data.options[i];
+					var optionElem = $('<option value="' + option.value + '"></option>');
+					optionElem.text(option.name);
+                    this.resultsElem.append(optionElem);
+				}
+			}
+		}
+		
+		AddWidget.prototype.onClickAdd = function() {
+			var addWidget = this;
+            log('onClickAdd()');
+            var options = this.resultsElem.find('option');
+            log('  this.resultsElem.val(): ' + this.resultsElem.val());
+            
+            var selectedOptions = this.resultsElem.val();
+            
+            if (selectedOptions) {
+                log('selectedOptions:');
+                log(selectedOptions);
+                log('typeof selectedOptions')
+                log(typeof selectedOptions);
+                log('selectedOptions.constructor')
+                log(selectedOptions.constructor);
+                log('selectedOptions.constructor == Array')
+                log(selectedOptions.constructor == Array);
+                
+                //return;
+                
+                $.post(
+                    '{% url ajax_society_add_tags %}'
+                    , {
+                        society_id: {{ society.id }}
+                        , tag_ids: selectedOptions
+                    }
+                    , function() {
+                        addWidget.onDoneAddingRemovingTags();
+                    }
+                );
+            }
+		}
+		
+		AddWidget.prototype.onDoneAddingRemovingTags = function() {
+            log('onDoneAddingRemovingTags()');
+            this.onChange(true);
+            refreshTagsTable();
+		}
+        
+        function removeTagFromSociety(tag_id) {
+            $.post(
+                '{% url ajax_society_remove_tags %}'
+                , {
+                    society_id: {{ society.id }}
+                    , tag_ids: [tag_id]
+                }
+                , function() {
+                    addWidget.onDoneAddingRemovingTags();
+                }
+            );
+        }
+		
+        var addWidget = null;
         
         $(function() {
-            attachMultisearch();
-            
             updateBatchEditResourcesButtons();
             
             $('input.select-resources').change(function() {
@@ -218,6 +278,12 @@
             $('input.select-resources').click(function() {
                 updateBatchEditResourcesButtons();
             });
+			
+			addWidget = new AddWidget('#add-tags-input', '#add-tags-select');
+            $('#add-tags-button').click(function() {
+                addWidget.onClickAdd();
+            });
+            
         });
         
     </script>
@@ -237,534 +303,502 @@
 	{% endif %}
     
     <table class="full-grid manage-grid">
-        {% comment %}
-        <tr>
-            <th>
-                Name:
-            </th>
-            <td width="80%">
-                {{ society.name }}
-            </td>
-        </tr>
-        <tr>
-            <th>
-                Abbreviation:
-            </th>
-            <td>
-                {{ society.abbreviation }}
-            </td>
-        </tr>
-        <tr>
-            <th>
-                Url
-            </th>
-            <td>
-                {{ society.url }}
-            </td>
-        </tr>
-        <tr>
-            <th>
-                Users
-            </th>
-            <td>
-                {% for user in society.users.all %}
-                    <a href="{% url admin_view_user user.id %}">{{ user.username }}</a>, 
-                {% endfor %}
-            </td>
-        </tr>
-        {% endcomment %}
         <tr>
             <td colspan="2" style="border: none;">
                 
-                {# <form action="{% url admin_manage_society society.id %}" method="post"> #}
-                    
-                    <div id="society-resource-tabs" class="nootabs {useCookies:false, useHash:true}">
-                        <ul class="nootabs-menus">
-                            <li><a href="">Manage this Organization's Resources ({{ num_unfiltered_resources }})</a></li>
-                            <li {% if not DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB %}class="last-menu"{% endif %}><a href="">Manage this Organization's Tags <span id="tag-count"></span></a></li>
-                            {% if DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB %}
-                                <li class="last-menu"><a href="">Help</a></li>
-                            {% endif %}
-                        </ul>
-                        
-                        <!-- Resources Tab -->
-                        <div id="resources-tab" class="nootabs-tab">
-                            {% if num_unfiltered_resources %}
-                                <form action="{% url admin_manage_society society.id %}" method="get">
-                                    <input type="hidden" name="resource_sort" value="{{ resource_sort }}" />
-                                    <input type="hidden" name="items_per_page" value="{{ items_per_page }}" />
-                                    <p>
-                                        <input name="resource_filter" value="{{ resource_filter }}" class="blur-text {text: '(Enter whole or partial words)', blurClass:'multi-search-input-blur'}" id="resource_filter" />
-                                        <input type="submit" value="Filter By Resource Name" class="submit-button" />
-                                        <input type="button" value="Remove Filter" class="submit-button" onclick="window.location='{% url admin_manage_society society.id %}?resource_sort={{ resource_sort }}&amp;items_per_page={{ items_per_page }}';" />
-                                        {% ifnotequal num_resources num_unfiltered_resources %}
-                                            <span class="matching-filter">{{ num_resources }} Matching Resources</span>
-                                        {% endifnotequal %}
-                                    </p>
-                                </form>
-                            {% endif %}
-                            
-                            
-                            {% if not resources %}
-                                {% if  not num_unfiltered_resources %}
-                                    <h1 class="no-resources-message">There are no resources assigned to this organization yet</h1>
-                                {% else %}
-                                    <h1 class="no-resources-message">There were no matching resources, please try again or remove your filter</h1>
-                                {% endif %}
-                            {% else %}
-                                
-                                
-                                <form action="{% url admin_manage_society society.id %}" method="get">
-                                    <input type="hidden" name="resource_sort" value="{{ resource_sort }}" />
-                                    <input type="hidden" name="resource_filter" value="{{ resource_filter }}" />
-                                    <p class="items-per-page">
-                                        Show
-                                        {{ items_per_page_form.items_per_page }}
-                                        items per page
-                                    </p>
-                                </form>
-                                
-                                <form action="{% url admin_edit_resources %}?return_url={{ current_url|urlencode }}&amp;society_id={{ society.id }}" method="post">
-                                
-                                    <p class="batch-editing-button">
-                                        <span class="edit-selected-resources-flyover">
-                                            <input type="submit" class="submit-button edit-selected-resources" value="Edit Selected Resources" />
-                                        </span>
-                                        <span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 5px;" title="Select 2 or more resources below and click this button to batch edit their tags, priority and whether or not they are completed.">[?]</span>
-                                    </p>
-                                    
-                                    <ul class="pages">
-                                        <li class="paginationTitle">Pages:</li>
-                                        {% pages resource_page num_resource_pages resource_page_url 13 %}
-                                    </ul>
-                                
-                                    <table class="resources">
-                                        <tr>
-                                            <th>
-                                                <img class="batch-edit-arrow" src="{{ MEDIA_URL }}images/arrow2-down-white.gif" />
-                                            </th>
-                                            <th>
-                                                Resource Name <span class="help_icon flyover" title="Name of the Product or Service. Click resource to edit.">[?]</span>
-                                            
-                                                <div class="table-sort">
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=name_ascending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
-                                                    {% ifequal resource_sort "name_ascending" %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
-                                                    {% else %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
-                                                    {% endifequal %}
-                                                </a>
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=name_descending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
-                                                    {% ifequal resource_sort "name_descending" %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
-                                                    {% else %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
-                                                    {% endifequal %}
-                                                </a>
-                                                </div>
-                                            
-                                            </th>
-                                            <th>
-                                                ID <span class="help_icon flyover" title="IEEE unique identifier.">[?]</span>
-                                            
-                                                <div class="table-sort">
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=ieee_id_ascending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
-                                                    {% ifequal resource_sort "ieee_id_ascending" %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
-                                                    {% else %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
-                                                    {% endifequal %}
-                                                </a>
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=ieee_id_descending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
-                                                    {% ifequal resource_sort "ieee_id_descending" %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
-                                                    {% else %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
-                                                    {% endifequal %}
-                                                </a>
-                                                </div>
-                                            </th>
-                                            <th>
-                                                Resource Type <span class="help_icon flyover" title="Publication, Conference, or Standard. If Standard, its status appears parenthetically.">[?]</span>
-                                            
-                                                <div class="table-sort">
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=resource_type_ascending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
-                                                    {% ifequal resource_sort "resource_type_ascending" %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
-                                                    {% else %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
-                                                    {% endifequal %}
-                                                </a>
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=resource_type_descending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
-                                                    {% ifequal resource_sort "resource_type_descending" %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
-                                                    {% else %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
-                                                    {% endifequal %}
-                                                </a>
-                                                </div>
-                                            </th>
-                                            <th>
-                                                URL <span class="help_icon flyover" title="Web link for the Resource.">[?]</span>
-                                            
-                                                <div class="table-sort">
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=url_ascending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
-                                                    {% ifequal resource_sort "url_ascending" %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
-                                                    {% else %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
-                                                    {% endifequal %}
-                                                </a>
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=url_descending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
-                                                    {% ifequal resource_sort "url_descending" %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
-                                                    {% else %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
-                                                    {% endifequal %}
-                                                </a>
-                                                </div>
-                                            </th>
-                                            <th>
-                                                Tags <span class="help_icon flyover" title="List of key words or phrases for related concepts and technology areas.">[?]</span>
-                                            
-                                                <div class="table-sort">
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=num_tags_ascending" class="live-num_tags {hashOnly:true}">
-                                                    {% ifequal resource_sort "num_tags_ascending" %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
-                                                    {% else %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
-                                                    {% endifequal %}
-                                                </a>
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=num_tags_descending" class="live-num_tags {hashOnly:true}">
-                                                    {% ifequal resource_sort "num_tags_descending" %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
-                                                    {% else %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
-                                                    {% endifequal %}
-                                                </a>
-                                                </div>
-                                            </th>
-                                            <th>
-                                                Organizations <span class="help_icon flyover" title="IEEE organizations that sponsor this resource.">[?]</span>
-                                            
-                                                <div class="table-sort">
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=num_societies_ascending" class="live-num_societies {hashOnly:true}">
-                                                    {% ifequal resource_sort "num_societies_ascending" %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
-                                                    {% else %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
-                                                    {% endifequal %}
-                                                </a>
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=num_societies_descending" class="live-num_societies {hashOnly:true}">
-                                                    {% ifequal resource_sort "num_societies_descending" %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
-                                                    {% else %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
-                                                    {% endifequal %}
-                                                </a>
-                                                </div>
-                                            </th>
-                                            <th>
-                                                Priority <span class="help_icon flyover" title='If "yes", this resource should be as complete as possible. Tags, Description, and URL.'>[?]</span>
-                                            
-                                                <div class="table-sort">
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=priority_ascending" class="live-priority {hashOnly:true}">
-                                                    {% ifequal resource_sort "priority_ascending" %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
-                                                    {% else %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
-                                                    {% endifequal %}
-                                                </a>
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=priority_descending" class="live-priority {hashOnly:true}">
-                                                    {% ifequal resource_sort "priority_descending" %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
-                                                    {% else %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
-                                                    {% endifequal %}
-                                                </a>
-                                                </div>
-                                            </th>
-                                            <th>
-                                                Completed <span class="help_icon flyover" title='If "yes", this resource is completed. At least one Tag is mapped. Description, and URL are added/validated.'>[?]</span>
-                                            
-                                                <div class="table-sort">
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=completed_ascending" class="live-completed {hashOnly:true}">
-                                                    {% ifequal resource_sort "completed_ascending" %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
-                                                    {% else %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
-                                                    {% endifequal %}
-                                                </a>
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=completed_descending" class="live-completed {hashOnly:true}">
-                                                    {% ifequal resource_sort "completed_descending" %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
-                                                    {% else %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
-                                                    {% endifequal %}
-                                                </a>
-                                                </div>
-                                            </th>
-                                            <th>
-                                                Description <span class="help_icon flyover" title="Short description of the Resource. 1-3 short sentences recommended.">[?]</span>
-                                            
-                                                <div class="table-sort">
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=description_ascending" class="live-description {hashOnly:true}">
-                                                    {% ifequal resource_sort "description_ascending" %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
-                                                    {% else %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
-                                                    {% endifequal %}
-                                                </a>
-                                                <a href="{% url admin_manage_society society.id %}?resource_sort=description_descending" class="live-description {hashOnly:true}">
-                                                    {% ifequal resource_sort "description_descending" %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
-                                                    {% else %}
-                                                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
-                                                    {% endifequal %}
-                                                </a>
-                                                </div>
-                                            </th>
-                                        </tr>
-                                        {% for resource in resources %}
-                                        
-                                            <tr class="{{ resource.classes }}">
-                                            
-                                                {% if resource.is_current_conference %}
-                                                    <td>
-                                                    </td>
-                                                {% else %}
-                                                    <td class="select-checkbox-on-click">
-                                                        <input type="checkbox" name="resource_ids" class="select-resources" value="{{ resource.id }}" />
-                                                    </td>
-                                                {% endif %}
-                                                <td class="first-item">
-                                                    <a href="{% url admin_edit_resource resource.id %}?return_url={{ current_url|urlencode }}&amp;society_id={{ society.id }}">{{ resource.name }}</a>
-                                                </td>
-                                                <td>
-                                                    {{ resource.ieee_id }}
-                                                </td>
-                                                <td>
-                                                    {{ resource.resource_type.name|capfirst }}
-                                                    {% ifequal resource.resource_type.name "standard" %}
-                                                        <br/>({{ resource.standard_status|capfirst }})
-                                                    {% endifequal %}
-                                                </td>
-                                                <td>
-                                                    {% if resource.url %}<a href="{{ resource.url }}" target="_blank"><span class="flyover {position:'bottom'}" title="{{ resource.url }}"><img src="{{ MEDIA_URL }}/images/popup.png"/></span></a>{% endif %}
-                                                    
-                                                    {% ifequal resource.url_status "bad" %}
-                                                        <!-- Bad URL icon -->
-                                                        <span class="flyover" title="{{ resource.url_error }}">
-                                                            <img src="{{ MEDIA_URL }}images/red_circle_x.png" />
-                                                        </span>
-                                                    {% endifequal %}
-                                                </td>
-                                                <td>
-                                                    {% if resource.nodes.all %}{{ resource.nodes.all.count }}{% endif %}
-                                                </td>
-                                                <td>
-                                                    {% if resource.societies.all %}
-                                                        {{ resource.society_abbreviations|join:", " }}
-                                                    {% endif %}
-                                                </td>
-                                                <td>
-                                                    {% if resource.priority_to_tag %}
-                                                        {{ resource.priority_to_tag|yesno|capfirst }}
-                                                    {% endif %}
-                                                </td>
-                                                <td>
-                                                    {% if resource.completed %}
-                                                        {{ resource.completed|yesno|capfirst }}
-                                                    {% endif %}
-                                                </td>
-                                                <td>
-                                                    {% if resource.description %}
-                                                        <span class="flyover { position:'left', customClass:'resource-description'} " title="{{ resource.description }}">
-                                                            <img src="{{ MEDIA_URL }}images/notes_icon.jpg" />
-                                                        </span>
-                                                    {% endif %}
-                                                </td>
-                                            </tr>
-                                            
-                                            {% for sub_conference in resource.other_conferences %}
-                                                {% if sub_conference.priority_to_tag and sub_conference.completed %}
-                                                    <tr class="resource-completed-priority sub-conference sub-conference-{{ resource.id }}">
-                                                {% else %}
-                                                    {% if sub_conference.priority_to_tag %}
-                                                        <tr class="resource-priority sub-conference sub-conference-{{ resource.id }}">
-                                                    {% else %}
-                                                        {% if sub_conference.completed %}
-                                                            <tr class="resource-completed sub-conference sub-conference-{{ resource.id }}">
-                                                        {% else %}
-                                                            <tr class="sub-conference sub-conference-{{ resource.id }}">
-                                                        {% endif %}
-                                                    {% endif %}
-                                                {% endif %}
-                                                
-                                                    <td class="select-checkbox-on-click">
-                                                        <input type="checkbox" name="resource_ids" class="select-resources" value="{{ sub_conference.id }}" />
-                                                    </td>
-                                                    <td class="first-item">
-                                                        <a href="{% url admin_edit_resource sub_conference.id %}?return_url={{ current_url|urlencode }}&amp;society_id={{ society.id }}">{{ sub_conference.name }}</a>
-                                                    </td>
-                                                    <td>
-                                                        {{ sub_conference.ieee_id }}
-                                                    </td>
-                                                    <td>
-                                                        {{ sub_conference.resource_type.name|capfirst }}
-                                                        {% ifequal sub_conference.resource_type.name "standard" %}
-                                                            <br/>({{ sub_conference.standard_status|capfirst }})
-                                                        {% endifequal %}
-                                                    </td>
-                                                    <td>
-                                                        {% if sub_conference.url %}<a href="{{ sub_conference.url }}" target="_blank"><span class="flyover {position:'bottom'}" title="{{ sub_conference.url }}"><img src="{{ MEDIA_URL }}/images/popup.png"/></span></a>{% endif %}
-                                                    </td>
-                                                    <td>
-                                                        {% if sub_conference.nodes.all %}{{ sub_conference.nodes.all.count }}{% endif %}
-                                                    </td>
-                                                    <td>
-                                                        {% if sub_conference.societies.all %}
-                                                            {{ sub_conference.society_abbreviations|join:", " }}
-                                                        {% endif %}
-                                                    </td>
-                                                    <td>
-                                                        {% if sub_conference.priority_to_tag %}
-                                                            {{ sub_conference.priority_to_tag|yesno|capfirst }}
-                                                        {% endif %}
-                                                    </td>
-                                                    <td>
-                                                        {% if sub_conference.completed %}
-                                                            {{ sub_conference.completed|yesno|capfirst }}
-                                                        {% endif %}
-                                                    </td>
-                                                    <td>
-                                                        {% if sub_conference.description %}
-                                                            <span class="flyover { position:'left', customClass:'sub_conference-description'} " title="{{ sub_conference.description }}">
-                                                                <img src="{{ MEDIA_URL }}images/notes_icon.jpg" />
-                                                            </span>
-                                                        {% endif %}
-                                                    </td>
-                                                </tr>
-                                            {% endfor %}
-                                            
-                                        {% endfor %}
-                                    </table>
-                                
-                                    <p class="batch-editing-button">
-                                        <span class="edit-selected-resources-flyover">
-                                            <input type="submit" value="Edit Selected Resources" class="submit-button edit-selected-resources" />
-                                        </span>
-                                        <span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 5px;" title="Select 2 or more resources above and click this button to batch edit their tags, priority and whether or not they are completed.">[?]</span>
-                                    </p>
-                            
-                                </form>
-                            
-                                <ul class="pages">
-                                    <li class="paginationTitle">Pages:</li>
-                                    {% pages resource_page num_resource_pages resource_page_url 13 %}
-                                </ul>
-                            {% endif %}
-
-                            <div style="margin-top: 1em; clear: both;">
-                                <a href="{% url missing_resource society.id %}" class="lightbox">Don't see the resource you need? Request it be added.</a>
-                            </div>
-                        </div>
-                        
-                        <!-- Tags Tab -->
-                        <div id="tags-tab" class="nootabs-tab">
-                            <input type="button" id="create-tag-float" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Tag" />
-                            
-                            <!-- Show the "Associate Tags with this Organization" input: -->
-                            <form autocomplete="off">{% eval form['tags'] %}<div class="multisearch-note">Type * to show all<br/>of this organization's tags</div></form>
-                            
-                            <div id="tags-table-content">
-                                {% manage_society_tags_table %}
-                            </div>
-                            <br style="clear:both;" />
-                        </div>
-                        
-                        {% if DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB %}
-                            <!-- Help Tab -->
-                            <div id="help-tab" class="nootabs-tab">
-                                <h2>Help</h2>
-                                
-                                <p>
-                                    Need a quick orientation to the Administrative Interface for Technology Navigator? Watch this short video.
-                                </p>
-                                
-                                <h3>Video Overview of Administrative Interface</h3>
-                                
-                                <object id='stU09QREBIR11eQFtbUlNYUlJV' width='425' height='344' type='application/x-shockwave-flash' data='http://www.screentoaster.com/swf/STPlayer.swf' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0'>
-                                    <param name='movie' value='http://www.screentoaster.com/swf/STPlayer.swf'/>
-                                    <param name='allowFullScreen' value='true'/>
-                                    <param name='allowScriptAccess' value='always'/>
-                                    <param name='flashvars' value='video=stU09QREBIR11eQFtbUlNYUlJV'/>
-                                    <param name='wmode' value='opaque'/>
-                                </object>
-                                <br/>
-                                <br/>
-                                
-                                <h3>Managing Resources in the Administrative Interface</h3>
-                                
-                                <object id='stU09QREBIR11eQV9aWV9cUV5U' width='425' height='344' type='application/x-shockwave-flash' data='http://www.screentoaster.com/swf/STPlayer.swf'  codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0'>
-                                    <param name='movie' value='http://www.screentoaster.com/swf/STPlayer.swf'/>
-                                    <param name='allowFullScreen' value='true'/>
-                                    <param name='allowScriptAccess' value='always'/>
-                                    <param name='flashvars' value='video=stU09QREBIR11eQV9aWV9cUV5U'/>
-                                    <param name='wmode' value='opaque'/>
-                                </object>
-                                <br/>
-                                <br/>
-                                
-                                <h3>Managing Tags in the Administrative Interface</h3>
-                                
-                                <object id='stU09QREBIR11cQ1tbXl9dUlNU' width='425' height='344' type='application/x-shockwave-flash' data='http://www.screentoaster.com/swf/STPlayer.swf'  codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0'>
-                                    <param name='movie' value='http://www.screentoaster.com/swf/STPlayer.swf'/>
-                                    <param name='allowFullScreen' value='true'/>
-                                    <param name='allowScriptAccess' value='always'/>
-                                    <param name='flashvars' value='video=stU09QREBIR11cQ1tbXl9dUlNU'/>
-                                    <param name='wmode' value='opaque'/>
-                                </object>
-                                <br/>
-                                <br/>
-                                
-                                <p>
-                                    If you'd like more context, or the video isn't working for you, please read through our Overview and Walkthrough documents.
-                                </p>
-                                
-                                <p>
-                                    <a href="{{ MEDIA_URL }}pdf/Tech%20Nav%20Administrative%20Overview.pdf" target="_blank" class="help-doc">
-                                        <img src="{{ MEDIA_URL }}images/pdf_icon_small.png" style="vertical-align:middle;"/>
-                                        Overview document (PDF)
-                                    </a>
-                                    <a href="{{ MEDIA_URL }}pdf/Administrative%20Interface%20Walkthrough.pdf" target="_blank" class="help-doc">
-                                        <img src="{{ MEDIA_URL }}images/pdf_icon_small.png" style="vertical-align:middle;"/>
-                                        Walkthrough document (PDF)
-                                    </a>
-                                </p>
-                                
-                                <p class="last-paragraph">
-                                    Questions still not answered? Email us at <a href="mailto:technav@ieee.org">technav@ieee.org</a>.
-                                </p>
-                                
-                                <br/>
-                                
-                                <h2>Survey</h2>
-                                <p>
-                                    Click here to <a href="#" onclick="window.open('http://aptuscollaborative.wufoo.com/embed/q7x3z9/',  null, 'height=970, width=680, toolbar=0, location=0, status=1, scrollbars=1'); return false" title="IEEE Technology Navigator Survey">fill out a survey</a> about the IEEE Technology Navigator.
-                                </p>
-                                
-                            </div>
-                        {% endif %}
-                        
-                    </div>
-                    
-                    {% comment %}
-                    <input type="submit" value="Save" class="button" />
-                    {% endcomment %}
-                    
-                {# </form> #}
-                
+				<div id="society-resource-tabs" class="nootabs {useCookies:false, useHash:true}">
+					<ul class="nootabs-menus">
+						<li><a href="">Manage this Organization's Resources ({{ num_unfiltered_resources }})</a></li>
+						<li {% if not DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB %}class="last-menu"{% endif %}><a href="">Manage this Organization's Tags <span id="tag-count"></span></a></li>
+						{% if DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB %}
+							<li class="last-menu"><a href="">Help</a></li>
+						{% endif %}
+					</ul>
+					
+					
+					<!-- Resources Tab -->
+					<div id="resources-tab" class="nootabs-tab">
+						
+						{% if num_unfiltered_resources %}
+							<form action="{% url admin_manage_society society.id %}" method="get">
+								<input type="hidden" name="resource_sort" value="{{ resource_sort }}" />
+								<input type="hidden" name="items_per_page" value="{{ items_per_page }}" />
+								<p>
+									<input name="resource_filter" value="{{ resource_filter }}" class="blur-text {text: '(Enter whole or partial words)', blurClass:'multi-search-input-blur'}" id="resource_filter" />
+									<input type="submit" value="Filter By Resource Name" class="submit-button" />
+									<input type="button" value="Remove Filter" class="submit-button" onclick="window.location='{% url admin_manage_society society.id %}?resource_sort={{ resource_sort }}&amp;items_per_page={{ items_per_page }}';" />
+									{% ifnotequal num_resources num_unfiltered_resources %}
+										<span class="matching-filter">{{ num_resources }} Matching Resources</span>
+									{% endifnotequal %}
+								</p>
+							</form>
+						{% endif %}
+						
+						
+						{% if not resources %}
+							{% if  not num_unfiltered_resources %}
+								<h1 class="no-resources-message">There are no resources assigned to this organization yet</h1>
+							{% else %}
+								<h1 class="no-resources-message">There were no matching resources, please try again or remove your filter</h1>
+							{% endif %}
+						{% else %}
+							
+							
+							<form action="{% url admin_manage_society society.id %}" method="get">
+								<input type="hidden" name="resource_sort" value="{{ resource_sort }}" />
+								<input type="hidden" name="resource_filter" value="{{ resource_filter }}" />
+								<p class="items-per-page">
+									Show
+									{{ items_per_page_form.items_per_page }}
+									items per page
+								</p>
+							</form>
+							
+							<form action="{% url admin_edit_resources %}?return_url={{ current_url|urlencode }}&amp;society_id={{ society.id }}" method="post">
+							
+								<p class="batch-editing-button">
+									<span class="edit-selected-resources-flyover">
+										<input type="submit" class="submit-button edit-selected-resources" value="Edit Selected Resources" />
+									</span>
+									<span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 5px;" title="Select 2 or more resources below and click this button to batch edit their tags, priority and whether or not they are completed.">[?]</span>
+								</p>
+								
+								<ul class="pages">
+									<li class="paginationTitle">Pages:</li>
+									{% pages resource_page num_resource_pages resource_page_url 13 %}
+								</ul>
+							
+								<table class="resources">
+									<tr>
+										<th>
+											<img class="batch-edit-arrow" src="{{ MEDIA_URL }}images/arrow2-down-white.gif" />
+										</th>
+										<th>
+											Resource Name <span class="help_icon flyover" title="Name of the Product or Service. Click resource to edit.">[?]</span>
+										
+											<div class="table-sort">
+											<a href="{% url admin_manage_society society.id %}?resource_sort=name_ascending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
+												{% ifequal resource_sort "name_ascending" %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
+												{% else %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+												{% endifequal %}
+											</a>
+											<a href="{% url admin_manage_society society.id %}?resource_sort=name_descending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
+												{% ifequal resource_sort "name_descending" %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
+												{% else %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+												{% endifequal %}
+											</a>
+											</div>
+										
+										</th>
+										<th>
+											ID <span class="help_icon flyover" title="IEEE unique identifier.">[?]</span>
+										
+											<div class="table-sort">
+											<a href="{% url admin_manage_society society.id %}?resource_sort=ieee_id_ascending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
+												{% ifequal resource_sort "ieee_id_ascending" %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
+												{% else %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+												{% endifequal %}
+											</a>
+											<a href="{% url admin_manage_society society.id %}?resource_sort=ieee_id_descending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
+												{% ifequal resource_sort "ieee_id_descending" %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
+												{% else %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+												{% endifequal %}
+											</a>
+											</div>
+										</th>
+										<th>
+											Resource Type <span class="help_icon flyover" title="Publication, Conference, or Standard. If Standard, its status appears parenthetically.">[?]</span>
+										
+											<div class="table-sort">
+											<a href="{% url admin_manage_society society.id %}?resource_sort=resource_type_ascending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
+												{% ifequal resource_sort "resource_type_ascending" %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
+												{% else %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+												{% endifequal %}
+											</a>
+											<a href="{% url admin_manage_society society.id %}?resource_sort=resource_type_descending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
+												{% ifequal resource_sort "resource_type_descending" %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
+												{% else %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+												{% endifequal %}
+											</a>
+											</div>
+										</th>
+										<th>
+											URL <span class="help_icon flyover" title="Web link for the Resource.">[?]</span>
+										
+											<div class="table-sort">
+											<a href="{% url admin_manage_society society.id %}?resource_sort=url_ascending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
+												{% ifequal resource_sort "url_ascending" %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
+												{% else %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+												{% endifequal %}
+											</a>
+											<a href="{% url admin_manage_society society.id %}?resource_sort=url_descending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
+												{% ifequal resource_sort "url_descending" %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
+												{% else %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+												{% endifequal %}
+											</a>
+											</div>
+										</th>
+										<th>
+											Tags <span class="help_icon flyover" title="List of key words or phrases for related concepts and technology areas.">[?]</span>
+										
+											<div class="table-sort">
+											<a href="{% url admin_manage_society society.id %}?resource_sort=num_tags_ascending" class="live-num_tags {hashOnly:true}">
+												{% ifequal resource_sort "num_tags_ascending" %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
+												{% else %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+												{% endifequal %}
+											</a>
+											<a href="{% url admin_manage_society society.id %}?resource_sort=num_tags_descending" class="live-num_tags {hashOnly:true}">
+												{% ifequal resource_sort "num_tags_descending" %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
+												{% else %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+												{% endifequal %}
+											</a>
+											</div>
+										</th>
+										<th>
+											Organizations <span class="help_icon flyover" title="IEEE organizations that sponsor this resource.">[?]</span>
+										
+											<div class="table-sort">
+											<a href="{% url admin_manage_society society.id %}?resource_sort=num_societies_ascending" class="live-num_societies {hashOnly:true}">
+												{% ifequal resource_sort "num_societies_ascending" %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
+												{% else %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+												{% endifequal %}
+											</a>
+											<a href="{% url admin_manage_society society.id %}?resource_sort=num_societies_descending" class="live-num_societies {hashOnly:true}">
+												{% ifequal resource_sort "num_societies_descending" %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
+												{% else %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+												{% endifequal %}
+											</a>
+											</div>
+										</th>
+										<th>
+											Priority <span class="help_icon flyover" title='If "yes", this resource should be as complete as possible. Tags, Description, and URL.'>[?]</span>
+										
+											<div class="table-sort">
+											<a href="{% url admin_manage_society society.id %}?resource_sort=priority_ascending" class="live-priority {hashOnly:true}">
+												{% ifequal resource_sort "priority_ascending" %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
+												{% else %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+												{% endifequal %}
+											</a>
+											<a href="{% url admin_manage_society society.id %}?resource_sort=priority_descending" class="live-priority {hashOnly:true}">
+												{% ifequal resource_sort "priority_descending" %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
+												{% else %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+												{% endifequal %}
+											</a>
+											</div>
+										</th>
+										<th>
+											Completed <span class="help_icon flyover" title='If "yes", this resource is completed. At least one Tag is mapped. Description, and URL are added/validated.'>[?]</span>
+										
+											<div class="table-sort">
+											<a href="{% url admin_manage_society society.id %}?resource_sort=completed_ascending" class="live-completed {hashOnly:true}">
+												{% ifequal resource_sort "completed_ascending" %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
+												{% else %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+												{% endifequal %}
+											</a>
+											<a href="{% url admin_manage_society society.id %}?resource_sort=completed_descending" class="live-completed {hashOnly:true}">
+												{% ifequal resource_sort "completed_descending" %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
+												{% else %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+												{% endifequal %}
+											</a>
+											</div>
+										</th>
+										<th>
+											Description <span class="help_icon flyover" title="Short description of the Resource. 1-3 short sentences recommended.">[?]</span>
+										
+											<div class="table-sort">
+											<a href="{% url admin_manage_society society.id %}?resource_sort=description_ascending" class="live-description {hashOnly:true}">
+												{% ifequal resource_sort "description_ascending" %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
+												{% else %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+												{% endifequal %}
+											</a>
+											<a href="{% url admin_manage_society society.id %}?resource_sort=description_descending" class="live-description {hashOnly:true}">
+												{% ifequal resource_sort "description_descending" %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
+												{% else %}
+													<img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+												{% endifequal %}
+											</a>
+											</div>
+										</th>
+									</tr>
+									{% for resource in resources %}
+									
+										<tr class="{{ resource.classes }}">
+										
+											{% if resource.is_current_conference %}
+												<td>
+												</td>
+											{% else %}
+												<td class="select-checkbox-on-click">
+													<input type="checkbox" name="resource_ids" class="select-resources" value="{{ resource.id }}" />
+												</td>
+											{% endif %}
+											<td class="first-item">
+												<a href="{% url admin_edit_resource resource.id %}?return_url={{ current_url|urlencode }}&amp;society_id={{ society.id }}">{{ resource.name }}</a>
+											</td>
+											<td>
+												{{ resource.ieee_id }}
+											</td>
+											<td>
+												{{ resource.resource_type.name|capfirst }}
+												{% ifequal resource.resource_type.name "standard" %}
+													<br/>({{ resource.standard_status|capfirst }})
+												{% endifequal %}
+											</td>
+											<td>
+												{% if resource.url %}<a href="{{ resource.url }}" target="_blank"><span class="flyover {position:'bottom'}" title="{{ resource.url }}"><img src="{{ MEDIA_URL }}/images/popup.png"/></span></a>{% endif %}
+												
+												{% ifequal resource.url_status "bad" %}
+													<!-- Bad URL icon -->
+													<span class="flyover" title="{{ resource.url_error }}">
+														<img src="{{ MEDIA_URL }}images/red_circle_x.png" />
+													</span>
+												{% endifequal %}
+											</td>
+											<td>
+												{% if resource.nodes.all %}{{ resource.nodes.all.count }}{% endif %}
+											</td>
+											<td>
+												{% if resource.societies.all %}
+													{{ resource.society_abbreviations|join:", " }}
+												{% endif %}
+											</td>
+											<td>
+												{% if resource.priority_to_tag %}
+													{{ resource.priority_to_tag|yesno|capfirst }}
+												{% endif %}
+											</td>
+											<td>
+												{% if resource.completed %}
+													{{ resource.completed|yesno|capfirst }}
+												{% endif %}
+											</td>
+											<td>
+												{% if resource.description %}
+													<span class="flyover { position:'left', customClass:'resource-description'} " title="{{ resource.description }}">
+														<img src="{{ MEDIA_URL }}images/notes_icon.jpg" />
+													</span>
+												{% endif %}
+											</td>
+										</tr>
+										
+										{% for sub_conference in resource.other_conferences %}
+											{% if sub_conference.priority_to_tag and sub_conference.completed %}
+												<tr class="resource-completed-priority sub-conference sub-conference-{{ resource.id }}">
+											{% else %}
+												{% if sub_conference.priority_to_tag %}
+													<tr class="resource-priority sub-conference sub-conference-{{ resource.id }}">
+												{% else %}
+													{% if sub_conference.completed %}
+														<tr class="resource-completed sub-conference sub-conference-{{ resource.id }}">
+													{% else %}
+														<tr class="sub-conference sub-conference-{{ resource.id }}">
+													{% endif %}
+												{% endif %}
+											{% endif %}
+											
+												<td class="select-checkbox-on-click">
+													<input type="checkbox" name="resource_ids" class="select-resources" value="{{ sub_conference.id }}" />
+												</td>
+												<td class="first-item">
+													<a href="{% url admin_edit_resource sub_conference.id %}?return_url={{ current_url|urlencode }}&amp;society_id={{ society.id }}">{{ sub_conference.name }}</a>
+												</td>
+												<td>
+													{{ sub_conference.ieee_id }}
+												</td>
+												<td>
+													{{ sub_conference.resource_type.name|capfirst }}
+													{% ifequal sub_conference.resource_type.name "standard" %}
+														<br/>({{ sub_conference.standard_status|capfirst }})
+													{% endifequal %}
+												</td>
+												<td>
+													{% if sub_conference.url %}<a href="{{ sub_conference.url }}" target="_blank"><span class="flyover {position:'bottom'}" title="{{ sub_conference.url }}"><img src="{{ MEDIA_URL }}/images/popup.png"/></span></a>{% endif %}
+												</td>
+												<td>
+													{% if sub_conference.nodes.all %}{{ sub_conference.nodes.all.count }}{% endif %}
+												</td>
+												<td>
+													{% if sub_conference.societies.all %}
+														{{ sub_conference.society_abbreviations|join:", " }}
+													{% endif %}
+												</td>
+												<td>
+													{% if sub_conference.priority_to_tag %}
+														{{ sub_conference.priority_to_tag|yesno|capfirst }}
+													{% endif %}
+												</td>
+												<td>
+													{% if sub_conference.completed %}
+														{{ sub_conference.completed|yesno|capfirst }}
+													{% endif %}
+												</td>
+												<td>
+													{% if sub_conference.description %}
+														<span class="flyover { position:'left', customClass:'sub_conference-description'} " title="{{ sub_conference.description }}">
+															<img src="{{ MEDIA_URL }}images/notes_icon.jpg" />
+														</span>
+													{% endif %}
+												</td>
+											</tr>
+										{% endfor %}
+										
+									{% endfor %}
+								</table>
+							
+								<p class="batch-editing-button">
+									<span class="edit-selected-resources-flyover">
+										<input type="submit" value="Edit Selected Resources" class="submit-button edit-selected-resources" />
+									</span>
+									<span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 5px;" title="Select 2 or more resources above and click this button to batch edit their tags, priority and whether or not they are completed.">[?]</span>
+								</p>
+						
+							</form>
+						
+							<ul class="pages">
+								<li class="paginationTitle">Pages:</li>
+								{% pages resource_page num_resource_pages resource_page_url 13 %}
+							</ul>
+						{% endif %}
+						
+						<div style="margin-top: 1em; clear: both;">
+							<a href="{% url missing_resource society.id %}" class="lightbox">Don't see the resource you need? Request it be added.</a>
+						</div>
+						
+					</div>
+					
+					
+					<!-- Tags Tab -->
+					<div id="tags-tab" class="nootabs-tab">
+						<input type="button" id="create-tag-float" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Tag" />
+						
+						Add Tags: <input id="add-tags-input" />
+						<select id="add-tags-select" size="5" multiple="multiple">
+						</select>
+                        <input id="add-tags-button" type="button" value="Add Tags" />
+						
+						
+						{% comment %}
+						<!-- Show the "Associate Tags with this Organization" input: -->
+						<form autocomplete="off">{% eval form['tags'] %}<div class="multisearch-note">Type * to show all<br/>of this organization's tags</div></form>
+						{% endcomment %}
+						
+						<div id="tags-table-content">
+							{% manage_society_tags_table %}
+						</div>
+						<br style="clear:both;" />
+					</div>
+					
+					{% if DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB %}
+						<!-- Help Tab -->
+						<div id="help-tab" class="nootabs-tab">
+							<h2>Help</h2>
+							
+							<p>
+								Need a quick orientation to the Administrative Interface for Technology Navigator? Watch this short video.
+							</p>
+							
+							<h3>Video Overview of Administrative Interface</h3>
+							
+							<object id='stU09QREBIR11eQFtbUlNYUlJV' width='425' height='344' type='application/x-shockwave-flash' data='http://www.screentoaster.com/swf/STPlayer.swf' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0'>
+								<param name='movie' value='http://www.screentoaster.com/swf/STPlayer.swf'/>
+								<param name='allowFullScreen' value='true'/>
+								<param name='allowScriptAccess' value='always'/>
+								<param name='flashvars' value='video=stU09QREBIR11eQFtbUlNYUlJV'/>
+								<param name='wmode' value='opaque'/>
+							</object>
+							<br/>
+							<br/>
+							
+							<h3>Managing Resources in the Administrative Interface</h3>
+							
+							<object id='stU09QREBIR11eQV9aWV9cUV5U' width='425' height='344' type='application/x-shockwave-flash' data='http://www.screentoaster.com/swf/STPlayer.swf'  codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0'>
+								<param name='movie' value='http://www.screentoaster.com/swf/STPlayer.swf'/>
+								<param name='allowFullScreen' value='true'/>
+								<param name='allowScriptAccess' value='always'/>
+								<param name='flashvars' value='video=stU09QREBIR11eQV9aWV9cUV5U'/>
+								<param name='wmode' value='opaque'/>
+							</object>
+							<br/>
+							<br/>
+							
+							<h3>Managing Tags in the Administrative Interface</h3>
+							
+							<object id='stU09QREBIR11cQ1tbXl9dUlNU' width='425' height='344' type='application/x-shockwave-flash' data='http://www.screentoaster.com/swf/STPlayer.swf'  codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0'>
+								<param name='movie' value='http://www.screentoaster.com/swf/STPlayer.swf'/>
+								<param name='allowFullScreen' value='true'/>
+								<param name='allowScriptAccess' value='always'/>
+								<param name='flashvars' value='video=stU09QREBIR11cQ1tbXl9dUlNU'/>
+								<param name='wmode' value='opaque'/>
+							</object>
+							<br/>
+							<br/>
+							
+							<p>
+								If you'd like more context, or the video isn't working for you, please read through our Overview and Walkthrough documents.
+							</p>
+							
+							<p>
+								<a href="{{ MEDIA_URL }}pdf/Tech%20Nav%20Administrative%20Overview.pdf" target="_blank" class="help-doc">
+									<img src="{{ MEDIA_URL }}images/pdf_icon_small.png" style="vertical-align:middle;"/>
+									Overview document (PDF)
+								</a>
+								<a href="{{ MEDIA_URL }}pdf/Administrative%20Interface%20Walkthrough.pdf" target="_blank" class="help-doc">
+									<img src="{{ MEDIA_URL }}images/pdf_icon_small.png" style="vertical-align:middle;"/>
+									Walkthrough document (PDF)
+								</a>
+							</p>
+							
+							<p class="last-paragraph">
+								Questions still not answered? Email us at <a href="mailto:technav@ieee.org">technav@ieee.org</a>.
+							</p>
+							
+							<br/>
+							
+							<h2>Survey</h2>
+							<p>
+								Click here to <a href="#" onclick="window.open('http://aptuscollaborative.wufoo.com/embed/q7x3z9/',  null, 'height=970, width=680, toolbar=0, location=0, status=1, scrollbars=1'); return false" title="IEEE Technology Navigator Survey">fill out a survey</a> about the IEEE Technology Navigator.
+							</p>
+							
+						</div>
+					{% endif %}
+					
+				</div>
+				
                 <div class="feedback-bar">
                 </div>
             </td>

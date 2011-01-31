@@ -34,7 +34,7 @@ from ieeetags import settings
 from ieeetags import permissions
 from ieeetags import url_checker
 from ieeetags.util import *
-from ieeetags.models import Node, NodeType, Permission, Resource, ResourceType, ResourceNodes, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager, FailedLoginLog, UrlCheckerLog, TaxonomyTerm, TaxonomyCluster, ProfileLog, ProcessControl, PROCESS_CONTROL_TYPES
+from ieeetags.models import Node, NodeSocieties, NodeType, Permission, Resource, ResourceType, ResourceNodes, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager, FailedLoginLog, UrlCheckerLog, TaxonomyTerm, TaxonomyCluster, ProfileLog, ProcessControl, PROCESS_CONTROL_TYPES
 from ieeetags.views import render
 from ieeetags.widgets import DisplayOnlyWidget
 from forms import *
@@ -4245,22 +4245,22 @@ def ajax_search_tags(request):
     'Used for the multisearch widget on the Manage Society page.'
     #MAX_RESULTS = 50
     
-    society_id = request.GET.get('society_id', '')
+    society_id = request.REQUEST.get('society_id', '')
     if society_id != '':
         society = Society.objects.get(id=society_id)
     else:
         society = None
     
-    filter_sector_ids = request.GET.get('filter_sector_ids', None)
+    filter_sector_ids = request.REQUEST.get('filter_sector_ids', None)
     if filter_sector_ids is not None:
         #sectors = [Node.objects.get(id=sector_id) for sector_id in filter_sector_ids.split(',')]
         sector_ids = [sector_id for sector_id in filter_sector_ids.split(',')]
     else:
         sector_ids = None
     
-    exclude_tag_id = request.GET.get('exclude_tag_id', None)
+    exclude_tag_id = request.REQUEST.get('exclude_tag_id', None)
     
-    search_for = request.GET['search_for']
+    search_for = request.REQUEST['search_for']
     if society_id != '':
         temp_society_id = int(society_id)
     else:
@@ -4303,6 +4303,83 @@ def ajax_search_tags(request):
             })
     
     return HttpResponse(json.dumps(data, sort_keys=True, indent=4), mimetype="application/json")
+
+@login_required
+@society_manager_or_admin_required
+def ajax_search_tags_new(request):
+    society_id = request.REQUEST['society_id']
+    search_for = request.REQUEST['search_for']
+    
+    assert search_for != '', 'search_for (%r) is empty.' % search_for
+    
+    tags = Node.objects.searchTagsByNameSubstring(search_for).order_by('name')
+    print 'tags.count(): %r' % tags.count()
+    tags = Node.objects.searchTagsByNameSubstring(search_for, exclude_society_id=society_id).order_by('name')
+    print 'tags.count(): %r' % tags.count()
+    
+    data = {
+        'search_for': search_for,
+        'options': [],
+    }
+    
+    if tags:
+        for tag in tags:
+            data['options'].append({
+                'name': tag.name,
+                'value': tag.id,
+            })
+    
+    return HttpResponse(json.dumps(data), mimetype="application/json")
+
+@login_required
+@society_manager_or_admin_required
+def ajax_society_add_tags(request):
+    'Add a list of tags to the society.'
+    #print 'ajax_society_add_tags()'
+    society_id = request.REQUEST['society_id']
+    tag_ids = request.REQUEST.getlist('tag_ids')
+    
+    #print '  society_id: %r' % society_id
+    #print '  tag_ids: %r' % tag_ids
+    
+    society = Society.objects.get(id=society_id)
+    
+    tags = []
+    for tag_id in tag_ids:
+        tag = Node.objects.get(id=tag_id)
+        tags.append(tag)
+    
+    for tag in tags:
+        node_societies = NodeSocieties()
+        node_societies.node = tag
+        node_societies.society = society
+        try:
+            node_societies.save()
+        except IntegrityError:
+            # Duplicate tag-society link, just ignore.
+            pass
+    
+    return HttpResponse('success', 'text/plain')
+
+@login_required
+@society_manager_or_admin_required
+def ajax_society_remove_tags(request):
+    'Remove a list of tags from the society.'
+    #print 'ajax_society_remove_tags()'
+    society_id = request.REQUEST['society_id']
+    tag_ids = request.REQUEST.getlist('tag_ids')
+    
+    society = Society.objects.get(id=society_id)
+    
+    tags = []
+    for tag_id in tag_ids:
+        tag = Node.objects.get(id=tag_id)
+        tags.append(tag)
+    
+    for tag in tags:
+        NodeSocieties.objects.filter(society=society, node=tag).delete()
+    
+    return HttpResponse('success', 'text/plain')
 
 @login_required
 @society_manager_or_admin_required
