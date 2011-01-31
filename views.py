@@ -194,6 +194,10 @@ def feedback(request):
 def browser_warning(request):
     'Shows the AJAX browser compatability warning page.  Allows the user to click through if they still want to browse the site.'
     return render(request, 'browser_warning.html')
+    
+def tester_message(request):
+    'Returns the HTML content for the tester message.'
+    return render(request, 'tester_message.html')
 
 @login_required
 def xplore_full_results(request, tag_id):

@@ -1374,6 +1374,19 @@ table#login-table td {
     padding: 5px;
 }
 
+#testerBtn {
+    background-color: #FD7400;
+    color: #FFFFFF;
+    padding: 3px 5px;
+    margin-top: 15px;
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+
 /* */
 
 .tags-table-loading {
