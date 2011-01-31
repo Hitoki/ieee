@@ -363,6 +363,10 @@ function getXploreResults(elem, showAll, offset) {
         success: function(data) {
             //log('success...');
             elem2.html(data);
+            
+            // Hook up auto-truncate for the descriptions.
+            autoTruncate(elem2.find('.auto-truncate-words'), {word_boundary:true} );
+            
             //log('  elem2: ' + elem2);
             //log('  elem2.length: ' + elem2.length);
             //log('  elem2[0]: ' + elem2[0]);
