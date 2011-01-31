@@ -1619,7 +1619,11 @@ p.export {
    -webkit-border-radius:5px 5px 5px 5px;
 }
 
-#tag-help-box a {
+#tag-help-box #link-video a {
+    color: #ffa500;
+}
+
+#tag-help-box #link-help a {
     color: white;
 }
 
@@ -1702,7 +1706,7 @@ p.export {
 }
 
 .video-image-hover {
-   color: orange !important;
+   color: white !important;
    text-decoration: underline !important;
 }
 
