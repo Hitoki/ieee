@@ -1378,7 +1378,7 @@ table#login-table td {
     background-color: #FD7400;
     border: 1px solid transparent;
     color: #FFFFFF;
-    padding: 3px 5px;
+    padding: 8px 12px;
     margin-top: 15px;
     display: inline-block;
     cursor: pointer;
@@ -1391,6 +1391,12 @@ table#login-table td {
     background-color: #FFFFFF;
     color: #FD7400;
     border: 1px solid #FD7400
+}
+
+#testerBtn-container {
+    float: left;
+    margin-left: 40px;
+    margin-top: 28px;   
 }
 
 
@@ -2235,8 +2241,9 @@ div#connectedness-container {
 }
 
 #overview-video-link {
-margin-top: -16px;
-float: right;   
+margin-top: -45px;
+float: right;  
+width: 270px; 
 }
 
 #overview-video-link a:hover {
