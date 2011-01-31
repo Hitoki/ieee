@@ -28,7 +28,10 @@
     {# For non-search-phrases #}
     
     <p id="tag-and-cluster-counts">
-        Showing{% if is_showing_all %} all{% endif %} <img src="/media/images/tag_icon.png" class="tag-icon" /> {{ num_tags }} tag{{ num_tags|pluralize }}{% if num_terms %} (<img src="/media/images/tag_icon.png" class="tag-icon" />{{ num_terms }} terms){% endif %}{% if num_clusters %} and <img src="/media/images/icon_cluster_sm.png" class="cluster-icon" /> {{ num_clusters }} cluster{{ num_clusters|pluralize }}{% endif %}{% if cluster %} in the cluster "{{ cluster.name }}"{% endif %}{% if sector %} in the industry sector "{{ sector }}"{% endif %}
-        
+        Showing 
+        {% if num_clusters %}<img src="/media/images/icon_cluster_sm.png" class="cluster-icon" /> {{ num_clusters }} cluster{{ num_clusters|pluralize }} and{% endif %}
+        <img src="/media/images/tag_icon.png" class="tag-icon" /> {{ num_tags }} unclustered tag{{ num_tags|pluralize }}
+        {% if num_terms %} (<img src="/media/images/tag_icon.png" class="tag-icon" />{{ num_terms }} terms){% endif %}
+        {% if cluster %} in the cluster "{{ cluster.name }}"{% endif %}{% if sector %} in the industry sector "{{ sector }}"{% endif %}
     </p>
 {% endif %}
