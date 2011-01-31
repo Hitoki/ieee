@@ -2680,3 +2680,11 @@ em.none {
 td.machine-generated-column {
     padding:1em;
 }
+
+.missing-logo {
+    background:red;
+    color:white;
+    height:100px;
+    text-align:center;
+    font-weight:bold;
+}
