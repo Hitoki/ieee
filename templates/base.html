@@ -53,6 +53,7 @@
 {% endif %}
                 {% block content %}{% endblock %}
 {% if not is_ajax %}
+                <a id="testerSurveyBtn" href="{% url tester_survey %}" class="lightbox {customClass: 'tester-survey'}">Tester Survey</a>
             </div>
             {% include "footer.inc.html" %}
         </div>

@@ -145,7 +145,8 @@ input.text {
 
 #lightbox .resources-lightbox-content .lightbox-close,
 #lightbox .overview-video-lightbox-content .lightbox-close,
-#lightbox .tester-message-lightbox-content .lightbox-close {
+#lightbox .tester-message-lightbox-content .lightbox-close,
+#lightbox .tester-survey-lightbox-content .lightbox-close {
     background: url(/media/images/close_button.png) no-repeat 0px 0px;
     height: 37px;
     margin: -20px 0 0 856px;
@@ -156,7 +157,8 @@ input.text {
 
 #lightbox .resources-lightbox-content .lightbox-close:hover,
 #lightbox .overview-video-lightbox-content .lightbox-close:hover,
-#lightbox .tester-message-lightbox-content .lightbox-close:hover {
+#lightbox .tester-message-lightbox-content .lightbox-close:hover,
+#lightbox .tester-survey-lightbox-content .lightbox-close:hover {
     background: url(/media/images/close_button.png) no-repeat 0px -44px;
     cursor: pointer;
 }
@@ -320,6 +322,21 @@ input.text {
     overflow-y: scroll;
     min-width: 512px;
     padding: 2em;
+}
+
+#lightbox .tester-survey-lightbox-content {
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    background-color: #FFFFFF; /*Old blue*/
+    border:1px solid black;
+    width: 848px;
+    height: 350px;
+    min-width: 512px;
+    padding: 2em;
+}
+
+#lightbox .tester-survey-lightbox-content .lightbox-close {
+    margin: -45px 0 0 856px;
 }
 
 #lightbox .tester-message-lightbox-content p {

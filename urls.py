@@ -29,7 +29,8 @@ else:
         url(r'^browser_warning$', views.browser_warning, name='browser_warning'),
         url(r'^xplore_full_results/(?P<tag_id>\d+)$', views.xplore_full_results, name='xplore_full_results'),
         url(r'^tester_message$', views.tester_message, name='tester_message'),
-        
+        url(r'^tester_survey$', views.tester_survey, name='tester_survey'),
+
         # AJAX
         #url(r'^ajax/tag_content$', views.ajax_tag_content, name='ajax_tag_content'),
         url(r'^ajax/tag_content/(?P<tag_id>\d+)/(?P<ui>\S+)$', views.ajax_tag_content, name='ajax_tag_content'),

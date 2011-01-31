@@ -199,6 +199,10 @@ def tester_message(request):
     'Returns the HTML content for the tester message.'
     return render(request, 'tester_message.html')
 
+def tester_survey(request):
+    'Returns the HTML content for the tester survey.'
+    return render(request, 'tester_survey.html')
+
 @login_required
 def xplore_full_results(request, tag_id):
     'Returns full listing of IEEE xplore results for the given tag.'
