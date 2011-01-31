@@ -1376,6 +1376,7 @@ table#login-table td {
 
 #testerBtn {
     background-color: #FD7400;
+    border: 1px solid transparent;
     color: #FFFFFF;
     padding: 3px 5px;
     margin-top: 15px;
@@ -1384,6 +1385,12 @@ table#login-table td {
     text-decoration: none;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
+}
+
+#testerBtn:hover {
+    background-color: #FFFFFF;
+    color: #FD7400;
+    border: 1px solid #FD7400
 }
 
 
