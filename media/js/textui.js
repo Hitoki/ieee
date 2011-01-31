@@ -212,7 +212,7 @@ var Tags = {
             
             if (hash == '') {
                 // Home page
-                Tags.selectSector('all');
+                Tags.selectSociety('all');
                 
             } else if (sector_matches) {
                 // Special case: when first loading the http://host/textui/ page, the hash will be changed to http://host/textui/#/sector/all.  This prevents the second/extraneous AJAX reload:
@@ -259,7 +259,7 @@ var Tags = {
             
             } else {
                 // Catch all for bad hashes... especially "#tag-login-tab" leftover from login redirect...
-                Tags.selectSector('all');
+                Tags.selectSociety('all');
                 
             }
             
@@ -1084,7 +1084,7 @@ var Tags = {
     },
     
     loadContentChunk: function() {
-        log('loadContentChunk()');
+        //log('loadContentChunk()');
         
         // Hide the loading banner.
         $('#tags-chunk-loading').remove();
@@ -1118,7 +1118,7 @@ var Tags = {
             if (zoom != 100) {
                 
                 // Add inline style="" to all DIV's, to prevent nodes from briefly showing up full-size.
-                log('adding STYLE attrs.');
+                //log('adding STYLE attrs.');
                 
                 // Add zoom styles to nodes.
                 var s = [];
