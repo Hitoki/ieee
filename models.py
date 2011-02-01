@@ -571,6 +571,7 @@ class Node(models.Model):
                 'num_resources1',
                 'num_sectors1',
                 'num_societies1',
+                'is_taxonomy_term',
             )
 
         min_resources = None
@@ -585,7 +586,7 @@ class Node(models.Model):
         for tag in tags:
             # Ignore all hidden tags
             
-            if (show_empty_terms and tag['is_taxonomy_term']) or (tag['num_societies1'] > 0 and tag['num_resources1'] > 0):            
+            if (show_empty_terms and tag['is_taxonomy_term']) or (tag['num_societies1'] > 0 and tag['num_resources1'] > 0):
                 if min_resources is None or tag['num_resources1'] < min_resources:
                     min_resources = tag['num_resources1']
                 if max_resources is None or tag['num_resources1'] > max_resources:
