@@ -502,9 +502,12 @@ def send_admin_email(subject, body):
     
     emails = [temp[1] for temp in settings.ADMINS]
     try:
-        send_mail(subject, message, settings.SERVER_EMAIL, emails)
+        send_mail(subject, body, settings.SERVER_EMAIL, emails)
     except Exception, e:
         # Silent fail.
+        print 'Error while sending email:'
+        print e
+        #raise
         pass
 
 def make_choices(values):

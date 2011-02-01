@@ -130,7 +130,6 @@ def textui(request, survey=False):
         'sectors':sectors,
         'filters':filters,
         'societies':societies,
-        'ENABLE_TEXTUI_SIMPLIFIED_COLORS': settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS,
         'ENABLE_SHOW_CLUSTERS_CHECKBOX': settings.ENABLE_SHOW_CLUSTERS_CHECKBOX,
         'ENABLE_SHOW_TERMS_CHECKBOX': settings.ENABLE_SHOW_TERMS_CHECKBOX,
     })
@@ -496,7 +495,7 @@ _POPULARITY_LEVELS = [
     'level6',
 ]
 
-def _get_popularity_level(min, max, count):
+def _get_popularity_level(min, max, count, node=None):
     '''
     Gets the popularity level for the given count of items.
     
@@ -509,7 +508,21 @@ def _get_popularity_level(min, max, count):
     '''
     
     if count < min or count > max:
-        raise Exception('count %r is out side of the min/max range (%r, %r)' % (count, min, max))
+        body = []
+        if node:
+            body.append('Node:')
+            body.append('  id: %s' % node['id'])
+            body.append('  name: %s' % node['name'])
+            body.append('  score1: %s' % node['score1'])
+        body = '\n'.join(body)
+        util.send_admin_email('Error in _get_popularity_level(): count %r is outside the range (%r, %r)' % (count, min, max), body)
+        #raise Exception('count %r is outside of the min/max range (%r, %r)' % (count, min, max) + '\n' + body)
+    
+    # NOTE: This is just to prevent errors for the end-user.
+    if count < min:
+        count = min
+    elif count > max:
+        count = max
     
     if min == max:
         return _POPULARITY_LEVELS[len(_POPULARITY_LEVELS)-1]
@@ -747,24 +760,24 @@ def ajax_textui_nodes(request):
     if cluster:
         # Get min/max scores for this cluster.
         #log('  getting min/max for this cluster.')
-        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = cluster.get_sector_ranges()
+        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = cluster.get_sector_ranges(show_empty_terms=show_empty_terms)
         (min_score, max_score) = cluster.get_combined_sector_ranges(show_empty_terms=show_empty_terms)
     elif sector:
         # Get min/max scores for this sector.
         #log('  getting min/max for this sector.')
-        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = sector.get_sector_ranges()
-        (min_score, max_score) = sector.get_combined_sector_ranges()
+        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = sector.get_sector_ranges(show_empty_terms=show_empty_terms)
+        (min_score, max_score) = sector.get_combined_sector_ranges(show_empty_terms=show_empty_terms)
     elif society:
         # Get min/max scores for this society.
         #log('  getting min/max for this society.')
-        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = society.get_tag_ranges()
-        (min_score, max_score) = society.get_combined_ranges()
+        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = society.get_tag_ranges(show_empty_terms=show_empty_terms)
+        (min_score, max_score) = society.get_combined_ranges(show_empty_terms=show_empty_terms)
     else:
         # Get min/max scores for all tags/clusters (root node).
         #log('  getting min/max for root node.')
         if sector_id is None and society_id is None:
             root_node = Node.objects.get(node_type__name=NodeType.ROOT)
-            (min_score, max_score) = root_node.get_combined_sector_ranges()
+            (min_score, max_score) = root_node.get_combined_sector_ranges(show_empty_terms=show_empty_terms)
         else:
             min_score = 0
             max_score = 10000
@@ -813,42 +826,31 @@ def ajax_textui_nodes(request):
             #num_related_tags = child_node['get_filtered_related_tag_count']()
             num_related_tags = child_node['num_related_tags1']
             
-                
-            
             if child_node['node_type__name'] == NodeType.TAG:
                 
                 # Show all terms, and all tags with content.
                 #if (show_empty_terms and child_node['is_taxonomy_term']) or (child_node['num_selected_filters1'] > 0 and child_node['num_societies1'] > 0 and child_node['num_resources1'] > 0):
                 if (show_empty_terms and child_node['is_taxonomy_term']) or (child_node['num_societies1'] > 0 and child_node['num_resources1'] > 0):
                     
-                    if not settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
-                        # Old-style popularity colors with main color & two color blocks
-                        resourceLevel = _get_popularity_level(min_resources, max_resources, child_node['num_resources1'])
-                        sectorLevel = _get_popularity_level(min_sectors, max_sectors, child_node['num_sectors1'])
-                        related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
-                    else:
-                        # New-style popularity colors - single color only
-                        try:
-                            combinedLevel = _get_popularity_level(min_score, max_score, child_node['score1'])
-                        except Exception:
-                            print 'Exception during _get_popularity_level() for node %r (%r), type %r' % (child_node['name'], child_node['id'], child_node['node_type__name'])
-                            raise
+                    try:
+                        combinedLevel = _get_popularity_level(min_score, max_score, child_node['score1'], node=child_node)
+                    except Exception:
+                        print 'Exception during _get_popularity_level() for node %r (%r), type %r' % (child_node['name'], child_node['id'], child_node['node_type__name'])
+                        print "child_node['id']: %s" % child_node['id']
+                        print "child_node['node_type__name']: %s" % child_node['node_type__name']
+                        print "child_node['num_societies1']: %s" % child_node['num_societies1']
+                        print "child_node['num_resources1']: %s" % child_node['num_resources1']
+                        print "child_node['score1']: %s" % child_node['score1']
+                        raise
                             
-                    if not settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
-                        # Separated color blocks
-                        child_node['level'] = resourceLevel
-                        child_node['sectorLevel'] = sectorLevel
-                        child_node['relatedTagLevel'] = related_tag_level
-                        child_node['num_related_tags'] = num_related_tags
-                    else:
-                        # Combined scores
-                        child_node['score'] = child_node['score1']
-                        child_node['level'] = combinedLevel
-                        
-                        #print 'combinedLevel: %s' % combinedLevel
-                        
-                        #child_node['min_score'] = min_score
-                        #child_node['max_score'] = max_score
+                    # Combined scores
+                    child_node['score'] = child_node['score1']
+                    child_node['level'] = combinedLevel
+                    
+                    #print 'combinedLevel: %s' % combinedLevel
+                    
+                    #child_node['min_score'] = min_score
+                    #child_node['max_score'] = max_score
                     
                 else:
                     #log('removing node %s' % child_node['name'])
@@ -1003,8 +1005,7 @@ def ajax_nodes_xml(request):
     nodes = [node]
     
     # First sorting by connectedness here, so we get the X most connected nodes (with the hard limit)
-    if settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
-        child_nodes = Node.objects.sort_queryset_by_score(child_nodes, False)
+    child_nodes = Node.objects.sort_queryset_by_score(child_nodes, False)
     
     # Add the node's children
     # TODO: Number of child nodes is temporarily limited to a hard limit... remove this later
@@ -1292,11 +1293,7 @@ def tooltip(request, tag_id=None):
             related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
             society_level = _get_popularity_level(min_societies, max_societies, tag.num_societies1)
             
-            if settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
-                # New-style popularity colors - single color only
-                tagLevel = _get_popularity_level(min_score, max_score, node.score1)
-            else:
-                tagLevel = resourceLevel
+            tagLevel = _get_popularity_level(min_score, max_score, node.score1)
             
             sectors_str = util.truncate_link_list(
                 tag.get_sectors(),

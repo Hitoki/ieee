@@ -141,13 +141,13 @@ class NodeManager(models.Manager):
         sector_type = NodeType.objects.getFromName(NodeType.SECTOR)
         return single_row(self.filter(name=name, node_type=sector_type), 'Looking up sector "%s"' % name)
     
-    def get_sectors_from_list(self, names):
-        'Returns a list of sectors whose names match the given list of names.'
-        sectorType = NodeType.objects.getFromName('sector')
-        results = self.filter(name__in=names, node_type=sectorType)
-        if len(results) != len(names):
-            raise Exception('Did not find matches for all sectors:\nnames: %s\nresults: %s' % (names, results))
-        return results
+    #def get_sectors_from_list(self, names):
+    #    'Returns a list of sectors whose names match the given list of names.'
+    #    sectorType = NodeType.objects.getFromName('sector')
+    #    results = self.filter(name__in=names, node_type=sectorType)
+    #    if len(results) != len(names):
+    #        raise Exception('Did not find matches for all sectors:\nnames: %s\nresults: %s' % (names, results))
+    #    return results
     
     def getFirstSector(self):
         'Gets the first sector.'
@@ -167,25 +167,25 @@ class NodeManager(models.Manager):
         tag_type = NodeType.objects.getFromName('tag')
         return self.filter(name=name, node_type=tag_type)
     
-    def get_tag_by_name(self, tag_name):
-        'Returns a single tag matching the given name, or None if not found.  Fails if more than one exist.'
-        #print 'get_tag_by_name()'
-        #print '  tag_name:', tag_name
-        tag_type = NodeType.objects.getFromName('tag')
-        return single_row_or_none(self.filter(name=tag_name, node_type=tag_type))
+    #def get_tag_by_name(self, tag_name):
+    #    'Returns a single tag matching the given name, or None if not found.  Fails if more than one exist.'
+    #    #print 'get_tag_by_name()'
+    #    #print '  tag_name:', tag_name
+    #    tag_type = NodeType.objects.getFromName('tag')
+    #    return single_row_or_none(self.filter(name=tag_name, node_type=tag_type))
         
-    def get_resource_range(self, sector):
-        "Returns the min/max amount of resources-per-tag for the given sector."
-        
-        resource_counts = [tag.resources.count() for tag in sector.child_nodes.all()]
-        if len(resource_counts) == 0:
-            min_resources = None
-            max_resources = None
-        else:
-            min_resources = min(resource_counts)
-            max_resources = max(resource_counts)
-        
-        return (min_resources, max_resources)
+    #def get_resource_range(self, sector):
+    #    "Returns the min/max amount of resources-per-tag for the given sector."
+    #    
+    #    resource_counts = [tag.resources.count() for tag in sector.child_nodes.all()]
+    #    if len(resource_counts) == 0:
+    #        min_resources = None
+    #        max_resources = None
+    #    else:
+    #        min_resources = min(resource_counts)
+    #        max_resources = max(resource_counts)
+    #    
+    #    return (min_resources, max_resources)
 
     #def get_cluster_range(self, cluster):
     #    "Returns the min/max amount of sectors-per-tag for the given sector."
@@ -202,18 +202,18 @@ class NodeManager(models.Manager):
     #    
     #    return (min_sectors, max_sectors)
     
-    def get_related_tag_range(self, sector):
-        "Returns the min/max amount of related_tags-per-tag for the given sector."
-        
-        related_tag_counts = [tag.related_tags.count() for tag in sector.child_nodes.all()]
-        if len(related_tag_counts) == 0:
-            min_related_tags = None
-            max_related_tags = None
-        else:
-            min_related_tags = min(related_tag_counts)
-            max_related_tags = max(related_tag_counts)
-        
-        return (min_related_tags, max_related_tags)
+    #def get_related_tag_range(self, sector):
+    #    "Returns the min/max amount of related_tags-per-tag for the given sector."
+    #    
+    #    related_tag_counts = [tag.related_tags.count() for tag in sector.child_nodes.all()]
+    #    if len(related_tag_counts) == 0:
+    #        min_related_tags = None
+    #        max_related_tags = None
+    #    else:
+    #        min_related_tags = min(related_tag_counts)
+    #        max_related_tags = max(related_tag_counts)
+    #    
+    #    return (min_related_tags, max_related_tags)
     
     def searchTagsByNameSubstring(self, substring, sector_ids=None, exclude_tag_id=None, society_id=None, exclude_society_id=None):
         """
@@ -539,7 +539,7 @@ class Node(models.Model):
         
         #print '  self.societies.all(): %r' % self.societies.all()
             
-    def get_sector_ranges(self, tags=None):
+    def get_sector_ranges(self, tags=None, show_empty_terms=False):
         """
         Returns the min/max amount of resources/sectors/related-tags per child-tag for this node.
         NOTE: self must be root, sector, or cluster.
@@ -566,7 +566,7 @@ class Node(models.Model):
             # Filter out tags with no resources
             tags = Node.objects.get_extra_info(tags)
             tags = tags.values(
-                'num_filters1',
+                #'num_filters1',
                 'num_related_tags1',
                 'num_resources1',
                 'num_sectors1',
@@ -584,7 +584,8 @@ class Node(models.Model):
         
         for tag in tags:
             # Ignore all hidden tags
-            if tag['num_resources1'] > 0 and tag['num_societies1'] > 0 and tag['num_filters1'] > 0:
+            
+            if (show_empty_terms and tag['is_taxonomy_term']) or (tag['num_societies1'] > 0 and tag['num_resources1'] > 0):            
                 if min_resources is None or tag['num_resources1'] < min_resources:
                     min_resources = tag['num_resources1']
                 if max_resources is None or tag['num_resources1'] > max_resources:
@@ -641,7 +642,9 @@ class Node(models.Model):
                     min_score = tag['score1']
                 if max_score is None or tag['score1'] > max_score:
                     max_score = tag['score1']
-                    
+        
+        print 'min_score: %r' % min_score
+        print 'max_score: %r' % max_score
         return (min_score, max_score)
         
     class Meta:
@@ -744,7 +747,7 @@ class Society(models.Model):
     def __unicode__(self):
         return self.name
     
-    def get_tag_ranges(self):
+    def get_tag_ranges(self, show_empty_terms=False):
         """
         Returns the min/max amount of resources/sectors/related-tags per tag for the given society.
         Ignores tags with no resources, no filters, or no societies.
@@ -774,7 +777,8 @@ class Society(models.Model):
         max_societies = None
         
         for tag in tags:
-            if tag.num_resources1 > 0 and tag.num_societies1 > 0 and tag.num_filters1 > 0:
+            if (show_empty_terms and tag.is_taxonomy_term) or (tag.num_societies1 > 0 and tag.num_resources1 > 0):
+            #if tag.num_resources1 > 0 and tag.num_societies1 > 0 and tag.num_filters1 > 0:
                 if min_resources is None or tag.num_resources1 < min_resources:
                     min_resources = tag.num_resources1
                 if max_resources is None or tag.num_resources1 > max_resources:
@@ -808,7 +812,7 @@ class Society(models.Model):
         
         return (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies)
     
-    def get_combined_ranges(self):
+    def get_combined_ranges(self, show_empty_terms=False):
         """
         Returns the min/max combined score per tag for the given society.
         Ignores tags with no resources, no filters, or no societies.
@@ -831,7 +835,9 @@ class Society(models.Model):
         
         for tag in tags:
             # Ignore all hidden tags
-            if tag.num_resources1 > 0 and tag.num_societies1 > 0 and tag.num_filters1 > 0:
+            #if (show_empty_terms and tag['is_taxonomy_term']) or (tag['num_societies1'] > 0 and tag['num_resources1'] > 0):
+            if (show_empty_terms and tag.is_taxonomy_term) or (tag.num_societies1 > 0 and tag.num_resources1 > 0):
+            #if tag.num_resources1 > 0 and tag.num_societies1 > 0 and tag.num_filters1 > 0:
                 if min_score is None or tag.score1 < min_score:
                     min_score = tag.score1
                 

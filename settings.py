@@ -193,11 +193,6 @@ DEBUG_ENABLE_CLUSTERS = True
 DISABLE_SITE = False
 'Disables the entire site, printing a "Site is disabled" message.  Used for server maintenance.'
 
-# This setting should be modified in settings.py, not local_settings.py (to ease server configuration tracking)
-#ENABLE_TEXTUI_SIMPLIFIED_COLORS = False
-ENABLE_TEXTUI_SIMPLIFIED_COLORS = True
-'Enables a single tag color in textui.  Otherwise, two extra color blocks are shown for sector/related tag popularity.  This is on by default, and the alternate color blocks method should be removed at some point.'
-
 ENABLE_FIREBUG_LITE = False
 'Enables firebug lite JS.'
 
