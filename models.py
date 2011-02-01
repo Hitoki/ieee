@@ -607,7 +607,7 @@ class Node(models.Model):
 
         return (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies)
 
-    def get_combined_sector_ranges(self, tags=None):
+    def get_combined_sector_ranges(self, tags=None, show_empty_terms=False):
         """
         Returns the min/max combined score per tag for the given sector or cluster.
         NOTE: self must be a sector or cluster.
@@ -617,7 +617,6 @@ class Node(models.Model):
         @return a tuple (min, max).
         """
         assert self.node_type.name == NodeType.ROOT or NodeType.SECTOR or self.node_type.name == NodeType.TAG_CLUSTER, 'self (%s, %s, %s) must be a sector or cluster' % (self.name, self.id, self.node_type.name)
-        
         if tags is None:
             if self.node_type.name == NodeType.ROOT:
                 tags = Node.objects.get_tags()
@@ -628,8 +627,8 @@ class Node(models.Model):
             tags = tags.values(
                 'num_resources1',
                 'num_societies1',
-                'num_filters1',
-                'score1'
+                'score1',
+                'is_taxonomy_term',
             )
         
         min_score = None
@@ -637,7 +636,7 @@ class Node(models.Model):
         
         for tag in tags:
             # Ignore all hidden tags
-            if tag['num_resources1'] > 0 and tag['num_societies1'] > 0 and tag['num_filters1'] > 0:
+            if (show_empty_terms and tag['is_taxonomy_term']) or (tag['num_societies1'] > 0 and tag['num_resources1'] > 0):
                 if min_score is None or tag['score1'] < min_score:
                     min_score = tag['score1']
                 if max_score is None or tag['score1'] > max_score:

@@ -508,8 +508,8 @@ def _get_popularity_level(min, max, count):
     @return: A text label 'level1' through 'level6'.
     '''
     
-    #if count < min or count > max:
-    #    raise Exception('count %r is out side of the min/max range (%r, %r)' % (count, min, max))
+    if count < min or count > max:
+        raise Exception('count %r is out side of the min/max range (%r, %r)' % (count, min, max))
     
     if min == max:
         return _POPULARITY_LEVELS[len(_POPULARITY_LEVELS)-1]
@@ -735,11 +735,20 @@ def ajax_textui_nodes(request):
                 max_score = node1.score1
             else:
                 max_score = max(max_score, node1.score1)
+
+    if show_terms and (word_queries or (cluster and show_terms and not word_queries and sector is None and society is None)):
+        # Show empty terms if we're:
+        # 1. Searching by phrase, or
+        # 2. Searching within a cluster, but not in any sector/society.
+        show_empty_terms = True
+    else:
+        show_empty_terms = False
+    
     if cluster:
         # Get min/max scores for this cluster.
         #log('  getting min/max for this cluster.')
         (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = cluster.get_sector_ranges()
-        (min_score, max_score) = cluster.get_combined_sector_ranges()
+        (min_score, max_score) = cluster.get_combined_sector_ranges(show_empty_terms=show_empty_terms)
     elif sector:
         # Get min/max scores for this sector.
         #log('  getting min/max for this sector.')
@@ -778,14 +787,6 @@ def ajax_textui_nodes(request):
     # This saves time when we check child_node.node_type later on (prevents DB hit for every single child_node)
     child_nodes = child_nodes.select_related('node_type')
     
-    if show_terms and (word_queries or (cluster and show_terms and not word_queries and sector is None and society is None)):
-        # Show empty terms if we're:
-        # 1. Searching by phrase, or
-        # 2. Searching within a cluster, but not in any sector/society.
-        show_empty_terms = True
-    else:
-        show_empty_terms = False
-    
     if request.user.is_staff:
         num_terms = child_nodes.filter(is_taxonomy_term=True).count()
     else:
@@ -802,7 +803,6 @@ def ajax_textui_nodes(request):
             'num_related_tags1',
             'num_resources1',
             'num_sectors1',
-            'num_selected_filters1',
             'num_societies1',
             'score1',
             'is_taxonomy_term',
@@ -813,25 +813,27 @@ def ajax_textui_nodes(request):
             #num_related_tags = child_node['get_filtered_related_tag_count']()
             num_related_tags = child_node['num_related_tags1']
             
-            if not settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
-                # Old-style popularity colors with main color & two color blocks
-                resourceLevel = _get_popularity_level(min_resources, max_resources, child_node['num_resources1'])
-                sectorLevel = _get_popularity_level(min_sectors, max_sectors, child_node['num_sectors1'])
-                related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
-            else:
-                # New-style popularity colors - single color only
-                try:
-                    combinedLevel = _get_popularity_level(min_score, max_score, child_node['score1'])
-                except Exception:
-                    print 'Exception during _get_popularity_level() for node %r' % child_node['name']
-                    raise
-                    
+                
             
             if child_node['node_type__name'] == NodeType.TAG:
                 
                 # Show all terms, and all tags with content.
-                if (show_empty_terms and child_node['is_taxonomy_term']) or (child_node['num_selected_filters1'] > 0 and child_node['num_societies1'] > 0 and child_node['num_resources1'] > 0):
+                #if (show_empty_terms and child_node['is_taxonomy_term']) or (child_node['num_selected_filters1'] > 0 and child_node['num_societies1'] > 0 and child_node['num_resources1'] > 0):
+                if (show_empty_terms and child_node['is_taxonomy_term']) or (child_node['num_societies1'] > 0 and child_node['num_resources1'] > 0):
                     
+                    if not settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
+                        # Old-style popularity colors with main color & two color blocks
+                        resourceLevel = _get_popularity_level(min_resources, max_resources, child_node['num_resources1'])
+                        sectorLevel = _get_popularity_level(min_sectors, max_sectors, child_node['num_sectors1'])
+                        related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
+                    else:
+                        # New-style popularity colors - single color only
+                        try:
+                            combinedLevel = _get_popularity_level(min_score, max_score, child_node['score1'])
+                        except Exception:
+                            print 'Exception during _get_popularity_level() for node %r (%r), type %r' % (child_node['name'], child_node['id'], child_node['node_type__name'])
+                            raise
+                            
                     if not settings.ENABLE_TEXTUI_SIMPLIFIED_COLORS:
                         # Separated color blocks
                         child_node['level'] = resourceLevel

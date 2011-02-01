@@ -773,6 +773,8 @@ var Tags = {
         } else if (this.page == this.PAGE_SOCIETY) {
             this.page = this.PAGE_SOCIETY_CLUSTER;
             page = 'society';
+        } else {
+            alert('Error: Tags.selectCluster(), sectorId and societyId are not specified.');
         }
         
         this.clusterId = clusterId;
@@ -1111,7 +1113,6 @@ var Tags = {
             
             // Load the next chunk of content into the tags div.
             //tagWindow.html(tagWindow.html() + chunk);
-            //log('chunk.substr(0, 100): ' + chunk.substr(0, 100));
             
             var zoom = $('#textui-zoom-slider').slider('value');
             
@@ -1143,7 +1144,10 @@ var Tags = {
                 chunk = chunk.replace(/(<img [^>]+ class="cluster-icon")\s*(\/>)/gi, '$1 style="' + s + '" $2')
             }
             
-            var chunkElem = $('<span>' + chunk + '</span>');
+            // NOTE: This next line causes Firefox to give "script stack space quota is exhausted" error.  Using innerHTML fixes this.
+            //var chunkElem = $('<span>' + chunk + '</span>');
+            var chunkElem = $('<span></span>');
+            chunkElem[0].innerHTML = chunk;
             
             //log('chunkElem: ');
             //console.log(chunkElem);
