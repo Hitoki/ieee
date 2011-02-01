@@ -124,6 +124,9 @@ def textui(request, survey=False):
     filters = Filter.objects.all()
     societies = Society.objects.all()
     
+    # NOTE: Hide TAB society from the nav.
+    societies = societies.exclude(abbreviation__in=['tab', 'ieee-usa'])
+    
     return render(request, 'textui.html', {
         'sectorId':sectorId,
         'clusterId': clusterId,
@@ -268,17 +271,21 @@ def ajax_tag_content(request, tag_id, ui=None):
     conferences = list(sorted(conferences, key=lambda resource: resource.year, reverse=True))
     conferences = util.group_conferences_by_series(conferences)
     
+    societies = tag.societies.all()
+    # Hide the TAB society.
+    societies = societies.exclude(abbreviation='tab')
+    
     num_related_items =  \
         sectors1.count() \
         + clusters1.count() \
-        + tag.societies.count() \
+        + societies.count() \
         + tag.related_tags.count() \
         + len(conferences) \
         + experts.count() \
         + len(periodicals) \
         + len(standards) \
         
-    if tag.is_taxonomy_term and ((sectors1.count() + tag.societies.count() + len(conferences) + experts.count() + len(periodicals) + len(standards)) == 0):
+    if tag.is_taxonomy_term and ((sectors1.count() + societies.count() + len(conferences) + experts.count() + len(periodicals) + len(standards)) == 0):
         # This is a term with no resources (except Related Tags), just show the abbreviated content popup.
         return render(request, 'ajax_term_content.html', {
             'tag':tag,
@@ -289,6 +296,7 @@ def ajax_tag_content(request, tag_id, ui=None):
         # Show the normal tag content popup.
         return render(request, 'ajax_tag_content.html', {
             'tag':tag,
+            'societies':societies,
             'conferences': conferences,
             'experts': experts,
             'periodicals': periodicals,

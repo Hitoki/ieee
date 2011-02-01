@@ -42,7 +42,7 @@
                             {% comment %}
                             #<li><a href="">Filters ({{ tag.filters.count }})</a></li>
                             {% endcomment %}
-                            <li id="ieee-societies-tab" class="middle-group-menu"><a href="" class="two-word-menu">IEEE<br /> Organizations <span>({{ tag.societies.count }})</span></a></li>
+                            <li id="ieee-societies-tab" class="middle-group-menu"><a href="" class="two-word-menu">IEEE<br /> Organizations <span>({{ societies.count }})</span></a></li>
                             <li id="related-tags-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu">Related <br />Tags <span>({{ tag.related_tags.count }})</span></a></li>
                             <li id="conferences-tab" class="begin-group-menu"><a href="" class="one-word-menu">Conferences <span>({{conferences|length}})</span></a></li>
                             <li id="periodicals-tab" class="middle-group-menu"><a href="" class="one-word-menu">Periodicals <span>({{periodicals|length}})</span></a></li>
@@ -97,14 +97,14 @@
                         <!-- Organizations -->
                         <div id="society-tab" data-printUrl='{% url print_resource tag.id "societies" %}'>
                             <div class="group">
-                            {% if tag.node_societies.all %}
+                            {% if societies.all %}
                                 <table class="society-images">
-                                    {% for node_society in tag.node_societies.all %}
+                                    {% for society in societies.all %}
                                         <tr>
                                             <td class="society-logo">
-                                                {% if node_society.society.logo_thumbnail %}
+                                                {% if society.logo_thumbnail %}
                                                     <div class="image-container">
-                                                        <img src="{{ node_society.society.logo_thumbnail.url }}" />
+                                                        <img src="{{ society.logo_thumbnail.url }}" />
                                                     </div>
                                                 {% else %}
                                                     <div class="image-container">
@@ -113,17 +113,17 @@
                                                 {% endif %}
                                             </td>
                                             <td>
-                                                {% if node_society.society.url %}
-                                                    <a href="{{ node_society.society.url }}" target="_blank">
+                                                {% if society.url %}
+                                                    <a href="{{ society.url }}" target="_blank">
                                                 {% endif %}
-                                                <span>{{ node_society.society.name }} ({{ node_society.society.abbreviation }})</span>
-                                                {% if node_society.society.url %}
+                                                <span>{{ society.name }} ({{ society.abbreviation }})</span>
+                                                {% if society.url %}
                                                     <img src="{{ MEDIA_URL }}images/popup.png" />
                                                 {% endif %}
-                                                {% if node_society.society.url %}
+                                                {% if society.url %}
                                                     </a>
                                                 {% endif %}
-                                                {% if node_society.is_machine_generated %}
+                                                {% if society.node_society.is_machine_generated %}
                                                     <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
                                                 {% endif %}
                                             </td>
