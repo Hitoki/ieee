@@ -1403,6 +1403,7 @@ table#login-table td {
     cursor: pointer;
     text-decoration: none;
     font-size: 7pt;
+    clear: left;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
 }
@@ -1958,10 +1959,6 @@ p.export {
 .sub-conference {
     background:lightblue !important;
 	display:none;
-}
-
-#resources-tab {
-    position:relative;
 }
 
 .curly-brace {
