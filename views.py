@@ -360,7 +360,7 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
     except urllib2.URLError:
         xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
         xplore_results = []
-        totalfound = None
+        totalfound = 0
     else:
         xplore_error = None
         
