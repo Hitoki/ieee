@@ -1421,11 +1421,26 @@ def tags_list(request):
     
 def tag_landing(request, tag_id):
     '''
-    Displays a wikipedia-style "flat" view of the resource. No tabs or other fancy UI.
+    Displays a wikipedia-style "flat" view of the tag. No tabs or other fancy UI.
     Simply uses the print_resource view passing in a different template name.
     '''
     return print_resource(request, tag_id, 'all', template_name='tag_landing.html', create_links=True, toc=True)
+    
+def clusters_list(request):
+    '''
+    Displays a wikipedia-style "flat" view of the cluster.
+    '''
+    return render(request, 'clusters_list.html', {
+        'clusters': Node.objects.get_clusters(),
+    })
 
+def cluster_landing(request, cluster_id):
+    '''
+    Displays a wikipedia-style "flat" view of the cluster. No tabs or other fancy UI.
+    Simply uses the print_resource view passing in a different template name.
+    '''
+    return print_resource(request, cluster_id, 'all', template_name='cluster_landing.html', create_links=True, toc=True)
+    
 def print_resource(request, tag_id, resource_type, template_name='print_resource.html', create_links=False, toc=False):
     '''
     The print resource page.
