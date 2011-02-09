@@ -1046,6 +1046,7 @@ def _import_resources(file, batch_commits=False):
     num_new_mga_societies = 0
     num_existing_mga_societies = 0
     mga_replacements = {}
+    num_urls_updated = 0
     
     reader = UnicodeReader(file)
     
@@ -1163,6 +1164,13 @@ def _import_resources(file, batch_commits=False):
                 resource.save()
                 
                 resources_pub_id_updated += 1
+            
+            # TEMP: for one time, force update of all URLs from the import file for existing resources.
+            if url != '':
+                resource = resources_cache[ieee_id]
+                resource.url = url.strip()
+                resource.save()
+                num_urls_updated += 1
             
         else:
             #logging.debug('  New resource %s "%s".' % (ieee_id, name))
@@ -1304,6 +1312,7 @@ def _import_resources(file, batch_commits=False):
         'num_new_mga_societies': num_new_mga_societies,
         'num_existing_mga_societies': num_existing_mga_societies,
         'mga_replacements': mga_replacements,
+        'num_urls_updated': num_urls_updated,
     }
 
 def _get_random_from_sequence(seq, num):
