@@ -98,43 +98,45 @@ table.main td.center .center-pad {
     left:0px;
 }
 
-#right-help {
-   color:white;
-   font-size: 8pt !important;
-   background-color: #33CC00;
-   padding: 1px 8px;
-   margin: 0 0 0 8px;
+.header-btns {
+    float: right;
+    clear: right;
+    margin: 10px 33px 0 0;
+}
+
+.header-btns .btn {
    border: 1px solid transparent;
-   -moz-border-radius: 3px;
-   -webkit-border-radius: 3px;
-}
-
-#right-help:hover {
-   text-decoration: none;
-   background-color: white;
-   color: #33CC00;
-   border: 1px solid #33CC00;
-}
-
-#header #right-admin {
-   float: right;
-   color:white;
+   color: white;
+   display: inline-block;
    font-size: 8pt;
-   background-color: red;
-   padding: 2px 10px;
-   margin: 9px 35px 0 0;
-   border: 1px solid transparent;
-   -moz-box-shadow: 1px 1px 5px #3F3F3F;
-   -webkit-box-shadow: 1px 1px 5px #3F3F3F;
+   margin: 0;
+   padding: 1px 8px;
    -moz-border-radius: 3px;
    -webkit-border-radius: 3px;
 }
 
-#header #right-admin:hover {
-   text-decoration: none;
-   background-color: white;
-   color: red;
-   border: 1px solid red;
+.header-btns .btn:hover {
+    text-decoration: none;
+    background-color: white !important;
+}
+
+.header-btns .btn.help {
+    background-color: #33CC00;
+}
+
+.header-btns .btn.help:hover {
+    border: 1px solid #33CC00;
+    color: #33CC00;
+}
+
+.header-btns .btn.admin {
+    margin: 0 5px 0 0;
+    background-color: red;
+}
+
+.header-btns .btn.admin:hover {
+    border: 1px solid red;
+    color: red;
 }
 
 #header a.home img {

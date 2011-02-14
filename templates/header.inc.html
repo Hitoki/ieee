@@ -1,9 +1,10 @@
 <div id="header">
     <span id="header-links">
-        {% if user.is_superuser %}
-            <a href="{% url admin_home %}" id="right-admin">Admin</a>
-        {% endif %}
-        <img src="{{MEDIA_URL}}images/sm-logo.png" width="106" height="32"/>
+        <a href="http://ieee.org"><img src="{{MEDIA_URL}}images/sm-logo.png" width="106" height="32"/></a>
+        <span class="header-btns">
+            {% if user.is_superuser %}<a href="{% url admin_home %}" class="btn admin">Admin</a>{% endif %} 
+            <a href="{{ EXTERNAL_HELP_URL }}" class="btn help" target="zendesk">Help</a>
+        </span>
     </span>
     <div id="header-logo">
         <a href="{{ LOGO_HREF }}" class="home">
