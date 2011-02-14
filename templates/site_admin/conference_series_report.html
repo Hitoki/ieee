@@ -34,80 +34,17 @@
                 # in Series
             </th>
         </tr>
-        {% for series in serieses %}
+        {% for conference_series, num_in_series in serieses %}
             <tr>
                 <td>
-                    <a href="#{{ series.0|urlencode }}">{{ series.0 }}</a> 
+                    <a href="{% url admin_conference_series_report2 conference_series %}">{{ conference_series }}</a> 
                 </td>
                 <td>
-                    {{ series.1 }}
+                    {{ num_in_series }}
                 </td>
             </tr>
         {% endfor %}
     </table>
 
-    <h2>Current Conference For Each Series</h2>
-    
-    <p class="instruction">
-        Current conference shown first in bold, other conferences in the same series shown in gray.
-    </p>
-    
-    <table class="grid">
-        <tr>
-            <th>
-                Series
-            </th>
-            <th>
-                Year
-            </th>
-            <th>
-                ID
-            </th>
-            <th>
-                Name
-            </th>
-        </tr>
-        {% for conference in conferences %}
-            <tr class="current">
-                <td>
-                    {{ conference.conference_series }}
-                </td>
-                <td>
-                    {{ conference.year }}
-                </td>
-                <td>
-                    <a name="{{ conference.conference_series|urlencode }}" href="{% url admin_view_resource conference.id %}">
-                        {{ conference.id }}
-                    </a>
-                </td>
-                <td>
-                    {{ conference.name }}
-                </td>
-            </tr>
-            {% for other_conference in conference.other_conferences %}
-                <tr class="other">
-                    <td>
-                        {{ other_conference.conference_series }}
-                    </td>
-                    <td>
-                        {{ other_conference.year }}
-                    </td>
-                    <td class="id">
-                        <a href="{% url admin_view_resource other_conference.id %}">
-                            {{ other_conference.id }}
-                        </a>
-                    </td>
-                    <td>
-                        {{ other_conference.name }}
-                    </td>
-                </tr>
-            {% endfor %}
-            <tr>
-                <td colspan="4">
-                    &nbsp;
-                </td>
-            </tr>
-        {% endfor %}
-    </table>
 
 {% endblock %}

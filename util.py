@@ -549,7 +549,95 @@ def safejoin(a, b):
         raise Exception('Resulting path %r is not within parent path %r' % (c, a))
     return os.path.abspath(c)
 
-## Command line util functions --------------------------------------------------
+def update_conference_series_tags(conferences=None, conference_series=None):
+    '''
+    Updates conferences so that each future conference inherits all previous years' conferences' tags.
+    Must give either conferences or conference_series.
+    @param conferences A list of conferences to update, should be sorted by conference_series, then year.  All conferences should have a valid conference_series value, and a valid year value.
+    @param conference_series (string) A series to parse through. Will grab all conferences of this series and update them.
+    '''
+    from models import Resource, ResourceNodes, ResourceType
+    #from ieeetags.models import Resource, ResourceNodes, ResourceType
+    #import models
+    if conferences is not None and conference_series is None:
+        pass
+    elif conferences is None and conference_series is not None:
+        conference_type = ResourceType.objects.getFromName(ResourceType.CONFERENCE)
+        conferences = Resource.objects.filter(resource_type=conference_type, conference_series=conference_series).order_by('year')
+    else:
+        raise Exception('Both conferences (%r) and conference_series (%r) were specified, should only specify one.' % (conferences, conference_series))
+    
+    num_conferences = 0
+    num_series = 0
+    num_tags_added = 0
+    
+    num_total_conferences = conferences.count()
+    
+    series = ''
+    last_update_time = None
+    start = time.time()
+    for i, conference in enumerate(conferences):
+        assert conference.conference_series.strip() != ''
+        assert conference.year is not None
+        assert conference.year != 0
+        
+        if series != conference.conference_series:
+            # Start of a new series.
+            tags = []
+            series = conference.conference_series
+            num_series += 1
+            #print '' 
+        
+        tags1 = [tag.name for tag in conference.nodes.all()]
+        num_tags1 = conference.nodes.count()
+        
+        # Add all previous tags to this conference.
+        for tag in tags:
+            if tag not in conference.nodes.all():
+                resource_nodes = ResourceNodes()
+                
+                #print 'conference: %r' % conference
+                #print 'type(conference): %s' % type(conference)
+                #print 'conference.name: %r' % conference.name
+                #
+                #print 'Resource: %r' % Resource
+                #print 'models.Resource: %r' % models.Resource
+                
+                resource_nodes.resource = conference
+                resource_nodes.node = tag
+                resource_nodes.is_machine_generated = True
+                resource_nodes.save()
+        
+        # Add all of this conference's tags to the list.
+        for tag in conference.nodes.all():
+            if tag not in tags:
+                tags.append(tag)
+                num_tags_added += 1
+        conference.save()
+        
+        tags2 = [tag.name for tag in conference.nodes.all()]
+        num_tags2 = conference.nodes.count()
+        
+        #print 'conference: %s, %s, %s, %s' % (conference.id, conference.conference_series, conference.year, conference.name)
+        #print '  %s' % (','.join(tags1))
+        #print '  %s' % (','.join(tags2))
+        
+        num_conferences += 1
+        
+        if not last_update_time or time.time() - last_update_time > 1:
+            try:
+                logging.debug('    Parsing row %d/%d, row/sec %f' % (i, num_total_conferences, i/(time.time()-start) ))
+            except Exception:
+                pass
+            last_update_time = time.time()
+    
+    return {
+        'num_conferences': num_conferences,
+        'num_series': num_series,
+        'num_tags_added': num_tags_added,
+    }
+
+# ------------------------------------------------------------------------------
 
 # NOTE: Cannot remove these yet, since they're included by default into any file that does "from util import *".  Need to fix all those first.
 import subprocess
@@ -558,171 +646,6 @@ from getopt import getopt
 import settings
 import subprocess
 import sys
-
-#def _run_mysql_cmd(cmd):
-#    args = [
-#        'mysql',
-#        '--user=%s' % settings.DATABASE_USER,
-#        '--password=%s' % settings.DATABASE_PASSWORD,
-#        '%s' % settings.DATABASE_NAME,
-#        '-e',
-#        cmd,
-#    ]
-#    process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-#    result = process.communicate()[0]
-#    #print 'stderr:', process.communicate()[1]
-#    return result
-#    
-#def create_db():
-#    import getpass
-#    
-#    password = getpass.getpass('Enter mysql root password:')
-#    
-#    # Drop the DB & user
-#    print 'Dropping database %s' % settings.DATABASE_NAME
-#    sql = """
-#    SET NAMES utf8;
-#    DROP DATABASE IF EXISTS %s;
-#    DROP USER %s@localhost;
-#    """ % (
-#        settings.DATABASE_NAME,
-#        settings.DATABASE_USER,
-#    )
-#    print sql
-#    proc = subprocess.Popen(['mysql', '--user', 'root', '--password=%s' % password], stdin=subprocess.PIPE)
-#    proc.communicate(sql + '\n')
-#    
-#    # Create the DB & user
-#    print 'Creating database %s' % settings.DATABASE_NAME
-#    sql = """
-#    SET NAMES utf8;
-#    -- Create the DB, create user, grant all DB privileges to user
-#    CREATE DATABASE %s CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-#    CREATE USER %s@localhost IDENTIFIED BY '%s';
-#    GRANT ALL ON %s.* TO %s@localhost;
-#    """ % (
-#        settings.DATABASE_NAME,
-#        settings.DATABASE_USER,
-#        settings.DATABASE_PASSWORD,
-#        settings.DATABASE_NAME,
-#        settings.DATABASE_USER,
-#    )
-#    print sql
-#    proc = subprocess.Popen(['mysql', '--user', 'root', '--password=%s' % password], stdin=subprocess.PIPE)
-#    proc.communicate(sql + '\n')
-#
-#def create_migrations():
-#    import re
-#    for appname in settings.INSTALLED_APPS:
-#        if app_name not in ['noomake', 'ieeetags.site_admin']:
-#            base_appname = re.sub('^.+\\.', '', appname)
-#            os.system('python manage.py dmigration app %s' % base_appname)
-#
-#def drop_all_tables():
-#    MAX_ITERATIONS = 15
-#    
-#    count = 0
-#    table_names = [1]
-#    
-#    # Loop through and keep dropping tables until there are none left (due to foreign key constraints, some tables wont drop the first time around)
-#    while len(table_names) > 0 and count < MAX_ITERATIONS:
-#        cmd = 'SHOW TABLES;'
-#        result = _run_mysql_cmd(cmd)
-#        print 'result:', result
-#        table_names = result.strip().split('\n')
-#        del table_names[0]
-#
-#        drop_cmd = ''
-#        print 'There are %d tables' % len(table_names)
-#        for table_name in table_names:
-#            print 'Dropping table %s' % table_name
-#            drop_cmd = 'DROP TABLE %s;\n' % table_name
-#            _run_mysql_cmd(drop_cmd)
-#        
-#        count += 1
-#
-#    cmd = 'SHOW TABLES;'
-#    result = _run_mysql_cmd(cmd).strip()
-#    
-#    if result != '':
-#        print 'Tables remaining:'
-#        print result
-#
-#def dump():
-#    import subprocess
-#    import settings
-#    args = [
-#        'mysqldump',
-#        '--user=%s' % settings.DATABASE_USER,
-#        '--password=%s' % settings.DATABASE_PASSWORD,
-#        '%s' % settings.DATABASE_NAME,
-#    ]
-#    subprocess.call(args)
-#
-#def load():
-#    import os
-#    os.system('python manage.py dbshell')
-#
-#def mig():
-#    import os
-#    os.system('python manage.py dmigrate all')
-#
-#def reset():
-#    #create_db()
-#    drop_all_tables()
-#    mig()
-#    os.system('manage.py loaddata initial_data')
-#
-##def sync():
-##    import os
-##    os.system('python manage.py syncdb')
-#
-#def main():
-#    opts, args = getopt(sys.argv[1:], '', [])
-#    if len(args) == 0:
-#        print 'Usage:'
-#        print '  create_db - create the DB using the mysql command line (needs mysql root password)'
-#        print '  create_migrations - create a migration for every app (bootstrap)'
-#        print '  drop_all_tables - drop all db tables'
-#        print '  dump - dump DB using mysqldump'
-#        print '  load - shortcut to dbshell, use with < to load sql data'
-#        print '  mig - shortcut to "dmigrate all"'
-#        print '  reset - drops tables & recreates'
-#        #print '  sync - shortcut to "syncdb"'
-#        sys.exit()
-#    
-#    #FUNCTIONS = [
-#    #    'create_db',
-#    #    'create_migrations',
-#    #    'drop_all_tables',
-#    #    'dump',
-#    #    'load',
-#    #    'mig',
-#    #    'reset',
-#    #    'sync',
-#    #]
-#    
-#    for arg in args:
-#        if arg == 'create_db':
-#            create_db()
-#        elif arg == 'create_migrations':
-#            create_migrations()
-#        elif arg == 'drop_all_tables':
-#            drop_all_tables()
-#        elif arg == 'dump':
-#            dump()
-#        elif arg == 'load':
-#            load()
-#        elif arg == 'mig':
-#            mig()
-#        elif arg == 'reset':
-#            reset()
-#        #elif arg == 'sync':
-#        #    sync()
-#        else:
-#            print 'Unrecognized arg "%s"' % arg
-#            sys.exit()
-#
 
 def main():
     out = get_process_info(1)

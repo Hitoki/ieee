@@ -1231,7 +1231,7 @@ def _import_resources(file, batch_commits=False):
             if len(societies) == 0:
                 # No valid societies - assign this resource to the TAB society
                 societies.append(tab_society)
-                
+            
             #logging.debug('  Adding resource "%s"' % name)
             #logging.debug('  project_code: %s' % project_code)
             
@@ -1254,8 +1254,27 @@ def _import_resources(file, batch_commits=False):
             resource.save()
             resources_created += 1
             
+            # Tags
+            tags = []
+            for tag_name in tag_names.split('|'):
+                tag_name = tag_name.strip()
+                try:
+                    tag = Node.objects.get(node_type__name=NodeType.TAG, name=tag_name)
+                except Node.DoesNotExist:
+                    pass
+                else:
+                    if tag not in resource.nodes.all():
+                        resource_nodes = ResourceNodes()
+                        resource_nodes.resource = resource
+                        resource_nodes.node = tag
+                        resource_nodes.save()
+            
             if pub_id != '':
                 new_resource_with_pub_id += 1
+            
+            if resource_type.name == ResourceType.CONFERENCE and project_code != '':
+                # Found a conference in a series, apply all tags to later conferences.
+                update_conference_series_tags(conference_series=project_code)
         
         if not last_update_time or time.time() - last_update_time > 1:
             try:
@@ -4908,19 +4927,16 @@ def conference_series_report(request):
     conferences = []
     serieses = Resource.objects.get_conference_series()
     
-    # Get the newest conference for each series
-    for conference_series, num_in_series in serieses:
-        # Get most recent conference for the series
-        resource = Resource.objects.get_current_conference_for_series(conference_series)
-        
-        assert resource is not None, 'resource returned from get_current_conference_for_series() is None'
-        
-        # TODO: Get only other conferences from this society
-        resource.other_conferences = Resource.objects.get_non_current_conferences_for_series(conference_series, current_conference=resource)
-        conferences.append(resource)
-    
     return render(request, 'site_admin/conference_series_report.html', {
         'serieses': serieses,
+        'conferences': conferences,
+    })
+
+@login_required
+@admin_required
+def conference_series_report2(request, conference_series):
+    conferences = Resource.objects.filter(conference_series=conference_series).order_by('year')
+    return render(request, 'site_admin/conference_series_report2.html', {
         'conferences': conferences,
     })
 
