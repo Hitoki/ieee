@@ -547,6 +547,7 @@ def _get_popularity_level(min, max, count, node=None):
 def ajax_textui_nodes(request):
     '''
     Returns HTML for the list of tags/clusters for the textui page.
+    @param token: The unique token for this request, used in JS to ignore overlapping AJAX requests.
     @param sector_id: (Optional) The sector to filter results.
     @param society_id: (Optional) The society to filter results.
     @param cluster_id: (Optional) The cluster to filter results, used to filter "search_for" results.
@@ -556,6 +557,8 @@ def ajax_textui_nodes(request):
     @return: The HTML content for all results.
     '''
     log('ajax_textui_nodes()')
+    
+    token = request.GET['token']
     
     sector_id = request.GET.get('sector_id', None)
     if sector_id == '' or sector_id == 'null' or sector_id == 'all':
@@ -968,6 +971,7 @@ def ajax_textui_nodes(request):
     })
     
     return HttpResponse(json.dumps({
+        'token': token,
         'search_for': search_for,
         'content': content,
         'node_count_content': node_count_content,

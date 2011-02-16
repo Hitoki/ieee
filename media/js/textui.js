@@ -150,6 +150,9 @@ var Tags = {
     page: null,
     isSearching: false,
     
+    // Stores the a unique token for each AJAX request, so that we can ignore overlapping requests.
+    ajaxToken: null,
+    
     sectorId: null,
     societyId: null,
     clusterId: null,
@@ -476,6 +479,9 @@ var Tags = {
         
         if (this.sectorId != null) {
             // Load the sector/cluster
+            log('updateResults(): load sector/cluster');
+            var token = createUUID();
+            this.ajaxToken = token;
             $.get(
                 '/ajax/textui_nodes',
                 {
@@ -486,6 +492,7 @@ var Tags = {
                     , page: 'sector'
 					, show_clusters: showClusters
 					, show_terms: showTerms
+                    , token: token
                 },
                 function(data) {
                     Tags.onLoadResults(data);
@@ -496,6 +503,9 @@ var Tags = {
             
         } else if (this.societyId != null) {
             // Load the society
+            log('updateResults(): load society');
+            var token = createUUID();
+            this.ajaxToken = token;
             $.get(
                 '/ajax/textui_nodes',
                 {
@@ -506,6 +516,7 @@ var Tags = {
                     , page: 'society'
 					, show_clusters: showClusters
 					, show_terms: showTerms
+                    , token: token
                 },
                 function(data) {
                     Tags.onLoadResults(data);
@@ -527,6 +538,9 @@ var Tags = {
                 return;
             }
             
+            log('updateResults(): load search_for');
+            var token = createUUID();
+            this.ajaxToken = token;
             $.get(
                 '/ajax/textui_nodes',
                 {
@@ -537,6 +551,7 @@ var Tags = {
 					, page: page
 					, show_clusters: showClusters
 					, show_terms: showTerms
+                    , token: token
 				},
                 function(data) {
                     Tags.onLoadResults(data);
@@ -562,14 +577,8 @@ var Tags = {
     },
     
     onLoadResults: function(data) {
-        var search_for = $('#tags-live-search').val();
-        
-        if (data.search_for == null) {
-            data.search_for = '';
-        }
-        
-        // Only update the results if this is the current search (ignore out-of-date searches during live-type).
-        if (data.search_for == search_for) {
+        // Only update the results if the token matches (ie. ignore all but the last AJAX request).
+        if (data.token == this.ajaxToken) {
             this.remainingContent = data.content;
             this.textui_flyovers_url = data.textui_flyovers_url;
             
@@ -808,6 +817,9 @@ var Tags = {
             showTerms = true;
         }
         
+        log('selectCluster(): load cluster');
+        var token = createUUID();
+        this.ajaxToken = token;
         $.get(
             '/ajax/textui_nodes',
             {
@@ -820,6 +832,7 @@ var Tags = {
                 , show_clusters: showClusters
                 , show_terms: showTerms
                 , search_for: search_for
+                , token: token
             },
             function(data) {
                 Tags.onLoadResults(data);
