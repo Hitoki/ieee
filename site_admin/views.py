@@ -4177,7 +4177,14 @@ def save_resource(request):
             else:
                 resource.url_status = Resource.URL_STATUS_GOOD
                 resource.url_error = ''
-            resource.nodes = form.cleaned_data['nodes']
+            
+            for node in form.cleaned_data['nodes']:
+                if not ResourceNodes.objects.filter(resource=resource, node=node).exists():
+                    resource_nodes = ResourceNodes()
+                    resource_nodes.resource = resource
+                    resource_nodes.node = node
+                    resource_nodes.save()
+            
             if form.cleaned_data['societies'] is not None:
                 resource.societies = form.cleaned_data['societies']
             resource.priority_to_tag = form.cleaned_data['priority_to_tag']
@@ -4193,8 +4200,11 @@ def save_resource(request):
             # Add all resource tags to the owning societies
             for society in resource.societies.all():
                 for node in resource.nodes.all():
-                    society.tags.add(node)
-                society.save()
+                    if not NodeSocieties.objects.filter(node=node, society=society).exists():
+                        node_societies = NodeSocieties()
+                        node_societies.node = node
+                        node_societies.society = society
+                        node_societies.save()
             
             # Return to the society the user was editing
             if begins_with(return_url, 'close_window'):
@@ -4224,7 +4234,7 @@ def save_resource(request):
         make_display_only(form.fields['societies'], is_multi_search=True)
         make_display_only(form.fields['ieee_id'])
     else:
-        if resource.resource_type.name == ResourceType.STANDARD:
+        if not resource or resource.resource_type.name == ResourceType.STANDARD:
             show_standard_status = True
         else:
             show_standard_status = False
