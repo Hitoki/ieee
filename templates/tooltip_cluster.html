@@ -22,6 +22,7 @@
         
         <p>
             <a href="javascript:Tags.selectCluster({{ cluster.id }}, {{ sector_id|default_if_none:"null" }}, null);">View full details</a>
+			<a onclick="javascript:window.open('/cluster/{{ cluster.id }}/{{ cluster.name|slugify }}', 'landing');" href="javascript:void(0)" style="text-decoration: none;float:right;">*</a>
         </p>
     </div>
 {% endblock %}
