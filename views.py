@@ -433,35 +433,45 @@ def ajax_xplore_results(request):
     @return: HTML output of results.
     '''
     tag_id = request.POST.get('tag_id')
-    #term_id = request.POST.get('term_id')
     
     if tag_id is not None and tag_id != 'undefined':
         tag = Node.objects.get(id=tag_id)
         term = None
         name = tag.name
-    #elif term_id is not None and term_id != 'undefined':
-    #    term = TaxonomyTerm.objects.get(id=term_id)
-    #    tag = None
-    #    name = term.name
-    #else:
-    #    assert False, 'Must specify either tag_id or term_id.'
     else:
-        assert False, 'Must specify either tag_id.'
+        assert False, 'Must specify tag_id.'
     
     show_all = (request.POST['show_all'] == 'true')
     offset = int(request.POST.get('offset', 0))
     
-    xplore_results, xplore_error, totalfound = _get_xplore_results(name, show_all=show_all, offset=offset)
+    xplore_results, xplore_error, num_results = _get_xplore_results(name, show_all=show_all, offset=offset)
     
-    return render(request, 'include_xplore_results.html', {
-        'name': name,
+    # DEBUG:
+    #xplore_results = []
+    #num_results = 0
+    
+    from django.template.loader import render_to_string
+    content = render_to_string('include_xplore_results.html', {
+        #'name': name,
         # TODO: This should use quote(), not replace()...
-        'search_term': name.replace(' ', '+'),
-        'xplore_error': xplore_error,
+        #'search_term': name.replace(' ', '+'),
+        #'xplore_error': xplore_error,
         'xplore_results': xplore_results,
-        'totalfound': totalfound,
-        'show_all': show_all,
+        #'totalfound': totalfound,
+        #'show_all': show_all,
     })
+    
+    # DEBUG:
+    #xplore_error = 'BAD ERROR.'
+    
+    data = {
+        'num_results': num_results,
+        'html': content,
+        'xplore_error': xplore_error,
+        'search_term': name,
+    }
+    
+    return HttpResponse(json.dumps(data), 'application/javascript')
 
 @login_required
 def ajax_node(request):

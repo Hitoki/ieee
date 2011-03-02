@@ -1089,9 +1089,7 @@ var Tags = {
     },
     
     onScroll: function() {
-        var scrollBottom = $('#tags').attr('scrollHeight') - $('#tags').scrollTop() - $('#tags').outerHeight();
-        //log('onScroll(), scrollBottom: ' + scrollBottom);
-        //var minScrollBottom = 200;
+        var scrollBottom = getScrollBottom($('#tags'));
         var minScrollBottom = 10;
         if (scrollBottom <= minScrollBottom) {
             this.loadContentChunk();

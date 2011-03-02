@@ -336,91 +336,129 @@ function addCommas(nStr) {
 	return x1 + x2;
 }
 
+function getScrollBottom(elem) {
+	return elem.attr('scrollHeight') - elem.scrollTop() - elem.outerHeight();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 // This loads the xplore results for a tag into the given element via AJAX.
-function getXploreResults(elem, showAll, offset) {
+function XploreLoader(elem, showAll) {
+	var xploreLoader = this;
+	this.elem = $(elem);
+	this.listElem = this.elem.find('ul');
+	this.scrollElem = this.elem.find('.group');
+	this.loadingElem = null;
+    this.isLoading = false;
+    this.noResultsElem = null;
+	
+    this.scrollElem.scroll(function() {
+        xploreLoader.onScroll();
+    });
+	
     if (showAll == undefined) {
         showAll = false;
     }
-    if (offset == undefined) {
-        offset = 0;
+	
+	this.offset = 0;
+    
+    this.numXploreResultsPerPage = 10;
+    
+    this.tagId = this.elem.metadata().tagId;
+    this.termId = this.elem.metadata().termId;
+	this.showAll = showAll;
+	
+	this.loadContent();
+}
+
+XploreLoader.prototype.loadContent = function() {
+    if (!this.isLoading) {
+        this.isLoading = true;
+        
+        var xploreLoader = this;
+        
+        this.loadingElem = $('<div id="xplore-loading" class="loading"><img src="/media/images/ajax-loader.gif" class="loading" /><br/>Loading Xplore results...</div>').appendTo(this.scrollElem);
+        
+        $.ajax({
+            url: '/ajax/xplore_results'
+            , data: {
+                tag_id: this.tagId
+                , term_id: this.termId
+                , show_all: this.showAll
+                , offset: this.offset
+            }
+            , type: 'post'
+            , dataType: 'json'
+            , success: function(data) {
+                xploreLoader.onLoadData(data);
+            }
+        });
+        
+        this.offset += this.numXploreResultsPerPage;
+    }
+}
+
+XploreLoader.prototype.onLoadData = function(data) {
+	this.loadingElem.remove();
+	this.loadingElem = null;
+    
+    if (this.noResultsElem) {
+        this.noResultsElem.remove();
+        this.noResultsElem = null;
     }
     
-    var numXploreResultsPerPage = 10;
+    if (data.xplore_error != null) {
+        // Xplore error, show the error message.
+        this.errorElem = $('<p class="error"></p>').appendTo(this.scrollElem);
+        this.errorElem.text(data.xplore_error);
     
-    var elem2 = $(elem);
-    var tagId = elem2.metadata().tagId;
-    var termId = elem2.metadata().termId;
-    elem2.html('<div class="loading"><img src="/media/images/ajax-loader.gif" class="loading" /><br/>Loading Xplore results...</div>');
-    var ajax = $.ajax({
-        url: '/ajax/xplore_results',
-        data: {
-            tag_id: tagId,
-            term_id: termId,
-            show_all: showAll,
-            offset: offset
-        },
-        type: 'post',
-        success: function(data) {
-            //log('success...');
-            elem2.html(data);
-            
-            // Hook up auto-truncate for the descriptions.
-            autoTruncate(elem2.find('.auto-truncate-words'), {word_boundary:true} );
-            
-            //log('  elem2: ' + elem2);
-            //log('  elem2.length: ' + elem2.length);
-            //log('  elem2[0]: ' + elem2[0]);
-            //log('  elem2[0].nodeName: ' + elem2[0].nodeName);
-            var num = elem2.find('#num-xplore-results-hidden').html();
-            $('#num-xplore-results').text('(' + num + ')');
-            
-            // NOTE: Need to get rid of the comma, or we get bad numbers.
-            num = num.replace(',', '');
-            var numRelatedItems = parseInt($('#num-related-items').metadata().number);
-            $('#num-related-items').text(addCommas(numRelatedItems + parseInt(num)));
-            
-            var prevButton = elem2.find('#xplore-view-previous');
-            if ( offset === 0 ) {
-                // Hide and disable the "previous" button (add its leading pipe) if we're at the beginning
-                prevButton.prev('span').andSelf().hide();
-                prevButton.click(function(){
-                   return false; 
-                });
-            } else {
-                prevButton.click(function() {
-                    getXploreResults(elem, false, offset - numXploreResultsPerPage);
-                    return false;
-                });
-            }
-            
-            var totalCount = parseInt(elem2.find('#num-xplore-results-hidden').text().replace(',',''));
-            var displayedCount = elem2.children('div.group').eq(0).children('a').length;
-            var nextButton = elem2.find('#xplore-view-next');
-            if ( offset + displayedCount >=  totalCount){
-                // Hide and disable the "next" button (add its leading pipe) if we're at the end
-                nextButton.prev('span').andSelf().hide();
-                nextButton.click(function(){
-                   return false; 
-                });
-            } else {
-                var remainingCount = totalCount - offset - displayedCount;
-                elem2.find('#nextCount').text( Math.min(remainingCount , numXploreResultsPerPage) );
-                nextButton.click(function() {
-                    getXploreResults(elem, false, offset + numXploreResultsPerPage);
-                    return false;
-                });
-            }
-            
-            resizeLightboxTab();
-            
+    } else {
+        // Normal results, load into the page.
+        
+        this.listElem[0].innerHTML += data.html;
+        
+        // Hook up auto-truncate for the descriptions.
+        autoTruncate(this.listElem.find('.auto-truncate-words'), { word_boundary:true } );
+        
+        $('#num-xplore-results').text('(' + addCommas(data.num_results) + ')');
+        
+        var numRelatedItems = parseInt($('#num-related-items').metadata().number);
+        $('#num-related-items').text(addCommas(numRelatedItems + data.num_results));
+		
+        if (data.num_results == 0) {
+            this.noResultsElem = $('<p class="no-resources">No xplore results are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
+        } else {
+            $('#xplore-totals').html(
+                'Showing ' + addCommas(data.num_results) + ' results\n'
+                + '(<a href="http://xploreuat.ieee.org/search/freesearchresult.jsp?newsearch=true&queryText=' + escape(data.search_term) + '&x=0&y=0" target="_blank"><span>Perform Search in Xplore</span> <img src="{{ MEDIA_URL }}images/popup.png" /></a>)'
+            );
         }
-    });
-    elem2.data('ajax', ajax);
+		
+        // Showing {{ xplore_results|length }} of {{ totalfound|intcomma }} results 
+        
+        resizeLightboxTab();
+        
+    }
+    
+    this.isLoading = false;
+}
+
+XploreLoader.prototype.onScroll = function() {
+	//log('onScroll()');
+	var minScrollBottom = 10;
+	var scrollBottom = getScrollBottom(this.scrollElem);
+	//log('  scrollBottom: ' + scrollBottom);
+	if (scrollBottom <= minScrollBottom) {
+		//log('  need to load new content');
+		this.loadContent();
+	}
 }
 
 function attachXploreResults(elem) {
-    getXploreResults(elem);
+    new XploreLoader(elem);
 }
+
+////////////////////////////////////////////////////////////////////////////////
 
 // Call elem whenever new content is created dynamically to attach any scripts
 function attachScripts(elem) {

@@ -1,52 +1,20 @@
 {% load humanize %}
-    <div class="print-resource">
-        <p id="xplore-totals">
-            {% if show_all %}
-                Showing all {{ totalfound|intcomma }} results
-            {% else %}
-                Showing {{ xplore_results|length }} of {{ totalfound|intcomma }} results 
-                
-                <span>| </span><a id="xplore-view-previous" href="#"><span>View previous 10</span></a>
-                <span>| </span><a id="xplore-view-next" href="#"><span>View next <span id="nextCount"></span></span></a>
-                (<a href="http://xploreuat.ieee.org/search/freesearchresult.jsp?newsearch=true&queryText={{ search_term }}&x=0&y=0" target="_blank"><span>Perform Search in Xplore</span> <img src="{{ MEDIA_URL }}images/popup.png" /></a>)
-                
+
+{% for result in xplore_results %}
+    <li>
+        {% if result.url %}
+            <a href="{{ result.url }}" target="_blank">
+        {% endif %}
+        <p class="{% cycle 'item_odd' 'item_even' %}">
+            <span class="auto-truncate-words {length:165, flyover:true}">{{ result.rank }}. {{ result.name|safe }}</span>
+            {% if result.url %}
+                <img src="{{ MEDIA_URL }}images/popup.png" />
             {% endif %}
         </p>
-    </div>
-    
-    <div class="group">
-
-        <div id="num-xplore-results-hidden" style="display:none;">{{ totalfound|intcomma }}</div>
-        
-        {% if xplore_error %}
-            <p class="error">
-                {{ xplore_error }}
-            </p>
-        {% else %}
-            <ul>
-            {% if xplore_results|length %}
-                {% for result in xplore_results %}
-                <li>
-                    {% if result.url %}
-                        <a href="{{ result.url }}" target="_blank">
-                    {% endif %}
-                    <p class="{% cycle 'item_odd' 'item_even' %}">
-                        <span class="auto-truncate-words {length:165, flyover:true}">{{ result.rank }}. {{ result.name|safe }}</span>
-                        {% if result.url %}
-                            <img src="{{ MEDIA_URL }}images/popup.png" />
-                        {% endif %}
-                    </p>
-                    {% if result.url %}
-                        </a>
-                    {% endif %}
-                    <p class="{% cycle 'pub_odd' 'pub_even' %}">{{ result.authors }} {{ result.pub_title }},  {{ result.pub_year }}</p>
-                    <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{ result.description|default:"(no description)" }}</p>
-                </li>
-                {% endfor %}
-            {% else %}
-               <p class="no-resources">No xplore results are currently tagged "{{ name }}"</p>
-            {% endif %}
-            </ul>
+        {% if result.url %}
+            </a>
         {% endif %}
-        
-    </div>
+        <p class="{% cycle 'pub_odd' 'pub_even' %}">{{ result.authors }} {{ result.pub_title }},  {{ result.pub_year }}</p>
+        <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{ result.description|default:"(no description)" }}</p>
+    </li>
+{% endfor %}

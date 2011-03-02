@@ -2023,6 +2023,7 @@ ul.errors {
 #xplore-results-container div.loading {
     padding-top:6em;
     text-align:center;
+    padding-bottom:3em;
 }
 
 #xplore-results-container img.loading {
@@ -2058,6 +2059,11 @@ ul.errors {
 
 div.group ul {
    margin-top: -20px;
+}
+
+#xplore-results-container .error {
+    margin-top: 20px;
+	padding:1em;
 }
 
 div.group ul li {
