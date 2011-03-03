@@ -82,6 +82,10 @@ SERVER_EMAIL = None
 
 # Postmark email service setting
 EMAIL_BACKEND = 'postmark.django_backend.EmailBackend'
+
+# Default email backend:
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 POSTMARK_SENDER = 'IEEE Technology Navigator <technav_admin@systemicist.com>'
 DEFAULT_FROM_EMAIL = 'IEEE Technology Navigator <technav_admin@systemicist.com>' # Address from which non-error emails will be sent
 
