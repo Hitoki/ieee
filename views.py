@@ -1525,26 +1525,18 @@ def debug_error(request):
     'DEBUG: Causes an error, to test the error handling.'
     test = 0/0
 
+@login_required
 def debug_send_email(request):
     'DEBUG: Tests sending an email.'
-    if not settings.DEBUG_ENABLE_EMAIL_TEST:
-        raise Exception('DEBUG_ENABLE_EMAIL_TEST is not enabled')
-        
-    if request.method == 'GET':
-        form = DebugSendEmailForm()
-    else:
-        form = DebugSendEmailForm(request.POST)
-        if form.is_valid():
-            log('sending email to "%s"' % form.cleaned_data['email'])
-            subject = 'debug_send_email() to "%s"' % form.cleaned_data['email']
-            message = 'debug_send_email() to "%s"' % form.cleaned_data['email']
-            send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [form.cleaned_data['email']])
-            log('email sent.')
-            return HttpResponse('Email sent to "%s"' % form.cleaned_data['email'])
-        
-    return render(request, 'debug_send_email.html', {
-        'form': form,
-    })
+    
+    assert request.user.is_superuser, 'Page disabled for non superusers.'
+    
+    log('sending email to "%s"' % request.user.email)
+    subject = 'debug_send_email() to "%s"' % request.user.email
+    message = 'debug_send_email() to "%s"' % request.user.email
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [request.user.email])
+    log('email sent.')
+    return HttpResponse('Email sent to "%s"' % request.user.email)
 
 def test_error(request):
     'DEBUG: Tests causing an error.'
@@ -1562,4 +1554,3 @@ def test_browsers(request):
     'DEBUG: Tests a browsers error.'
     assert settings.DEBUG
     return render(request, 'test_browsers.html')
-   
