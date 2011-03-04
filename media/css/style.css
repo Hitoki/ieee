@@ -2036,6 +2036,11 @@ ul.errors {
     margin: 0;
 }
 
+#xplore-nav {
+    float:right;
+    margin:0;
+}
+
 .print-resource {
     width: 813px;
     height: 20px;

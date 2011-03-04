@@ -209,6 +209,7 @@ def tester_survey(request):
 def xplore_full_results(request, tag_id):
     'Returns full listing of IEEE xplore results for the given tag.'
     tag = Node.objects.get(id=tag_id)
+
     results, errors, total_results = _get_xplore_results(tag.name, show_all=True)
     return render(request, 'xplore_full_results.html', {
         'tag':tag,
@@ -325,7 +326,24 @@ def ajax_tag_content(request, tag_id, ui=None):
 #        'ui': ui,
 #    })
 
-def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, offset=0):
+XPLORE_SORT_AUTHOR = 'au'
+XPLORE_SORT_TITLE = 'ti'
+XPLORE_SORT_AUTHOR_AFFILIATIONS = 'cs'
+XPLORE_SORT_PUBLICATION_TITLE = 'jn'
+# NOTE: This causes an error on the xplore server.
+#XPLORE_SORT_ARTICLE_NUMBER = 'an'
+XPLORE_SORT_PUBLICATION_YEAR = 'py'
+
+XPLORE_SORTS = [
+    XPLORE_SORT_AUTHOR,
+    XPLORE_SORT_TITLE,
+    XPLORE_SORT_AUTHOR_AFFILIATIONS,
+    XPLORE_SORT_PUBLICATION_TITLE,
+    #XPLORE_SORT_ARTICLE_NUMBER,
+    XPLORE_SORT_PUBLICATION_YEAR,
+]
+
+def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, offset=0, sort=None):
     '''
     Get xplore results for the given tag_name from the IEEE Xplore search gateway.  Searches all fields for the tag_name phrase, returns results.
     @return: a 3-tuple of (results, errors, total_results).  'errors' is a string of any errors that occurred, or None.  'total_results' is the total number of results (regardless of how many are returned in 'results'.  'results' is an array of dicts:
@@ -346,14 +364,19 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
     else:
         max_num_results = 10
     
-    url = 'http://xploreuat.ieee.org/gateway/ipsSearch.jsp?' + urllib.urlencode({
-    #url = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?' + urllib.urlencode({
+    if sort is not None and sort not in XPLORE_SORTS:
+        raise Exception('Unknown sort %r' % sort)
+    
+    params = {
         # Number of results
         'hc': max_num_results,
         # Specifies the result # to start from
         'rs': offset+1,
         'md': tag_name.encode('utf-8'),
-    })
+    }
+    if sort:
+        params['sortfield'] = sort
+    url = 'http://xploreuat.ieee.org/gateway/ipsSearch.jsp?' + urllib.urlencode(params)
     
     try:
         file1 = urllib2.urlopen(url)
@@ -430,6 +453,10 @@ def ajax_xplore_results(request):
     '''
     Shows the list of IEEE xplore articles for the given tag.
     @param tag_id: POST var, specifyies the tag.
+    @param show_all: POST var, ("true" or "false"): if true, return all rows.
+    @param offset: POST var, int: the row to start at.
+    @param sort: POST var, the sorting field.
+    @param token: POST var, the ajax token to pass through.
     @return: HTML output of results.
     '''
     tag_id = request.POST.get('tag_id')
@@ -443,8 +470,12 @@ def ajax_xplore_results(request):
     
     show_all = (request.POST['show_all'] == 'true')
     offset = int(request.POST.get('offset', 0))
+    sort = request.POST['sort']
+    if sort == 'null':
+        sort = None
+    token = request.POST['token']
     
-    xplore_results, xplore_error, num_results = _get_xplore_results(name, show_all=show_all, offset=offset)
+    xplore_results, xplore_error, num_results = _get_xplore_results(name, show_all=show_all, offset=offset, sort=sort)
     
     # DEBUG:
     #xplore_results = []
@@ -452,11 +483,12 @@ def ajax_xplore_results(request):
     
     from django.template.loader import render_to_string
     content = render_to_string('include_xplore_results.html', {
+        'MEDIA_URL': settings.MEDIA_URL,
+        'xplore_results': xplore_results,
         #'name': name,
         # TODO: This should use quote(), not replace()...
         #'search_term': name.replace(' ', '+'),
         #'xplore_error': xplore_error,
-        'xplore_results': xplore_results,
         #'totalfound': totalfound,
         #'show_all': show_all,
     })
@@ -469,6 +501,7 @@ def ajax_xplore_results(request):
         'html': content,
         'xplore_error': xplore_error,
         'search_term': name,
+        'token': token,
     }
     
     return HttpResponse(json.dumps(data), 'application/javascript')

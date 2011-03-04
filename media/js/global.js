@@ -342,8 +342,33 @@ function getScrollBottom(elem) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+var XPLORE_SORT_AUTHOR = 'au';
+var XPLORE_SORT_TITLE = 'ti';
+var XPLORE_SORT_AUTHOR_AFFILIATIONS = 'cs';
+var XPLORE_SORT_PUBLICATION_TITLE = 'jn';
+//var XPLORE_SORT_ARTICLE_NUMBER = 'an';
+var XPLORE_SORT_PUBLICATION_YEAR = 'py';
+
+function getXploreSortName(sort) {
+    if (sort == XPLORE_SORT_AUTHOR) {
+        return 'Author';
+    } else if (sort == XPLORE_SORT_TITLE) {
+        return 'Title';
+    } else if (sort == XPLORE_SORT_AUTHOR_AFFILIATIONS) {
+        return 'Affiliations';
+    } else if (sort == XPLORE_SORT_PUBLICATION_TITLE) {
+        return 'Publication Title';
+    //} else if (sort == XPLORE_SORT_ARTICLE_NUMBER) {
+    //    return 'Article Number';
+    } else if (sort == XPLORE_SORT_PUBLICATION_YEAR) {
+        return 'Publication Year';
+    } else {
+        alert('getXploreSortName(): ERROR: Unknown sort "' + sort + '"');
+    }
+}
+
 // This loads the xplore results for a tag into the given element via AJAX.
-function XploreLoader(elem, showAll) {
+function XploreLoader(elem, showAll, sort) {
 	var xploreLoader = this;
 	this.elem = $(elem);
 	this.listElem = this.elem.find('ul');
@@ -351,6 +376,7 @@ function XploreLoader(elem, showAll) {
 	this.loadingElem = null;
     this.isLoading = false;
     this.noResultsElem = null;
+    this.ajaxToken = null;
 	
     this.scrollElem.scroll(function() {
         xploreLoader.onScroll();
@@ -360,22 +386,49 @@ function XploreLoader(elem, showAll) {
         showAll = false;
     }
 	
+    if (sort == undefined) {
+        sort = null;
+    }
+    
 	this.offset = 0;
     
     this.numXploreResultsPerPage = 10;
     
     this.tagId = this.elem.metadata().tagId;
     this.termId = this.elem.metadata().termId;
-	this.showAll = showAll;
 	
+    this.showAll = showAll;
+    this.sort = sort;
+	
+    $('#xplore-sort').click(function() {
+        var sort = $(this).val();
+        if (sort == '') {
+            sort = null;
+        }
+        xploreLoader.setSort(sort);
+    });
+    
 	this.loadContent();
 }
 
-XploreLoader.prototype.loadContent = function() {
-    if (!this.isLoading) {
+XploreLoader.prototype.setSort = function(sort) {
+    if (sort !=  this.sort) {
+        this.sort = sort;
+        // Clear the previous results.
+        this.listElem.empty();
+        // Reset to item #1.
+        this.offset = 0;
+        // Force another load to happen, regardless of if one is already happening.
+        this.loadContent(true);
+    }
+}
+
+XploreLoader.prototype.loadContent = function(force) {
+    if (!this.isLoading || force) {
         this.isLoading = true;
         
         var xploreLoader = this;
+        this.ajaxToken = (new Date()).getTime() + '-' + Math.random();
         
         this.loadingElem = $('<div id="xplore-loading" class="loading"><img src="/media/images/ajax-loader.gif" class="loading" /><br/>Loading Xplore results...</div>').appendTo(this.scrollElem);
         
@@ -386,6 +439,8 @@ XploreLoader.prototype.loadContent = function() {
                 , term_id: this.termId
                 , show_all: this.showAll
                 , offset: this.offset
+                , sort: this.sort
+                , token: this.ajaxToken
             }
             , type: 'post'
             , dataType: 'json'
@@ -399,57 +454,58 @@ XploreLoader.prototype.loadContent = function() {
 }
 
 XploreLoader.prototype.onLoadData = function(data) {
-	this.loadingElem.remove();
-	this.loadingElem = null;
-    
-    if (this.noResultsElem) {
-        this.noResultsElem.remove();
-        this.noResultsElem = null;
-    }
-    
-    if (data.xplore_error != null) {
-        // Xplore error, show the error message.
-        this.errorElem = $('<p class="error"></p>').appendTo(this.scrollElem);
-        this.errorElem.text(data.xplore_error);
-    
-    } else {
-        // Normal results, load into the page.
+    if (data.token == this.ajaxToken) {
+        this.loadingElem.remove();
+        this.loadingElem = null;
         
-        this.listElem[0].innerHTML += data.html;
-        
-        // Hook up auto-truncate for the descriptions.
-        autoTruncate(this.listElem.find('.auto-truncate-words'), { word_boundary:true } );
-        
-        $('#num-xplore-results').text('(' + addCommas(data.num_results) + ')');
-        
-        var numRelatedItems = parseInt($('#num-related-items').metadata().number);
-        $('#num-related-items').text(addCommas(numRelatedItems + data.num_results));
-		
-        if (data.num_results == 0) {
-            this.noResultsElem = $('<p class="no-resources">No xplore results are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
-        } else {
-            $('#xplore-totals').html(
-                'Showing ' + addCommas(data.num_results) + ' results\n'
-                + '(<a href="http://xploreuat.ieee.org/search/freesearchresult.jsp?newsearch=true&queryText=' + escape(data.search_term) + '&x=0&y=0" target="_blank"><span>Perform Search in Xplore</span> <img src="{{ MEDIA_URL }}images/popup.png" /></a>)'
-            );
+        if (this.noResultsElem) {
+            this.noResultsElem.remove();
+            this.noResultsElem = null;
         }
-		
-        // Showing {{ xplore_results|length }} of {{ totalfound|intcomma }} results 
         
-        resizeLightboxTab();
+        if (data.xplore_error != null) {
+            // Xplore error, show the error message.
+            this.errorElem = $('<p class="error"></p>').appendTo(this.scrollElem);
+            this.errorElem.text(data.xplore_error);
         
+        } else {
+            // Normal results, load into the page.
+            
+            this.listElem[0].innerHTML += data.html;
+            
+            // Hook up auto-truncate for the descriptions.
+            autoTruncate(this.listElem.find('.auto-truncate-words'), { word_boundary:true } );
+            
+            $('#num-xplore-results').text('(' + addCommas(data.num_results) + ')');
+            
+            var numRelatedItems = parseInt($('#num-related-items').metadata().number);
+            $('#num-related-items').text(addCommas(numRelatedItems + data.num_results));
+            
+            if (data.num_results == 0) {
+                this.noResultsElem = $('<p class="no-resources">No xplore results are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
+            } else {
+                var html = 'Showing ' + addCommas(data.num_results) + ' results';
+                if (this.sort) {
+                    html += ', sorted by ' + getXploreSortName(this.sort);
+                }
+                html += ' (<a href="http://xploreuat.ieee.org/search/freesearchresult.jsp?newsearch=true&queryText=' + escape(data.search_term) + '&x=0&y=0" target="_blank"><span>Perform Search in Xplore</span> <img src="' + MEDIA_URL + 'images/popup.png" /></a>)'
+                $('#xplore-totals').html(html);
+            }
+            
+            // Showing {{ xplore_results|length }} of {{ totalfound|intcomma }} results 
+            
+            resizeLightboxTab();
+            
+        }
+        
+        this.isLoading = false;
     }
-    
-    this.isLoading = false;
 }
 
 XploreLoader.prototype.onScroll = function() {
-	//log('onScroll()');
 	var minScrollBottom = 10;
 	var scrollBottom = getScrollBottom(this.scrollElem);
-	//log('  scrollBottom: ' + scrollBottom);
 	if (scrollBottom <= minScrollBottom) {
-		//log('  need to load new content');
 		this.loadContent();
 	}
 }

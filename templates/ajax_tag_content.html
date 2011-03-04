@@ -310,19 +310,30 @@
                         #        </div>
                         #    </div>
                         {% endcomment %}
-
+                        
+                        <!-- Xplore Results -->
                         <div id="xplore-tab" data-printUrl='{% url print_resource tag.id "xplore" %}'>
-                            <!-- Xplore -->
                             <div id="xplore-results-container" class="{ tagId: {{ tag.id }} }">
-								<div class="print-resource">
-									<p id="xplore-totals"></p>
-								</div>
-								
-								<div class="group">
+                                <div class="print-resource">
+                                    <p id="xplore-totals"></p>
+                                    <p id="xplore-nav">
+                                        Sort by
+                                        <select id="xplore-sort">
+                                            <option value="">(None)</option>
+                                            <option value="au">Author</option>
+                                            <option value="ti">Title</option>
+                                            <option value="cs">Affiliations</option>
+                                            <option value="jn">Publication Title</option>
+                                            <option value="py">Publication Year</option>
+                                        </select>
+                                    </p>
+                                </div>
+                                
+                                <div class="group">
                                     <ul>
                                         {# NOTE: This will be replaced by AJAX. #}
                                     </ul>
-								</div>
+                                </div>
                             </div>
                         </div>
                         
