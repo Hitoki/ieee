@@ -21,7 +21,7 @@ import urllib2
 import xml.dom.minidom
 from decorators import optional_login_required as login_required
 
-from ieeetags.models import single_row, Filter, Node, NodeType, Profile, Resource, ResourceType, Society, ProfileLog
+from ieeetags.models import single_row, Cache, Filter, Node, NodeType, Profile, Resource, ResourceType, Society, ProfileLog
 from ieeetags.forms import *
 #from profiler import Profiler
 import settings
@@ -589,97 +589,8 @@ def _get_popularity_level(min, max, count, node=None):
     
     return 'level' + str(level)
 
-@login_required
-#@util.profiler
-def ajax_textui_nodes(request):
-    '''
-    Returns HTML for the list of tags/clusters for the textui page.
-    @param token: The unique token for this request, used in JS to ignore overlapping AJAX requests.
-    @param sector_id: (Optional) The sector to filter results.
-    @param society_id: (Optional) The society to filter results.
-    @param cluster_id: (Optional) The cluster to filter results, used to filter "search_for" results.
-    @param search_for: (Optional) A search phrase to filter results.
-    @param sort: The sort method.
-    @param page: The current tab/page ("sector" or "society").
-    @return: The HTML content for all results.
-    '''
-    log('ajax_textui_nodes()')
-    
-    token = request.GET['token']
-    
-    sector_id = request.GET.get('sector_id', None)
-    if sector_id == '' or sector_id == 'null' or sector_id == 'all':
-        sector_id = None
-    try:
-        sector_id = int(sector_id)
-        sector = Node.objects.get(id=sector_id, node_type__name=NodeType.SECTOR)
-    except (TypeError, ValueError):
-        sector = None
-    assert sector_id is None or type(sector_id) is int, 'Bad value for sector_id %r' % sector_id
-    
-    society_id = request.GET.get('society_id', None)
-    if society_id == '' or society_id == 'null' or society_id == 'all':
-        society_id = None
-    try:
-        society_id = int(society_id)
-        society = Society.objects.get(id=society_id)
-    except (TypeError, ValueError):
-        society = None
-    assert society_id is None or type(society_id) is int, 'Bad value for society_id %r' % society_id
-        
-    cluster_id = request.GET.get('cluster_id', None)
-    if cluster_id == '' or cluster_id == 'null':
-        cluster_id = None
-    try:
-        cluster_id = int(cluster_id)
-        cluster = Node.objects.get(id=cluster_id, node_type__name=NodeType.TAG_CLUSTER)
-    except (TypeError, ValueError):
-        cluster = None
-    assert cluster_id is None or type(cluster_id) is int, 'Bad value for cluster_id %r' % cluster_id
-    
-    search_for = request.GET.get('search_for', None)
-    if search_for == 'null' or search_for == '':
-        search_for = None
-    
-    show_clusters = request.GET.get('show_clusters', 'false')
-    assert show_clusters in ['true', 'false'], 'show_clusters (%r) was not "true" or "false".' % (show_clusters)
-    show_clusters = (show_clusters == 'true')
-    
-    assert show_clusters or settings.ENABLE_SHOW_CLUSTERS_CHECKBOX, 'Cannot show_clusters=false if ENABLE_SHOW_CLUSTERS_CHECKBOX is not set.'
-    
-    show_terms = request.GET.get('show_terms', 'false')
-    assert show_terms in ['true', 'false'], 'show_terms (%r) was not "true" or "false".' % (show_terms)
-    show_terms = (show_terms == 'true')
-    
-    assert show_terms or settings.ENABLE_SHOW_TERMS_CHECKBOX, 'Cannot set show_terms=false if ENABLE_SHOW_TERMS_CHECKBOX is not set.'
-    
-    log('  sector_id: %s' % sector_id)
-    log('  society_id: %s' % society_id)
-    log('  cluster_id: %s' % cluster_id)
-    log('  search_for: %s' % search_for)
-    log('  show_clusters: %s' % show_clusters)
-    log('  show_terms: %s' % show_terms)
-    
-    log('  sector: %s' % sector)
-    log('  society: %s' % society)
-    log('  cluster: %s' % cluster)
-    
-    assert sector_id is None or society_id is None, 'Cannot specify both sector_id and society_id.'
-    assert show_clusters or cluster_id is None, 'Cannot specify cluster_id and show_clusters=false.'
-    
-    sort = request.GET.get('sort')
-    log('  sort: %s' % sort)
-    
-    page = request.GET['page']
-    log('  page: %s' % page)
-    if page != 'sector' and page != 'society':
-        raise Exception('page (%r) should be "sector" or "society"' % page)
-    
-    #filterValues = request.GET.get('filterValues')
-    ##log('filterValues: %s' % filterValues)
-    
-    log('')
-    
+def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, society, cluster_id, cluster, show_clusters, show_terms, is_staff, page):
+
     order_by = None
     extra_order_by = None
     search_page_title = None
@@ -858,7 +769,7 @@ def ajax_textui_nodes(request):
     # This saves time when we check child_node.node_type later on (prevents DB hit for every single child_node)
     child_nodes = child_nodes.select_related('node_type')
     
-    if request.user.is_staff:
+    if is_staff:
         num_terms = child_nodes.filter(is_taxonomy_term=True).count()
     else:
         num_terms = None
@@ -987,6 +898,113 @@ def ajax_textui_nodes(request):
         'page': page,
     })
     
+    node_count_content = render_to_string('ajax_textui_node_count.inc.html', {
+        'child_nodes': child_nodes,
+        'num_clusters': num_clusters,
+        'num_tags': num_tags,
+        'search_for': search_for,
+        'search_for_too_short': search_for_too_short,
+        'search_page_title': search_page_title,
+        'cluster': cluster,
+        'num_terms': num_terms,
+        'sector': sector,
+    })
+    
+    return [content, node_count_content]
+
+@login_required
+#@util.profiler
+def ajax_textui_nodes(request):
+    '''
+    Returns HTML for the list of tags/clusters for the textui page.
+    @param token: The unique token for this request, used in JS to ignore overlapping AJAX requests.
+    @param sector_id: (Optional) The sector to filter results.
+    @param society_id: (Optional) The society to filter results.
+    @param cluster_id: (Optional) The cluster to filter results, used to filter "search_for" results.
+    @param search_for: (Optional) A search phrase to filter results.
+    @param sort: The sort method.
+    @param page: The current tab/page ("sector" or "society").
+    @param show_clusters: (Boolean)
+    @param show_terms: (Boolean)
+    @return: The HTML content for all results.
+    '''
+    log('ajax_textui_nodes()')
+    
+    token = request.GET['token']
+    
+    sector_id = request.GET.get('sector_id', None)
+    if sector_id == '' or sector_id == 'null' or sector_id == 'all':
+        sector_id = None
+    try:
+        sector_id = int(sector_id)
+        sector = Node.objects.get(id=sector_id, node_type__name=NodeType.SECTOR)
+    except (TypeError, ValueError):
+        sector = None
+    assert sector_id is None or type(sector_id) is int, 'Bad value for sector_id %r' % sector_id
+    
+    society_id = request.GET.get('society_id', None)
+    if society_id == '' or society_id == 'null' or society_id == 'all':
+        society_id = None
+    try:
+        society_id = int(society_id)
+        society = Society.objects.get(id=society_id)
+    except (TypeError, ValueError):
+        society = None
+    assert society_id is None or type(society_id) is int, 'Bad value for society_id %r' % society_id
+        
+    cluster_id = request.GET.get('cluster_id', None)
+    if cluster_id == '' or cluster_id == 'null':
+        cluster_id = None
+    try:
+        cluster_id = int(cluster_id)
+        cluster = Node.objects.get(id=cluster_id, node_type__name=NodeType.TAG_CLUSTER)
+    except (TypeError, ValueError):
+        cluster = None
+    assert cluster_id is None or type(cluster_id) is int, 'Bad value for cluster_id %r' % cluster_id
+    
+    search_for = request.GET.get('search_for', None)
+    if search_for == 'null' or search_for == '':
+        search_for = None
+    
+    show_clusters = request.GET.get('show_clusters', 'false')
+    assert show_clusters in ['true', 'false'], 'show_clusters (%r) was not "true" or "false".' % (show_clusters)
+    show_clusters = (show_clusters == 'true')
+    
+    assert show_clusters or settings.ENABLE_SHOW_CLUSTERS_CHECKBOX, 'Cannot show_clusters=false if ENABLE_SHOW_CLUSTERS_CHECKBOX is not set.'
+    
+    show_terms = request.GET.get('show_terms', 'false')
+    assert show_terms in ['true', 'false'], 'show_terms (%r) was not "true" or "false".' % (show_terms)
+    show_terms = (show_terms == 'true')
+    
+    assert show_terms or settings.ENABLE_SHOW_TERMS_CHECKBOX, 'Cannot set show_terms=false if ENABLE_SHOW_TERMS_CHECKBOX is not set.'
+    
+    #log('  sector_id: %s' % sector_id)
+    #log('  society_id: %s' % society_id)
+    #log('  cluster_id: %s' % cluster_id)
+    #log('  search_for: %s' % search_for)
+    #log('  show_clusters: %s' % show_clusters)
+    #log('  show_terms: %s' % show_terms)
+    #
+    #log('  sector: %s' % sector)
+    #log('  society: %s' % society)
+    #log('  cluster: %s' % cluster)
+    
+    assert sector_id is None or society_id is None, 'Cannot specify both sector_id and society_id.'
+    assert show_clusters or cluster_id is None, 'Cannot specify cluster_id and show_clusters=false.'
+    
+    sort = request.GET.get('sort')
+    log('  sort: %s' % sort)
+    
+    page = request.GET['page']
+    log('  page: %s' % page)
+    if page != 'sector' and page != 'society':
+        raise Exception('page (%r) should be "sector" or "society"' % page)
+    
+    #filterValues = request.GET.get('filterValues')
+    ##log('filterValues: %s' % filterValues)
+    
+    log('')
+    
     # Build the textui_flyover_url var.
     params = {}
     if sector_id is None:
@@ -1005,17 +1023,35 @@ def ajax_textui_nodes(request):
     
     textui_flyovers_url = reverse('tooltip') + '/tagid?' + urllib.urlencode(params)
     
-    node_count_content = render_to_string('ajax_textui_node_count.inc.html', {
-        'child_nodes': child_nodes,
-        'num_clusters': num_clusters,
-        'num_tags': num_tags,
+    # Get page from cache, or generate if needed.
+    
+    cache_params = {
+        'sector_id': sector_id,
+        'society_id': society_id,
+        'cluster_id': cluster_id,
         'search_for': search_for,
-        'search_for_too_short': search_for_too_short,
-        'search_page_title': search_page_title,
-        'cluster': cluster,
-        'num_terms': num_terms,
-        'sector': sector,
-    })
+        'sort': sort,
+        'page': page,
+        'show_clusters': show_clusters,
+        'show_terms': show_terms,
+    }
+    
+    cache = Cache.objects.get('ajax_textui_nodes', cache_params)
+    # DEBUG:
+    #cache = None
+    if not cache:
+        # Create the cache if it doesn't already exist.
+        print 'CACHE MISS: Creating new cache page.'
+        content, node_count_content = _render_textui_nodes(sort, search_for, sector_id, sector, society_id, society, cluster_id, cluster, show_clusters, show_terms, request.user.is_staff, page)
+        cache_content = json.dumps({
+            'content': content,
+            'node_count_content': node_count_content,
+        })
+        cache = Cache.objects.set('ajax_textui_nodes', cache_params, cache_content)
+    else:
+        #print 'CACHE HIT.'
+        cache_content = json.loads(cache.content)
+        content, node_count_content = cache_content['content'], cache_content['node_count_content']
     
     return HttpResponse(json.dumps({
         'token': token,

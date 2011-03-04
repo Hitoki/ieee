@@ -1329,4 +1329,53 @@ class ProcessControl(models.Model):
     last_processed_tag = models.ForeignKey(Node, null=True, blank=True, default=None)
 
     date_created = models.DateTimeField(auto_now_add=True)
+
+def urlencode_sorted(d):
+    import urllib
+    result = []
+    for name in sorted(d.keys()):
+        result.append((name, d[name]))
+    return urllib.urlencode(result)
+
+class CacheManager(models.Manager):
+    def get(self, name, params):
+        if type(params) is dict:
+            params = urlencode_sorted(params)
+        try:
+            return super(CacheManager, self).get(name=name, params=params)
+        except Cache.DoesNotExist:
+            return None
     
+    def set(self, name, params, content):
+        if type(params) is dict:
+            params = urlencode_sorted(params)
+        cache = self.get(name, params)
+        if not cache:
+            cache = Cache()
+            cache.name = name
+            cache.params = params
+        cache.content = content
+        cache.save()
+        return cache
+    
+    def delete(self, name, params=None):
+        if type(params) is dict:
+            params = urlencode_sorted(params)
+        if params is None:
+            caches = self.filter(name=name)
+            caches.delete()
+        else:
+            cache = self.get(name, params)
+            if cache:
+                cache.delete()
+    
+class Cache(models.Model):
+    name = models.CharField(max_length=100)
+    params = models.CharField(max_length=1000, blank=True)
+    content = models.TextField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    
+    objects = CacheManager()
+    
+    def __str__(self):
+        return '<Cache: %s, %s, %s>' % (self.name, self.params, len(self.content))
