@@ -343,7 +343,7 @@ XPLORE_SORTS = [
     XPLORE_SORT_PUBLICATION_YEAR,
 ]
 
-def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, offset=0, sort=None):
+def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, offset=0, sort=None, sort_desc=False):
     '''
     Get xplore results for the given tag_name from the IEEE Xplore search gateway.  Searches all fields for the tag_name phrase, returns results.
     @return: a 3-tuple of (results, errors, total_results).  'errors' is a string of any errors that occurred, or None.  'total_results' is the total number of results (regardless of how many are returned in 'results'.  'results' is an array of dicts:
@@ -376,6 +376,8 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
     }
     if sort:
         params['sortfield'] = sort
+    if sort_desc:
+        params['sortorder'] = 'desc'
     url = 'http://xploreuat.ieee.org/gateway/ipsSearch.jsp?' + urllib.urlencode(params)
     
     try:
@@ -456,6 +458,7 @@ def ajax_xplore_results(request):
     @param show_all: POST var, ("true" or "false"): if true, return all rows.
     @param offset: POST var, int: the row to start at.
     @param sort: POST var, the sorting field.
+    @param sort_desc: POST var, the direction for sorting.
     @param token: POST var, the ajax token to pass through.
     @return: HTML output of results.
     '''
@@ -473,9 +476,10 @@ def ajax_xplore_results(request):
     sort = request.POST['sort']
     if sort == 'null':
         sort = None
+    sort_desc = (request.POST['sort_desc'] == 'true')
     token = request.POST['token']
     
-    xplore_results, xplore_error, num_results = _get_xplore_results(name, show_all=show_all, offset=offset, sort=sort)
+    xplore_results, xplore_error, num_results = _get_xplore_results(name, show_all=show_all, offset=offset, sort=sort, sort_desc=sort_desc)
     
     # DEBUG:
     #xplore_results = []

@@ -399,21 +399,36 @@ function XploreLoader(elem, showAll, sort) {
 	
     this.showAll = showAll;
     this.sort = sort;
+    this.sortDesc = false;
 	
     $('#xplore-sort').click(function() {
-        var sort = $(this).val();
-        if (sort == '') {
-            sort = null;
-        }
-        xploreLoader.setSort(sort);
+        xploreLoader.onChangeSelect();
+    });
+    $('#xplore-sort').change(function() {
+        xploreLoader.onChangeSelect();
     });
     
 	this.loadContent();
 }
 
-XploreLoader.prototype.setSort = function(sort) {
-    if (sort !=  this.sort) {
+XploreLoader.prototype.onChangeSelect = function() {
+    var sort = $('#xplore-sort').val();
+    if (sort == '') {
+        sort = null;
+    }
+    var desc = false;
+    if (sort != null && sort[0] == '-') {
+        log('setting desc');
+        desc = true;
+        sort = sort.substr(1, sort.length);
+    }
+    this.setSort(sort, desc);
+}
+
+XploreLoader.prototype.setSort = function(sort, desc) {
+    if (sort !=  this.sort || this.sortDesc != desc) {
         this.sort = sort;
+        this.sortDesc = desc;
         // Clear the previous results.
         this.listElem.empty();
         // Reset to item #1.
@@ -440,6 +455,7 @@ XploreLoader.prototype.loadContent = function(force) {
                 , show_all: this.showAll
                 , offset: this.offset
                 , sort: this.sort
+                , sort_desc: this.sortDesc
                 , token: this.ajaxToken
             }
             , type: 'post'
