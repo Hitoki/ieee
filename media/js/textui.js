@@ -1165,6 +1165,8 @@ var Tags = {
             //log('chunkElem.length: ' + chunkElem.length);
             
             tagWindow.append(chunkElem);
+            // NOTE: This isn't any faster:
+            //tagWindow[0].innerHTML += chunk;
             
             // Calling special function to avoid code bloat due to duplication. The string "tagid" in the url will be replaced with the
             // actual id.
