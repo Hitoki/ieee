@@ -1,13 +1,4 @@
 
-function getNode(parent, name) {
-    var nodes = parent.getElementsByTagName(name);
-    if (nodes.length != 1) {
-        alert("getNode(" + parent + ", " + name + "): found " + nodes.length + " nodes.");
-        return null;
-    }
-    return nodes[0];
-}
-
 // Scales down the effect of the zoom.
 function scaleZoom(zoom, scale) {
     if (zoom >= 100) {
@@ -114,7 +105,8 @@ $(document).ready(function(){
                 } else if (tab.tab[0].id == 'societies-tab') {
                     Tags.selectSociety('all');
                 } else {
-                    alert('onChangeTab(): Error: unknown tab id "' + tab.tab[0].id + '"');
+					ajax_report_error('onChangeTab(): Error: unknown tab id "' + tab.tab[0].id + '"');
+                    return;
                 }
             }
         });
@@ -534,7 +526,7 @@ var Tags = {
             } else if (this.page == PAGE_SOCIETY || this.page == PAGE_SOCIETY_CLUSTER) {
                 page = 'society';
             } else {
-                alert('Tags.updateResults(): ERROR: Unknown page ' + this.page);
+                ajax_report_error('Tags.updateResults(): ERROR: Unknown page ' + this.page);
                 return;
             }
             
@@ -759,7 +751,7 @@ var Tags = {
         }
         
         if (sectorId != null && societyId != null) {
-            alert('Tags.selectCluster(): ERROR: Cannot specify both sectorId and societyId.');
+            ajax_report_error('Tags.selectCluster(): ERROR: Cannot specify both sectorId and societyId.');
             return;
         }
         
@@ -783,7 +775,8 @@ var Tags = {
             this.page = this.PAGE_SOCIETY_CLUSTER;
             page = 'society';
         } else {
-            alert('Error: Tags.selectCluster(), sectorId and societyId are not specified.');
+            ajax_report_error('Error: Tags.selectCluster(), sectorId and societyId are not specified.');
+            return;
         }
         
         this.clusterId = clusterId;
@@ -945,7 +938,8 @@ var Tags = {
         //    if (this.nodeType == 'sector') {
         //        $('#switch-link').attr('href', '/roamer#/sector/' + this.sectorId);
         //    } else {
-        //        alert('ERROR in updateSwitchLink(): Unrecognized nodeType "' + this.nodeType + '"');
+        //        ajax_report_error('ERROR in updateSwitchLink(): Unrecognized nodeType "' + this.nodeType + '"');
+        //        return;
         //    }
         //} else {
         //    $('#switch-link').attr('href', '/roamer');
@@ -962,7 +956,8 @@ var Tags = {
         } else if (this.page == this.PAGE_SOCIETY) {
             this.selectSociety(this.societyId);
         } else {
-            alert('Tags.updateSort(): Error, page (' + this.page + ') must be "sector", "tag_cluster", or "society".');
+            ajax_report_error('Tags.updateSort(): Error, page (' + this.page + ') must be "sector", "tag_cluster", or "society".');
+            return;
         }
     },
     
@@ -980,13 +975,13 @@ var Tags = {
     setDefaultZoomValues: function() {
         var tag = $('#default-height-tag');
         if (tag.length == 0) {
-            alert('ERROR: In setDefaultZoomValues(), could not find #default-height-tag element.');
+            ajax_report_error('ERROR: In setDefaultZoomValues(), could not find #default-height-tag element.');
             return;
         }
         
         var clusterIcon = tag.find('.cluster-icon')
         if (clusterIcon.length == 0) {
-            alert('ERROR: In setDefaultZoomValues(), could not find #default-height-tag .cluster-icon element.');
+            ajax_report_error('ERROR: In setDefaultZoomValues(), could not find #default-height-tag .cluster-icon element.');
             return;
         }
         

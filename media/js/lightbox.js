@@ -226,7 +226,7 @@ var Lightbox = {
     // 
     subscribe: function(event, func) {
         if (!event in this.subscribers) {
-            alert('Lightbox.subscribe(): Unknown event "' + event + '"');
+            ajax_report_error('Lightbox.subscribe(): Unknown event "' + event + '"');
             return;
         }
         this.subscribers[event].push(func);
@@ -235,7 +235,7 @@ var Lightbox = {
     // Notify all subscribers of an event.
     _notify: function(event, data) {
         if (!event in this.subscribers) {
-            alert('Lightbox.notify(): Unknown event "' + event + '"');
+            ajax_report_error('Lightbox.notify(): Unknown event "' + event + '"');
             return;
         }
         for (var i=0; i<this.subscribers[event].length; i++) {

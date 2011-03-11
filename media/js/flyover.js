@@ -144,7 +144,7 @@ var Flyover = {
         elem = $(elem);
         
         if (!elem) {
-            alert('Flyover: elem argument is required');
+            ajax_report_error('Flyover: elem argument is required');
             return;
         }
         
@@ -185,61 +185,61 @@ var Flyover = {
         
         // Validate options
         if ($.inArray(this.options.position, ['left', 'left-top', 'left-bottom', 'right', 'right-top', 'right-bottom', 'top', 'top-left', 'top-right', 'bottom', 'bottom-left', 'bottom-right', 'auto-left-right-top', 'auto']) == -1) {
-            alert('Flyover: unrecognized position "' + this.options.position + '"');
+            ajax_report_error('Flyover: unrecognized position "' + this.options.position + '"');
             return;
         } else if (isNaN(parseInt(this.options.hideDelay))) {
-            alert('Flyover: hideDelay is not a number (' + this.options.hideDelay + ')');
+            ajax_report_error('Flyover: hideDelay is not a number (' + this.options.hideDelay + ')');
             return;
         } else if (this.options.width != null && isNaN(parseInt(this.options.width))) {
-            alert('Flyover: width is not a number (' + this.options.width + ')');
+            ajax_report_error('Flyover: width is not a number (' + this.options.width + ')');
             return;
         } else if (this.options.height != null && isNaN(parseInt(this.options.height))) {
-            alert('Flyover: height is not a number (' + this.options.height + ')');
+            ajax_report_error('Flyover: height is not a number (' + this.options.height + ')');
             return;
         } else if (this.options.shadows !== true && this.options.shadows !== false) {
-            alert('Flyover: shadows must be true or false (' + this.options.shadows + ')');
+            ajax_report_error('Flyover: shadows must be true or false (' + this.options.shadows + ')');
             return;
         } else if (this.options.customClass !== null && typeof this.options.customClass != 'string') {
-            alert('Flyover: customClass must be null or a string (' + this.options.customClass + ')');
+            ajax_report_error('Flyover: customClass must be null or a string (' + this.options.customClass + ')');
             return;
         } else if (typeof this.options.event != 'string') {
-            alert('Flyover: event must be a string (' + this.options.event + ')');
+            ajax_report_error('Flyover: event must be a string (' + this.options.event + ')');
             return;
         } else if (this.options.event != 'hover' && this.options.event != 'hoverIntent' && this.options.event != 'click') {
-            alert('Flyover: event must be "hover", "hoverIntent", or "click" (' + this.options.event + ')');
+            ajax_report_error('Flyover: event must be "hover", "hoverIntent", or "click" (' + this.options.event + ')');
             return;
         } else if (typeof this.options.arrow != 'boolean') {
-            alert('Flyover: arrow must be a boolean (' + this.options.arrow + ')');
+            ajax_report_error('Flyover: arrow must be a boolean (' + this.options.arrow + ')');
             return;
         } else if (this.options.content !== null && typeof this.options.content != 'string') {
-            alert('Flyover: content must be null or a string (' + this.options.content + ')');
+            ajax_report_error('Flyover: content must be null or a string (' + this.options.content + ')');
             return;
         } else if (typeof this.options.sticky != 'boolean') {
-            alert('Flyover: sticky must be a boolean (' + this.options.sticky + ')');
+            ajax_report_error('Flyover: sticky must be a boolean (' + this.options.sticky + ')');
             return;
         } else if (typeof this.options.closeButton != 'boolean') {
-            alert('Flyover: closeButton must be a boolean (' + this.options.closeButton + ')');
+            ajax_report_error('Flyover: closeButton must be a boolean (' + this.options.closeButton + ')');
             return;
         } else if (typeof this.options.clickOffClose != 'boolean') {
-            alert('Flyover: clickOffClose must be a boolean (' + this.options.clickOffClose + ')');
+            ajax_report_error('Flyover: clickOffClose must be a boolean (' + this.options.clickOffClose + ')');
             return;
         } else if (this.options.showCallback !== null && typeof this.options.showCallback != 'function') {
-            alert('Flyover: showCallback must be null or a function (' + this.options.showCallback + ')');
+            ajax_report_error('Flyover: showCallback must be null or a function (' + this.options.showCallback + ')');
             return;
         } else if (this.options.closeCallback !== null && typeof this.options.closeCallback != 'function') {
-            alert('Flyover: closeCallback must be null or a function (' + this.options.closeCallback + ')');
+            ajax_report_error('Flyover: closeCallback must be null or a function (' + this.options.closeCallback + ')');
             return;
         } else if (typeof this.options.closeOnMouseOutLink != 'boolean') {
-            alert('Flyover: closeOnMouseOutLink must be a boolean (' + this.options.closeOnMouseOutLink + ')');
+            ajax_report_error('Flyover: closeOnMouseOutLink must be a boolean (' + this.options.closeOnMouseOutLink + ')');
             return;
         } else if (this.options.url != null && typeof this.options.url != 'string') {
-            alert('Flyover: url must be a string (' + this.options.url + ')');
+            ajax_report_error('Flyover: url must be a string (' + this.options.url + ')');
             return;
         } else if (typeof this.options.showInitial != 'boolean') {
-            alert('Flyover: showInitial must be a boolean (' + this.options.showInitial + ')');
+            ajax_report_error('Flyover: showInitial must be a boolean (' + this.options.showInitial + ')');
             return;
         } else if (typeof this.options.positionCursor != 'boolean') {
-            alert('Flyover: positionCursor must be a boolean (' + this.options.positionCursor + ')');
+            ajax_report_error('Flyover: positionCursor must be a boolean (' + this.options.positionCursor + ')');
             return;
         }
 		

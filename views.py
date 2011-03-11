@@ -172,8 +172,6 @@ def feedback(request):
         if form.is_valid():
             
             # Send email
-            from django.core.mail import send_mail
-            
             subject = 'IEEE Comments from %s' % form.cleaned_data['email']
             message = 'Sent on %s:\n%s\n\n' % (time.strftime('%Y-%m-%d %H:%M:%S'), form.cleaned_data['comments'])
             send_from = settings.DEFAULT_FROM_EMAIL
@@ -1498,6 +1496,29 @@ def ajax_profile_log(request):
     plog.save()
     return HttpResponse('success')
 
+def ajax_javascript_error_log(request):
+    #print 'ajax_javascript_error_log()'
+    message = request.REQUEST['message']
+    url = request.REQUEST['url']
+    vars = request.REQUEST['vars']
+    
+    #print '  message: %r' % message
+    #print '  url: %r' % url
+    #print '  vars: %r' % vars
+    vars = util.urldecode(vars)
+    #print '  vars: %r' % vars
+    
+    s = []
+    for name in sorted(vars.keys()):
+        s.append('%s=%r' % (name, vars[name]))
+    s = '\n'.join(s)
+    
+    util.send_admin_email('JAVASCRIPT ERROR: %s' % message, '''URL: %s
+
+%s''' % (url, s))
+
+    return HttpResponse('success')
+
 def tags_list(request):
     '''
     Displays a list of links to the tag "wikipedia-style" pages (see views.tag_landing)
@@ -1607,7 +1628,7 @@ def debug_send_email(request):
     log('sending email to "%s"' % request.user.email)
     subject = 'debug_send_email() to "%s"' % request.user.email
     message = 'debug_send_email() to "%s"' % request.user.email
-    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [request.user.email])
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [request.user.email], fail_silently=False)
     log('email sent.')
     return HttpResponse('Email sent to "%s"' % request.user.email)
 

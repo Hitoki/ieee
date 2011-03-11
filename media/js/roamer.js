@@ -168,7 +168,8 @@ var Roamer = {
                 //log('setting root hash');
                 $.historyLoad('');
             } else {
-                alert('ERROR in getNodeInfo(): unknown nodeInfo.type: ' + this.nodeInfo.type);
+                ajax_report_error('ERROR in getNodeInfo(): unknown nodeInfo.type: ' + this.nodeInfo.type);
+                return;
             }
         }
         
@@ -285,7 +286,8 @@ var Roamer = {
             Flyover.detach($('#switch-link'));
             
         } else {
-            alert('ERROR in updateSwitchLink(): unknown nodeInfo.type "' + this.nodeInfo.type + '"');
+            ajax_report_error('ERROR in updateSwitchLink(): unknown nodeInfo.type "' + this.nodeInfo.type + '"');
+            return;
         }
         //log('~updateSwitchLink()');
     },
@@ -332,7 +334,8 @@ function constellationRoamer_onEdgeDoubleClick(edgeID) {
 
 function constellationRoamer_onError(str) {
     //log("constellation error: " + str);
-    alert("constellation error: " + str);
+    ajax_report_error("constellation error: " + str);
+    return;
 }
 
 ////////////////////////////////////////

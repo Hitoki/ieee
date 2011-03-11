@@ -637,6 +637,19 @@ def update_conference_series_tags(conferences=None, conference_series=None):
         'num_tags_added': num_tags_added,
     }
 
+def urldecode(query):
+    import urllib
+    data = {}
+    pairs = query.split('&')
+    for pair in pairs:
+        if pair.find('='):
+            k, v = map(urllib.unquote, pair.split('='))
+            if k in data:
+                data[k].append(v)
+            else:
+                data[k] = [v]
+    return data
+
 # ------------------------------------------------------------------------------
 
 # NOTE: Cannot remove these yet, since they're included by default into any file that does "from util import *".  Need to fix all those first.

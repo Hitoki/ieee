@@ -26,14 +26,16 @@ Nootab.prototype.setContainer = function(container, options) {
         this.container = $(container);
         
         if (this.container.length != 1) {
-            alert('Error in Nootab.setContainer(): container.length (' + this.container.length + ') should be 1.');
+            ajax_report_error('Error in Nootab.setContainer(): container.length (' + this.container.length + ') should be 1.');
             return;
         }
         
         $(container).data('nootabs', this);
         
-        if (!this.container[0].id)
-            alert("nootabs: the container must have an id.");
+        if (!this.container[0].id) {
+            ajax_report_error("nootabs: the container must have an id.");
+            return;
+        }
         this.id = this.container[0].id;
         this.cookieName = 'nootab-current-tab-' + this.id;
         
@@ -87,7 +89,8 @@ Nootab.prototype.setContainer = function(container, options) {
         
         // NOTE: Don't check for equal number of menus & tabs if 'this.options.disable' is true (if no JS involved, page might have many menus & 1 tab
         if (!this.options.disable && menus.length != tabs.length) {
-            alert('Nootab: Mismatched number of menus (' + menus.length + ') and tabs (' + tabs.length + ').');
+            ajax_report_error('Nootab: Mismatched number of menus (' + menus.length + ') and tabs (' + tabs.length + ').');
+            return;
         }
         
         this.tabs = [];
@@ -178,7 +181,7 @@ Nootab.prototype.setContainer = function(container, options) {
 
 Nootab.prototype.setCookie = function(index) {
     if (!$.cookie) {
-        alert('Error in NooTab::setCookie(): $.cookie is null, nootabs.js requires jquery.cookie.js');
+        ajax_report_error('Error in NooTab::setCookie(): $.cookie is null, nootabs.js requires jquery.cookie.js');
         return;
     }
     $.cookie(this.cookieName, index+"", {path:'/'} );
@@ -186,7 +189,7 @@ Nootab.prototype.setCookie = function(index) {
 
 Nootab.prototype.getCookie = function() {
     if (!$.cookie) {
-        alert('Error in NooTab::getCookie(): $.cookie is null, nootabs.js requires jquery.cookie.js');
+        ajax_report_error('Error in NooTab::getCookie(): $.cookie is null, nootabs.js requires jquery.cookie.js');
         return;
     }
     
@@ -233,8 +236,10 @@ Nootab.prototype.addTab = function(menu, tab) {
     
     menu.addClass('nootabs-menu');
     var link = menu.children('a');
-    if (link.length != 1)
-        alert("Nootab: there are " + link.length + " links within the LI tag, require 1.");
+    if (link.length != 1) {
+        ajax_report_error("Nootab: there are " + link.length + " links within the LI tag, require 1.");
+        return;
+    }
     
     if (this.options.event == 'click') {
         link.click(function() {

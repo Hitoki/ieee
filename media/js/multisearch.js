@@ -1,17 +1,4 @@
 
-/*
-function log(msg) {
-    if (window.console) {
-        console.log(msg);
-    }
-}
-
-function error(msg) {
-    alert(msg);
-    return false;
-}
-*/
-
 function listAppend(list, item) {
     if ($.trim(list) == '')
         return item;
@@ -176,10 +163,10 @@ function MultiSearch(container, options) {
     
     // Validate options
     if (typeof this.options.searchUrl != 'string' || $.trim(this.options.searchUrl) == '')
-        return error('MultiSearch(): must specify a "searchUrl"');
+        return ajax_report_error('MultiSearch(): must specify a "searchUrl"');
     
     if (typeof this.options.format != 'string' || (this.options.format != 'simple' && this.options.format != 'full_tags_table'))
-        return error('MultiSearch(): format must be "simple" or "full_tags_table"');
+        return ajax_report_error('MultiSearch(): format must be "simple" or "full_tags_table"');
     
     if (this.options.society_id != null)
         this.options.society_tags_first = true;
@@ -216,7 +203,7 @@ function MultiSearch(container, options) {
     this.inputTimer = null;
     this.input = this.container.find('.multi-search-input');
     if (this.input.length == 0)
-        return error('MultiSearch(): did not find .multi-search-input element');
+        return ajax_report_error('MultiSearch(): did not find .multi-search-input element');
     
     this.input.data('multisearch', this);
     this.input.keydown(function(e) {
@@ -237,11 +224,11 @@ function MultiSearch(container, options) {
     
     this.dataElem = this.container.find('input.multi-search-data');
     if (this.dataElem.length == 0)
-        return error('MultiSearch(): did not find any element "input.multi-search-data"');
+        return ajax_report_error('MultiSearch(): did not find any element "input.multi-search-data"');
     
     this.selectedOptionsElem = this.container.find('.multi-search-selected-options');
     if (this.selectedOptionsElem.length == 0)
-        return error('MultiSearch(): did not find .multi-search-selected-options element');
+        return ajax_report_error('MultiSearch(): did not find .multi-search-selected-options element');
     if (!this.options.showSelectedOptions) {
         this.selectedOptionsElem.hide();
     }
@@ -368,16 +355,6 @@ MultiSearch.prototype.onInputTimer = function() {
         this.closePopup();
     }
     
-}
-
-function url_encode(obj) {
-    var data = '';
-    for (var i in obj) {
-        if (data != '')
-            data += '&';
-        data += escape(i) + '=' + escape(obj[i]);
-    }
-    return data;
 }
 
 // Update and display the search options popup, in case something has changed
@@ -641,7 +618,7 @@ MultiSearch.prototype.findSearchOptionIndex = function(value) {
 MultiSearch.prototype.toggleSearchOption = function(value) {
     var searchOption = this.findSearchOption(value);
     if (searchOption == null)
-        return error('MultiSearch.toggleSearchOption(): value "' + value + '" not found');
+        return ajax_report_error('MultiSearch.toggleSearchOption(): value "' + value + '" not found');
     
     if (searchOption.checked) {
         this.unselectSearchOption(value);
@@ -653,7 +630,7 @@ MultiSearch.prototype.toggleSearchOption = function(value) {
 MultiSearch.prototype.highlightSearchOption = function(value) {
     var searchOption = this.findSearchOption(value);
     if (searchOption == null)
-        return error('MultiSearch.highlightSearchOption(): value "' + value + '" not found');
+        return ajax_report_error('MultiSearch.highlightSearchOption(): value "' + value + '" not found');
     
     if (this.highlightedSearchOptionValue != null)
         // Unhighlight the previous option
@@ -681,7 +658,7 @@ MultiSearch.prototype.highlightSearchOption = function(value) {
 MultiSearch.prototype.selectSearchOption = function(value) {
     var searchOption = this.findSearchOption(value);
     if (searchOption == null)
-        return error('MultiSearch.selectSearchOption(): value "' + value + '" not found');
+        return ajax_report_error('MultiSearch.selectSearchOption(): value "' + value + '" not found');
     
     searchOption.checkboxElem.attr('src', '/media/images/checkbox_on.png');
     searchOption.checked = true;
@@ -712,7 +689,7 @@ MultiSearch.prototype.selectSearchOption = function(value) {
 MultiSearch.prototype.unselectSearchOption = function(value) {
     var searchOption = this.findSearchOption(value);
     if (searchOption == null)
-        return error('MultiSearch.unselectSearchOption(): value "' + value + '" not found');
+        return ajax_report_error('MultiSearch.unselectSearchOption(): value "' + value + '" not found');
     
     searchOption.checkboxElem.attr('src', '/media/images/checkbox.png');
     searchOption.checked = false;
@@ -995,7 +972,7 @@ MultiSearch.prototype.getNumSelectedOptions = function() {
 // 
 MultiSearch.prototype.subscribe = function(event, func) {
     if (!event in this.subscribers) {
-        alert('MultiSearch.subscribe(): Unknown event "' + event + '"');
+        ajax_report_error('MultiSearch.subscribe(): Unknown event "' + event + '"');
         return;
     }
     this.subscribers[event].push(func);
@@ -1004,7 +981,7 @@ MultiSearch.prototype.subscribe = function(event, func) {
 // Notify all subscribers of an event.
 MultiSearch.prototype._notify = function(event, data) {
     if (!event in this.subscribers) {
-        alert('MultiSearch.notify(): Unknown event "' + event + '"');
+        ajax_report_error('MultiSearch.notify(): Unknown event "' + event + '"');
         return;
     }
     for (var i=0; i<this.subscribers[event].length; i++) {

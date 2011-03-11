@@ -17,7 +17,7 @@ function LiveSearch(inputElem) {
     
     if (!this.options.use_tags_callback) {
         if (this.options.url == null || $.trim(this.options.url) == '') {
-            alert('Error in LiveSearch(): url is blank.');
+            ajax_report_error('Error in LiveSearch(): url is blank.');
             return;
         }
     }
@@ -87,7 +87,7 @@ LiveSearch.prototype.update = function(useDelayValue) {
                 this.searchingFor = value;
                 
                 if (window.Tags == undefined) {
-                    alert('Error in LiveSearch.update(): Tags is not defined.')
+                    ajax_report_error('Error in LiveSearch.update(): Tags is not defined.')
                     return;
                 }
                 

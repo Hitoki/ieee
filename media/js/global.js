@@ -159,7 +159,7 @@ function HighlightCheckbox(elem, options) {
     }
     
     if (this.options.highlightElem == null) {
-        alert('HighlightCheckbox(): Error, this.options.highlightElem must be specified.');
+        ajax_report_error('HighlightCheckbox(): Error, this.options.highlightElem must be specified.');
         return;
     }
     
@@ -363,7 +363,8 @@ function getXploreSortName(sort) {
     } else if (sort == XPLORE_SORT_PUBLICATION_YEAR) {
         return 'Publication Year';
     } else {
-        alert('getXploreSortName(): ERROR: Unknown sort "' + sort + '"');
+        ajax_report_error('getXploreSortName(): ERROR: Unknown sort "' + sort + '"');
+        return;
     }
 }
 
@@ -571,6 +572,43 @@ function createUUID() {
 
     var uuid = s.join("");
     return uuid;
+}
+
+function url_encode(obj) {
+    var data = '';
+    for (var i in obj) {
+        if (data != '')
+            data += '&';
+        data += escape(i) + '=' + escape(obj[i]);
+    }
+    return data;
+}
+
+function ajax_report_error(msg) {
+    log('ajax_report_error()');
+    log('  msg: ' + msg);
+    var vars = {};
+    for (var i in window) {
+        if (typeof window[i] == 'function') {
+            //vars[i] = '(function)';
+        } else if (typeof window[i] == 'object') {
+            vars[i] = '(object)';
+        } else {
+            vars[i] = '' + window[i];
+        }
+    }
+    $.post(
+        INDEX_URL + 'ajax/javascript_error_log'
+        , {
+            message: msg
+            , url: window.location.href
+            , vars: url_encode(vars)
+        }
+    );
+    
+    if (DEBUG) {
+        alert('ajax_report_error(): ' + msg);
+    }
 }
 
 var mouseX = null;

@@ -43,8 +43,9 @@ else:
         url(r'^ajax/tooltip/(?P<tag_id>\d+)$', views.tooltip, name='tooltip'),
         url(r'^ajax/tooltip$', views.tooltip, name='tooltip'),
         url(r'^ajax/video$', views.ajax_video, name='ajax_video'),
-        
         url(r'^ajax/profile_log$', views.ajax_profile_log, name='ajax_profile_log'),
+        
+        url(r'^ajax/javascript_error_log$', views.ajax_javascript_error_log, name='ajax_javascript_error_log'),
         
         # Print
         url(r'^print/resource/(?P<tag_id>\d+)/(?P<resource_type>.+)$', views.print_resource, name='print_resource'),

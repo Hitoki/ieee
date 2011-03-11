@@ -47,4 +47,5 @@ def settings(request):
 	return {
 		'ENABLE_FIREBUG_LITE': settings.ENABLE_FIREBUG_LITE,
 		'ENABLE_PROGRESSIVE_LOADING': settings.ENABLE_PROGRESSIVE_LOADING,
+		'DEBUG': settings.DEBUG,
 	}

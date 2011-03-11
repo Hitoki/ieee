@@ -51,17 +51,17 @@ function autoTruncate(elems, options) {
         );
         
         if (options.length == null) {
-            alert('auto-truncate: must specify a length');
+            ajax_report_error('auto-truncate: must specify a length');
             return;
         }
         
         if (typeof options.word_boundary != 'boolean') {
-            alert('auto-truncate: "word_boundary" must be a boolean');
+            ajax_report_error('auto-truncate: "word_boundary" must be a boolean');
             return;
         }
         
         if (typeof options.flyover != 'boolean') {
-            alert('auto-truncate: "flyover" must be a boolean');
+            ajax_report_error('auto-truncate: "flyover" must be a boolean');
             return;
         }
         
@@ -102,7 +102,7 @@ function autoTruncate(elems, options) {
                     
                     if (text.length == 0) {
                         // NOTE: This shouldn't be needed, but it might catch some infinite loops
-                        alert('Error: autoTruncate(): text was "", breaking');
+                        ajax_report_error('Error: autoTruncate(): text was "", breaking');
                         break;
                     }
                     
