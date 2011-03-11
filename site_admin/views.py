@@ -34,7 +34,7 @@ from ieeetags import settings
 from ieeetags import permissions
 from ieeetags import url_checker
 from ieeetags.util import *
-from ieeetags.models import Node, NodeSocieties, NodeType, Permission, Resource, ResourceType, ResourceNodes, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager, FailedLoginLog, UrlCheckerLog, TaxonomyTerm, TaxonomyCluster, ProfileLog, ProcessControl, PROCESS_CONTROL_TYPES
+from ieeetags.models import Cache, Node, NodeSocieties, NodeType, Permission, Resource, ResourceType, ResourceNodes, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager, FailedLoginLog, UrlCheckerLog, TaxonomyTerm, TaxonomyCluster, ProfileLog, ProcessControl, PROCESS_CONTROL_TYPES
 from ieeetags.views import render
 from ieeetags.widgets import DisplayOnlyWidget
 from forms import *
@@ -959,6 +959,9 @@ def import_societies(request):
         errors = list_to_html_list(results['errors'], 'errors')
         del results['errors']
         
+        # Invalidate caches, so they are regenerated.
+        Cache.objects.delete('ajax_textui_nodes')
+        
         return render(request, 'site_admin/import_file.html', {
             'page_title': 'Import Societies',
             'errors': errors,
@@ -1487,6 +1490,10 @@ def import_resources(request):
         # Import resources from the uploaded file
         file = request.FILES['file']
         results = _import_resources(file)
+        
+        # Invalidate caches, so they are regenerated.
+        Cache.objects.delete('ajax_textui_nodes')
+        
         return render(request, 'site_admin/import_resources_file.html', {
             #'errors': list_to_html_list(errors, 'errors'),
             'results': results,
@@ -1515,6 +1522,9 @@ def import_clusters(request):
         results = _import_clusters(file)
         
         results['errors'] = list_to_html_list(results['errors'])
+        
+        # Invalidate caches, so they are regenerated.
+        Cache.objects.delete('ajax_textui_nodes')
         
         return render(request, 'site_admin/import_file.html', {
             #'errors': list_to_html_list(errors, 'errors'),
@@ -1570,6 +1580,9 @@ def import_conference_series(request):
         
         #results['errors'] = list_to_html_list(results['errors'])
         
+        # Invalidate caches, so they are regenerated.
+        Cache.objects.delete('ajax_textui_nodes')
+        
         return render(request, 'site_admin/import_file.html', {
             'page_title': 'Import Tag Clusters',
             'submit_url': reverse('admin_import_conference_series'),
@@ -1603,11 +1616,12 @@ def update_resource_from_xplore_log(request, filename):
     response.write('</pre>')
     return response
 
+# TODO: Is this function obsolete & unused?
+
 @login_required
 @admin_required
 def update_resources_from_xplore_perform(request):
     return _update_periodical_from_xplore(request)
-
 
 @transaction.commit_manually
 def _update_periodical_from_xplore(request):
@@ -2144,6 +2158,9 @@ def import_standards(request):
                 'results': results,
             })
     
+    # Invalidate all resource-related caches, so they are regenerated.
+    Cache.objects.delete('ajax_textui_nodes')
+    
     return render(request, 'site_admin/import_file.html', {
         'page_title': 'Import Standards File',
         'form': form,
@@ -2304,6 +2321,9 @@ def import_mai(request):
             results['duplicate_ieee_ids'] = list_to_html_list(results['duplicate_ieee_ids'])
             results['invalid_tags'] = list_to_html_list(results['invalid_tags'])
             results['duplicate_tags'] = list_to_html_list(results['duplicate_tags'])
+            
+            # Invalidate all resource-related caches, so they are regenerated.
+            Cache.objects.delete('ajax_textui_nodes')
             
             return render(request, 'site_admin/import_file.html', {
                 'page_title': 'Import MAI Conferences File',
@@ -2740,6 +2760,9 @@ def edit_tags(request):
                         tag.filters.remove(filter)
                         tag.save()
             
+            # Invalidate all resource-related caches, so they are regenerated.
+            Cache.objects.delete('ajax_textui_nodes')
+            
             # Form saved successfully, redirect to previous page
             return HttpResponseRedirect(return_url)
     else:
@@ -3006,6 +3029,9 @@ def save_tag(request, tag_id):
         for cluster in clusters:
             cluster.cluster_update_filters()
         
+        # Invalidate all resource-related caches, so they are regenerated.
+        Cache.objects.delete('ajax_textui_nodes')
+        
         if return_url != '':
             return HttpResponseRedirect(return_url)
         else:
@@ -3039,7 +3065,10 @@ def delete_tag(request, tag_id):
     assert tag.node_type.name == NodeType.TAG
     tag.delete()
     
-    print return_url
+    # Invalidate all resource-related caches, so they are regenerated.
+    Cache.objects.delete('ajax_textui_nodes')
+    
+    #print return_url
     if return_url is not None and len(return_url):
         return HttpResponseRedirect(return_url)
     else:
@@ -3157,6 +3186,9 @@ def combine_tags(request):
         except Node.DoesNotExist, e:
             logging.debug('Tag does not exist: %s' % e)
     
+    # Invalidate all resource-related caches, so they are regenerated.
+    Cache.objects.delete('ajax_textui_nodes')
+    
     return HttpResponseRedirect(return_url)
 
 @login_required
@@ -3207,7 +3239,10 @@ def edit_cluster(request, cluster_id=None):
                 
                 cluster.child_nodes = tags
                 cluster.save()
-
+            
+            # Invalidate all resource-related caches, so they are regenerated.
+            Cache.objects.delete('ajax_textui_nodes')
+            
             return HttpResponseRedirect(reverse('admin_view_cluster', args=[cluster.id]))
         
     return render(request, 'site_admin/edit_cluster.html', {
@@ -3222,6 +3257,10 @@ def delete_cluster(request, cluster_id):
     #return_to = request.GET.get('return_to')
     cluster = Node.objects.get(id=cluster_id)
     cluster.delete()
+    
+    # Invalidate all resource-related caches, so they are regenerated.
+    Cache.objects.delete('ajax_textui_nodes')    
+    
     #return HttpResponseRedirect(return_to)
     return HttpResponseRedirect(reverse('admin_clusters_report'))
     
@@ -3737,6 +3776,9 @@ def manage_society(request, society_id):
     
     tags_tab_url = reverse('admin_manage_society', args=[society_id]) + '#tab-tags-tab'
     
+    # Invalidate all resource-related caches, so they are regenerated.
+    Cache.objects.delete('ajax_textui_nodes')
+    
     return render(request, 'site_admin/manage_society.html', {
         'society': society,
         'form': form,
@@ -3865,6 +3907,9 @@ def save_society(request):
             society.resources = form.cleaned_data['resources']
         society.save()
         
+        # Invalidate all resource-related caches, so they are regenerated.
+        Cache.objects.delete('ajax_textui_nodes')
+        
         #print 'return_url:', return_url
         #print 'society:', society
         #print 'society.id:', society.id
@@ -3882,6 +3927,10 @@ def save_society(request):
 @admin_required
 def delete_society(request, society_id):
     Society.objects.get(id=society_id).delete()
+    
+    # Invalidate all resource-related caches, so they are regenerated.
+    Cache.objects.delete('ajax_textui_nodes')
+    
     return HttpResponseRedirect(reverse('admin_societies'))
 
 @login_required
@@ -3960,6 +4009,9 @@ def edit_resources(request):
                 resource.save()
                 for tag in remove_tags:
                     tag.save()
+            
+            # Invalidate all resource-related caches, so they are regenerated.
+            Cache.objects.delete('ajax_textui_nodes')
             
             return HttpResponseRedirect(return_url)
             
@@ -4206,6 +4258,9 @@ def save_resource(request):
                         node_societies.society = society
                         node_societies.save()
             
+            # Invalidate all resource-related caches, so they are regenerated.
+            Cache.objects.delete('ajax_textui_nodes')
+            
             # Return to the society the user was editing
             if begins_with(return_url, 'close_window'):
                 return HttpResponse("""
@@ -4258,6 +4313,10 @@ def delete_resource(request, resource_id):
     resource = Resource.objects.get(id=resource_id)
     old_nodes = resource.nodes.all()
     Resource.objects.get(id=resource_id).delete()
+    
+    # Invalidate all resource-related caches, so they are regenerated.
+    cache = Cache.objects.delete('ajax_textui_nodes')    
+    
     return HttpResponseRedirect(next)
 
 @login_required
@@ -4397,6 +4456,9 @@ def ajax_society_add_tags(request):
             # Duplicate tag-society link, just ignore.
             pass
     
+    # Invalidate all resource-related caches, so they are regenerated.
+    cache = Cache.objects.delete('ajax_textui_nodes')
+    
     return HttpResponse('success', 'text/plain')
 
 @login_required
@@ -4416,6 +4478,9 @@ def ajax_society_remove_tags(request):
     
     for tag in tags:
         NodeSocieties.objects.filter(society=society, node=tag).delete()
+    
+    # Invalidate all resource-related caches, so they are regenerated.
+    cache = Cache.objects.delete('ajax_textui_nodes')
     
     return HttpResponse('success', 'text/plain')
 
@@ -4488,12 +4553,20 @@ def ajax_update_society(request):
         society = Society.objects.get(id=society_id)
         tag = Node.objects.get(id=tag_id)
         society.tags.add(tag)
+        
+        # Invalidate all resource-related caches, so they are regenerated.
+        cache = Cache.objects.delete('ajax_textui_nodes')
+        
         return HttpResponse('success')
     
     elif action == 'remove_tag':
         society = Society.objects.get(id=society_id)
         tag = Node.objects.get(id=tag_id)
         society.tags.remove(tag)
+        
+        # Invalidate all resource-related caches, so they are regenerated.
+        cache = Cache.objects.delete('ajax_textui_nodes')
+        
         return HttpResponse('success')
     
     else:
@@ -4510,6 +4583,9 @@ def ajax_copy_resource_tags(request):
     profile.copied_resource = resource
     profile.save()
     
+    # Invalidate all resource-related caches, so they are regenerated.
+    cache = Cache.objects.delete('ajax_textui_nodes')
+    
     return HttpResponse('Success', mimetype='text/plain')
     
 @login_required
@@ -4524,6 +4600,9 @@ def ajax_paste_resource_tags(request):
     from_resource = request.user.get_profile().copied_resource
     assert from_resource is not None
     from_tag_names = [tag.name for tag in from_resource.nodes.all()]
+    
+    # Invalidate all resource-related caches, so they are regenerated.
+    cache = Cache.objects.delete('ajax_textui_nodes')
     
     return render(request, 'site_admin/ajax_paste_resource_tags.html', {
         'to_resource': to_resource,

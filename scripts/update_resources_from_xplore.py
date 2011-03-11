@@ -415,6 +415,9 @@ def main(*args):
                 
                 last_tag = tag
                 
+            # Invalidate all resource-related caches, so they are regenerated.
+            models.Cache.objects.delete('ajax_textui_nodes')
+            
             log('\nSummary:')
             log('Tags Processed: %d' % resSum['tags_processed'])
             
