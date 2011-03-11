@@ -236,6 +236,7 @@ var Tags = {
                 this.selectCluster(clusterId, sectorId, null, false);
             
             } else if (society_matches) {
+                //'  got a society match.');
                 // Society
                 var societyId = society_matches[1];
                 if (societyId !== "all"){
@@ -358,7 +359,7 @@ var Tags = {
     // This is like _showWaitScreen(), but it shows the "Please wait" on top of the tags instead of replacing them.  Used for zooming.
     // If specified, the "callback" function is fired after the wait screen is shown.
     _showWaitScreenOver: function(callback) {
-        log('_showWaitScreenOver()');
+        //log('_showWaitScreenOver()');
         
         // Hide the content lightbox if it's visible.
         Lightbox.hide();
@@ -385,7 +386,7 @@ var Tags = {
     },
     
     _hideWaitScreenOver: function() {
-        log('_hideWaitScreenOver()');
+        //log('_hideWaitScreenOver()');
         Lightbox.hide();
     },
     
@@ -408,36 +409,43 @@ var Tags = {
             $.historyLoad('/sector/' + this.sectorId);
         }
         
+        //log('selectSector(): calling updateResults().');
         this.updateResults();
     },
     
     selectSociety: function(societyId, setHash) {
         //log('selectSociety()');
         //log('  societyId: ' + societyId);
+        //log('  setHash: ' + setHash);
         
-        this.page = this.PAGE_SOCIETY
-        
-        this.societyId = societyId;
-        this.sectorId = null;
-        this.clusterId = null;
-        this.nodeType = null;
-        
-        if (setHash == undefined) {
-            setHash = true;
+        if (this.page != this.PAGE_SOCIETY || this.societyId != societyId) {
+            this.page = this.PAGE_SOCIETY
+            
+            this.societyId = societyId;
+            this.sectorId = null;
+            this.clusterId = null;
+            this.nodeType = null;
+            
+            if (setHash == undefined) {
+                setHash = true;
+            }
+            
+            if (setHash) {
+                //log('setting hash to "' + '/society/' + this.societyId + '"');
+                $.historyLoad('/society/' + this.societyId);
+            }
+            
+            //log('selectSociety(): calling updateResults().');
+            this.updateResults();
         }
-        
-        if (setHash) {
-            //log('setting hash to "' + '/sector/' + this.sectorId + '"');
-            $.historyLoad('/society/' + this.societyId);
-        }
-        
-        this.updateResults();
     },
     
     showSearchResults: function(search_for, showSearchResultsCallback) {
         this.isSearching = true;
         this.updateHighlightedNode();
         this._showWaitScreen();
+        
+        //log('showSearchResults(): calling updateResults().');
         this.updateResults(showSearchResultsCallback);
     },
     
@@ -471,7 +479,7 @@ var Tags = {
         
         if (this.sectorId != null) {
             // Load the sector/cluster
-            log('updateResults(): load sector/cluster');
+            //log('updateResults(): load sector/cluster');
             var token = createUUID();
             this.ajaxToken = token;
             $.get(
@@ -495,7 +503,7 @@ var Tags = {
             
         } else if (this.societyId != null) {
             // Load the society
-            log('updateResults(): load society');
+            //log('updateResults(): load society');
             var token = createUUID();
             this.ajaxToken = token;
             $.get(
@@ -530,7 +538,7 @@ var Tags = {
                 return;
             }
             
-            log('updateResults(): load search_for');
+            //log('updateResults(): load search_for');
             var token = createUUID();
             this.ajaxToken = token;
             $.get(
@@ -563,8 +571,9 @@ var Tags = {
     },
     
     clearSearchResults: function() {
-        log('clearSearchResults()');
+        //log('clearSearchResults()');
         $('#tags-live-search').val('');
+        //log('clearSearchResults(): calling updateResults().');
         this.updateResults();
     },
     
@@ -967,6 +976,7 @@ var Tags = {
         this.clusterId = null;
         this.societyId = null;
         $('#tags-live-search').val('');
+        //log('clearSectorSociety(): calling updateResults().');
         this.updateResults();
         $('#tag-galaxy').removeClass('tag-galaxy-viewing');
         $("#tags-live-search").focus();
