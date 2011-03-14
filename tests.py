@@ -40,10 +40,10 @@ class LoadPagesTestCase(unittest.TestCase):
         response = client.get(reverse('index'))
         
         # Redirect.
-        #self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         
         # Fail
-        self.assertEqual(response.status_code, 200)
+        #self.assertEqual(response.status_code, 200)
 
     def testTextui(self):
         'Test that the textui page loads.'
@@ -52,7 +52,7 @@ class LoadPagesTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         
         # ERROR:
-        self.assertEqual(response.status_code, 1000)
+        #self.assertEqual(response.status_code, 1000)
 
     def test404Error(self):
         'Test a non-existent page (404 error).'

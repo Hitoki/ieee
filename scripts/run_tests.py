@@ -29,20 +29,24 @@ def main():
     
     # Parse the results to see if there was an error.
     
-    matches = re.search(r'FAILED \(failures=(\d+)\)', err_output)
-    if matches:
-        # Found errors.
-        num_errors = matches.group(1)
-        subject = '*** Tests failed for rev %s, %s errors.' % (revision, num_errors)
-        body = err_output
-    else:
+    success_matches = re.search(r'Ran (\d+) tests in (\d\.\d+)s\n\nOK', err_output)
+    
+    if success_matches:
         # No errors.
         subject = 'Tests passed for rev %s.' % revision
-        body = ''
+        body = subject
+    else:
+        # Found errors.
+        matches = re.search(r'FAILED \(failures=(\d+)\)', err_output)
+        if matches:
+            num_errors = matches.group(1)
+        else:
+            num_errors = '(Unknown)'
+        subject = '*** Tests failed for rev %s, %s errors.' % (revision, num_errors)
+        body = err_output
     
     print subject
-    if body != '':
-        print body
+    print body
     
     send_admin_email(subject, body)
     
