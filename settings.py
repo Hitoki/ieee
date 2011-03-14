@@ -162,6 +162,9 @@ XPLORE_IMPORT_MAX_QUERY_RESULTS = 10
 import south.logger
 logging.getLogger('south').setLevel(logging.CRITICAL)
 
+# This forces south to use 'syncdb' when running tests, vs. using the migrations.
+SOUTH_TESTS_MIGRATE = False
+
 # Debug Settings ---------------------------------------------------------------
 
 # Used for the COMSOC demo to assign all tags to comsoc by default

@@ -650,6 +650,33 @@ def urldecode(query):
                 data[k] = [v]
     return data
 
+def get_svn_info(path):
+    import re
+    import subprocess
+    
+    proc = subprocess.Popen(
+        ['svn', 'info', path],
+        #cwd=path,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+    )
+    stdout, temp = proc.communicate()
+    
+    result = {  
+        'url': None,
+        'revision': None,
+    }
+    
+    matches = re.search(r'(?m)^URL: (.+)$', stdout)
+    if matches:
+        result['url'] = matches.group(1).strip()
+    
+    matches = re.search(r'(?m)^Revision: (.+)$', stdout)
+    if matches:
+        result['revision'] = matches.group(1).strip()
+    
+    return result
+
 # ------------------------------------------------------------------------------
 
 # NOTE: Cannot remove these yet, since they're included by default into any file that does "from util import *".  Need to fix all those first.
@@ -661,11 +688,14 @@ import subprocess
 import sys
 
 def main():
-    out = get_process_info(1)
-    print 'out: %r' % out
+    #out = get_process_info(1)
+    #print 'out: %r' % out
+    #
+    #out = get_process_info(100)
+    #print 'out: %r' % out
     
-    out = get_process_info(100)
-    print 'out: %r' % out
+    #print get_svn_info(relpath(__file__, '..'))
+    print get_svn_info(relpath(__file__, '.'))
 
 if __name__ == '__main__':
     main()

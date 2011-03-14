@@ -1,0 +1,1102 @@
+[
+    {
+        "pk": 1,
+        "model": "ieeetags.nodetype",
+        "fields": {
+            "name": "root"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "ieeetags.nodetype",
+        "fields": {
+            "name": "sector"
+        }
+    },
+    {
+        "pk": 3,
+        "model": "ieeetags.nodetype",
+        "fields": {
+            "name": "tag"
+        }
+    },
+    {
+        "pk": 4,
+        "model": "ieeetags.nodetype",
+        "fields": {
+            "name": "tag_cluster"
+        }
+    },
+    
+    
+    {
+        "pk": 1, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Aerospace & Electronics Systems", 
+            "logo_full": "images\\sc_logos\\full\\aes.jpg", 
+            "url": "http://ieee-aess.org/", 
+            "abbreviation": "AES", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\aes.jpg", 
+            "users": [
+                89, 
+                166, 
+                220, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Antennas & Propagation", 
+            "logo_full": "images\\sc_logos\\full\\ap.jpg", 
+            "url": "http://www.ieeeaps.org/", 
+            "abbreviation": "AP", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\ap.jpg", 
+            "users": [
+                90, 
+                166, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Biometrics Council", 
+            "logo_full": "images\\sc_logos\\full\\bmc.jpg", 
+            "url": "http://www.ieee-biometrics.org/", 
+            "abbreviation": "BMC", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\bmc.jpg", 
+            "users": [
+                91, 
+                166, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Broadcast Technology", 
+            "logo_full": "images\\sc_logos\\full\\bt.jpg", 
+            "url": "http://www.ieee.org/organizations/society/bt/index.html", 
+            "abbreviation": "BT", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\bt.jpg", 
+            "users": [
+                92, 
+                93, 
+                166, 
+                244, 
+                250, 
+                253, 
+                254
+            ]
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Circuits & Systems", 
+            "logo_full": "images\\sc_logos\\full\\cas.jpg", 
+            "url": "http://www.ieee-cas.org/", 
+            "abbreviation": "CAS", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\cas.jpg", 
+            "users": [
+                94, 
+                95, 
+                166, 
+                189, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Communications", 
+            "logo_full": "images\\sc_logos\\full\\com.jpg", 
+            "url": "http://ww2.comsoc.org/", 
+            "abbreviation": "COM", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\com.jpg", 
+            "users": [
+                96, 
+                97, 
+                98, 
+                99, 
+                100, 
+                101, 
+                166, 
+                194, 
+                218, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Components, Packaging & Manufacturing Tech", 
+            "logo_full": "images\\sc_logos\\full\\cpmt.jpg", 
+            "url": "http://www.cpmt.org/", 
+            "abbreviation": "CPMT", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\cpmt.jpg", 
+            "users": [
+                102, 
+                103, 
+                166, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Computational Intelligence", 
+            "logo_full": "images\\sc_logos\\full\\ci.jpg", 
+            "url": "http://www.ieee-cis.org/", 
+            "abbreviation": "CI", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\ci.jpg", 
+            "users": [
+                104, 
+                105, 
+                106, 
+                166, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Computer", 
+            "logo_full": "images\\sc_logos\\full\\c.jpg", 
+            "url": "http://www.computer.org/", 
+            "abbreviation": "C", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\c.jpg", 
+            "users": [
+                107, 
+                108, 
+                109, 
+                110, 
+                111, 
+                166, 
+                208, 
+                215, 
+                217, 
+                223, 
+                232, 
+                239, 
+                244, 
+                250, 
+                253, 
+                276
+            ]
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Consumer Electronics", 
+            "logo_full": "images/sc_logos/full/ce.png", 
+            "url": "http://ewh.ieee.org/soc/ces/", 
+            "abbreviation": "CE", 
+            "logo_thumbnail": "images/sc_logos/thumbnail/ce.png", 
+            "users": [
+                112, 
+                166, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Control Systems", 
+            "logo_full": "images\\sc_logos\\full\\cs.jpg", 
+            "url": "http://www.ieeecss.org/", 
+            "abbreviation": "CS", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\cs.jpg", 
+            "users": [
+                113, 
+                114, 
+                166, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Council on Electronic Design Automation", 
+            "logo_full": "images\\sc_logos\\full\\ceda.jpg", 
+            "url": "http://www.c-eda.org/", 
+            "abbreviation": "CEDA", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\ceda.jpg", 
+            "users": [
+                115, 
+                116, 
+                166, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Council on Superconductivity", 
+            "logo_full": "images\\sc_logos\\full\\csc.jpg", 
+            "url": "http://www.ewh.ieee.org/tc/csc/", 
+            "abbreviation": "CSC", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\csc.jpg", 
+            "users": [
+                117, 
+                166, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Dielectrics & Electrical Insulation", 
+            "logo_full": "images\\sc_logos\\full\\dei.jpg", 
+            "url": "http://ewh.ieee.org/soc/deis/", 
+            "abbreviation": "DEI", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\dei.jpg", 
+            "users": [
+                118, 
+                166, 
+                242, 
+                244, 
+                248, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Education", 
+            "logo_full": "images\\sc_logos\\full\\e.jpg", 
+            "url": "http://www.ewh.ieee.org/soc/es/", 
+            "abbreviation": "E", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\e.jpg", 
+            "users": [
+                119, 
+                166, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Electromagnetic Compatibility", 
+            "logo_full": "images\\sc_logos\\full\\emc.jpg", 
+            "url": "http://www.ewh.ieee.org/soc/emcs/", 
+            "abbreviation": "EMC", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\emc.jpg", 
+            "users": [
+                120, 
+                166, 
+                212, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Electron Devices", 
+            "logo_full": "images\\sc_logos\\full\\ed.jpg", 
+            "url": "http://www.ieee.org/portal/pages/society/eds/index.html", 
+            "abbreviation": "ED", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\ed.jpg", 
+            "users": [
+                121, 
+                123, 
+                124, 
+                125, 
+                126, 
+                166, 
+                191, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Engineering in Medicine & Biology", 
+            "logo_full": "images\\sc_logos\\full\\emb.jpg", 
+            "url": "http://www.embs.org/", 
+            "abbreviation": "EMB", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\emb.jpg", 
+            "users": [
+                127, 
+                128, 
+                129, 
+                166, 
+                230, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Geoscience & Remote Sensing", 
+            "logo_full": "images\\sc_logos\\full\\grs.jpg", 
+            "url": "http://www.grss-ieee.org/", 
+            "abbreviation": "GRS", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\grs.jpg", 
+            "users": [
+                130, 
+                166, 
+                178, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 50, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "IEEE USA", 
+            "logo_full": "images/sc_logos/full/ieee-usa.jpg", 
+            "url": "http://www.ieeeusa.org/", 
+            "abbreviation": "IEEE-USA", 
+            "logo_thumbnail": "images/sc_logos/thumbnail/ieee-usa.jpg", 
+            "users": []
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Industrial Electronics", 
+            "logo_full": "images\\sc_logos\\full\\ie.jpg", 
+            "url": "http://www.ieee-ies.org/", 
+            "abbreviation": "IE", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\ie.jpg", 
+            "users": [
+                131, 
+                132, 
+                166, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 21, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Industry Applications", 
+            "logo_full": "images\\sc_logos\\full\\ias.jpg", 
+            "url": "http://ewh.ieee.org/soc/ias/", 
+            "abbreviation": "IAS", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\ias.jpg", 
+            "users": [
+                133, 
+                134, 
+                166, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 22, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Information Theory", 
+            "logo_full": "images\\sc_logos\\full\\it.jpg", 
+            "url": "http://www.itsoc.org/", 
+            "abbreviation": "IT", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\it.jpg", 
+            "users": [
+                135, 
+                166, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 23, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Instrumentation & Measurement", 
+            "logo_full": "images\\sc_logos\\full\\im.jpg", 
+            "url": "http://ieee-ims.org/main/", 
+            "abbreviation": "IM", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\im.jpg", 
+            "users": [
+                136, 
+                166, 
+                177, 
+                220, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 24, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Intelligent Transportation Systems", 
+            "logo_full": "images\\sc_logos\\full\\its.jpg", 
+            "url": "http://www.ewh.ieee.org/tc/its/", 
+            "abbreviation": "ITS", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\its.jpg", 
+            "users": [
+                137, 
+                166, 
+                176, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 25, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Magnetics", 
+            "logo_full": "images\\sc_logos\\full\\mag.jpg", 
+            "url": "http://www.ieeemagnetics.org/", 
+            "abbreviation": "MAG", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\mag.jpg", 
+            "users": [
+                138, 
+                166, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 51, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Member and Geographic Activities", 
+            "logo_full": "images/sc_logos/full/mga.jpg", 
+            "url": "http://ieee.org/societies_communities/geo_activities/index.html", 
+            "abbreviation": "MGA", 
+            "logo_thumbnail": "images/sc_logos/thumbnail/mga.jpg", 
+            "users": []
+        }
+    }, 
+    {
+        "pk": 26, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Microwave Theory & Techniques", 
+            "logo_full": "images\\sc_logos\\full\\mtt.jpg", 
+            "url": "http://www.mtt.org/", 
+            "abbreviation": "MTT", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\mtt.jpg", 
+            "users": [
+                139, 
+                140, 
+                166, 
+                211, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 27, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Nanotechnology Council", 
+            "logo_full": "images\\sc_logos\\full\\nano.jpg", 
+            "url": "http://ewh.ieee.org/tc/nanotech/", 
+            "abbreviation": "NANO", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\nano.jpg", 
+            "users": [
+                141, 
+                166, 
+                181, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 28, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Nuclear & Plasma Science", 
+            "logo_full": "images/sc_logos/full/nps.jpg", 
+            "url": "http://ewh.ieee.org/soc/nps/", 
+            "abbreviation": "NPS", 
+            "logo_thumbnail": "images/sc_logos/thumbnail/nps.jpg", 
+            "users": [
+                142, 
+                166, 
+                244, 
+                245, 
+                247, 
+                249, 
+                250, 
+                253, 
+                258, 
+                262
+            ]
+        }
+    }, 
+    {
+        "pk": 29, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Oceanic Engineering", 
+            "logo_full": "images\\sc_logos\\full\\oe.jpg", 
+            "url": "http://www.oceanicengineering.org/", 
+            "abbreviation": "OE", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\oe.jpg", 
+            "users": [
+                143, 
+                166, 
+                180, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 30, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Photonics", 
+            "logo_full": "images/sc_logos/full/phot.jpg", 
+            "url": "http://www.ieee.org/portal/site/leos/", 
+            "abbreviation": "PHOT", 
+            "logo_thumbnail": "images/sc_logos/thumbnail/phot.jpg", 
+            "users": [
+                144, 
+                145, 
+                166, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 32, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Power & Energy", 
+            "logo_full": "images\\sc_logos\\full\\pe.jpg", 
+            "url": "http://www.ieee-pes.org/", 
+            "abbreviation": "PE", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\pe.jpg", 
+            "users": [
+                146, 
+                147, 
+                166, 
+                225, 
+                226, 
+                227, 
+                228, 
+                229, 
+                244, 
+                250, 
+                251, 
+                252, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 31, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Power Electronics", 
+            "logo_full": "images\\sc_logos\\full\\pel.jpg", 
+            "url": "http://www.pels.org/", 
+            "abbreviation": "PEL", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\pel.jpg", 
+            "users": [
+                148, 
+                149, 
+                166, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 33, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Product Safety Engineering", 
+            "logo_full": "images\\sc_logos\\full\\pse.jpg", 
+            "url": "http://ewh.ieee.org/soc/pses/", 
+            "abbreviation": "PSE", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\pse.jpg", 
+            "users": [
+                150, 
+                166, 
+                175, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 34, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Professional Communication", 
+            "logo_full": "images\\sc_logos\\full\\pc.jpg", 
+            "url": "http://ewh.ieee.org/soc/pcs/", 
+            "abbreviation": "PC", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\pc.jpg", 
+            "users": [
+                151, 
+                166, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 35, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Reliability", 
+            "logo_full": "images\\sc_logos\\full\\r.jpg", 
+            "url": "http://www.ieee.org/portal/index.jsp?pageID=relsoc_home", 
+            "abbreviation": "R", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\r.jpg", 
+            "users": [
+                152, 
+                153, 
+                166, 
+                184, 
+                186, 
+                192, 
+                193, 
+                195, 
+                196, 
+                204, 
+                210, 
+                216, 
+                221, 
+                244, 
+                250, 
+                253, 
+                255
+            ]
+        }
+    }, 
+    {
+        "pk": 36, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Robotics & Automation", 
+            "logo_full": "images\\sc_logos\\full\\ra.jpg", 
+            "url": "http://www.ieee-ras.org/", 
+            "abbreviation": "RA", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\ra.jpg", 
+            "users": [
+                154, 
+                155, 
+                166, 
+                174, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 37, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Sensors Council", 
+            "logo_full": "images/sc_logos/full/sen.png", 
+            "url": "http://www.ewh.ieee.org/tc/sensors/", 
+            "abbreviation": "SEN", 
+            "logo_thumbnail": "images/sc_logos/thumbnail/sen.png", 
+            "users": [
+                156, 
+                166, 
+                198, 
+                207, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 38, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Signal Processing", 
+            "logo_full": "images/sc_logos/full/sp.jpg", 
+            "url": "http://www.signalprocessingsociety.org/", 
+            "abbreviation": "SP", 
+            "logo_thumbnail": "images/sc_logos/thumbnail/sp.jpg", 
+            "users": [
+                157, 
+                158, 
+                166, 
+                200, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 39, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Social Implications of Technology", 
+            "logo_full": "", 
+            "url": "http://www.ieeessit.org/", 
+            "abbreviation": "SSIT", 
+            "logo_thumbnail": "", 
+            "users": [
+                159, 
+                166, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 40, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Solid State Circuits", 
+            "logo_full": "images\\sc_logos\\full\\ssc.jpg", 
+            "url": "http://ewh.ieee.org/soc/sscs/index.php", 
+            "abbreviation": "SSC", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\ssc.jpg", 
+            "users": [
+                160, 
+                161, 
+                166, 
+                219, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 49, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Standards Board", 
+            "logo_full": "", 
+            "url": "", 
+            "abbreviation": "Standards Board", 
+            "logo_thumbnail": "", 
+            "users": []
+        }
+    }, 
+    {
+        "pk": 41, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Systems Council", 
+            "logo_full": "images\\sc_logos\\full\\sys.jpg", 
+            "url": "http://ieeesystemscouncil.org", 
+            "abbreviation": "SYS", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\sys.jpg", 
+            "users": [
+                162, 
+                166, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 42, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Systems, Man & Cybernetics", 
+            "logo_full": "images\\sc_logos\\full\\smc.jpg", 
+            "url": "http://www.ieeesmc.org/", 
+            "abbreviation": "SMC", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\smc.jpg", 
+            "users": [
+                163, 
+                166, 
+                187, 
+                188, 
+                190, 
+                197, 
+                199, 
+                201, 
+                202, 
+                203, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 43, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Technical Activities Board", 
+            "logo_full": "images/sc_logos/full/tab.jpg", 
+            "url": "http://www.ieee.org/tab", 
+            "abbreviation": "TAB", 
+            "logo_thumbnail": "images/sc_logos/thumbnail/tab.jpg", 
+            "users": [
+                166, 
+                167, 
+                168, 
+                209, 
+                213, 
+                244, 
+                250, 
+                251, 
+                252, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 44, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Technical Committee on Earth Observation", 
+            "logo_full": "images\\sc_logos\\full\\iceo.jpg", 
+            "url": "http://www.ieee-earth.org/", 
+            "abbreviation": "ICEO", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\iceo.jpg", 
+            "users": [
+                166, 
+                169, 
+                182, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 45, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Technical Committee on RFID", 
+            "logo_full": "images/sc_logos/full/rfid.png", 
+            "url": "", 
+            "abbreviation": "RFID", 
+            "logo_thumbnail": "images/sc_logos/thumbnail/rfid.png", 
+            "users": [
+                166, 
+                170, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 46, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Technology Management Council", 
+            "logo_full": "images\\sc_logos\\full\\tmc.jpg", 
+            "url": "http://www.ieeetmc.org/", 
+            "abbreviation": "TMC", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\tmc.jpg", 
+            "users": [
+                166, 
+                171, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 47, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Ultrasonics, Ferroelectrics & Frequency Control", 
+            "logo_full": "images\\sc_logos\\full\\uffc.jpg", 
+            "url": "http://www.ieee-uffc.org/main/index.asp", 
+            "abbreviation": "UFFC", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\uffc.jpg", 
+            "users": [
+                166, 
+                172, 
+                179, 
+                244, 
+                250, 
+                253
+            ]
+        }
+    }, 
+    {
+        "pk": 48, 
+        "model": "ieeetags.society", 
+        "fields": {
+            "name": "Vehicular Technology", 
+            "logo_full": "images\\sc_logos\\full\\vt.jpg", 
+            "url": "http://www.vtsociety.org/", 
+            "abbreviation": "VT", 
+            "logo_thumbnail": "images\\sc_logos\\thumbnail\\vt.jpg", 
+            "users": [
+                166, 
+                173, 
+                250, 
+                253
+            ]
+        }
+    },
+    
+    
+    {
+        "pk": 1, 
+        "model": "ieeetags.resourcetype", 
+        "fields": {
+            "name": "conference"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "ieeetags.resourcetype", 
+        "fields": {
+            "name": "expert"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "ieeetags.resourcetype", 
+        "fields": {
+            "name": "periodical"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "ieeetags.resourcetype", 
+        "fields": {
+            "name": "standard"
+        }
+    },
+    
+    
+    
+    
+    {
+        "pk": 1, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "admin", 
+            "first_name": "Admin", 
+            "last_name": "", 
+            "is_active": true, 
+            "is_superuser": true, 
+            "is_staff": true, 
+            "last_login": "2010-10-06 14:02:26", 
+            "groups": [], 
+            "user_permissions": [], 
+            "password": "sha1$4cc39$06985e33acaf7bafa9ee01a26a4b39a96d58231b", 
+            "email": "technav_admin@systemicist.com", 
+            "date_joined": "2009-03-11 14:39:39"
+        }
+    }, 
+    {
+        "pk": 183, 
+        "model": "auth.user", 
+        "fields": {
+            "username": "j.yoneda", 
+            "first_name": "James", 
+            "last_name": "Yoneda", 
+            "is_active": true, 
+            "is_superuser": true, 
+            "is_staff": true, 
+            "last_login": "2011-03-01 02:24:40", 
+            "groups": [], 
+            "user_permissions": [], 
+            "password": "sha1$49ce6$33b002fd9b4be6f4f5e1172cf6fa75f3cf1ee2ba", 
+            "email": "jamesyoneda@thoughtcap.com", 
+            "date_joined": "2009-05-06 14:09:31"
+        }
+    }
+
+]

@@ -8,7 +8,7 @@ class Migration(DataMigration):
 
     def forwards(self, orm):
         "Write your forwards methods here."
-        for abbr in ['nps', 'phot', 'sp', 'tab']:
+        for abbr in ['NPS', 'PHOT', 'SP', 'TAB']:
             soc = orm.Society.objects.get(abbreviation=abbr)
             soc.logo_full = 'images/sc_logos/full/%s.jpg' % abbr
             soc.logo_thumbnail = 'images/sc_logos/thumbnail/%s.jpg' % abbr
