@@ -46,16 +46,24 @@ def main():
         
         print 'Checking repo %s' % url
         
+        # Run the first set of tests, regardless if the SVN is newer.
+        print 'Running tests.'
+        subprocess.call(
+            [sys.executable, 'run_tests.py'],
+        )
+        
         while True:
             local_rev = get_svn_info(path)['revision']
             remote_rev = get_svn_info(url)['revision']
             
             if local_rev != remote_rev:
+                # The SVN is newer than the working-copy, update & test.
                 print 'Updating working copy to latest revision.'
                 print 'local_rev: %s' % local_rev
                 print 'remote_rev: %s' % remote_rev
                 
-                send_admin_email('Updating working copy from %s to %s' % (local_rev, remote_rev), '')
+                subject = 'Updating working copy from %s to %s' % (local_rev, remote_rev)
+                send_admin_email(subject, subject)
                 
                 subprocess.call(
                     ['svn', 'update', path],
@@ -75,7 +83,8 @@ def main():
         
     except Exception, e:
         print 'EXCEPTION: %r' % e
-        send_admin_email('Test runner quit with exception %r' % e, '')
+        subject = 'Test runner quit with exception %r' % e
+        send_admin_email(subject, subject)
     
     if log_filename:
         f = sys.stdout
