@@ -56,14 +56,14 @@ def main():
             local_rev = get_svn_info(path)['revision']
             remote_rev = get_svn_info(url)['revision']
             
-            if local_rev != remote_rev:
+            if remote_rev is not None and local_rev != remote_rev:
                 # The SVN is newer than the working-copy, update & test.
                 print 'Updating working copy to latest revision.'
                 print 'local_rev: %s' % local_rev
                 print 'remote_rev: %s' % remote_rev
                 
-                subject = 'Updating working copy from %s to %s' % (local_rev, remote_rev)
-                send_admin_email(subject, subject)
+                #subject = 'Updating working copy from %s to %s' % (local_rev, remote_rev)
+                #send_admin_email(subject, subject)
                 
                 subprocess.call(
                     ['svn', 'update', path],
