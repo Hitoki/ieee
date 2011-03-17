@@ -7,6 +7,7 @@
     <h1>Preview Email</h1>
     
     <form action="{% url admin_send_email_all_users %}" method="post">
+        {% csrf_token %}
         {{ form }}
         <table class="grid">
             <tr>

@@ -5,6 +5,7 @@
     <h1>Search Tags</h1>
     
     <form action="{% url admin_search_tags %}" method="post">
+        {% csrf_token %}
         <table>
             {{ form }}
         </table>

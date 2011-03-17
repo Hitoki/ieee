@@ -5,6 +5,7 @@
     <h1>Search Resources</h1>
     
     <form action="{% url admin_search_resources %}" method="post">
+        {% csrf_token %}
         <table>
             {{ form }}
         </table>

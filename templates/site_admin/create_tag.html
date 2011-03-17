@@ -91,6 +91,7 @@
     {% endif %}
     
     <form action="{% url admin_create_tag %}?society_id={{ society_id }}&amp;add_to_society={{ add_to_society }}&amp;return_url={{ return_url|urlencode }}" method="post">
+        {% csrf_token %}
         <table class="grid edit-create">
             {{ form.id }}
             <tr>

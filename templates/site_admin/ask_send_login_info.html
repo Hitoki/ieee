@@ -9,6 +9,7 @@
     </p>
     <p>
         <form action="{% url admin_send_login_info "password_changed" %}" method="post" style="text-align:center;">
+            {% csrf_token %}
             <input type="hidden" name="user_ids" value="{{ edited_user.id }}" />
             <input type="hidden" name="plaintext_passwords" value="{{ plaintext_password }}" />
             <input type="submit" value="Send login info email" />

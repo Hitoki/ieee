@@ -17,6 +17,7 @@
     
     <p>
         <form action="{% url admin_combine_tags %}?return_url={{ current_url|urlencode }}" method="post">
+            {% csrf_token %}
             <input type="hidden" name="duplicate_tags_json" value="{{ duplicate_tags_json }}" />
             <input type="submit" value="Combine Tags" />
         </form>

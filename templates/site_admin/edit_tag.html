@@ -51,6 +51,7 @@
 
     <h1>Edit Tag</h1>
     <form action="{% url admin_save_tag tag.id %}?return_url={{ return_url|urlencode }}&amp;society_id={{ society_id }}" method="post">
+        {% csrf_token %}
         <table class="grid edit-create">
             {{ form.id }}
             <tr>

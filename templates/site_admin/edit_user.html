@@ -23,6 +23,7 @@
     {% endif %}
     
     <form action="{% url admin_save_user %}" method="post">
+        {% csrf_token %}
         <table class="grid">
             {{ form }}
         </table>

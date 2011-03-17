@@ -26,6 +26,7 @@
         <!-- Login tab -->
         <div id="login-tab" class="nootabs-tab">            
             <form method="post">
+                {% csrf_token %}
                 {# NOTE: We need to use a hidden field for "next" and use javascript to add the #hash, otherwise the #hash is lost by django. #}
                 <input type="hidden" id="full_url" name="next" value="{{ next }}" />
                 {% if error %}

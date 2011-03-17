@@ -66,6 +66,7 @@
     {% endif %}
     
     <form action="{% url admin_save_resource %}?return_url={{ return_url|urlencode }}" method="post">
+         {% csrf_token %}
         <input type="hidden" name="ignore_url_error" value="{{ ignore_url_error }}" />
         <table class="full-grid edit-create">
             {{ form.id }}

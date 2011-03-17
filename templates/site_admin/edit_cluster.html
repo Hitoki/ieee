@@ -8,6 +8,7 @@
     {% else %}
         <form action="{% url admin_create_cluster %}" method="post">
     {% endif %}
+        {% csrf_token %}
         <table class="grid edit-create">
             {{ form }}
         </table>

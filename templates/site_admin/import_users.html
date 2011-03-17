@@ -7,6 +7,7 @@
     {% if not results %}
         
         <form action="{% url admin_import_users %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
             <table class="grid">
                 {{ form }}
                 <tr class="buttons">
@@ -37,6 +38,7 @@
                 
                 <!-- Send user login info button -->
                 <form action="{% url admin_send_login_info "created" %}" method="post">
+                    {% csrf_token %}
                     {% for user1 in users %}
                         <input type="hidden" name="user_ids" value="{{ user1.id }}" />
                         <input type="hidden" name="plaintext_passwords" value="{{ user1.plaintext_password }}" />
