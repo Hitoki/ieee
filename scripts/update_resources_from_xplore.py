@@ -89,9 +89,9 @@ def main(*args):
                 use_resume = temp
             else:
                 raise Exception('Unknown value for --resume %r, must be "true", "false", "yes", "no", 1, or 0' % value)
-        elif name == 'alert_email':
+        elif name == '--alert_email':
             alert_email = value
-        elif name == 'alert_url':
+        elif name == '--alert_url':
             alert_url = value
         else:
             raise Exception('Unknown argument %r' % name)
