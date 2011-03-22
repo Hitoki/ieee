@@ -42,8 +42,8 @@ def main(*args):
         'xplore_hc=',
         'path=',
         'resume=',
-        'alert_email=',
-        'alert_url='
+        #'alert_email=',
+        #'alert_url=',
     ])
     
     def get_bool_arg(value):
@@ -91,14 +91,10 @@ def main(*args):
                 use_resume = temp
             else:
                 raise Exception('Unknown value for --resume %r, must be "true", "false", "yes", "no", 1, or 0' % value)
-        elif name == 'alert_email':
-            temp = value
-            if temp is not None:
-                alert_email = temp
-        elif name == 'alert_url':
-            temp = value
-            if temp is not None:
-                alert_email = temp
+#        elif name == 'alert_email':
+#            alert_email = value
+#        elif name == 'alert_url':
+#            alert_url = value
         else:
             raise Exception('Unknown argument %r' % name)
     
@@ -482,9 +478,9 @@ def main(*args):
         log('')
         
         
-        if alert_email != None and alert_url != None:
-            message = "Visit %s for details." % alert_url
-            send_mail('Import-from-Xplore complete', message, settings.DEFAULT_FROM_EMAIL, [alert_email])
+#        if alert_email != None and alert_url != None:
+#            message = "Visit %s for details." % alert_url
+#            send_mail('Import-from-Xplore complete', message, settings.DEFAULT_FROM_EMAIL, [alert_email])
     
     finally:
         pass
