@@ -1034,9 +1034,11 @@ def ajax_textui_nodes(request):
         'show_terms': show_terms,
     }
     
-    cache = Cache.objects.get('ajax_textui_nodes', cache_params)
-    # DEBUG:
-    #cache = None
+    if settings.DEBUG_IGNORE_CACHE:
+        cache = None
+    else:
+        cache = Cache.objects.get('ajax_textui_nodes', cache_params)
+        
     if not cache:
         # Create the cache if it doesn't already exist.
         print 'CACHE MISS: Creating new cache page.'

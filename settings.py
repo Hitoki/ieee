@@ -233,6 +233,9 @@ ENABLE_DEBUG_TOOLBAR = False
 ENABLE_PROGRESSIVE_LOADING = True
 'Enables loading the tags progressively (piecemeal) for textui page.'
 
+DEBUG_IGNORE_CACHE = False
+'If enabled, the cache is never used (ie. pages are regenerated for each view).'
+
 # Local Settings ---------------------------------------------------------------
 
 try:
