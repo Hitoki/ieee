@@ -173,9 +173,14 @@ p#xplore-totals {
 }
 
 #help-col-left {
-    width: 210px;
+    width: 180px;
 }
 
 #help-col-right {
-    width: 200px;
+    width: 280px;
+}
+
+.close-help {
+    display: block;
+    text-align: right;
 }
