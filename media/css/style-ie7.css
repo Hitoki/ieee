@@ -171,3 +171,11 @@ p#xplore-totals {
 #xplore-results-container div.group ul {
    margin-top: 0;
 }
+
+#help-col-left {
+    width: 210px;
+}
+
+#help-col-right {
+    width: 200px;
+}
