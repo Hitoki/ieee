@@ -180,7 +180,12 @@ p#xplore-totals {
     width: 180px;
 }
 
+#help-close-button {
+   margin-right: 0;
+}
+
 .close-help {
     display: block;
     text-align: right;
+    white-space: nowrap;
 }
