@@ -265,6 +265,8 @@ def ajax_tag_content(request, tag_id, ui=None):
     for conferences_resource_node in conferences_resource_nodes:
         conference = conferences_resource_node.resource
         conference.is_machine_generated = conferences_resource_node.is_machine_generated
+        if not re.compile('^https?://').match(conference.url):
+            conference.url = 'http://' + conference.url
         conferences.append(conference)
         
     conferences = list(sorted(conferences, key=lambda resource: resource.year, reverse=True))
