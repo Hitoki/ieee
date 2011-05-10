@@ -849,6 +849,8 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
                 
                 # TODO: Not using levels yet, so all clusters show as the same color.
                 
+                
+                avg_score = child_nodes.get(id=child_node['id']).get_combined_sector_ranges(show_empty_terms=show_empty_terms)[2]
                 child_node['level'] = _get_popularity_level(min_score, max_score, avg_score, node=child_node)
                 
                 # Make sure clusters show on top of the list.
