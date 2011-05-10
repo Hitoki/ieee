@@ -635,6 +635,7 @@ class Node(models.Model):
         
         min_score = None
         max_score = None
+        score_sum = 0
         
         for tag in tags:
             # Ignore all hidden tags
@@ -643,10 +644,14 @@ class Node(models.Model):
                     min_score = tag['score1']
                 if max_score is None or tag['score1'] > max_score:
                     max_score = tag['score1']
+                score_sum = score_sum + tag['score1']
+        
+        avg_score = score_sum / tags.count()
         
         print 'min_score: %r' % min_score
         print 'max_score: %r' % max_score
-        return (min_score, max_score)
+        print 'avg_score: %r' % avg_score
+        return (min_score, max_score, avg_score)
         
     class Meta:
         ordering = ['name']
