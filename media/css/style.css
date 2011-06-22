@@ -2486,12 +2486,19 @@ width: 100%;
 
 #tag_page #tag_middle {
 width: 100%;
-margin-top: 20px;   
+margin-top: 20px;
+clear: both;   
+}
+
+.addthis_toolbox {
+float: right;
+margin-top: 10px;
 }
 
 #tag_header {
 font-size: 17pt;
 color: #006699;
+float: left;
 }
 
 #tag_header span {
