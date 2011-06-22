@@ -71,15 +71,14 @@
                 <br /><a href="/admin/tag/{{ tag.id }}/edit">Edit this Tag</a>
             {% endif %}
         </div>
-        <!-- AddThis Button BEGIN -->
-        <div class="addthis_toolbox addthis_default_style ">
-            <a class="addthis_button_preferred_1"></a>
-            <a class="addthis_button_preferred_2"></a>
-            <a class="addthis_button_preferred_3"></a>
-            <a class="addthis_button_preferred_4"></a>
-            <a class="addthis_button_compact"></a>
-            <a class="addthis_counter addthis_bubble_style"></a>
-        </div>
-        <!-- AddThis Button END -->
+    <!-- AddThis Button BEGIN -->
+    <a href="http://www.addthis.com/bookmark.php?v=250&amp;pubid=ra-4e02511c660b81ce" 
+        class="addthis_button" 
+        addthis:url="/tag/{{ tag.id }}/{{ tag.name|slugify }}"
+        addthis:title="{{ tag.name|slugify }}"
+    >
+    <img src="http://s7.addthis.com/static/btn/v2/lg-share-en.gif" width="125" height="16" alt="Bookmark and Share" style="border:0"/>
+    </a>
+    <!-- AddThis Button END -->
     </div>
 {% endblock %}
