@@ -2493,6 +2493,7 @@ clear: both;
 .addthis_toolbox {
 float: right;
 margin-top: 10px;
+width: 160px;
 }
 
 #tag_header {
