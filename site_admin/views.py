@@ -1658,7 +1658,7 @@ def _update_periodical_from_xplore(request):
     for tag in tags:
         resSum['tags_processed'] += 1
         xplore_logger.write('Querying Xplore for Tag: %s' % tag.name + os.linesep)
-        xplore_query_url = 'http://xploreuat.ieee.org/gateway/ipsSearch.jsp?' + urllib.urlencode({
+        xplore_query_url = settings.EXTERNAL_XPLORE_URL + urllib.urlencode({
             # Number of results
             'hc': 5,
             'md': tag.name.encode('utf-8'),

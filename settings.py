@@ -62,6 +62,8 @@ LOGIN_URL = '/admin/login'
 
 EXTERNAL_HELP_URL = 'http://help.technav.systemicist.com/forums'
 
+EXTERNAL_XPLORE_URL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?'
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'o5tqsvh$&e3@@jzm)uvc02s*lsuw+5*r6jd%d+8u-6lzi3i%6j'
 
