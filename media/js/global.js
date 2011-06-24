@@ -499,10 +499,19 @@ XploreLoader.prototype.onLoadData = function(data) {
             // Hook up auto-truncate for the descriptions.
             autoTruncate(this.listElem.find('.auto-truncate-words'), { word_boundary:true } );
             
-            $('#num-xplore-results').text('(' + addCommas(data.num_results) + ')');
+            var totalElem;
+            if(this.ctype == "Educational Courses"){
+                $('#num-education-results').text('(' + addCommas(data.num_results) + ')');
+                totalElem = $('#education-totals')
+            } else {
+                $('#num-xplore-results').text('(' + addCommas(data.num_results) + ')');
+                totalElem = $('#xplore-totals')
+            }
             
             var numRelatedItems = parseInt($('#num-related-items').metadata().number);
-            $('#num-related-items').text(addCommas(numRelatedItems + data.num_results));
+            var newTotal = numRelatedItems + data.num_results;
+            $('#num-related-items').text(addCommas(newTotal));
+            $('#num-related-items').metadata().number = newTotal;
             
             if (data.num_results == 0) {
                 this.noResultsElem = $('<p class="no-resources">No xplore results are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
@@ -511,8 +520,8 @@ XploreLoader.prototype.onLoadData = function(data) {
                 if (this.sort) {
                     html += ', sorted by ' + getXploreSortName(this.sort);
                 }
-                html += ' (<a href="http://xploreuat.ieee.org/search/freesearchresult.jsp?newsearch=true&queryText=' + escape(data.search_term) + '&x=0&y=0" target="_blank"><span>Perform Search in Xplore</span> <img src="' + MEDIA_URL + 'images/popup.png" /></a>)'
-                $('#xplore-totals').html(html);
+                html += ' (<a href="http://xploreuat.ieee.org/search/freesearchresult.jsp?newsearch=true&queryText=' + escape(data.search_term) + '&x=0&y=0' + (this.ctype ? '&ctype=' + this.ctype : '') + '" target="_blank"><span>Perform Search in Xplore</span> <img src="' + MEDIA_URL + 'images/popup.png" /></a>)'
+                totalElem.html(html);
             }
             
             // Showing {{ xplore_results|length }} of {{ totalfound|intcomma }} results 
