@@ -369,7 +369,7 @@ function getXploreSortName(sort) {
 }
 
 // This loads the xplore results for a tag into the given element via AJAX.
-function XploreLoader(elem, showAll, sort) {
+function XploreLoader(elem, showAll, sort, ctype) {
 	var xploreLoader = this;
 	this.elem = $(elem);
 	this.listElem = this.elem.find('ul');
@@ -391,6 +391,10 @@ function XploreLoader(elem, showAll, sort) {
         sort = null;
     }
     
+    if (ctype == undefined) {
+        ctype = null;
+    }
+    
 	this.offset = 0;
     
     this.numXploreResultsPerPage = 10;
@@ -401,6 +405,7 @@ function XploreLoader(elem, showAll, sort) {
     this.showAll = showAll;
     this.sort = sort;
     this.sortDesc = false;
+    this.ctype = ctype;
 	
     $('#xplore-sort').click(function() {
         xploreLoader.onChangeSelect();
@@ -458,6 +463,7 @@ XploreLoader.prototype.loadContent = function(force) {
                 , sort: this.sort
                 , sort_desc: this.sortDesc
                 , token: this.ajaxToken
+                , ctype: this.ctype
             }
             , type: 'post'
             , dataType: 'json'
@@ -527,8 +533,8 @@ XploreLoader.prototype.onScroll = function() {
 	}
 }
 
-function attachXploreResults(elem) {
-    new XploreLoader(elem);
+function attachXploreResults(elem, ctype) {
+    new XploreLoader(elem, null, null, ctype);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

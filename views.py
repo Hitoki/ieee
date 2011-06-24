@@ -343,7 +343,7 @@ XPLORE_SORTS = [
     XPLORE_SORT_PUBLICATION_YEAR,
 ]
 
-def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, offset=0, sort=None, sort_desc=False):
+def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, offset=0, sort=None, sort_desc=False, ctype=None):
     '''
     Get xplore results for the given tag_name from the IEEE Xplore search gateway.  Searches all fields for the tag_name phrase, returns results.
     @return: a 3-tuple of (results, errors, total_results).  'errors' is a string of any errors that occurred, or None.  'total_results' is the total number of results (regardless of how many are returned in 'results'.  'results' is an array of dicts:
@@ -378,6 +378,8 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
         params['sortfield'] = sort
     if sort_desc:
         params['sortorder'] = 'desc'
+    if ctype:
+        params['ctype'] = ctype
     url = settings.EXTERNAL_XPLORE_URL + urllib.urlencode(params)
     
     try:
@@ -460,6 +462,7 @@ def ajax_xplore_results(request):
     @param sort: POST var, the sorting field.
     @param sort_desc: POST var, the direction for sorting.
     @param token: POST var, the ajax token to pass through.
+    @param ctype: POST var, the document type to search for. Blank equals all types.
     @return: HTML output of results.
     '''
     tag_id = request.POST.get('tag_id')
@@ -478,8 +481,11 @@ def ajax_xplore_results(request):
         sort = None
     sort_desc = (request.POST['sort_desc'] == 'true')
     token = request.POST['token']
+    ctype = None
+    if 'ctype' in request.POST:
+        ctype = request.POST['ctype']
     
-    xplore_results, xplore_error, num_results = _get_xplore_results(name, show_all=show_all, offset=offset, sort=sort, sort_desc=sort_desc)
+    xplore_results, xplore_error, num_results = _get_xplore_results(name, show_all=show_all, offset=offset, sort=sort, sort_desc=sort_desc, ctype=ctype)
     
     # DEBUG:
     #xplore_results = []
