@@ -228,6 +228,11 @@ input.text {
     height: 42px;
     background-color: #EEEEEE;
 }
+
+#educations-tab.nootabs-selected-menu {
+   background-color: #FFFFFF;
+}
+
 /*End set widths*/
 
 #lightbox .resources-lightbox-content ul.nootabs-menus li.right-menu {
