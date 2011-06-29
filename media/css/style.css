@@ -2042,7 +2042,7 @@ ul.errors {
 }
 
 .print-resource {
-    width: 813px;
+    width: 803px;
     height: 20px;
     text-align: right;
     position: absolute;
@@ -2062,6 +2062,21 @@ ul.errors {
     margin-top: 30px;
 }
 
+#education-tab {
+   width: 822px !important;
+}
+
+#education-totals {
+   float: left;
+   margin: 0;
+   padding-left: 5px;
+   font-style: italic;
+}
+
+#education-results-container div.group {
+   padding-top: 20px;
+}
+
 div.group ul {
    margin-top: -20px;
 }
@@ -2079,6 +2094,10 @@ div.group ul li {
 
 #xplore-tab div.print-resource {
     margin-top: -30px;
+}
+
+#education-tab div.print-resource {
+   margin-top: -10px;
 }
 
 #resource-print-container {
