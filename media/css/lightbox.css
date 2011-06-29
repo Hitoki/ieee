@@ -208,23 +208,23 @@ input.text {
 }
 
 #conferences-tab {
-    width: 88px;
+    width: 78px;
 }
 
 #periodicals-tab {
-    width: 80px;
+    width: 68px;
 }
 
 #standards-tab {
-    width: 77px;
+    width: 67px;
 }
 
 #articles-tab {
-    width: 120px;
+    width: 152px;
 }
 
 #educations-tab {
-    width: 80px;
+    width: 70px;
     height: 42px;
     background-color: #EEEEEE;
 }
@@ -244,7 +244,7 @@ input.text {
 }
 
 #lightbox .resources-lightbox-content ul.nootabs-menus li.end-group-menu {
-    margin-right: 35px;
+    margin-right: 40px;
 }
 
 

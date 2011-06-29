@@ -2020,7 +2020,8 @@ ul.errors {
     color:white;
 }
 
-#xplore-results-container div.loading {
+#xplore-results-container div.loading,
+#education-results-container div.loading {
     padding-top:6em;
     text-align:center;
     padding-bottom:3em;
