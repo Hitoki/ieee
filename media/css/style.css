@@ -2043,7 +2043,7 @@ ul.errors {
 }
 
 .print-resource {
-    width: 803px;
+    width: 812px;
     height: 20px;
     text-align: right;
     position: absolute;
@@ -2075,7 +2075,7 @@ ul.errors {
 }
 
 #education-results-container div.group {
-   padding-top: 20px;
+   margin-top: 30px;
 }
 
 div.group ul {
@@ -2093,12 +2093,9 @@ div.group ul li {
     padding: 0;
 }
 
-#xplore-tab div.print-resource {
-    margin-top: -30px;
-}
-
+#xplore-tab div.print-resource,
 #education-tab div.print-resource {
-   margin-top: -10px;
+    margin-top: -30px;
 }
 
 #resource-print-container {
