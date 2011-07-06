@@ -423,7 +423,14 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
                     
                 return value
         
-        totalfound = int(getElementValueByTagName(xml1.documentElement, 'totalfound'))
+        try:
+            totalfound = int(getElementValueByTagName(xml1.documentElement, 'totalfound'))
+            
+        # If no records found Xplore will return xml like this and the int parse with raise an exeption
+        # <Error><![CDATA[Cannot go to record 1 since query  only returned 0 records]]></Error>
+        except TypeError:
+            # return
+            return [], 'No records found', 0
         
         xplore_results = []
         for document1 in xml1.documentElement.getElementsByTagName('document'):
