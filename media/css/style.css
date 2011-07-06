@@ -2030,7 +2030,7 @@ ul.errors {
 #xplore-results-container img.loading {
 }
 
-#xplore-totals {
+#xplore-totals, #education-totals{
     font-style:italic;
     padding-left:5px;
     float: left;
@@ -2642,7 +2642,7 @@ width: 100%;
 
 #inner-container {
 width: 85%;
-min-width: 950px;
+min-width: 1010px;
 margin: 30px auto 5px;
 padding: 0 10px 10px 10px;
 background: #FFFFFF url(/media/images/inner-top.png) no-repeat top right;
