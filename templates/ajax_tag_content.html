@@ -11,7 +11,7 @@
             <div id="printContainer_inner">
                 <span>&nbsp;</span>
                 <ul id="printSelect_options" class="customSelectList">
-                    <li data-value="def"><span>To print, choose one&nbsp;...&nbsp;</span></li>
+                    <li data-value="def"><span>Choose one&nbsp;...&nbsp;</span></li>
                     <li data-value="cur" ><span>Print Current Tab</span></li>
                     <li data-value="all"><span>Print All Tabs</span></li>
                 </ul>
@@ -22,7 +22,17 @@
             </span>
         </div>
         
-        <h1><span id="tag-name">"{{ tag.name }}"</span> has <span id="num-related-items" class="{ number: {{ num_related_items }} }"><img src="{{ MEDIA_URL }}images/resource_popup_xplore_loader.gif" /></span> related resources</h1>
+    <div class="dialogAddThis">
+        <a href="http://www.addthis.com/bookmark.php?v=250&amp;pubid=ra-4e02511c660b81ce" 
+            class="addthis_button" 
+            addthis:url="/tag/{{ tag.id }}/{{ tag.name|slugify }}"
+            addthis:title="{{ tag.name|slugify }}"
+        >
+        <img src="http://s7.addthis.com/static/btn/v2/lg-share-en.gif" width="125" height="16" alt="Bookmark and Share" style="border:0"/>
+        </a>
+    </div>
+        
+        <span class="dialogTitle"><span id="tag-name">"{{ tag.name }}"</span> has <span id="num-related-items" class="{ number: {{ num_related_items }} }"><img src="{{ MEDIA_URL }}images/resource_popup_xplore_loader.gif" /></span> related resources</span>
         <div class="resources-pad">
         
             

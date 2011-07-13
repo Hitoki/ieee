@@ -2261,6 +2261,18 @@ div#connectedness-container {
 
 #tag-name {
     background-color: #FFFFFF; /*Old blue*/
+    font-size: 16pt;
+}
+
+.dialogTitle {
+    font-size: 9pt;  
+    display: inline-block;
+    margin: 10px 0 0 20px; 
+}
+
+.dialogAddThis {
+   float: right;
+   margin: 17px 20px 0 0;
 }
 
 #show-video-link {
@@ -2334,12 +2346,12 @@ display: inline;
 }
 
 #printSelect_options li {
-width: 206px; 
+width: 144px; 
 padding-left: 3px;
 }
 
 #printSelect {
-width: 209px;
+width: 147px;
 margin-right: 10px;
 }
 
