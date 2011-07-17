@@ -743,12 +743,12 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
         # Get min/max scores for this cluster.
         #log('  getting min/max for this cluster.')
         (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = cluster.get_sector_ranges(show_empty_terms=show_empty_terms)
-        (min_score, max_score, avg_score) = cluster.get_combined_sector_ranges(show_empty_terms=show_empty_terms)
+        (min_score, max_score) = cluster.get_combined_sector_ranges(show_empty_terms=show_empty_terms)
     elif sector:
         # Get min/max scores for this sector.
         #log('  getting min/max for this sector.')
         (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = sector.get_sector_ranges(show_empty_terms=show_empty_terms)
-        (min_score, max_score, avg_score) = sector.get_combined_sector_ranges(show_empty_terms=show_empty_terms)
+        (min_score, max_score) = sector.get_combined_sector_ranges(show_empty_terms=show_empty_terms)
     elif society:
         # Get min/max scores for this society.
         #log('  getting min/max for this society.')
@@ -759,7 +759,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
         #log('  getting min/max for root node.')
         if sector_id is None and society_id is None:
             root_node = Node.objects.get(node_type__name=NodeType.ROOT)
-            (min_score, max_score, avg_score) = root_node.get_combined_sector_ranges(show_empty_terms=show_empty_terms)
+            (min_score, max_score) = root_node.get_combined_sector_ranges(show_empty_terms=show_empty_terms)
         else:
             min_score = 0
             max_score = 10000
@@ -861,14 +861,15 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
                 #        filter_child_node = True
                 
                 # TODO: Not using levels yet, so all clusters show as the same color.
+                child_node['level'] = ''
                 
-                
-                (min_score, max_score, avg_score) = child_nodes.get(id=child_node['id']).get_combined_sector_ranges(show_empty_terms=show_empty_terms)
-                child_node['level'] = _get_popularity_level(min_score, max_score, avg_score, node=child_node)
+                (min_score, max_score) = child_nodes.get(id=child_node['id']).get_combined_sector_ranges(show_empty_terms=show_empty_terms)
+                child_node['level'] = _get_popularity_level(min_score, max_score, child_node['score1'], node=child_node)
                 
                 # Make sure clusters show on top of the list.
                 filter_child_node = True
                 clusters.append(child_node)
+                
                     
             else:
                 raise Exception('Unknown child node type "%s" for node "%s"' % (child_node['node_type__name'], child_node['name']))
@@ -1317,7 +1318,7 @@ def tooltip(request, tag_id=None):
                     'score1',
                 )
                 (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = parent.get_sector_ranges(tags)
-                (min_score, max_score, avg_score) = parent.get_combined_sector_ranges(tags)
+                (min_score, max_score) = parent.get_combined_sector_ranges(tags)
             
             elif society_id is not None:
                 if society_id == 'all':
