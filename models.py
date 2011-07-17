@@ -344,7 +344,7 @@ class NodeManager(models.Manager):
                     -- Count of this tag's resources.
                     (SELECT COUNT(*) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id)
                     -- If node is a cluster, sum of cluster's child tag's resources.
-                    + (SELECT ieeetags_node.node_type_id = %(cluster_node_type_id)s AND
+                    + (IF(ieeetags_node.node_type_id = %(cluster_node_type_id)s,
                         (SELECT COUNT(*)
                         FROM ieeetags_resource_nodes
                         WHERE ieeetags_resource_nodes.node_id IN 
@@ -352,7 +352,7 @@ class NodeManager(models.Manager):
                             FROM ieeetags_node_parents
                             WHERE from_node_id = ieeetags_node.id)
                         )
-                       OR 0) 
+                        ,0)) 
                        
                     -- This tag's sectors.
                     + (SELECT COUNT(*)
@@ -363,7 +363,7 @@ class NodeManager(models.Manager):
                         AND parent.node_type_id = %(sector_node_type_id)s)
                         
                     -- If node is a cluster, sum of cluster's child tag's sectors.
-                    + (SELECT ieeetags_node.node_type_id = %(cluster_node_type_id)s AND
+                    + (IF(ieeetags_node.node_type_id = %(cluster_node_type_id)s,
                             (SELECT COUNT(*)
                             FROM ieeetags_node_parents
                             INNER JOIN ieeetags_node as parent
@@ -373,12 +373,12 @@ class NodeManager(models.Manager):
                                 FROM ieeetags_node_parents
                                 WHERE from_node_id = ieeetags_node.id)
                             AND parent.node_type_id = %(sector_node_type_id)s)
-                        OR 0)
+                        ,0))
                     
                     -- Count of this tag's related tags
                     + (SELECT COUNT(*) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id)
                     -- If node is a cluster, sum of cluster's child tag's related tags.
-                    + (SELECT ieeetags_node.node_type_id = %(cluster_node_type_id)s AND
+                    + (IF(ieeetags_node.node_type_id = %(cluster_node_type_id)s,
                         (SELECT COUNT(*)
                         FROM ieeetags_node_related_tags
                         WHERE ieeetags_node_related_tags.from_node_id IN
@@ -386,12 +386,12 @@ class NodeManager(models.Manager):
                             FROM ieeetags_node_parents
                             WHERE from_node_id = ieeetags_node.id)
                         )
-                       OR 0)
+                       ,0))
                        
                     -- Count of this tag's societies
                     + (SELECT COUNT(*) FROM ieeetags_node_societies WHERE ieeetags_node_societies.node_id = ieeetags_node.id)
                     -- If node is a cluster, sum of cluster's child tag's societies.
-                    + (SELECT ieeetags_node.node_type_id = %(cluster_node_type_id)s AND
+                    + (IF(ieeetags_node.node_type_id = %(cluster_node_type_id)s,
                         (SELECT COUNT(*)
                         FROM ieeetags_node_societies
                         WHERE ieeetags_node_societies.node_id IN
@@ -399,7 +399,7 @@ class NodeManager(models.Manager):
                             FROM ieeetags_node_parents
                             WHERE from_node_id = ieeetags_node.id)
                         )
-                       OR 0)
+                       ,0))
                     """ % {'cluster_node_type_id': cluster_node_type_id, 'sector_node_type_id': sector_node_type_id},
                 #'filtered_num_related_tags1': """
                 #    SELECT COUNT(ieeetags_node_related_tags.id) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id
