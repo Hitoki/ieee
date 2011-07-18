@@ -338,9 +338,9 @@ class NodeManager(models.Manager):
                     (SELECT COUNT(*)
                     FROM ieeetags_resource_nodes
                     WHERE ieeetags_resource_nodes.node_id IN 
-                       (SELECT to_node_id 
+                       (SELECT from_node_id 
                         FROM ieeetags_node_parents
-                        WHERE from_node_id = ieeetags_node.id)
+                        WHERE to_node_id = ieeetags_node.id)
                     )
                     ,0))
         """ % (cluster_node_type_id)
@@ -353,9 +353,9 @@ class NodeManager(models.Manager):
                 (SELECT COUNT(*)
                 FROM ieeetags_node_societies
                 WHERE ieeetags_node_societies.node_id IN
-                    (SELECT to_node_id
+                    (SELECT from_node_id
                     FROM ieeetags_node_parents
-                    WHERE from_node_id = ieeetags_node.id)
+                    WHERE to_node_id = ieeetags_node.id)
                 )
                ,0))
         """ % (cluster_node_type_id)
@@ -378,9 +378,9 @@ class NodeManager(models.Manager):
                     INNER JOIN ieeetags_node as parent
                     ON ieeetags_node_parents.to_node_id = parent.id
                     WHERE ieeetags_node_parents.from_node_id IN
-                        (SELECT to_node_id
+                        (SELECT from_node_id
                         FROM ieeetags_node_parents
-                        WHERE from_node_id = ieeetags_node.id)
+                        WHERE to_node_id = ieeetags_node.id)
                     )
                 ,0))
         """ % {'cluster_node_type_id': cluster_node_type_id, 'sector_node_type_id': sector_node_type_id}
@@ -393,9 +393,9 @@ class NodeManager(models.Manager):
                 (SELECT COUNT(*)
                 FROM ieeetags_node_related_tags
                 WHERE ieeetags_node_related_tags.from_node_id IN
-                    (SELECT to_node_id
+                    (SELECT from_node_id
                     FROM ieeetags_node_parents
-                    WHERE from_node_id = ieeetags_node.id)
+                    WHERE to_node_id = ieeetags_node.id)
                 )
                ,0))
         """ % cluster_node_type_id
