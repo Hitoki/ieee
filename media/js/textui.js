@@ -199,11 +199,11 @@ var Tags = {
             // Matches "#/sector/123/cluster/123"
             var cluster_sector_matches = hash.match(/^\/sector\/(all|\d+)\/cluster\/(\d+)$/);
             
-            // Matches "#/society/123"
-            var society_matches = hash.match(/^\/society\/(all|\d+)$/);
+            // Matches "#/organization/123"
+            var society_matches = hash.match(/^\/organization\/(all|\d+)$/);
             
-            // Matches "#/society/123/cluster/123"
-            var cluster_society_matches = hash.match(/^\/society\/(all|\d+)\/cluster\/(\d+)$/);
+            // Matches "#/ogranization/123/cluster/123"
+            var cluster_society_matches = hash.match(/^\/organization\/(all|\d+)\/cluster\/(\d+)$/);
             
             if (hash == '') {
                 // Home page
@@ -431,8 +431,8 @@ var Tags = {
             }
             
             if (setHash) {
-                //log('setting hash to "' + '/society/' + this.societyId + '"');
-                $.historyLoad('/society/' + this.societyId);
+                //log('setting hash to "' + '/oganization/' + this.societyId + '"');
+                $.historyLoad('/organization/' + this.societyId);
             }
             
             //log('selectSociety(): calling updateResults().');
@@ -866,7 +866,7 @@ var Tags = {
                 log('setting hash to "' + hash + '"');
                 $.historyLoad(hash);
             } else if (this.societyId) {
-                var hash = '/society/' + this.societyId + '/cluster/' + this.clusterId;
+                var hash = '/organization/' + this.societyId + '/cluster/' + this.clusterId;
                 log('setting hash to "' + hash + '"');
                 $.historyLoad(hash);
             } else {
