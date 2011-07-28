@@ -306,7 +306,7 @@ def ajax_tag_content(request, tag_id, ui=None):
             'num_related_items': num_related_items,
             'parent_nodes': parent_nodes,
             'ui': ui,
-            'host_info': "http%s://%s" % (["","s"](request.is_secure()), request.META["HTTP_HOST"])
+            'host_info': "http%s://%s" % (("","s")[request.is_secure()], request.META["HTTP_HOST"])
             #'xplore_error': xplore_error,
             #'xplore_results': xplore_results,
         })
