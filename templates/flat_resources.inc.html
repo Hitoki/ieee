@@ -11,6 +11,8 @@ Include file used by both print_resource.html and tag_landing.html
 		    var addthis_config = {
 		        "data_track_clickback" : true,
 		        "data_ga_tracker" : "AddThis",
+		        "url": "{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}",
+		        "title": "{{ tag.name|slugify }}"
 		    };
 		</script>
         <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4e02511c660b81ce"></script> 
