@@ -25,15 +25,21 @@
         <div class="dialogAddThis">
             <a href="http://www.addthis.com/bookmark.php?v=250&amp;pubid=ra-4e02511c660b81ce" 
                 class="addthis_button" 
-                addthis:url="{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}"
+                addthis:url="{{ host_info }}/textui/?autoload={{ tag.id }}"
                 addthis:title="{{ tag.name|slugify }}"
             >
             <img src="http://s7.addthis.com/static/btn/v2/lg-share-en.gif" width="125" height="16" alt="Bookmark and Share" style="border:0"/>
             </a>
             <script type="text/javascript">
                 $(function(){
+                    // add the current url hash to the addthis config
+                    var addthisbtn = $('a.addthis_button[addthis\\:url]');
+                    var addthisurl = addthisbtn.attr('addthis\:url');
+                    addthisurl += window.location.hash;
+                    addthisbtn.attr('addthis\:url', addthisurl);
                     // init the sharing button
                     addthis.button('.addthis_button', {}, {});
+                    
                 });
             </script>
         </div>
