@@ -595,7 +595,7 @@ def _get_popularity_level(min, max, count, node=None):
     
     if min == max:
         return _POPULARITY_LEVELS[len(_POPULARITY_LEVELS)-1]
-    level = int(round((count-min) / float(max-min) * float(len(_POPULARITY_LEVELS)-1))) + 1
+    level = int(round(float(count-min) / float(max-min) * float(len(_POPULARITY_LEVELS)-1))) + 1
     
     # TODO: This fixes invisible terms where the count is < min.  Is this a hack?
     if level == 0:
@@ -716,7 +716,6 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
         # Restrict to only tags.
         child_nodes = child_nodes.filter(node_type__name=NodeType.TAG)
     child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, filterIds)
-    
     if word_queries:
         log('  using min/max for all results.')
         # Get the min/max scores for these search results
