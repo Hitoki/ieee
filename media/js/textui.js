@@ -434,10 +434,11 @@ var Tags = {
                 //log('setting hash to "' + '/oganization/' + this.societyId + '"');
                 $.historyLoad('/organization/' + this.societyId);
             }
-            
             //log('selectSociety(): calling updateResults().');
-            this.updateResults();
         }
+        
+        this.updateResults();
+        
     },
     
     showSearchResults: function(search_for, showSearchResultsCallback) {
