@@ -869,7 +869,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
                 child_node['level'] = _get_popularity_level(min_score, max_score, child_node['score1'], node=child_node)
                 
                 # Make sure clusters show on top of the list.
-                #filter_child_node = True
+                filter_child_node = True
                 clusters.append(child_node)
                 
                     
@@ -882,8 +882,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
     num_clusters = len(clusters)
     num_tags = len(child_nodes2)
     
-    #child_nodes = clusters + child_nodes2
-    child_nodes = child_nodes2
+    child_nodes = clusters + child_nodes2
     
     if search_for is not None:
         final_punc =  ('.', ':')[len(child_nodes) > 0]
