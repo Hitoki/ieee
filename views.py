@@ -775,6 +775,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
             log('  Excluding clustered tags.')
             child_nodes = child_nodes.exclude(parents__node_type__name=NodeType.TAG_CLUSTER)
     
+    
     if order_by is not None:
         # Sort by one of the non-extra columns
         child_nodes = child_nodes.order_by(order_by)
@@ -789,6 +790,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
     
     clusters = []
     child_nodes2 = []
+    
     
     if child_nodes.count() > 0:
         for child_node in child_nodes.values(
@@ -861,9 +863,9 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
                 #        filter_child_node = True
                 
                 # TODO: Not using levels yet, so all clusters show as the same color.
-                child_node['level'] = ''
+                #child_node['level'] = ''
                 
-                (min_score, max_score) = child_nodes.get(id=child_node['id']).get_combined_sector_ranges(show_empty_terms=show_empty_terms)
+                #(min_score, max_score) = child_nodes.get(id=child_node['id']).get_combined_sector_ranges(show_empty_terms=show_empty_terms)
                 child_node['level'] = _get_popularity_level(min_score, max_score, child_node['score1'], node=child_node)
                 
                 # Make sure clusters show on top of the list.
