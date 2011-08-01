@@ -7,17 +7,17 @@
         var tags_callback = null;
         
         $(function() {
-			
-            // NOTE: .change() doesn't fire in IE till the checkbox loses focus, must use 'propertychange' for IE.
-			$('#show-clusters').bind($.browser.msie ? 'propertychange': 'change', function() {
-				Tags.updateResults();
-                $.cookie('show_clusters', this.checked, { expires: 100 });
-			});
             
-			$('#show-terms').bind($.browser.msie ? 'propertychange': 'change', function() {
-				Tags.updateResults();
+            // NOTE: .change() doesn't fire in IE till the checkbox loses focus, must use 'propertychange' for IE.
+            $('#show-clusters').bind($.browser.msie ? 'propertychange': 'change', function() {
+                Tags.updateResults();
+                $.cookie('show_clusters', this.checked, { expires: 100 });
+            });
+            
+            $('#show-terms').bind($.browser.msie ? 'propertychange': 'change', function() {
+                Tags.updateResults();
                 $.cookie('show_terms', this.checked, { expires: 100 });
-			});
+            });
             
             start = new Date();
             log('Starting at ' + start);
@@ -80,7 +80,7 @@
                 change: function(e, ui) {
                     $('#textui-zoom-value').text(ui.value + '%');
                     Tags.updateZoom();
-                }	
+                }    
             });
             
             // Attach event to default-zoom image.
@@ -88,8 +88,8 @@
                 $('#textui-zoom-slider').slider('value', 100);
             });
             
-			/*
-			function callback() {
+            /*
+            function callback() {
                 // This should execute when the new data is loaded and the zoom is done.
                 log('Done!');
                 end = new Date();
@@ -111,7 +111,7 @@
             }
             
             tags_callback = callback;
-			*/
+            */
             
             var show_clusters = $.cookie('show_clusters');
             if (show_clusters == null) {
@@ -200,17 +200,17 @@
                                         </td>
                                     </tr>
                                 </table>
-								<table id="tag-model-left">
-									<tr>
-										<td>
-											# of Resources 
-										</td>
-										<td>
-											<span class="flyover helpbracket" title="The number of IEEE products or services mapped to this tag" style="margin-right: 3px;">[?]</span><img src="/media/images/arrow-right.png" class="tag-model-arrow" />
-										</td>
-									</tr>
-								</table>
-								<img style="margin-top:-4px;" src="/media/images/model-tag-simplified.png"/>
+                                <table id="tag-model-left">
+                                    <tr>
+                                        <td>
+                                            # of Resources 
+                                        </td>
+                                        <td>
+                                            <span class="flyover helpbracket" title="The number of IEEE products or services mapped to this tag" style="margin-right: 3px;">[?]</span><img src="/media/images/arrow-right.png" class="tag-model-arrow" />
+                                        </td>
+                                    </tr>
+                                </table>
+                                <img style="margin-top:-4px;" src="/media/images/model-tag-simplified.png"/>
                             </div>
                         {% endcomment %}
                         
@@ -231,7 +231,7 @@
                             <div id="sortContainer_inner">
                                 <span>&nbsp;</span>
                                 <ul id="sortSelect_options" class="customSelectList">
-									<li data-value="connectedness"><span>Linkages</span></li>
+                                    <li data-value="connectedness"><span>Linkages</span></li>
                                     {% comment %}
                                     #    TODO: Re-enable clusters
                                     #    <li data-value="clusters_first_alpha"><span>Clusters First</span></li>
@@ -306,10 +306,10 @@
                         </div>
                     </div>
                     
-					<div id="misc-bar">
-						<div id="tag-counts">
-						</div>
-						
+                    <div id="misc-bar">
+                        <div id="tag-counts">
+                        </div>
+                        
                         <p id="show-clusters-terms-box">
                             {% if ENABLE_SHOW_CLUSTERS_CHECKBOX %}
                                 <input id="show-clusters" type="checkbox" /> <label for="show-clusters">Show Clusters</label>
@@ -319,10 +319,10 @@
                                 <input id="show-terms" type="checkbox" /> <label for="show-terms">Show Terms</label>
                             {% endif %}
                         </p>
-						
-						<br style="clear:both;" />
-					</div>
-					
+                        
+                        <br style="clear:both;" />
+                    </div>
+                    
                     <div id="tag-galaxy" class="alt-box">
                         
                         <!-- NOTE: This is only used by javascript to get the default height/padding/margin/etc. -->

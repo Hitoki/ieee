@@ -8,13 +8,13 @@ Include file used by both print_resource.html and tag_landing.html
         </div>
         <!-- AddThis Button BEGIN -->
         <script type="text/javascript">
-		    var addthis_config = {
-		        "data_track_clickback" : true,
-		        "data_ga_tracker" : "AddThis",
-		        "url": "{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}",
-		        "title": "{{ tag.name|slugify }}"
-		    };
-		</script>
+            var addthis_config = {
+                "data_track_clickback" : true,
+                "data_ga_tracker" : "AddThis",
+                "url": "{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}",
+                "title": "{{ tag.name|slugify }}"
+            };
+        </script>
         <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4e02511c660b81ce"></script> 
         <div class="addthis_toolbox addthis_default_style ">
             <a class="addthis_button_email"></a>
@@ -43,9 +43,9 @@ Include file used by both print_resource.html and tag_landing.html
                 </td>
                 {% endif %}
                 <td>
-		        {% if create_links %}
-		            <div id="tag_technav" onclick="location.href='/textui/?autoload={{ tag.id }}';">
-		                <span>View in</span>
+                {% if create_links %}
+                    <div id="tag_technav" onclick="location.href='/textui/?autoload={{ tag.id }}';">
+                        <span>View in</span>
                     </div>
                 {% endif %}
                 </td>
