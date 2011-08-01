@@ -23,27 +23,30 @@
         </div>
         
         <div class="dialogAddThis">
-            <a href="http://www.addthis.com/bookmark.php?v=250&amp;pubid=ra-4e02511c660b81ce" 
-                class="addthis_button" 
-                addthis:url="{{ host_info }}/textui/?autoload={{ tag.id }}"
-                addthis:title="{{ tag.name|slugify }}"
-            >
-            <img src="http://s7.addthis.com/static/btn/v2/lg-share-en.gif" width="125" height="16" alt="Bookmark and Share" style="border:0"/>
-            </a>
+            <!-- AddThis Button BEGIN -->
+            <script type="text/javascript">
+                var addthis_config = {
+                    "data_track_clickback" : true,
+                    "data_ga_tracker" : "AddThis",
+                    "url": "{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}",
+                    "title": "{{ tag.name|slugify }}"
+                };
+            </script>
+            <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4e02511c660b81ce"></script> 
+            <div class="addthis_toolbox addthis_default_style ">
+                <a class="addthis_button_email"></a>
+                <a class="addthis_button_twitter"></a>
+                <a class="addthis_button_facebook"></a>
+                <a class="addthis_button_linkedin"></a>
+                <a class="addthis_counter addthis_bubble_style"></a>
+            </div>
             <script type="text/javascript">
                 $(function(){
-                    // add the current url hash to the addthis config
-                    var addthisbtn = $('a.addthis_button[addthis\\:url]');
-                    var addthisurl = addthisbtn.attr('addthis\:url');
-                    addthisurl += window.location.hash;
-                    addthisbtn.attr('addthis\:url', addthisurl);
-                    // init the sharing button
-                    addthis.button('.addthis_button', {}, {});
-                    
+                    addthis.toolbox('.addthis_toolbox', addthis_config, {});
                 });
             </script>
+            <!-- AddThis Button END -->
         </div>
-        
         <span class="dialogTitle"><span id="tag-name">"{{ tag.name }}"</span> has <span id="num-related-items" class="{ number: {{ num_related_items }} }"><img src="{{ MEDIA_URL }}images/resource_popup_xplore_loader.gif" /></span> related resources</span>
         <div class="resources-pad">
         
