@@ -1071,10 +1071,10 @@ var Tags = {
                 elem.find('.node').css('padding-left', (tags.defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
                 elem.find('.node').css('padding-right', (tags.defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
                 
-                elem.find('.cluster-icon').css({
-                    width: (tags.defaultClusterIconWidth * scaleZoom(zoom, 1) / 100) + 'px'
-                    , height: (tags.defaultClusterIconHeight * scaleZoom(zoom, 1) / 100) + 'px'
-                });
+                //elem.find('.cluster-icon').css({
+                //    width: (tags.defaultClusterIconWidth * scaleZoom(zoom, 1) / 100) + 'px'
+                //    , height: (tags.defaultClusterIconHeight * scaleZoom(zoom, 1) / 100) + 'px'
+                //});
                 
                 tags._hideWaitScreenOver();
                 
