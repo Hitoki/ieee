@@ -2518,6 +2518,9 @@ clear: both;
 
 .addthis_toolbox {
 float: right;
+}
+
+#tag_page .addthis_toolbox {
 margin-top: 10px;
 }
 
