@@ -2268,6 +2268,7 @@ div#connectedness-container {
     font-size: 9pt;  
     display: inline-block;
     margin: 10px 0 0 20px; 
+    width: 525px;
 }
 
 .dialogAddThis {
