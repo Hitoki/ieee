@@ -28,7 +28,7 @@
                 var addthis_config = {
                     "data_track_clickback" : true,
                     "data_ga_tracker" : "AddThis",
-                    "url": "{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}",
+                    "url": "{{ host_info }}/textui/?autoload={{ tag.id }}" + window.location.hash,
                     "title": "{{ tag.name|slugify }}"
                 };
             </script>
@@ -47,6 +47,7 @@
             </script>
             <!-- AddThis Button END -->
         </div>
+        
         <span class="dialogTitle"><span id="tag-name">"{{ tag.name }}"</span> has <span id="num-related-items" class="{ number: {{ num_related_items }} }"><img src="{{ MEDIA_URL }}images/resource_popup_xplore_loader.gif" /></span> related resources</span>
         <div class="resources-pad">
         
@@ -348,14 +349,16 @@
                                         Sort by
                                         <select id="xplore-sort">
                                             <option value="">Xplore Default</option>
-                                            <option value="au">Author (A-Z)</option>
-                                            <option value="-au">Author (Z-A)</option>
-                                            <option value="ti">Title (A->Z)</option>
-                                            <option value="-ti">Title (Z->A)</option>
-                                            <option value="jn">Publication (A->Z)</option>
-                                            <option value="-jn">Publication (Z->A)</option>
-                                            <option value="py">Year (Past->Now)</option>
-                                            <option value="-py">Year (Now->Past)</option>
+                                            <option value="au">Author</option>
+                                            <option value="-au">Author (desc)</option>
+                                            <option value="ti">Title</option>
+                                            <option value="-ti">Title (desc)</option>
+                                            <option value="cs">Affiliations</option>
+                                            <option value="-cs">Affiliations (desc)</option>
+                                            <option value="jn">Publication Title</option>
+                                            <option value="-jn">Publication Title (desc)</option>
+                                            <option value="py">Publication Year</option>
+                                            <option value="-py">Publication Year (desc)</option>
                                         </select>
                                     </p>
                                 </div>
