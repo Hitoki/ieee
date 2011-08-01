@@ -1154,11 +1154,11 @@ var Tags = {
                 chunk = chunk.replace(/(<div [^>]+)(>)/gi, '$1 style="' + s + '" $2')
                 
                 // Add zoom styles to cluster icons.
-                var s = [];
-                s.push('width:' + (this.defaultClusterIconWidth * scaleZoom(zoom, 1) / 100) + 'px');
-                s.push('height:' + (this.defaultClusterIconHeight * scaleZoom(zoom, 1) / 100) + 'px');
-                s = s.join('; ');
-                chunk = chunk.replace(/(<img [^>]+ class="cluster-icon")\s*(\/>)/gi, '$1 style="' + s + '" $2')
+                //var s = [];
+                //s.push('width:' + (this.defaultClusterIconWidth * scaleZoom(zoom, 1) / 100) + 'px');
+                //s.push('height:' + (this.defaultClusterIconHeight * scaleZoom(zoom, 1) / 100) + 'px');
+                //s = s.join('; ');
+                //chunk = chunk.replace(/(<img [^>]+ class="cluster-icon")\s*(\/>)/gi, '$1 style="' + s + '" $2')
             }
             
             // NOTE: This next line causes Firefox to give "script stack space quota is exhausted" error.  Using innerHTML fixes this.
