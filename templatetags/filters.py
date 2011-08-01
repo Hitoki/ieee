@@ -40,6 +40,11 @@ def truncatechars(value, arg):
         return value[:char_count-3] + '...'
     else:
         return value
+    
+@register.filter
+def fixentityamps(value):
+    'Replaces &amp;# with &# to allow html entities to work.'
+    return value.replace('&amp;#', '&#')
 
 @register.filter
 def reprjs(value):
