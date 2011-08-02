@@ -27,7 +27,9 @@
             <script type="text/javascript">
                 var addthis_config = {
                     "data_track_clickback" : true,
-                    "data_ga_tracker" : "AddThis",
+                    "data_ga_tracker" : "AddThis"
+                };
+                var addthis_share = {
                     "url": "{{ host_info }}/textui/?autoload={{ tag.id }}" + window.location.hash,
                     "title": "{{ tag.name|slugify }}"
                 };
@@ -42,7 +44,7 @@
             </div>
             <script type="text/javascript">
                 $(function(){
-                    addthis.toolbox('.addthis_toolbox', addthis_config, {});
+                    addthis.toolbox('.addthis_toolbox', addthis_config, addthis_share);
                 });
             </script>
             <!-- AddThis Button END -->
