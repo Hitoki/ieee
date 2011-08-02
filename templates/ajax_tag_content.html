@@ -30,7 +30,7 @@
                     "data_ga_tracker" : "AddThis"
                 };
                 var addthis_share = {
-                    "url": "{{ host_info }}/textui/?autoload={{ tag.id }}" + window.location.hash,
+                    "url": "{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}",
                     "title": "{{ tag.name|slugify }}"
                 };
             </script>
