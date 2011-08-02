@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User, UserManager
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import MultipleObjectsReturned 
 from django.db import connection
 from django.db import models
 from django.db.models import Q
@@ -1424,7 +1425,9 @@ class CacheManager(models.Manager):
             return super(CacheManager, self).get(name=name, params=params)
         except Cache.DoesNotExist:
             return None
-    
+        except MultipleObjectsReturned:
+            return super(CacheManager, self).filter(name=name, params=params)[0]
+        
     def set(self, name, params, content):
         if type(params) is dict:
             params = urlencode_sorted(params)
