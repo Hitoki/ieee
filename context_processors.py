@@ -48,4 +48,6 @@ def settings(request):
 		'ENABLE_FIREBUG_LITE': settings.ENABLE_FIREBUG_LITE,
 		'ENABLE_PROGRESSIVE_LOADING': settings.ENABLE_PROGRESSIVE_LOADING,
 		'DEBUG': settings.DEBUG,
+                'GA_SITE_NUM': settings.GA_SITE_NUM or 1
 	}
+

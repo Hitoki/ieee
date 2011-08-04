@@ -91,6 +91,9 @@ EMAIL_BACKEND = 'postmark.django_backend.EmailBackend'
 POSTMARK_SENDER = 'IEEE Technology Navigator <technav_admin@systemicist.com>'
 DEFAULT_FROM_EMAIL = 'IEEE Technology Navigator <technav_admin@systemicist.com>' # Address from which non-error emails will be sent
 
+# Google Analytics
+GA_SITE_NUM = 1
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.load_template_source',
