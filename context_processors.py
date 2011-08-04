@@ -50,4 +50,3 @@ def settings(request):
 		'DEBUG': settings.DEBUG,
                 'GA_SITE_NUM': settings.GA_SITE_NUM or 1
 	}
-
