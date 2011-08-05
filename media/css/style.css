@@ -129,6 +129,15 @@ table.main td.center .center-pad {
     color: #33CC00;
 }
 
+.header-btns .btn.join {
+   background-color: #FD7400;
+}
+
+.header-btns .btn.join:hover {
+    border: 1px solid #FD7400;
+    color: #FD7400;
+}
+
 .header-btns .btn.admin {
     margin: 0 5px 0 0;
     background-color: red;

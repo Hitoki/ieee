@@ -3,6 +3,7 @@
         <a href="http://ieee.org"><img src="{{MEDIA_URL}}images/sm-logo.png" width="106" height="32"/></a>
         <span class="header-btns">
             {% if user.is_superuser %}<a href="{% url admin_home %}" class="btn admin">Admin</a>{% endif %} 
+            <a href="http://www.ieee.org/membership_services/membership/join/index.html?WT.mc_id=u_join" class="btn join" target="_self">Join IEEE!</a>
             <a href="{{ EXTERNAL_HELP_URL }}" class="btn help" target="zendesk">Help</a>
         </span>
     </span>
