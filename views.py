@@ -721,15 +721,28 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
         # Get the min/max scores for these search results
         min_score = None
         max_score = None
+        min_cluster_score = None
+        max_cluster_score = None
+
         for node1 in child_nodes:
-            if min_score is None:
-                min_score = node1.score1
+            if node1.node_type.name == NodeType.TAG_CLUSTER:
+                if min_cluster_score is None:
+                    min_cluster_score = node1.score1
+                else:
+                    min_cluster_score = min(min_cluster_score, node1.score1)
+                if max_cluster_score is None:
+                    max_cluster_score = node1.score1
+                else:
+                    max_cluster_score = max(max_cluster_score, node1.score1)
             else:
-                min_score = min(min_score, node1.score1)
-            if max_score is None:
-                max_score = node1.score1
-            else:
-                max_score = max(max_score, node1.score1)
+                if min_score is None:
+                    min_score = node1.score1
+                else:
+                    min_score = min(min_score, node1.score1)
+                if max_score is None:
+                    max_score = node1.score1
+                else:
+                    max_score = max(max_score, node1.score1)
 
     if show_terms and (word_queries or (cluster and show_terms and not word_queries and sector is None and society is None)):
         # Show empty terms if we're:
@@ -763,11 +776,30 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
         else:
             min_score = 0
             max_score = 10000
+            min_cluster_score = 0
+            max_cluster_score = 10000
+
+
+    min_cluster_score = 0
+    max_cluster_score = 1
+    for node1 in child_nodes:
+        if node1.node_type.name == NodeType.TAG_CLUSTER:
+            if min_cluster_score is None:
+                min_cluster_score = node1.score1
+            else:
+                min_cluster_score = min(min_cluster_score, node1.score1)
+                if max_cluster_score is None:
+                    max_cluster_score = node1.score1
+                else:
+                    max_cluster_score = max(max_cluster_score, node1.score1)
+
     
     #log('  min_resources: %s' % min_resources)
     #log('  max_resources: %s' % max_resources)
     #log('  min_score: %s' % min_score)
     #log('  max_score: %s' % max_score)
+    #log('  min_cluster_score: %s' % min_cluster_score)
+    #log('  max_cluster_score: %s' % max_cluster_score)
     
     if show_clusters:
         if cluster is None and not word_queries:
@@ -866,7 +898,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
                 #child_node['level'] = ''
                 
                 #(min_score, max_score) = child_nodes.get(id=child_node['id']).get_combined_sector_ranges(show_empty_terms=show_empty_terms)
-                child_node['level'] = _get_popularity_level(min_score, max_score, child_node['score1'], node=child_node)
+                child_node['level'] = _get_popularity_level(min_cluster_score, max_cluster_score, child_node['score1'], node=child_node)
                 
                 # Make sure clusters show on top of the list.
                 filter_child_node = True
