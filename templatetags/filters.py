@@ -42,11 +42,6 @@ def truncatechars(value, arg):
         return value
     
 @register.filter
-def fixentityamps(value):
-    'Replaces &amp;# with &# to allow html entities to work.'
-    return value.replace('&amp;#', '&#')
-
-@register.filter
 def reprjs(value):
     'This outputs a python value in javascript-friendly format.'
     

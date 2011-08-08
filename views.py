@@ -444,9 +444,9 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
             pub_year = getElementValueByTagName(document1, 'py')
 
             # Escape here, since we're going to output this as |safe on the template
-            title = cgi.escape(title)
-            #if highlight_search_term:
-            #    title = re.sub('(?i)(%s)' % tag_name, r'<strong>\1</strong>', title)
+            #title = cgi.escape(title)
+            if highlight_search_term:
+                title = re.sub('(?i)(%s)' % tag_name, r'<strong>\1</strong>', title)
             
             result = {
                 'rank': rank,

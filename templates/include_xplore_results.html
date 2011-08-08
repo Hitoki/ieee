@@ -6,7 +6,7 @@
             <a href="{{ result.url }}" target="_blank">
         {% endif %}
         <p class="{% cycle 'item_odd' 'item_even' %}">
-            <span class="auto-truncate-words {length:165, flyover:true}">{{ result.rank }}. {{ result.name|safe|fixentityamps }}</span>
+            <span class="auto-truncate-words {length:165, flyover:true}">{{ result.rank }}. {{ result.name|safe }}</span>
             {% if result.url %}
                 <img src="{{ MEDIA_URL }}images/popup.png" />
             {% endif %}
@@ -15,6 +15,6 @@
             </a>
         {% endif %}
         <p class="{% cycle 'pub_odd' 'pub_even' %}">{{ result.authors }} {{ result.pub_title }},  {{ result.pub_year }}</p>
-        <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{ result.description|default:"(no description)" }}</p>
+        <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{ result.description|safe|default:"(no description)" }}</p>
     </li>
 {% endfor %}
