@@ -46,6 +46,18 @@
 		{% if ENABLE_FIREBUG_LITE %}
 			<script type="text/javascript" src="https://getfirebug.com/firebug-lite.js"></script>
 		{% endif %}
+		
+		<!-- Google Analytics Scripts -->
+        <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+        </script>
+        <script type="text/javascript">
+            try {
+            var pageTracker = _gat._getTracker("UA-9482893-{{ GA_SITE_NUM }}");
+            pageTracker._trackPageview();
+            } catch(err) {}
+        </script>
                 
         {% block extra_head %}{% endblock %}
         {% block extra_head2 %}{% endblock %}
@@ -66,17 +78,6 @@
             </div>
             {% include "footer.inc.html" %}
         </div>
-
-        <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-        </script>
-        <script type="text/javascript">
-            try {
-            var pageTracker = _gat._getTracker("UA-9482893-{{ GA_SITE_NUM }}");
-            pageTracker._trackPageview();
-            } catch(err) {}
-        </script>
 		
         <script type="text/javascript">
 	        var zenbox_params = {};
