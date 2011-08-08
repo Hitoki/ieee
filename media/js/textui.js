@@ -10,6 +10,9 @@ function scaleZoom(zoom, scale) {
 
 var sortDropDown, printDropDown;
 $(document).ready(function(){
+    //hide the "Standards Board"
+    $('#society-list-item-49').hide();
+
     if ($.cookie("noShowHelpBox")){
         $('#tag-help-box').hide();
     }
