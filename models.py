@@ -1426,8 +1426,10 @@ class CacheManager(models.Manager):
         except Cache.DoesNotExist:
             return None
         except MultipleObjectsReturned:
-            return super(CacheManager, self).filter(name=name, params=params)[0]
-        
+            idtosave = super(CacheManager, self).filter(name=name, params=params).order_by('-id')[0:1][0].id
+            super(CacheManager, self).filter(name=name, params=params).exclude(id=idtosave).delete()
+            return super(CacheManager, self).get(id=idtosave)
+             
     def set(self, name, params, content):
         if type(params) is dict:
             params = urlencode_sorted(params)
