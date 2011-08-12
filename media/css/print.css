@@ -65,3 +65,7 @@ padding: 0;
 #tag_middle {
    display: none;
 }
+
+.addthis_toolbox  {
+   display: none;
+}
