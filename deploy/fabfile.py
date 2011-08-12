@@ -290,6 +290,9 @@ def checkout_site():
     run('touch "%(site_code)s/start-wsgi.py"' % env)
     
     #sudo('/etc/init.d/httpd restart', pty=True)
+
+def build_tagcloud_caches():
+    run('python deploy/create_caches.py create_caches')
     
 def install_siteminder_client():
     script = """
