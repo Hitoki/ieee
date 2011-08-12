@@ -1,6 +1,6 @@
 from ieeetags.models import Cache, Node, NodeType, Society
 from ieeetags.views import _render_textui_nodes
-import json
+import simplejson as json
 
 def create_caches():
     cache_params = {
