@@ -818,6 +818,7 @@ span#roamer-beta-warning {
     padding: 0 5px 2px 0;
     margin-right:34px;
     background-color: white;
+    overflow: hidden;
 }             
 
 #alternate-page #tag-galaxy .alt-box-pad {
