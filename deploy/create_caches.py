@@ -3,6 +3,7 @@ from ieeetags.views import _render_textui_nodes
 import simplejson as json
 
 def create_caches():
+    print 'Starting to create caches...'
     cache_params = {
         'sector_id': None,
         'society_id': None,
