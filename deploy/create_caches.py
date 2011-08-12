@@ -21,7 +21,7 @@ def main():
     sectors = Node.objects.filter(node_type__name=NodeType.SECTOR)
     for sector in sectors:
         for sort in sorts:
-            print 'Creating cache for Sector %s sorted by %s' % sector.name, sort
+            print 'Creating cache for Sector %s sorted by %s' % (sector.name, sort)
             cache_params['sector_id'] = sector.id
             cache_params['page'] = 'sector'
             cache_params['sort'] = sort
@@ -35,7 +35,7 @@ def main():
     orgs = Society.objects.all()
     for org in orgs:
         for sort in sorts:
-            print 'Creating cache for Organization/Society: %s' % org.name
+            print 'Creating cache for Organization/Society %s sorted by %s' % (org.name, sort)
             cache_params['sector_id'] = None
             cache_params['society_id'] = org.id
             cache_params['page'] = 'society'
