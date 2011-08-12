@@ -19,7 +19,7 @@ def main():
     for sector in sectors:
         print 'Creating cache for Sector: %s' % sector.name
         cache_params['sector_id'] = sector.id
-        content, node_count_content = _render_textui_nodes('connectedness', '', sector.id, sector, None, None, None, None, True, True, False, 0)
+        content, node_count_content = _render_textui_nodes('connectedness', '', sector.id, sector, None, None, None, None, True, True, False, 'sector')
         cache_content = json.dumps({
             'content': content,
             'node_count_content': node_count_content,
@@ -31,7 +31,7 @@ def main():
         print 'Creating cache for Organization/Society: %s' % org.name
         cache_params['sector_id'] = None
         cache_params['society_id'] = org.id
-        content, node_count_content = _render_textui_nodes('connectedness', '', None, None, org.id, org, None, None, True, True, False, 0)
+        content, node_count_content = _render_textui_nodes('connectedness', '', None, None, org.id, org, None, None, True, True, False, 'society')
         cache_content = json.dumps({
             'content': content,
             'node_count_content': node_count_content,
