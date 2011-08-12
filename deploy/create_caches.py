@@ -2,7 +2,7 @@ from ieeetags.models import Cache, Node, NodeType, Society
 from ieeetags.views import _render_textui_nodes
 import simplejson as json
 
-def create_caches():
+def main():
     print 'Starting to create caches...'
     cache_params = {
         'sector_id': None,
@@ -42,3 +42,5 @@ def create_caches():
     #societies = Society.objects.all()
     #for society in societies:
         
+if __name__ == '__main__':
+    main()
