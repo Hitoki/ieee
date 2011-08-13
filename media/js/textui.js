@@ -760,6 +760,11 @@ var Tags = {
     
     selectCluster: function(clusterId, sectorId, societyId, setHash) {
         var tags = this;
+
+	// unbind scroll event to avoid tags appearing under the loading animation
+	// it will get reboud once the load is complete
+	$('#tags').unbind('scroll');
+
         log("selectCluster()");
         log("  clusterId: " + clusterId);
         log("  sectorId: " + sectorId);
