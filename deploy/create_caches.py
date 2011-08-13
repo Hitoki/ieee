@@ -32,7 +32,7 @@ def insert_cache(sector, society, page):
         'show_terms': True,
     }
 
-    cache_params['sector_id'] =    sorts = ('connectedness', 'alphabetical', 'frequency', 'num_sectors', 'num_related_tags', 'num_societies')
+    sorts = ('connectedness', 'alphabetical', 'frequency', 'num_sectors', 'num_related_tags', 'num_societies')
     for sort in sorts:
         cache_params['sort'] = sort
         content, node_count_content = _render_textui_nodes(sort, None, sector and sector.id or None, sector, society and society.id or None, society, None, None, True, True, False, page)
