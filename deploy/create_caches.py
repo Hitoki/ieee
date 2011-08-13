@@ -5,51 +5,42 @@ import simplejson as json
 def main():
     print 'Starting to create caches...'
 
-    sorts = ('connectedness', 'alphabetical', 'frequency', 'num_sectors', 'num_related_tags', 'num_societies')
+
+    insert_cache(None, None, 'sector')
+    insert_cache(None, None, 'society')
+
+    sectors = Node.objects.filter(node_type__name=NodeType.SECTOR)
+    for sector in sectors:
+        print 'Creating cache for Sector %s sorted by %s' % (sector.name, 'sort')
+        insert_cache(sector, None, 'sector')
+
+    societies = Society.objects.all()
+    for society in societies:
+        print 'Creating cache for Organization/Society %s sorted by %s' % (society.name, 'sort')
+        insert_cache(None, society, 'society')
+
+def insert_cache(sector, society, page):
 
     cache_params = {
-        'sector_id': None,
-        'society_id': None,
+        'sector_id': sector and sector.id or None,
+        'society_id': society and society.id or None,
         'cluster_id': None,
         'search_for': None,
         'sort': 'connectedness',
-        'page': '',
+        'page': page,
         'show_clusters': True,
         'show_terms': True,
     }
 
-    sectors = Node.objects.filter(node_type__name=NodeType.SECTOR)
-    for sector in sectors:
-        for sort in sorts:
-            print 'Creating cache for Sector %s sorted by %s' % (sector.name, sort)
-            cache_params['sector_id'] = sector.id
-            cache_params['page'] = 'sector'
-            cache_params['sort'] = sort
-            content, node_count_content = _render_textui_nodes(sort, None, sector.id, sector, None, None, None, None, True, True, False, 'sector')
-            cache_content = json.dumps({
-                    'content': content,
-                    'node_count_content': node_count_content,
-                    })
-            cache = Cache.objects.set('ajax_textui_nodes', cache_params, cache_content)
-
-    orgs = Society.objects.all()
-    for org in orgs:
-        for sort in sorts:
-            print 'Creating cache for Organization/Society %s sorted by %s' % (org.name, sort)
-            cache_params['sector_id'] = None
-            cache_params['society_id'] = org.id
-            cache_params['page'] = 'society'
-            cache_params['sort'] = sort
-            content, node_count_content = _render_textui_nodes(sort, None, None, None, org.id, org, None, None, True, True, False, 'society')
-            cache_content = json.dumps({
-                    'content': content,
-                    'node_count_content': node_count_content,
-                    })
-            cache = Cache.objects.set('ajax_textui_nodes', cache_params, cache_content)
-
-
-    #societies = Society.objects.all()
-    #for society in societies:
+    cache_params['sector_id'] =    sorts = ('connectedness', 'alphabetical', 'frequency', 'num_sectors', 'num_related_tags', 'num_societies')
+    for sort in sorts:
+        cache_params['sort'] = sort
+        content, node_count_content = _render_textui_nodes(sort, None, sector and sector.id or None, sector, society and society.id or None, society, None, None, True, True, False, page)
+        cache_content = json.dumps({
+                'content': content,
+                'node_count_content': node_count_content,
+                })
+        cache = Cache.objects.set('ajax_textui_nodes', cache_params, cache_content)
         
 if __name__ == '__main__':
     main()
