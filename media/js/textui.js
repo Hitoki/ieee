@@ -347,6 +347,7 @@ var Tags = {
         this.updateChangedNode();
 		
         var tagWindow = $("#tags");
+	tagWindow.unbind('scroll');
         tagWindow.empty();
         tagWindow.html(
             '<div id="loading" class="please-wait">'
@@ -604,6 +605,11 @@ var Tags = {
             
             $('#tags').empty();
             this.loadContentChunk();
+	    var tags = this;
+            $('#tags').scroll(function() {
+		tags.onScroll();
+            });
+
         }
     },
     
