@@ -347,6 +347,8 @@ var Tags = {
         this.updateChangedNode();
 		
         var tagWindow = $("#tags");
+	// unbind scroll event to avoid tags appearing under the loading animation
+	// it will get reboud once the load is complete
 	tagWindow.unbind('scroll');
         tagWindow.empty();
         tagWindow.html(
@@ -605,6 +607,7 @@ var Tags = {
             
             $('#tags').empty();
             this.loadContentChunk();
+	    // Rebind the scroll event
 	    var tags = this;
             $('#tags').scroll(function() {
 		tags.onScroll();
