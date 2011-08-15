@@ -141,9 +141,9 @@ input.text {
     -webkit-border-radius: 10px;
     border: 1px solid black;
     background-color: #F2F5FF;
-    background: -moz-linear-gradient(center top , #F2F5FF, #C6D3FE) repeat scroll 0 0 #F2F5FF;
-    background: -webkit-gradient(linear, left top, left bottom, from(#F2F5FF), to(#C6D3FE)) repeat scroll 0 0 #F2F5FF;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F35228', endColorstr='#C94220');
+    background: -moz-linear-gradient(center top , #F2F5FF, #B5C7FF) repeat scroll 0 0 #F2F5FF;
+    background: -webkit-gradient(linear, left top, left bottom, from(#F2F5FF), to(#B5C7FF)) repeat scroll 0 0 #F2F5FF;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F35228', endColorstr='#B5C7FF');
 }
 
 #lightbox .resources-lightbox-content .lightbox-close,
