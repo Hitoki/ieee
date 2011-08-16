@@ -1551,6 +1551,10 @@ table.node-tooltip-grid td {
     padding-right:5px; 
 }
 
+.node-tooltip-details {
+   margin-top: 10px;
+}
+
 .sector-block,
 .related-tags-block,
 .filter-block,
