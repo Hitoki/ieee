@@ -345,12 +345,12 @@ var Flyover = {
         
         // Add the arrow
         if (position == 'right-top') {
-            this._flyover.find('.flyover-close-button').css({right: '', left: '10px'});
-            this._flyover.find('.node-tooltip h3').css({marginLeft: '20px'});
+            //this._flyover.find('.flyover-close-button').css({right: '', left: '10px'});
+            //this._flyover.find('.node-tooltip h3').css({marginLeft: '20px'});
             this.arrow = $('<img src="/media/images/flyover_arrow_right_top.png" class="flyover-arrow"/>').appendTo(this._flyover);
         } else if (position == 'right-bottom') {
-            this._flyover.find('.flyover-close-button').css({right: '', left: '10px'});
-            this._flyover.find('.node-tooltip h3').css({marginLeft: '20px'});
+            //this._flyover.find('.flyover-close-button').css({right: '', left: '10px'});
+            //this._flyover.find('.node-tooltip h3').css({marginLeft: '20px'});
             this.arrow = $('<img src="/media/images/flyover_arrow_right_bottom.png" class="flyover-arrow"/>').appendTo(this._flyover);
         } else if (position == 'left-top') {
             this.arrow = $('<img src="/media/images/flyover_arrow_left_top.png" class="flyover-arrow"/>').appendTo(this._flyover);
