@@ -258,10 +258,12 @@ p.admin-links a:hover {
 }
 
 #footer {
-    clear:both;
-    position:relative;
+    clear: both;
+    margin: 15px auto;
+    position: relative;
+    width: 86%;
     z-index: 1;
-    padding-bottom: 10px;
+    text-align: center;
 }
 
 #footer-login {
@@ -288,10 +290,6 @@ p.admin-links a:hover {
 }
 
 #copyright {
-    display: inline-block;
-    position: relative;
-    width: 100%; 
-    text-align: center;
     color: #FFFFFF;
     font-size: 8pt;
 }
@@ -1410,8 +1408,6 @@ table#login-table td {
     color: #FFFFFF;
     padding: 2px 5px;
     float: left;
-    margin-top: 20px;
-    margin-left: -10px;
     cursor: pointer;
     text-decoration: none;
     font-size: 7pt;
