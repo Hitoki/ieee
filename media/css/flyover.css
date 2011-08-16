@@ -15,7 +15,7 @@
     background-color: #F2F5FF;
     background: -moz-linear-gradient(center top , #F2F5FF, #B5C7FF) repeat scroll 0 0 #F2F5FF;
     background: -webkit-gradient(linear, left top, left bottom, from(#F2F5FF), to(#B5C7FF)) repeat scroll 0 0 #F2F5FF;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F35228', endColorstr='#B5C7FF');
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F2F5FF', endColorstr='#B5C7FF');
     
     /* Non IE compatible: */
     -moz-border-radius: 6px;
