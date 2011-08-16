@@ -1073,6 +1073,12 @@ def ajax_textui_nodes(request):
     params['page'] = page
     
     textui_flyovers_url = reverse('tooltip') + '/tagid?' + urllib.urlencode(params)
+    # The tooltip url needs to know if 'all' societies or sectors is chosen.
+    # Otherwise the color blocks in the tooltip will all be red.
+    if request.GET.get('society_id', None) == "all":
+        textui_flyovers_url = textui_flyovers_url.replace('society_id=null', 'society_id=all')
+    if request.GET.get('sector_id', None) == "all":
+        textui_flyovers_url = textui_flyovers_url.replace('parent_id=null', 'parent_id=all')
     
     # Get page from cache, or generate if needed.
     
@@ -1380,21 +1386,23 @@ def tooltip(request, tag_id=None):
                     ):
                         if min_resources is None or tag1['num_resources1'] < min_resources:
                             min_resources = tag1['num_resources1']
-                        if max_resources is None or tag1['num_resources1'] < max_resources:
+                        if max_resources is None or tag1['num_resources1'] > max_resources:
                             max_resources = tag1['num_resources1']
                         if min_sectors is None or tag1['num_sectors1'] < min_sectors:
+                            print "new min"
                             min_sectors = tag1['num_sectors1']
-                        if max_sectors is None or tag1['num_sectors1'] < max_sectors:
+                        if max_sectors is None or tag1['num_sectors1'] > max_sectors:
+                            print "new max"
                             max_sectors = tag1['num_sectors1']
-                        if min_related_tags is None or tag1['num_related_tags1'] < min_related_tags:
+                        if min_related_tags is None or tag1['num_related_tags1'] > min_related_tags:
                             min_related_tags = tag1['num_related_tags1']
                         if max_related_tags is None or tag1['num_related_tags1'] < max_related_tags:
                             max_related_tags = tag1['num_related_tags1']
-                        if min_societies is None or tag1['num_societies1'] < min_societies:
+                        if min_societies is None or tag1['num_societies1'] > min_societies:
                             min_societies = tag1['num_societies1']
                         if max_societies is None or tag1['num_societies1'] < max_societies:
                             max_societies = tag1['num_societies1']
-                        if min_score is None or tag1['score1'] < min_score:
+                        if min_score is None or tag1['score1'] > min_score:
                             min_score = tag1['score1']
                         if max_score is None or tag1['score1'] < max_score:
                             max_score = tag1['score1']
