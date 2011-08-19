@@ -14,6 +14,7 @@ Include file used by both print_resource.html and tag_landing.html
                 data_track_clickback: true
             };
             var addthis_share = {
+	        host_info: "{{ host_info }}",
                 url: "{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}",
                 title: "{{ tag.name }}",
                 description: "Read more about {{ tag.name }} on IEEE TechNav."
