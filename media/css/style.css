@@ -2760,3 +2760,7 @@ td.machine-generated-column {
     text-align:center;
     font-weight:bold;
 }
+
+.tag_base #inner-container {
+   background: none repeat scroll 0 0 white;
+}
