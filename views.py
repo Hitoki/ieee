@@ -1461,13 +1461,9 @@ ag_ranges()
             num_related_tags = tag.get_filtered_related_tag_count()
             num_societies = tag.societies.all()
             
-            print 'res'
             resourceLevel = _get_popularity_level(min_resources, max_resources, tag.num_resources1)
-            print 'sector'
             sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.num_sectors1)
-            print 'tag'
             related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
-            print 'soc'
             society_level = _get_popularity_level(min_societies, max_societies, tag.num_societies1)
             
             tagLevel = _get_popularity_level(min_score, max_score, node.score1)
