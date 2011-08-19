@@ -1374,8 +1374,7 @@ def tooltip(request, tag_id=None):
                     # Temporary fix for production since tooltip queries for 'all' are too slow
                     if not settings.DEBUG:
                         fake_society= Society.objects.all()[0]
-                        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = fake_society.get_t\
-ag_ranges()
+                        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = fake_society.get_tag_ranges()
                         (min_score, max_score) = fake_society.get_combined_ranges()
 
                     else:
