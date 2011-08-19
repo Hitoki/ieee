@@ -575,7 +575,9 @@ def _get_popularity_level(min, max, count, node=None):
     @param count: The count for this specific item.
     @return: A text label 'level1' through 'level6'.
     '''
-    
+
+    min = min or 0
+
     if count < min or count > max:
         body = []
         if node:
@@ -595,6 +597,7 @@ def _get_popularity_level(min, max, count, node=None):
     
     if min == max:
         return _POPULARITY_LEVELS[len(_POPULARITY_LEVELS)-1]
+    print "%s, %s, %s" % (min, max, count)
     level = int(round(float(count-min) / float(max-min) * float(len(_POPULARITY_LEVELS)-1))) + 1
     
     # TODO: This fixes invisible terms where the count is < min.  Is this a hack?
@@ -716,6 +719,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
         # Restrict to only tags.
         child_nodes = child_nodes.filter(node_type__name=NodeType.TAG)
     child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, filterIds)
+    print child_nodes.query
     if word_queries:
         log('  using min/max for all results.')
         # Get the min/max scores for these search results
@@ -1444,9 +1448,13 @@ def tooltip(request, tag_id=None):
             num_related_tags = tag.get_filtered_related_tag_count()
             num_societies = tag.societies.all()
             
+            print 'res'
             resourceLevel = _get_popularity_level(min_resources, max_resources, tag.num_resources1)
+            print 'sector'
             sectorLevel = _get_popularity_level(min_sectors, max_sectors, tag.num_sectors1)
+            print 'tag'
             related_tag_level = _get_popularity_level(min_related_tags, max_related_tags, num_related_tags)
+            print 'soc'
             society_level = _get_popularity_level(min_societies, max_societies, tag.num_societies1)
             
             tagLevel = _get_popularity_level(min_score, max_score, node.score1)
