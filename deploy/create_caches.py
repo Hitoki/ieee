@@ -1,6 +1,7 @@
 from ieeetags.models import Cache, Node, NodeType, Society
 from ieeetags.views import _render_textui_nodes
 import simplejson as json
+from noomake import *
 
 def main():
     print 'Starting to create caches...'
