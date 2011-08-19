@@ -1348,8 +1348,9 @@ def tooltip(request, tag_id=None):
             if parent_id is not None:
                 if parent_id == "all":
                     if not settings.DEBUG:
-                        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = (1,1,1,1,1,1,1,1)
-                        (min_score, max_score) = (1,1)
+                        # Temporary fix for production since tooltip queries for 'all' are too slow
+                        parent = Node.objects.filter(node_type__name=NodeType.SECTOR)[0]
+                        tags = parent.child_nodes
                     else:     
                         parent = Node.objects.get(node_type=Node.objects.getNodesForType(NodeType.ROOT))
                         tags = Node.objects.get_tags()
@@ -1370,9 +1371,13 @@ def tooltip(request, tag_id=None):
             
             elif society_id is not None:
                 if society_id == 'all':
+                    # Temporary fix for production since tooltip queries for 'all' are too slow
                     if not settings.DEBUG:
-                        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = (1,1,1,1,1,1,1,1)
-                        (min_score, max_score) = (1,1)
+                        fake_society= Society.objects.all()[0]
+                        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = fake_society.get_t\
+ag_ranges()
+                        (min_score, max_score) = fake_society.get_combined_ranges()
+
                     else:
                         # For All Societies, check all tags to get mins/maxes.
                         from django.db.models import Count, Min, Max
