@@ -1346,7 +1346,7 @@ def tooltip(request, tag_id=None):
             # Normal Tag
             
             if parent_id is not None:
-                if (parent_id == "all"):
+                if (setting.DEBUG and parent_id == "all"):
                     parent = Node.objects.get(node_type=Node.objects.getNodesForType(NodeType.ROOT))
                     tags = Node.objects.get_tags()
                 else:
@@ -1365,7 +1365,7 @@ def tooltip(request, tag_id=None):
                 (min_score, max_score) = parent.get_combined_sector_ranges(tags)
             
             elif society_id is not None:
-                if society_id == 'all':
+                if settings.DEBUG and society_id == 'all':
                     # For All Societies, check all tags to get mins/maxes.
                     from django.db.models import Count, Min, Max
                     tags = Node.objects.get_tags()
