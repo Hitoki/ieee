@@ -9,13 +9,17 @@ Include file used by both print_resource.html and tag_landing.html
         <!-- AddThis Button BEGIN -->
         <script type="text/javascript">
             var addthis_config = {
-                "data_track_clickback" : true,
-                "data_ga_tracker" : "AddThis",
-                "url": "{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}",
-                "title": "{{ tag.name|slugify }}"
+                pubid: "ra-4e02511c660b81ce",
+                data_ga_property: "UA-9482893-{{ GA_SITE_NUM }}",
+                data_track_clickback: true
             };
+            var addthis_share = {
+                url: "{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}",
+                title: "{{ tag.name }}",
+                description: "Read more about {{ tag.name }} on IEEE TechNav."
+           };
         </script>
-        <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4e02511c660b81ce"></script> 
+        <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script> 
         <div class="addthis_toolbox addthis_default_style ">
             <a class="addthis_button_email"></a>
             <a class="addthis_button_twitter"></a>
@@ -23,6 +27,11 @@ Include file used by both print_resource.html and tag_landing.html
             <a class="addthis_button_linkedin"></a>
             <a class="addthis_counter addthis_bubble_style"></a>
         </div>
+        <script type="text/javascript">
+            $(function(){
+                addthis.toolbox('.addthis_toolbox', addthis_config, addthis_share);
+            });
+        </script>
         <!-- AddThis Button END -->
         <table id="tag_middle"><tbody>
             <tr>

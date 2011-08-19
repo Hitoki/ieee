@@ -26,14 +26,16 @@
             <!-- AddThis Button BEGIN -->
             <script type="text/javascript">
                 var addthis_config = {
-                    "data_track_clickback" : true,
-                    "data_ga_tracker" : "AddThis"
+                    pubid: "ra-4e02511c660b81ce",
+                    data_ga_property: "UA-9482893-{{ GA_SITE_NUM }}",
+                    data_track_clickback: true
                 };
                 var addthis_share = {
-                    "url": "{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}",
-                    "title": "{{ tag.name|slugify }}"
-                };
-            </script>
+                    url: "{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}",
+                    title: "{{ tag.name }}",
+                    description: "Read more about {{ tag.name }} on IEEE TechNav."
+               };
+           </script>
             <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4e02511c660b81ce"></script> 
             <div class="addthis_toolbox addthis_default_style ">
                 <a class="addthis_button_email"></a>
