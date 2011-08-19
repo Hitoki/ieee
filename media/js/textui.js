@@ -1200,6 +1200,8 @@ var Tags = {
                     , hideDelay: 400
                     , positionCursor: false
                     , closeButton: true
+		    , useWaitCursor: true
+		    , useWaitHtml: true
                 }
             );
             

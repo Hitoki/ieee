@@ -140,9 +140,9 @@ var Flyover = {
     // Shows a flyover for the given element
     show: function(elem, options) {
         this._stopHideTimer();    
-        
+
         elem = $(elem);
-        
+
         if (!elem) {
             ajax_report_error('Flyover: elem argument is required');
             return;
@@ -177,11 +177,16 @@ var Flyover = {
             closeOnMouseOutLink: false,
             url: null,
             showInitial: false,
-			positionCursor: false
+	    positionCursor: false,
+	    useWaitCusror: false,
+	    useWaitHtml: false
         };
         this.options = $.extend(this.options, options);
         this.options = $.extend(this.options, elem.metadata());
         this._elem = elem;
+
+	if (this.options.useWaitCursor)
+	    elem.children().andSelf().css('cursor', 'wait');
         
         // Validate options
         if ($.inArray(this.options.position, ['left', 'left-top', 'left-bottom', 'right', 'right-top', 'right-bottom', 'top', 'top-left', 'top-right', 'bottom', 'bottom-left', 'bottom-right', 'auto-left-right-top', 'auto']) == -1) {
@@ -280,6 +285,8 @@ var Flyover = {
             this.shadowRightTop = $('<div class="flyover-shadow-right-top"></div>').appendTo(this._flyover);
             this.shadowRightMid = $('<div class="flyover-shadow-right-mid"></div>').appendTo(this._flyover);
         }
+
+
         
         if (this.options.arrow) {
             this.showArrow(this.options.position);
@@ -301,20 +308,27 @@ var Flyover = {
                 }
             );
         }
+
+	if (this.options.useWaitHtml){
+	    this.content.html('<img src="/media/images/ajax-loader.gif" style="margin: 20px">');
+	    Flyover._reposition();
+	}
         
         var content;
         if (this.options.url != null) {
             //console.log('using URL');
-            this.content.load(this.options.url, function() { Flyover._reposition(); } );
+            this.content.load(this.options.url, function() { Flyover._reposition(); elem.children().andSelf().css('cursor', null);} );
         } else if (this.options.content !== null) {
             // Use the given content
             this.content.html(htmlentities(this.options.content));
             this._reposition();
+	    elem.children().andSelf().css('cursor', null);
             
         } else if (this.options.content_html !== null) {
             // Use the given HTML content
             this.content.html(this.options.content_html);
             this._reposition();
+	    elem.children().andSelf().css('cursor', null);
             
         } else {
             // Use the elem's title as the content
@@ -330,8 +344,11 @@ var Flyover = {
             
             this.content.html(htmlentities(content));
             this._reposition();
+	    elem.children().andSelf().css('cursor', null);
         }
         
+	
+
         if (this.options.showCallback) 
             this.options.showCallback();
     },
