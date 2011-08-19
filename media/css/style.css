@@ -865,7 +865,7 @@ span#roamer-beta-warning {
 }
 
 #alternate-page #tag-galaxy div.tag_cluster a {
-    border-color:#006699;
+    border-color:transparent;
     color:#000000;
     background:white;
     padding:0.4em 0.5em;
