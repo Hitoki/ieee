@@ -8,6 +8,12 @@
     <head>
         <meta name="description" content="Connecting You to the IEEE Universe of Information">
         <title>IEEE Technology Navigator {% block server_title %}{% endblock %}</title>
+        
+        <meta property="og:title" content="IEEE Technology Navigator Clusters and Tags"/>
+        <meta property="og:url" content="{{ host_info }}"/>
+        <meta property="og:image" content="{{ host_info }}/media/images/technav_banner.png"/>
+        <meta property="og:site_name" content="IEEE Technology Navigator"/>
+        <meta property="og:description" content="Connecting You to the IEEE Universe of Information"/>
 
         <link rel="shortcut icon" href="{{ MEDIA_URL }}images/favicon.ico" type="image/x-icon" />
         
@@ -41,11 +47,6 @@
                 data_ga_property: "UA-9482893-{{ GA_SITE_NUM }}",
                 data_track_clickback: true
             };
-            var addthis_share = {
-                url: "{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}",
-                title: "{{ tag.name }}",
-                description: "Read more about {{ tag.name }} on IEEE TechNav."
-           };
         </script>
         <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script> 
 		
