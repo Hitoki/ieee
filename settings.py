@@ -143,6 +143,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'ieeetags.context_processors.is_ajax',
     'ieeetags.context_processors.survey',
     'ieeetags.context_processors.settings',
+    'ieeetags.context_processors.host_info'
 )
 
 # Application Settings ---------------------------------------------------------

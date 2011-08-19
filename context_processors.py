@@ -1,6 +1,9 @@
 import django.conf
 import django.http
 
+def host_info(request):
+    return {'host_info': "http%s://%s" % (("","s")[request.is_secure()], request.META["HTTP_HOST"])}
+
 def media_url(request):
     "Adds settings.MEDIA_URL to the context as MEDIA_URL."
     from django.conf import settings
