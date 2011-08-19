@@ -14,7 +14,7 @@
         {% if result.url %}
             </a>
         {% endif %}
-        <p class="{% cycle 'pub_odd' 'pub_even' %}">{{ result.authors }} {{ result.pub_title }},  {{ result.pub_year }}</p>
+        <p class="{% cycle 'pub_odd' 'pub_even' %}">{{ result.authors|safe }} {{ result.pub_title|safe }},  {{ result.pub_year|safe }}</p>
         <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{ result.description|safe|default:"(no description)" }}</p>
     </li>
 {% endfor %}
