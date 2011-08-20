@@ -456,6 +456,11 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
                 'pub_title': pub_title,
                 'pub_year': pub_year,
             }
+
+            # Working around an Xplore bug that returns broken URLs
+            if ctype == 'Educational Courses':
+                result['url'] = result['url'].replace('stamp/stamp.jsp?ar', 'servlet/opac?md')
+
             xplore_results.append(result)
         
     return xplore_results, xplore_error, totalfound
