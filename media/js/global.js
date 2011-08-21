@@ -370,11 +370,11 @@ function getXploreSortName(sort) {
 
 // This loads the xplore results for a tag into the given element via AJAX.
 function XploreLoader(elem, showAll, sort, ctype) {
-	var xploreLoader = this;
-	this.elem = $(elem);
-	this.listElem = this.elem.find('ul');
-	this.scrollElem = this.elem.find('.group');
-	this.loadingElem = null;
+    var xploreLoader = this;
+    this.elem = $(elem);
+    this.listElem = this.elem.find('ul');
+    this.scrollElem = this.elem.find('.group');
+    this.loadingElem = null;
     this.isLoading = false;
     this.noResultsElem = null;
     this.ajaxToken = null;
@@ -414,7 +414,7 @@ function XploreLoader(elem, showAll, sort, ctype) {
         xploreLoader.onChangeSelect();
     });
     
-	this.loadContent();
+    this.loadContent();
 }
 
 XploreLoader.prototype.onChangeSelect = function() {
@@ -485,8 +485,14 @@ XploreLoader.prototype.onLoadData = function(data) {
             this.noResultsElem.remove();
             this.noResultsElem = null;
         }
-        
+	
         if (data.num_results == 0){
+	    if(this.ctype == "Educational Courses"){
+		$('#num-education-results').text('(0)');
+		$('#education-results-container .print-resource').remove(); 
+		this.listElem.html('<p class="no-resources">No educational resources are currently tagged ' + $('#tag-name').text() + '</p>');
+	    }
+
             this.unbind(scroll);
             return false;
         }
@@ -506,7 +512,8 @@ XploreLoader.prototype.onLoadData = function(data) {
             var totalElem;
             if(this.ctype == "Educational Courses"){
                 $('#num-education-results').text('(' + addCommas(data.num_results) + ')');
-                totalElem = $('#education-totals')
+                totalElem = $('#education-totals');
+		   
             } else {
                 $('#num-xplore-results').text('(' + addCommas(data.num_results) + ')');
                 totalElem = $('#xplore-totals')
