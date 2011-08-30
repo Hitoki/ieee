@@ -2314,6 +2314,15 @@ border: 5px solid #FFFFFF;
 margin: -20px 0 0 516px;   
 }
 
+#lightbox .welcome-panels-lightbox-content .lightbox-close.link {
+background-image: none;
+margin: 3px 0 0;  
+height: auto;
+width: auto;
+position: relative;
+display: inline-block; 
+}
+
 #overview-video-link a:hover {
 	text-decoration: none;
 }
