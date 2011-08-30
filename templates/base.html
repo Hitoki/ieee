@@ -20,7 +20,7 @@
 
         <link rel="shortcut icon" href="{{ MEDIA_URL }}images/favicon.ico" type="image/x-icon" />
         
-        {% cssmin css/style.css css/lightbox.css css/nootabs.css css/multisearch.css css/flyover.css css/vert-center.css css/jquery-ui-1.7.2.custom.css %}
+        {% cssmin css/style.css css/lightbox.css css/nootabs.css css/multisearch.css css/flyover.css css/vert-center.css css/jquery-ui-1.7.2.custom.css css/slidedeck.skin.css %}
         <!--[if IE 7]>
         <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/style-ie7.css" title="Style for IE7" />
         <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/vert-center-ie.css" title="Vert Center Style for IE" />
@@ -35,7 +35,7 @@
             var DEBUG = {{ DEBUG|reprjs }};
         </script>
         
-        {% jsmin js/jquery-1.3.2.js js/jquery.scrollTo.js js/jquery.metadata.js js/jquery.history.js js/global.js js/roamer.js js/textui.js js/lightbox.js js/nootabs.js js/json2.js js/multisearch.js js/jquery.hoverIntent.js js/flyover.js js/blurText.js js/autoTruncate.js js/jqbrowser2.js js/liveUrl.js js/php.js js/jquery.color.js js/jquery.bgiframe.js js/expandSeries.js js/jquery.cookie.js js/livesearch.js js/jquery-ui-1.7.2.custom.min.js js/jquery.imageDropdown.js %}
+        {% jsmin js/jquery-1.3.2.js js/jquery.scrollTo.js js/jquery.metadata.js js/jquery.history.js js/global.js js/roamer.js js/textui.js js/lightbox.js js/nootabs.js js/json2.js js/multisearch.js js/jquery.hoverIntent.js js/flyover.js js/blurText.js js/autoTruncate.js js/jqbrowser2.js js/liveUrl.js js/php.js js/jquery.color.js js/jquery.bgiframe.js js/expandSeries.js js/jquery.cookie.js js/livesearch.js js/jquery-ui-1.7.2.custom.min.js js/jquery.imageDropdown.js js/slidedeck.jquery.lite.pack.js %}
         <!-- BEGIN IE ActiveX activation workaround for Constellation Roamer by Chris Benjaminsen -->
         <script type="text/javascript">function writeHTML(a){document.write(a)}</script>
         <!--

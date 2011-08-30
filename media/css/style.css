@@ -2305,6 +2305,11 @@ float: right;
 width: 270px; 
 }
 
+.welcome-panels-lightbox-content .skin-slidedeck {
+box-shadow: 0 0 0;   
+border: 5px solid #FFFFFF;
+}
+
 #overview-video-link a:hover {
 	text-decoration: none;
 }

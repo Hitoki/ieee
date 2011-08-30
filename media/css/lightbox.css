@@ -146,10 +146,7 @@ input.text {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F2F5FF', endColorstr='#B5C7FF');
 }
 
-#lightbox .resources-lightbox-content .lightbox-close,
-#lightbox .overview-video-lightbox-content .lightbox-close,
-#lightbox .tester-message-lightbox-content .lightbox-close,
-#lightbox .tester-survey-lightbox-content .lightbox-close {
+#lightbox .lightbox-close {
     background: url(/media/images/close_button.png) no-repeat 0px 0px;
     height: 37px;
     margin: -20px 0 0 856px;
@@ -158,10 +155,7 @@ input.text {
     z-index: 9999;
 }
 
-#lightbox .resources-lightbox-content .lightbox-close:hover,
-#lightbox .overview-video-lightbox-content .lightbox-close:hover,
-#lightbox .tester-message-lightbox-content .lightbox-close:hover,
-#lightbox .tester-survey-lightbox-content .lightbox-close:hover {
+#lightbox .lightbox-close:hover {
     background: url(/media/images/close_button.png) no-repeat 0px -44px;
     cursor: pointer;
 }
@@ -309,6 +303,16 @@ input.text {
 
 .paste-tags-lightbox-content p.tags {
     margin-left:1em;
+}
+
+#lightbox .welcome-panels-lightbox-content {
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    background-color: #FFFFFF; /*Old blue*/
+    border:1px solid black;
+    width: 533px;
+    min-width: 512px;
+    padding: 1px;
 }
 
 #lightbox .overview-video-lightbox-content {
