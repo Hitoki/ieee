@@ -2310,6 +2310,10 @@ box-shadow: 0 0 0;
 border: 5px solid #FFFFFF;
 }
 
+#lightbox .welcome-panels-lightbox-content .lightbox-close {
+margin: -20px 0 0 516px;   
+}
+
 #overview-video-link a:hover {
 	text-decoration: none;
 }

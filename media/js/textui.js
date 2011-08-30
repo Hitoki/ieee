@@ -64,6 +64,8 @@ $(document).ready(function(){
          $(".customSelectContainer").blur();
     });
     
+    $("#welcome-link").click();
+    
     $("#link-video").hover(function() {
         $("#video-link").addClass("video-image-hover");
         $("#video-icon").addClass("help-icon-hover");
