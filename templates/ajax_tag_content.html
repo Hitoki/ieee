@@ -227,7 +227,7 @@
                                             <div id="other-conferences-{{ resource.id }}" class="other-conferences">
                                                 {% for other_conference in resource.other_conferences %}
                                                     {% if other_conference.url and other_conference.url_status != "bad" %}
-                                                        <a href="{{ other_conference.url }}" target="_blank">
+                                                        <a href="{{ other_conference.url }}" target="_blank" rel="nofollow">
                                                     {% endif %}
                                                     <p class="{% cycle 'item_odd' 'item_even' %}">
                                                         <span>{{other_conference.name}}</span>
@@ -328,7 +328,7 @@
                         #            {% if experts|length %}
                         #                {% for resource in experts %}
                         #                    {% if resource.url %}
-                        #                        <a href="{{ resource.url }}" target="_blank">
+                        #                        <a href="{{ resource.url }}" target="_blank" rel="nofollow">
                         #                    {% endif %}
                         #                    <p class="{% cycle 'item_odd' 'item_even' %}">{{resource.name}}</p>
                         #                    {% if resource.url %}

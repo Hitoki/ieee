@@ -532,7 +532,7 @@ XploreLoader.prototype.onLoadData = function(data) {
                     html += ', sorted by ' + getXploreSortName(this.sort);
                 }
                 if (!this.ctype){
-                    html += ' (<a href="http://xploreuat.ieee.org/search/freesearchresult.jsp?newsearch=true&queryText=' + escape(data.search_term) + '&x=0&y=0' + (this.ctype ? '&ctype=' + this.ctype : '') + '" target="_blank"><span>Perform Search in Xplore</span> <img src="' + MEDIA_URL + 'images/popup.png" /></a>)'
+                    html += ' (<a href="http://xploreuat.ieee.org/search/freesearchresult.jsp?newsearch=true&queryText=' + escape(data.search_term) + '&x=0&y=0' + (this.ctype ? '&ctype=' + this.ctype : '') + '" target="_blank" rel="nofollow"><span>Perform Search in Xplore</span> <img src="' + MEDIA_URL + 'images/popup.png" /></a>)'
                 }
                 totalElem.html(html);
             }

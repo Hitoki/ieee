@@ -3,7 +3,7 @@
 {% for result in xplore_results %}
     <li>
         {% if result.url %}
-            <a href="{{ result.url }}" target="_blank">
+            <a href="{{ result.url }}" target="_blank" rel="nofollow">
         {% endif %}
         <p class="{% cycle 'item_odd' 'item_even' %}">
             <span class="auto-truncate-words {length:165, flyover:true}">{{ result.rank }}. {{ result.name|safe }}</span>
