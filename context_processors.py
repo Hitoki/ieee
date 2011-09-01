@@ -53,3 +53,10 @@ def settings(request):
 		'DEBUG': settings.DEBUG,
                 'GA_SITE_NUM': settings.GA_SITE_NUM or 1
 	}
+
+def total_tag_count(request):
+    from ieeetags.models import Node, NodeType
+    c = Node.objects.filter(node_type__name=NodeType.TAG).count()
+    return {
+        'total_tag_count': c
+        }
