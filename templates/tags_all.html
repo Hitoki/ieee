@@ -1,0 +1,48 @@
+{% extends "base_table.html" %}
+
+
+{% block logo_href %}{% url tags_list %}{% endblock %}
+{% block feedback %}{% endblock %}{# hide feedback link using blank block #}
+{% block main_table_content %}
+
+<style>
+td{
+padding: 0 5px 0 5px;
+}
+.count, .nodeId{
+text-align: right;
+}
+.cb{
+text-align: center;
+}
+th.result{
+width: 80px;
+}
+</style>
+
+<div style="padding: 2em">
+  <table style="width: 400px; cell-">
+    <tr>
+      <th>Name</th>
+    </tr>
+    <tbody>
+      {% for tag in tags %}
+      <tr>
+        <td><a href="{% url tag_landing tag.pk %}{{tag.name|slugify|slice:":40"}}">{{tag.name}}</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div>Other tags:</div>
+<div>
+    <a href="{% url tags_starts '[0-9]'|urlencode %}">#'s</a> 
+  {% for x in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'  %}
+    <a href="{% url tags_starts x %}">{{ x }}</a>
+    {% if not forloop.last %} - {% endif %}
+  {% endfor %}
+    <a href="{% url tags_starts '[^a-z0-9]'|urlencode %}">misc</a> 
+</div>
+
+{% endblock %}

@@ -1617,6 +1617,19 @@ def tags_list(request):
 
     return render_to_response('tags_list.html', {"tags": Node.objects.get_tags(), "show_id": is_staff, "show_resource_count": is_staff, "show_checkbox": is_staff }, context_instance=RequestContext(request));
     
+def tags_all(request):
+    '''
+    Displays a list of "high_potency" links to the tag "wikipedia-style" pages (see views.tag_landing)
+    '''
+
+    nodes = Node.objects.filter(high_potency=True)
+
+    return render_to_response('tags_all.html', {"tags": nodes }, context_instance=RequestContext(request))
+
+def tags_starts(request, starts_with):
+    nodes = Node.objects.filter(high_potency=False, name__iregex='^'+starts_with)
+    return render_to_response('tags_list.html', {"tags": nodes }, context_instance=RequestContext(request))
+
 def tag_landing(request, tag_id):
     '''
     Displays a wikipedia-style "flat" view of the tag. No tabs or other fancy UI.
