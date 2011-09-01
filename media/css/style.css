@@ -2310,10 +2310,6 @@ box-shadow: 0 0 0;
 border: 5px solid #FFFFFF;
 }
 
-#lightbox .welcome-panels-lightbox-content .lightbox-close {
-margin: -20px 0 0 516px;   
-}
-
 #lightbox .welcome-panels-lightbox-content .lightbox-close.link {
 background-image: none;
 margin: 3px 0 0;  
