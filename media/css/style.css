@@ -68,9 +68,7 @@ table.main td.center .center-pad {
     height: 85px;
     text-align: left;
     position: relative;
-    margin-bottom: 10px;
-    -moz-border-radius: 10px 10px 0 0;
-    -webkit-border-radius: 10px 10px 0 0;
+    margin-bottom: 7px;
 }
 
 #header-links {
@@ -82,13 +80,14 @@ table.main td.center .center-pad {
 }
 
 #header-links img {
-   margin: 11px 33px 0 0;
+   margin: 8px 33px 0 0;
    float: right;
    clear: both;
 }
 
 #header-logo {
    float: left;
+   margin-top: 2px;
 }
 
 #header-logo img {
@@ -101,7 +100,7 @@ table.main td.center .center-pad {
 .header-btns {
     float: right;
     clear: right;
-    margin: 3px 33px 0 0;
+    margin: 8px 33px 0 0;
 }
 
 .header-btns .btn {
