@@ -494,6 +494,7 @@ class Node(models.Model):
     related_tags = models.ManyToManyField('self', null=True, blank=True)
     
     is_taxonomy_term = models.BooleanField(default=False)
+    high_potency = models.BooleanField(default=False)
     'Marks tags that have originated from the IEEE taxonomy.'
     
     objects = NodeManager()
@@ -575,7 +576,12 @@ class Node(models.Model):
             if related_tag.num_filters1 > 0 and related_tag.num_resources1 > 0:
                 count += 1
         return count
-    
+
+    def get_resource_count(self):
+        return ResourceNodes.objects.filter(node=self).count()
+
+    resource_count = property(get_resource_count)
+
     def save(self, add_child_info=True, *args, **kwargs):
         cluster_type = NodeType.objects.getFromName(NodeType.TAG_CLUSTER)
         #print 'Node.save()'

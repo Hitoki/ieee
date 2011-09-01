@@ -59,6 +59,7 @@ urlpatterns += patterns('',
     # Tags
     url(r'^tags/edit$', views.edit_tags, name='admin_edit_tags'),
     url(r'^tags$', views.list_tags, name='admin_list_tags'),
+    url(r'^tag/set_high_potency$', views.tag_set_high_potency),
     url(r'^tag/(\d+)$', views.view_tag, name='admin_view_tag'),
     url(r'^tag/create$', views.create_tag, name='admin_create_tag'),
     url(r'^tag/(?P<tag_id>\d+)/edit$', views.edit_tag, name='admin_edit_tag'),

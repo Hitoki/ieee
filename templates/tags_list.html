@@ -4,10 +4,70 @@
 {% block logo_href %}{% url tags_list %}{% endblock %}
 {% block feedback %}{% endblock %}{# hide feedback link using blank block #}
 {% block main_table_content %}
+
+<style>
+td{
+padding: 0 5px 0 5px;
+}
+.count, .nodeId{
+text-align: right;
+}
+.cb{
+text-align: center;
+}
+th.result{
+width: 80px;
+}
+</style>
+
+{% if show_checkbox %}
+<script type="text/javascript">
+$(document).ready(function(){
+$('input:checkbox').change(function(event){
+    $(event.target).parent().next('.result').children().remove();
+    $.ajax(
+        { 
+          url: '/admin/tag/set_high_potency',
+          data: {id: $(event.target).attr('data-nodeId'), value: $(event.target).is(':checked')},
+          dataType: 'json',
+          success: function(json){
+            if (json.success){
+                var res = $('<span>saved</span>');
+                $(event.target).parent().next('.result').append(res); 
+            }
+          },
+          failure: function(json){
+            
+          }
+        }
+    );
+});
+});
+</script>
+
+{% endif %}
+
 <div style="padding: 2em">
-    {% for tag in tags %}
-        <a href="{% url tag_landing tag.pk %}{{tag.name|slugify}}">{{tag.name}}</a><br/>
-	{% endfor %}
+  <table style="width: 400px; cell-">
+    <tr>
+      <th>Name</th>
+      {% if show_id %}<th>ID</th>{% endif %}
+      {% if show_resource_count %}<th>Resource Count</th>{% endif %}
+      {% if show_checkbox %}<th>High Potency</th>
+      <th class="result"></th>
+      {% endif %}
+    </tr>
+    <tbody>
+      {% for tag in tags %}
+      <tr>
+        {% if show_id %}<td class="nodeId">{{ tag.pk }}</td>{% endif %}
+        <td><a href="{% url tag_landing tag.pk %}{{tag.name|slugify|slice:":40"}}">{{tag.name}}</a></td>
+	{% if show_resource_count %}<td class="count">{{ tag.resource_count }}</td>{% endif %}
+	{% if show_checkbox %}<td class="cb"><input type="checkbox" data-nodeId="{{ tag.pk }}" {% if tag.high_potency %} checked="checked"{% endif %}></input></td><td class="result"></td>{% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 
 {% endblock %}

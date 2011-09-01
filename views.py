@@ -602,7 +602,8 @@ def _get_popularity_level(min, max, count, node=None):
     if min == max:
         return _POPULARITY_LEVELS[len(_POPULARITY_LEVELS)-1]
     print "%s, %s, %s" % (min, max, count)
-    level = int(round(float(count-min) / float(max-min) * float(len(_POPULARITY_LEVELS)-1))) + 1
+    import math
+    level = int(math.ceil(float(count-min) / float(max-min) * float(len(_POPULARITY_LEVELS)-1))) + 1
     
     # TODO: This fixes invisible terms where the count is < min.  Is this a hack?
     if level == 0:
@@ -1611,8 +1612,10 @@ def tags_list(request):
     Displays a list of links to the tag "wikipedia-style" pages (see views.tag_landing)
     Mostly useful for spider link discovery and SEO.
     '''
-    
-    return render_to_response('tags_list.html', {"tags": Node.objects.get_tags()}, context_instance=RequestContext(request));
+
+    is_staff = request.user.is_staff
+
+    return render_to_response('tags_list.html', {"tags": Node.objects.get_tags(), "show_id": is_staff, "show_resource_count": is_staff, "show_checkbox": is_staff }, context_instance=RequestContext(request));
     
 def tag_landing(request, tag_id):
     '''

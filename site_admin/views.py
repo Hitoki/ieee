@@ -854,6 +854,15 @@ def unassigned_tags(request):
         },
     })
 
+
+@login_required
+@admin_required
+def tag_set_high_potency(request):
+    tag = Node.objects.get(id=request.GET.get('id'))
+    tag.high_potency = request.GET.get('value') == 'true'
+    tag.save()
+    return HttpResponse(json.dumps({'success': True}), 'application/javascript')
+
 def _remove_society_acronym(society_name):
     # Make sure the society name field does not contain a redundant acronym (there is already have an acronym field)
     matches = re.match(r'^(.+) \((.+)\)$', society_name)
