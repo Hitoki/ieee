@@ -771,6 +771,17 @@ span#roamer-beta-warning {
     color: white;
 }
 
+#alternate-page #left-column ul#sectors li#cluster a,
+#alternate-page #left-column ul#societies li#cluster a {
+   padding-left: 25px;
+   background: transparent url(/media/images/icon_cluster_sm.png) no-repeat scroll 3px 4px;
+}
+
+#alternate-page  #left-column ul#societies li#cluster a:hover,
+#alternate-page  #left-column ul#sectors li#cluster a:hover {
+   background: orange url(/media/images/icon_cluster_sm.png) no-repeat scroll 3px 4px !important;
+}
+
 #alternate-page #left-column ul#societies li a.active-society {
     background:#006699;
     color: white;
