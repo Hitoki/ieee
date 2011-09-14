@@ -213,7 +213,7 @@ def main(*args):
                 
                 resSum['tags_processed'] += 1
                 log('Querying Xplore for Tag: %s' % tag.name)
-                xplore_query_url = settings.EXTERNAL_XPLORE_URL + urllib.urlencode({
+                xplore_query_url = ieeetags.settings.EXTERNAL_XPLORE_URL + urllib.urlencode({
                     # Number of results
                     'hc': xplore_hc,
                     # NOTE: Must UTF8 encode here, otherwise urlencode() fails with non-ASCII names.
