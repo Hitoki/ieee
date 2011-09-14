@@ -6,6 +6,12 @@
 {% block main_table_content %}
 
 <style>
+.countLbl{
+
+}
+.countVal{
+font-weight: bold;
+}
 td{
 padding: 0 5px 0 5px;
 }
@@ -54,10 +60,14 @@ $('input:checkbox').change(function(event){
 {% endif %}
 
 <div style="padding: 2em 0">
-  <table style="width: 400px; cell-">
+<div>
+<span class="countLbl">Tags shown: </span><span class="countVal">{{ tags.count }}</span>
+</div>
+<br/> 
+ <table style="width: 400px; cell-">
     <tr>
       {% if show_id %}<th>ID</th>{% endif %}
-      <th>Name</th>
+      <th style="text-align: left">Name</th>
       {% if show_resource_count %}<th>Resource Count</th>{% endif %}
       {% if show_checkbox %}<th>High Potency</th>
       <th class="result"></th>

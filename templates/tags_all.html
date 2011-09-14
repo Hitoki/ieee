@@ -6,6 +6,12 @@
 {% block main_table_content %}
 
 <style>
+.countLbl{
+
+}
+.countVal{
+font-weight: bold;
+}
 td{
 padding: 0 5px 0 5px;
 }
@@ -27,9 +33,13 @@ $(document).ready(function(){
 </script>
 
 <div style="padding: 2em 0">
+<div>
+<span class="countLbl">Total tags: </span><span class="countVal">{{ total_tag_count }}</span>&nbsp;<span class="countLbl">Tags shown: </span><span class="countVal">{{ tags.count }}</span>
+</div>
+<br/>
   <table style="width: 400px; cell-">
     <tr>
-      <th>Name</th>
+      <th style="text-align: left">Name</th>
     </tr>
     <tbody>
       {% for tag in tags %}
