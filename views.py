@@ -374,7 +374,7 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
         'rs': offset+1
     }
 
-    tax_term_count = ieeetags.Node.objects.filter(name='tag_name', is_taxonomy_term=True).count()
+    tax_term_count = Node.objects.filter(name='tag_name', is_taxonomy_term=True).count()
     if tax_term_count:
         params['thsrsterms'] = '"%s"' % tag_name.encode('utf-8')
     else:
