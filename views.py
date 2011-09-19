@@ -388,6 +388,9 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
         params['ctype'] = ctype
     url = settings.EXTERNAL_XPLORE_URL + urllib.urlencode(params)
 
+    if settings.DEBUG:
+        log('xplore query: %s' % url)
+
     try:
         file1 = urllib2.urlopen(url)
     except urllib2.URLError:
