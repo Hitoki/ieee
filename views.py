@@ -372,7 +372,7 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
         'hc': max_num_results,
         # Specifies the result # to start from
         'rs': offset+1,
-        'md': tag_name.encode('utf-8'),
+        'thsrsterms': '"%s"' % tag_name.encode('utf-8'),
     }
     if sort:
         params['sortfield'] = sort
@@ -381,7 +381,7 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
     if ctype:
         params['ctype'] = ctype
     url = settings.EXTERNAL_XPLORE_URL + urllib.urlencode(params)
-    
+
     try:
         file1 = urllib2.urlopen(url)
     except urllib2.URLError:
@@ -431,6 +431,7 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
         except TypeError:
             # return
             return [], 'No records found', 0
+                
         
         xplore_results = []
         for document1 in xml1.documentElement.getElementsByTagName('document'):

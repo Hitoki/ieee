@@ -486,17 +486,7 @@ XploreLoader.prototype.onLoadData = function(data) {
             this.noResultsElem = null;
         }
 	
-        if (data.num_results == 0){
-	    if(this.ctype == "Educational Courses"){
-		$('#num-education-results').text('(0)');
-		$('#education-results-container .print-resource').remove(); 
-		this.listElem.html('<p class="no-resources">No educational resources are currently tagged ' + $('#tag-name').text() + '</p>');
-	    }
-
-            this.unbind(scroll);
-            return false;
-        }
-        if (data.xplore_error != null) {
+        if (data.xplore_error != null && data.num_results != 0) {
             // Xplore error, show the error message.
             this.errorElem = $('<p class="error" style="margin: 50px 0 0 10px;"></p>').appendTo(this.scrollElem);
             this.errorElem.text(data.xplore_error);
@@ -525,7 +515,16 @@ XploreLoader.prototype.onLoadData = function(data) {
             $('#num-related-items').metadata().number = newTotal;
             
             if (data.num_results == 0) {
+		if(this.ctype == "Educational Courses"){
+		    $('#num-education-results').text('(0)');
+		    $('#education-results-container .print-resource').remove(); 
+		    this.listElem.html('<p class="no-resources">No educational resources are currently tagged ' + $('#tag-name').text() + '</p>');
+		} else {
+		    $('#num-xplore-results').text('(0)');
+		    $('#xplore-results-container .print-resource').remove(); 
                 this.noResultsElem = $('<p class="no-resources">No xplore results are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
+		}
+
             } else {
                 var html = 'Showing ' + addCommas(data.num_results) + ' results';
                 if (this.sort) {
