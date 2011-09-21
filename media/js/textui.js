@@ -108,7 +108,7 @@ $(document).ready(function(){
                 } else if (tab.tab[0].id == 'societies-tab') {
                     Tags.selectSociety('all');
                 } else {
-					ajax_report_error('onChangeTab(): Error: unknown tab id "' + tab.tab[0].id + '"');
+                                        ajax_report_error('onChangeTab(): Error: unknown tab id "' + tab.tab[0].id + '"');
                     return;
                 }
             }
@@ -345,11 +345,11 @@ var Tags = {
         
         // Update the switch interfaces link
         this.updateChangedNode();
-		
+                
         var tagWindow = $("#tags");
-	// unbind scroll event to avoid tags appearing under the loading animation
-	// it will get reboud once the load is complete
-	tagWindow.unbind('scroll');
+        // unbind scroll event to avoid tags appearing under the loading animation
+        // it will get reboud once the load is complete
+        tagWindow.unbind('scroll');
         tagWindow.empty();
         tagWindow.html(
             '<div id="loading" class="please-wait">'
@@ -495,8 +495,8 @@ var Tags = {
                     , sort: this.getSort()
                     , search_for: search_for
                     , page: 'sector'
-					, show_clusters: showClusters
-					, show_terms: showTerms
+                                        , show_clusters: showClusters
+                                        , show_terms: showTerms
                     , token: token
                 },
                 function(data) {
@@ -519,8 +519,8 @@ var Tags = {
                     , sort: this.getSort()
                     , search_for: search_for
                     , page: 'society'
-					, show_clusters: showClusters
-					, show_terms: showTerms
+                                        , show_clusters: showClusters
+                                        , show_terms: showTerms
                     , token: token
                 },
                 function(data) {
@@ -549,15 +549,15 @@ var Tags = {
             $.get(
                 '/ajax/textui_nodes',
                 {
-					search_for: search_for
-					, society_id: this.societyId
-					, node_id: this.sectorId
-					, cluster_id: this.clusterId
-					, page: page
-					, show_clusters: showClusters
-					, show_terms: showTerms
+                                        search_for: search_for
+                                        , society_id: this.societyId
+                                        , node_id: this.sectorId
+                                        , cluster_id: this.clusterId
+                                        , page: page
+                                        , show_clusters: showClusters
+                                        , show_terms: showTerms
                     , token: token
-				},
+                                },
                 function(data) {
                     Tags.onLoadResults(data);
                     if (showSearchResultsCallback) {
@@ -607,11 +607,11 @@ var Tags = {
             
             $('#tags').empty();
             this.loadContentChunk();
-	    
-	    // Rebind the scroll event
-	    var tags = this;
+            
+            // Rebind the scroll event
+            var tags = this;
             $('#tags').scroll(function() {
-		tags.onScroll();
+                tags.onScroll();
             });
 
         }
@@ -762,9 +762,9 @@ var Tags = {
     selectCluster: function(clusterId, sectorId, societyId, setHash) {
         var tags = this;
 
-	// unbind scroll event to avoid tags appearing under the loading animation
-	// it will get reboud once the load is complete
-	$('#tags').unbind('scroll');
+        // unbind scroll event to avoid tags appearing under the loading animation
+        // it will get reboud once the load is complete
+        $('#tags').unbind('scroll');
 
         log("selectCluster()");
         log("  clusterId: " + clusterId);
@@ -819,7 +819,7 @@ var Tags = {
         
         // Hide any flyvoers so they don't persist when the node is gone.
         Flyover.hide();
-		
+                
         var showClusters;
         if ($('#show-clusters').length) {
             showClusters = $('#show-clusters').attr('checked');
@@ -1092,10 +1092,10 @@ var Tags = {
                 //    , height: (tags.defaultClusterIconHeight * scaleZoom(zoom, 1) / 100) + 'px'
                 //});
               
-		// Add another content chunk if we haven't filled the container yet.
-		if ($('#tags').attr('scrollHeight') <= $('#tags').outerHeight() + $('#tags-chunk-loading').outerHeight()){
-		    tags.loadContentChunk();
-		}
+                // Add another content chunk if the tag container is not full.
+                if ($('#tags').attr('scrollHeight') <= $('#tags').outerHeight() + $('#tags-chunk-loading').outerHeight()){
+                    tags.loadContentChunk();
+                }
 
                 tags._hideWaitScreenOver();                
 
@@ -1207,7 +1207,7 @@ var Tags = {
                     , hideDelay: 400
                     , positionCursor: false
                     , closeButton: true
-		    , useWaitCursor: true
+                    , useWaitCursor: true
                 }
             );
 
@@ -1219,10 +1219,10 @@ var Tags = {
                         + '<img src="/media/images/ajax-loader.gif" />'
                     + '</div>'
                 ));
-		// Add another content chunk if we haven't filled the container yet.
-		if ($('#tags').attr('scrollHeight') <= $('#tags').outerHeight() + $('#tags-chunk-loading').outerHeight()){
-		     this.loadContentChunk();
-		}
+                // Add another content chunk if we haven't filled the container yet.
+                if ($('#tags').attr('scrollHeight') <= $('#tags').outerHeight() + $('#tags-chunk-loading').outerHeight()){
+                     this.loadContentChunk();
+                }
             }
         }
         
