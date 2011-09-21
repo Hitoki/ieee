@@ -1091,9 +1091,14 @@ var Tags = {
                 //    width: (tags.defaultClusterIconWidth * scaleZoom(zoom, 1) / 100) + 'px'
                 //    , height: (tags.defaultClusterIconHeight * scaleZoom(zoom, 1) / 100) + 'px'
                 //});
-                
-                tags._hideWaitScreenOver();
-                
+              
+		// Add another content chunk if we haven't filled the container yet.
+		if ($('#tags').attr('scrollHeight') <= $('#tags').outerHeight() + $('#tags-chunk-loading').outerHeight()){
+		    tags.loadContentChunk();
+		}
+
+                tags._hideWaitScreenOver();                
+
                 if (tags_callback) {
                     tags_callback();
                 }
@@ -1108,6 +1113,7 @@ var Tags = {
         this.oldZoom = zoom;
         
         //log('~resizeNodes()');
+
     },
     
     onScroll: function() {
