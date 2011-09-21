@@ -607,6 +607,7 @@ var Tags = {
             
             $('#tags').empty();
             this.loadContentChunk();
+	    
 	    // Rebind the scroll event
 	    var tags = this;
             $('#tags').scroll(function() {
@@ -1203,7 +1204,7 @@ var Tags = {
 		    , useWaitCursor: true
                 }
             );
-            
+
             if (this.remainingContent.length > 0) {
                 // Show the loading banner if there is still remaining content.
                 tagWindow.append($(''
@@ -1212,6 +1213,10 @@ var Tags = {
                         + '<img src="/media/images/ajax-loader.gif" />'
                     + '</div>'
                 ));
+		// Add another content chunk if we haven't filled the container yet.
+		if ($('#tags').attr('scrollHeight') <= $('#tags').outerHeight() + $('#tags-chunk-loading').outerHeight()){
+		     this.loadContentChunk();
+		}
             }
         }
         
