@@ -378,7 +378,7 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
     if tax_term_count:
         params['thsrsterms'] = '"%s"' % tag_name.encode('utf-8')
     else:
-        params['md'] = tag_name.encode('utf-8')
+        params['md'] = '"%s"' % tag_name.encode('utf-8')
 
     if sort:
         params['sortfield'] = sort
