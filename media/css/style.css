@@ -1755,8 +1755,8 @@ p.export {
 
 .close-help {
     display: inline-block;
-    cursor: pointer;
     text-decoration:underline;
+    color: #FFFFFF;
 }
 
 #help-close-button {

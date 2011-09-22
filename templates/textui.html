@@ -148,23 +148,23 @@
                 <span class="feature_label">Navigate by:</span>
                 <div id="left-column-container" class="{ useCookies:false, useHash:false }">
                     <ul id="galaxy-tabs" class="nootabs-menus">
-                        <li><a href="">Industry Sector</a></li>
-                        <li class="last-menu"><a href="">IEEE Organization</a></li>
+                        <li><a href="" rel="nofollow">Industry Sector</a></li>
+                        <li class="last-menu"><a href="" rel="nofollow">IEEE Organization</a></li>
                         <li style="display:none;"><a href="">&nbsp;</a></li> {# used to compensate for filters div #}
                     </ul>
                     <div id="sectors-tab" class="sectors-vert-box">
                         <ul id="sectors">
-                            <li id="sector-list-item-all"><a href="javascript:Tags.selectSector('all');">All Industry Sectors</a></li>                        
+                            <li id="sector-list-item-all"><a href="javascript:Tags.selectSector('all');" rel="nofollow">All Industry Sectors</a></li>                        
                             {% for sector in sectors %}
-                                <li id="sector-list-item-{{ sector.id }}"><a href="javascript:Tags.selectSector({{ sector.id }});">{{ sector.name }}</a></li>
+                                <li id="sector-list-item-{{ sector.id }}"><a href="javascript:Tags.selectSector({{ sector.id }});" rel="nofollow">{{ sector.name }}</a></li>
                                 {% endfor %}
                         </ul>
                     </div>
                     <div id="societies-tab">
                         <ul id="societies">
-                            <li id="society-list-item-all"><a href="javascript:Tags.selectSociety('all');">All IEEE Organizations</a></li>                         
+                            <li id="society-list-item-all"><a href="javascript:Tags.selectSociety('all');" rel="nofollow">All IEEE Organizations</a></li>                         
                             {% for society in societies %}
-                                <li id="society-list-item-{{ society.id }}"><a href="javascript:Tags.selectSociety({{ society.id }});">{{ society.name }}</a></li>
+                                <li id="society-list-item-{{ society.id }}"><a href="javascript:Tags.selectSociety({{ society.id }});" rel="nofollow">{{ society.name }}</a></li>
                             {% endfor %}
                         </ul>
                     </div>
@@ -301,8 +301,8 @@
                                 </tr></table>
                             </div>
                             <div id="hide-help-box" style="padding-top:36px;margin-bottom:-7px">
-                                <div class="close-help" id="help-close-button">Hide</div> 
-                                <div class="close-help" id="no-show-box">Hide and don't show again</div>
+                                <a href="javascript:void(0)" class="close-help" id="help-close-button" rel="nofollow">Hide</a> 
+                                <a href="javascript:void(0)" class="close-help" id="no-show-box" rel="nofollow">Hide and don't show again</a>
                             </div>
                         </div>
                     </div>
