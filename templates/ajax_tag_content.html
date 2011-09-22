@@ -38,10 +38,10 @@
            </script>
             <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script> 
             <div class="addthis_toolbox addthis_default_style ">
-                <a class="addthis_button_email"></a>
-                <a class="addthis_button_twitter"></a>
-                <a class="addthis_button_facebook"></a>
-                <a class="addthis_button_linkedin"></a>
+                <a class="addthis_button_email" rel="nofollow"></a>
+                <a class="addthis_button_twitter" rel="nofollow"></a>
+                <a class="addthis_button_facebook" rel="nofollow"></a>
+                <a class="addthis_button_linkedin" rel="nofollow"></a>
             </div>
             <script type="text/javascript">
                 $(function(){
@@ -63,26 +63,26 @@
 
                     <div id="resource-tabs" class="nootabs tag-resources-tabs { useCookies:false, defaultTab:2, useHash:false }">
                         <ul class="nootabs-menus">
-                            <li id="industry-sectors-tab" class="begin-group-menu"><a href="" class="two-word-menu">Industry <br />Sectors <span>({{ parent_nodes|length }})</span></a></li>
+                            <li id="industry-sectors-tab" class="begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Industry <br />Sectors <span>({{ parent_nodes|length }})</span></a></li>
                             {% comment %}
                             #TODO: Re-enable clusters
-                            #<li><a href="">Sectors &amp; Clusters ({{ parent_nodes|length }})</a></li>
+                            #<li><a href="" rel="nofollow">Sectors &amp; Clusters ({{ parent_nodes|length }})</a></li>
                             {% endcomment %}
                             {% comment %}
-                            #<li><a href="">Filters ({{ tag.filters.count }})</a></li>
+                            #<li><a href="" rel="nofollow">Filters ({{ tag.filters.count }})</a></li>
                             {% endcomment %}
-                            <li id="ieee-societies-tab" class="middle-group-menu"><a href="" class="two-word-menu">IEEE<br /> Organizations <span>({{ societies.count }})</span></a></li>
-                            <li id="related-tags-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu">Related <br />Tags <span>({{ tag.related_tags.count }})</span></a></li>
-                            <li id="conferences-tab" class="begin-group-menu"><a href="" class="two-word-menu">Conferences <span>({{conferences|length}})</span></a></li>
-                            <li id="periodicals-tab" class="middle-group-menu"><a href="" class="two-word-menu">Periodicals <span>({{periodicals|length}})</span></a></li>
-                            <li id="standards-tab" class="middle-group-menu"><a href="" class="two-word-menu">Standards <span>({{standards|length}})</span></a></li>
+                            <li id="ieee-societies-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">IEEE<br /> Organizations <span>({{ societies.count }})</span></a></li>
+                            <li id="related-tags-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu" rel="nofollow">Related <br />Tags <span>({{ tag.related_tags.count }})</span></a></li>
+                            <li id="conferences-tab" class="begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Conferences <span>({{conferences|length}})</span></a></li>
+                            <li id="periodicals-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Periodicals <span>({{periodicals|length}})</span></a></li>
+                            <li id="standards-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Standards <span>({{standards|length}})</span></a></li>
                             
 
                             {% comment %}
-                            #    <li><a href="">Experts <span>({{experts|length}})</span></a></li>
+                            #    <li><a href="" rel="nofollow">Experts <span>({{experts|length}})</span></a></li>
                             {% endcomment %}
-                            <li id="articles-tab" class="right-menu"><a href="" class="two-word-menu">IEEE Xplore<br/>Articles <span id="num-xplore-results"></span></a></li>
-                            <li id="educations-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu">Educational<br/>Resources <span id="num-education-results"></span></a></li>
+                            <li id="articles-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">IEEE Xplore<br/>Articles <span id="num-xplore-results"></span></a></li>
+                            <li id="educations-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu" rel="nofollow">Educational<br/>Resources <span id="num-education-results"></span></a></li>
                         </ul>
                         
                         <!-- Sectors &amp; Clusters -->
@@ -92,12 +92,12 @@
                                     {% for parent_node in parent_nodes %}
                                         <p class="{% cycle 'item_odd' 'item_even' %}">
                                             {% ifequal ui "textui" %}
-                                                <a href="javascript:Tags.selectSector({{ parent_node.sector.id }});">
+                                                <a href="javascript:Tags.selectSector({{ parent_node.sector.id }});" rel="nofollow">
                                                     <span>{{ parent_node.sector.name }}</span>
                                                 </a>
                                             {% else %}
                                                 {% ifequal ui "roamer" %}
-                                                    <a href="javascript:Roamer.setNode({{ parent_node.sector.id }});">
+                                                    <a href="javascript:Roamer.setNode({{ parent_node.sector.id }});" rel="nofollow">
                                                         <span>{{ parent_node.sector.name }}</span>
                                                     </a>
                                                 {% endifequal %}
@@ -175,7 +175,7 @@
                                     {% for related_tag in tag.related_tags.all %}
                                         <p class="{% cycle 'item_odd' 'item_even' %}">
                                             {% ifequal ui "textui" %}
-                                                <a href="javascript:Tags.selectTag({{ related_tag.id }});">
+                                                <a href="javascript:Tags.selectTag({{ related_tag.id }});" rel="nofollow">
                                                     <span>{{ related_tag.name }}</span>
                                                 </a>
                                             {% else %}
@@ -214,11 +214,11 @@
                                         <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
                                         {% if resource.is_current_conference and resource.other_conferences|length %}
                                             <p class="more-conferences">
-                                                <a href="#" id="show-other-conferences-{{ resource.id }}" class="show-other-conferences {id: {{ resource.id }}}">
+                                                <a href="#" id="show-other-conferences-{{ resource.id }}" class="show-other-conferences {id: {{ resource.id }}}" rel="nofollow">
                                                     <img src="{{ MEDIA_URL }}images/plusbox.png"/>
                                                     Show {{ resource.other_conferences|length }} more conference{{ resource.other_conferences|pluralize }} in this series...
                                                 </a>
-                                                <a href="#" id="hide-other-conferences-{{ resource.id }}" class="hide-other-conferences {id: {{ resource.id }}}">
+                                                <a href="#" id="hide-other-conferences-{{ resource.id }}" class="hide-other-conferences {id: {{ resource.id }}}" rel="nofollow">
                                                     <img src="{{ MEDIA_URL }}images/minusbox.png"/>
                                                     Hide other conferences in this series
                                                 </a>
@@ -227,7 +227,7 @@
                                             <div id="other-conferences-{{ resource.id }}" class="other-conferences">
                                                 {% for other_conference in resource.other_conferences %}
                                                     {% if other_conference.url and other_conference.url_status != "bad" %}
-                                                        <a href="{{ other_conference.url }}" target="_blank" rel="nofollow">
+                                                        <a href="{{ other_conference.url }}" target="_blank" rel="nofollow" rel="nofollow">
                                                     {% endif %}
                                                     <p class="{% cycle 'item_odd' 'item_even' %}">
                                                         <span>{{other_conference.name}}</span>

@@ -17,7 +17,7 @@
             {% endcomment %}
             <tr>
                 <td>
-                    <a href="javascript:Tags.selectTag({{tag.id}}, 'sector-tab');">
+                    <a href="javascript:Tags.selectTag({{tag.id}}, 'sector-tab');" rel="nofollow">
                         <table class="sector-block vert-center">
                             <tr>
                                 <td class="{{sectorLevel}}">
@@ -33,7 +33,7 @@
             </tr>
             <tr>
                 <td>
-                    <a href="javascript:Tags.selectTag({{tag.id}}, 'society-tab');">
+                    <a href="javascript:Tags.selectTag({{tag.id}}, 'society-tab');" rel="nofollow">
                         <table class="societies-block vert-center">
                             <tr>
                                 <td class="{{societyLevel}}">
@@ -49,7 +49,7 @@
             </tr>
             <tr>
                 <td>
-                    <a href="javascript:Tags.selectTag({{tag.id}}, 'related-tab');">
+                    <a href="javascript:Tags.selectTag({{tag.id}}, 'related-tab');" rel="nofollow">
                         <table class="related-tags-block vert-center">
                             <tr>
                                 <td class="{{relatedTagLevel}}">
@@ -65,10 +65,10 @@
             </tr>
         </table>
         <div class="results-links">
-            <a href="javascript:Tags.selectTag({{tag.id}});">{{ tag.resources.count }} Resource{{tag.resources.count|pluralize}} Tagged "{{ tag.name }}"</a> 
-			<a onclick="javascript:window.open('/tag/{{ tag.id }}/{{ tag.name|slugify }}', 'landing');" href="javascript:void(0)" style="text-decoration: none;float:right;">*</a>
+            <a href="javascript:Tags.selectTag({{tag.id}});" rel="nofollow">{{ tag.resources.count }} Resource{{tag.resources.count|pluralize}} Tagged "{{ tag.name }}"</a> 
+			<a onclick="javascript:window.open('/tag/{{ tag.id }}/{{ tag.name|slugify }}', 'landing');" href="javascript:void(0)" style="text-decoration: none;float:right;" rel="nofollow">*</a>
             {% if showEditLink %}
-                <br /><a href="/admin/tag/{{ tag.id }}/edit">Edit this Tag</a>
+                <br /><a href="/admin/tag/{{ tag.id }}/edit" rel="nofollow">Edit this Tag</a>
             {% endif %}
         </div>
     </div>
