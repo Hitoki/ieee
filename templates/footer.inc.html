@@ -15,9 +15,9 @@
                         <a href="{% url admin_home %}">Organization Manager</a>
                     {% endifequal %}
                     {% if user.is_authenticated %}
-                        <a href="{% url admin_logout %}">*</a>
+                        <a href="{% url admin_logout %}" rel="nofollow">*</a>
                     {% else %}
-                        <a href="{% url admin_login %}">*</a>
+                        <a href="{% url admin_login %}" rel="nofollow">*</a>
                     {% endif %}
                 </p>
             {% endif %}
