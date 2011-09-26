@@ -79,7 +79,7 @@ Include file used by both print_resource.html and tag_landing.html
                 {% for society in societies %}
                     <li>
                         {% if create_links %}
-                            <a href="{{ society.url }}">{{ society.name }}</a>
+                            <a href="{{ society.url }}" rel="nofollow">{{ society.name }}</a>
                         {% else %}
                             {{ society.name }}
                         {% endif %}
