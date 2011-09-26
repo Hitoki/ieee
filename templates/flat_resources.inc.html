@@ -28,6 +28,9 @@ Include file used by both print_resource.html and tag_landing.html
             <a class="addthis_counter addthis_bubble_style"></a>
         </div>
         <!-- AddThis Button END -->
+	{% if tag.definition %}
+	<p style="clear: both">{{ tag.definition|safe }}</p>
+	{% endif %}
         <table id="tag_middle"><tbody>
             <tr>
                 {% if toc %}

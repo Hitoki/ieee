@@ -494,9 +494,14 @@ class Node(models.Model):
     related_tags = models.ManyToManyField('self', null=True, blank=True)
     
     is_taxonomy_term = models.BooleanField(default=False)
-    high_potency = models.BooleanField(default=False)
     'Marks tags that have originated from the IEEE taxonomy.'
+
+    high_potency = models.BooleanField(default=False)
+
+    definition = models.CharField(blank=True, null=True, max_length=2000)
+
     
+
     objects = NodeManager()
     
     def __unicode__(self):
