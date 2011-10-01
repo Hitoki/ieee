@@ -154,10 +154,10 @@ table.main td.center .center-pad {
 #header #tagline {
     color:#006699;
 	display: none;
-    float: left;
+    float: right;
     font-size:12pt;
     font-style:italic;
-    margin:12px 0 0 50px
+    margin:12px 30px 0 0;
     position: relative;
     white-space: nowrap;
 }

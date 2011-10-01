@@ -2,6 +2,7 @@
 <div id="header">
     <span id="header-links">
         <a href="http://ieee.org" rel="nofollow"><img src="{{MEDIA_URL}}images/sm-logo.png" width="106" height="32"/></a>
+        <span id="tagline">Connecting You to the IEEE Universe of Information</span>
         <span class="header-btns">
             <a href="/tags/all" id="totalTagLink"><span id="totalTagCount">{{ total_tag_count|intcomma  }}</span> tags and counting!</a> &nbsp;&nbsp;
             {% if user.is_superuser %}<a href="{% url admin_home %}" class="btn admin" rel="nofollow">Admin</a>{% endif %} 
@@ -13,6 +14,5 @@
         <a href="{{ LOGO_HREF }}" class="home" rel="nofollow">
             <img src="{{MEDIA_URL}}images/technav_banner.png" width="410" height="73"/>
         </a>
-         <span id="tagline">Connecting You to the IEEE Universe of Information</span>
     </div>
 </div>
