@@ -155,9 +155,9 @@ table.main td.center .center-pad {
     color:#006699;
 	display: none;
     float: left;
-    font-size:13pt;
+    font-size:12pt;
     font-style:italic;
-    margin:49px 34px 0 0;
+    margin:12px 0 0 50px
     position: relative;
     white-space: nowrap;
 }
