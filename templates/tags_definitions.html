@@ -1,0 +1,85 @@
+{% extends "base_table.html" %}
+
+
+{% block logo_href %}{% url tags_list %}{% endblock %}
+{% block feedback %}{% endblock %}{# hide feedback link using blank block #}
+{% block main_table_content %}
+
+<style>
+.countLbl{
+
+}
+.countVal{
+font-weight: bold;
+}
+td{
+padding: 0 5px 0 5px;
+}
+.count, .nodeId{
+text-align: right;
+}
+.cb{
+text-align: center;
+}
+th.result{
+width: 80px;
+}
+td{
+padding: 10px;
+}
+</style>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#totalTagLink").remove();
+});
+</script>
+
+{% if show_checkbox %}
+<script type="text/javascript">
+$(document).ready(function(){
+$('input:checkbox').change(function(event){
+    $(event.target).parent().next('.result').children().remove();
+    $.ajax(
+        { 
+          url: '/admin/tag/set_high_potency',
+          data: {id: $(event.target).attr('data-nodeId'), value: $(event.target).is(':checked')},
+          dataType: 'json',
+          success: function(json){
+            if (json.success){
+                var res = $('<span>saved</span>');
+                $(event.target).parent().next('.result').append(res); 
+            }
+          },
+          failure: function(json){
+            
+          }
+        }
+    );
+});
+});
+</script>
+
+{% endif %}
+
+<div style="padding: 2em 0">
+<div>
+<span class="countLbl">Tags shown: </span><span class="countVal">{{ tags.count }}</span>
+</div>
+<br/> 
+ <table style="width: 400px;">
+    <tbody>
+      {% for tag in tags %}
+      <tr>
+        {% if show_id %}<td class="nodeId">{{ tag.pk }}</td>{% endif %}
+        <td><a href="{% url tag_landing tag.pk %}{{tag.name|slugify|slice:":40"}}">{{tag.name}}</a></td>
+        <td>{{ tag.definition }}</td>
+      </tr>
+      {% empty %}
+       <td colspan="4">Sorry no matching tags found.</td>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}
