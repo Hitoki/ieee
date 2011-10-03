@@ -2947,6 +2947,7 @@ def edit_tag(request, tag_id):
     form = EditTagForm(initial={
         'id': tag.id,
         'name': tag.name,
+        'definition': tag.definition,
         'parents': [parent.id for parent in tag.parents.all()],
         'node_type': tag.node_type.id,
         'societies': tag.societies.all(),
@@ -3029,9 +3030,11 @@ def save_tag(request, tag_id):
         
         #tag.node_type = form.cleaned_data['node_type']
         if form.cleaned_data['societies'] is not None:
-            tag.societies = form.cleaned_data['societies']
+            NodeSocieties.objects.update_for_node(tag, form.cleaned_data['societies'])                        
+
         tag.filters = form.cleaned_data['filters']
         tag.related_tags = form.cleaned_data['related_tags']
+        tag.definition = form.cleaned_data['definition']
         tag.save()
         
         clusters = tag.get_parent_clusters()

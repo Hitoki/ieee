@@ -65,6 +65,14 @@
             </tr>
             <tr>
                 <th>
+                    <label for="id_definition">{{ form.definition.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="Definition from the IEEE Thesaurus/Taxonomy">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.definition }}
+                </td>
+            </tr>
+            <tr>
+                <th>
                     <label for="id_societies">{{ form.societies.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="IEEE organizations that have associated Tag with their domain.">[?]</span>:</label>
                 </th>
                 <td>

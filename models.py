@@ -742,11 +742,22 @@ class Node(models.Model):
     class Meta:
         ordering = ['name']
         
+
+class NodeSocietiesManager(models.Manager):
+    def update_for_node(self, node, societies):
+        societies_to_delete = self.filter(node=node).exclude(society__in=societies)
+        societies_to_delete.delete()
+
+        for society in societies:
+            self.get_or_create(node=node, society=society)
+
 class NodeSocieties(models.Model):
     node = models.ForeignKey('Node', related_name='node_societies')
     society = models.ForeignKey('Society', related_name='node_societies')
     date_created = models.DateTimeField(blank=True, null=True, default=None)
     is_machine_generated = models.BooleanField(default=False)
+
+    objects = NodeSocietiesManager()
     
     class Meta:
         db_table = 'ieeetags_node_societies'
