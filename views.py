@@ -1701,7 +1701,7 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
         if template_name == 'tag_landing.html':
 
             for conference in conferences:
-                if not re.compile('^https?://').match(conference.url):
+                if len(conference.url.strip()) and  not re.compile('^https?://').match(conference.url):
                     conference.url = 'http://' + conference.url
                 
             # Sort the conferences by year latest to earliest.
