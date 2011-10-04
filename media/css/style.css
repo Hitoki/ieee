@@ -2787,3 +2787,10 @@ td.machine-generated-column {
 .tag_base #inner-container {
    background: none repeat scroll 0 0 white;
 }
+
+#countLink {
+    float: right;
+    font-weight: bold;
+    margin-right: 33px;
+    text-decoration: underline;   
+}
