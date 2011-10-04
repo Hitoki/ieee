@@ -1699,6 +1699,11 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     if resource_type == 'conferences' or resource_type == 'all':
         conferences = Resource.objects.getForNode(tag, resourceType=ResourceType.CONFERENCE)
         if template_name == 'tag_landing.html':
+
+            for conference in conferences:
+                if not re.compile('^https?://').match(conference.url):
+                    conference.url = 'http://' + conference.url
+                
             # Sort the conferences by year latest to earliest.
             conferences = list(sorted(conferences, key=lambda resource: resource.year, reverse=True))
             conferences = util.group_conferences_by_series(conferences)
