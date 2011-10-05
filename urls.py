@@ -6,6 +6,8 @@ import site_admin.views
 import settings
 import views
 
+from ieeetags.sitemaps import *
+
 django.contrib.admin.autodiscover()
 
 if not settings.DEBUG:
@@ -20,6 +22,14 @@ if settings.DISABLE_SITE:
     
 else:
     urlpatterns = patterns('',
+        url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap',
+            {'sitemaps': {
+                    'OneOffs':        OneOffsSitemap
+                    ,'TagsStartWith': TagsStartWithSitemap
+                    ,'Tags':          TagLandingSitemap
+                    }
+             }
+        ),
         url(r'^$', views.index, name='index'),
         url(r'^roamer$', views.roamer, name='roamer'),
         url(r'^textui/(survey)?$', views.textui, name='textui'),

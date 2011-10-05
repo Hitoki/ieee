@@ -127,6 +127,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.humanize',
+    'django.contrib.sitemaps',
     'south',
     'ieeetags',
     'ieeetags.site_admin',
