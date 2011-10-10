@@ -54,9 +54,11 @@
                 </table>
             </form>
             
+            {% comment %}
             <div id="testerBtn-container">
                 <a id="testerBtn" href="{% url tester_message %}" class="lightbox {customClass: 'tester-message'}">Testers, please read this first!</a>
             </div>
+            {% endcomment %}
             
             <div id="overview-video-link">
                 <a id="show-video-link" href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}"><span class="{customClass: 'overview-video'}" style="margin:0 0 10px 10px;display:inline-block">Watch the overview video</span><img src='{{ MEDIA_URL}}images/video-still.png' alt="IEEE Video Still" style="width: 223px; height: 125px; vertical-align: middle" /></a>
