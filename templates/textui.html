@@ -226,27 +226,30 @@
                                 <span id="textui-tags-search-clear">&nbsp;</span>
                             </div>
                         </div>
-                            
-                        <div id="sortContainer_outter">
-                            <div id="sortContainer_inner">
-                                <span>&nbsp;</span>
-                                <ul id="sortSelect_options" class="customSelectList">
-                                    <li data-value="connectedness"><span>Linkages</span></li>
-                                    {% comment %}
-                                    #    TODO: Re-enable clusters
-                                    #    <li data-value="clusters_first_alpha"><span>Clusters First</span></li>
-                                    {% endcomment %}
-                                    <li data-value="alphabetical"><span>Alphabetical</span></li>
-                                    <li data-value="frequency" ><span>Resources</span></li>
-                                    <li data-value="num_sectors"><span>Industry Sectors</span></li>
-                                    <li data-value="num_related_tags"><span>Related Tags</span></li>
-                                    <li data-value="num_societies"><span>IEEE Organizations</span></li>
-                                </ul>
+                        
+                        <div id="textui-tags-sort">
+                            <span class="feature_label">Sort by:</span>
+                            <div id="sortContainer_outter">
+                                <div id="sortContainer_inner">
+                                    <span>&nbsp;</span>
+                                    <ul id="sortSelect_options" class="customSelectList">
+                                        <li data-value="connectedness"><span>Linkages</span></li>
+                                        {% comment %}
+                                        #    TODO: Re-enable clusters
+                                        #    <li data-value="clusters_first_alpha"><span>Clusters First</span></li>
+                                        {% endcomment %}
+                                        <li data-value="alphabetical"><span>Alphabetical</span></li>
+                                        <li data-value="frequency" ><span>Resources</span></li>
+                                        <li data-value="num_sectors"><span>Industry Sectors</span></li>
+                                        <li data-value="num_related_tags"><span>Related Tags</span></li>
+                                        <li data-value="num_societies"><span>IEEE Organizations</span></li>
+                                    </ul>
+                                </div>
+                                <span id="sortSelect" class="customSelectContainer" tabindex="0">
+                                    <span class="selected"></span>
+                                    <span class="dropIcon" style="float:right;"></span>
+                                </span>
                             </div>
-                            <span id="sortSelect" class="customSelectContainer" tabindex="0">
-                                <span class="selected"></span>
-                                <span class="dropIcon" style="float:right;"></span>
-                            </span>
                         </div>
                     </div>
                     

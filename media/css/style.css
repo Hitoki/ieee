@@ -2150,7 +2150,8 @@ div.group ul li {
     width: 355px;
 }
 
-#textui-tags-search span.feature_label {
+#textui-tags-search span.feature_label,
+#textui-tags-sort span.feature_label {
     margin: 0 5px 0 0;
     display: inline-block;
     float:left;
@@ -2336,6 +2337,10 @@ display: inline-block;
 }
 
 /*DropDowns*/
+#textui-tags-sort {
+float: right;    
+}
+
 #sortContainer_outter {
     float: right;
     width: 200px;
