@@ -1517,7 +1517,7 @@ def import_clusters(request):
         # Display form
         form = ImportFileForm()
         return render(request, 'site_admin/import_file.html', {
-            'page_title': 'Import Tag Clusters',
+            'page_title': 'Import Topic Areas',
             'form': form,
         })
         
@@ -1537,7 +1537,7 @@ def import_clusters(request):
         
         return render(request, 'site_admin/import_file.html', {
             #'errors': list_to_html_list(errors, 'errors'),
-            'page_title': 'Import Tag Clusters',
+            'page_title': 'Import Topic Areas',
             'results': results,
         })
 
@@ -1593,7 +1593,7 @@ def import_conference_series(request):
         Cache.objects.delete('ajax_textui_nodes')
         
         return render(request, 'site_admin/import_file.html', {
-            'page_title': 'Import Tag Clusters',
+            'page_title': 'Import Topic Areas',
             'submit_url': reverse('admin_import_conference_series'),
             'results': results,
         })
@@ -1666,7 +1666,7 @@ def _update_periodical_from_xplore(request):
     tags = Node.objects.filter(node_type=node_type)[:5]
     for tag in tags:
         resSum['tags_processed'] += 1
-        xplore_logger.write('Querying Xplore for Tag: %s' % tag.name + os.linesep)
+        xplore_logger.write('Querying Xplore for Topic: %s' % tag.name + os.linesep)
         xplore_query_url = settings.EXTERNAL_XPLORE_URL + urllib.urlencode({
             # Number of results
             'hc': 5,
@@ -1726,13 +1726,13 @@ def _update_periodical_from_xplore(request):
         # TODO add finally block to close file once python is updated past 2.4
         
     xplore_logger.write('\nSummary:' + os.linesep)
-    xplore_logger.write('Tags Processed: %d' % resSum['tags_processed'] + os.linesep)
+    xplore_logger.write('Topics Processed: %d' % resSum['tags_processed'] + os.linesep)
 
     xplore_logger.write('Xplore Connection Errors: %d' % resSum['xplore_connection_errors'] + os.linesep)
     xplore_logger.write('Xplore Hits without IDs: %d' % resSum['xplore_hits_without_id'] + os.linesep)
     xplore_logger.write('Pre-existing Relationships: %d' % resSum['existing_relationship_count'] + os.linesep)
     xplore_logger.write('Relationships Created: %d' % resSum['relationships_created'] + os.linesep)
-    xplore_logger.write('Xplore Hits with no Matching Technav Tag: %d' % resSum['resources_not_found'] + os.linesep)
+    xplore_logger.write('Xplore Hits with no Matching Technav Topic: %d' % resSum['resources_not_found'] + os.linesep)
     xplore_logger.close()
     transaction.rollback()
     

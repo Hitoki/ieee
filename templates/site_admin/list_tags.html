@@ -4,18 +4,18 @@
 
 {% block main_table_content %}
     
-    <h1>Tag List</h1>
+    <h1>Topic List</h1>
     
     <table class="grid">
         <tr>
             <th>
-                Tag
+                Topic
             </th>
             <th>
                 Sectors
             </th>
             <th>
-                Related Tags
+                Related Topics
             </th>
         </tr>
         {% for tag in tags %}
@@ -37,6 +37,6 @@
         {% endfor %}
     </table>
     
-    <a href="{% url admin_create_tag %}?return_url={{ current_url|urlencode }}">Create a new Tag</a>
+    <a href="{% url admin_create_tag %}?return_url={{ current_url|urlencode }}">Create a new Topic</a>
     
 {% endblock %}

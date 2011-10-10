@@ -82,7 +82,7 @@
 <div class="create-tag-lightbox">
 {% endif %}
     
-    <h1>Create New Tag</h1>
+    <h1>Create New Topic</h1>
     
     {% if sector %}
         <p>
@@ -105,7 +105,7 @@
             </tr>
             <tr>
                 <th>
-                    <label for="id_sector">{{ form.sectors.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="Industry Sector for which the Tag is relevant, from the domain perspective of the S/C.">[?]</span>:</label>
+                    <label for="id_sector">{{ form.sectors.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="Industry Sector for which the Topic is relevant, from the domain perspective of the S/C.">[?]</span>:</label>
                 </th>
                 <td>
                     {{ form.sectors.errors }}
@@ -114,7 +114,7 @@
             </tr>
             <tr>
                 <th>
-                    <label for="id_filters">{{ form.filters.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="Choose one or multiple categories that describe the Tag. If none are chosen, this Tag will not be displayed to end users.">[?]</span>:</label>
+                    <label for="id_filters">{{ form.filters.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="Choose one or multiple categories that describe the Topic. If none are chosen, this Topic will not be displayed to end users.">[?]</span>:</label>
                 </th>
                 <td>
                     {{ form.filters.errors }}
@@ -123,12 +123,12 @@
             </tr>
             <tr>
                 <th>
-                    <label for="id_related_tags">{{ form.related_tags.label }} <span class="help_icon flyover {position:'top', customClass:'editForm'}" title='Typing a portion of a word or phrase will bring up a list of all matching tags. Choose "Create a new tag" if a matching tag does not exist.'>[?]</span>:</label>
+                    <label for="id_related_tags">{{ form.related_tags.label }} <span class="help_icon flyover {position:'top', customClass:'editForm'}" title='Typing a portion of a word or phrase will bring up a list of all matching topics. Choose "Create a new topic" if a matching topic does not exist.'>[?]</span>:</label>
                 </th>
                 <td>
                     {{ form.related_tags.errors }}
                     {{ form.related_tags }}
-                    <div class="multisearch-note">Type * to show all<br/>of this organization's tags</div>
+                    <div class="multisearch-note">Type * to show all<br/>of this organization's topics</div>
                 </td>
             </tr>
         </table>

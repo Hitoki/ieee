@@ -6,14 +6,14 @@
         Page time: {{ page_time|floatformat }}s
     </p>
     
-    <h1>Tags Report</h1>
+    <h1>Topics Report</h1>
     <p class="export">
         <a href="{% url admin_tags_report %}?export_csv=1">Export as CSV</a>
     </p>
     
     <p>
         <em>
-            Columns show the count &amp; percentage of tags that a) have filters, b) are tagged to resources, and c) have organizations assigned, respectively.
+            Columns show the count &amp; percentage of topics that a) have filters, b) are tagged to resources, and c) have organizations assigned, respectively.
         </em>
     </p>
     
@@ -37,7 +37,7 @@
         </tr>
         <tr class="all-resources">
             <td>
-                All Tags
+                All Topics
             </td>
             <td class="num total">
                 {{ all_total_tags }}

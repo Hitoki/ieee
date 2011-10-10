@@ -53,7 +53,7 @@
                         <table class="related-tags-block vert-center">
                             <tr>
                                 <td class="{{relatedTagLevel}}">
-                                    Related Tags
+                                    Related Topics
                                 </td>
                             </tr>
                         </table>
@@ -68,7 +68,7 @@
             <a href="javascript:Tags.selectTag({{tag.id}});" rel="nofollow">{{ tag.resources.count }} Resource{{tag.resources.count|pluralize}} Tagged "{{ tag.name }}"</a> 
 			<a onclick="javascript:window.open('/tag/{{ tag.id }}/{{ tag.name|slugify }}', 'landing');" href="javascript:void(0)" style="text-decoration: none;float:right;" rel="nofollow">*</a>
             {% if showEditLink %}
-                <br /><a href="/admin/tag/{{ tag.id }}/edit" rel="nofollow">Edit this Tag</a>
+                <br /><a href="/admin/tag/{{ tag.id }}/edit" rel="nofollow">Edit this Topic</a>
             {% endif %}
         </div>
     </div>

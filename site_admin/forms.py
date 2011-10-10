@@ -21,8 +21,8 @@ TRISTATE_CHOICES_RESOURCES = [
 
 TRISTATE_CHOICES_TAGS = [
     ('no change', 'No change'),
-    ('yes', 'Apply to all tags'),
-    ('no', 'Remove from all tags'),
+    ('yes', 'Apply to all topics'),
+    ('no', 'Remove from all topics'),
 ]
 
 def _make_choices(list1, add_blank=False, nice_format=True):
@@ -64,10 +64,10 @@ def autostrip(cls):
 # ------------------------------------------------------------------------------
 
 class CreateTagForm(Form):
-    name = CharField(max_length=100, label='Tag Name', show_hidden_initial=True)
+    name = CharField(max_length=100, label='Topic Name', show_hidden_initial=True)
     sectors = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), label='Sectors', widget=CheckboxSelectMultipleColumns(columns=3))
     filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultipleColumns(columns=2), required=False, label='Filters')
-    related_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags', show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from Tag', blur_text='Type a few characters to bring up matching tags'))
+    related_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Related Topics', widget_label='Associate Related Topics', show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Topic from Topic', blur_text='Type a few characters to bring up matching topics'))
         
     def clean_name(self):
         data = self.cleaned_data['name']
@@ -77,10 +77,10 @@ class CreateTagForm(Form):
             # If the name has changed check to see if it already exists in the DB.
             # If the name value has not changed the user is resubmitting the same name, despite the warning that it is a duplicate.
             if 'name' in self._get_changed_data() and len(Node.objects.getTagsByName(data)):
-                raise forms.ValidationError("A tag with this name already exists. To create this tag anyway resubmit the form.")
+                raise forms.ValidationError("A topic with this name already exists. To create this tag anyway resubmit the form.")
         else:
             if len(Node.objects.getTagsByName(data)):
-                raise forms.ValidationError("A tag named \"%s\" already exists. As a %s you do not have permission to create a duplicate tag. Only Administrators can do so." % (data, self.user_role.replace('_', ' ').title()))
+                raise forms.ValidationError("A topic named \"%s\" already exists. As a %s you do not have permission to create a duplicate tag. Only Administrators can do so." % (data, self.user_role.replace('_', ' ').title()))
         return data
                 
 
@@ -88,12 +88,12 @@ CreateTagForm = autostrip(CreateTagForm)
 
 class EditTagForm(Form):
     id = IntegerField(widget=HiddenInput(), required=False)
-    name = CharField(max_length=100, label='Tag Name')
+    name = CharField(max_length=100, label='Topic Name')
     parents = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), label='Sectors', widget=CheckboxSelectMultipleColumns(columns=3))
     definition = CharField(widget=Textarea())
-    societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies', label='Societies', widget=MultiSearchWidget(remove_link_flyover_text='Remove Society from Tag'))
+    societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies', label='Societies', widget=MultiSearchWidget(remove_link_flyover_text='Remove Society from Topic'))
     filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultipleColumns(columns=2), required=False, label='Filters')
-    related_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Related Tags', widget_label='Associate Related Tags with this Tag',show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from Tag', blur_text='Type a few characters to bring up matching tags'))
+    related_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Related Topics', widget_label='Associate Related Topics with this Topic',show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from Tag', blur_text='Type a few characters to bring up matching topics'))
 
 EditTagForm = autostrip(EditTagForm)
 
@@ -142,7 +142,7 @@ class EditResourceForm(Form):
     ieee_id = CharField(required=False, label='ID')
     description = CharField(widget=Textarea, max_length=1000, required=False)
     url = CharField(max_length=1000, required=False, label='URL')
-    nodes = MultiSearchField(label='Tags', model=Node, search_url='/admin/ajax/search_tags', widget_label='Associate Tags with this Resource', show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from Resource', blur_text='Type a few characters to bring up matching tags'))
+    nodes = MultiSearchField(label='Tags', model=Node, search_url='/admin/ajax/search_tags', widget_label='Associate Topics with this Resource', show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Topic from Resource', blur_text='Type a few characters to bring up matching topics'))
     societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies', label='Societies', widget=MultiSearchWidget(remove_link_flyover_text='Remove Society from Resource'))
     priority_to_tag = BooleanField(required=False)
     completed = BooleanField(required=False)
@@ -198,7 +198,7 @@ UserForm = autostrip(UserForm)
 class ManageSocietyForm(Form):
     # No longer used, page is live-edit (resources are just links)
     #resources = MultiSearchField(model=Resource, search_url='/admin/ajax/search_resources')
-    tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget_label='Associate Tags with this Society', show_create_tag_link=True, widget=MultiSearchWidget(attrs={'classMetadata':'showSelectedOptions:false' }))
+    tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget_label='Associate Topics with this Society', show_create_tag_link=True, widget=MultiSearchWidget(attrs={'classMetadata':'showSelectedOptions:false' }))
 
 class MissingResourceForm(Form):
     society = ModelChoiceField(queryset=Society.objects.all(), widget=HiddenInput())
@@ -213,7 +213,7 @@ class ImportFileForm(Form):
     file = FileField()
 
 class EditResourcesForm(Form):
-    assign_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Assign Tags', widget_label='Assign Tags', show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag', blur_text='Type a few characters to bring up matching tags'))
+    assign_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Assign Topics', widget_label='Assign Topics', show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag', blur_text='Type a few characters to bring up matching topics'))
     priority = ChoiceField(choices=TRISTATE_CHOICES_RESOURCES, widget=RadioSelect())
     completed = ChoiceField(choices=TRISTATE_CHOICES_RESOURCES, widget=RadioSelect())
 
@@ -224,7 +224,7 @@ class EditTagsForm(Form):
     market_areas_filter = ChoiceField(choices=TRISTATE_CHOICES_TAGS, widget=RadioSelect(), label='Market Areas')
 
 class EditClusterForm(ModelForm):
-    tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from this Cluster', blur_text='Type a few characters to bring up matching tags'))
+    tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget=MultiSearchWidget(remove_link_flyover_text='Remove Topic from this Topic Area', blur_text='Type a few characters to bring up matching topics'))
     class Meta:
         model = Node
         fields = ['name']

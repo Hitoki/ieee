@@ -22,7 +22,7 @@
                 return false;
             });
             $('.edit-selected-tags').addClass('disabled');
-            Flyover.attach($('.edit-selected-tags-flyover'), { content: 'Select 2 or more tags to activate this button.' });
+            Flyover.attach($('.edit-selected-tags-flyover'), { content: 'Select 2 or more topics to activate this button.' });
         }
         
     }
@@ -52,9 +52,9 @@
 <form action="{% url admin_edit_tags %}?return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}" method="post">
     <p class="batch-editing-button">
         <span class="edit-selected-tags-flyover">
-            <input type="submit" value="Edit Selected Tags" class="submit-button edit-selected-tags" />
+            <input type="submit" value="Edit Selected Topics" class="submit-button edit-selected-tags" />
         </span>
-        <span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 5px;" title="Select 2 or more tags below and click this button to batch edit their filters.">[?]</span>
+        <span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 5px;" title="Select 2 or more topics below and click this button to batch edit their filters.">[?]</span>
     </p>
     
     <ul class="pages" id="pages-tags-top">
@@ -68,7 +68,7 @@
                 <img class="batch-edit-arrow" src="{{ MEDIA_URL }}images/arrow2-down-white.gif" />
             </th>
             <th>
-                Tag Name <span class="help_icon flyover" title="Keyword or phrase for related concept or technology area. Click tag to edit.">[?]</span>
+                Topic Name <span class="help_icon flyover" title="Keyword or phrase for related concept or technology area. Click topic to edit.">[?]</span>
                 <div class="table-sort">
                 <a href="{% url admin_manage_society society.id %}?tag_sort=name_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "name_ascending" %}
@@ -88,7 +88,7 @@
 
             </th>
             <th>
-                Sectors <span class="help_icon flyover" title="Industry Sector for which the Tag is relevant, from the domain perspective of the S/C.">[?]</span>
+                Sectors <span class="help_icon flyover" title="Industry Sector for which the Topic is relevant, from the domain perspective of the S/C.">[?]</span>
                 
                 <div class="table-sort">
                 <a href="{% url admin_manage_society society.id %}?tag_sort=sector_list_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
@@ -108,7 +108,7 @@
                 </div>
             </th>
             <th>
-                Organizations <span class="help_icon flyover" title="IEEE organizations that have associated Tag with their domain.">[?]</span>
+                Organizations <span class="help_icon flyover" title="IEEE organizations that have associated Topic with their domain.">[?]</span>
                 
                 <div class="table-sort">
                 <a href="{% url admin_manage_society society.id %}?tag_sort=num_societies_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
@@ -148,7 +148,7 @@
                 </div>
             </th>
             <th>
-                Resources <span class="help_icon flyover" title="IEEE Products or Services mapped to this Tag.">[?]</span>
+                Resources <span class="help_icon flyover" title="IEEE Products or Services mapped to this Topic.">[?]</span>
                 
                 <div class="table-sort">
                 <a href="{% url admin_manage_society society.id %}?tag_sort=num_resources_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
@@ -168,7 +168,7 @@
                 </div>
             </th>
             <th>
-                Related Tags <span class="help_icon flyover" title="Tags that are related concepts or technology areas.">[?]</span>
+                Related Topics <span class="help_icon flyover" title="Topics that are related concepts or technology areas.">[?]</span>
                 
                 <div class="table-sort">
                 <a href="{% url admin_manage_society society.id %}?tag_sort=num_related_tags_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
@@ -188,7 +188,7 @@
                 </div>
             </th>
             <th>
-                Remove <span class="help_icon flyover" title="Remove this tag from this organization.">[?]</span>
+                Remove <span class="help_icon flyover" title="Remove this topic from this organization.">[?]</span>
             </th>
         </tr>
         {% for tag in tags %}
@@ -223,16 +223,16 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="javascript:removeTagFromSociety({{ tag.id }});" onclick="return confirm('Remove this tag?');"><span class="flyover" title="Remove Tag from Organization">[x]</span></a>
+                    <a href="javascript:removeTagFromSociety({{ tag.id }});" onclick="return confirm('Remove this tag?');"><span class="flyover" title="Remove Topic from Organization">[x]</span></a>
                 </td>
             </tr>
         {% endfor %}
     </table>
     <p class="batch-editing-button">
         <span class="edit-selected-tags-flyover">
-            <input type="submit" value="Edit Selected Tags" class="submit-button edit-selected-tags" />
+            <input type="submit" value="Edit Selected Topics" class="submit-button edit-selected-tags" />
         </span>
-        <span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 5px;" title="Select 2 or more tags above and click this button to batch edit their filters.">[?]</span>
+        <span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 5px;" title="Select 2 or more topics above and click this button to batch edit their filters.">[?]</span>
     </p>
 </form>
 
@@ -241,6 +241,6 @@
         <li class="paginationTitle">Pages:</li>
         {% pages tag_page num_tag_pages tag_page_url 13 %}
     </ul>
-    <input type="button" id="create-tag" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Tag" />
+    <input type="button" id="create-tag" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic" />
         <span style="clear:both;">&nbsp;</span>
 </div>

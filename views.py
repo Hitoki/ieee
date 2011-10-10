@@ -388,7 +388,7 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
         elif len(nodes) == 1:
             return nodes[0]
         else:
-            raise Exception('More than one element found for tag name "%s"' % tag_name)
+            raise Exception('More than one element found for topic name "%s"' % tag_name)
         
     def getElementValueByTagName(node, tag_name):
         node1 = getElementByTagName(node, tag_name)

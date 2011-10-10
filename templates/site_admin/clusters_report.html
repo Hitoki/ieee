@@ -2,22 +2,22 @@
 
 {% block main_table_content %}
     
-    <h1>Tag Clusters Report</h1>
+    <h1>Topic Area Report</h1>
     
     <p>
-        <a href="{% url admin_create_cluster %}">Create a Cluster</a>
+        <a href="{% url admin_create_cluster %}">Create a Topic Area</a>
     </p>
     
     <table class="grid">
         <tr>
             <th>
-                Cluster Name:
+                Topic Area Name:
             </th>
             <th>
                 Sector:
             </th>
             <th>
-                Tags:
+                Topics:
             </th>
         </tr>
         {% for cluster in clusters %}

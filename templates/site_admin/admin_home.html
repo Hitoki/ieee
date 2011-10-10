@@ -19,10 +19,10 @@
                 <li>{{ num_societies }} IEEE organizations</li>
                 <li>{{ num_society_managers }} organization managers</li>
                 <li>{{ num_sectors }} industry sectors</li>
-                <li>{{ num_clusters }} clusters</li>
-                <li>{{ num_tags }} tags</li>
-                <li>{{ num_unclustered_tags }} unclustered tags</li>
-                <li>{{ num_clustered_tags }} clustered tags</li>
+                <li>{{ num_clusters }} topic areas</li>
+                <li>{{ num_tags }} topics</li>
+                <li>{{ num_unclustered_tags }} unclustered topics</li>
+                <li>{{ num_clustered_tags }} clustered topics</li>
                 <li>
                     {{ num_resources }} resources
                     <ul>
@@ -38,18 +38,18 @@
             Reports <span class="admin-note">(Please allow up to a minute for the report to run)</span>:
             <ul>
                 <li><a href="{% url admin_login_report %}">Login Report</a></li>
-                <li><a href="{% url admin_tagged_resources_report "all" %}">Tagged resources Report</a></li>
-                <li><a href="{% url admin_tagged_resources_report "priority" %}">Tagged resources Report (priority-only)</a></li>
-                <li><a href="{% url admin_tags_report %}">Tags Report</a></li>
+                <li><a href="{% url admin_tagged_resources_report "all" %}">Topic resources Report</a></li>
+                <li><a href="{% url admin_tagged_resources_report "priority" %}">Topic resources Report (priority-only)</a></li>
+                <li><a href="{% url admin_tags_report %}">Topics Report</a></li>
                 {% if DEBUG_ENABLE_CLUSTERS %}
-                    <li><a href="{% url admin_clusters_report %}">Clusters Report</a></li>
+                    <li><a href="{% url admin_clusters_report %}">Topic Area Report</a></li>
                 {% endif %}
                 <li><a href="{% url admin_priority_report %}">Priority Report</a></li>
-                <li><a href="{% url admin_duplicate_tags_report %}">Duplicate Tags Report</a></li>
+                <li><a href="{% url admin_duplicate_tags_report %}">Duplicate Topics Report</a></li>
                 <li><a href="{% url admin_society_logos_report %}">Organization Logos Report</a></li>
                 <li><a href="{% url admin_conference_series_report %}">Conference Series Report</a></li>
                 <li><a href="{% url admin_broken_links_report %}">Broken Links Report</a></li>
-                <li><a href="{% url admin_create_fake_tags %}">Create Fake Tags</a></li>
+                <li><a href="{% url admin_create_fake_tags %}">Create Fake Topics</a></li>
                 <li><a href="{% url admin_taxonomy_report %}">Taxonomy Report</a></li>
                 <li><a href="{% url admin_machine_generated_data_report %}">Machine-Generated Data Report</a></li>
             </ul>
@@ -76,12 +76,12 @@
             </ul>
         </li>
         <li>
-            <strong>Tags:</strong>
+            <strong>Topics:</strong>
             <ul>
-                <li><a href="{% url admin_list_tags %}">List Tags</a></li>
-                <li><a href="{% url admin_create_tag %}?return_url={{ current_url|urlencode }}">Create a new Tag</a></li>
-                <li><a href="{% url admin_search_tags %}">Search Tags</a></li>
-                <li><a href="{% url admin_list_orphan_tags %}">List Orphan Tags</a></li>
+                <li><a href="{% url admin_list_tags %}">List Topics</a></li>
+                <li><a href="{% url admin_create_tag %}?return_url={{ current_url|urlencode }}">Create a new Topic</a></li>
+                <li><a href="{% url admin_search_tags %}">Search Topics</a></li>
+                <li><a href="{% url admin_list_orphan_tags %}">List Orphan Topics</a></li>
             </ul>
         </li>
         <li>
@@ -103,7 +103,7 @@
                     <li><a href="{% url admin_import_resources %}">Import Resources</a></li>
                     <li><a href="{% url admin_import_societies %}">Import IEEE Organizations</a></li>
                     {% if DEBUG_ENABLE_CLUSTERS %}
-                        <li><a href="{% url admin_import_clusters %}">Import Clusters</a></li>
+                        <li><a href="{% url admin_import_clusters %}">Import Topic Areas</a></li>
                     {% endif %}
                     <li><a href="{% url admin_import_conference_series %}">Import Conference Series</a></li>
                     <li><a href="{% url admin_import_xplore %}">Import From Xplore</a></li>

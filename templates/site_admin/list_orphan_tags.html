@@ -4,16 +4,16 @@
 
 {% block main_table_content %}
     
-    <h1>Orphan Tags</h1>
+    <h1>Orphan Topics</h1>
     
     <p>
-        Found {{ tags|length }} tags.
+        Found {{ tags|length }} topics.
     </p>
     
     <table class="grid">
         <tr>
             <th width="66%">
-                Tag (Sectors)
+                Topic (Sectors)
             </th>
             <th width="34%">
                 Organizations
@@ -36,6 +36,6 @@
         {% endfor %}
     </table>
     
-    <a href="{% url admin_create_tag %}?return_url={{ current_url|urlencode }}">Create a new Tag</a>
+    <a href="{% url admin_create_tag %}?return_url={{ current_url|urlencode }}">Create a new Topic</a>
     
 {% endblock %}
