@@ -312,7 +312,7 @@ input.text {
     border:1px solid black;
     width: 875px;
     min-width: 512px;
-    padding: 1px;
+    padding: 0;
 }
 
 #lightbox .overview-video-lightbox-content {
