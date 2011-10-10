@@ -28,6 +28,11 @@ $(document).ready(function(){
     });
     $("#tags-live-search").focus();
     
+    $(".btn.help").click(function() {
+        $("#tag-help-box").show();
+        $('div#sectors-tab, div#societies-tab').css('height', '622px');
+    });
+    
     function hideHelpBox() {
         var windowHeight = $(window).height();
         var navTabsHeight = $('#galaxy-tabs .nootabs-menu').eq(0).height();

@@ -160,7 +160,7 @@
                                 {% endfor %}
                         </ul>
                     </div>
-                    <div id="societies-tab">
+                    <div id="societies-tab" style="height:395px">
                         <ul id="societies">
                             <li id="society-list-item-all"><a href="javascript:Tags.selectSociety('all');" rel="nofollow">All IEEE Organizations</a></li>                         
                             {% for society in societies %}
@@ -259,7 +259,7 @@
                         <span id="textui-zoom-default-zoom" style="display:none">Reset</span>
                     </div>
                     
-                    <div id="tag-help-box">
+                    <div id="tag-help-box" style="display:none">
                         <div id="help-col-left" class="help-col">
                             <table><tr>
                                 <td class="help-arrow-container"><img src="{{MEDIA_URL}}images/help-arrow.png"/></td>
@@ -305,7 +305,7 @@
                             </div>
                             <div id="hide-help-box" style="padding-top:36px;margin-bottom:-7px">
                                 <a href="javascript:void(0)" class="close-help" id="help-close-button" rel="nofollow">Hide</a> 
-                                <a href="javascript:void(0)" class="close-help" id="no-show-box" rel="nofollow">Hide and don't show again</a>
+                                {% comment %}<a href="javascript:void(0)" class="close-help" id="no-show-box" rel="nofollow">Hide and don't show again</a>{% endcomment %}
                             </div>
                         </div>
                     </div>
