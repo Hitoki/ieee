@@ -1717,8 +1717,9 @@ p.export {
 }
 
 #hide-help-box {
-   padding-top: 52px;
+   padding-top: 61px;
    font-size: 9pt;
+   text-align: right;
 }
 
 #links-help-box {
