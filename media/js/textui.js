@@ -46,15 +46,6 @@ $(document).ready(function(){
         hideHelpBox();
     });
     
-    $('#no-show-box').click(function(){
-        //set a cookie to show that the user hidden the help box
-        var options = { path: '/', expires: 7 };
-        $.cookie("noShowHelpBox", 'true', options);
-        
-        hideHelpBox();
-        
-    });
-    
     sortDropDown = $('#sortSelect').imageDropdown({'selectList': $("ul#sortSelect_options"), 'initialIndex': 0});
     if (sortDropDown) {
         sortDropDown.bind('change', function(){

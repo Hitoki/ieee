@@ -33,18 +33,6 @@
                 var navTabsHeight = $('#galaxy-tabs .nootabs-menu').eq(0).height();
                 var tagCountsHeight = $('#tag-counts').outerHeight();
                 
-                if ($('#tag-help-box').is(':visible')) {
-                    //Set nav height to match main window
-                    $('div#sectors-tab, div#societies-tab').css('min-height', 633 - navTabsHeight);
-                    //Set nav height for when help box is visible
-                    $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 146 - navTabsHeight);
-                } else {
-                    //Set nav min-height to match main window (should match textui.js hideHelpBox function)
-                    $('div#sectors-tab, div#societies-tab').css('min-height', 437 - navTabsHeight);
-                    //Set nav height to match main window (should match textui.js hideHelpBox function)
-                    $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 343 - navTabsHeight);
-                };
-                
                 //Set height for main window on initial load
                 $('div#tag-galaxy').css('height', windowHeight - tagBoxHeight - 180 - tagCountsHeight);
                 
@@ -305,7 +293,6 @@
                             </div>
                             <div id="hide-help-box">
                                 <a href="javascript:void(0)" class="close-help" id="help-close-button" rel="nofollow">Hide</a> 
-                                {% comment %}<a href="javascript:void(0)" class="close-help" id="no-show-box" rel="nofollow">Hide and don't show again</a>{% endcomment %}
                             </div>
                         </div>
                     </div>
