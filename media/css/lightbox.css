@@ -357,7 +357,8 @@ input.text {
 
 .skin-slidedeck dl.slidedeck > dd.slide_3 {
     background: url(/media/images/get-started-diagram.png) no-repeat 42px 0 #FFFFFF;
-    font-size: 11pt;
+    font-size: 13pt;
+    font-family: Georgia;
 }
 
 .slidedeck .slide_1 p,
@@ -376,7 +377,7 @@ input.text {
 .slide_3 .help-col-left {
     margin-left: 132px;
     margin-top: 110px;
-    width: 208px;
+    width: 218px;
     margin-right: 0;
 }
 
@@ -403,7 +404,7 @@ input.text {
     border: 1px solid transparent;
     height: auto;
     width: auto;
-    margin: 0;
+    margin: 15px 0 0;
     position: relative;
     display: inline-block;
     -moz-border-radius: 5px;
