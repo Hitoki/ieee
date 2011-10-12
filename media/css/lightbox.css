@@ -346,6 +346,11 @@ input.text {
     margin-top: 10px;
 }
 
+.skin-slidedeck dl.slidedeck > dd.slide_1,
+.skin-slidedeck dl.slidedeck > dd.slide_2 {
+    background: url(/media/images/slidedeck/panel.png) 42px 0 #FFFFFF;
+}
+
 .slidedeck .slide_1 p,
 .slidedeck .slide_2 p {
    font-size: 18pt;
