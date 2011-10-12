@@ -26,19 +26,10 @@
             $('#tag-help-box').css('width', tagGalaxyWidth - 5);
             
             var resizeTagGalaxy = function() {
-                
-                var windowHeight = $(window).height();
-                //var tagBoxHeight = $('#tag-help-box').height();
-                var tagGalaxyWidth = $('#tag-galaxy').width();
-                //var navTabsHeight = $('#galaxy-tabs .nootabs-menu').eq(0).height();
-                //var tagCountsHeight = $('#tag-counts').outerHeight();
-                
-                //Set height for main window on initial load
-                //$('div#tag-galaxy').css('height', windowHeight - tagBoxHeight - 180 - tagCountsHeight);
-                
-                //$("#tags").css('height', windowHeight - 100);
+                //var windowHeight = $(window).height();
                 
                 //Set width for help box
+                var tagGalaxyWidth = $('#tag-galaxy').width();
                 $('#tag-help-box').css('width', tagGalaxyWidth - 19);
             };
             
@@ -142,7 +133,7 @@
                         <li class="last-menu"><a href="" rel="nofollow">IEEE Organization</a></li>
                         <li style="display:none;"><a href="" rel="nofollow">&nbsp;</a></li> {# used to compensate for filters div #}
                     </ul>
-                    <div id="sectors-tab" class="sectors-vert-box">
+                    <div id="sectors-tab" class="sectors-vert-box" style="height:392px">
                         <ul id="sectors">
                             <li id="sector-list-item-all"><a href="javascript:Tags.selectSector('all');" rel="nofollow">All Industry Sectors</a></li>                        
                             {% for sector in sectors %}

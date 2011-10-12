@@ -28,18 +28,17 @@ $(document).ready(function(){
     });
     $("#tags-live-search").focus();
     
-    $(".btn.help").click(function() {
+    var tagGalaxyWidth = $('#tag-galaxy').width();
+    $('#tag-help-box').css('width', tagGalaxyWidth - 19);
+    
+    $(".help").click(function() {
         $("#tag-help-box").show();
-        $('div#sectors-tab, div#societies-tab').css('height', '622px');
+        $('div#sectors-tab, div#societies-tab').css('height', '603px');
     });
     
     function hideHelpBox() {
-        var windowHeight = $(window).height();
-        var navTabsHeight = $('#galaxy-tabs .nootabs-menu').eq(0).height();
-        
         $('#tag-help-box').hide();
-        $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 343 - navTabsHeight);
-        $('div#sectors-tab, div#societies-tab').css('min-height', 437 - navTabsHeight);
+        $('div#sectors-tab, div#societies-tab').css('height', '392px');
     }
     
     $('#help-close-button').click(function(){

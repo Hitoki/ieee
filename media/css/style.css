@@ -811,18 +811,16 @@ span#roamer-beta-warning {
 }
 
 #alternate-page #tags {
-    height: 440px;
+    height: 390px;
     overflow: hidden;
     position:relative;
     /*line-height: 1.2em;*/
 }
 
 #alternate-page #tag-galaxy {
-    /* NOTE: height is set by javascript. */
-    /*height: 441px;*/
-    min-height: 441px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
+    height: 397px;
     padding: 0 5px 2px 0;
     margin-right:34px;
     background-color: white;
@@ -830,8 +828,7 @@ span#roamer-beta-warning {
 }             
 
 #alternate-page #tag-galaxy .alt-box-pad {
-    height: 96.5%;
-    min-height: 431px;
+    min-height: 390px;
     overflow: auto;
 }
 
@@ -1652,10 +1649,11 @@ p.export {
 #tag-help-box {
    border:1px solid #006699;
    padding: 12px;
-   margin: 6px 0 6px 0.2em;
-   display: inline-block;
+   margin: 6px 0 0 0.2em;
+   display: block;
    text-align: center;
    color: white;
+   height: 180px;
    background-color: #006699;
    -moz-border-radius:5px 5px 5px 5px;
    -webkit-border-radius:5px 5px 5px 5px;
@@ -2774,6 +2772,7 @@ background: url(/media/images/inner-top.png) no-repeat scroll 0 0;
 #misc-bar {
 	overflow:auto;
 	margin-right:34px;
+	height: 40px;
 }
 
 #tag-counts {
