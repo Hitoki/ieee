@@ -31,15 +31,18 @@ $(document).ready(function(){
     var tagGalaxyWidth = $('#tag-galaxy').width();
     $('#tag-help-box').css('width', tagGalaxyWidth - 19);
     
-    $(".help").click(function() {
+    // Functions to handle opening Help and resizing UI    
+    function showHelpBox() {
         $("#tag-help-box").show();
-        $('div#sectors-tab, div#societies-tab').css('height', '603px');
-    });
+    }
     
     function hideHelpBox() {
         $('#tag-help-box').hide();
-        $('div#sectors-tab, div#societies-tab').css('height', '392px');
     }
+    
+    $(".help").click(function() {                
+        showHelpBox();
+    });
     
     $('#help-close-button').click(function(){
         hideHelpBox();

@@ -477,11 +477,13 @@ ul#view-header li {
 }
 
 #left-column-container div#sectors-tab {
+    min-height: 355px;
     -moz-border-radius-topleft: 0px !important;
     -webkit-border-top-left-radius: 0px !important;
 }
 
 #left-column-container div#societies-tab {
+    min-height: 355px;
     -moz-border-radius-topright: 0px !important;
     -webkit-border-top-right-radius: 0px !important;
     overflow-y:scroll;
@@ -820,7 +822,6 @@ span#roamer-beta-warning {
 #alternate-page #tag-galaxy {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
-    height: 397px;
     padding: 0 5px 2px 0;
     margin-right:34px;
     background-color: white;

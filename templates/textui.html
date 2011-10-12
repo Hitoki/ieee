@@ -26,7 +26,11 @@
             $('#tag-help-box').css('width', tagGalaxyWidth - 5);
             
             var resizeTagGalaxy = function() {
-                //var windowHeight = $(window).height();
+                var windowHeight = $(window).height();
+                
+                // Set heights for galaxy and nav panels
+                $("#tags").css('height', windowHeight - 300);
+                $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 295);
                 
                 //Set width for help box
                 var tagGalaxyWidth = $('#tag-galaxy').width();
