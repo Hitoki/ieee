@@ -28,13 +28,15 @@
             var resizeTagGalaxy = function() {
                 
                 var windowHeight = $(window).height();
-                var tagBoxHeight = $('#tag-help-box').height();
+                //var tagBoxHeight = $('#tag-help-box').height();
                 var tagGalaxyWidth = $('#tag-galaxy').width();
-                var navTabsHeight = $('#galaxy-tabs .nootabs-menu').eq(0).height();
-                var tagCountsHeight = $('#tag-counts').outerHeight();
+                //var navTabsHeight = $('#galaxy-tabs .nootabs-menu').eq(0).height();
+                //var tagCountsHeight = $('#tag-counts').outerHeight();
                 
                 //Set height for main window on initial load
-                $('div#tag-galaxy').css('height', windowHeight - tagBoxHeight - 180 - tagCountsHeight);
+                //$('div#tag-galaxy').css('height', windowHeight - tagBoxHeight - 180 - tagCountsHeight);
+                
+                //$("#tags").css('height', windowHeight - 100);
                 
                 //Set width for help box
                 $('#tag-help-box').css('width', tagGalaxyWidth - 19);
@@ -148,7 +150,7 @@
                                 {% endfor %}
                         </ul>
                     </div>
-                    <div id="societies-tab" style="height:395px">
+                    <div id="societies-tab" style="height:392px">
                         <ul id="societies">
                             <li id="society-list-item-all"><a href="javascript:Tags.selectSociety('all');" rel="nofollow">All IEEE Organizations</a></li>                         
                             {% for society in societies %}
