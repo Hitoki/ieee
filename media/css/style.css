@@ -1196,7 +1196,7 @@ table.vert-center td {
     line-height: 15px;
 }
 
-#frequency-indicator {
+.frequency-indicator {
     padding: 0 0 0 2px;
     float:left;
     color: #FFFFFF;
@@ -1210,12 +1210,12 @@ table.vert-center td {
     background: url(/media/images/frequency-bar.png) no-repeat 0 0;
 }
 
-#frequency-indicator .small {
+.frequency-indicator .small {
    font-size: 8pt;
 }
 
 /*
-#frequency-indicator img {
+.frequency-indicator img {
     margin-top: -4px;
 }
 */
@@ -2333,7 +2333,12 @@ div#connectedness-container {
 }
 
 .welcome-panels-lightbox-content h1 {
-   margin-top: 10px;
+    margin-top: 10px;
+}
+
+.welcome-panels-lightbox-content .frequency-indicator {
+    float: none;
+    display: inline-block;
 }
 
 .welcome-panels-lightbox-content #goBtn.lightbox-close {
@@ -2344,8 +2349,9 @@ div#connectedness-container {
     border: 1px solid transparent;
     height: auto;
     width: auto;
-    margin: 0;
+    margin: 10px 0 0 0;
     position: relative;
+    display: inline-block;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
 }
