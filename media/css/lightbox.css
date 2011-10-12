@@ -329,8 +329,11 @@ input.text {
 }
 
 .skin-slidedeck dl.slidedeck > dt {
-   height: 380px;
    width: 755px;
+}
+
+.skin-slidedeck dl.slidedeck > dd {
+   height: 378px !important;
 }
 
 #lightbox .welcome-panels-lightbox-content .lightbox-close.link {
@@ -344,6 +347,7 @@ input.text {
 
 .slidedeck .slide_1 h1 {
     margin-top: 10px;
+    font-family: Georgia;
 }
 
 .skin-slidedeck dl.slidedeck > dd.slide_1,
@@ -353,7 +357,9 @@ input.text {
 
 .slidedeck .slide_1 p,
 .slidedeck .slide_2 p {
-   font-size: 18pt;
+   font-size: 19pt;
+   line-height: 1.5;
+   font-family: Georgia;
 }
 
 .slidedeck .frequency-indicator {
