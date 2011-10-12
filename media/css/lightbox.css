@@ -362,6 +362,32 @@ input.text {
     font-size: 10pt;
 }
 
+#get-started-diagram {
+   background: url(/media/images/get-started-diagram.png) 0 0 #FFFFFF;
+   display: inline-block;
+   width: 754px;
+   height: 335px;
+   text-align: left;
+}
+
+#get-started-diagram .help-col-left {
+    margin-left: 140px;
+    margin-top: 116px;
+    width: 190px;
+    margin-right: 30px;
+}
+
+#get-started-diagram .help-col-mid {
+    width: 185px;
+    margin-top: 116px;
+}
+
+#get-started-diagram .help-col-right {
+    width: 140px;
+    margin-top: 116px;
+    margin-right: 35px;
+}
+
 .slidedeck #goBtn.lightbox-close {
     background: none repeat scroll 0 0 #33CC00;
     color: #FFFFFF;

@@ -1677,24 +1677,27 @@ p.export {
     text-align: left;
 }
 
-#help-col-left {
+.help-col-left {
     float: left;
     width: 235px;
+    text-align: left;
 }
 
-#help-col-left div {
-   padding-top: 37px;
+.help-col-left div {
+   padding-top: 30px;
 }
 
-#help-col-mid {
+.help-col-mid {
     margin: 0 auto;
     display: inline-block;
     width: 257px;
+    text-align: left;
 }
 
-#help-col-right {
+.help-col-right {
     float: right;
     width: 210px;
+    text-align: left;
 }
 
 #help-icon {
@@ -1716,7 +1719,7 @@ p.export {
 }
 
 #hide-help-box {
-   padding-top: 61px;
+   padding-top: 53px;
    font-size: 9pt;
    text-align: right;
 }
