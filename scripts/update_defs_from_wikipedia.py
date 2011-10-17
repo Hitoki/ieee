@@ -47,7 +47,7 @@ def main(*args):
         except IndexError:
             continue
         except:
-            PyErr_Print()
+            print sys.exec_info()[:2]
             continue
 
 
