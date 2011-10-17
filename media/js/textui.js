@@ -10,12 +10,17 @@ function scaleZoom(zoom, scale) {
 
 var sortDropDown, printDropDown;
 $(document).ready(function(){
+    
+    if ($.cookie("noShowPanels")){
+        //Hide the panels
+    } else {
+        //Show the panels
+    }
+    
+    $("a#welcome-link").click();
+    
     //hide the "Standards Board"
     $('#society-list-item-49').hide();
-
-    if ($.cookie("noShowHelpBox")){
-        $('#tag-help-box').hide();
-    }
     
     // When clicking the help link, if the help panel is not shown, show it and abort.
     // Otherwise follow the link as normal
@@ -46,6 +51,10 @@ $(document).ready(function(){
     
     $('#help-close-button').click(function(){
         hideHelpBox();
+    });
+    
+    $('#dont-show-panels').click(function() {
+       $.cookie("noShowPanels", 'true', options);
     });
     
     sortDropDown = $('#sortSelect').imageDropdown({'selectList': $("ul#sortSelect_options"), 'initialIndex': 0});
