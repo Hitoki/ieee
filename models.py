@@ -499,6 +499,8 @@ class Node(models.Model):
     high_potency = models.BooleanField(default=False)
 
     definition = models.CharField(blank=True, null=True, max_length=2000)
+    definition_source = models.CharField(blank=True, null=True, max_length=50)
+    definition_updated_when =models.DateTimeField(blank=True, null=True)
 
     
 

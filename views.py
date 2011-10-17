@@ -434,16 +434,25 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
             
         try:
             file1 = urllib2.urlopen(url)
-        except urllib2.URLError:
-            xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
-            xplore_results = []
-            totalfound = 0
-        else:
-            xplore_error = None
         
             # Get the charset of the request and decode/re-encode the response text into UTF-8 so we can parse it
             info = file1.info()
             temp, charset = info['content-type'].split('charset=')
+
+            raise KeyError()
+
+        except urllib2.URLError:
+            xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
+            xplore_results = []
+            totalfound = 0
+        except KeyError:
+            xplore_error = 'Error: Could not determine content type of the IEEE Xplore response.'
+            xplore_results = []
+            totalfound = 0
+
+        else:
+            xplore_error = None
+
             xml_body = file1.read()
             file1.close()
             xml_body = xml_body.decode(charset).encode('utf-8')
@@ -464,36 +473,36 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
                 return [], 'No records found', 0
                 
         
-        xplore_results = []
-        for document1 in xml1.documentElement.getElementsByTagName('document'):
-            rank = getElementValueByTagName(document1, 'rank')
-            title = getElementValueByTagName(document1, 'title')
-            abstract = getElementValueByTagName(document1, 'abstract')
-            pdf = getElementValueByTagName(document1, 'pdf')
-            authors = getElementValueByTagName(document1, 'authors')
-            pub_title = getElementValueByTagName(document1, 'pubtitle')
-            pub_year = getElementValueByTagName(document1, 'py')
+            xplore_results = []
+            for document1 in xml1.documentElement.getElementsByTagName('document'):
+                rank = getElementValueByTagName(document1, 'rank')
+                title = getElementValueByTagName(document1, 'title')
+                abstract = getElementValueByTagName(document1, 'abstract')
+                pdf = getElementValueByTagName(document1, 'pdf')
+                authors = getElementValueByTagName(document1, 'authors')
+                pub_title = getElementValueByTagName(document1, 'pubtitle')
+                pub_year = getElementValueByTagName(document1, 'py')
+                
+                # Escape here, since we're going to output this as |safe on the template
+                # title = cgi.escape(title)
+                if highlight_search_term:
+                    title = re.sub('(?i)(%s)' % tag_name, r'<strong>\1</strong>', title)
+                    
+                    result = {
+                        'rank': rank,
+                        'name': title,
+                        'description': abstract,
+                        'url': pdf,
+                        'authors': authors,
+                        'pub_title': pub_title,
+                        'pub_year': pub_year,
+                        }
+                    
+                    # Working around an Xplore bug that returns broken URLs
+                    if ctype == 'Educational Courses':
+                        result['url'] = result['url'].replace('stamp/stamp.jsp?ar', 'servlet/opac?md')
 
-            # Escape here, since we're going to output this as |safe on the template
-            #title = cgi.escape(title)
-            if highlight_search_term:
-                title = re.sub('(?i)(%s)' % tag_name, r'<strong>\1</strong>', title)
-            
-            result = {
-                'rank': rank,
-                'name': title,
-                'description': abstract,
-                'url': pdf,
-                'authors': authors,
-                'pub_title': pub_title,
-                'pub_year': pub_year,
-            }
-
-            # Working around an Xplore bug that returns broken URLs
-            if ctype == 'Educational Courses':
-                result['url'] = result['url'].replace('stamp/stamp.jsp?ar', 'servlet/opac?md')
-
-            xplore_results.append(result)
+                        xplore_results.append(result)
         
     return xplore_results, xplore_error, totalfound
 

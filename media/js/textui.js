@@ -21,6 +21,13 @@ $(document).ready(function(){
     
     //hide the "Standards Board"
     $('#society-list-item-49').hide();
+
+    if ($.cookie("noShowHelpBox")){
+        $('#tag-help-box').hide();
+    } else {
+        setTimeout(function(){$('#welcome-link').click();}, 2000);
+        $('#tag-help-box').show();
+    }
     
     // When clicking the help link, if the help panel is not shown, show it and abort.
     // Otherwise follow the link as normal
