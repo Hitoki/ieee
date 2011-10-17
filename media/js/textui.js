@@ -12,22 +12,20 @@ var sortDropDown, printDropDown;
 $(document).ready(function(){
     
     if ($.cookie("noShowPanels")){
-        //Hide the panels
+        $(".welcome-panels-lightbox-outer").remove();
     } else {
-        //Show the panels
+        //Only open panels if on tag galaxy view.
+        if ( $('#tag-galaxy').is(':visible') ) {
+            setTimeout(function(){$('#welcome-link').click();}, 1000);
+        }
     }
     
-    $("a#welcome-link").click();
+    $('#dont-show-panels').click(function() {
+        $.cookie("noShowPanels", 'true', options);
+    });
     
     //hide the "Standards Board"
     $('#society-list-item-49').hide();
-
-    if ($.cookie("noShowHelpBox")){
-        $('#tag-help-box').hide();
-    } else {
-        setTimeout(function(){$('#welcome-link').click();}, 2000);
-        $('#tag-help-box').show();
-    }
     
     // When clicking the help link, if the help panel is not shown, show it and abort.
     // Otherwise follow the link as normal
@@ -58,10 +56,6 @@ $(document).ready(function(){
     
     $('#help-close-button').click(function(){
         hideHelpBox();
-    });
-    
-    $('#dont-show-panels').click(function() {
-       $.cookie("noShowPanels", 'true', options);
     });
     
     sortDropDown = $('#sortSelect').imageDropdown({'selectList': $("ul#sortSelect_options"), 'initialIndex': 0});

@@ -2788,3 +2788,7 @@ td.machine-generated-column {
     margin-right: 33px;
     text-decoration: underline;   
 }
+
+.tag_base #welcome-link {
+   display: none;
+}
