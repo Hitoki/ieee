@@ -589,6 +589,14 @@ class Node(models.Model):
 
     resource_count = property(get_resource_count)
 
+    def _get_definition_link(self):
+        if self.definition_source == 'dbpedia.org':
+            return "(From <a href='https://en.wikipedia.org/wiki/%s'>Wikipedia.com</a>)" % self.name.replace(' ', '_') 
+        else:
+            return ''
+
+    definition_link = property(_get_definition_link)
+
     def save(self, add_child_info=True, *args, **kwargs):
         cluster_type = NodeType.objects.getFromName(NodeType.TAG_CLUSTER)
         #print 'Node.save()'
