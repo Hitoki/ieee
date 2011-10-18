@@ -312,8 +312,7 @@ input.text {
 #lightbox .welcome-panels-lightbox-content {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
-    background-color: #FFFFFF; /*Old blue*/
-    border:1px solid black;
+    background-color: #FFFFFF;
     width: 937px;
     min-width: 512px;
     padding: 0;
