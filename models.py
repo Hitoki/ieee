@@ -597,6 +597,17 @@ class Node(models.Model):
 
     definition_link = property(_get_definition_link)
 
+    def _get_definition_type(self):
+        if self.definition_source == 'dbpedia.org':
+            return "wiki new"
+        elif 'wikipedia.org' in self.definition:
+            return "wiki old"
+        else:
+            return "other"
+
+    definition_type = property(_get_definition_type)
+        
+
     def save(self, add_child_info=True, *args, **kwargs):
         cluster_type = NodeType.objects.getFromName(NodeType.TAG_CLUSTER)
         #print 'Node.save()'

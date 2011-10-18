@@ -12,6 +12,9 @@
 .countVal{
 font-weight: bold;
 }
+th{
+white-space: nowrap;
+}
 td{
 padding: 0 5px 0 5px;
 }
@@ -79,10 +82,16 @@ $('input:checkbox').change(function(event){
 <br/> 
  <table style="width: 400px;">
     <tbody>
+      <tr>
+          <th>Tag Name</th>
+          <th>Definition Type</th>
+          <th>Definition</th>
+      </tr>
       {% for tag in tags %}
       <tr>
         {% if show_id %}<td class="nodeId">{{ tag.pk }}</td>{% endif %}
         <td><a href="{% url tag_landing tag.pk %}{{tag.name|slugify|slice:":40"}}">{{tag.name}}</a></td>
+        <td>{{ tag.definition_type}}</td>
         <td>{{ tag.definition }} {{ tag.definition_link|safe }}</td>
       </tr>
       {% empty %}
