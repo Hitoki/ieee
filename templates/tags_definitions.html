@@ -64,8 +64,17 @@ $('input:checkbox').change(function(event){
 
 <div style="padding: 2em 0">
 <div>
-<span class="countLbl">Tags shown: </span><span class="countVal">{{ tags.count }}</span>
+<span class="countLbl">Tags shown: </span><span class="countVal">{{ tags.count }}</spn>
 <a href="{{ LOGO_HREF }}" id="countLink">Take me back to Technology Navigator</a>
+</div>
+<div>
+<span class="countLbl">Tags with old Wikipedia definitions: </span><span class="countVal">{{ preexisting_wiki_def_count }}</spn>
+</div>
+<div>
+<span class="countLbl">Tags with new Wikipedia definitions: </span><span class="countVal">{{ new_wiki_def_count }}</spn>
+</div>
+<div>
+<span class="countLbl">Tags with other definitions: </span><span class="countVal">{{ other_def_count }}</spn>
 </div>
 <br/> 
  <table style="width: 400px;">

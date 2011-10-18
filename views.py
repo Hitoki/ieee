@@ -1667,10 +1667,6 @@ def tags_all(request):
 
     return render_to_response('tags_all.html', {"tags": nodes }, context_instance=RequestContext(request))
 
-def tags_definitions(request):
-    nodes = Node.objects.exclude(Q(definition__isnull=True) | Q(definition__exact=''))
-    return render_to_response('tags_definitions.html', {"tags": nodes}, context_instance=RequestContext(request))
-
 def tags_starts(request, starts_with):
     nodes = Node.objects.filter(high_potency=False, name__iregex='^'+starts_with)
     return render_to_response('tags_list.html', {"tags": nodes }, context_instance=RequestContext(request))

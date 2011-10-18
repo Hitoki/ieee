@@ -65,7 +65,6 @@ else:
         url(r'^tags/?$', views.tags_list, name='tags_list'),
         url(r'^tags/starts/(?P<starts_with>.+)/?$', views.tags_starts, name='tags_starts'),
         url(r'^tags/all/?$', views.tags_all,name='tags_all'),
-        url(r'^tags/definitions/?$', views.tags_definitions,name='tags_definitions'),
         url(r'^tag/(?P<tag_id>\d+)/[0-9a-zA-Z_-]*$', views.tag_landing, name='tag_landing'),
         url(r'^clusters/', views.clusters_list, name='clusters_list'),
         url(r'^cluster/(?P<cluster_id>\d+)/[0-9a-zA-Z_-]*$', views.cluster_landing, name='cluster_landing'),

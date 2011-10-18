@@ -13,7 +13,8 @@ if settings.USE_SITEMINDER_LOGIN:
 else:
     urlpatterns += patterns('', url(r'^login$', views.login, name='admin_login'))
 
-urlpatterns += patterns('',
+urlpatterns += patterns(
+    '',
     url(r'^logout$', views.logout, name='admin_logout'),
     url(r'^forgot_password$', views.forgot_password, name='forgot_password'),
     url(r'^forgot_password_confirmation$', views.forgot_password_confirmation, name='forgot_password_confirmation'),
@@ -59,6 +60,7 @@ urlpatterns += patterns('',
     # Tags
     url(r'^tags/edit$', views.edit_tags, name='admin_edit_tags'),
     url(r'^tags$', views.list_tags, name='admin_list_tags'),
+    url(r'^tags/definitions/?$', views.tags_definitions,name='tags_definitions'),                    
     url(r'^tag/set_high_potency$', views.tag_set_high_potency),
     url(r'^tag/(\d+)$', views.view_tag, name='admin_view_tag'),
     url(r'^tag/create$', views.create_tag, name='admin_create_tag'),

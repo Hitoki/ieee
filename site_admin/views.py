@@ -19,6 +19,7 @@ from Queue import Empty, Queue
 
 from django.db import IntegrityError
 from django.db import transaction
+from django.db.models import Q
 from django.core.mail import EmailMessage
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
@@ -28,6 +29,8 @@ from django.contrib import auth
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from django.utils import simplejson as json
+from django.shortcuts import render_to_response
+from django.template import RequestContext
 
 from csv_utf8 import UnicodeReader
 from ieeetags import settings
@@ -4735,6 +4738,17 @@ def tagged_resources_report(request, filter):
             'all_percent_resources': all_percent_resources,
             'societies': result_societies,
         })
+
+@login_required
+@admin_required
+def tags_definitions(request):
+    all_tags = Node.objects.filter(node_type__name=NodeType.TAG).exclude(definition__isnull=True)
+    preexisting_wiki_def_count = all_tags.filter(definition_source__isnull=True).filter(definition__icontains='wikipedia.org').count()
+    new_wiki_def_count = all_tags.filter(definition_source__exact='dbpedia.org').count()
+    other_def_count = all_tags.filter(definition_source__isnull=True).exclude(definition__icontains='wikipedia.org').count()
+    nodes = Node.objects.exclude(Q(definition__isnull=True) | Q(definition__exact=''))
+    return render_to_response('tags_definitions.html', {"tags": nodes, "preexisting_wiki_def_count": preexisting_wiki_def_count, "new_wiki_def_count": new_wiki_def_count, "other_def_count": other_def_count}, context_instance=RequestContext(request))
+
 
 @login_required
 @admin_required
