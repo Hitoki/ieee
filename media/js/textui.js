@@ -16,14 +16,11 @@ $(document).ready(function(){
     } else {
         //Only open panels if on tag galaxy view.
         if ( $('#tag-galaxy').is(':visible') ) {
-            setTimeout(function(){$('#welcome-link').click();}, 1000);
+            setTimeout(function(){
+                $('#welcome-link').click();
+            }, 1000);
         }
     }
-    
-    $('#dont-show-panels').click(function() {
-        $.cookie("noShowPanels", 'true', options);
-    });
-    
     //hide the "Standards Board"
     $('#society-list-item-49').hide();
     
