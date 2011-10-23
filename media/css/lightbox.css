@@ -378,6 +378,11 @@ input.text {
     font-size: 10pt;
 }
 
+.skin-slidedeck .tag-icon, .skin-slidedeck .cluster-icon {
+   vertical-align: baseline;
+   
+}
+
 .slide_3 .help-col-left {
     margin-left: 132px;
     margin-top: 110px;
