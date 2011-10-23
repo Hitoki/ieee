@@ -321,18 +321,19 @@ input.text {
 .welcome-panels-lightbox-content .skin-slidedeck {
     height: 400px;
     width: 915px;
-    box-shadow: 0 0 0;   
+    box-shadow: 1px 1px 5px #3F3F3F inset;
+    background: #006699 0 0 none;   
     border: 0px solid #FFFFFF;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
 }
 
-.skin-slidedeck dl.slidedeck > dt {
-   width: 755px;
+.welcome-panels-lightbox-content .skin-slidedeck .slidedeck {
+    background-color: #D7D7D7;
 }
 
-.skin-slidedeck dl.slidedeck > dd {
-   height: 378px !important;
+.skin-slidedeck dl.slidedeck > dt {
+   width: 755px;
 }
 
 #lightbox .welcome-panels-lightbox-content .lightbox-close.link {
@@ -342,6 +343,7 @@ input.text {
     width: auto;
     position: relative;
     display: inline-block; 
+    color: #FFFFFF;
 }
 
 .slidedeck .slide_1 h1 {
@@ -351,13 +353,15 @@ input.text {
 
 .skin-slidedeck dl.slidedeck > dd.slide_1,
 .skin-slidedeck dl.slidedeck > dd.slide_2 {
-    background: url(/media/images/slidedeck/panel.png) no-repeat 42px 0 #FFFFFF;
+    background: url(/media/images/slidedeck/panel.png) no-repeat 42px 0 #006699;
+    border-right: 5px solid #006699;
 }
 
 .skin-slidedeck dl.slidedeck > dd.slide_3 {
-    background: url(/media/images/get-started-diagram.png) no-repeat 42px 0 #FFFFFF;
+    background: url(/media/images/get-started-diagram.png) no-repeat 42px 0 #006699;
     font-size: 13pt;
     font-family: Georgia;
+    border-right: 5px solid #006699;
 }
 
 .slidedeck .slide_1 p,
@@ -365,6 +369,10 @@ input.text {
    font-size: 19pt;
    line-height: 1.5;
    font-family: Georgia;
+}
+
+.skin-slidedeck dl.slidedeck > dt {
+   background-color: #006699 !important;
 }
 
 .slidedeck .frequency-indicator {
