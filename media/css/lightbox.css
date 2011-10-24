@@ -443,6 +443,9 @@ input.text {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33cc00', endColorstr='#269900',GradientType=0 ); /* IE6-9 */
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
+    box-shadow: 1px 1px 2px #3F3F3F;
+    -moz-box-shadow: 1px 1px 2px #3F3F3F;
+    -webkit-box-shadow: 1px 1px 2px #3F3F3F;
 }
 
 .slidedeck-navBtns .nav-next:hover,
