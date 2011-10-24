@@ -2398,6 +2398,11 @@ div#connectedness-container {
    margin: 17px 20px 0 0;
 }
 
+.addthis_32x32_style a {
+   display: inline-block !important; 
+   vertical-align: middle;
+}
+
 #show-video-link {
     display:block;
     text-align:center;
