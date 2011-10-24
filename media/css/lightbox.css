@@ -358,7 +358,7 @@ input.text {
 
 .skin-slidedeck dl.slidedeck > dd.slide_3 {
     background: url(/media/images/get-started-diagram.png) no-repeat 42px 0 #006699;
-    font-size: 11.5pt;
+    font-size: 13pt;
     border-right: 5px solid #006699;
 }
 
@@ -384,25 +384,25 @@ input.text {
 }
 
 .slide_3 .help-col-left {
-    margin-left: 132px;
-    margin-top: 110px;
-    width: 218px;
+    margin-left: 120px;
+    margin-top: 32px;
+    width: 231px;
     margin-right: 0;
 }
 
 .slide_3 .help-col-left div {
-    padding-top: 15px;
+    padding-top: 50px;
 }
 
 .slide_3 .help-col-mid {
     width: 185px;
-    margin-top: 110px;
+    margin-top: 15px;
 }
 
 .slide_3 .help-col-right {
-    width: 160px;
-    margin-top: 110px;
-    margin-right: 25px;
+    width: 175px;
+    margin-top: 15px;
+    margin-right: 10px;
 }
 
 #lightbox .overview-video-lightbox-content {
