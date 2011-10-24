@@ -60,7 +60,7 @@ Include file used by both print_resource.html and tag_landing.html
         </tbody></table>
         {% if sectors %}
         <div id="tag-sectors">
-            <h3><a href="" name="sectors"></a>Sectors</h3><a href="#top" class="topLink">Back to Top</a>
+            <h3><a href="" name="sectors"></a>{{ tag.name }}-Related Sectors</h3><a href="#top" class="topLink">Back to Top</a>
             <ul>
                 {% for parent in sectors %}
                     <li>
@@ -77,7 +77,7 @@ Include file used by both print_resource.html and tag_landing.html
                 
         {% if societies %}
         <div id="tag-societies">
-            <h3><a name="societies"></a>Organizations</h3><a href="#top" class="topLink">Back to Top</a>
+            <h3><a name="societies"></a>{{ tag.name }}-Related Organizations</h3><a href="#top" class="topLink">Back to Top</a>
             <ul>
                 {% for society in societies %}
                     <li>
@@ -94,7 +94,7 @@ Include file used by both print_resource.html and tag_landing.html
             
         {% if related_tags %}
         <div id="tag-related-tags">
-            <h3><a name="related_tags"></a>Related Tags</h3><a href="#top" class="topLink">Back to Top</a>
+            <h3><a name="related_tags"></a>{{ tag.name }}-Related Tags</h3><a href="#top" class="topLink">Back to Top</a>
             <ul>
                 {% for related_tag in related_tags %}
                     <li>
@@ -111,7 +111,7 @@ Include file used by both print_resource.html and tag_landing.html
             
         {% if conferences %}
         <div id="tag-conferences">
-            <h3><a name="conferences"></a>Conferences</h3><a href="#top" class="topLink">Back to Top</a>
+            <h3><a name="conferences"></a>{{ tag.name }}-Related Conferences</h3><a href="#top" class="topLink">Back to Top</a>
             <ul>
         {% if conferences|length %}
             {% for resource in conferences %}
@@ -164,7 +164,7 @@ Include file used by both print_resource.html and tag_landing.html
             
         {% if periodicals %}
         <div id="tag-periodicals">
-            <h3><a name="periodicals"></a>Periodicals</h3><a href="#top" class="topLink">Back to Top</a>
+            <h3><a name="periodicals"></a>{{ tag.name }}-Related Periodicals</h3><a href="#top" class="topLink">Back to Top</a>
             <ul class="tag_list">
                 {% for periodical in periodicals.all %}
                     <li>
@@ -186,7 +186,7 @@ Include file used by both print_resource.html and tag_landing.html
             
         {% if standards %}
         <div id="tag-standards">
-            <h3><a name="standards"></a>Standards</h3><a href="#top" class="topLink">Back to Top</a>
+            <h3><a name="standards"></a>{{ tag.name }}-Related Standards</h3><a href="#top" class="topLink">Back to Top</a>
             <ul class="tag_list">
                 {% for standard in standards.all %}
                     <li>
@@ -208,7 +208,7 @@ Include file used by both print_resource.html and tag_landing.html
             
         {% if xplore_results %}
         <div id="tag-xplore">
-            <h3><a name="xplore"></a>Xplore Articles</h3><a href="#top" class="topLink">Back to Top</a>
+            <h3><a name="xplore"></a>{{ tag.name }}-Related Xplore Articles</h3><a href="#top" class="topLink">Back to Top</a>
             <ul class="tag_list">
                 {% for xplore_result in xplore_results %}
                     <li>
