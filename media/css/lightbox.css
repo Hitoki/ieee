@@ -405,28 +405,6 @@ input.text {
     margin-right: 25px;
 }
 
-.slidedeck #goBtn.lightbox-close {
-    background: none repeat scroll 0 0 #33CC00;
-    color: #FFFFFF;
-    padding: 5px 15px;
-    cursor: pointer;
-    border: 1px solid transparent;
-    height: auto;
-    width: auto;
-    margin: 15px 0 0;
-    position: relative;
-    display: inline-block;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-}
-
-.slidedeck #goBtn.lightbox-close:hover {
-    background: none repeat scroll 0 0 #FFFFFF;
-    color: #33CC00;
-    border: 1px solid #33CC00;
-}
-
-
 #lightbox .overview-video-lightbox-content {
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -435,6 +413,42 @@ input.text {
     width: 512px;
     min-width: 512px;
     padding: 2em;
+}
+
+.slidedeck-navBtns {
+    bottom: 10px;
+    position: absolute;
+    right: 6px;   
+}
+
+.slidedeck-navBtns .next,
+#lightbox .slidedeck-navBtns .lightbox-close {
+    border: 1px solid #33CC00;
+    color: #FFFFFF;
+    padding: 0 5px 2px;
+    margin: 0;
+    position: relative;
+    background: #33cc00; /* Old browsers */
+    background: -moz-linear-gradient(top, #33cc00 40%, #269900 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(40%,#33cc00), color-stop(100%,#269900)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #33cc00 40%,#269900 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #33cc00 40%,#269900 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #33cc00 40%,#269900 100%); /* IE10+ */
+    background: linear-gradient(top, #33cc00 40%,#269900 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33cc00', endColorstr='#269900',GradientType=0 ); /* IE6-9 */
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+}
+
+.slidedeck-navBtns .next:hover,
+#lightbox .slidedeck-navBtns .lightbox-close:hover {
+    cursor: pointer;
+    color: #33CC00;
+    background: none repeat scroll 0 0 #FFFFFF;
+}
+
+.slidedeck-navBtns .next img {
+   vertical-align: middle;
 }
 
 #lightbox .overview-video-lightbox-content .lightbox-close {
