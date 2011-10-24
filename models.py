@@ -591,7 +591,7 @@ class Node(models.Model):
 
     def _get_definition_link(self):
         if self.definition_source == 'dbpedia.org':
-            return "(From <a href='https://en.wikipedia.org/wiki/%s'>Wikipedia.com</a>)" % self.name.replace(' ', '_') 
+            return "(From Wikipedia.org)"
         else:
             return ''
 
