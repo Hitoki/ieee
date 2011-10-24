@@ -7,7 +7,7 @@
 	        <p>The IEEE Technology Navigator brings together the vast catalog of IEEE resources and organizes it into technology topics &mdash; engineering and science concepts that are relevant to you.</p>
             <p>Whether you're a student researching an emerging technology or a practicing engineer looking for a conference to attend, Technology Navigator puts you just a few clicks away from thousands of valuable IEEE resources.</p>
             <div class="slidedeck-navBtns">
-                <span class="next">Next <img src="/media/images/nextArrow.png"/></span>
+                <span class="nav-next">Next <img src="/media/images/nextArrow.png"/></span>
             </div>
         </dd>
 	    
@@ -20,7 +20,7 @@
                <img class="tag-icon" src="/media/images/standard_icon.png"> standards, <img class="tag-icon" src="/media/images/education_icon.png"> educational resources.</p>
            <p>Every resource is linked so you can go straight to it!</p>
             <div class="slidedeck-navBtns">
-                <span class="next">Next <img src="/media/images/nextArrow.png"/></span>
+                <span class="nav-next">Next <img src="/media/images/nextArrow.png"/></span>
             </div>
 	    </dd>
 	    
@@ -70,6 +70,9 @@
 	<script type="text/javascript">
 	    // The most basic implementation using the default options
 	    $('.slidedeck').slidedeck();
+	    $('.nav-next').click(function(){
+	        $('.slidedeck').slidedeck().next();
+        });
 	</script>
 	<!-- Help support SlideDeck! Place this noscript tag on your page when you deploy a SlideDeck to provide a link back! -->
 	<noscript>
