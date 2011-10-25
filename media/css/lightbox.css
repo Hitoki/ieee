@@ -456,7 +456,9 @@ input.text {
 }
 
 .slidedeck-navBtns .nav-next img {
-   vertical-align: top;
+    height: 18px;
+    padding-left: 5px;
+    vertical-align: middle;
 }
 
 #lightbox .overview-video-lightbox-content .lightbox-close {
