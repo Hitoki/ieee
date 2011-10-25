@@ -38,12 +38,12 @@ Include file used by both print_resource.html and tag_landing.html
                     <div id="tag_contents">
                         <span>Contents</span>
                         <ol>
-                            {% if sectors %}<li><a href="#sectors">Sectors</a></li>{% endif %}
-                            {% if societies %}<li><a href="#societies">Organizations</a></li>{% endif %}
-                            {% if related_tags %}<li><a href="#concepts">Concepts</a></li>{% endif %}
-                            {% if conferences %}<li><a href="#conferences">Conferences</a></li>{% endif %}
-                            {% if periodicals %}<li><a href="#periodicals">Periodicals</a></li>{% endif %}
-                            {% if standards %}<li><a href="#standards">Standards</a></li>{% endif %}
+                            {% if sectors %}<li><a href="#sectors">Sectors related to {{ tag.name }}</a></li>{% endif %}
+                            {% if societies %}<li><a href="#societies">Organizations related to {{ tag.name }}</a></li>{% endif %}
+                            {% if related_tags %}<li><a href="#concepts">Concepts related to {{ tag.name }}</a></li>{% endif %}
+                            {% if conferences %}<li><a href="#conferences">Conferences related to {{ tag.name }}</a></li>{% endif %}
+                            {% if periodicals %}<li><a href="#periodicals">Periodicals related to {{ tag.name }}</a></li>{% endif %}
+                            {% if standards %}<li><a href="#standards">Standards related to {{ tag.name }}</a></li>{% endif %}
                             {% if xplore_results %}<li><a href="#xplore">Xplore Articles</a></li>{% endif %}
                         </ol>
                     </div>
