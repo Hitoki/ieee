@@ -426,7 +426,7 @@ input.text {
 #lightbox .slidedeck-navBtns .lightbox-close {
     border: 1px solid #33CC00;
     color: #FFFFFF;
-    padding: 4px 7px 2px;
+    padding: 4px 10px;
     margin: 0;
     position: relative;
     display: inline-block;
