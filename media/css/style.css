@@ -2675,10 +2675,9 @@ display: inline-block;
 }
 
 #tag_technav {
-background: #33CC00 url(/media/images/tag-technavlogo.png) no-repeat 80px 5px;
-width: 352px;
-height: 35px;
-padding: 20px 8px 8px 8px;
+height: 60px;
+width: 360px;
+padding: 8px;
 float: right;
 -moz-border-radius: 10px;
 -webkit-border-radius: 10px; 
@@ -2686,17 +2685,38 @@ display: inline-block;
 cursor: pointer;
 -moz-box-shadow: 1px 1px 5px #3F3F3F;
 -webkit-box-shadow: 1px 1px 5px #3F3F3F;
+background: #33cc00; /* Old browsers */
+background: -moz-linear-gradient(top, #33cc00 40%, #269900 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(40%,#33cc00), color-stop(100%,#269900)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #33cc00 40%,#269900 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, #33cc00 40%,#269900 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, #33cc00 40%,#269900 100%); /* IE10+ */
+background: linear-gradient(top, #33cc00 40%,#269900 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33cc00', endColorstr='#269900',GradientType=0 ); /* IE6-9 */
 }
 
 #tag_technav:hover {
-background: orange url(/media/images/tag-technavlogo.png) no-repeat 80px -65px;
+background: #ffc35b; /* Old browsers */
+background: -moz-linear-gradient(top, #ffc35b 0%, #f29d00 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffc35b), color-stop(100%,#f29d00)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #ffc35b 0%,#f29d00 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, #ffc35b 0%,#f29d00 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, #ffc35b 0%,#f29d00 100%); /* IE10+ */
+background: linear-gradient(top, #ffc35b 0%,#f29d00 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffc35b', endColorstr='#f29d00',GradientType=0 ); /* IE6-9 */
+}
+
+#tag_technav:hover span {
+background: transparent url(/media/images/tag-technavlogo.png) no-repeat 80px -65px;
 }
 
 #tag_technav span {
 color: white;   
 text-decoration: none;
-width: 305px;
+height: 60px;
+width: 360px;
 display: inline-block;
+background: transparent url(/media/images/tag-technavlogo.png) no-repeat 80px 5px;
 }
 
 .topLink {
