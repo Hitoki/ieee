@@ -610,7 +610,7 @@ class Node(models.Model):
 
     def _get_definition_link(self):
         if self.definition_source == 'dbpedia.org':
-            return "(From Wikipedia.org)"
+            return "(From <a href='https://wikipedia.org/wiki/%s'>Wikipedia.org</a>)" % self.wikipedia_slug
         else:
             return ''
 
@@ -629,7 +629,7 @@ class Node(models.Model):
 
     def _get_wikipedia_slug(self):
         """Transform the tag name into a format used by wikipedia."""
-        return tag.name.replace(' ', '_')
+        return self.name.replace(' ', '_')
 
     wikipedia_slug = property(_get_wikipedia_slug)
 
