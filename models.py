@@ -591,15 +591,18 @@ class Node(models.Model):
     resource_count = property(get_resource_count)
 
     def _get_short_definition(self):
-        """Returns the first sentence, optionally if defintion is of a certain type."""
-
-        if self.definition_source != 'dbpedia.org':
+        """Returns the first sentence for old/new wikipedia definitions."""
+        if not self.definition_type.startswith('wiki'):
             return self.definition
 
-        pat = r'(.+\.)\s'
+        pat = r'(.+?\.)\s'
         matches = re.search(pat, self.definition)
         if matches:
-            return matches.groups()[0]
+            short_def = matches.groups()[0]
+            if self.definition_type == 'wiki old':
+                # Add back the embedded source string that just got removed.
+                short_def = '%s %s' % (short_def, '(www.wikipedia.org)') 
+            return short_def
         else:
             return self.definition
 
