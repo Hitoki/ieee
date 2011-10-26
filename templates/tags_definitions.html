@@ -92,7 +92,7 @@ $('input:checkbox').change(function(event){
         {% if show_id %}<td class="nodeId">{{ tag.pk }}</td>{% endif %}
         <td><a href="{% url tag_landing tag.pk %}{{tag.name|slugify|slice:":40"}}">{{tag.name}}</a></td>
         <td>{{ tag.definition_type}}</td>
-        <td>{{ tag.definition }} {{ tag.definition_link|safe }}</td>
+        <td>{{ tag.short_definition }} {{ tag.definition_link|safe }} ({% ifequal tag.definition_type 'dbpedia.org' %}first sentence{% endifequal %})</td>
       </tr>
       {% empty %}
        <td colspan="4">Sorry no matching tags found.</td>

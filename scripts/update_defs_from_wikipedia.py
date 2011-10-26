@@ -34,7 +34,7 @@ def main(*args):
     sparql = SPARQLWrapper("http://dbpedia.org/sparql")
     for tag in tags[10:]:
         print tag.name
-        query = sparql_pat  % quote(tag.name.replace(' ', '_'))
+        query = sparql_pat  % tag.wikipedia_slug # quote(tag.name.replace(' ', '_'))
         sparql.setQuery(query)
         sparql.setReturnFormat(JSON)
         results = sparql.query().convert()

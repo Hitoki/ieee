@@ -12,6 +12,7 @@ import time
 import string
 import settings
 import logging
+import re
 #from profiler import Profiler
 from enum import Enum
 import util
@@ -589,6 +590,21 @@ class Node(models.Model):
 
     resource_count = property(get_resource_count)
 
+    def _get_short_definition(self):
+        """Returns the first sentence, optionally if defintion is of a certain type."""
+
+        if self.definition_type != 'dppedia.org':
+            return self.definition
+
+        pat = r'(.+\.)(\s|$)'
+        matches = re.search(pat, self.definition)
+        if matches:
+            return matches.groups()[0]
+        else:
+            return self.definition
+
+    short_definition = property(_get_short_definition)
+
     def _get_definition_link(self):
         if self.definition_source == 'dbpedia.org':
             return "(From Wikipedia.org)"
@@ -607,6 +623,13 @@ class Node(models.Model):
 
     definition_type = property(_get_definition_type)
         
+
+    def _get_wikipedia_slug(self):
+        """Transform the tag name into a format used by wikipedia."""
+        return tag.name.replace(' ', '_')
+
+    wikipedia_slug = property(_get_wikipedia_slug)
+
 
     def save(self, add_child_info=True, *args, **kwargs):
         cluster_type = NodeType.objects.getFromName(NodeType.TAG_CLUSTER)
