@@ -595,7 +595,9 @@ class Node(models.Model):
         if not self.definition_type.startswith('wiki'):
             return self.definition
 
-        pat = r'(.+?\.)\s'
+        # Match up to the first period followed by a space that
+        # isn't part of i.e. or e.g.
+        pat = r'(.+?(?<![(i\.e)|(e\.g)])\.)\s'
         matches = re.search(pat, self.definition)
         if matches:
             short_def = matches.groups()[0]
