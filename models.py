@@ -619,7 +619,7 @@ class Node(models.Model):
     def _get_definition_type(self):
         if self.definition_source == 'dbpedia.org':
             return "wiki new"
-        elif 'wikipedia.org' in self.definition:
+        elif 'wikipedia.org' in self.definition.lower():
             return "wiki old"
         else:
             return "other"
