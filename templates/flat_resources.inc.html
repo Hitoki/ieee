@@ -29,7 +29,7 @@ Include file used by both print_resource.html and tag_landing.html
         </div>
         <!-- AddThis Button END -->
 	{% if tag.definition %}
-	<p style="clear:both;margin-top:20px;display:inline-block">{{ tag.definition|safe }}</p>
+	<p style="clear:both;margin-top:20px;display:inline-block">{{ tag.short_definition|safe }}</p>
 	{% endif %}
         <table id="tag_middle"><tbody>
             <tr>
