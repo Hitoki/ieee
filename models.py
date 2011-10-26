@@ -593,10 +593,10 @@ class Node(models.Model):
     def _get_short_definition(self):
         """Returns the first sentence, optionally if defintion is of a certain type."""
 
-        if self.definition_type != 'dppedia.org':
+        if self.definition_source != 'dbpedia.org':
             return self.definition
 
-        pat = r'(.+\.)(\s|$)'
+        pat = r'(.+\.)\s'
         matches = re.search(pat, self.definition)
         if matches:
             return matches.groups()[0]
