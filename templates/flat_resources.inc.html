@@ -23,7 +23,7 @@ Include file used by both print_resource.html and tag_landing.html
                 </div>
                 {% endif %}
                 <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script> 
-                <div class="addthis_toolbox addthis_32x32_style ">
+                <div class="addthis_toolbox addthis_16x16_style ">
                     <a class="addthis_button_email"></a>
                     <a class="addthis_button_twitter"></a>
                     <a class="addthis_button_facebook"></a>
@@ -269,6 +269,8 @@ Include file used by both print_resource.html and tag_landing.html
         $('h3 span.index').each(function(i, obj){
             $(this).text((i+1) + '.');
         });
+        var mainWidth = $("#inner-container").outerWidth();    
+        $("#tag_frozen_header").css('width', mainWidth);
     });
     
 </script>
