@@ -17,8 +17,16 @@ Include file used by both print_resource.html and tag_landing.html
                 url: "{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}",
                 title: "{{ tag.name }}",
                 description: "Read more about {{ tag.name }} on IEEE TechNav."
-           };
-        </script>
+            };
+
+            // Dynamically number the section content blocks.
+            $(document).ready(function(){
+                $('h3 span.index').each(function(i, obj){
+                    $(this).text((i+1) + '.');
+                });
+            });
+            
+       </script>
         <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script> 
         <div class="addthis_toolbox addthis_32x32_style ">
             <a class="addthis_button_email"></a>
@@ -28,9 +36,9 @@ Include file used by both print_resource.html and tag_landing.html
             <a class="addthis_counter addthis_bubble_style"></a>
         </div>
         <!-- AddThis Button END -->
-	{% if tag.definition %}
-	<p style="clear:both;margin-top:20px;display:inline-block">{{ tag.short_definition|safe }}</p>
-	{% endif %}
+        {% if tag.definition %}
+        <p style="clear:both;margin-top:20px;display:inline-block">{{ tag.short_definition|safe }}</p>
+        {% endif %}
         <table id="tag_middle"><tbody>
             <tr>
                 {% if toc %}
@@ -60,7 +68,7 @@ Include file used by both print_resource.html and tag_landing.html
         </tbody></table>
         {% if sectors %}
         <div id="tag-sectors">
-            <h3><a href="" name="sectors"></a>1. Sectors related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
+            <h3><a href="" name="sectors"></a><span class="index"></span> Sectors related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
             <ul>
                 {% for parent in sectors %}
                     <li>
@@ -77,7 +85,7 @@ Include file used by both print_resource.html and tag_landing.html
                 
         {% if societies %}
         <div id="tag-societies">
-            <h3><a name="societies"></a>2. Organizations related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
+            <h3><a name="societies"></a><span class="index"></span> Organizations related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
             <ul>
                 {% for society in societies %}
                     <li>
@@ -94,7 +102,7 @@ Include file used by both print_resource.html and tag_landing.html
             
         {% if related_tags %}
         <div id="tag-related-tags">
-            <h3><a name="concepts"></a>3. Concepts related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
+            <h3><a name="concepts"></a><span class="index"></span> Concepts related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
             <ul>
                 {% for related_tag in related_tags %}
                     <li>
@@ -111,7 +119,7 @@ Include file used by both print_resource.html and tag_landing.html
             
         {% if conferences %}
         <div id="tag-conferences">
-            <h3><a name="conferences"></a>4. Conferences related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
+            <h3><a name="conferences"></a><span class="index"></span> Conferences related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
             <ul>
         {% if conferences|length %}
             {% for resource in conferences %}
@@ -164,7 +172,7 @@ Include file used by both print_resource.html and tag_landing.html
             
         {% if periodicals %}
         <div id="tag-periodicals">
-            <h3><a name="periodicals"></a>5. Periodical articles related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
+            <h3><a name="periodicals"></a><span class="index"></span> Periodical articles related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
             <ul class="tag_list">
                 {% for periodical in periodicals.all %}
                     <li>
@@ -186,7 +194,7 @@ Include file used by both print_resource.html and tag_landing.html
             
         {% if standards %}
         <div id="tag-standards">
-            <h3><a name="standards"></a>6. Standards related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
+            <h3><a name="standards"></a><span class="index"></span> Standards related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
             <ul class="tag_list">
                 {% for standard in standards.all %}
                     <li>
@@ -208,7 +216,7 @@ Include file used by both print_resource.html and tag_landing.html
             
         {% if xplore_results %}
         <div id="tag-xplore">
-            <h3><a name="xplore"></a>7. Xplore Articles</h3><a href="#top" class="topLink">Back to Top</a>
+            <h3><a name="xplore"></a><span class="index"></span> Xplore Articles</h3><a href="#top" class="topLink">Back to Top</a>
             <ul class="tag_list">
                 {% for xplore_result in xplore_results %}
                     <li>
