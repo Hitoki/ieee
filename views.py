@@ -439,8 +439,6 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
             info = file1.info()
             temp, charset = info['content-type'].split('charset=')
 
-            raise KeyError()
-
         except urllib2.URLError:
             xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
             xplore_results = []
@@ -472,7 +470,6 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
                 # Otherwise, give up.
                 return [], 'No records found', 0
                 
-        
             xplore_results = []
             for document1 in xml1.documentElement.getElementsByTagName('document'):
                 rank = getElementValueByTagName(document1, 'rank')
@@ -488,21 +485,21 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
                 if highlight_search_term:
                     title = re.sub('(?i)(%s)' % tag_name, r'<strong>\1</strong>', title)
                     
-                    result = {
-                        'rank': rank,
-                        'name': title,
-                        'description': abstract,
-                        'url': pdf,
-                        'authors': authors,
-                        'pub_title': pub_title,
-                        'pub_year': pub_year,
-                        }
+                result = {
+                    'rank': rank,
+                    'name': title,
+                    'description': abstract,
+                    'url': pdf,
+                    'authors': authors,
+                    'pub_title': pub_title,
+                    'pub_year': pub_year,
+                    }
+                
+                # Working around an Xplore bug that returns broken URLs
+                if ctype == 'Educational Courses':
+                    result['url'] = result['url'].replace('stamp/stamp.jsp?ar', 'servlet/opac?md')
                     
-                    # Working around an Xplore bug that returns broken URLs
-                    if ctype == 'Educational Courses':
-                        result['url'] = result['url'].replace('stamp/stamp.jsp?ar', 'servlet/opac?md')
-
-                        xplore_results.append(result)
+                xplore_results.append(result)
         
     return xplore_results, xplore_error, totalfound
 
@@ -1711,9 +1708,10 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     standards = Node.objects.none()
     conf_count = 0
     totalfound = 0
+    xplore_edu_results = None
     xplore_results = None
     
-    if resource_type not in ['all', 'sectors', 'related_tags', 'societies', 'conferences', 'periodicals', 'standards', 'xplore']:
+    if resource_type not in ['all', 'sectors', 'related_tags', 'societies', 'conferences', 'periodicals', 'standards', 'xplore_edu', 'xplore']:
         raise Exception('Unknown resource_type "%s"' % resource_type)
 
     if resource_type == 'sectors' or resource_type == 'all':
@@ -1741,12 +1739,14 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
         periodicals = Resource.objects.getForNode(tag, resourceType=ResourceType.PERIODICAL)
     if resource_type == 'standards' or resource_type == 'all':
         standards = Resource.objects.getForNode(tag, resourceType=ResourceType.STANDARD)
+    if resource_type == 'xplore_edu' or resource_type == 'all':
+        xplore_edu_results, xplore_edu_error, totaledufound = _get_xplore_results(tag.name, False, ctype='Educational Courses')
     if resource_type == 'xplore' or resource_type == 'all':
         xplore_results, xplore_error, totalfound = _get_xplore_results(tag.name, False)
     
     page_date = datetime.datetime.now()
     
-    related_items_count = sectors.count() + related_tags.count() + societies.count() + conf_count + periodicals.count() + standards.count() + totalfound
+    related_items_count = sectors.count() + related_tags.count() + societies.count() + conf_count + periodicals.count() + standards.count() + totaledufound+ totalfound
         
         
     return render(request, template_name, {
@@ -1758,6 +1758,7 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
         'conferences': conferences,
         'periodicals': periodicals,
         'standards': standards,
+        'xplore_edu_results': xplore_edu_results,
         'xplore_results': xplore_results,
         'toc': toc,
         'create_links': create_links,
