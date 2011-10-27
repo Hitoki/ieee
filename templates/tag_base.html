@@ -50,9 +50,12 @@
         <div id="page-container">
             <div id="inner-container">
                 
+                {% comment %}
                 <div id="corner-notch"></div>
                 
                 {% include "utility_links.inc.html" %}
+                {% include "header.inc.html" %}
+                {% endcomment %}
                 
 {% endif %}
                 {% block content %}{% endblock %}

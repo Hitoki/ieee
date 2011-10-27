@@ -4,31 +4,35 @@ Include file used by both print_resource.html and tag_landing.html
 {% endcomment %}
 <div id="tag_page">
     <div id="tag_frozen_header">
+        <div id="corner-notch"></div>
+        {% include "utility_links.inc.html" %}
         {% include "header.inc.html" %}
-        <div class="left">
-            <h1 class="title">{{ tag.name }}</h1>
-            {% if tag.definition %}
-            <div id="tag_definition">
-                {{ tag.short_definition|safe }}
+        <div class="tag_header_inner">
+            <div class="left">
+                <h1 class="title">{{ tag.name }}</h1>
+                {% if tag.definition %}
+                <div id="tag_definition">
+                    {{ tag.short_definition|safe }}
+                </div>
+                {% endif %}
             </div>
-            {% endif %}
+            <div class="right">
+                {% if create_links %}
+                <div id="tag_technav" onclick="location.href='/textui/?autoload={{ tag.id }}';">
+                    <div><span>View this topic in</span></div>
+                </div>
+                {% endif %}
+                <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script> 
+                <div class="addthis_toolbox addthis_32x32_style ">
+                    <a class="addthis_button_email"></a>
+                    <a class="addthis_button_twitter"></a>
+                    <a class="addthis_button_facebook"></a>
+                    <a class="addthis_button_linkedin"></a>
+                    <a class="addthis_counter addthis_bubble_style"></a>
+                </div>
+            </div>
+            <br style="clear:both"/>
         </div>
-        <div class="right">
-            {% if create_links %}
-            <div id="tag_technav" onclick="location.href='/textui/?autoload={{ tag.id }}';">
-                <div><span>View this topic in</span></div>
-            </div>
-            {% endif %}
-            <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script> 
-            <div class="addthis_toolbox addthis_32x32_style ">
-                <a class="addthis_button_email"></a>
-                <a class="addthis_button_twitter"></a>
-                <a class="addthis_button_facebook"></a>
-                <a class="addthis_button_linkedin"></a>
-                <a class="addthis_counter addthis_bubble_style"></a>
-            </div>
-        </div>
-        <br style="clear:both"/>
     </div>
     
     {% if toc %}
