@@ -2619,6 +2619,52 @@ background: url(/media/images/drop_down_openactive.png) no-repeat 0px 0px;
 font-size: 12pt;
 }
 
+#tag_page #totalTagLink {
+margin-right: 95px;   
+}
+
+#tag_frozen_header {
+background-color: #FFFFFF;
+border-bottom: 1px solid #3F3F3F;
+-moz-box-shadow: 0 0 5px #3F3F3F;
+-webkit-box-shadow: 0 0 5px #3F3F3F;
+left: 0;
+margin-bottom: 20px;
+padding: 0 20px 15px;
+position: fixed;
+right: 0;
+top: 0;
+min-height: 235px;
+}
+
+#tag_frozen_header .left {
+float: left;
+width: 50%;   
+}
+
+#tag_frozen_header .right {
+float: right;
+width: 50%;
+}
+
+#tag_page h1 {
+clear: left;
+display: inline-block;
+float: left;
+margin: 0 0 10px;
+}
+
+#tag_definition {
+clear: left;
+float: left;
+width: 535px;
+font-size: 9pt;
+}
+
+#tag_page ul {
+margin-left: 2px;   
+}
+
 #tag_page ol li {
 margin: 0 0 0 10px;
 padding: 0;   
@@ -2639,14 +2685,10 @@ margin: 0 0 15px 0;
 width: 100%;   
 }
 
-#tag_page #tag_middle {
-width: 100%;
-margin-top: 20px;
-clear: both;   
-}
-
 .addthis_toolbox {
 float: right;
+clear: right;
+margin: 27px 33px 0 0;
 }
 
 #tag_header {
@@ -2679,6 +2721,7 @@ float: right;
 -webkit-border-radius: 10px; 
 display: inline-block;
 cursor: pointer;
+margin: 0 33px 0 0;
 -moz-box-shadow: 1px 1px 5px #3F3F3F;
 -webkit-box-shadow: 1px 1px 5px #3F3F3F;
 background: #33cc00; /* Old browsers */
@@ -2717,7 +2760,8 @@ background: transparent url(/media/images/tag-technavlogo.png) no-repeat 80px 3p
 
 #tag_technav span {
 float: left;
-margin-top: 18px;   
+margin-top: 9px;
+width: 80px;  
 }
 
 .topLink {
@@ -2733,11 +2777,10 @@ background: transparent url(/media/images/topLink.png) no-repeat 83px -11px;
 }
 
 #tag_contents {
-font-size: 10pt;
 clear: both;
 display: inline-block;
-background-color: #DFDFDF;
-padding: 10px 15px 10px 10px;
+font-size: 10pt;
+padding: 240px 15px 10px 3px;
 -moz-border-radius: 10px;
 -webkit-border-radius: 10px;
 }

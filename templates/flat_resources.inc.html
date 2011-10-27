@@ -3,267 +3,268 @@
 Include file used by both print_resource.html and tag_landing.html
 {% endcomment %}
 <div id="tag_page">
-        <div id="tag_header">
-            {{ related_items_count|intcomma }} Related resources for <span>{{ tag.name }}</span>
+    <div id="tag_frozen_header">
+        {% include "header.inc.html" %}
+        <div class="left">
+            <h1 class="title">{{ tag.name }}</h1>
+            {% if tag.definition %}
+            <div id="tag_definition">
+                {{ tag.short_definition|safe }}
+            </div>
+            {% endif %}
         </div>
-        <!-- AddThis Button BEGIN -->
-        <script type="text/javascript">
-            var addthis_config = {
-                pubid: "ra-4e02511c660b81ce",
-                data_ga_property: "UA-9482893-{{ GA_SITE_NUM }}",
-                data_track_clickback: true
-            };
-            var addthis_share = {
-                url: "{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}",
-                title: "{{ tag.name }}",
-                description: "Read more about {{ tag.name }} on IEEE TechNav."
-            };
-
-            // Dynamically number the section content blocks.
-            $(document).ready(function(){
-                $('h3 span.index').each(function(i, obj){
-                    $(this).text((i+1) + '.');
-                });
-            });
-            
-       </script>
-        <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script> 
-        <div class="addthis_toolbox addthis_32x32_style ">
-            <a class="addthis_button_email"></a>
-            <a class="addthis_button_twitter"></a>
-            <a class="addthis_button_facebook"></a>
-            <a class="addthis_button_linkedin"></a>
-            <a class="addthis_counter addthis_bubble_style"></a>
+        <div class="right">
+            {% if create_links %}
+            <div id="tag_technav" onclick="location.href='/textui/?autoload={{ tag.id }}';">
+                <div><span>View this topic in</span></div>
+            </div>
+            {% endif %}
+            <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script> 
+            <div class="addthis_toolbox addthis_32x32_style ">
+                <a class="addthis_button_email"></a>
+                <a class="addthis_button_twitter"></a>
+                <a class="addthis_button_facebook"></a>
+                <a class="addthis_button_linkedin"></a>
+                <a class="addthis_counter addthis_bubble_style"></a>
+            </div>
         </div>
-        <!-- AddThis Button END -->
-        {% if tag.definition %}
-        <p style="clear:both;margin-top:20px;display:inline-block">{{ tag.short_definition|safe }}</p>
-        {% endif %}
-        <table id="tag_middle"><tbody>
-            <tr>
-                {% if toc %}
-                <td>
-                    <div id="tag_contents">
-                        <span>Contents</span>
-                        <ol>
-                            {% if sectors %}<li><a href="#sectors">Sectors related to {{ tag.name }}</a></li>{% endif %}
-                            {% if societies %}<li><a href="#societies">Organizations related to {{ tag.name }}</a></li>{% endif %}
-                            {% if related_tags %}<li><a href="#concepts">Concepts related to {{ tag.name }}</a></li>{% endif %}
-                            {% if conferences %}<li><a href="#conferences">Conferences related to {{ tag.name }}</a></li>{% endif %}
-                            {% if periodicals %}<li><a href="#periodicals">Periodicals related to {{ tag.name }}</a></li>{% endif %}
-                            {% if standards %}<li><a href="#standards">Standards related to {{ tag.name }}</a></li>{% endif %}
-                            {% if xplore_edu_results %}<li><a href="#xplore_edu">Educational Resources</a></li>{% endif %}
-                            {% if xplore_results %}<li><a href="#xplore">Xplore Articles</a></li>{% endif %}
-                        </ol>
-                    </div>
-                </td>
-                {% endif %}
-                <td>
-                {% if create_links %}
-                    <div id="tag_technav" onclick="location.href='/textui/?autoload={{ tag.id }}';">
-                        <div><span>View in</span></div>
-                    </div>
-                {% endif %}
-                </td>
-            </tr>
-        </tbody></table>
-        {% if sectors %}
-        <div id="tag-sectors">
-            <h3><a href="" name="sectors"></a><span class="index"></span> Sectors related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
-            <ul>
-                {% for parent in sectors %}
-                    <li>
-                        {% if create_links %}
-                            <a href="/tag/{{ parent.id }}/{{ parent.name|slugify }}">{{ parent.name }}</a>
-                        {% else %}
-                            {{ parent.name }}
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
-                
-        {% if societies %}
-        <div id="tag-societies">
-            <h3><a name="societies"></a><span class="index"></span> Organizations related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
-            <ul>
-                {% for society in societies %}
-                    <li>
-                        {% if create_links %}
-                            <a href="{{ society.url }}" rel="nofollow">{{ society.name }}</a>
-                        {% else %}
-                            {{ society.name }}
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
-            
-        {% if related_tags %}
-        <div id="tag-related-tags">
-            <h3><a name="concepts"></a><span class="index"></span> Concepts related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
-            <ul>
-                {% for related_tag in related_tags %}
-                    <li>
-                        {% if create_links %}
-                            <a href="/tag/{{ related_tag.id }}/{{ related_tag.name|slugify }}">{{ related_tag.name }}</a>
-                        {% else %}
-                            {{ related_tag.name }}
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
-            
-        {% if conferences %}
-        <div id="tag-conferences">
-            <h3><a name="conferences"></a><span class="index"></span> Conferences related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
-            <ul>
-        {% if conferences|length %}
-            {% for resource in conferences %}
-                {# grouped conference displayed on the tag landing page #}
+        <br style="clear:both"/>
+    </div>
+    
+    {% if toc %}
+    <div id="tag_contents">
+        <span>Contents ({{ related_items_count|intcomma }} related resources)</span>
+        <ol>
+            {% if sectors %}<li><a href="#sectors">Sectors related to {{ tag.name }}</a></li>{% endif %}
+            {% if societies %}<li><a href="#societies">Organizations related to {{ tag.name }}</a></li>{% endif %}
+            {% if related_tags %}<li><a href="#concepts">Concepts related to {{ tag.name }}</a></li>{% endif %}
+            {% if conferences %}<li><a href="#conferences">Conferences related to {{ tag.name }}</a></li>{% endif %}
+            {% if periodicals %}<li><a href="#periodicals">Periodicals related to {{ tag.name }}</a></li>{% endif %}
+            {% if standards %}<li><a href="#standards">Standards related to {{ tag.name }}</a></li>{% endif %}
+            {% if xplore_edu_results %}<li><a href="#xplore_edu">Educational Resources</a></li>{% endif %}
+            {% if xplore_results %}<li><a href="#xplore">Xplore Articles</a></li>{% endif %}
+        </ol>
+    </div>
+    {% endif %}
+    
+    {% if sectors %}
+    <div id="tag-sectors">
+        <h3><a href="" name="sectors"></a><span class="index"></span> Sectors related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
+        <ul>
+            {% for parent in sectors %}
                 <li>
-                {% if resource.url and resource.url_status != "bad" %}<a href="{{ resource.url }}" target="_blank" rel="nofollow">{% endif %}
-                    <span>{{resource.name}}</span>
-                    {% if resource.url and resource.url_status != "bad" %}</a>{% endif %}
-                    <p>{{resource.description}}</p>
-                    {% if resource.is_current_conference and resource.other_conferences|length %}
-                        <ul class="conference-series">
-                            {% for other_conference in resource.other_conferences %}
-                                <li>
-                                {% if other_conference.url and other_conference.url_status != "bad" %}
-                                    <a href="{{ other_conference.url }}" target="_blank" rel="nofollow">
-                                {% endif %}
-                                    <span>{{other_conference.name}}</span>
-                                {% if other_conference.url and other_conference.url_status != "bad" %}
-                                    </a>
-                                {% endif %}
-                                <p class="{% cycle 'desc_odd' 'desc_even' %} ">{{other_conference.description}}</p>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                        
+                    {% if create_links %}
+                        <a href="/tag/{{ parent.id }}/{{ parent.name|slugify }}">{{ parent.name }}</a>
+                    {% else %}
+                        {{ parent.name }}
                     {% endif %}
                 </li>
             {% endfor %}
-        {% else %}
-            <p class="no-resources">No conferences are currently tagged "{{ tag.name }}"</p>
-        {% endif %}
-            {% for conference in conferences.all %}
-                {# ungrouped conference displayed on the print resource page #}
+        </ul>
+    </div>
+    {% endif %}
+            
+    {% if societies %}
+    <div id="tag-societies">
+        <h3><a name="societies"></a><span class="index"></span> Organizations related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
+        <ul>
+            {% for society in societies %}
+                <li>
+                    {% if create_links %}
+                        <a href="{{ society.url }}" rel="nofollow">{{ society.name }}</a>
+                    {% else %}
+                        {{ society.name }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+        
+    {% if related_tags %}
+    <div id="tag-related-tags">
+        <h3><a name="concepts"></a><span class="index"></span> Concepts related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
+        <ul>
+            {% for related_tag in related_tags %}
+                <li>
+                    {% if create_links %}
+                        <a href="/tag/{{ related_tag.id }}/{{ related_tag.name|slugify }}">{{ related_tag.name }}</a>
+                    {% else %}
+                        {{ related_tag.name }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+        
+    {% if conferences %}
+    <div id="tag-conferences">
+        <h3><a name="conferences"></a><span class="index"></span> Conferences related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
+        <ul>
+    {% if conferences|length %}
+        {% for resource in conferences %}
+            {# grouped conference displayed on the tag landing page #}
+            <li>
+            {% if resource.url and resource.url_status != "bad" %}<a href="{{ resource.url }}" target="_blank" rel="nofollow">{% endif %}
+                <span>{{resource.name}}</span>
+                {% if resource.url and resource.url_status != "bad" %}</a>{% endif %}
+                <p>{{resource.description}}</p>
+                {% if resource.is_current_conference and resource.other_conferences|length %}
+                    <ul class="conference-series">
+                        {% for other_conference in resource.other_conferences %}
+                            <li>
+                            {% if other_conference.url and other_conference.url_status != "bad" %}
+                                <a href="{{ other_conference.url }}" target="_blank" rel="nofollow">
+                            {% endif %}
+                                <span>{{other_conference.name}}</span>
+                            {% if other_conference.url and other_conference.url_status != "bad" %}
+                                </a>
+                            {% endif %}
+                            <p class="{% cycle 'desc_odd' 'desc_even' %} ">{{other_conference.description}}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    
+                {% endif %}
+            </li>
+        {% endfor %}
+    {% else %}
+        <p class="no-resources">No conferences are currently tagged "{{ tag.name }}"</p>
+    {% endif %}
+        {% for conference in conferences.all %}
+            {# ungrouped conference displayed on the print resource page #}
+            <li>
+                <p class="title">
+                {% if create_links %}
+                    <a href="{{ conference.url }}" target="_blank" rel="nofollow">{{ conference.name }}</a>
+                {% else %}
+                    {{ conference.name }}
+                {% endif %}
+                </p>
+                <p class="description">
+                    {{ conference.description|truncatewords:60 }}
+                </p>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+        
+    {% if periodicals %}
+    <div id="tag-periodicals">
+        <h3><a name="periodicals"></a><span class="index"></span> Periodical articles related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
+        <ul class="tag_list">
+            {% for periodical in periodicals.all %}
                 <li>
                     <p class="title">
                     {% if create_links %}
-                        <a href="{{ conference.url }}" target="_blank" rel="nofollow">{{ conference.name }}</a>
+                        <a href="{{ periodical.url }}" target="_blank" rel="nofollow">{{ periodical.name }}</a>
                     {% else %}
-                        {{ conference.name }}
+                        {{ periodical.name }}
                     {% endif %}
                     </p>
                     <p class="description">
-                        {{ conference.description|truncatewords:60 }}
+                        {{ periodical.description|truncatewords:60 }}
                     </p>
                 </li>
             {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
-            
-        {% if periodicals %}
-        <div id="tag-periodicals">
-            <h3><a name="periodicals"></a><span class="index"></span> Periodical articles related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
-            <ul class="tag_list">
-                {% for periodical in periodicals.all %}
-                    <li>
-                        <p class="title">
-                        {% if create_links %}
-                            <a href="{{ periodical.url }}" target="_blank" rel="nofollow">{{ periodical.name }}</a>
-                        {% else %}
-                            {{ periodical.name }}
-                        {% endif %}
-                        </p>
-                        <p class="description">
-                            {{ periodical.description|truncatewords:60 }}
-                        </p>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
-            
-        {% if standards %}
-        <div id="tag-standards">
-            <h3><a name="standards"></a><span class="index"></span> Standards related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
-            <ul class="tag_list">
-                {% for standard in standards.all %}
-                    <li>
-                        <p class="title">
-                        {% if create_links %}
-                            <a href="{{ standard.url }}" target="_blank" rel="nofollow">{{ standard.name }}</a>
-                        {% else %}
-                            {{ standard.name }}
-                        {% endif %}
-                        </p>
-                        <p class="description">
-                            {{ standard.description|truncatewords:60 }}
-                        </p>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
+        </ul>
+    </div>
+    {% endif %}
+        
+    {% if standards %}
+    <div id="tag-standards">
+        <h3><a name="standards"></a><span class="index"></span> Standards related to {{ tag.name }}</h3><a href="#top" class="topLink">Back to Top</a>
+        <ul class="tag_list">
+            {% for standard in standards.all %}
+                <li>
+                    <p class="title">
+                    {% if create_links %}
+                        <a href="{{ standard.url }}" target="_blank" rel="nofollow">{{ standard.name }}</a>
+                    {% else %}
+                        {{ standard.name }}
+                    {% endif %}
+                    </p>
+                    <p class="description">
+                        {{ standard.description|truncatewords:60 }}
+                    </p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
 
-        {% if xplore_edu_results %}
-        <div id="tag-xplore_edu">
-            <h3><a name="xplore_edu"></a><span class="index"></span> Educational Resources</h3><a href="#top" class="topLink">Back to Top</a>
-            <ul class="tag_list">
-                {% for xplore_result in xplore_edu_results %}
-                    <li>
-                        <p class="title">
-                        {% if create_links %}
-                            <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow">{{ xplore_result.name }}</a>
-                        {% else %}
-                            {{ xplore_result.name }}
-                        {% endif %}
-                        </p>
-                        <p class="pub-info">
-                            {{ xplore_result.authors }} {{ xplore_result.pub_title }},  {{ xplore_result.pub_year }}
-                        </p>
-                        <p class="description">
-                            {{ xplore_result.description|truncatewords:60 }}
-                        </p>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
-            
-        {% if xplore_results %}
-        <div id="tag-xplore">
-            <h3><a name="xplore"></a><span class="index"></span> Xplore Articles</h3><a href="#top" class="topLink">Back to Top</a>
-            <ul class="tag_list">
-                {% for xplore_result in xplore_results %}
-                    <li>
-                        <p class="title">
-                        {% if create_links %}
-                            <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow">{{ xplore_result.name }}</a>
-                        {% else %}
-                            {{ xplore_result.name }}
-                        {% endif %}
-                        </p>
-                        <p class="pub-info">
-                            {{ xplore_result.authors }} {{ xplore_result.pub_title }},  {{ xplore_result.pub_year }}
-                        </p>
-                        <p class="description">
-                            {{ xplore_result.description|truncatewords:60 }}
-                        </p>
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
-        <a href="#top" class="topLink">Back to Top</a>
-        <br style="clear:both"/>
+    {% if xplore_edu_results %}
+    <div id="tag-xplore_edu">
+        <h3><a name="xplore_edu"></a><span class="index"></span> Educational Resources</h3><a href="#top" class="topLink">Back to Top</a>
+        <ul class="tag_list">
+            {% for xplore_result in xplore_edu_results %}
+                <li>
+                    <p class="title">
+                    {% if create_links %}
+                        <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow">{{ xplore_result.name }}</a>
+                    {% else %}
+                        {{ xplore_result.name }}
+                    {% endif %}
+                    </p>
+                    <p class="pub-info">
+                        {{ xplore_result.authors }} {{ xplore_result.pub_title }},  {{ xplore_result.pub_year }}
+                    </p>
+                    <p class="description">
+                        {{ xplore_result.description|truncatewords:60 }}
+                    </p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+        
+    {% if xplore_results %}
+    <div id="tag-xplore">
+        <h3><a name="xplore"></a><span class="index"></span> Xplore Articles</h3><a href="#top" class="topLink">Back to Top</a>
+        <ul class="tag_list">
+            {% for xplore_result in xplore_results %}
+                <li>
+                    <p class="title">
+                    {% if create_links %}
+                        <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow">{{ xplore_result.name }}</a>
+                    {% else %}
+                        {{ xplore_result.name }}
+                    {% endif %}
+                    </p>
+                    <p class="pub-info">
+                        {{ xplore_result.authors }} {{ xplore_result.pub_title }},  {{ xplore_result.pub_year }}
+                    </p>
+                    <p class="description">
+                        {{ xplore_result.description|truncatewords:60 }}
+                    </p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <a href="#top" class="topLink">Back to Top</a>
+    <br style="clear:both"/>
 </div>
+
+<script type="text/javascript">
+    var addthis_config = {
+        pubid: "ra-4e02511c660b81ce",
+        data_ga_property: "UA-9482893-{{ GA_SITE_NUM }}",
+        data_track_clickback: true
+    };
+    var addthis_share = {
+        url: "{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}",
+        title: "{{ tag.name }}",
+        description: "Read more about {{ tag.name }} on IEEE TechNav."
+    };
+
+    // Dynamically number the section content blocks.
+    $(document).ready(function(){
+        $('h3 span.index').each(function(i, obj){
+            $(this).text((i+1) + '.');
+        });
+    });
+    
+</script>
