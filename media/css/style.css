@@ -2671,7 +2671,7 @@ display: inline-block;
 }
 
 #tag_technav {
-height: 60px;
+height: 57px;
 width: 360px;
 padding: 8px;
 float: right;
@@ -2702,17 +2702,22 @@ background: linear-gradient(top, #ffc35b 0%,#f29d00 100%); /* W3C */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffc35b', endColorstr='#f29d00',GradientType=0 ); /* IE6-9 */
 }
 
-#tag_technav:hover span {
-background: transparent url(/media/images/tag-technavlogo.png) no-repeat 80px -65px;
+#tag_technav:hover div {
+background: transparent url(/media/images/tag-technavlogo.png) no-repeat 80px -67px;
 }
 
-#tag_technav span {
+#tag_technav div {
 color: white;   
 text-decoration: none;
 height: 60px;
 width: 360px;
 display: inline-block;
-background: transparent url(/media/images/tag-technavlogo.png) no-repeat 80px 5px;
+background: transparent url(/media/images/tag-technavlogo.png) no-repeat 80px 3px;
+}
+
+#tag_technav span {
+float: left;
+margin-top: 18px;   
 }
 
 .topLink {
