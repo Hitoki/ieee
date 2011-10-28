@@ -5,6 +5,16 @@
         <span id="tagline">Connecting You to the IEEE Universe of Information</span>
         <span class="header-btns">
             <a href="/tags/all" id="totalTagLink">We now cover <span id="totalTagCount">{{ total_tag_count|intcomma  }}</span> topics</a> &nbsp;&nbsp;
+            {% if tag %}
+                <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script> 
+                <div class="addthis_toolbox addthis_16x16_style ">
+                    <a class="addthis_button_email"></a>
+                    <a class="addthis_button_twitter"></a>
+                    <a class="addthis_button_facebook"></a>
+                    <a class="addthis_button_linkedin"></a>
+                    <a class="addthis_counter addthis_bubble_style"></a>
+                </div>
+            {% endif %}
             {% if user.is_superuser %}<a href="{% url admin_home %}" class="btn admin" rel="nofollow">Admin</a>{% endif %} 
             {% comment %}<a href="http://www.ieee.org/membership_services/membership/join/index.html?WT.mc_id=u_join" class="btn join" target="_self" rel="nofollow">Join IEEE!</a>{% endcomment %}
             <a href="javascript:void(0)" class="btn help" rel="nofollow">Help</a>
