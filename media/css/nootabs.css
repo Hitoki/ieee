@@ -20,11 +20,18 @@ ul.nootabs-menus li {
     position: relative;
 }
 
-ul.nootabs-menus li a {
-    padding: 5px 40px 5px 5px;
+#galaxy-tabs li a {
+    padding: 8px 0 5px 5px;
+    height: 35px;
     display: block;
     line-height: 16px;
     text-align: left;
+}
+
+#galaxy-tabs li a span {
+   float: right;
+   font-weight: normal;
+   width: 62px;
 }
 
 ul.nootabs-menus li a:hover {
@@ -139,10 +146,6 @@ ul.nootabs-menus li a {
     color:#666;
     background:#EEEEEE;
     font-size: 8pt;
-}
-
-ul.nootabs-menus li a span {
-    font-weight:normal;
 }
 
 ul.nootabs-menus li.nootabs-selected-menu a {
