@@ -2664,8 +2664,8 @@ padding-left: 15px;
 background-color: #FFFFFF;
 margin-top: -7px;
 padding-bottom: 15px;
--moz-box-shadow: -5px 3px 5px #3F3F3F;
--webkit-box-shadow: -5px 3px 5px #3F3F3F;
+-moz-box-shadow: 0 3px 5px #3F3F3F;
+-webkit-box-shadow: 0 3px 5px #3F3F3F;
 }
 
 #tag_frozen_header #utility-links {
@@ -2698,7 +2698,7 @@ font-size: 9pt;
 }
 
 #tag_page ul {
-margin-left: 2px;   
+margin-left: 25px;   
 }
 
 #tag_page ol li {
@@ -2865,6 +2865,7 @@ margin: 0 0 0 17px !important;
 background-color: #DFDFDF;
 padding: 10px;
 margin-top: 5px;
+margin-left: 0;
 -moz-border-radius: 10px;
 -webkit-border-radius: 10px;   
 }
