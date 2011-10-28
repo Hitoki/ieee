@@ -29,9 +29,11 @@ ul.nootabs-menus li {
 }
 
 #galaxy-tabs li a span {
-   float: right;
-   font-weight: normal;
-   width: 60px;
+    float: right;
+    font-weight: normal;
+    padding-right: 7px;
+    text-align: right;
+    width: 46px;
 }
 
 ul.nootabs-menus li a:hover {
@@ -133,10 +135,6 @@ ul.nootabs-menus li.last-menu a {
 
 
 /* Page-specific styling below: */
-
-ul.nootabs-menus li {
-    margin: 0em 0em -1px -1px;
-}
 
 .full-grid ul.nootabs-menus li {
     margin: 0em 0em -6px -1px;

@@ -454,6 +454,7 @@ ul#view-header li {
 
 #left-column-container .nootabs-tab {
     border: 1px solid #006699;
+    border-top: 0 none;
     height: 100%;
     width: 174px;
     -moz-border-radius-bottomleft: 5px;
