@@ -461,7 +461,7 @@ ul#view-header li {
     -moz-border-radius-bottomright: 5px;
     -webkit-border-bottom-left-radius: 5px;
     -webkit-border-bottom-right-radius: 5px;
-    padding-top: 5px;
+    padding-top: 3px;
 }
 
 #left-column-container .nootabs-menus li.nootabs-selected-menu {
@@ -773,7 +773,7 @@ span#roamer-beta-warning {
 #alternate-page #left-column ul#societies li a {
     color: #333333;
     margin: 0px;
-    padding: 2px 18px 4px 4px;
+    padding: 2px 18px 3px 4px;
     width: 152px;
     border-top: 1px solid transparent;
 }
