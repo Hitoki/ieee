@@ -501,7 +501,9 @@ var Flyover = {
                 position = horizontal + '-' + vertical;
             }
             
-            this.showArrow(position);
+	    // failsafe to avoid the little-to-big problem
+	    if (this._flyover.width() > 0 )
+		this.showArrow(position);
             
             if (this.options.width != null)
                 this._flyover.css('width', this.options.width);
@@ -629,7 +631,10 @@ var Flyover = {
             
             // TODO: This should be an option
             //this._flyover.fadeIn('normal');
-            this._flyover.show();
+
+	    // failsafe to avoid the little-to-big problem
+	    if (this._flyover.width() > 0)
+		this._flyover.show();
         }
     },
     
