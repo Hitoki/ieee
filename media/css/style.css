@@ -794,6 +794,7 @@ span#roamer-beta-warning {
 
 #alternate-page #left-column ul#societies li a.active-society,
 #alternate-page #left-column ul#sectors li a.active-sector {
+    border-top: 1px solid #006699;
     background: #77bddd; /* Old browsers */
     background: -moz-linear-gradient(top, #77bddd 0%, #006699 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#77bddd), color-stop(100%,#006699)); /* Chrome,Safari4+ */
@@ -807,6 +808,7 @@ span#roamer-beta-warning {
 
 #alternate-page #left-column ul#sectors li a:hover,
 #alternate-page #left-column ul#societies li a:hover {
+    border-top: 1px solid #ffa500;
     background: #ffd896; /* Old browsers */
     background: -moz-linear-gradient(top, #ffd896 0%, #ffa500 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffd896), color-stop(100%,#ffa500)); /* Chrome,Safari4+ */
