@@ -431,7 +431,7 @@ ul#view-header li {
 }
 
 #galaxy-tabs li{
-    width: 86px;
+    width: 95px;
     min-height: 42px;
     border: 1px solid gray;
     border-bottom: 1px solid #006699;
@@ -440,7 +440,7 @@ ul#view-header li {
 #galaxy-tabs li.last-menu {
     margin-left: -1px !Important;
     border-left: 1px solid #006699;
-    width: 87px !important;
+    width: 78px !important;
 }
 
 #left-column-container .nootabs-menu {
