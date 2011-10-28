@@ -90,6 +90,11 @@ table.main td.center .center-pad {
    margin-top: 2px;
 }
 
+#totalTagLink {
+    display: inline-block;
+    margin-top: 43px;
+}
+
 #header-logo img {
     float: left;
     position:relative;

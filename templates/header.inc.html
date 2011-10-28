@@ -4,7 +4,6 @@
         <a href="http://ieee.org" rel="nofollow"><img src="{{MEDIA_URL}}images/sm-logo.png" width="106" height="32"/></a>
         <span id="tagline">Connecting You to the IEEE Universe of Information</span>
         <span class="header-btns">
-            <a href="/tags/all" id="totalTagLink">We now cover <span id="totalTagCount">{{ total_tag_count|intcomma  }}</span> topics</a> &nbsp;&nbsp;
             {% if tag %}
                 <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script> 
                 <div class="addthis_toolbox addthis_16x16_style ">
@@ -24,5 +23,6 @@
         <a href="{{ LOGO_HREF }}" class="home" rel="nofollow">
             <img src="{{MEDIA_URL}}images/technav_banner.png" width="410" height="73"/>
         </a>
+        <a href="/tags/all" id="totalTagLink">We now cover <span id="totalTagCount">{{ total_tag_count|intcomma  }}</span> topics</a> &nbsp;&nbsp;
     </div>
 </div>
