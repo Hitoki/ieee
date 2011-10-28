@@ -770,26 +770,24 @@ span#roamer-beta-warning {
 
 #alternate-page #left-column ul#sectors li a,
 #alternate-page #left-column ul#societies li a {
-    color:#333333;
-    margin:0px;
+    color: #333333;
+    margin: 0px;
     padding: 4px 18px 4px 4px;
     width: 152px;
-}
-
-#alternate-page #left-column ul#societies li a {
-    color:#333333;
-    margin:0px;
+    border-top: 1px solid transparent;
 }
 
 #alternate-page #left-column ul#sectors li#cluster a,
 #alternate-page #left-column ul#societies li#cluster a {
    padding-left: 25px;
+   border-top: 0 none;
    background: transparent url(/media/images/icon_cluster_sm.png) no-repeat scroll 3px 4px;
 }
 
 #alternate-page  #left-column ul#societies li#cluster a:hover,
 #alternate-page  #left-column ul#sectors li#cluster a:hover {
-   background: white url(/media/images/icon_cluster_sm.png) no-repeat scroll 3px 4px !important;
+    border-top: 0 none;
+    background: white url(/media/images/icon_cluster_sm.png) no-repeat scroll 3px 4px !important;
 }
 
 #alternate-page #left-column ul#societies li a.active-society,
