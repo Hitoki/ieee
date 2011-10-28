@@ -15,6 +15,9 @@ $(document).ready(function(){
     if ($("body").hasClass("tag_base")) {
         var frozenHeadAdj = $("#tag_frozen_header").height() - 15;
         $("#tag_contents").css("padding-top", frozenHeadAdj);
+        $(".topLink").click(function() {
+            $('html, body').animate({ scrollTop: 0 }, 'slow');
+        });
     }
     
     if ($.cookie("noShowPanels")){
