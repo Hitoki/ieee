@@ -2754,6 +2754,10 @@ color: #006699;
 display: inline-block;
 }
 
+#tag_page h3 {
+margin-top: 0;   
+}
+
 #tag_technav {
 height: 57px;
 width: 360px;

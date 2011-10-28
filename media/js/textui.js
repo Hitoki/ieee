@@ -11,10 +11,13 @@ function scaleZoom(zoom, scale) {
 var sortDropDown, printDropDown;
 $(document).ready(function(){
     
-    // Adjust content padding depending on height of frozen header on tag landing pages.
+    // Functions for tag landing pages only.
     if ($("body").hasClass("tag_base")) {
+        // Adjust content padding depending on height of frozen header on tag landing pages.
         var frozenHeadAdj = $("#tag_frozen_header").height() - 15;
         $("#tag_contents").css("padding-top", frozenHeadAdj);
+        
+        // Handles smooth scroll to top of page.
         $(".topLink").click(function() {
             $('html, body').animate({ scrollTop: 0 }, 'slow');
         });
