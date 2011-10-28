@@ -937,6 +937,7 @@ var Tags = {
             }
             , showCloseButton: true
         });
+	$('.resources-lightbox-content').append($('<div class="resource-loading">'));
     },
     
     onSelectTag: function(tabName) {
