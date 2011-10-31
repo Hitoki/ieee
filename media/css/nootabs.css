@@ -141,7 +141,7 @@ ul.nootabs-menus li.last-menu a {
 #resource-tabs ul.nootabs-menus li {
     background-color: #EEEEEE;
     margin: 0 0 0 -1px;
-    padding: 2px 0 5px 5px;
+    padding: 0 0 3px 5px;
 }
 
 #resource-tabs ul.nootabs-menus li.nootabs-selected-menu {
@@ -181,4 +181,17 @@ div.nootabs-tab {
     text-align:center;
     padding:1em;
     color:gray;
+}
+
+#login-tabs ul {
+   margin-bottom: -6px;
+}
+
+#login-tabs li a {
+   padding: 5px 20px;
+   display: inline-block;
+}
+
+#login-tabs .last-menu {
+   margin-left: -1px;
 }

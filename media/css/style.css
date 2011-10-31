@@ -2012,10 +2012,6 @@ p.export {
     border:1px solid gray;
 }
 
-#adminLogin ul.nootabs-menus li a{
-    padding-bottom: 7px;
-}
-
 #login-table label {
    font-weight: bold;
 }
