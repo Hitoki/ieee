@@ -134,6 +134,23 @@ ul.nootabs-menus li.last-menu a {
 
 
 /* Page-specific styling below: */
+.tag-resources-tabs ul {
+    margin-bottom: -1px;
+}
+
+#resource-tabs ul.nootabs-menus li {
+    background-color: #EEEEEE;
+    margin: 0 0 0 -1px;
+    padding: 2px 0 5px 5px;
+}
+
+#resource-tabs ul.nootabs-menus li.nootabs-selected-menu {
+   background-color: #FFFFFF;
+}
+
+#resource-tabs ul.nootabs-menus li a {
+   padding: 0;
+}
 
 .full-grid ul.nootabs-menus li {
     margin: 0em 0em -6px -1px;
@@ -164,8 +181,4 @@ div.nootabs-tab {
     text-align:center;
     padding:1em;
     color:gray;
-}
-
-#resource-tabs ul.nootabs-menus li a {
-    padding: 5px;
 }

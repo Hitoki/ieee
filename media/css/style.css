@@ -644,6 +644,10 @@ div.image-container {
     cursor: pointer;
 }
 
+.waitCursor {
+cursor: url(/media/images/wait-cursor.gif), wait;
+}
+
 #content p.desc_even {
     padding: 5px 5px 0 10px;
     margin: 0px;

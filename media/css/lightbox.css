@@ -211,24 +211,23 @@ input.text {
 }
 
 #conferences-tab {
-    width: 86px;
+    width: 79px;
 }
 
 #periodicals-tab {
-    width: 75px;
+    width: 72px;
 }
 
 #standards-tab {
-    width: 74px;
+    width: 67px;
 }
 
 #articles-tab {
-    width: 140px;
+    width: 133px;
 }
 
 #educations-tab {
-    width: 117px;
-    height: 42px;
+    width: 101px;
     background-color: #EEEEEE;
 }
 
