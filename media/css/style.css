@@ -3010,5 +3010,5 @@ td.machine-generated-column {
 
 #brokenLinkGrid {
     table-layout: fixed;
-    max-width: 1200px;
+    width: 1200px;
 }
