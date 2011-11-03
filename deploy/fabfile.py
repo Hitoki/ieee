@@ -197,7 +197,7 @@ def create_blank_domain():
         % env.domain, uid='root', gid='wheel', mode=0644)
     sudo('[ -f /etc/httpd/sites-enabled/%(domain)s.conf ] || ln -s /etc/httpd/sites-available/%(domain)s.conf /etc/httpd/sites-enabled/' % env, pty=True)
     run('mkdir -p "%(site_home)s/html" "%(site_home)s/log" "%(site_home)s/python/releases"' % env)
-    run('cd "%(site_home)s" && virtualenv python' % env)
+    run('cd "%(site_home)s" && virtualenv --python=python2.6 python' % env)
     
     run('chmod o+x ~')  # Set up directory traversal permissions for the home directory, so Apache can reach ~/sites
     
