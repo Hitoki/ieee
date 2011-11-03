@@ -3007,3 +3007,8 @@ td.machine-generated-column {
 .tag_base #welcome-link {
    display: none;
 }
+
+#brokenLinkGrid {
+    table-layout: fixed;
+    max-width: 1200px;
+}
