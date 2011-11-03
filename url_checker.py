@@ -214,12 +214,8 @@ def check_url_thread(resource_queue, resources_to_save_queue, checking_hosts):
         # Check if the host is being checked right now... wait until it's not
         
         urlparts = urlparse.urlparse(resource.url)
-        try:
-            hostname = urlparts.netloc
-        except AttributeError e:
-            print 'Got AttributeError, %s' % e
-            continue
-
+        hostname = urlparts.netloc
+        
         #print '  %s:   adding %s to checking_hosts' % (thread.getName(), hostname)
         checking_hosts.block_and_append(hostname)
         
