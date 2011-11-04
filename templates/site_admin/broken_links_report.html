@@ -28,11 +28,11 @@
     
     <p>
         Total Resources: {{ num_resources }}<br/>
-        Total Resources with URLs: {{ num_url_resources }}<br/>
-        Good URLs: {{ num_good_resources }}<br/>
-        Bad URLs: {{ bad_resources.count }}<br/>
-        Checked URLs: {{ num_checked_resources }}<br/>
-        Unchecked URLs: {{ num_unchecked_resources }}<br/>
+        Total Resources with URLs: {{ num_url_resources }} (url is not blank string)<br/>
+        Good URLs: {{ num_good_resources }} (url status is &quot;Good&quot;)<br/>
+        Bad URLs: {{ bad_resources.count }} (url status is &quot;Bad&quot;, listed below)<br/>
+        Checked URLs: {{ num_checked_resources }} (url status is &quot;Good&quot; or  &quot;Bad&quot;)<br/>
+        Unchecked URLs: {{ num_unchecked_resources }} (url is not blank string and url_status <i>is</i> blank string)<br/>
     </p>
     
     <table class="grid" id="brokenLinkGrid" width="1200">
