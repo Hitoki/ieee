@@ -1166,7 +1166,17 @@ def ajax_textui_nodes(request):
         'node_count_content': node_count_content,
         'textui_flyovers_url': textui_flyovers_url,
     }), 'text/plain')
-    
+
+
+def ajax_nodes_json(request):
+    "Create a JSON collection for API"
+    nodes = Node.objects.filter(name__contains=request.REQUEST['s'])
+    from django.core import serializers
+    json = serializers.serialize("json", nodes, ensure_ascii=False, fields=('id', 'name'))
+    json = json.replace(', "model": "ieeetags.node"', '')
+    return HttpResponse(json, content_type='application/javascript; charset=utf8')
+
+
 @login_required
 def ajax_nodes_xml(request):
     "Creates an XML list of nodes & connections for Asterisq Constellation Roamer."

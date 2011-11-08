@@ -49,6 +49,7 @@ else:
         url(r'^ajax/xplore_results$', views.ajax_xplore_results, name='ajax_xplore_results'),
         url(r'^ajax/node$', views.ajax_node, name='ajax_node'),
         url(r'^ajax/nodes_xml$', views.ajax_nodes_xml, name='ajax_nodes_xml'),
+        url(r'^ajax/nodes_json$', views.ajax_nodes_json, name='ajax_nodes_json'),
         url(r'^ajax/textui_nodes$', views.ajax_textui_nodes, name='ajax_textui_nodes'),
         url(r'^ajax/tooltip/(?P<tag_id>\d+)$', views.tooltip, name='tooltip'),
         url(r'^ajax/tooltip$', views.tooltip, name='tooltip'),
