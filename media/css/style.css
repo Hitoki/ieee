@@ -75,14 +75,22 @@ table.main td.center .center-pad {
     float: right;
     position: absolute;
     white-space: nowrap;
-    right: 0;
+    right: 30px;
     top: 0;
 }
 
-#header-links img {
-   margin: 8px 33px 0 0;
-   float: right;
-   clear: both;
+.custom_images {
+   float: left;
+   margin-right: 11px;
+}
+
+.custom_images a {
+   margin: 8px 5px 0 0;
+   float: left;
+}
+
+.tag_base .btn.help {
+   margin-top: 10px;
 }
 
 #header-logo {
@@ -103,9 +111,10 @@ table.main td.center .center-pad {
 }
 
 .header-btns {
-    float: right;
-    clear: right;
-    margin: 8px 33px 0 0;
+    display: block;
+    clear: both;
+    margin: 8px 0 0 0;
+    text-align: right;
 }
 
 .header-btns .btn {
@@ -2695,7 +2704,7 @@ margin: 0 0 10px;
 clear: left;
 float: left;
 width: 535px;
-font-size: 9pt;
+font-size: 11pt;
 }
 
 #tag_page ul {
