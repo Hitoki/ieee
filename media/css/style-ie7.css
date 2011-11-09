@@ -189,3 +189,15 @@ p#xplore-totals {
     text-align: right;
     white-space: nowrap;
 }
+
+.nootabs-menu span {
+   margin-top: -35px;
+}
+
+#tag-and-cluster-counts {
+   margin-top: 10px;
+}
+
+#textui-tags-sort .feature_label {
+    display: none !important;
+}
