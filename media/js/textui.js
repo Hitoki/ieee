@@ -33,6 +33,10 @@ $(document).ready(function(){
             }, 1000);
         }
     }
+    
+    // Set cookie onload to only show the box 1 time.
+    $.cookie("noShowPanels", 1);
+    
     //hide the "Standards Board"
     $('#society-list-item-49').hide();
     
