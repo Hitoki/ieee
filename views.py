@@ -1170,7 +1170,19 @@ def ajax_textui_nodes(request):
 
 def ajax_nodes_json(request):
     "Create a JSON collection for API"
-    nodes = Node.objects.filter(name__contains=request.REQUEST['s'])
+    if not 's' in request.GET or not len(request.GET['s'].strip()):
+        return HttpResponse("{'error': 'no search term provided'}", content_type='application/javascript; charset=utf8')
+
+    search_words = re.split(r'\s', request.GET['s'])
+    from django.db.models import Q
+    queries = None
+    for word in search_words:
+        if queries is None:
+            queries = Q(name__icontains=word)
+        else:
+            queries &= Q(name__icontains=word)
+    
+    nodes = Node.objects.filter(queries)
     from django.core import serializers
     json = serializers.serialize("json", nodes, ensure_ascii=False, fields=('id', 'name'))
     json = json.replace(', "model": "ieeetags.node"', '')
