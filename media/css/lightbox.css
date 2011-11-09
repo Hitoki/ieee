@@ -337,6 +337,10 @@ input.text {
     background-color: #D7D7D7;
 }
 
+.skin-slidedeck {
+   padding: 11px !important;
+}
+
 .skin-slidedeck dl.slidedeck > dt {
    width: 755px;
 }
