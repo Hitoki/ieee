@@ -32,7 +32,7 @@ Include file used by both print_resource.html and tag_landing.html
         <span>Contents ({{ related_items_count|intcomma }} related resources)</span>
         <ol>
             {% if sectors %}<li><a href="#sectors">Sectors related to {{ tag.name }}</a></li>{% endif %}
-            {% if societies %}<li><a href="#societies">Organizations related to {{ tag.name }}</a></li>{% endif %}
+            {% if societies %}<li><a href="#societies">IEEE Organizations related to {{ tag.name }}</a></li>{% endif %}
             {% if related_tags %}<li><a href="#concepts">Concepts related to {{ tag.name }}</a></li>{% endif %}
             {% if conferences %}<li><a href="#conferences">Conferences related to {{ tag.name }}</a></li>{% endif %}
             {% if periodicals %}<li><a href="#periodicals">Periodicals related to {{ tag.name }}</a></li>{% endif %}
@@ -64,7 +64,7 @@ Include file used by both print_resource.html and tag_landing.html
             
     {% if societies %}
     <div id="tag-societies">
-        <h3><a name="societies"></a><span class="index"></span> Organizations related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a name="societies"></a><span class="index"></span> IEEE Organizations related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         <ul>
             {% for society in societies %}
                 <li>
