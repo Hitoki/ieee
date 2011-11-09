@@ -1791,8 +1791,14 @@ p.export {
     color: #ffa500;
 }
 
-#tag-help-box #link-help a {
+#tag-help-box a {
     color: white;
+    text-decoration: none;
+}
+
+#tag-help-box a:hover {
+   color: #FFA500;
+   text-decoration: underline;
 }
 
 #no-show-container {
