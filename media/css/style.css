@@ -76,7 +76,7 @@ table.main td.center .center-pad {
     position: absolute;
     white-space: nowrap;
     right: 30px;
-    top: 0;
+    top: 10px;
 }
 
 .custom_images {
