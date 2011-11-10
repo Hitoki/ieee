@@ -12,7 +12,7 @@ Include file used by both print_resource.html and tag_landing.html
                 <h1 class="title">{{ tag.name }}</h1>
                 {% if tag.definition %}
                 <div id="tag_definition">
-                    {{ tag.short_definition|safe }}
+                    {{ tag.short_definition|safe }} <small>(Wikipedia.org)</small>
                 </div>
                 {% endif %}
             </div>
