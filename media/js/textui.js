@@ -622,9 +622,12 @@ var Tags = {
                 $('#tag-galaxy .alt-box-pad').data('original_min_height', parseInt($('#tag-galaxy .alt-box-pad').css('min-height')));
             }
             var minHeight = $('#tag-galaxy .alt-box-pad').data('original_min_height') - height;
-            $('#tag-galaxy .alt-box-pad').css('min-height', minHeight + 'px');
-            
-            $(window).resize();
+	    try{
+		$('#tag-galaxy .alt-box-pad').css('min-height', minHeight + 'px');
+            } catch (err)
+
+	    }
+	    $(window).resize();
             
             $('#tags').empty();
             this.loadContentChunk();
