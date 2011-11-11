@@ -624,7 +624,7 @@ var Tags = {
             var minHeight = $('#tag-galaxy .alt-box-pad').data('original_min_height') - height;
 	    try{
 		$('#tag-galaxy .alt-box-pad').css('min-height', minHeight + 'px');
-            } catch (err)
+            } catch (err) {
 
 	    }
 	    $(window).resize();
