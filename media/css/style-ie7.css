@@ -63,10 +63,6 @@ form.items-per-page {
     width: auto !important;
 }
 
-#left-column ul#sectors li a {
-    width: 164px !important;
-}
-
 #right-column {
 	margin-left:190px;
 }
