@@ -2706,6 +2706,7 @@ background: url(/media/images/inner-top.png) no-repeat scroll 0 0;
 #misc-bar {
 	overflow:hidden;
 	padding: 12px 0;
+	height: 19px;
 }
 
 #tag-counts h2 {
