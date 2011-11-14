@@ -294,20 +294,17 @@
                     </div>
                     
                     <div id="misc-bar">
-                        <div id="tag-counts">
-                        </div>
-                        
+                        <div id="tag-counts"></div>
+                        {% if ENABLE_SHOW_CLUSTERS_CHECKBOX or ENABLE_SHOW_TERMS_CHECKBOX %}
                         <p id="show-clusters-terms-box">
                             {% if ENABLE_SHOW_CLUSTERS_CHECKBOX %}
                                 <input id="show-clusters" type="checkbox" /> <label for="show-clusters">Show Clusters</label>
                             {% endif %}
-                            
                             {% if ENABLE_SHOW_TERMS_CHECKBOX %}
                                 <input id="show-terms" type="checkbox" /> <label for="show-terms">Show Terms</label>
                             {% endif %}
                         </p>
-                        
-                        <br style="clear:both;" />
+                        {% endif %}
                     </div>
                     
                     <div id="tag-galaxy" class="alt-box">
