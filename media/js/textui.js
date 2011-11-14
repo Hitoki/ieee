@@ -616,18 +616,22 @@ var Tags = {
                 $('#tag-galaxy').data('original_min_height', parseInt($('#tag-galaxy').css('min-height')));
             }
             var minHeight = $('#tag-galaxy').data('original_min_height') - height;
-            $('#tag-galaxy').css('min-height', minHeight + 'px');
+            try {
+                $('#tag-galaxy').css('min-height', minHeight + 'px');
+            } catch (err){
+
+            }
             
             if ($('#tag-galaxy .alt-box-pad').data('original_min_height') == undefined) {
                 $('#tag-galaxy .alt-box-pad').data('original_min_height', parseInt($('#tag-galaxy .alt-box-pad').css('min-height')));
             }
             var minHeight = $('#tag-galaxy .alt-box-pad').data('original_min_height') - height;
-	    try{
-		$('#tag-galaxy .alt-box-pad').css('min-height', minHeight + 'px');
+            try{
+                $('#tag-galaxy .alt-box-pad').css('min-height', minHeight + 'px');
             } catch (err) {
 
-	    }
-	    $(window).resize();
+            }
+            $(window).resize();
             
             $('#tags').empty();
             this.loadContentChunk();
