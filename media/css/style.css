@@ -2461,6 +2461,8 @@ div#connectedness-container {
 
 #sortContainer_outter {
     float: right;
+    position: relative;
+    z-index: 9999999;
 }
 
 #sortContainer_inner {
