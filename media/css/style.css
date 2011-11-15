@@ -111,6 +111,7 @@ table.main td.center .center-pad {
     clear: both;
     margin: 8px 0 0 0;
     text-align: right;
+    float: right;
 }
 
 .header-btns .btn {
@@ -2495,6 +2496,8 @@ padding-left: 3px;
     float: right;
     margin-top: 15px;
     margin-right: 15px;
+    position: relative;
+    z-index: 9999999;
 }
 
 #printContainer_inner {

@@ -199,7 +199,7 @@ input.text {
 
 /*Widths set for resource lightbox tabs, supports up to 2 numbers in tab count and 5 in article count safely*/
 #industry-sectors-tab {
-    width: 86px;
+    width: 80px;
 }
 
 #ieee-societies-tab {
@@ -211,7 +211,7 @@ input.text {
 }
 
 #conferences-tab {
-    width: 79px;
+    width: 85px;
 }
 
 #periodicals-tab {

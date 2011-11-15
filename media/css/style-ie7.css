@@ -15,7 +15,7 @@
 #lightbox .resources-lightbox-content .resources-pad .alt-box,
 #lightbox .resources-lightbox-content .resources-pad .alt-box #content,
 #lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs {
-    height: 100%;
+    height: 90%;
 }
 
 #lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs .nootabs-selected-tab {
@@ -75,20 +75,14 @@ form.items-per-page {
     padding: 7px 5px 0 0 !important;
 }                   
 
-.print-resource {
-    width: 777px !important;
-}
-
+#education-tab div.print-resource,
 #xplore-tab div.print-resource {
-    margin-top: 0;
+    margin-top: 0 !important;
+    width: 777px !important;
 }
 
 #xplore-tab div.group {
     margin-top: 0;
-}
-
-#lightbox .resources-lightbox-content ul.nootabs-menus li.end-group-menu {
-    margin-right: 25px !important;
 }
 
 #alternate-page #tag-galaxy div.tag {
@@ -102,10 +96,6 @@ form.items-per-page {
 #alternate-page #tag-galaxy div.tag {
     float:left;
     margin:1em .1em;
-}
-
-#xplore-tab div.print-resource {
-    margin-top: 0px;
 }
 
 p#xplore-totals {
@@ -134,20 +124,6 @@ p#xplore-totals {
    margin-right: 30px;
 }
 
-#help-col-left {
-   width: 220px;
-   margin-right: 50px;
-}
-
-#help-col-mid {
-    margin-left: 0;
-    float: left;
-}
-
-#help-col-right {
-    display: inline-block;
-}
-
 #hide-help-box div {
    float: left;
 }
@@ -166,14 +142,6 @@ p#xplore-totals {
 
 #xplore-results-container div.group ul {
    margin-top: 0;
-}
-
-#help-col-left {
-    width: 180px;
-}
-
-#help-col-right {
-    width: 180px;
 }
 
 #help-close-button {
@@ -196,4 +164,25 @@ p#xplore-totals {
 
 #textui-tags-sort .feature_label {
     display: none !important;
+}
+
+.help-col-left {
+   margin-right: -190px; 
+}
+
+.help-col-right {
+    clear: none;
+    margin-top: -175px;
+}
+
+#lightbox .resources-lightbox-content ul.nootabs-menus li.end-group-menu {
+   margin-right: 5px;
+}
+
+#textui-tags-search-clear {
+   margin-left: -35px;
+}
+
+.tag_header_inner {
+   border-bottom: 2px solid #CFCFCF;
 }

@@ -1,5 +1,6 @@
 .tag_base #inner-container {
    background: none repeat scroll 0 0 white;
+   filter: none;
 }
 
 .tag_base #welcome-link {
@@ -47,6 +48,7 @@ padding-left: 15px;
 background-color: #FFFFFF;
 margin-top: -7px;
 padding-bottom: 15px;
+min-height: 105px;
 -moz-box-shadow: 0 3px 5px #3F3F3F;
 -webkit-box-shadow: 0 3px 5px #3F3F3F;
 }
@@ -214,7 +216,7 @@ padding: 190px 15px 10px 3px;
 }
 
 #tag_contents ol {
-margin-left: 10px;   
+margin-left: 15px;   
 }
 
 #tag_contents ul {
