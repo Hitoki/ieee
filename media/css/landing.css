@@ -73,6 +73,7 @@ clear: left;
 display: inline-block;
 float: left;
 margin: 0 0 10px;
+font-size: 18pt;
 }
 
 #tag_definition {
