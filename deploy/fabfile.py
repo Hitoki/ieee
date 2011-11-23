@@ -293,7 +293,7 @@ def checkout_site():
 
 def build_tagcloud_caches():
     _expand_site_paths(env)
-    run('cd "%(site_home)s/python" && source bin/activate && export PYTHONPATH=%(site_code)s/..:$PYTHONPATH && export DJANGO_SETTINGS_MODULE=ieeetags.settings &&  python %(site_code)s/deploy/create_caches.py' % env)
+    run('cd "%(site_home)s/python" && source bin/activate && export PYTHONPATH=%(site_code)s/..:%(site_code)s/:$PYTHONPATH && export DJANGO_SETTINGS_MODULE=ieeetags.settings &&  python %(site_code)s/deploy/create_caches.py' % env)
     #run('python deploy/create_caches.py create_caches')
     
 def install_siteminder_client():
