@@ -1695,7 +1695,12 @@ def tag_landing(request, tag_id):
     Displays a wikipedia-style "flat" view of the tag. No tabs or other fancy UI.
     Simply uses the print_resource view passing in a different template name.
     '''
-    return print_resource(request, tag_id, 'all', template_name='tag_landing.html', create_links=True, toc=True)
+    # TODO move logic to decorator
+    if re.match(settings.MOBILE_URL_PREFIX, request.META['HTTP_HOST']):
+        template_name = 'tag_landing_mobile.html'
+    else:
+        template_name = 'tag_landing.html'
+    return print_resource(request, tag_id, 'all', template_name=template_name, create_links=True, toc=True)
     
 def clusters_list(request):
     '''
