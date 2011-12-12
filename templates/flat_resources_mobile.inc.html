@@ -7,73 +7,19 @@ Include file used by both print_resource.html and tag_landing.html
     <div id="tag_contents">
         <h1>Contents ({{ related_items_count|intcomma }} related resources for {{ tag.name }})</h1>
         <ol>
-            {% if sectors %}<li><a href="#sectors">Sectors related to {{ tag.name }}</a></li>{% endif %}
-            {% if societies %}<li><a href="#societies">IEEE Organizations related to {{ tag.name }}</a></li>{% endif %}
-            {% if related_tags %}<li><a href="#concepts">Concepts related to {{ tag.name }}</a></li>{% endif %}
             {% if conferences %}<li><a href="#conferences">Conferences related to {{ tag.name }}</a></li>{% endif %}
-            {% if periodicals %}<li><a href="#periodicals">Periodicals related to {{ tag.name }}</a></li>{% endif %}
             {% if standards %}<li><a href="#standards">Standards related to {{ tag.name }}</a></li>{% endif %}
-            {% if xplore_edu_results %}<li><a href="#xplore_edu">Educational Resources on {{ tag.name }}</a></li>{% endif %}
+            {% if periodicals %}<li><a href="#periodicals">Periodicals related to {{ tag.name }}</a></li>{% endif %}
             {% if xplore_results %}<li><a href="#xplore">Xplore Articles mentioning {{ tag.name }}</a></li>{% endif %}
+            {% if societies %}<li><a href="#societies">IEEE Organizations related to {{ tag.name }}</a></li>{% endif %}
+            {% if related_tags %}<li><a href="#concepts">Topics related to {{ tag.name }}</a></li>{% endif %}
+            {% if xplore_edu_results %}<li><a href="#xplore_edu">Educational Resources on {{ tag.name }}</a></li>{% endif %}
+            {% if sectors %}<li><a href="#sectors">Fields of study related to {{ tag.name }}</a></li>{% endif %}
         </ol>
     </div>
     <hr/>
     {% endif %}
     
-    {% if sectors %}
-    <div id="tag-sectors">
-        <h3><a href="" name="sectors"></a><span class="index"></span> Sectors related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
-        <ul>
-            {% for parent in sectors %}
-                <li>
-                    {% if create_links %}
-                        <a href="/tag/{{ parent.id }}/{{ parent.name|slugify }}">{{ parent.name }}</a>
-                    {% else %}
-                        {{ parent.name }}
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-    <hr/>
-    {% endif %}
-            
-    {% if societies %}
-    <div id="tag-societies">
-        <h3><a name="societies"></a><span class="index"></span> IEEE Organizations related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
-        <ul>
-            {% for society in societies %}
-                <li>
-                    {% if create_links %}
-                        <a href="{{ society.url }}" rel="nofollow">{{ society.name }}</a>
-                    {% else %}
-                        {{ society.name }}
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-    <hr/>
-    {% endif %}
-        
-    {% if related_tags %}
-    <div id="tag-related-tags">
-        <h3><a name="concepts"></a><span class="index"></span> Concepts related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
-        <ul>
-            {% for related_tag in related_tags %}
-                <li>
-                    {% if create_links %}
-                        <a href="/tag/{{ related_tag.id }}/{{ related_tag.name|slugify }}">{{ related_tag.name }}</a>
-                    {% else %}
-                        {{ related_tag.name }}
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-    <hr/>
-    {% endif %}
-        
     {% if conferences %}
     <div id="tag-conferences">
         <h3><a name="conferences"></a><span class="index"></span> Conferences related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
@@ -127,7 +73,30 @@ Include file used by both print_resource.html and tag_landing.html
     </div>
     <hr/>
     {% endif %}
-        
+
+    {% if standards %}
+    <div id="tag-standards">
+        <h3><a name="standards"></a><span class="index"></span> Standards related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <ul class="tag_list">
+            {% for standard in standards.all %}
+                <li>
+                    <p class="title">
+                    {% if create_links %}
+                        <a href="{{ standard.url }}" target="_blank" rel="nofollow">{{ standard.name }}</a>
+                    {% else %}
+                        {{ standard.name }}
+                    {% endif %}
+                    </p>
+                    <p class="description">
+                        {{ standard.description|truncatewords:60 }}
+                    </p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <hr/>
+    {% endif %}
+
     {% if periodicals %}
     <div id="tag-periodicals">
         <h3><a name="periodicals"></a><span class="index"></span> Periodical articles related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
@@ -150,23 +119,61 @@ Include file used by both print_resource.html and tag_landing.html
     </div>
     <hr/>
     {% endif %}
-        
-    {% if standards %}
-    <div id="tag-standards">
-        <h3><a name="standards"></a><span class="index"></span> Standards related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+
+    {% if xplore_results %}
+    <div id="tag-xplore">
+        <h3><a name="xplore"></a><span class="index"></span> Xplore Articles mentioning {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         <ul class="tag_list">
-            {% for standard in standards.all %}
+            {% for xplore_result in xplore_results %}
                 <li>
                     <p class="title">
                     {% if create_links %}
-                        <a href="{{ standard.url }}" target="_blank" rel="nofollow">{{ standard.name }}</a>
+                        <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow">{{ xplore_result.name }}</a>
                     {% else %}
-                        {{ standard.name }}
+                        {{ xplore_result.name }}
                     {% endif %}
                     </p>
-                    <p class="description">
-                        {{ standard.description|truncatewords:60 }}
+                    <p class="pub-info">
+                        {{ xplore_result.authors }} {{ xplore_result.pub_title }},  {{ xplore_result.pub_year }}
                     </p>
+                    <p class="description">
+                        {{ xplore_result.description|truncatewords:60 }}
+                    </p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    {% if societies %}
+    <div id="tag-societies">
+        <h3><a name="societies"></a><span class="index"></span> IEEE Organizations related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <ul>
+            {% for society in societies %}
+                <li>
+                    {% if create_links %}
+                        <a href="{{ society.url }}" rel="nofollow">{{ society.name }}</a>
+                    {% else %}
+                        {{ society.name }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <hr/>
+    {% endif %}
+
+    {% if related_tags %}
+    <div id="tag-related-tags">
+        <h3><a name="concepts"></a><span class="index"></span> Topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <ul>
+            {% for related_tag in related_tags %}
+                <li>
+                    {% if create_links %}
+                        <a href="/tag/{{ related_tag.id }}/{{ related_tag.name|slugify }}">{{ related_tag.name }}</a>
+                    {% else %}
+                        {{ related_tag.name }}
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>
@@ -199,30 +206,23 @@ Include file used by both print_resource.html and tag_landing.html
     </div>
     <hr/>
     {% endif %}
-        
-    {% if xplore_results %}
-    <div id="tag-xplore">
-        <h3><a name="xplore"></a><span class="index"></span> Xplore Articles mentioning {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
-        <ul class="tag_list">
-            {% for xplore_result in xplore_results %}
+    
+    {% if sectors %}
+    <div id="tag-sectors">
+        <h3><a href="" name="sectors"></a><span class="index"></span> Fields of study related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <ul>
+            {% for parent in sectors %}
                 <li>
-                    <p class="title">
                     {% if create_links %}
-                        <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow">{{ xplore_result.name }}</a>
+                        <a href="/tag/{{ parent.id }}/{{ parent.name|slugify }}">{{ parent.name }}</a>
                     {% else %}
-                        {{ xplore_result.name }}
+                        {{ parent.name }}
                     {% endif %}
-                    </p>
-                    <p class="pub-info">
-                        {{ xplore_result.authors }} {{ xplore_result.pub_title }},  {{ xplore_result.pub_year }}
-                    </p>
-                    <p class="description">
-                        {{ xplore_result.description|truncatewords:60 }}
-                    </p>
                 </li>
             {% endfor %}
         </ul>
     </div>
+    <hr/>
     {% endif %}
     <a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
     <br style="clear:both"/>
