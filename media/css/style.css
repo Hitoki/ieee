@@ -534,6 +534,12 @@ p.admin-links a:hover {
     font-size: 8pt;
 }
 
+#surveyFooter {
+   color: #3F3F3F;
+   text-align: center;
+   font-size: 7pt;
+}
+
 #ieee-home {
    color: white;
    text-decoration: underline;
