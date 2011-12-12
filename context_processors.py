@@ -56,7 +56,7 @@ def settings(request):
 
 def total_tag_count(request):
     from ieeetags.models import Node, NodeType
-    c = Node.objects.filter(node_type__name=NodeType.TAG).count()
+    c = Node.objects.filter(node_type__name=NodeType.TAG).count() - 1
     return {
         'total_tag_count': c
         }
