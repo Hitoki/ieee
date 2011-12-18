@@ -962,7 +962,11 @@ var Tags = {
         
                 // Set searchComplete as the callback function when a search is 
                 // complete.  The patentSearch object will have results in it.
-                patentSearch.setSearchCompleteCallback(this, function(){alert('patent api callback');}, null);
+                patentSearch.setSearchCompleteCallback(this,
+                                                       function(){
+                                                           $('#patents-tab div.group').html(patentSearch.results.html);
+                                                       }
+                                                       , null);
                 
                 // Specify search quer(ies)
                 patentSearch.execute('electronic%20nose');
