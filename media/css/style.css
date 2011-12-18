@@ -1042,7 +1042,7 @@ span#roamer-beta-warning {
 
 #alternate-page #left-column ul#sectors li#cluster a,
 #alternate-page #left-column ul#societies li#cluster a {
-   padding-left: 25px;
+   padding: 3px 0 5px 25px;
    border-top: 0 none;
    background: transparent url(/media/images/icon_cluster_sm.png) no-repeat scroll 3px 4px;
 }
@@ -1690,7 +1690,6 @@ table.vert-center td {
     text-align: center;
     padding-top: 1px;
     margin-top: 1px;
-    margin-left: 2px;
     cursor: default;
     background: url(/media/images/frequency-bar.png) no-repeat 0 0;
 }
@@ -3111,9 +3110,10 @@ background: url(/media/images/inner-top.png) no-repeat scroll 0 0;
     color:#006699;
 }
 
-#tag-counts h3 {
-    margin:.5em .5em 0 .5em;
+#tag-counts {
+    margin: 0;
     font-weight: normal;
+    font-size: 11pt;
 }
 
 p#tag-and-cluster-counts {

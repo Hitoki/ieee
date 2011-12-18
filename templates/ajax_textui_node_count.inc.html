@@ -3,9 +3,8 @@
     {# For search phrases #}
     
     {% if search_for_too_short %}
-        <h3>The filter phrase <b>{{ search_for }}</b> is too short. Please enter more characters above OR <a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">clear the filter now</a>.</h3>
+        The filter phrase <b>{{ search_for }}</b> is too short. Please enter more characters above OR <a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">clear the filter now</a>.
     {% else %}
-        <h3>
         {# If the view returned results summary, use it. If not (happens when "All Sectors" or "All Organizations" are chosen), construct one. #}
         {% if search_page_title %}
             {{ search_page_title.num }} results for <b>{{ search_page_title.search_for }}</b> {{search_page_title.node_desc }}
@@ -21,7 +20,6 @@
         {% if num_terms %}
             ({{ num_terms }} terms)
         {% endif %}
-        </h3>
     {% endif %}
     
 {% else %}
