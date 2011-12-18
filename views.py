@@ -1750,7 +1750,7 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
         societies = tag.societies.all()
     if resource_type == 'conferences' or resource_type == 'all':
         conferences = Resource.objects.getForNode(tag, resourceType=ResourceType.CONFERENCE)
-        if template_name == 'tag_landing.html':
+        if template_name in ('tag_landing.html', 'tag_landing_mobile.html'):
 
             for conference in conferences:
                 if len(conference.url.strip()) and  not re.compile('^https?://').match(conference.url):
