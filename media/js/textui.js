@@ -965,7 +965,7 @@ var Tags = {
                 patentSearch.setSearchCompleteCallback(this, function(){alert('patent api callback');}, null);
                 
                 // Specify search quer(ies)
-                patentSearch.execute('{{ tag.name|slugify }}');
+                patentSearch.execute('electronic%20nose');
                 
                 // Include the required Google branding
                 google.search.Search.getBranding('branding');
