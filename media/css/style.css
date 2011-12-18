@@ -909,6 +909,17 @@ cursor: url(/media/images/wait-cursor.gif), wait;
     margin: 0px;
 }
 
+#xplore-tab p.desc_even,
+#xplore-tab p.desc_odd, 
+#xplore-tab p.pub_even,
+#xplore-tab p.pub_odd,
+#education-tab p.desc_even,
+#education-tab p.desc_odd, 
+#education-tab p.pub_even,
+#education-tab p.pub_odd {
+    padding: 5px 5px 0 30px;
+}
+
 #content-title {
     clear: both;
 }
@@ -2599,6 +2610,7 @@ div.group ul li:first-child {
 
 #education-tab div.print-resource {
     margin-top: -30px;
+    padding: 5px 5px 3px;
 }
 
 #resource-print-container {
