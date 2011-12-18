@@ -25,7 +25,7 @@ Include file used by both print_resource.html and tag_landing.html
         <h3><a name="conferences"></a><span class="index"></span> Conferences related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         <ul>
     {% if conferences|length %}
-        {% for resource in conferences|slice:":5" %}
+        {% for resource in conferences|slice:":1" %}
             {# grouped conference displayed on the tag landing page #}
             <li>
             {% if resource.url and resource.url_status != "bad" %}<a href="{{ resource.url }}" target="_blank" rel="nofollow">{% endif %}
@@ -34,7 +34,7 @@ Include file used by both print_resource.html and tag_landing.html
                 <p>{{resource.description}}</p>
                 {% if resource.is_current_conference and resource.other_conferences|length %}
                     <ul class="conference-series">
-                        {% for other_conference in resource.other_conferences %}
+                        {% for other_conference in resource.other_conferences|slice:":5" %}
                             <li>
                             {% if other_conference.url and other_conference.url_status != "bad" %}
                                 <a href="{{ other_conference.url }}" target="_blank" rel="nofollow">
