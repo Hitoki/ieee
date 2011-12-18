@@ -504,11 +504,11 @@ XploreLoader.prototype.onLoadData = function(data) {
                         
             var totalElem;
             if(this.ctype == "Educational Courses"){
-                $('#num-education-results').text('(' + addCommas(data.num_results) + ')');
+                $('#num-education-results').text(addCommas(data.num_results));
                 totalElem = $('#education-totals');
 		   
             } else {
-                $('#num-xplore-results').text('(' + addCommas(data.num_results) + ')');
+                $('#num-xplore-results').text(addCommas(data.num_results));
                 totalElem = $('#xplore-totals')
             }
             

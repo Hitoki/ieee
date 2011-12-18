@@ -178,6 +178,9 @@ ul.nootabs-menus li a:hover {
 
 #resource-tabs ul.nootabs-menus li a span {
    font-size: 7pt;
+   float: right;
+   vertical-align: baseline;
+   margin: 2px 5px 0 0;
 }
 
 .full-grid ul.nootabs-menus li {
