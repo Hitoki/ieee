@@ -68,9 +68,11 @@ ul.nootabs-menus li a:hover {
     top: 5px;
     border: 1px solid #006699;
     overflow: hidden;
+     -moz-border-radius-topright:5px;
     -moz-border-radius-bottomright:5px;
     -moz-border-radius-bottomleft:5px;
     -webkit-border-bottom-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
     -webkit-border-bottom-right-radius: 5px;
 }
 

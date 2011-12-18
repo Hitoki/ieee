@@ -317,10 +317,10 @@ function onCopyTagsSuccess(linkElem, data) {
 
 function resizeLightboxTab() {
     var windowHeight = $(window).height();
-    $('.resources-lightbox-content').css('height', windowHeight - 210); // Blue container
+    $('.resources-lightbox-content').css('height', windowHeight - 220); // Blue container
     //$('#resource-tabs .nootabs-selected-tab').css('height', windowHeight - 320); // White container
     $('.nootabs-selected-tab div.group').css('height', windowHeight - 300);
-    $('#xplore-results-container div.group, #education-results-container div.group').css('height', windowHeight - 320);
+    $('#xplore-results-container div.group, #education-results-container div.group').css('height', windowHeight - 330);
 }
 
 function addCommas(nStr) {
@@ -493,12 +493,14 @@ XploreLoader.prototype.onLoadData = function(data) {
         
         } else {
             // Normal results, load into the page.
-            
+                        
             this.listElem[0].innerHTML += data.html;
+            
+            resizeLightboxTab();
             
             // Hook up auto-truncate for the descriptions.
             autoTruncate(this.listElem.find('.auto-truncate-words'), { word_boundary:true } );
-            
+                        
             var totalElem;
             if(this.ctype == "Educational Courses"){
                 $('#num-education-results').text('(' + addCommas(data.num_results) + ')');
@@ -537,8 +539,6 @@ XploreLoader.prototype.onLoadData = function(data) {
             }
             
             // Showing {{ xplore_results|length }} of {{ totalfound|intcomma }} results 
-            
-            resizeLightboxTab();
             
         }
         

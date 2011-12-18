@@ -277,7 +277,7 @@ table.main td.center .center-pad {
     float: right;
     position: absolute;
     white-space: nowrap;
-    right: 30px;
+    right: 41px;
     top: 10px;
 }
 
@@ -615,7 +615,7 @@ ul#view-header li {
 #left-column ul#sectors li,
 #left-column ul#societies li {
     margin:0px;
-    width: 174px;
+    width: 100%;
 }
 
 #left-column ul#sectors li#cluster,
@@ -648,12 +648,9 @@ ul#view-header li {
     background:#bad4f9;
 }
 
-#left-column h2.feature_label {
-
-}
-
 #galaxy-tabs {
-    width: 187px;  
+    width: auto;
+    text-align: left;
 }
 
 #galaxy-tabs li{
@@ -727,10 +724,12 @@ ul#view-header li {
     background: #ffd896;
 }
 
+.cssgradients #left-column-container .nootabs-menus li.nootabs-selected-menu a:hover,
 #left-column-container .nootabs-menus li.nootabs-selected-menu a:hover {
     background: none 0 0 white;
     text-decoration: none !important;
     color: #006699 !important;
+    cursor: default;
 }
 
 #left-column-container .nootabs-menus li.nootabs-selected-menu a{
@@ -743,6 +742,8 @@ ul#view-header li {
     min-height: 395px;
     -moz-border-radius-topleft: 0px !important;
     -webkit-border-top-left-radius: 0px !important;
+    -moz-border-radius-topright: 0px !important;
+    -webkit-border-top-right-radius: 0px !important;
 }
 
 #left-column-container div#societies-tab {
@@ -912,6 +913,14 @@ cursor: url(/media/images/wait-cursor.gif), wait;
     clear: both;
 }
 
+.gs-result {
+padding-top: 5px;   
+}
+
+.gs-watermark {
+   display: none;
+}
+
 /* */
 .backtotop, .backtoptop:hover, .backtotop img {
     text-decoration: none;
@@ -1008,7 +1017,7 @@ span#roamer-beta-warning {
 }
 
 #alternate-page .alt-box .alt-box-pad {
-    padding:.5em;
+    padding: 3px 5px;
 }
 
 #alternate-page #left-column ul#sectors li a,
@@ -2547,7 +2556,6 @@ ul.errors {
 .nootabs-selected-tab div.group {
     height: 100%;
     overflow: auto;
-    margin-top: 10px;
 }
 
 #xplore-results-container div.group {
@@ -2668,8 +2676,9 @@ div.group ul li {
 
 #textui-zoom-container {
 	float:right;
-    width:22px;
-    padding-top: 88px;
+    width:20px;
+    margin-top: 100px;
+    margin-right: 5px;
 }
 
 #textui-zoom-container .feature_label {
@@ -2989,7 +2998,7 @@ background: url(/media/images/drop_down_openactive.png) no-repeat 0px 0px;
 /*New Laytout*/
 #utility-links {
 float: right;
-margin: -23px 35px 0 0; 
+margin: -23px 42px 0 0; 
 color: #FFFFFF; 
 }
 
@@ -3060,7 +3069,7 @@ background: url(/media/images/inner-top.png) no-repeat scroll 0 0;
 
 #misc-bar {
 	overflow:hidden;
-	padding: 12px 0;
+	padding: 15px 0 14px;
 	height: 19px;
 }
 
