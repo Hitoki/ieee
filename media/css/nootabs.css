@@ -173,6 +173,11 @@ ul.nootabs-menus li a:hover {
    padding: 4px 0;
    display: inline-block;
    width: 131px;
+   font-size: 9pt;
+}
+
+#resource-tabs ul.nootabs-menus li a span {
+   font-size: 7pt;
 }
 
 .full-grid ul.nootabs-menus li {
