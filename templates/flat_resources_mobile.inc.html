@@ -25,36 +25,7 @@ Include file used by both print_resource.html and tag_landing.html
         <h3><a name="conferences"></a><span class="index"></span> Conferences related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         <ul>
     {% if conferences|length %}
-        {% for resource in conferences|slice:":1" %}
-            {# grouped conference displayed on the tag landing page #}
-            <li>
-            {% if resource.url and resource.url_status != "bad" %}<a href="{{ resource.url }}" target="_blank" rel="nofollow">{% endif %}
-                <span>{{resource.name}}</span>
-                {% if resource.url and resource.url_status != "bad" %}</a>{% endif %}
-                <p>{{resource.description}}</p>
-                {% if resource.is_current_conference and resource.other_conferences|length %}
-                    <ul class="conference-series">
-                        {% for other_conference in resource.other_conferences|slice:":0" %}
-                            <li>
-                            {% if other_conference.url and other_conference.url_status != "bad" %}
-                                <a href="{{ other_conference.url }}" target="_blank" rel="nofollow">
-                            {% endif %}
-                                <span>{{other_conference.name}}</span>
-                            {% if other_conference.url and other_conference.url_status != "bad" %}
-                                </a>
-                            {% endif %}
-                            <p class="{% cycle 'desc_odd' 'desc_even' %} ">{{other_conference.description}}</p>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                    
-                {% endif %}
-            </li>
-        {% endfor %}
-    {% else %}
-        <p class="no-resources">No conferences are currently tagged "{{ tag.name }}"</p>
-    {% endif %}
-        {% for conference in conferences.all|slice:":5" %}
+        {% for conference in conferences.all|slice:":1" %}
             {# ungrouped conference displayed on the print resource page #}
             <li>
                 <p class="title">
@@ -69,6 +40,9 @@ Include file used by both print_resource.html and tag_landing.html
                 </p>
             </li>
         {% endfor %}
+    {% else %}
+        <p class="no-resources">No conferences are currently tagged "{{ tag.name }}"</p>
+    {% endif %}
         </ul>
     </div>
     <hr/>
