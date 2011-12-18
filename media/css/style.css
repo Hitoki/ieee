@@ -2548,8 +2548,9 @@ ul.errors {
     position: absolute;
     padding: 5px;
     background: white;
-    -moz-border-radius-topleft: 5px;
-    -webkit-border-top-left-radius: 5px;
+    border-bottom: 1px solid #CFCFCF;
+    -moz-border-radius-topright: 5px;
+    -webkit-border-top-right-radius: 5px;
 }
 
 .nootabs-selected-tab div.group {
@@ -2558,22 +2559,17 @@ ul.errors {
 }
 
 #xplore-results-container div.group {
-    margin-top: 30px;
+    margin-top: 48px;
 }
 
 #education-totals {
    float: left;
    margin: 0;
    padding-left: 5px;
-   font-style: italic;
 }
 
 #education-results-container div.group {
    margin-top: 30px;
-}
-
-div.group ul {
-   margin-top: -20px;
 }
 
 #xplore-results-container div.group ul {
@@ -2592,9 +2588,13 @@ div.group ul li {
     padding: 0;
 }
 
+div.group ul li:first-child {
+   margin-top: 0;
+}
+
 #xplore-tab div.print-resource {
     height: 38px;
-    margin-top: -30px;   
+    margin-top: -48px;   
 }
 
 #education-tab div.print-resource {
@@ -2680,6 +2680,10 @@ div.group ul li {
 .articles-show-count {
     float: left;
     clear: left;   
+}
+
+#education-tab .articles-search {
+   display: none;
 }
 
 .clear-hover {
