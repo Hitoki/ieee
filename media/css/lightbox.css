@@ -166,6 +166,20 @@ input.text {
     cursor: pointer;
 }
 
+#lightbox .resources-lightbox-content .nootabs-selected-tab div.group {
+min-height: 265px;   
+}
+
+#lightbox .resources-lightbox-content {
+min-height: 350px;   
+}
+
+#lightbox .resources-lightbox-content div.nootabs-tab {
+    float: right;  
+    clear: none;
+    width: 687px;  
+}
+
 #lightbox .resources-lightbox-content .resources-pad {
     height: 100%;
 }
@@ -197,68 +211,8 @@ input.text {
     font-weight: normal;
 }
 
-/*Widths set for resource lightbox tabs, supports up to 2 numbers in tab count and 5 in article count safely*/
-#industry-sectors-tab {
-    width: 80px;
-}
-
-#ieee-societies-tab {
-    width: 132px;
-}
-
-#related-tags-tab {
-   width: 82px;
-}
-
-#conferences-tab {
-    width: 85px;
-}
-
-#periodicals-tab {
-    width: 72px;
-}
-
-#standards-tab {
-    width: 67px;
-}
-
-#articles-tab {
-    width: 133px;
-}
-
-#educations-tab {
-    width: 101px;
-    background-color: #EEEEEE;
-}
-
-#educations-tab.nootabs-selected-menu {
-   background-color: #FFFFFF;
-}
-
-/*End set widths*/
-
-#lightbox .resources-lightbox-content ul.nootabs-menus li.right-menu {
-    float: right;
-}
-
-
-#lightbox .resources-lightbox-content ul.nootabs-menus li.right-menu,
-#lightbox .resources-lightbox-content ul.nootabs-menus li.right-menu a {
-    -moz-border-radius-topright: 5px;
-    -webkit-border-top-right-radius: 5px;
-    -moz-border-radius-topleft: 5px;
-    -webkit-border-top-left-radius: 5px;
-}
-
 #lightbox .resources-lightbox-content ul.nootabs-menus li.end-group-menu {
     margin-right: 12px;
-}
-
-
-#lightbox .resources-lightbox-content ul.nootabs-menus li.begin-group-menu a,
-#lightbox .resources-lightbox-content ul.nootabs-menus li.begin-group-menu {
-    -moz-border-radius-topleft: 5px;
-    -webkit-border-top-left-radius: 5px;
 }
 
 #lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-selected-menu a span {

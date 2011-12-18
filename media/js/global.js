@@ -317,10 +317,10 @@ function onCopyTagsSuccess(linkElem, data) {
 
 function resizeLightboxTab() {
     var windowHeight = $(window).height();
-    $('.resources-lightbox-content').css('height', windowHeight - 200);
-    $('#resource-tabs .nootabs-selected-tab').css('height', windowHeight - 320);
-    $('.nootabs-selected-tab div.group').css('height', windowHeight - 330);
-    $('#xplore-results-container div.group, #education-results-container div.group').css('height', windowHeight - 350);
+    $('.resources-lightbox-content').css('height', windowHeight - 210); // Blue container
+    //$('#resource-tabs .nootabs-selected-tab').css('height', windowHeight - 320); // White container
+    $('.nootabs-selected-tab div.group').css('height', windowHeight - 300);
+    //$('#xplore-results-container div.group, #education-results-container div.group').css('height', windowHeight - 350);
 }
 
 function addCommas(nStr) {

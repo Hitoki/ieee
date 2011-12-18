@@ -45,7 +45,7 @@ ul.nootabs-menus li a:hover {
     border-bottom: 1px solid var(pallette-lines);
 }
 
-li.nootabs-selected-menu {
+#galaxy-tabs li.nootabs-selected-menu {
     text-decoration: none; 
     border: 1px solid #006699 !important;
     border-bottom: 1px solid white !important;
@@ -77,18 +77,14 @@ li.nootabs-selected-menu {
     padding: 5px;  
 }
 
-ul.nootabs-menus li.nootabs-first-menu {
-    margin-left :0 !important;
-}
-
-ul.nootabs-menus li.nootabs-first-menu,
-ul.nootabs-menus li.nootabs-first-menu a {
+#galaxy-tabs ul.nootabs-menus li.nootabs-first-menu,
+#galaxy-tabs ul.nootabs-menus li.nootabs-first-menu a {
     -moz-border-radius-topleft:5px;
     -webkit-border-top-left-radius: 5px;
 }
 
-ul.nootabs-menus li.last-menu,
-ul.nootabs-menus li.last-menu a {
+#galaxy-tabs ul.nootabs-menus li.last-menu,
+#galaxy-tabs ul.nootabs-menus li.last-menu a {
     -moz-border-radius-topright:5px;
     -webkit-border-top-right-radius: 5px;
 }
@@ -134,18 +130,23 @@ ul.nootabs-menus li.last-menu a {
 
 
 /* Page-specific styling below: */
-.tag-resources-tabs ul {
-    margin-bottom: -1px;
+.tag-resources-tabs ul.nootabs-menus {
+    float: left;
+    clear: none;
+    width: 138px;
+    margin-right: -2px;
 }
 
 #resource-tabs ul.nootabs-menus li {
     background-color: #EEEEEE;
-    margin: 0 0 0 -1px;
+    margin: 0 0 -1px -1px;
     padding: 0 0 3px 5px;
+    width: 131px;
 }
 
 #resource-tabs ul.nootabs-menus li.nootabs-selected-menu {
    background-color: #FFFFFF;
+   border-right: 1px solid #FFFFFF;
 }
 
 #resource-tabs ul.nootabs-menus li a {
