@@ -972,7 +972,7 @@ var Tags = {
                                                        , null);
                 
                 // Specify search quer(ies)
-                patentSearch.execute('electronic%20nose');
+                patentSearch.execute(encodeURI($('div.[id="tag-' + id + '"]:first').text()));
                 
                 // Include the required Google branding
                 google.search.Search.getBranding('branding');
