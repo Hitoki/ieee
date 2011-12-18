@@ -167,11 +167,11 @@ input.text {
 }
 
 #lightbox .resources-lightbox-content .nootabs-selected-tab div.group {
-min-height: 265px;   
+    min-height: 265px;   
 }
 
 #lightbox .resources-lightbox-content {
-min-height: 350px;   
+    min-height: 350px;   
 }
 
 #lightbox .resources-lightbox-content div.nootabs-tab {

@@ -136,7 +136,7 @@
                 <span class="feature_label">Navigate by:</span>
                 <div id="left-column-container" class="{ useCookies:false, useHash:false }">
                     <ul id="galaxy-tabs" class="nootabs-menus">
-                        <li><a href="" rel="nofollow"><img src="/media/images/industryIcon.png"/> <span style="width: 46px;">Industry Topic</span></a></li>
+                        <li class="first-menu"><a href="" rel="nofollow"><img src="/media/images/industryIcon.png"/> <span style="width: 46px;">Industry Topic</span></a></li>
                         <li class="last-menu"><a href="" rel="nofollow"><img src="/media/images/orgIcon.png"/> <span style="width: 26px;">IEEE Org</span></a></li>
                         <li style="display:none;"><a href="" rel="nofollow">&nbsp;</a></li> {# used to compensate for filters div #}
                     </ul>
@@ -144,8 +144,8 @@
                         <ul id="sectors">
                             <li id="sector-list-item-all"><a href="javascript:Tags.selectSector('all');" rel="nofollow">All Industry Topics</a></li>                        
                             {% for sector in sectors %}
-                                <li id="sector-list-item-{{ sector.id }}"><a href="javascript:Tags.selectSector({{ sector.id }});" rel="nofollow">{{ sector.name }}</a></li>
-                                {% endfor %}
+                            <li id="sector-list-item-{{ sector.id }}"><a href="javascript:Tags.selectSector({{ sector.id }});" rel="nofollow">{{ sector.name }}</a></li>
+                            {% endfor %}
                         </ul>
                     </div>
                     <div id="societies-tab" style="height:392px">

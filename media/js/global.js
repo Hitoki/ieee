@@ -320,7 +320,7 @@ function resizeLightboxTab() {
     $('.resources-lightbox-content').css('height', windowHeight - 210); // Blue container
     //$('#resource-tabs .nootabs-selected-tab').css('height', windowHeight - 320); // White container
     $('.nootabs-selected-tab div.group').css('height', windowHeight - 300);
-    //$('#xplore-results-container div.group, #education-results-container div.group').css('height', windowHeight - 350);
+    $('#xplore-results-container div.group, #education-results-container div.group').css('height', windowHeight - 320);
 }
 
 function addCommas(nStr) {

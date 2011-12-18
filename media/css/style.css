@@ -696,11 +696,20 @@ ul#view-header li {
     background-color: white;
 }
 
-#left-column-container .nootabs-menus li.nootabs-first-menu {
+.nootabs-menus li.first-menu,
+.nootabs-menus li.first-menu a {
     -moz-border-radius-topleft: 5px !Important;
     -moz-border-radius-topright: 0 !important;
     -webkit-border-top-left-radius: 5px !Important;
     -webkit-border-top-right-radius: 0 !important;
+}
+
+.nootabs-menus li.last-menu,
+.nootabs-menus li.last-menu a {
+    -moz-border-radius-topright: 5px !Important;
+    -moz-border-radius-topleft: 0 !important;
+    -webkit-border-top-right-radius: 5px !Important;
+    -webkit-border-top-left-radius: 0 !important;
 }
 
 .cssgradients #left-column-container .nootabs-menus li.nootabs-menu a:hover {
@@ -2525,7 +2534,7 @@ ul.errors {
 }
 
 .print-resource {
-    width: 812px;
+    width: 677px;
     height: 20px;
     text-align: right;
     position: absolute;

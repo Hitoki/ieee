@@ -67,6 +67,7 @@ ul.nootabs-menus li a:hover {
     display: block;
     top: 5px;
     border: 1px solid #006699;
+    overflow: hidden;
     -moz-border-radius-bottomright:5px;
     -moz-border-radius-bottomleft:5px;
     -webkit-border-bottom-left-radius: 5px;
@@ -128,7 +129,6 @@ ul.nootabs-menus li a:hover {
     border:none;
 }
 
-
 /* Page-specific styling below: */
 .tag-resources-tabs ul.nootabs-menus {
     float: left;
@@ -137,10 +137,28 @@ ul.nootabs-menus li a:hover {
     margin-right: -2px;
 }
 
+.tag-resources-tabs .nootabs-menus li.first-menu,
+.tag-resources-tabs .nootabs-menus li.first-menu a {
+    -moz-border-radius-topleft: 5px !important;
+    -moz-border-radius-topright: 0 !important;
+    -webkit-border-top-left-radius: 5px !important;
+    -webkit-border-top-right-radius: 0 !important;
+}
+
+.tag-resources-tabs .nootabs-menus li.last-menu,
+.tag-resources-tabs .nootabs-menus li.last-menu a {
+    -moz-border-radius-bottomleft: 5px !important;
+    -moz-border-radius-topleft: 0 !important;
+    -moz-border-radius-topright: 0 !important;
+    -webkit-border-bottom-left-radius: 5px !important;
+    -webkit-border-top-left-radius: 0 !important;
+    -webkit-border-top-right-radius: 0 !important;
+}
+
 #resource-tabs ul.nootabs-menus li {
     background-color: #EEEEEE;
     margin: 0 0 -1px -1px;
-    padding: 0 0 3px 5px;
+    padding: 0 0 0 5px;
     width: 131px;
 }
 
@@ -150,7 +168,9 @@ ul.nootabs-menus li a:hover {
 }
 
 #resource-tabs ul.nootabs-menus li a {
-   padding: 0;
+   padding: 4px 0;
+   display: inline-block;
+   width: 131px;
 }
 
 .full-grid ul.nootabs-menus li {
