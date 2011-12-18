@@ -956,6 +956,21 @@ var Tags = {
                     Tags.onSelectTag(tabName);
                 }
                 $('#tag-name').effect("highlight", {}, 2000);
+
+                // populate the patent tab.
+                patentSearch = new google.search.PatentSearch();
+        
+                // Set searchComplete as the callback function when a search is 
+                // complete.  The patentSearch object will have results in it.
+                patentSearch.setSearchCompleteCallback(this, function(){alert('patent api callback');}, null);
+                
+                // Specify search quer(ies)
+                patentSearch.execute('{{ tag.name|slugify }}');
+                
+                // Include the required Google branding
+                google.search.Search.getBranding('branding');
+        
+
                 $(document).trigger('onShowLightboxTab');
             }
             , showCloseButton: true
