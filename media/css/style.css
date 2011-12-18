@@ -2531,7 +2531,6 @@ ul.errors {
 }
 
 #xplore-totals, #education-totals{
-    font-style:italic;
     padding-left:5px;
     float: left;
     margin: 0;
@@ -2577,6 +2576,11 @@ div.group ul {
    margin-top: -20px;
 }
 
+#xplore-results-container div.group ul {
+   margin-top: 0px;
+}
+
+
 #xplore-results-container .error {
     margin-top: 20px;
 	padding:1em;
@@ -2588,7 +2592,11 @@ div.group ul li {
     padding: 0;
 }
 
-#xplore-tab div.print-resource,
+#xplore-tab div.print-resource {
+    height: 38px;
+    margin-top: -30px;   
+}
+
 #education-tab div.print-resource {
     margin-top: -30px;
 }
@@ -2637,13 +2645,12 @@ div.group ul li {
     float:left;
 }
 
-#textui-tags-search input {
+.live-search {
     border:1px solid #006699;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     width: 155px;
     padding: 2px 0 1px 23px;
-    float: left;
     display: inline-block;
     margin-top: 0;
     outline: none;
@@ -2651,7 +2658,7 @@ div.group ul li {
     background: #FFFFFF url(../images/magnifyIcon.png) no-repeat 4px 3px;
 }
 
-#textui-tags-search-clear {
+.live-search-clear {
     background-image:url(/media/images/clear-search.png);
     background-position:0 0;
     background-repeat:no-repeat;
@@ -2664,11 +2671,22 @@ div.group ul li {
     display: none;
 }
 
-.textui-tags-search-clear-hover {
+.articles-search {
+    float: left;
+    clear: right;  
+    margin-bottom: 3px; 
+}
+
+.articles-show-count {
+    float: left;
+    clear: left;   
+}
+
+.clear-hover {
     background-color: orange !important;
 }
 
-#textui-tags-search-clear:hover {
+.live-search-clear:hover {
    background-position: 0 -21px;
 }
 

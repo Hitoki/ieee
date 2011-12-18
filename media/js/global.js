@@ -529,12 +529,13 @@ XploreLoader.prototype.onLoadData = function(data) {
 		}
 
             } else {
-                var html = 'Showing ' + addCommas(data.num_results) + ' results';
+                var html = '<div class="articles-search">Show articles containing: <input class="live-search" id="article-live-search"><span id="article-search-clear" class="live-search-clear">&nbsp;</span></div>';
+                html += '<div class="articles-show-count">Showing ' + addCommas(data.num_results) + ' articles';
                 if (this.sort) {
                     html += ', sorted by ' + getXploreSortName(this.sort);
                 }
                 if (!this.ctype){
-                    html += ' (<a href="http://xploreuat.ieee.org/search/freesearchresult.jsp?newsearch=true&queryText=' + escape(data.search_term) + '&x=0&y=0' + (this.ctype ? '&ctype=' + this.ctype : '') + '" target="_blank" rel="nofollow"><span>Perform Search in Xplore</span> <img src="' + MEDIA_URL + 'images/popup.png" /></a>)'
+                    html += ' (<a href="http://xploreuat.ieee.org/search/freesearchresult.jsp?newsearch=true&queryText=' + escape(data.search_term) + '&x=0&y=0' + (this.ctype ? '&ctype=' + this.ctype : '') + '" target="_blank" rel="nofollow"><span>show search in Xplore instead</span> <img src="' + MEDIA_URL + 'images/popup.png" /></a>)</div>'
                 }
                 totalElem.html(html);
             }
