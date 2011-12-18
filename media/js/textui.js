@@ -966,6 +966,7 @@ var Tags = {
                                                        function(){
                                                            $.each(patentSearch.results, function(i, result){
                                                                       $('#patents-tab div.group').append($(result.html));
+                                                                      $('#patents-tab a span').text(patentSearch.results.length); // patentSearch.cursor.estimatedResultCount
                                                                   });
                                                        }
                                                        , null);
