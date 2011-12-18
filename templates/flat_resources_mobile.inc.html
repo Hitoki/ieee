@@ -34,7 +34,7 @@ Include file used by both print_resource.html and tag_landing.html
                 <p>{{resource.description}}</p>
                 {% if resource.is_current_conference and resource.other_conferences|length %}
                     <ul class="conference-series">
-                        {% for other_conference in resource.other_conferences|slice:":5" %}
+                        {% for other_conference in resource.other_conferences|slice:":0" %}
                             <li>
                             {% if other_conference.url and other_conference.url_status != "bad" %}
                                 <a href="{{ other_conference.url }}" target="_blank" rel="nofollow">
