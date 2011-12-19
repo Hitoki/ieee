@@ -1,6 +1,7 @@
 .tag_base #inner-container {
    background: none repeat scroll 0 0 white;
    filter: none;
+   width: 1205px; /*Required to match frozen header width*/
 }
 
 .tag_base #welcome-link {
