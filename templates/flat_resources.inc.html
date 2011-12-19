@@ -34,6 +34,7 @@ Include file used by both print_resource.html and tag_landing.html
         <ol>
             {% if conferences %}<li><a href="#conferences">Conferences related to {{ tag.name }}</a></li>{% endif %}
             {% if standards %}<li><a href="#standards">Standards related to {{ tag.name }}</a></li>{% endif %}
+            <li><a href="#patents">Patents related to {{ tag.name }}</a></li>
             {% if periodicals %}<li><a href="#periodicals">Periodicals related to {{ tag.name }}</a></li>{% endif %}
             {% if xplore_results %}<li><a href="#xplore">Xplore Articles mentioning {{ tag.name }}</a></li>{% endif %}
             {% if societies %}<li><a href="#societies">IEEE Organizations related to {{ tag.name }}</a></li>{% endif %}
@@ -121,7 +122,14 @@ Include file used by both print_resource.html and tag_landing.html
     </div>
     <hr/>
     {% endif %}
-    
+
+    <div id="tag-patents">
+        <h3><a name="patents"></a><span class="index"></span> Patents related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <div class="patent-list"></div>
+        <div id="branding"></div>
+    </div>
+    <hr/>
+
     {% if periodicals %}
     <div id="tag-periodicals">
         <h3><a name="periodicals"></a><span class="index"></span> Periodical articles related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
