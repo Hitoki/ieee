@@ -218,6 +218,8 @@ padding: 190px 15px 10px 3px;
 
 #tag_contents ol {
 margin-left: 15px;   
+display: block;
+clear: both;
 }
 
 #tag_contents ul {
