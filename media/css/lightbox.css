@@ -166,12 +166,29 @@ input.text {
     cursor: pointer;
 }
 
-#lightbox .resources-lightbox-content .nootabs-selected-tab div.group {
-    min-height: 295px;   
+#lightbox .resources-lightbox-content #sector-tab div.group,
+#lightbox .resources-lightbox-content #society-tab div.group,
+#lightbox .resources-lightbox-content #related-tab div.group,
+#lightbox .resources-lightbox-content #conference-tab div.group,
+#lightbox .resources-lightbox-content #periodical-tab div.group,
+#lightbox .resources-lightbox-content #standard-tab div.group {
+    min-height: 347px;
+}
+
+#lightbox .resources-lightbox-content #patents-tab div.group {
+   min-height: 328px;
+}
+
+#lightbox .resources-lightbox-content #xplore-tab div.group {
+    min-height: 299px;
+}
+
+#lightbox .resources-lightbox-content #education-tab div.group {
+    min-height: 317px;
 }
 
 #lightbox .resources-lightbox-content {
-    min-height: 400px;   
+    min-height: 425px;   
 }
 
 #lightbox .resources-lightbox-content div.nootabs-tab {
