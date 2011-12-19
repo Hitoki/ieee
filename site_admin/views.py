@@ -3916,10 +3916,6 @@ def save_society(request):
         society.url = form.cleaned_data['url']
         society.users = form.cleaned_data['users']
         
-        # Society does not need to edit tags/resources in this form
-        if request.user.is_superuser:
-            society.tags = form.cleaned_data['tags']
-            society.resources = form.cleaned_data['resources']
         society.save()
         
         # Invalidate all resource-related caches, so they are regenerated.
