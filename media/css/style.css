@@ -2578,7 +2578,7 @@ ul.errors {
 }
 
 #xplore-results-container div.group {
-    margin-top: 48px;
+    margin-top: 52px;
 }
 
 #education-totals {
@@ -2612,8 +2612,8 @@ div.group ul li:first-child {
 }
 
 #xplore-tab div.print-resource {
-    height: 38px;
-    margin-top: -48px;   
+    height: 42px;
+    margin-top: -52px;   
 }
 
 #education-tab div.print-resource {
@@ -2694,7 +2694,7 @@ div.group ul li:first-child {
 .articles-search {
     float: left;
     clear: right;  
-    margin-bottom: 3px; 
+    margin-bottom: 5px; 
 }
 
 .articles-show-count {
