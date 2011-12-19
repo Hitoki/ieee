@@ -832,7 +832,7 @@ ul#view-header li {
 }
 
 #content table.society-images {
-    margin: 10px 5px 0 10px;
+    margin: 10px 5px 0 15px;
 }
 
 #content table.society-images img {
@@ -855,13 +855,13 @@ div.image-container {
 }
 
 #content p.item_even {
-    padding: 5px 5px 0 10px;
+    padding: 5px 5px 0 15px;
     margin: 0px;
     vertical-align: top;
 }
 
 #content p.item_odd {
-    padding: 5px 5px 0 10px;
+    padding: 5px 5px 0 15px;
     margin: 0px;
 }
 
@@ -897,24 +897,24 @@ cursor: url(/media/images/wait-cursor.gif), wait;
 }
 
 #content p.desc_even {
-    padding: 5px 5px 0 10px;
+    padding: 5px 5px 0 15px;
     margin: 0px;
 }
 
 #content p.desc_odd {
-    padding: 5px 5px 0 10px;
+    padding: 5px 5px 0 15px;
     margin: 0px;
 }
 
 #content p.pub_even {
     font-style: italic;
-    padding: 5px 5px 0 10px;
+    padding: 5px 5px 0 15px;
     margin: 0px;
 }
 
 #content p.pub_odd {
     font-style: italic;
-    padding: 5px 5px 0 10px;
+    padding: 5px 5px 0 15px;
     margin: 0px;
 }
 
@@ -926,7 +926,7 @@ cursor: url(/media/images/wait-cursor.gif), wait;
 #education-tab p.desc_odd, 
 #education-tab p.pub_even,
 #education-tab p.pub_odd {
-    padding: 5px 5px 0 30px;
+    padding: 5px 5px 0 35px;
 }
 
 #content-title {
@@ -2550,7 +2550,7 @@ ul.errors {
 }
 
 #xplore-totals, #education-totals{
-    padding-left:5px;
+    padding-left: 10px;
     float: left;
     margin: 0;
 }
@@ -2618,7 +2618,7 @@ div.group ul li:first-child {
 
 #education-tab div.print-resource {
     margin-top: -28px;
-    padding: 5px 5px 3px;
+    padding: 5px 0px 3px 10px;
 }
 
 #resource-print-container {
