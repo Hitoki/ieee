@@ -37,7 +37,7 @@
                             <li id="articles-tab" class="right-menu"><a href="" class="two-word-menu">IEEE Xplore<br/>Articles <span id="num-xplore-results"></span></a></li>
                         </ul>
                         
-                        <!-- Related Tags -->
+                        <!-- Related Topics -->
                         <div id="related-tab" data-printUrl='{% url print_resource tag.id "related_tags" %}'>
                             <div class="group">
                                 {% if tag.related_tags.all %}
@@ -53,7 +53,7 @@
                                         </p>
                                     {% endfor %}
                                 {% else %}
-                                    <p class="no-resources">No related tags are currently tagged "{{ tag.name }}"</p>
+                                    <p class="no-resources">No related topics are currently tagged "{{ tag.name }}"</p>
                                 {% endif %}
                             </div>
                         </div>

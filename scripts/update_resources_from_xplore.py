@@ -161,7 +161,7 @@ def main(*args):
                 
             resSum = XploreUpdateResultsSummary
             
-            log('Import Xplore Results into Resource')
+            log('Import Xplore Articles into Resource')
             log('Started at %s' % now)
             
             resource_type = models.ResourceType.objects.getFromName('periodical')

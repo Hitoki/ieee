@@ -453,7 +453,7 @@ XploreLoader.prototype.loadContent = function(force) {
         var xploreLoader = this;
         this.ajaxToken = (new Date()).getTime() + '-' + Math.random();
         
-        this.loadingElem = $('<div id="xplore-loading" class="loading"><img src="/media/images/ajax-loader.gif" class="loading" /><br/>Loading Xplore results...</div>').appendTo(this.scrollElem);
+        this.loadingElem = $('<div id="xplore-loading" class="loading"><img src="/media/images/ajax-loader.gif" class="loading" /><br/>Loading Xplore articles...</div>').appendTo(this.scrollElem);
         
         $.ajax({
             url: '/ajax/xplore_results'
@@ -526,7 +526,7 @@ XploreLoader.prototype.onLoadData = function(data) {
 		} else {
 		    $('#num-xplore-results').text('0');
 		    $('#xplore-results-container .print-resource').remove(); 
-                this.noResultsElem = $('<p class="no-resources">No xplore results are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
+                this.noResultsElem = $('<p class="no-resources">No Xplore Articles are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
 		}
 
             } else {

@@ -1661,7 +1661,7 @@ def _update_periodical_from_xplore(request):
     log_filename = os.path.join(log_dirname, log_filename)
     xplore_logger = open(log_filename, 'ab')
     
-    xplore_logger.write('Import Xplore Results into Resource' + os.linesep)
+    xplore_logger.write('Import Xplore Articles into Resource' + os.linesep)
     xplore_logger.write('Started at %s' % now + os.linesep)
     
     resource_type = ResourceType.objects.getFromName('periodical')

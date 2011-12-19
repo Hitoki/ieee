@@ -107,7 +107,7 @@
                                         </p>
                                     {% endfor %}
                                 {% else %}
-                                    <p class="no-resources">No sectors are currently tagged "{{ tag.name }}"</p>
+                                    <p class="no-resources">No industry topics are currently tagged "{{ tag.name }}"</p>
                                 {% endif %}
                             </div>
                         </div>
@@ -167,7 +167,7 @@
                             </div>
                         </div>
                         
-                        <!-- Related Tags -->
+                        <!-- Related Topics -->
                         <div id="related-tab" data-printUrl='{% url print_resource tag.id "related_tags" %}'>
                             <div class="group">
                                 {% if tag.related_tags.all %}
@@ -183,7 +183,7 @@
                                         </p>
                                     {% endfor %}
                                 {% else %}
-                                    <p class="no-resources">No related tags are currently tagged "{{ tag.name }}"</p>
+                                    <p class="no-resources">No related topics are currently tagged "{{ tag.name }}"</p>
                                 {% endif %}
                             </div>
                         </div>
