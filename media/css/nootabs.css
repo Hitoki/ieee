@@ -76,11 +76,6 @@ ul.nootabs-menus li a:hover {
     -webkit-border-bottom-right-radius: 5px;
 }
 
-#resource-tabs .nootabs-selected-tab {
-    -moz-border-radius-topleft: 5px;
-    -webkit-border-top-left-radius: 5px;
-}
-
 .noocontainer {
     padding: 5px;  
 }

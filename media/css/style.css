@@ -2588,7 +2588,7 @@ ul.errors {
 }
 
 #education-results-container div.group {
-   margin-top: 30px;
+   margin-top: 28px;
 }
 
 #xplore-results-container div.group ul {
@@ -2617,7 +2617,7 @@ div.group ul li:first-child {
 }
 
 #education-tab div.print-resource {
-    margin-top: -30px;
+    margin-top: -28px;
     padding: 5px 5px 3px;
 }
 
