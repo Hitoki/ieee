@@ -855,16 +855,22 @@ div.image-container {
 }
 
 #content p.item_even {
-    padding: 5px 5px 0 36px;
+    padding: 5px 5px 0 15px;
     margin: 0px;
     vertical-align: top;
-    text-indent: -18px;
 }
 
 #content p.item_odd {
-    padding: 5px 5px 0 36px;
+    padding: 5px 5px 0 15px;
     margin: 0px;
-    text-indent: -18px;
+}
+
+#xplore-tab p.item_odd,
+#xplore-tab p.item_even,
+#education-tab p.item_odd,
+#education-tab p.item_even {
+   padding: 5px 5px 0 36px;
+   text-indent: -18px;
 }
 
 .xplore-full-results-page p.item_even, .xplore-full-results-page p.item_odd {
