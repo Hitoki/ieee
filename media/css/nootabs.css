@@ -215,7 +215,23 @@ div.nootabs-tab {
 }
 
 #login-tabs ul {
-   margin-bottom: -6px;
+    margin-bottom: -6px;
+    position: relative;
+    z-index: 9999;
+}
+
+#login-tabs .nootabs-first-menu {
+   margin-left: 0;
+}
+
+#login-tabs .nootabs-first-menu,
+#login-tabs .nootabs-first-menu a {
+    -moz-border-radius-topleft:5px;
+    -webkit-border-top-left-radius: 5px;
+}
+
+#login-tabs .nootabs-selected-menu {
+   border-bottom: 1px solid #FFFFFF;
 }
 
 #login-tabs li a {
