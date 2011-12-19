@@ -934,7 +934,7 @@ cursor: url(/media/images/wait-cursor.gif), wait;
 }
 
 .gs-result {
-padding-top: 5px;   
+padding: 5px 0 0 5px;
 }
 
 .gs-watermark {
