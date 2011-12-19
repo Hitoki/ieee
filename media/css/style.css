@@ -432,6 +432,14 @@ p.admin-links {
     display: inline-block;
 }
 
+.newWindowIcon {
+   display: inline-block;
+   background: transparent url(/media/images/popup.png) no-repeat scroll 0 0;
+   height: 13px;
+   width: 13px;
+   margin-left: 5px;
+}
+
 #feedback-link {
     color:white;
     font-size: 8pt;
@@ -574,7 +582,7 @@ ul, ol {
 li {
     margin:0px;
     padding:0px;
-    margin-left:2em;
+    /*margin-left:2em;*/
 }
 
 /* */
@@ -752,6 +760,7 @@ ul#view-header li {
     -webkit-border-top-right-radius: 0px !important;
     overflow-y:scroll;
     overflow-x:hidden;
+    /*display: inline; Prevents them from snapping into place on load*/
 }
 
 #right-column {

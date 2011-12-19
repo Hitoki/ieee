@@ -968,6 +968,7 @@ var Tags = {
                                                                       $('#patents-tab div.group').append($(result.html));
                                                                       $('#patents-tab a span').text(patentSearch.results.length); // patentSearch.cursor.estimatedResultCount
                                                                   });
+                                                                  $("<span class='newWindowIcon'></span>").insertAfter("a.gs-title");
                                                        }
                                                        , null);
                 
@@ -976,9 +977,9 @@ var Tags = {
                 
                 // Include the required Google branding
                 google.search.Search.getBranding('branding');
-        
 
                 $(document).trigger('onShowLightboxTab');
+
             }
             , showCloseButton: true
         });
