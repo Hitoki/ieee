@@ -158,15 +158,21 @@ ul.nootabs-menus li a:hover {
 }
 
 #resource-tabs ul.nootabs-menus li {
-    background-color: #EEEEEE;
+    background-color: transparent;
     margin: 0 0 -1px -1px;
     padding: 0 0 0 5px;
     width: 131px;
+    border: 1px solid transparent;
 }
 
 #resource-tabs ul.nootabs-menus li.nootabs-selected-menu {
    background-color: #FFFFFF;
+   border: 1px solid #006699;
    border-right: 1px solid #FFFFFF;
+    -moz-border-radius-bottomleft: 5px !important;
+    -moz-border-radius-topleft: 5px !important;
+    -webkit-border-bottom-left-radius: 5px !important;
+    -webkit-border-top-left-radius: 5px !important;
 }
 
 #resource-tabs ul.nootabs-menus li a {
@@ -174,6 +180,12 @@ ul.nootabs-menus li a:hover {
    display: inline-block;
    width: 131px;
    font-size: 9pt;
+   background-color: transparent;
+   outline: none;
+}
+
+#resource-tabs ul.nootabs-menus li a:hover {
+   text-decoration: none;
 }
 
 #resource-tabs ul.nootabs-menus li a span {
