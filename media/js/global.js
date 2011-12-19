@@ -531,7 +531,7 @@ XploreLoader.prototype.onLoadData = function(data) {
 
             } else {
                 var html = '<div class="articles-search">Show articles containing: <input class="live-search" id="article-live-search"><span id="article-search-clear" class="live-search-clear">&nbsp;</span></div>';
-                html += '<div class="articles-show-count">Showing ' + addCommas(data.num_results) + ' articles';
+                html += '<div class="articles-show-count">' + addCommas(data.num_results) + ' articles';
                 if (this.sort) {
                     html += ', sorted by ' + getXploreSortName(this.sort);
                 }
