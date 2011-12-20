@@ -971,9 +971,11 @@ var Tags = {
                                                                       $('#patents-tab a span').text(patentSearch.cursor.estimatedResultCount); // patentSearch.cursor.estimatedResultCount
                                                                   });
                                                                   $("<span class='newWindowIcon'></span>").insertAfter("a.gs-title");
-                                                           var moreResultsLink = $('<a target="_blank">More results on Google</a>');
-                                                           moreResultsLink.attr('href', patentSearch.cursor.moreResultsUrl);
-                                                           $('#patents-tab div.group').append(moreResultsLink);
+                                                           if (patentSearch.cursor.estimatedResultCount > 8) {
+                                                               var moreResultsLink = $('<a target="_blank">More results on Google</a>');
+                                                               moreResultsLink.attr('href', patentSearch.cursor.moreResultsUrl);
+                                                               $('#patents-tab div.group').append(moreResultsLink);
+                                                           }
                                                        }
                                                        , null);                
 
