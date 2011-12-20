@@ -959,7 +959,9 @@ var Tags = {
 
                 // populate the patent tab.
                 patentSearch = new google.search.PatentSearch();
-        
+                patentSearch.setResultSetSize(8);
+                //patentSearch.setNoHtmlGeneration();
+
                 // Set searchComplete as the callback function when a search is 
                 // complete.  The patentSearch object will have results in it.
                 patentSearch.setSearchCompleteCallback(this,
@@ -969,9 +971,12 @@ var Tags = {
                                                                       $('#patents-tab a span').text(patentSearch.results.length); // patentSearch.cursor.estimatedResultCount
                                                                   });
                                                                   $("<span class='newWindowIcon'></span>").insertAfter("a.gs-title");
+                                                           var moreResultsLink = $('<a target="_blank">More results on Google</a>');
+                                                           moreResultsLink.attr('href', patentSearch.cursor.moreResultsUrl);
+                                                           $('#patents-tab div.group').append(moreResultsLink);
                                                        }
-                                                       , null);
-                
+                                                       , null);                
+
                 // Specify search quer(ies)
                 patentSearch.execute($('div.[id="tag-' + id + '"]:first').text());
                 
