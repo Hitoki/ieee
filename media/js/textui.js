@@ -968,7 +968,7 @@ var Tags = {
                                                        function(){
                                                            $.each(patentSearch.results, function(i, result){
                                                                       $('#patents-tab div.group').append($(result.html));
-                                                                      $('#patents-tab a span').text(patentSearch.results.length); // patentSearch.cursor.estimatedResultCount
+                                                                      $('#patents-tab a span').text(patentSearch.cursor.estimatedResultCount); // patentSearch.cursor.estimatedResultCount
                                                                   });
                                                                   $("<span class='newWindowIcon'></span>").insertAfter("a.gs-title");
                                                            var moreResultsLink = $('<a target="_blank">More results on Google</a>');
