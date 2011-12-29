@@ -206,7 +206,7 @@ def create_blank_domain():
     sudo pip install -E "%(site_home)s/python" "MySQL-python>=1.2.3c1"
     sudo pip install -E "%(site_home)s/python" "SPARQLWrapper>=1.4.2"
     sudo pip install -E "%(site_home)s/python" "south"
-    sudo pip install -E "%(site_home)s/python" "enum
+    sudo pip install -E "%(site_home)s/python" "enum"
     sudo pip install -E "%(site_home)s/python" "simpljson"
     sudo pip install -E "%(site_home)s/python" "docutils>=0.5"
     sudo pip install -E "%(site_home)s/python" "hashlib==20081119"
