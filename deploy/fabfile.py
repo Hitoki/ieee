@@ -207,7 +207,7 @@ def create_blank_domain():
     sudo pip install -E "%(site_home)s/python" "SPARQLWrapper>=1.4.2"
     sudo pip install -E "%(site_home)s/python" "south"
     sudo pip install -E "%(site_home)s/python" "enum"
-    sudo pip install -E "%(site_home)s/python" "simpljson"
+    sudo pip install -E "%(site_home)s/python" "simplejson"
     sudo pip install -E "%(site_home)s/python" "docutils>=0.5"
     sudo pip install -E "%(site_home)s/python" "hashlib==20081119"
     sudo pip install -E "%(site_home)s/python" "django-registration==0.7"
