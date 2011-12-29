@@ -53,7 +53,7 @@ ul.nootabs-menus li a:hover {
 }
 
 .nootabs-selected-menu a, .nootabs-selected-menu a:hover {
-    color: #006699;
+    color: #006699 !important;
     font-weight: bold;
     text-decoration: none !important;
 }
@@ -165,10 +165,12 @@ ul.nootabs-menus li a:hover {
     border: 1px solid transparent;
 }
 
-#resource-tabs ul.nootabs-menus li.nootabs-selected-menu {
+#resource-tabs ul.nootabs-menus li.nootabs-selected-menu,
+#resource-tabs ul.nootabs-menus li.nootabs-selected-menu:hover {
    background-color: #FFFFFF;
    border: 1px solid #006699;
    border-right: 1px solid #FFFFFF;
+   cursor: default;
     -moz-border-radius-bottomleft: 5px !important;
     -moz-border-radius-topleft: 5px !important;
     -webkit-border-bottom-left-radius: 5px !important;
@@ -180,12 +182,13 @@ ul.nootabs-menus li a:hover {
    display: inline-block;
    width: 131px;
    font-size: 10pt;
-   background-color: transparent;
+   background: transparent !important;
    outline: none;
 }
 
 #resource-tabs ul.nootabs-menus li a:hover {
    text-decoration: none;
+   color: #FFA500;
 }
 
 #resource-tabs ul.nootabs-menus li a span {
@@ -209,6 +212,11 @@ ul.nootabs-menus li.nootabs-selected-menu a {
     /*background:#006599;*/
     background: white;
     color: #006699;
+}
+
+ul.nootabs-menus li.nootabs-selected-menu a:hover {
+    background: white !important;
+    color: #006699 !important;
 }
 
 div.nootabs-tab {
@@ -243,7 +251,8 @@ div.nootabs-tab {
 }
 
 #login-tabs .nootabs-selected-menu {
-   border-bottom: 1px solid #FFFFFF;
+    border: 1px solid #006699;
+    border-bottom: 1px solid #FFFFFF;
 }
 
 #login-tabs li a {
