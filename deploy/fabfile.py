@@ -183,11 +183,11 @@ def create_blank_domain():
     current_dir = os.path.dirname(__file__)
     
     # Populate and upload the apache config file for situations when the site is down (maintenance, etc.)
-    site_conf = open(os.path.join(current_dir, 'site.down.template.conf'), 'rU').read()
-    for var_name, value in config.iteritems():
-        site_conf = site_conf.replace('#{%s}' % var_name, value)
-    sudo_put_data(site_conf, '/etc/httpd/sites-available/%s.down.conf'
-        % env.domain, uid='root', gid='wheel', mode=0644)
+    # site_conf = open(os.path.join(current_dir, 'site.down.template.conf'), 'rU').read()
+    # for var_name, value in config.iteritems():
+    #     site_conf = site_conf.replace('#{%s}' % var_name, value)
+    # sudo_put_data(site_conf, '/etc/httpd/sites-available/%s.down.conf'
+    #     % env.domain, uid='root', gid='wheel', mode=0644)
     
     # Populate and upload the apache config file for normal operations
     site_conf = open(os.path.join(current_dir, 'site.template.conf'), 'rU').read()
@@ -197,25 +197,25 @@ def create_blank_domain():
         % env.domain, uid='root', gid='wheel', mode=0644)
     sudo('[ -f /etc/httpd/sites-enabled/%(domain)s.conf ] || ln -s /etc/httpd/sites-available/%(domain)s.conf /etc/httpd/sites-enabled/' % env, pty=True)
     run('mkdir -p "%(site_home)s/html" "%(site_home)s/log" "%(site_home)s/python/releases"' % env)
-    run('cd "%(site_home)s" && virtualenv --python=python2.6 python' % env)
+    run('cd "%(site_home)s" && virtualenv --python=python2.4 python' % env)
     
     run('chmod o+x ~')  # Set up directory traversal permissions for the home directory, so Apache can reach ~/sites
     
     script = """
     sudo pip install -E "%(site_home)s/python" "Django==1.2.3"
     sudo pip install -E "%(site_home)s/python" "MySQL-python>=1.2.3c1"
+    sudo pip install -E "%(site_home)s/python" "SPARQLWrapper>=1.4.2"
+    sudo pip install -E "%(site_home)s/python" "south"
+    sudo pip install -E "%(site_home)s/python" "enum
+    sudo pip install -E "%(site_home)s/python" "simpljson"
     sudo pip install -E "%(site_home)s/python" "docutils>=0.5"
     sudo pip install -E "%(site_home)s/python" "hashlib==20081119"
     sudo pip install -E "%(site_home)s/python" "django-registration==0.7"
     sudo pip install -E "%(site_home)s/python" "django-profiles==0.2"
-    # sudo pip install -E "%(site_home)s/python" "dmigrations==0.3.1"
+    sudo pip install -E "%(site_home)s/python" "wsgiref"
     """ % env
     run_multiline_script(script)
     
-    # Install dmigrations which apparently can't be done via PIP, etc
-    sudo('cd %(site_home)s/python && source bin/activate && cd %(site_home)s && svn checkout http://dmigrations.googlecode.com/svn/trunk/ dmigrations && easy_install dmigrations' % env, pty=True)
-    
-        
     http_username = raw_input('Enter new site basic auth username (blank to skip): ')
     if http_username:
         http_password = getpass.getpass('Enter new site basic auth password: ')
@@ -284,7 +284,7 @@ def checkout_site():
     sudo('cd "%(site_home)s/python/releases" && rm -rf $(ls | grep -v -E previous\|current\|`readlink previous`\|`readlink current`)' % env, pty=True)
     
     # Apply any south migrations.
-    run('cd "%(site_home)s/python/releases/current/ieeetags/" && export PYTHONPATH=..:../../../lib/python2.4/site-packages/ && python "%(site_code)s/manage.py" syncdb --noinput && python manage.py migrate --delete-ghost-migrations' % env)
+    run('cd "%(site_home)s/python" && source bin/activate && cd "%(site_home)s/python/releases/current/ieeetags/" && export PYTHONPATH=..:../../../lib/python2.4/site-packages/ && python "%(site_code)s/manage.py" syncdb --noinput && python manage.py migrate --delete-ghost-migrations' % env)
     
     env.site_code = code_symlink
     run('touch "%(site_code)s/start-wsgi.py"' % env)
