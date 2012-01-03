@@ -203,3 +203,7 @@ p#xplore-totals {
 .tag-resources-tabs ul.nootabs-menus {
    width: 121px;
 }
+
+#resource-tabs ul.nootabs-menus li a span.right {
+    margin: -13px 5px 0 0;
+}
