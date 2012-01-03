@@ -191,11 +191,11 @@ ul.nootabs-menus li a:hover {
    color: #FFA500;
 }
 
-#resource-tabs ul.nootabs-menus li a span {
-   font-size: 7pt;
-   float: right;
-   vertical-align: baseline;
-   margin: 2px 5px 0 0;
+#resource-tabs ul.nootabs-menus li a span.right {
+    float: right;
+    font-size: 7pt;
+    vertical-align: baseline;
+    margin: -13px 5px 0 0;
 }
 
 .full-grid ul.nootabs-menus li {

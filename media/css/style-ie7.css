@@ -186,3 +186,20 @@ p#xplore-totals {
 .tag_header_inner {
    border-bottom: 2px solid #CFCFCF;
 }
+
+.slide_3 .slidedeck-navBtns {
+    left: 0;
+}
+
+#tag_page #tag_contents {
+   margin-top: 0 !important;
+}
+
+#resource-tabs ul.nootabs-menus li a,
+#resource-tabs ul.nootabs-menus li {
+    width: 120px;
+}
+
+.tag-resources-tabs ul.nootabs-menus {
+   width: 121px;
+}

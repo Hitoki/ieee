@@ -63,7 +63,7 @@
 
                     <div id="resource-tabs" class="nootabs tag-resources-tabs { useCookies:false, defaultTab:2, useHash:false }">
                         <ul class="nootabs-menus">
-                            <li id="industry-sectors-tab" class="first-menu begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Industry <br />Topics <span>{{ parent_nodes|length }}</span></a></li>
+                            <li id="industry-sectors-tab" class="first-menu begin-group-menu"><a href="" class="two-word-menu" rel="nofollow"><span class="left">Industry<br/>Topics</span> <span class="right">{{ parent_nodes|length }}</span></a></li>
                             {% comment %}
                             #TODO: Re-enable clusters
                             #<li><a href="" rel="nofollow">Sectors &amp; Clusters ({{ parent_nodes|length }})</a></li>
@@ -71,17 +71,17 @@
                             {% comment %}
                             #<li><a href="" rel="nofollow">Filters ({{ tag.filters.count }})</a></li>
                             {% endcomment %}
-                            <li id="ieee-societies-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">IEEE<br /> Orgs <span>{{ societies.count }}</span></a></li>
-                            <li id="related-tags-tab" class="end-group-menu"><a href="" class="two-word-menu" rel="nofollow">Related <br />Topics <span>{{ tag.related_tags.count }}</span></a></li>
-                            <li id="conferences-tab" class="begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Conferences <span>{{conferences|length}}</span></a></li>
-                            <li id="periodicals-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Periodicals <span>{{periodicals|length}}</span></a></li>
-                            <li id="standards-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Standards <span>{{standards|length}}</span></a></li>
-                            <li id="patents-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Patents <span>{{patents|length}}</span></a></li>
+                            <li id="ieee-societies-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow"><span class="left">IEEE<br/>Orgs</span> <span class="right">{{ societies.count }}</span></a></li>
+                            <li id="related-tags-tab" class="end-group-menu"><a href="" class="two-word-menu" rel="nofollow"><span class="left">Related<br/>Topics</span> <span class="right">{{ tag.related_tags.count }}</span></a></li>
+                            <li id="conferences-tab" class="begin-group-menu"><a href="" class="two-word-menu" rel="nofollow"><span class="left">Conferences</span> <span class="right">{{conferences|length}}</span></a></li>
+                            <li id="periodicals-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow"><span class="left">Periodicals</span> <span class="right">{{periodicals|length}}</span></a></li>
+                            <li id="standards-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow"><span class="left">Standards</span> <span class="right">{{standards|length}}</span></a></li>
+                            <li id="patents-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow"><span class="left">Patents</span> <span class="right">{{patents|length}}</span></a></li>
                             {% comment %}
                             #    <li><a href="" rel="nofollow">Experts <span>({{experts|length}})</span></a></li>
                             {% endcomment %}
-                            <li id="articles-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">IEEE Xplore<br/>Articles <span id="num-xplore-results"></span></a></li>
-                            <li id="educations-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu" rel="nofollow">Educational<br/>Resources <span id="num-education-results"></span></a></li>
+                            <li id="articles-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow"><span class="left">IEEE Xplore<br/>Articles</span> <span class="right" id="num-xplore-results"></span></a></li>
+                            <li id="educations-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu" rel="nofollow"><span class="left">Educational<br/>Resources</span> <span class="right" id="num-education-results"></span></a></li>
                         </ul>
                         
                         <!-- Sectors &amp; Clusters -->
