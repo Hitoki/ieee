@@ -27,11 +27,6 @@
             }
         }
     }
-    .nootabs-menus li.nootabs-menu a:hover {
-        @include orange-gradient;
-        color: $white;
-        text-decoration: none;
-    }
     #alternate-page #tag-galaxy div.node {
         a.level1, div.level1, span.level1 {
             @include level1-gradient;

@@ -262,3 +262,13 @@ margin-left: 0;
 -moz-border-radius: 10px;
 -webkit-border-radius: 10px;   
 }
+
+a.gs-title {
+color: blue;
+text-decoration: none;
+}
+
+a.gs-title:hover {
+color: orange;
+text-decoration: underline;
+}

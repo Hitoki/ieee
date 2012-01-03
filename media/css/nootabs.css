@@ -235,7 +235,6 @@ div.nootabs-tab {
 }
 
 #login-tabs ul {
-    margin-bottom: 0;
     position: relative;
     z-index: 9999;
 }
@@ -265,6 +264,23 @@ div.nootabs-tab {
    display: inline-block;
 }
 
+#left-column-container ul.nootabs-menus li a:hover,
+#login-tabs ul.nootabs-menus li a:hover {
+   color: #FFFFFF;
+   text-decoration: none;
+   background: -moz-linear-gradient(top, #ffd896 0%, #ffa500 100%); /* FF3.6+ */
+   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffd896), color-stop(100%,#ffa500)); /* Chrome,Safari4+ */
+   background: -webkit-linear-gradient(top, #ffd896 0%,#ffa500 100%); /* Chrome10+,Safari5.1+ */
+   background: -o-linear-gradient(top, #ffd896 0%,#ffa500 100%); /* Opera 11.10+ */
+   background: -ms-linear-gradient(top, #ffd896 0%,#ffa500 100%); /* IE10+ */
+   background: linear-gradient(top, #ffd896 0%,#ffa500 100%); /* W3C */
+   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffd896', endColorstr='#ffa500',GradientType=0 ); /* IE6-9 */
+}
+
 #login-tabs .last-menu {
    margin-left: -1px;
+}
+
+#login-tabs ul.nootabs-menus {
+   margin-bottom: -6px;
 }
