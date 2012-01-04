@@ -1736,6 +1736,7 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     conf_count = 0
     totalfound = 0
     xplore_edu_results = None
+    totaledufound = 0
     xplore_results = None
     
     if resource_type not in ['all', 'sectors', 'related_tags', 'societies', 'conferences', 'periodicals', 'standards', 'xplore_edu', 'xplore']:
