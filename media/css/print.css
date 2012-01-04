@@ -69,3 +69,51 @@ padding: 0;
 .addthis_toolbox  {
    display: none;
 }
+
+#tag_page #tag_frozen_header {
+    background-color: #FFFFFF;
+    margin: 0;
+    min-height: 0px;
+    min-width: 0px;
+    padding: 0;
+    position: relative;
+    top: 0;
+    width: 100%;
+}
+
+#tag_page #tag_frozen_header .tag_header_inner {
+    background-color: #FFFFFF;
+    box-shadow: 0 0 0 #3F3F3F;
+    margin-top: 0px;
+    min-height: 0px;
+    padding-bottom: 0px;
+}
+
+#tag_page #tag_frozen_header .tag_header_inner .left {
+    padding-left: 0;   
+}
+
+.addthis_16x16_style,
+#totalTagLink,
+#utility-links,
+#tagline,
+.header-btns {
+   display: none;
+}
+
+.print-resource #tag_page ul {
+   margin-left: 0;
+}
+
+#tag_page #tag_frozen_header #header {
+   padding: 0;
+   margin: 0;
+}
+
+.print-resource #tag_page ul li {
+    margin: 0 0 15px !important;
+}
+
+a.home {
+   text-decoration: none;
+}
