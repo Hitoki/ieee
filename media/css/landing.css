@@ -14,7 +14,7 @@
 
 /* Tag Page Styling */
 #tag_page {
-font-size: 12pt;
+font-size: 11pt;
 }
 
 #tag_frozen_header {
@@ -221,6 +221,7 @@ padding: 190px 15px 10px 3px;
 margin-left: 15px;
 margin-right: 25px;
 float: left;
+font-size: 9pt;
 }
 
 #tag_contents ul {

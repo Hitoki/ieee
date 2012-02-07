@@ -38,7 +38,7 @@ Include file used by both print_resource.html and tag_landing.html
     
     {% if toc %}
     <div id="tag_contents">
-        <h1 style="font-size:14pt">Contents ({{ related_items_count|intcomma }} related resources for {{ tag.name }})</h1>
+        <h1 style="font-size:13pt">Contents ({{ related_items_count|intcomma }} related resources for {{ tag.name }})</h1>
         <ol style="clear:left">
             {% if conferences %}<li><a href="#conferences">Conferences related to {{ tag.name }}</a></li>{% endif %}
             {% if standards %}<li><a href="#standards">Standards related to {{ tag.name }}</a></li>{% endif %}
