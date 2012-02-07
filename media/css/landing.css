@@ -218,9 +218,9 @@ padding: 190px 15px 10px 3px;
 }
 
 #tag_contents ol {
-margin-left: 15px;   
-display: block;
-clear: both;
+margin-left: 15px;
+margin-right: 25px;
+float: left;
 }
 
 #tag_contents ul {
