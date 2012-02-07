@@ -1,9 +1,15 @@
 {% load humanize %}
 <div id="header">
+    {% if tag and create_links %}
+        <div id="tag_technav" onclick="location.href='/textui/?autoload={{ tag.id }}';" rel="nofollow">
+            <div><span>View this topic in</span></div>
+        </div>
+    {% endif %}
     <span id="header-links">
         <a href="http://ieee.org" rel="nofollow" style="float:right"><img src="{{MEDIA_URL}}images/sm-logo.png" width="106" height="32"/></a>
         <span id="tagline">Connecting You to the IEEE Universe of Information</span>
         <span class="header-btns">
+            {% comment %}
             {% if tag %}
                 <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script> 
                 <div class="custom_images addthis_16x16_style">
@@ -11,9 +17,11 @@
                     <a class="addthis_button_twitter"><img src="{{MEDIA_URL}}images/twitter.png" width="24" height="24" border="0" alt="Share to Twitter" /></a>
                     <a class="addthis_button_facebook"><img src="{{MEDIA_URL}}images/facebook.png" width="24" height="24" border="0" alt="Share to Facebook" /></a>
                     <a class="addthis_button_linkedin"><img src="{{MEDIA_URL}}images/linkedin.png" width="24" height="24" border="0" alt="Share to LinkedIn" /></a>
-                    {% comment %}<a class="addthis_counter addthis_bubble_style"></a>{% endcomment %}
+                    <a class="addthis_counter addthis_bubble_style"></a>
                 </div>
             {% endif %}
+            {% endcomment %}
+            
             {% if user.is_superuser %}<a href="{% url admin_home %}" class="btn admin" rel="nofollow">Admin</a>{% endif %} 
             {% comment %}<a href="http://www.ieee.org/membership_services/membership/join/index.html?WT.mc_id=u_join" class="btn join" target="_self" rel="nofollow">Join IEEE!</a>{% endcomment %}
             <a href="javascript:void(0)" class="btn help" rel="nofollow">Help</a>
