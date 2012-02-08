@@ -37,10 +37,10 @@ display: inline-block;
 }
 
 #tag_definition {
-clear: left;
-float: left;
-width: 535px;
+clear: both;
 font-size: 11pt;
+margin: 20px 0 5px;
+width: 835px;
 }
 
 #tag_page ul {
