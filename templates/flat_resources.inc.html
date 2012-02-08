@@ -52,7 +52,7 @@ Include file used by both print_resource.html and tag_landing.html
     <br/>
     {% endif %}
 
-    <div id="tag-conferences">
+    <div id="tag-conferences" class="tag-section">
         <h3><a name="conferences"></a><span class="index"></span> Conferences related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if conferences %}
         <ul>
@@ -104,9 +104,8 @@ Include file used by both print_resource.html and tag_landing.html
         <p class="no-resources">No conferences are currently tagged "{{ tag.name }}"</p>
         {% endif %}
     </div>
-    <br/>
     
-    <div id="tag-standards">
+    <div id="tag-standards" class="tag-section">
         <h3><a name="standards"></a><span class="index"></span> Standards related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if standards %}
         <ul class="tag_list">
@@ -129,16 +128,14 @@ Include file used by both print_resource.html and tag_landing.html
         <p class="no-resources">No standards are currently tagged "{{ tag.name }}"</p>
         {% endif %}
     </div>
-    <br/>
 
-    <div id="tag-patents">
+    <div id="tag-patents" class="tag-section">
         <h3><a name="patents"></a><span class="index"></span> Patents related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         <div class="patent-list"></div>
         <div id="branding"></div>
     </div>
-    <br/>
 
-    <div id="tag-periodicals">
+    <div id="tag-periodicals" class="tag-section">
         <h3><a name="periodicals"></a><span class="index"></span> Periodical articles related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if periodicals %}
         <ul class="tag_list">
@@ -161,9 +158,8 @@ Include file used by both print_resource.html and tag_landing.html
         <p class="no-resources">No periodicals are currently tagged "{{ tag.name }}"</p>
         {% endif %}
     </div>
-    <br/>
     
-    <div id="tag-xplore">
+    <div id="tag-xplore" class="tag-section">
         <h3><a name="xplore"></a><span class="index"></span> Xplore Articles related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if xplore_results %}
         <ul class="tag_list">
@@ -189,9 +185,8 @@ Include file used by both print_resource.html and tag_landing.html
         <p class="no-resources">No Xplore Articles are currently tagged "{{ tag.name }}"</p>
         {% endif %}
     </div>
-    <br/>
 
-    <div id="tag-societies">
+    <div id="tag-societies" class="tag-section">
         <h3><a name="societies"></a><span class="index"></span> IEEE Organizations related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if societies %}
         <ul>
@@ -209,9 +204,8 @@ Include file used by both print_resource.html and tag_landing.html
         <p class="no-resources">No organizations are currently tagged "{{ tag.name }}"</p>
         {% endif %}
     </div>
-    <br/>
 
-    <div id="tag-related-tags">
+    <div id="tag-related-tags" class="tag-section">
         <h3><a name="concepts"></a><span class="index"></span> Related topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if related_tags %}
         <ul>
@@ -229,9 +223,8 @@ Include file used by both print_resource.html and tag_landing.html
         <p class="no-resources">No related topics are currently tagged "{{ tag.name }}"</p>
         {% endif %}
     </div>
-    <br/>
 
-    <div id="tag-xplore_edu">
+    <div id="tag-xplore_edu" class="tag-section">
         <h3><a name="xplore_edu"></a><span class="index"></span> Educational Resources on {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if xplore_edu_results %}
         <ul class="tag_list">
@@ -257,9 +250,8 @@ Include file used by both print_resource.html and tag_landing.html
         <p class="no-resources">No education resources are currently tagged "{{ tag.name }}"</p>
         {% endif %}
     </div>
-    <br/>
 
-    <div id="tag-sectors">
+    <div id="tag-sectors" class="tag-section">
         <h3><a href="" name="sectors"></a><span class="index"></span> Industry topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if sectors %}
         <ul>
@@ -277,7 +269,6 @@ Include file used by both print_resource.html and tag_landing.html
         <p class="no-resources">No industry topics are currently tagged "{{ tag.name }}"</p>
         {% endif %}
     </div>
-    <br/>
     <br style="clear:both"/>
 </div>
 
