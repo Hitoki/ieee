@@ -18,6 +18,11 @@ Include file used by both print_resource.html and tag_landing.html
         {% include "header.inc.html" %}
         <div class="tag_header_inner">
             <h1 class="title">{{ tag.name }}</h1>
+            {% if tag and create_links %}
+                <div id="tag_technav" onclick="location.href='/textui/?autoload={{ tag.id }}';" rel="nofollow">
+                    <div><span>View this topic in</span></div>
+                </div>
+            {% endif %}
             {% if tag.definition %}
             <div id="tag_definition">
                 {{ tag.short_definition|safe }} <small>(Wikipedia.org)</small>

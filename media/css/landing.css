@@ -32,6 +32,10 @@ margin: 0 0 10px;
 font-size: 18pt;
 }
 
+#tag_page h1.title {
+display: inline-block;   
+}
+
 #tag_definition {
 clear: left;
 float: left;
@@ -102,13 +106,13 @@ margin-top: 0;
 #tag_technav {
 height: 32px;
 width: 205px;
-padding: 8px;
+padding: 3px 8px;
 vertical-align: top;
 -moz-border-radius: 10px;
 -webkit-border-radius: 10px; 
 display: inline-block;
 cursor: pointer;
-margin: 25px 0 10px 45px;
+margin: 0 0 0 25px;
 -moz-box-shadow: 1px 1px 5px #3F3F3F;
 -webkit-box-shadow: 1px 1px 5px #3F3F3F;
 background: #ffc35b; /* Old browsers */
@@ -245,4 +249,8 @@ font-weight: normal;
 
 #tag_page p.no-resources {
 padding-left: 26px;   
+}
+
+#totalTagLink { 
+   margin-left: 180px;
 }

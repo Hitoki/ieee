@@ -1,10 +1,5 @@
 {% load humanize %}
 <div id="header">
-    {% if tag and create_links %}
-        <div id="tag_technav" onclick="location.href='/textui/?autoload={{ tag.id }}';" rel="nofollow">
-            <div><span>View this topic in</span></div>
-        </div>
-    {% endif %}
     <span id="header-links">
         <a href="http://ieee.org" rel="nofollow" style="float:right"><img src="{{MEDIA_URL}}images/sm-logo.png" width="106" height="32"/></a>
         <span id="tagline">Connecting You to the IEEE Universe of Information</span>
