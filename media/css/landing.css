@@ -1,3 +1,7 @@
+body.tag_base  {
+line-height: 1.5;   
+}
+
 .tag_base #inner-container {
    background: none repeat scroll 0 0 white;
    filter: none;
@@ -103,7 +107,7 @@ color: #006699;
 }
 
 #tag_page h3 {
-margin-top: 0;   
+margin: 0 0 5px 0;
 }
 
 #tag_technav {
@@ -159,14 +163,16 @@ margin-top: 0;
 text-align: left;
 white-space: normal;
 width: 58px; 
+line-height: 1.2;
 }
 
 .topLink {
 background: transparent url(/media/images/topLink.png) no-repeat 83px 3px;
 float: right;
 font-size: 10pt;
-margin-top: -33px;
+margin-top: -24px;
 padding-right: 18px;
+line-height: 1.2;
 }
 
 .topLink:hover {
@@ -177,6 +183,7 @@ background: transparent url(/media/images/topLink.png) no-repeat 83px -11px;
 clear: both;
 display: inline-block;
 padding: 10px 0 0 0;
+line-height: 1.2;
 }
 
 #tag_contents ol {
@@ -213,7 +220,7 @@ display: inline-block;
 #tag-xplore li,
 #tag-standards li,
 #tag-periodicals li {
-margin: 0 0 30px 17px !important;   
+margin: 0 0 20px 17px !important;   
 }
 
 #tag-conferences li:last-child, 
