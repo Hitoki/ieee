@@ -35,7 +35,7 @@ Include file used by both print_resource.html and tag_landing.html
     <div id="tag_contents">
         <h1 style="font-size:13pt">{{ related_items_count|intcomma }} related resources for {{ tag.name }}</h1>
         {# Using break line list method for browser compatibility #}
-        <ol
+        <ol style="width:570px"
         ><li {% if not conferences %}class="disabled"{% endif %}><a href="#conferences">Conferences related to {{ tag.name }}</a></li
         ><li {% if not standards %}class="disabled"{% endif %}><a href="#standards">Standards related to {{ tag.name }}</a></li
         ><li><a href="#patents">Patents related to {{ tag.name }}</a></li
