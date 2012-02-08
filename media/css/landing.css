@@ -158,7 +158,7 @@ width: 58px;
 background: transparent url(/media/images/topLink.png) no-repeat 83px 3px;
 float: right;
 font-size: 10pt;
-margin-top: 23px;
+margin-top: -35px;
 padding-right: 18px;
 }
 
@@ -241,4 +241,8 @@ text-decoration: underline;
 #tag_contents span.h1SubText {
 font-size: 9pt;
 font-weight: normal;   
+}
+
+#tag_page p.no-resources {
+padding-left: 26px;   
 }

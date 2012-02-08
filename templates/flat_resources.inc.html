@@ -47,10 +47,10 @@ Include file used by both print_resource.html and tag_landing.html
     </div>
     <hr/>
     {% endif %}
-    
-    {% if conferences %}
+
     <div id="tag-conferences">
         <h3><a name="conferences"></a><span class="index"></span> Conferences related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        {% if conferences %}
         <ul>
     {% if conferences|length %}
         {% for resource in conferences %}
@@ -79,8 +79,6 @@ Include file used by both print_resource.html and tag_landing.html
                 {% endif %}
             </li>
         {% endfor %}
-    {% else %}
-        <p class="no-resources">No conferences are currently tagged "{{ tag.name }}"</p>
     {% endif %}
         {% for conference in conferences.all %}
             {# ungrouped conference displayed on the print resource page #}
@@ -98,13 +96,15 @@ Include file used by both print_resource.html and tag_landing.html
             </li>
         {% endfor %}
         </ul>
+        {% else %}
+        <p class="no-resources">No conferences are currently tagged "{{ tag.name }}"</p>
+        {% endif %}
     </div>
     <hr/>
-    {% endif %}
     
-    {% if standards %}
     <div id="tag-standards">
         <h3><a name="standards"></a><span class="index"></span> Standards related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        {% if standards %}
         <ul class="tag_list">
             {% for standard in standards.all %}
                 <li>
@@ -121,9 +121,11 @@ Include file used by both print_resource.html and tag_landing.html
                 </li>
             {% endfor %}
         </ul>
+        {% else %}
+        <p class="no-resources">No standards are currently tagged "{{ tag.name }}"</p>
+        {% endif %}
     </div>
     <hr/>
-    {% endif %}
 
     <div id="tag-patents">
         <h3><a name="patents"></a><span class="index"></span> Patents related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
@@ -132,9 +134,9 @@ Include file used by both print_resource.html and tag_landing.html
     </div>
     <hr/>
 
-    {% if periodicals %}
     <div id="tag-periodicals">
         <h3><a name="periodicals"></a><span class="index"></span> Periodical articles related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        {% if periodicals %}
         <ul class="tag_list">
             {% for periodical in periodicals.all %}
                 <li>
@@ -151,13 +153,15 @@ Include file used by both print_resource.html and tag_landing.html
                 </li>
             {% endfor %}
         </ul>
+        {% else %}
+        <p class="no-resources">No periodicals are currently tagged "{{ tag.name }}"</p>
+        {% endif %}
     </div>
     <hr/>
-    {% endif %}
     
-    {% if xplore_results %}
     <div id="tag-xplore">
         <h3><a name="xplore"></a><span class="index"></span> Xplore Articles mentioning {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        {% if xplore_results %}
         <ul class="tag_list">
             {% for xplore_result in xplore_results %}
                 <li>
@@ -177,13 +181,15 @@ Include file used by both print_resource.html and tag_landing.html
                 </li>
             {% endfor %}
         </ul>
+        {% else %}
+        <p class="no-resources">No Xplore Articles are currently tagged "{{ tag.name }}"</p>
+        {% endif %}
     </div>
     <hr/>
-    {% endif %}
-    
-    {% if societies %}
+
     <div id="tag-societies">
         <h3><a name="societies"></a><span class="index"></span> IEEE Organizations related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        {% if societies %}
         <ul>
             {% for society in societies %}
                 <li>
@@ -195,13 +201,15 @@ Include file used by both print_resource.html and tag_landing.html
                 </li>
             {% endfor %}
         </ul>
+        {% else %}
+        <p class="no-resources">No organizations are currently tagged "{{ tag.name }}"</p>
+        {% endif %}
     </div>
     <hr/>
-    {% endif %}
-    
-    {% if related_tags %}
+
     <div id="tag-related-tags">
         <h3><a name="concepts"></a><span class="index"></span> Topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        {% if related_tags %}
         <ul>
             {% for related_tag in related_tags %}
                 <li>
@@ -213,13 +221,15 @@ Include file used by both print_resource.html and tag_landing.html
                 </li>
             {% endfor %}
         </ul>
+        {% else %}
+        <p class="no-resources">No topics are currently tagged "{{ tag.name }}"</p>
+        {% endif %}
     </div>
     <hr/>
-    {% endif %}
-    
-    {% if xplore_edu_results %}
+
     <div id="tag-xplore_edu">
         <h3><a name="xplore_edu"></a><span class="index"></span> Educational Resources on {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        {% if xplore_edu_results %}
         <ul class="tag_list">
             {% for xplore_result in xplore_edu_results %}
                 <li>
@@ -239,13 +249,15 @@ Include file used by both print_resource.html and tag_landing.html
                 </li>
             {% endfor %}
         </ul>
+        {% else %}
+        <p class="no-resources">No education resources are currently tagged "{{ tag.name }}"</p>
+        {% endif %}
     </div>
     <hr/>
-    {% endif %}
-    
-    {% if sectors %}
+
     <div id="tag-sectors">
         <h3><a href="" name="sectors"></a><span class="index"></span> Fields of Study related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        {% if sectors %}
         <ul>
             {% for parent in sectors %}
                 <li>
@@ -257,11 +269,13 @@ Include file used by both print_resource.html and tag_landing.html
                 </li>
             {% endfor %}
         </ul>
+        {% else %}
+        <p class="no-resources">No education resources are currently tagged "{{ tag.name }}"</p>
+        {% endif %}
     </div>
     <hr/>
-    {% endif %}
-    <a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
     <br style="clear:both"/>
+    <a href="javascript:void(0)" class="topLink" rel="nofollow" style="margin-top:-20px">Back to Top</a>
 </div>
 
 <script type="text/javascript">
