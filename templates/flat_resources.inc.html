@@ -33,7 +33,7 @@ Include file used by both print_resource.html and tag_landing.html
     
     {% if toc %}
     <div id="tag_contents">
-        <h1 style="font-size:13pt">Contents <span class="h1SubText">({{ related_items_count|intcomma }} related resources for {{ tag.name }})</span></h1>
+        <h1 style="font-size:13pt">{{ related_items_count|intcomma }} related resources for {{ tag.name }}</h1>
         {# Using break line list method for browser compatibility #}
         <ol
         ><li {% if not conferences %}class="disabled"{% endif %}><a href="#conferences">Conferences related to {{ tag.name }}</a></li
@@ -279,7 +279,6 @@ Include file used by both print_resource.html and tag_landing.html
     </div>
     <br/>
     <br style="clear:both"/>
-    <a href="javascript:void(0)" class="topLink" rel="nofollow" style="margin-top:-20px">Back to Top</a>
 </div>
 
 <script type="text/javascript">
