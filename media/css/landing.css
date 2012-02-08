@@ -232,9 +232,13 @@ margin-left: 0;
 -webkit-border-radius: 10px;   
 }
 
-a.gs-title {
-color: blue;
-text-decoration: none;
+.gs-result .gs-title, .gs-result .gs-title * {
+color: blue !important;
+text-decoration: none !important;
+}
+
+.gs-patentResult img.gs-image {
+border: 1px solid #CFCFCF;   
 }
 
 a.gs-title:hover {
