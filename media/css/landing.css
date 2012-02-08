@@ -268,5 +268,10 @@ margin-left: 130px;
 }
 
 .tag-section {
-margin-top: 30px;   
+margin-top: 40px;   
+}
+
+hr {
+width: 70%;
+margin: 40px auto 0;
 }
