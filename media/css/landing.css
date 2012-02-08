@@ -241,3 +241,8 @@ a.gs-title:hover {
 color: orange;
 text-decoration: underline;
 }
+
+#tag_contents span.h1SubText {
+font-size: 9pt;
+font-weight: normal;   
+}
