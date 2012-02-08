@@ -29,17 +29,21 @@ Include file used by both print_resource.html and tag_landing.html
     {% if toc %}
     <div id="tag_contents">
         <h1 style="font-size:13pt">Contents <span class="h1SubText">({{ related_items_count|intcomma }} related resources for {{ tag.name }})</span></h1>
-        <ol style="clear:left"
-        >{% if conferences %}<li><a href="#conferences">Conferences related to {{ tag.name }}</a></li
-        >{% endif %}{% if standards %}<li><a href="#standards">Standards related to {{ tag.name }}</a></li
-        >{% endif %}<li><a href="#patents">Patents related to {{ tag.name }}</a></li
-        >{% if periodicals %}<li><a href="#periodicals">Periodicals related to {{ tag.name }}</a></li
-        >{% endif %}{% if xplore_results %}<li><a href="#xplore">Xplore Articles mentioning {{ tag.name }}</a></li
-        >{% endif %}{% if societies %}<li><a href="#societies">IEEE Organizations related to {{ tag.name }}</a></li
-        >{% endif %}{% if related_tags %}<li><a href="#concepts">Topics related to {{ tag.name }}</a></li
-        >{% endif %}{% if xplore_edu_results %}<li><a href="#xplore_edu">Educational Resources on {{ tag.name }}</a></li
-        >{% endif %}{% if sectors %}<li><a href="#sectors">Fields of study related to {{ tag.name }}</a></li
-        >{% endif %}</ol>
+        {# Using break line list method for browser compatibility #}
+        <ol
+        ><li {% if not conferences %}class="disabled"{% endif %}><a href="#conferences">Conferences related to {{ tag.name }}</a></li
+        ><li {% if not standards %}class="disabled"{% endif %}><a href="#standards">Standards related to {{ tag.name }}</a></li
+        ><li><a href="#patents">Patents related to {{ tag.name }}</a></li
+        ><li {% if not periodicals %}class="disabled"{% endif %}><a href="#periodicals">Periodicals related to {{ tag.name }}</a></li
+        ><li {% if not xplore_results %}class="disabled"{% endif %}><a href="#xplore">Xplore Articles mentioning {{ tag.name }}</a></li
+        ></ol>
+        
+        <ol start="6"
+        ><li {% if not standards %}class="disabled"{% endif %}><a href="#societies">IEEE Organizations related to {{ tag.name }}</a></li
+        ><li {% if not related_tags %}class="disabled"{% endif %}><a href="#concepts">Topics related to {{ tag.name }}</a></li
+        ><li {% if not xplore_edu_results %}class="disabled"{% endif %}><a href="#xplore_edu">Educational Resources on {{ tag.name }}</a></li
+        ><li {% if not sectors %}class="disabled"{% endif %}><a href="#sectors">Fields of study related to {{ tag.name }}</a></li
+        ></ol>
     </div>
     <hr/>
     {% endif %}
