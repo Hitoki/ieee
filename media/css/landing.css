@@ -33,7 +33,8 @@ font-size: 18pt;
 }
 
 #tag_page h1.title {
-display: inline-block;   
+display: inline-block; 
+color: #000000;  
 }
 
 #tag_definition {
