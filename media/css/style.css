@@ -842,8 +842,23 @@ div.image-container {
 #content-title {
   clear: both; }
 
-.gs-result {
-  padding: 5px 0 0 5px; }
+.gs-result .gs-title * {
+  color: blue !important;
+  text-decoration: none !important; }
+  .gs-result .gs-title *:hover {
+    color: #FFA500 !important;
+    text-decoration: underline !important; }
+
+.gs-patentResult .gs-image-box {
+  padding-bottom: 15px; }
+.gs-patentResult img.gs-image {
+  border: 1px solid #CFCFCF !important; }
+
+#patents-tab div.group {
+  padding-left: 15px; }
+
+#patents-tab table {
+  margin-top: 10px; }
 
 .gs-watermark {
   display: none; }

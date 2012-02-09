@@ -782,8 +782,30 @@ cursor: url(/media/images/wait-cursor.gif), wait;
     clear: both;
 }
 
-.gs-result {
-    padding: 5px 0 0 5px;
+.gs-result .gs-title * {
+    color: blue !important;
+    text-decoration: none !important;
+    &:hover {
+        color: #FFA500 !important;
+        text-decoration: underline !important;
+    }
+}
+
+.gs-patentResult {
+    .gs-image-box {
+        padding-bottom: 15px;
+    }
+    img.gs-image {
+        border: 1px solid #CFCFCF !important; 
+    }  
+}
+
+#patents-tab div.group {
+   padding-left: 15px;
+}
+
+#patents-tab table {
+    margin-top: 10px;   
 }
 
 .gs-watermark {
