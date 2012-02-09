@@ -183,10 +183,6 @@ p#xplore-totals {
    margin-left: -35px;
 }
 
-.tag_header_inner {
-   border-bottom: 2px solid #CFCFCF;
-}
-
 .slide_3 .slidedeck-navBtns {
     left: 0;
 }
@@ -206,4 +202,8 @@ p#xplore-totals {
 
 #resource-tabs ul.nootabs-menus li a span.right {
     margin: -13px 5px 0 0;
+}
+
+#tag_page h1.title {
+   display: inline-block;
 }
