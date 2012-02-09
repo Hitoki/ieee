@@ -137,26 +137,19 @@ $(document).ready(function(){
     }
     
     // Modification of accordion script to allow multiple panels to be open for conferences
-    $("#notaccordion").addClass("notaccordion")
+    $("#notaccordion")
+        .addClass("notaccordion")
         .find("h3")
-        .addClass("notaccordion-header")
-        .prepend('<span class="notaccordion-icon notaccordion-icon-e"></span>')
-        .click(function() {
-            //if ($('h3').hasClass('ui-state-active')){
-            //    window.location.hash = 'multiple';
-            //} else {
-            //    window.location.hash = $(this).children('a').text().replace(/\s+/g, '');
-            //}
-          $(this)
-            .toggleClass("notaccordion-header-active")
-            .find("> .ui-icon").toggleClass("notaccordion-icon-e notaccordion-icon-s").end()
-            .next().toggleClass("notaccordion-content-active").slideToggle();
-            return false;
-        })
-        .next()
-          .addClass("notaccordion-content")
-          .hide();
-    
+            .addClass("notaccordion-header")
+            .click(function() {
+                $(this)
+                    .toggleClass("notaccordion-header-active")
+                    .next().toggleClass("notaccordion-content-active").show();
+                    return false;
+            })
+            .next()
+              .addClass("notaccordion-content")
+              .hide();
 });
 
 function splitContent(content, len) {

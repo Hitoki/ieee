@@ -290,6 +290,7 @@ font-size: 11pt;
 
 .notaccordion-content {
 margin-bottom: 25px;   
+clear: both;
 }
 
 #tag_page h3.notaccordion-header:hover {
