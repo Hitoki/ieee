@@ -216,7 +216,6 @@ display: inline-block;
   
 }
 
-#tag-conferences li, 
 #tag-xplore li,
 #tag-standards li,
 #tag-periodicals li {
@@ -274,4 +273,26 @@ margin-top: 40px;
 hr {
 width: 70%;
 margin: 40px auto 0;
+}
+
+#notaccordion {
+
+}
+
+#tag_page #notaccordion ul li {
+margin-bottom: 5px;   
+}
+
+.notaccordion-header {
+display: inline-block;  
+font-size: 11pt; 
+}
+
+.notaccordion-content {
+margin-bottom: 25px;   
+}
+
+#tag_page h3.notaccordion-header:hover {
+cursor: pointer;
+color: #FFA500;
 }
