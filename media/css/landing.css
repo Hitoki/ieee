@@ -288,11 +288,6 @@ display: inline-block;
 font-size: 11pt; 
 }
 
-.notaccordion-content {
-margin-bottom: 25px;   
-clear: both;
-}
-
 #tag_page h3.notaccordion-header:hover {
 cursor: pointer;
 color: #FFA500;
