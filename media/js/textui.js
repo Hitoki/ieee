@@ -141,20 +141,23 @@ $(document).ready(function(){
         .addClass("notaccordion")
         .find("h3")
             .addClass("notaccordion-header")
+            .prepend('<span class="notaccordion-icon notaccordion-icon-e"></span>')
             .click(function() {
                 if($(this).hasClass("notaccordion-header-active")) {
                     $(this)
                         .toggleClass("notaccordion-header-active")
-                        .next().toggleClass("notaccordion-content-active").hide();
+                        .find("> .notaccordion-icon").addClass("notaccordion-icon-e").removeClass("notaccordion-icon-s").end()
+                        .next('div').toggleClass("notaccordion-content-active").hide();
                         return false;
                 } else {
                 $(this)
                     .toggleClass("notaccordion-header-active")
-                    .next().toggleClass("notaccordion-content-active").show();
+                    .find("> .notaccordion-icon").addClass("notaccordion-icon-s").removeClass("notaccordion-icon-e").end()
+                    .next('div').toggleClass("notaccordion-content-active").show();
                     return false;
                 }
             })
-            .next()
+            .next('div')
               .addClass("notaccordion-content")
               .hide();
 });

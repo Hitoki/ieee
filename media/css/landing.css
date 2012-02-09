@@ -106,10 +106,6 @@ font-weight: bold;
 color: #006699;
 }
 
-#tag_page h3 {
-margin: 0 0 5px 0;
-}
-
 #tag_technav {
 height: 32px;
 width: 205px;
@@ -170,7 +166,7 @@ line-height: 1.2;
 background: transparent url(/media/images/topLink.png) no-repeat 83px 3px;
 float: right;
 font-size: 10pt;
-margin-top: -24px;
+margin-top: -35px;
 padding-right: 18px;
 line-height: 1.2;
 }
@@ -230,10 +226,8 @@ margin: 0 0 0 17px !important;
 }
 
 #tag-conferences .conference-series {
-background-color: #DFDFDF;
-padding: 10px;
-margin-top: 5px;
-margin-left: 0;
+padding: 0 10px 0;
+margin-left: 15px;
 -moz-border-radius: 10px;
 -webkit-border-radius: 10px;   
 }
@@ -270,7 +264,7 @@ margin-bottom: 5px;
 }
 
 .notaccordion-header {
-display: inline-block;  
+display: inline;
 font-size: 11pt; 
 }
 
@@ -281,4 +275,22 @@ color: #FFA500;
 
 .gs-patentResult .gs-image-box {
 padding-left: 25px;   
+}
+
+.notaccordion-icon {
+  background-repeat: no-repeat;
+  display: inline-block;
+  height: 19px;
+  width: 20px;
+  margin-right: 5px;
+  vertical-align: text-bottom;
+  cursor: pointer;
+}
+
+.notaccordion-icon.notaccordion-icon-e {
+  background: transparent url(/media/images/toggleExpand.png) no-repeat 0px 3px;
+}
+
+.notaccordion-icon.notaccordion-icon-s {
+  background: transparent url(/media/images/toggleCollapse.png) no-repeat 0px 3px;
 }
