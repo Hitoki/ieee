@@ -63,7 +63,7 @@ Include file used by both print_resource.html and tag_landing.html
                         <h3>{{resource.name}}</h3>
                         {% if resource.url and resource.url_status != "bad" %}<a href="{{ resource.url }}" target="_blank" rel="nofollow">Visit website</a>{% endif %}
                         <p style="margin:0 0 10px 25px">{{resource.description}}</p>
-                            <div style="display:none">
+                        <div style="display:none">
                             {% if resource.is_current_conference and resource.other_conferences|length %}
                             <ul class="conference-series">
                                 {% for other_conference in resource.other_conferences %}
@@ -76,8 +76,8 @@ Include file used by both print_resource.html and tag_landing.html
                                 {% endfor %}
                             </ul>
                             {% endif %}
-                            </div>
-                            <br/>
+                        </div>
+                        <br/>
                     {% endfor %}
                 </div>
             {% endif %}

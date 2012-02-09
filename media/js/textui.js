@@ -138,7 +138,6 @@ $(document).ready(function(){
     
     // Modification of accordion script to allow multiple panels to be open for conferences
     $("#notaccordion")
-        .addClass("notaccordion")
         .find("h3")
             .addClass("notaccordion-header")
             .prepend('<span class="notaccordion-icon notaccordion-icon-e"></span>')
@@ -147,13 +146,13 @@ $(document).ready(function(){
                     $(this)
                         .toggleClass("notaccordion-header-active")
                         .find("> .notaccordion-icon").addClass("notaccordion-icon-e").removeClass("notaccordion-icon-s").end()
-                        .next('div').toggleClass("notaccordion-content-active").hide();
+                        .next('div').hide();
                         return false;
                 } else {
                 $(this)
                     .toggleClass("notaccordion-header-active")
                     .find("> .notaccordion-icon").addClass("notaccordion-icon-s").removeClass("notaccordion-icon-e").end()
-                    .next('div').toggleClass("notaccordion-content-active").show();
+                    .next('div').show();
                     return false;
                 }
             })
