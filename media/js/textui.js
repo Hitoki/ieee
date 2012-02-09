@@ -142,10 +142,17 @@ $(document).ready(function(){
         .find("h3")
             .addClass("notaccordion-header")
             .click(function() {
+                if($(this).hasClass("notaccordion-header-active")) {
+                    $(this)
+                        .toggleClass("notaccordion-header-active")
+                        .next().toggleClass("notaccordion-content-active").hide();
+                        return false;
+                } else {
                 $(this)
                     .toggleClass("notaccordion-header-active")
                     .next().toggleClass("notaccordion-content-active").show();
                     return false;
+                }
             })
             .next()
               .addClass("notaccordion-content")
