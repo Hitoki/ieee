@@ -1,20 +1,30 @@
 {% load humanize filters smartif %}
+
+{% block extra_head %}
+<script src="https://www.google.com/jsapi?key=ABQIAAAAET-l-_pKVFbYTFwkzUZFuxQqXNOgVZsVxxAJPjYxgMwG3sAPmRRUT1Aw1TCcL7OyNBCohYUcq2aExA"></script>
+<script type="text/javascript">
+    google.load('search', '1');
+</script>
+{% endblock %}
+
+
 {% comment %}
 Include file used by both print_resource.html and tag_landing.html
 {% endcomment %}
 <div id="tag_page">    
     {% if toc %}
     <div id="tag_contents">
-        <h1>Contents ({{ related_items_count|intcomma }} related resources for {{ tag.name }})</h1>
+        <h1>{{ tag.name }}: {{ related_items_count|intcomma }} related resources</h1>
         <ol>
-            {% if conferences %}<li><a href="#conferences">Conferences related to {{ tag.name }}</a></li>{% endif %}
-            {% if standards %}<li><a href="#standards">Standards related to {{ tag.name }}</a></li>{% endif %}
-            {% if periodicals %}<li><a href="#periodicals">Periodicals related to {{ tag.name }}</a></li>{% endif %}
-            {% if xplore_results %}<li><a href="#xplore">Xplore Articles mentioning {{ tag.name }}</a></li>{% endif %}
-            {% if societies %}<li><a href="#societies">IEEE Organizations related to {{ tag.name }}</a></li>{% endif %}
-            {% if related_tags %}<li><a href="#concepts">Topics related to {{ tag.name }}</a></li>{% endif %}
-            {% if xplore_edu_results %}<li><a href="#xplore_edu">Educational Resources on {{ tag.name }}</a></li>{% endif %}
-            {% if sectors %}<li><a href="#sectors">Fields of study related to {{ tag.name }}</a></li>{% endif %}
+            {% if conferences %}<li><a href="#conferences">Conferences</a></li>{% endif %}
+            {% if standards %}<li><a href="#standards">Standards</a></li>{% endif %}
+            <li><a href="#patents">Patents</a></li>
+            {% if periodicals %}<li><a href="#periodicals">Periodicals</a></li>{% endif %}
+            {% if xplore_results %}<li><a href="#xplore">Xplore Articles</a></li>{% endif %}
+            {% if societies %}<li><a href="#societies">IEEE Organizations</a></li>{% endif %}
+            {% if related_tags %}<li><a href="#concepts">Topics</a></li>{% endif %}
+            {% if xplore_edu_results %}<li><a href="#xplore_edu">Educational Resources</a></li>{% endif %}
+            {% if sectors %}<li><a href="#sectors">Industry Topic</a></li>{% endif %}
         </ol>
     </div>
     <hr/>
@@ -70,6 +80,13 @@ Include file used by both print_resource.html and tag_landing.html
     </div>
     <hr/>
     {% endif %}
+
+    <div id="tag-patents" class="tag-section">
+        <h3><a name="patents"></a><span class="index"></span> Patents related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <div class="patent-list"></div>
+        <div id="branding"></div>
+    </div>
+    <hr/>
 
     {% if periodicals %}
     <div id="tag-periodicals">
@@ -183,7 +200,7 @@ Include file used by both print_resource.html and tag_landing.html
     
     {% if sectors %}
     <div id="tag-sectors">
-        <h3><a href="" name="sectors"></a><span class="index"></span> Fields of study related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a href="" name="sectors"></a><span class="index"></span> Industry topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         <ul>
             {% for parent in sectors|slice:":5" %}
                 <li>
@@ -201,3 +218,34 @@ Include file used by both print_resource.html and tag_landing.html
     <a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
     <br style="clear:both"/>
 </div>
+
+
+<script type="text/javascript">
+    // Initialize Google Patent Search
+    var id = '{{ tag.name }}';
+    patentSearch = new google.search.PatentSearch();
+    patentSearch.setSearchCompleteCallback(this,
+    function(){
+        $.each(patentSearch.results, function(i, result){
+          $('.patent-list').append($(result.html));
+          //$('.patent-list a span').text(patentSearch.results.length); // patentSearch.cursor.estimatedResultCount
+        });
+        //$("<span class='newWindowIcon'></span>").insertAfter("a.gs-title");
+    }
+    , null);
+
+    // Specify search quer(ies)
+    patentSearch.execute($('h1.title').text());
+
+    // Include the required Google branding
+    google.search.Search.getBranding('branding');
+
+    // Dynamically number the section content blocks.
+    $(document).ready(function(){
+        $('h3 span.index').each(function(i, obj){
+            $(this).text((i+1) + '.');
+        });
+        var mainWidth = $("#inner-container").outerWidth();    
+        $("#tag_frozen_header").css('width', mainWidth);
+    });
+</script>
