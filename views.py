@@ -1696,7 +1696,7 @@ def tag_landing(request, tag_id):
     Simply uses the print_resource view passing in a different template name.
     '''
     # TODO move logic to decorator
-    if re.match(settings.MOBILE_URL_PREFIX, request.META['HTTP_HOST']):
+    if re.match(settings.MOBILE_URL_PREFIX, request.META['HTTP_HOST']) and not ('nomobile' in request.GET and request.GET['nomobile']=="1"):
         template_name = 'tag_landing_mobile.html'
     else:
         template_name = 'tag_landing.html'
