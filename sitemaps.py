@@ -6,7 +6,7 @@ from ieeetags.models import Node, NodeType
 from urllib import quote
 
 class BaseSitemap(Sitemap):
-    lastmod = datetime(2012, 2, 21)
+    lastmod = datetime(2012, 2, 21, 0, 0, 0)
 
 class OneOffsSitemap(BaseSitemap):
     def items(self):
