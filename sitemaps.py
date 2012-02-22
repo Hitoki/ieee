@@ -1,10 +1,14 @@
 from django.contrib.sitemaps import Sitemap
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
+from datetime import datetime
 from ieeetags.models import Node, NodeType
 from urllib import quote
 
-class OneOffsSitemap(Sitemap):
+class BaseSitemap(Sitemap):
+    lastmod = datetime(2012, 2, 21)
+
+class OneOffsSitemap(BaseSitemap):
     def items(self):
         return [
             { 'name': 'home', 'path': '/'} 
@@ -16,7 +20,7 @@ class OneOffsSitemap(Sitemap):
     def location(self, item):
         return item['path']
 
-class TagsStartWithSitemap(Sitemap):
+class TagsStartWithSitemap(BaseSitemap):
     def items(self):
         alphalist = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
         alphalist = [quote('[0-9]')] + alphalist + [quote('[^a-z0-9]')]
@@ -25,7 +29,7 @@ class TagsStartWithSitemap(Sitemap):
     def location(self, item):
         return reverse('tags_starts', args=[item])
 
-class TagLandingSitemap(Sitemap):
+class TagLandingSitemap(BaseSitemap):
     def items(self):
         return Node.objects.filter(node_type__name=NodeType.TAG)
 
