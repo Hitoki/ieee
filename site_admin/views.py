@@ -4410,7 +4410,7 @@ def ajax_search_tags(request):
                 'societies': societies,
             })
     
-    return HttpResponse(json.dumps(data, sort_keys=True, indent=4), mimetype="application/json")
+    return HttpResponse(json.dumps(data, sort_keys=True, indent=4, use_decimal=True), mimetype="application/json")
 
 @login_required
 @society_manager_or_admin_required
