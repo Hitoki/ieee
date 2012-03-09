@@ -14,7 +14,7 @@ Include file used by both print_resource.html and tag_landing.html
 <div id="tag_page">    
     {% if toc %}
     <div id="tag_contents">
-        <h1>{{ tag.name }}: {{ related_items_count|intcomma }} related resources</h1>
+        <h1 class="title"><span>{{ tag.name }}</span>: {{ related_items_count|intcomma }} related resources</h1>
         <ol>
             {% if conferences %}<li><a href="#conferences">Conferences</a></li>{% endif %}
             {% if standards %}<li><a href="#standards">Standards</a></li>{% endif %}
@@ -235,7 +235,7 @@ Include file used by both print_resource.html and tag_landing.html
     , null);
 
     // Specify search quer(ies)
-    patentSearch.execute($('h1.title').text());
+    patentSearch.execute($('h1.title > span').eq(0).text());
 
     // Include the required Google branding
     google.search.Search.getBranding('branding');
