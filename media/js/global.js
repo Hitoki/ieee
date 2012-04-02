@@ -176,7 +176,8 @@ function HighlightCheckbox(elem, options) {
 
 HighlightCheckbox.prototype.onChange = function (e) {
     if (this.elem.attr('checked')) {
-        var classes = this.options.highlightElem.attr('className').split(' ');
+        var classes = this.options.highlightElem.attr('className');
+        var classes = classes ? classes.split(' ') : '';
         for (var i=0; i<classes.length; i++) {
             if (classes[i].substr(classes[i].length-10, 10) != '_highlight') {
                 this.options.highlightElem.addClass(classes[i] + '_highlight');
