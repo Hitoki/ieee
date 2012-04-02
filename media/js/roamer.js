@@ -24,7 +24,7 @@ var Roamer = {
             this.filter(filters[i].id, filters[i].checked);
         }
         
-        $.historyInit(function(hash) {
+        $.history.init(function(hash) {
             roamer.onChangeHash(hash);
         });
         
@@ -160,13 +160,13 @@ var Roamer = {
             // Update the hash...
             if (this.nodeInfo.type == 'sector') {
                 //log('setting sector hash');
-                $.historyLoad('/sector/' + this.nodeInfo.id);
+                $.history.load('/sector/' + this.nodeInfo.id);
             } else if (this.nodeInfo.type == 'tag') {
                 //log('setting tag hash');
-                $.historyLoad('/tag/' + this.nodeInfo.id);
+                $.history.load('/tag/' + this.nodeInfo.id);
             } else if (this.nodeInfo.type == 'root') {
                 //log('setting root hash');
-                $.historyLoad('');
+                $.history.load('');
             } else {
                 ajax_report_error('ERROR in getNodeInfo(): unknown nodeInfo.type: ' + this.nodeInfo.type);
                 return;

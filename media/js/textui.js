@@ -219,7 +219,7 @@ var Tags = {
         
         this.setDefaultZoomValues();
         
-        $.historyInit(function(hash) {
+        $.history.init(function(hash) {
             tags.onChangeHash(hash);
         });
         
@@ -455,7 +455,7 @@ var Tags = {
         
         if (setHash) {
             //log('setting hash to "' + '/sector/' + this.sectorId + '"');
-            $.historyLoad('/sector/' + this.sectorId);
+            $.history.load('/sector/' + this.sectorId);
         }
         
         //log('selectSector(): calling updateResults().');
@@ -481,7 +481,7 @@ var Tags = {
             
             if (setHash) {
                 //log('setting hash to "' + '/oganization/' + this.societyId + '"');
-                $.historyLoad('/organization/' + this.societyId);
+                $.history.load('/organization/' + this.societyId);
             }
             //log('selectSociety(): calling updateResults().');
         }
@@ -933,11 +933,11 @@ var Tags = {
             if (this.sectorId) {
                 var hash = '/sector/' + this.sectorId + '/cluster/' + this.clusterId;
                 log('setting hash to "' + hash + '"');
-                $.historyLoad(hash);
+                $.history.load(hash);
             } else if (this.societyId) {
                 var hash = '/organization/' + this.societyId + '/cluster/' + this.clusterId;
                 log('setting hash to "' + hash + '"');
-                $.historyLoad(hash);
+                $.history.load(hash);
             } else {
                 // fail.
                 log('Tags.selectCluster(): ERROR: Neither sectorId or societyId are set.');
