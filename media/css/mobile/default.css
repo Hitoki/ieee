@@ -60,6 +60,10 @@ body {
 			color: #e0e0e0 !important;
 		}
 
+span.index {
+    display: none;
+}
+
 ul.search_results {
 	margin: 0 -10px;
 	padding: 0;
