@@ -340,7 +340,7 @@ function addCommas(nStr) {
 }
 
 function getScrollBottom(elem) {
-	return elem.attr('scrollHeight') - elem.scrollTop() - elem.outerHeight();
+	return elem.prop("scrollHeight") - elem.scrollTop() - elem.outerHeight();
 }
 
 ////////////////////////////////////////////////////////////////////////////////

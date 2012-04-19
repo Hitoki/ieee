@@ -1176,7 +1176,7 @@ var Tags = {
                 //});
               
                 // Add another content chunk if the tag container is not full.
-                if ($('#tags').attr('scrollHeight') <= $('#tags').outerHeight() + $('#tags-chunk-loading').outerHeight()){
+                if ($('#tags').prop("scrollHeight") <= $('#tags').outerHeight() + $('#tags-chunk-loading').outerHeight()){
                     tags.loadContentChunk();
                 }
 
@@ -1303,7 +1303,7 @@ var Tags = {
                     + '</div>'
                 ));
                 // Add another content chunk if we haven't filled the container yet.
-                if ($('#tags').attr('scrollHeight') <= $('#tags').outerHeight() + $('#tags-chunk-loading').outerHeight()){
+                if ($('#tags').prop("scrollHeight") <= $('#tags').outerHeight() + $('#tags-chunk-loading').outerHeight()){
                      this.loadContentChunk();
                 }
             }
