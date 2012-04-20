@@ -495,8 +495,7 @@ ul#view-header li {
     background: $white;
     width: 100%;
     cursor: default;
-    -moz-border-radius: 0 0 0 5px;
-    -webkit-border-radius: 0 0 0 5px;
+    @include custom-border-radius (0, 0, 0, 5px);
 }
 
 #left-column ul li.all {
@@ -544,10 +543,7 @@ ul#view-header li {
     border-top: 0 none;
     height: 100%;
     width: 174px;
-    -moz-border-radius-bottomleft: 5px;
-    -moz-border-radius-bottomright: 5px;
-    -webkit-border-bottom-left-radius: 5px;
-    -webkit-border-bottom-right-radius: 5px;
+    @include custom-border-radius (0, 0, 5px, 5px);
     padding-top: 3px;
 }
 
@@ -559,18 +555,12 @@ ul#view-header li {
 
 .nootabs-menus li.first-menu,
 .nootabs-menus li.first-menu a {
-    -moz-border-radius-topleft: 5px !important;
-    -moz-border-radius-topright: 0 !important;
-    -webkit-border-top-left-radius: 5px !important;
-    -webkit-border-top-right-radius: 0 !important;
+    @include custom-border-radius (5px, 0, 0, 0);
 }
 
 .nootabs-menus li.last-menu,
 .nootabs-menus li.last-menu a {
-    -moz-border-radius-topright: 5px !important;
-    -moz-border-radius-topleft: 0 !important;
-    -webkit-border-top-right-radius: 5px !important;
-    -webkit-border-top-left-radius: 0 !important;
+    @include custom-border-radius (0, 5px, 0, 0);
 }
 
 #left-column-container .nootabs-menus li.nootabs-selected-menu a:hover {
@@ -588,16 +578,12 @@ ul#view-header li {
 
 #left-column-container div#sectors-tab {
     min-height: 395px;
-    -moz-border-radius-topleft: 0px !important;
-    -webkit-border-top-left-radius: 0px !important;
-    -moz-border-radius-topright: 0px !important;
-    -webkit-border-top-right-radius: 0px !important;
+    @include custom-border-radius (0, 0, 5px, 5px);
 }
 
 #left-column-container div#societies-tab {
     min-height: 395px;
-    -moz-border-radius-topright: 0px !important;
-    -webkit-border-top-right-radius: 0px !important;
+    @include custom-border-radius (0, 0, 5px, 5px);
     overflow-y:scroll;
     overflow-x:hidden;
     /*display: inline; Prevents them from snapping into place on load*/
@@ -2632,8 +2618,7 @@ background: url(/media/images/inner-top.png) no-repeat scroll 0 0;
     text-align: center;
     color: $medium-gray;
     padding: 1em;
-    -moz-border-radius: 18px;
-    -webkit-border-radius: 18px;
+    @include custom-border-radius (18px, 18px, 18px, 18px);
 }
 
 #tags-chunk-loading {
