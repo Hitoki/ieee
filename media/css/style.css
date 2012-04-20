@@ -2368,7 +2368,6 @@ div#connectedness-container {
 #tags-chunk-loading {
   display: block;
   clear: both;
-  border: 1px solid black;
   background-color: white;
   padding: 1em 1em;
   text-align: center;
