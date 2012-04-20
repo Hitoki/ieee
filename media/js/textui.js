@@ -146,17 +146,17 @@ $(document).ready(function(){
                     $(this)
                         .toggleClass("notaccordion-header-active")
                         .find("> .notaccordion-icon").addClass("notaccordion-icon-e").removeClass("notaccordion-icon-s").end()
-                        .next('div').hide();
+                        .nextAll('div').hide();
                         return false;
                 } else {
                 $(this)
                     .toggleClass("notaccordion-header-active")
                     .find("> .notaccordion-icon").addClass("notaccordion-icon-s").removeClass("notaccordion-icon-e").end()
-                    .next('div').show();
+                    .nextAll('div').show();
                     return false;
                 }
             })
-            .next('div')
+            .nextAll('div')
               .addClass("notaccordion-content")
               .hide();
 });
