@@ -650,7 +650,7 @@ MultiSearch.prototype.highlightSearchOption = function(value) {
     else if (searchOption.elem.prop("offsetTop") < this.popupElem.prop('scrollTop')) {
         // Highlighted element was further up, scroll up
         this.popupElem.prop('scrollTop',
-A            searchOption.elem.prop("offsetTop") - 1
+            searchOption.elem.prop("offsetTop") - 1
         );
     }
 }
