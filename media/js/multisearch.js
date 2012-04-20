@@ -641,16 +641,16 @@ MultiSearch.prototype.highlightSearchOption = function(value) {
     searchOption.elem.addClass('multi-search-popup-highlighted-item');
     
     // Automatically scroll the popup when the user highlights an option out of view.
-    if ((searchOption.elem.attr("offsetTop") + searchOption.elem.attr("offsetHeight")) > (this.popupElem.attr('offsetHeight') + this.popupElem.attr('scrollTop'))) {
+    if ((searchOption.elem.prop("offsetTop") + searchOption.elem.prop("offsetHeight")) > (this.popupElem.prop('offsetHeight') + this.popupElem.prop('scrollTop'))) {
         // Highlighted element was further down, scroll down
-        this.popupElem.attr('scrollTop',
-            searchOption.elem.attr("offsetTop") + searchOption.elem.attr("offsetHeight") - this.popupElem.attr('offsetHeight') + 1
+        this.popupElem.prop('scrollTop',
+            searchOption.elem.prop("offsetTop") + searchOption.elem.prop("offsetHeight") - this.popupElem.prop('offsetHeight') + 1
         );
     }
-    else if (searchOption.elem.attr("offsetTop") < this.popupElem.attr('scrollTop')) {
+    else if (searchOption.elem.prop("offsetTop") < this.popupElem.prop('scrollTop')) {
         // Highlighted element was further up, scroll up
-        this.popupElem.attr('scrollTop',
-            searchOption.elem.attr("offsetTop") - 1
+        this.popupElem.prop('scrollTop',
+A            searchOption.elem.prop("offsetTop") - 1
         );
     }
 }
@@ -919,9 +919,9 @@ MultiSearch.prototype.showPopup = function() {
         // Show popup
         this.popupVisible = true;
         this.popupElem.show();
-        var height = this.input.attr('offsetHeight') - 3;
+        var height = this.input.prop('offsetHeight') - 3;
         this.popupElem.css('top', height + 'px');
-        var width = this.input.attr('offsetWidth') - 3;
+        var width = this.input.prop('offsetWidth') - 3;
         this.popupElem.css('width', width + 'px');
     }
 }

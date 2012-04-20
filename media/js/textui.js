@@ -351,8 +351,8 @@ var Tags = {
                 var pos = sortDropDown.position();
                 this.tagSortOverlayElem.css('top', pos.top);
                 this.tagSortOverlayElem.css('left', pos.left);
-                this.tagSortOverlayElem.css('width', sortDropDown.attr('offsetWidth'));
-                this.tagSortOverlayElem.css('height', sortDropDown.attr('offsetHeight'));
+                this.tagSortOverlayElem.css('width', sortDropDown.prop('offsetWidth'));
+                this.tagSortOverlayElem.css('height', sortDropDown.prop('offsetHeight'));
                 
                 Flyover.attach(this.tagSortOverlayElem, {
                     'content': 'Please start by selecting an Industry Sector or IEEE Society',
@@ -1102,7 +1102,7 @@ var Tags = {
         // In IE, the CSS 'height' is 'auto'.
         var height = parseInt(tag.css('height'));
         if (isNaN(height)) {
-            this.defaultHeight = tag.attr('offsetHeight');
+            this.defaultHeight = tag.prop('offsetHeight');
         } else {
             this.defaultHeight = Math.round(height);
         }
