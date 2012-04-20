@@ -2033,10 +2033,11 @@ div.group ul li:first-child {
   cursor: pointer;
   display: inline-block;
   height: 20px;
-  margin-left: -20px;
+  margin-left: -25px;
   width: 20px;
   float: right;
-  display: none; }
+  display: none;
+  position: relative; }
 
 .articles-search {
   float: left;
