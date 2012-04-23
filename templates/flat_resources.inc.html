@@ -49,6 +49,7 @@ Include file used by both print_resource.html and tag_landing.html
             <li {% if not related_tags %}class="disabled"{% endif %}><a href="#concepts">Related topics related to {{ tag.name }}</a></li>
             <li {% if not xplore_edu_results %}class="disabled"{% endif %}><a href="#xplore_edu">Educational Resources on {{ tag.name }}</a></li>
             <li {% if not sectors %}class="disabled"{% endif %}><a href="#sectors">Industry topics related to {{ tag.name }}</a></li>
+            <li {% if not jobs %}class="disabled"{% endif %}><a href="#jobs">Jobs related to {{ tag.name }}</a></li>
         </ol>
     </div>
     <br/>
@@ -278,6 +279,16 @@ Include file used by both print_resource.html and tag_landing.html
         {% endif %}
     </div>
     <br/>
+
+    <div id="tag-jobs" class="tag-section">
+        <h3><a href="" name="jobs"></a><span class="index"></span> Industry topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <div>
+        </div>
+        {% else %}
+        <p class="no-resources">No industry topics are currently tagged "{{ tag.name }}"</p>
+        {% endif %}
+    </div>
+    <br/>
 </div>
 
 <script type="text/javascript">
@@ -310,6 +321,14 @@ Include file used by both print_resource.html and tag_landing.html
 
     // Include the required Google branding
     google.search.Search.getBranding('branding');
+
+    // Populate Jobs from
+    //var sucHndlr = function(){
+        
+    //};
+    var jobsQstr = $('h1.title').text().replace(' ', '+');
+    jobsQstr = "clientid=ieee&stringVar=jsonString&pageSize=25&kOrEntire=" + jbosQstr + "&outFormat=jsxml";
+    $('#tag-jobs div').load("http://jobs.ieee.org/qjs/", jobsQstr);
 
     // Dynamically number the section content blocks.
     $(document).ready(function(){
