@@ -281,11 +281,21 @@ Include file used by both print_resource.html and tag_landing.html
     <br/>
 
     <div id="tag-jobs" class="tag-section">
-        <h3><a href="" name="jobs"></a><span class="index"></span> Industry topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
-        <div>
-        </div>
+        <h3><a href="" name="jobs"></a><span class="index"></span> Jobs related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        {% if jobs %}
+        <ul>
+            {% for parent in jobs %}
+                <li>
+                    {% if create_links %}
+                        <a href="/tag/{{ parent.id }}/{{ parent.name|slugify }}">{{ parent.name }}</a>
+                    {% else %}
+                        {{ parent.name }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
         {% else %}
-        <p class="no-resources">No industry topics are currently tagged "{{ tag.name }}"</p>
+        <p class="no-resources">No jobs are currently tagged "{{ tag.name }}"</p>
         {% endif %}
     </div>
     <br/>
