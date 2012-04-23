@@ -1,12 +1,12 @@
 {% extends "base_table.html" %}
 {% load filters humanize smartif %}
-
+  
 {# NOTE: This the template page for the Resource Results lightbox/popup #}
-
+  
 {% block main_table_content %}
-    
+     
     {% if is_ajax %}
-        
+         
         <div id="printContainer_outter">
             <div id="printContainer_inner">
                 <span>&nbsp;</span>
@@ -21,7 +21,7 @@
                 <span class="dropIcon" style="float:right;"></span>
             </span>
         </div>
-        
+         
         <div class="dialogAddThis">
             <!-- AddThis Button BEGIN -->
             <script type="text/javascript">
@@ -50,21 +50,20 @@
             </script>
             <!-- AddThis Button END -->
         </div>
-        
+         
         <span class="dialogTitle"><span id="tag-name">"{{ tag.name }}"</span> has <span id="num-related-items" class="{ number: {{ num_related_items }} }"><img src="{{ MEDIA_URL }}images/resource_popup_xplore_loader.gif" /></span> related resources</span>
         <div class="resources-pad">
-        
-            
+         
+             
             <div class="alt-box">
                 <div id="content" class="alt-box-pad">
     {% else %}
-        
+         
     {% endif %}
-
-                    <div id="resource-tabs" class="nootabs tag-resources-tabs { useCookies:false, defaultTab:1, useHash:false }">
+  
+                    <div id="resource-tabs" class="nootabs tag-resources-tabs { useCookies:false, defaultTab:2, useHash:false }">
                         <ul class="nootabs-menus">
-                            <li id="overview-tab" class="first-menu begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Overview </a></li>
-                            <li id="industry-sectors-tab" class="begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Industry<br/>Topics <span class="right">{{ parent_nodes|length }}</span></a></li>
+                            <li id="industry-sectors-tab" class="first-menu begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Industry<br/>Topics <span class="right">{{ parent_nodes|length }}</span></a></li>
                             {% comment %}
                             #TODO: Re-enable clusters
                             #<li><a href="" rel="nofollow">Sectors &amp; Clusters ({{ parent_nodes|length }})</a></li>
@@ -84,12 +83,7 @@
                             <li id="articles-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">IEEE Xplore<br/>Articles <span class="right" id="num-xplore-results"></span></a></li>
                             <li id="educations-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu" rel="nofollow">Educational<br/>Resources <span class="right" id="num-education-results"></span></a></li>
                         </ul>
-<!-- Sectors &amp; Clusters -->
-                        <div id="overview-tab" class="sector-tab" data-printUrl='{% url print_resource tag.id "sectors" %}'>
-                            <div class="group">
-                                <p>test</p>
-                            </div>
-                        </div>
+                         
                         <!-- Sectors &amp; Clusters -->
                         <div id="sector-tab" class="sector-tab" data-printUrl='{% url print_resource tag.id "sectors" %}'>
                             <div class="group">
@@ -117,7 +111,7 @@
                                 {% endif %}
                             </div>
                         </div>
-                        
+                         
                         {% comment %}
                         <!-- Filters -->
                         <div>
@@ -130,7 +124,7 @@
                             </div>
                         </div>
                         {% endcomment %}
-                        
+                         
                         <!-- Organizations -->
                         <div id="society-tab" data-printUrl='{% url print_resource tag.id "societies" %}'>
                             <div class="group">
@@ -172,7 +166,7 @@
                                 {% endif %}
                             </div>
                         </div>
-                        
+                         
                         <!-- Related Topics -->
                         <div id="related-tab" data-printUrl='{% url print_resource tag.id "related_tags" %}'>
                             <div class="group">
@@ -193,7 +187,7 @@
                                 {% endif %}
                             </div>
                         </div>
-                        
+                         
                         <div id="conference-tab" data-printUrl='{% url print_resource tag.id "conferences" %}'>
                             <!-- Conferences -->
                             <div class="group">
@@ -228,7 +222,7 @@
                                                     Hide other conferences in this series
                                                 </a>
                                             </p>
-                                            
+                                             
                                             <div id="other-conferences-{{ resource.id }}" class="other-conferences">
                                                 {% for other_conference in resource.other_conferences %}
                                                     {% if other_conference.url and other_conference.url_status != "bad" %}
@@ -249,7 +243,7 @@
                                                     <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{other_conference.description}}</p>
                                                 {% endfor %}
                                             </div>
-                                            
+                                             
                                         {% endif %}
                                     </li>    
                                     {% endfor %}
@@ -259,7 +253,7 @@
                             </ul>
                             </div>
                         </div>
-                        
+                         
                         <div id="periodical-tab" data-printUrl='{% url print_resource tag.id "periodicals" %}'>
                             <!-- Periodicals -->
                             <div class="group">
@@ -278,7 +272,7 @@
                                             {% if resource.url and resource.url_status != "bad" %}
                                                 </a>
                                             {% endif %}
-                                            
+                                             
                                             {% if resource.is_machine_generated %}
                                                 <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
                                             {% endif %}
@@ -292,7 +286,7 @@
                             </ul>
                             </div>
                         </div>
-                        
+                         
                         <div id="standard-tab" data-printUrl='{% url print_resource tag.id "standards" %}'>
                             <!-- Standards -->
                             <div class="group">
@@ -318,14 +312,14 @@
                                         <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
                                     </li>
                                     {% endfor %}
-                                
+                                 
                                 {% else %}
                                     <p class="no-resources">No standards are currently tagged "{{ tag.name }}"</p>
                                 {% endif %}
                             </ul>
                             </div>
                         </div>
-                        
+                         
                         {% comment %}
                         #    <div>
                         #        <!-- Experts -->
@@ -347,15 +341,15 @@
                         #        </div>
                         #    </div>
                         {% endcomment %}
-                        
-
+                         
+  
                         <!-- Patents -->
                         <div id="patents-tab" data-printUrl='{% url print_resource tag.id "patents" %}'>
                             <div class="group">
                             </div>
                             <div id="branding"></div>
                         </div>
-
+  
                         <!-- Xplore Results -->
                         <div id="xplore-tab" data-printUrl='{% url print_resource tag.id "xplore" %}'>
                             <div id="xplore-results-container" class="{ tagId: {{ tag.id }} }">
@@ -376,7 +370,7 @@
                                         </select>
                                     </p>
                                 </div>
-                                
+                                 
                                 <div class="group">
                                     <ul>
                                         {# NOTE: This will be replaced by AJAX. #}
@@ -384,7 +378,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+                         
                         <script type="text/javascript">
                             $(function() {
                                 var printDropDown = $('#printSelect').imageDropdown({'selectList': $("ul#printSelect_options")});
@@ -399,7 +393,7 @@
                                     printDropDown.close();
                                     printDropDown.reset();
                                 })
-                                
+                                 
                                 attachXploreResults('#xplore-results-container');
                             });
                         </script>
@@ -408,9 +402,9 @@
                             <div id="education-results-container" class="{ tagId: {{ tag.id }} }">
                                 <div class="print-resource">
                                     <p id="education-totals"></p>
-
+  
                                 </div>
-                                
+                                 
                                 <div class="group">
                                     <ul>
                                         {# NOTE: This will be replaced by AJAX. #}
@@ -423,15 +417,14 @@
                                 attachXploreResults('#education-results-container', 'Educational Courses');
                             });
                         </script>
-
-                    
+  
+                     
                     </div>
-    
+     
     {% if is_ajax %}
                 </div>
             </div>
         </div>
     {% endif %}
-
+  
 {% endblock %}
-
