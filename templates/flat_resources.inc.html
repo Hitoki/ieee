@@ -337,8 +337,9 @@ Include file used by both print_resource.html and tag_landing.html
         
     //};
     var jobsQstr = $('h1.title').text().replace(' ', '+');
-    jobsQstr = "clientid=ieee&stringVar=jsonString&pageSize=25&kOrEntire=" + jbosQstr + "&outFormat=jsxml";
-    $('#tag-jobs div').load("http://jobs.ieee.org/qjs/", jobsQstr);
+    jobsQstr = "?clientid=ieee&stringVar=jsonString&pageSize=25&kOrEntire=" + jobsQstr + "&outFormat=jsxml";
+    //$('#tag-jobs div').load("http://jobs.ieee.org/qjs/"+jobsQstr);
+    //alert("http://jobs.ieee.org/qjs/"+jobsQstr);
 
     // Dynamically number the section content blocks.
     $(document).ready(function(){
@@ -347,5 +348,13 @@ Include file used by both print_resource.html and tag_landing.html
         });
         var mainWidth = $("#inner-container").outerWidth();    
         $("#tag_frozen_header").css('width', mainWidth);
+
+        $.getJSON('http://jobs.ieee.org/qjs/'+jobsQstr,
+          function(data) {
+            alert('success');
+            $.each(data.items, function(i,item){
+              alert('in');
+            });
+          });
     });
 </script>
