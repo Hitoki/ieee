@@ -282,18 +282,8 @@ Include file used by both print_resource.html and tag_landing.html
 
     <div id="tag-jobs" class="tag-section">
         <h3><a href="" name="jobs"></a><span class="index"></span> Jobs related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
-        {% if jobs %}
-        <ul>
-            {% for parent in jobs %}
-                <li>
-                    {% if create_links %}
-                        <a href="/tag/{{ parent.id }}/{{ parent.name|slugify }}">{{ parent.name }}</a>
-                    {% else %}
-                        {{ parent.name }}
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
+        {% if jobsHtml %}
+            {{ jobsHtml|safe }}
         {% else %}
         <p class="no-resources">No jobs are currently tagged "{{ tag.name }}"</p>
         {% endif %}
@@ -332,14 +322,6 @@ Include file used by both print_resource.html and tag_landing.html
     // Include the required Google branding
     google.search.Search.getBranding('branding');
 
-    // Populate Jobs from
-    //var sucHndlr = function(){
-        
-    //};
-    var jobsQstr = $('h1.title').text().replace(' ', '+');
-    jobsQstr = "?clientid=ieee&stringVar=jsonString&pageSize=25&kOrEntire=" + jobsQstr + "&outFormat=jsxml";
-    //$('#tag-jobs div').load("http://jobs.ieee.org/qjs/"+jobsQstr);
-    //alert("http://jobs.ieee.org/qjs/"+jobsQstr);
 
     // Dynamically number the section content blocks.
     $(document).ready(function(){
@@ -349,12 +331,16 @@ Include file used by both print_resource.html and tag_landing.html
         var mainWidth = $("#inner-container").outerWidth();    
         $("#tag_frozen_header").css('width', mainWidth);
 
-        $.getJSON('http://jobs.ieee.org/qjs/'+jobsQstr,
+        $.ajax('http://jobs.ieee.org/qjs/', jobsQstr,
           function(data) {
             alert('success');
             $.each(data.items, function(i,item){
               alert('in');
             });
-          });
+          },
+          function(){
+    var foo = 120;
+    }
+        );
     });
 </script>

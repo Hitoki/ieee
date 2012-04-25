@@ -1775,8 +1775,13 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     page_date = datetime.datetime.now()
     
     related_items_count = sectors.count() + related_tags.count() + societies.count() + conf_count + periodicals.count() + standards.count() + totaledufound+ totalfound
-        
-        
+    
+    file1 = urllib2.urlopen("http://jobs.ieee.org/qjs/?clientid=ieee&stringVar=jsonString&pageSize=25&kOrEntire=%s&outFormat=jsxml" % tag.name)
+    from BeautifulSoup import BeautifulSoup
+    jobsHtml = BeautifulSoup(file1.read()).find('body').contents[1]
+    file1 = None
+    
+
     return render(request, template_name, {
         'page_date': page_date,
         'tag': tag,
@@ -1790,7 +1795,8 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
         'xplore_results': xplore_results,
         'toc': toc,
         'create_links': create_links,
-        'related_items_count': related_items_count
+        'related_items_count': related_items_count,
+        'jobsHtml': jobsHtml
     })
 
 def debug_error(request):
