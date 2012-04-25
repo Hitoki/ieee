@@ -49,7 +49,7 @@ Include file used by both print_resource.html and tag_landing.html
             <li {% if not related_tags %}class="disabled"{% endif %}><a href="#concepts">Related topics related to {{ tag.name }}</a></li>
             <li {% if not xplore_edu_results %}class="disabled"{% endif %}><a href="#xplore_edu">Educational Resources on {{ tag.name }}</a></li>
             <li {% if not sectors %}class="disabled"{% endif %}><a href="#sectors">Industry topics related to {{ tag.name }}</a></li>
-            <li {% if not jobs %}class="disabled"{% endif %}><a href="#jobs">Jobs related to {{ tag.name }}</a></li>
+            <li {% if not jobsHtml %}class="disabled"{% endif %}><a href="#jobs">Jobs related to {{ tag.name }}</a></li>
         </ol>
     </div>
     <br/>
@@ -330,7 +330,7 @@ Include file used by both print_resource.html and tag_landing.html
         });
         var mainWidth = $("#inner-container").outerWidth();    
         $("#tag_frozen_header").css('width', mainWidth);
-
+        /*
         $.ajax('http://jobs.ieee.org/qjs/', jobsQstr,
           function(data) {
             alert('success');
@@ -339,8 +339,18 @@ Include file used by both print_resource.html and tag_landing.html
             });
           },
           function(){
-    var foo = 120;
-    }
-        );
+            var foo = 120;
+            });
+        */
+        $('.featured').each(function(){
+                var href = $(this).attr('href');
+                $(this).attr('href', 'http://jobs.ieee.org'+href);
+                var textEl = this.nextSibling;
+                var spanEl = $('<p />').text(textEl.data).addClass('job-desc');
+                $(this).after(spanEl);
+                $(textEl).remove();
+        });
+
+        $('span.Featured').children('table').attr('id','jobs-table')
     });
 </script>

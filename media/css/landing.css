@@ -294,3 +294,11 @@ padding-left: 25px;
 .notaccordion-icon.notaccordion-icon-s {
   background: transparent url(/media/images/toggleCollapse.png) no-repeat 0px 3px;
 }
+
+#jobs-table {
+  margin-left: 25px;
+}
+
+.job-desc {
+  margin-bottom: 10px !important;
+}

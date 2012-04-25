@@ -1778,7 +1778,12 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     
     file1 = urllib2.urlopen("http://jobs.ieee.org/qjs/?clientid=ieee&stringVar=jsonString&pageSize=25&kOrEntire=%s&outFormat=jsxml" % tag.name)
     from BeautifulSoup import BeautifulSoup
-    jobsHtml = BeautifulSoup(file1.read()).find('body').contents[1]
+    jobsHtml = BeautifulSoup(file1.read()).find('body')
+
+
+    for e in jobsHtml.findAll("br"):
+        e.extract()
+
     file1 = None
     
 
