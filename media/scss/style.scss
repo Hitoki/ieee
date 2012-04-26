@@ -798,6 +798,23 @@ cursor: url(/media/images/wait-cursor.gif), wait;
    display: none;
 }
 
+#job-tab{
+    a {
+        display: block;
+        clear: both;
+        margin-top: 15px;
+        &:first-child {
+            margin-top: 10px;
+        }
+        &:last-child {
+            margin-bottom: 10px;
+        }
+    }
+    td {
+        padding-left: 15px;
+    }
+}
+
 /* */
 .backtotop, .backtoptop:hover, .backtotop img {
     text-decoration: none;

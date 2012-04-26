@@ -899,6 +899,17 @@ div.image-container {
 .gs-watermark {
   display: none; }
 
+#job-tab a {
+  display: block;
+  clear: both;
+  margin-top: 15px; }
+  #job-tab a:first-child {
+    margin-top: 10px; }
+  #job-tab a:last-child {
+    margin-bottom: 10px; }
+#job-tab td {
+  padding-left: 15px; }
+
 /* */
 .backtotop, .backtoptop:hover, .backtotop img {
   text-decoration: none;

@@ -276,6 +276,16 @@ def ajax_tag_content(request, tag_id, ui=None):
     # Hide the TAB society.
     societies = societies.exclude(abbreviation='tab')
     
+    file1 = urllib2.urlopen("http://jobs.ieee.org/qjs/?clientid=ieee&stringVar=jsonString&pageSize=25&kOrEntire=%s&outFormat=jsxml" % tag.name)
+    from BeautifulSoup import BeautifulSoup
+    jobs = BeautifulSoup(file1.read()).find('body')
+
+
+    for e in jobs.findAll("br"):
+        e.extract()
+
+    file1 = None
+    
     num_related_items =  \
         sectors1.count() \
         + clusters1.count() \
@@ -285,8 +295,9 @@ def ajax_tag_content(request, tag_id, ui=None):
         + experts.count() \
         + len(periodicals) \
         + len(standards) \
+        + len(jobs) \
         
-    if tag.is_taxonomy_term and ((sectors1.count() + societies.count() + len(conferences) + experts.count() + len(periodicals) + len(standards)) == 0):
+    if tag.is_taxonomy_term and ((sectors1.count() + societies.count() + len(conferences) + experts.count() + len(periodicals) + len(standards)) + len(jobs) == 0):
         # This is a term with no resources (except Related Tags), just show the abbreviated content popup.
         return render(request, 'ajax_term_content.html', {
             'tag':tag,
@@ -298,6 +309,7 @@ def ajax_tag_content(request, tag_id, ui=None):
         return render(request, 'ajax_tag_content.html', {
             'tag':tag,
             'societies':societies,
+            'jobs':jobs,
             'conferences': conferences,
             'experts': experts,
             'periodicals': periodicals,
