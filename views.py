@@ -282,6 +282,9 @@ def ajax_tag_content(request, tag_id, ui=None):
     if jobsHtml:
         for e in jobsHtml.findAll("br"):
             e.extract()
+        for e in jobsHtml.findAll("a"):
+            e['href'] = 'http://jobs.ieee.org' + e['href']
+
     else:
         jobsHtml = ''
 
