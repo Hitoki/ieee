@@ -67,6 +67,9 @@
             &.level6 {
                 @include level6-gradient;
             }
+            &:hover a {
+                text-decoration: none;
+            }
         }
     }
 }

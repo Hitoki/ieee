@@ -17,7 +17,7 @@
             {% endcomment %}
             <tr>
                 <td>
-                    <a href="javascript:Tags.selectTag({{tag.id}}, 'sector-tab');" rel="nofollow">
+                    <a href="javascript:void(0){% comment %}javascript:Tags.selectTag({{tag.id}}, 'sector-tab');{% endcomment %}" rel="nofollow" style="cursor:default">
                         <table class="sector-block vert-center">
                             <tr>
                                 <td class="{{sectorLevel}}">

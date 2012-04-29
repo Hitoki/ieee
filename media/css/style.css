@@ -258,6 +258,8 @@
   /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00497c', endColorstr='#001320',GradientType=0 );
   /* IE6-9 */ }
+.cssgradients .flyover-container td:hover a {
+  text-decoration: none; }
 
 .no-cssgradients #inner-container {
   background-color: #f2f5ff; }

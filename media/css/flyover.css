@@ -3,7 +3,7 @@
     /* Start out hidden so we can display when content is ready */
     visibility: hidden;
     position: absolute;
-    z-index: 200;
+    z-index: 99999999;
     min-height: 10px;
     border: 1px solid #6F7985;
     padding: 8px;

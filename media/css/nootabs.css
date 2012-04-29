@@ -197,6 +197,12 @@ ul.nootabs-menus li a:hover {
    color: #FFA500;
 }
 
+#resource-tabs ul.nootabs-menus li a.disabled,
+#resource-tabs ul.nootabs-menus li a.disabled:hover {
+    color: #9F9F9F;
+    cursor: default;
+}
+
 #resource-tabs ul.nootabs-menus li a span.right {
     float: right;
     font-size: 7pt;
