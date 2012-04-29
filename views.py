@@ -278,26 +278,26 @@ def ajax_tag_content(request, tag_id, ui=None):
     
     file1 = urllib2.urlopen("http://jobs.ieee.org/qjs/?clientid=ieee&stringVar=jsonString&pageSize=25&kOrEntire=%s&outFormat=jsxml" % tag.name)
     from BeautifulSoup import BeautifulSoup
-    jobs = BeautifulSoup(file1.read()).find('body')
-
-
-    for e in jobs.findAll("br"):
-        e.extract()
+    jobsHtml = BeautifulSoup(file1.read()).find('body')
+    if jobsHtml:
+        for e in jobsHtml.findAll("br"):
+            e.extract()
+    else:
+        jobsHtml = ''
 
     file1 = None
-    
+    # removied sectors from count
     num_related_items =  \
-        sectors1.count() \
-        + clusters1.count() \
+        clusters1.count() \
         + societies.count() \
         + tag.related_tags.count() \
         + len(conferences) \
         + experts.count() \
         + len(periodicals) \
         + len(standards) \
-        + len(jobs) \
+        + len(jobsHtml) \
         
-    if tag.is_taxonomy_term and ((sectors1.count() + societies.count() + len(conferences) + experts.count() + len(periodicals) + len(standards)) + len(jobs) == 0):
+    if tag.is_taxonomy_term and ((sectors1.count() + societies.count() + len(conferences) + experts.count() + len(periodicals) + len(standards)) + len(jobsHtml) == 0):
         # This is a term with no resources (except Related Tags), just show the abbreviated content popup.
         return render(request, 'ajax_term_content.html', {
             'tag':tag,
@@ -309,7 +309,7 @@ def ajax_tag_content(request, tag_id, ui=None):
         return render(request, 'ajax_tag_content.html', {
             'tag':tag,
             'societies':societies,
-            'jobs':jobs,
+            'jobs':jobsHtml,
             'conferences': conferences,
             'experts': experts,
             'periodicals': periodicals,
@@ -1792,9 +1792,11 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     from BeautifulSoup import BeautifulSoup
     jobsHtml = BeautifulSoup(file1.read()).find('body')
 
-
-    for e in jobsHtml.findAll("br"):
-        e.extract()
+    if jobsHtml:
+        for e in jobsHtml.findAll("br"):
+            e.extract()
+    else:
+        jobsHtml = ''
 
     file1 = None
     
