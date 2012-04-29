@@ -630,7 +630,8 @@ ul#view-header li {
 
 #galaxy-tabs {
   width: auto;
-  text-align: left; }
+  text-align: left;
+  margin-bottom: -1px; }
 
 #galaxy-tabs li {
   width: 95px;
@@ -668,7 +669,7 @@ ul#view-header li {
 
 #left-column-container .nootabs-menus li.nootabs-selected-menu {
   border: 1px solid #006699;
-  border-bottom: 1px solid white !important;
+  border-bottom: 0px solid white !important;
   background-color: white; }
 
 .nootabs-menus li.first-menu,
@@ -731,6 +732,7 @@ ul#view-header li {
   -webkit-border-bottom-left-radius: 5px;
   overflow-y: scroll;
   overflow-x: hidden;
+  border-top: 1px solid #006699;
   /*display: inline; Prevents them from snapping into place on load*/ }
 
 #right-column {

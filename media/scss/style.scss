@@ -517,6 +517,7 @@ ul#view-header li {
 #galaxy-tabs {
     width: auto;
     text-align: left;
+    margin-bottom: -1px;
 }
 
 #galaxy-tabs li{
@@ -552,7 +553,7 @@ ul#view-header li {
 
 #left-column-container .nootabs-menus li.nootabs-selected-menu {
     border: 1px solid $primaryColor;
-    border-bottom: 1px solid $white !important;
+    border-bottom: 0px solid $white !important;
     background-color: $white;
 }
 
@@ -589,6 +590,7 @@ ul#view-header li {
     @include custom-border-radius (0, 0, 5px, 5px);
     overflow-y:scroll;
     overflow-x:hidden;
+    border-top: 1px solid #006699;
     /*display: inline; Prevents them from snapping into place on load*/
 }
 
