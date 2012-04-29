@@ -989,19 +989,19 @@ var Tags = {
                 // Set searchComplete as the callback function when a search is 
                 // complete.  The patentSearch object will have results in it.
                 patentSearch.setSearchCompleteCallback(this,
-                                                       function(){
-                                                           $.each(patentSearch.results, function(i, result){
-                                                                      $('#patents-tab div.group').append($(result.html));
-                                                                      $('#patents-tab a span').text(patentSearch.cursor.estimatedResultCount); // patentSearch.cursor.estimatedResultCount
-                                                                  });
-                                                                  $("<span class='newWindowIcon'></span>").insertAfter("a.gs-title");
-                                                           if (patentSearch.cursor.estimatedResultCount > 8) {
-                                                               var moreResultsLink = $('<a target="_blank">More results on Google</a>');
-                                                               moreResultsLink.attr('href', patentSearch.cursor.moreResultsUrl);
-                                                               $('#patents-tab div.group').append(moreResultsLink);
-                                                           }
-                                                       }
-                                                       , null);                
+                   function(){
+                       $.each(patentSearch.results, function(i, result){
+                           $('#patents-tab div.group').append($(result.html));
+                           $('#patents-tab a span').text(patentSearch.cursor.estimatedResultCount); // patentSearch.cursor.estimatedResultCount
+                       });
+                       $("<span class='newWindowIcon'></span>").insertAfter("a.gs-title");
+                       if (patentSearch.cursor.estimatedResultCount > 8) {
+                           var moreResultsLink = $('<a target="_blank">More results on Google</a>');
+                           moreResultsLink.attr('href', patentSearch.cursor.moreResultsUrl);
+                           $('#patents-tab div.group').append(moreResultsLink);
+                       }
+                   }
+                   , null);
 
                 // Specify search quer(ies)
                 patentSearch.execute($('div.[id="tag-' + id + '"]:first').text());
