@@ -92,14 +92,20 @@
                                     {% for parent_node in parent_nodes %}
                                         <p class="{% cycle 'item_odd' 'item_even' %}">
                                             {% ifequal ui "textui" %}
+                                            {% comment %}
                                                 <a href="javascript:Tags.selectSector({{ parent_node.sector.id }});" rel="nofollow">
                                                     <span>{{ parent_node.sector.name }}</span>
                                                 </a>
+                                            {% endcomment %}
+                                            <strong>{{ parent_node.sector.name }}</strong>
                                             {% else %}
                                                 {% ifequal ui "roamer" %}
+                                                {% comment %}
                                                     <a href="javascript:Roamer.setNode({{ parent_node.sector.id }});" rel="nofollow">
                                                         <span>{{ parent_node.sector.name }}</span>
                                                     </a>
+                                                {% endcomment %}
+                                                <strong>{{ parent_node.sector.name }}</strong>
                                                 {% endifequal %}
                                             {% endifequal %}
                                             {% if parent_node.clusters %}
