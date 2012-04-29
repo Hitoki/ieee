@@ -63,7 +63,7 @@
   
                     <div id="resource-tabs" class="nootabs tag-resources-tabs { useCookies:false, defaultTab:2, useHash:false }">
                         <ul class="nootabs-menus">
-                            <li id="industry-sectors-tab-disabled" class="first-menu begin-group-menu flyover {width:370}" title="Navigating by Industry Topic is currently not available"><a href="" class="two-word-menu disabled" rel="nofollow">Industry<br/>Topics <span class="right" style="display:none">{{ parent_nodes|length }}</span></a></li>
+                            <li id="industry-sectors-tab" class="first-menu begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Industry<br/>Topics <span class="right">{{ parent_nodes|length }}</span></a></li>
                             {% comment %}
                             #TODO: Re-enable clusters
                             #<li><a href="" rel="nofollow">Sectors &amp; Clusters ({{ parent_nodes|length }})</a></li>
@@ -88,8 +88,6 @@
                         <!-- Sectors &amp; Clusters -->
                         <div id="sector-tab" class="sector-tab" data-printUrl='{% url print_resource tag.id "sectors" %}'>
                             <div class="group">
-                                <p class="no-resources">Navigating by Industry Topic is currently not available</p>
-                                {% comment %}
                                 {% if parent_nodes|length %}
                                     {% for parent_node in parent_nodes %}
                                         <p class="{% cycle 'item_odd' 'item_even' %}">
@@ -112,7 +110,6 @@
                                 {% else %}
                                     <p class="no-resources">No industry topics are currently tagged "{{ tag.name }}"</p>
                                 {% endif %}
-                                {% endcomment %}
                             </div>
                         </div>
                          

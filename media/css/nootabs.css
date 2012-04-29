@@ -290,6 +290,13 @@ div.nootabs-tab {
    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffd896', endColorstr='#ffa500',GradientType=0 ); /* IE6-9 */
 }
 
+#left-column-container ul.nootabs-menus li a.disabled,
+#left-column-container ul.nootabs-menus li a.disabled:hover {
+    cursor: default;
+    color: #666666;
+    background: none repeat scroll 0 0 #EEEEEE !important;
+}
+
 #login-tabs .last-menu {
    margin-left: -1px;
 }
