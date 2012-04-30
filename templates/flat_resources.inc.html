@@ -39,20 +39,19 @@ Include file used by both print_resource.html and tag_landing.html
         {# Using break line list method for browser compatibility #}
         <ol style="width:570px">
             <li {% if not conferences %}class="disabled"{% endif %}><a href="#conferences">Conferences related to {{ tag.name }}</a></li>
-            <li {% if not standards %}class="disabled"{% endif %}><a href="#standards">Standards related to {{ tag.name }}</a></li>
-            <li><a href="#patents">Patents related to {{ tag.name }}</a></li>
-            <li {% if not periodicals %}class="disabled"{% endif %}><a href="#periodicals">Periodicals related to {{ tag.name }}</a></li>
             <li {% if not xplore_results %}class="disabled"{% endif %}><a href="#xplore">Xplore Articles related to  {{ tag.name }}</a></li>
+            <li {% if not jobsHtml %}class="disabled"{% endif %}><a href="#jobs">Jobs related to {{ tag.name }}</a></li>
+            <li><a href="#patents">Patents related to {{ tag.name }}</a></li>
+            <li {% if not xplore_edu_results %}class="disabled"{% endif %}><a href="#xplore_edu">Educational Resources on {{ tag.name }}</a></li>    
         </ol>
         <ol start="6">
+            <li {% if not standards %}class="disabled"{% endif %}><a href="#standards">Standards related to {{ tag.name }}</a></li>
+            <li {% if not periodicals %}class="disabled"{% endif %}><a href="#periodicals">Periodicals related to {{ tag.name }}</a></li>
             <li {% if not societies %}class="disabled"{% endif %}><a href="#societies">IEEE Organizations related to {{ tag.name }}</a></li>
             <li {% if not related_tags %}class="disabled"{% endif %}><a href="#concepts">Related topics related to {{ tag.name }}</a></li>
-            <li {% if not xplore_edu_results %}class="disabled"{% endif %}><a href="#xplore_edu">Educational Resources on {{ tag.name }}</a></li>
             <li {% if not sectors %}class="disabled"{% endif %}><a href="#sectors">Industry topics related to {{ tag.name }}</a></li>
-            <li {% if not jobsHtml %}class="disabled"{% endif %}><a href="#jobs">Jobs related to {{ tag.name }}</a></li>
         </ol>
     </div>
-    <br/>
     <hr/>
     {% endif %}
 
@@ -107,63 +106,6 @@ Include file used by both print_resource.html and tag_landing.html
     </div>
     <hr/>
     
-    <div id="tag-standards" class="tag-section">
-        <h3><a name="standards"></a><span class="index"></span> Standards related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
-        {% if standards %}
-        <ul class="tag_list">
-            {% for standard in standards.all %}
-                <li>
-                    <p class="title">
-                    {% if create_links %}
-                        <a href="{{ standard.url }}" target="_blank" rel="nofollow">{{ standard.name }}</a>
-                    {% else %}
-                        {{ standard.name }}
-                    {% endif %}
-                    </p>
-                    <p class="description">
-                        {{ standard.description|truncatewords:60 }}
-                    </p>
-                </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <p class="no-resources">No standards are currently tagged "{{ tag.name }}"</p>
-        {% endif %}
-    </div>
-    <hr/>
-    
-    <div id="tag-patents" class="tag-section">
-        <h3><a name="patents"></a><span class="index"></span> Patents related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
-        <div class="patent-list"></div>
-        <div id="branding"></div>
-    </div>
-    <hr/>
-
-    <div id="tag-periodicals" class="tag-section">
-        <h3><a name="periodicals"></a><span class="index"></span> Periodicals related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
-        {% if periodicals %}
-        <ul class="tag_list">
-            {% for periodical in periodicals.all %}
-                <li>
-                    <p class="title">
-                    {% if create_links %}
-                        <a href="{{ periodical.url }}" target="_blank" rel="nofollow">{{ periodical.name }}</a>
-                    {% else %}
-                        {{ periodical.name }}
-                    {% endif %}
-                    </p>
-                    <p class="description">
-                        {{ periodical.description|truncatewords:60 }}
-                    </p>
-                </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <p class="no-resources">No periodicals are currently tagged "{{ tag.name }}"</p>
-        {% endif %}
-    </div>
-    <hr/>
-    
     <div id="tag-xplore" class="tag-section">
         <h3><a name="xplore"></a><span class="index"></span> Xplore Articles related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if xplore_results %}
@@ -191,47 +133,24 @@ Include file used by both print_resource.html and tag_landing.html
         {% endif %}
     </div>
     <hr/>
-
-    <div id="tag-societies" class="tag-section">
-        <h3><a name="societies"></a><span class="index"></span> IEEE Organizations related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
-        {% if societies %}
-        <ul>
-            {% for society in societies %}
-                <li>
-                    {% if create_links %}
-                        <a href="{{ society.url }}" rel="nofollow">{{ society.name }}</a>
-                    {% else %}
-                        {{ society.name }}
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
+    
+    <div id="tag-jobs" class="tag-section">
+        <h3><a href="" name="jobs"></a><span class="index"></span> Jobs related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        {% if jobsHtml %}
+            {{ jobsHtml|safe }}
         {% else %}
-        <p class="no-resources">No organizations are currently tagged "{{ tag.name }}"</p>
+        <p class="no-resources">No jobs are currently tagged "{{ tag.name }}"</p>
         {% endif %}
     </div>
     <hr/>
-
-    <div id="tag-related-tags" class="tag-section">
-        <h3><a name="concepts"></a><span class="index"></span> Related topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
-        {% if related_tags %}
-        <ul>
-            {% for related_tag in related_tags %}
-                <li>
-                    {% if create_links %}
-                        <a href="/tag/{{ related_tag.id }}/{{ related_tag.name|slugify }}">{{ related_tag.name }}</a>
-                    {% else %}
-                        {{ related_tag.name }}
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-        {% else %}
-        <p class="no-resources">No related topics are currently tagged "{{ tag.name }}"</p>
-        {% endif %}
+    
+    <div id="tag-patents" class="tag-section">
+        <h3><a name="patents"></a><span class="index"></span> Patents related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <div class="patent-list"></div>
+        <div id="branding"></div>
     </div>
     <hr/>
-
+    
     <div id="tag-xplore_edu" class="tag-section">
         <h3><a name="xplore_edu"></a><span class="index"></span> Educational Resources on {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if xplore_edu_results %}
@@ -259,7 +178,97 @@ Include file used by both print_resource.html and tag_landing.html
         {% endif %}
     </div>
     <hr/>
-
+    
+    <div id="tag-standards" class="tag-section">
+        <h3><a name="standards"></a><span class="index"></span> Standards related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        {% if standards %}
+        <ul class="tag_list">
+            {% for standard in standards.all %}
+                <li>
+                    <p class="title">
+                    {% if create_links %}
+                        <a href="{{ standard.url }}" target="_blank" rel="nofollow">{{ standard.name }}</a>
+                    {% else %}
+                        {{ standard.name }}
+                    {% endif %}
+                    </p>
+                    <p class="description">
+                        {{ standard.description|truncatewords:60 }}
+                    </p>
+                </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="no-resources">No standards are currently tagged "{{ tag.name }}"</p>
+        {% endif %}
+    </div>
+    <hr/>
+    
+    <div id="tag-periodicals" class="tag-section">
+        <h3><a name="periodicals"></a><span class="index"></span> Periodicals related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        {% if periodicals %}
+        <ul class="tag_list">
+            {% for periodical in periodicals.all %}
+                <li>
+                    <p class="title">
+                    {% if create_links %}
+                        <a href="{{ periodical.url }}" target="_blank" rel="nofollow">{{ periodical.name }}</a>
+                    {% else %}
+                        {{ periodical.name }}
+                    {% endif %}
+                    </p>
+                    <p class="description">
+                        {{ periodical.description|truncatewords:60 }}
+                    </p>
+                </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="no-resources">No periodicals are currently tagged "{{ tag.name }}"</p>
+        {% endif %}
+    </div>
+    <hr/>
+    
+    <div id="tag-societies" class="tag-section">
+        <h3><a name="societies"></a><span class="index"></span> IEEE Organizations related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        {% if societies %}
+        <ul>
+            {% for society in societies %}
+                <li>
+                    {% if create_links %}
+                        <a href="{{ society.url }}" rel="nofollow">{{ society.name }}</a>
+                    {% else %}
+                        {{ society.name }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="no-resources">No organizations are currently tagged "{{ tag.name }}"</p>
+        {% endif %}
+    </div>
+    <hr/>
+    
+    <div id="tag-related-tags" class="tag-section">
+        <h3><a name="concepts"></a><span class="index"></span> Related topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        {% if related_tags %}
+        <ul>
+            {% for related_tag in related_tags %}
+                <li>
+                    {% if create_links %}
+                        <a href="/tag/{{ related_tag.id }}/{{ related_tag.name|slugify }}">{{ related_tag.name }}</a>
+                    {% else %}
+                        {{ related_tag.name }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="no-resources">No related topics are currently tagged "{{ tag.name }}"</p>
+        {% endif %}
+    </div>
+    <hr/>
+    
     <div id="tag-sectors" class="tag-section">
         <h3><a href="" name="sectors"></a><span class="index"></span> Industry topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if sectors %}
@@ -279,16 +288,7 @@ Include file used by both print_resource.html and tag_landing.html
         {% endif %}
     </div>
     <br/>
-
-    <div id="tag-jobs" class="tag-section">
-        <h3><a href="" name="jobs"></a><span class="index"></span> Jobs related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
-        {% if jobsHtml %}
-            {{ jobsHtml|safe }}
-        {% else %}
-        <p class="no-resources">No jobs are currently tagged "{{ tag.name }}"</p>
-        {% endif %}
-    </div>
-    <br/>
+    
 </div>
 
 <script type="text/javascript">
