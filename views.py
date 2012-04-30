@@ -27,6 +27,8 @@ from ieeetags.forms import *
 import settings
 import util
 from widgets import make_display_only
+from BeautifulSoup import BeautifulSoup
+
 
 TOOLTIP_MAX_CHARS = 120
 
@@ -275,16 +277,17 @@ def ajax_tag_content(request, tag_id, ui=None):
     societies = tag.societies.all()
     # Hide the TAB society.
     societies = societies.exclude(abbreviation='tab')
+
+    jobsUrl = "http://jobs.ieee.org/qjs/?clientid=ieee&stringVar=jsonString&pageSize=25&%s&outFormat=html" % urllib.urlencode({"kOrEntire": tag.name})
+    file1 = urllib2.urlopen(jobsUrl).read()
     
-    file1 = urllib2.urlopen("http://jobs.ieee.org/qjs/?clientid=ieee&stringVar=jsonString&pageSize=25&kOrEntire=%s&outFormat=jsxml" % tag.name)
-    from BeautifulSoup import BeautifulSoup
-    jobsHtml = BeautifulSoup(file1.read()).find('body')
+    jobsHtml = BeautifulSoup(file1).find('span', attrs={"class": "Featured"})
     if jobsHtml:
         for e in jobsHtml.findAll("br"):
             e.extract()
         for e in jobsHtml.findAll("a"):
             e['href'] = 'http://jobs.ieee.org' + e['href']
-
+        jobsHtml = jobsHtml.__repr__()
     else:
         jobsHtml = ''
 
@@ -1791,13 +1794,17 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     
     related_items_count = sectors.count() + related_tags.count() + societies.count() + conf_count + periodicals.count() + standards.count() + totaledufound+ totalfound
     
-    file1 = urllib2.urlopen("http://jobs.ieee.org/qjs/?clientid=ieee&stringVar=jsonString&pageSize=25&kOrEntire=%s&outFormat=jsxml" % tag.name)
-    from BeautifulSoup import BeautifulSoup
-    jobsHtml = BeautifulSoup(file1.read()).find('body')
 
+    jobsUrl = "http://jobs.ieee.org/qjs/?clientid=ieee&stringVar=jsonString&pageSize=25&%s&outFormat=html" % urllib.urlencode({"kOrEntire": tag.name})
+    file1 = urllib2.urlopen(jobsUrl).read()
+    
+    jobsHtml = BeautifulSoup(file1).find('span', attrs={"class": "Featured"})
     if jobsHtml:
         for e in jobsHtml.findAll("br"):
             e.extract()
+        for e in jobsHtml.findAll("a"):
+            e['href'] = 'http://jobs.ieee.org' + e['href']
+        jobsHtml = jobsHtml.__repr__()
     else:
         jobsHtml = ''
 
