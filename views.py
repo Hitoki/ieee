@@ -287,8 +287,10 @@ def ajax_tag_content(request, tag_id, ui=None):
             e.extract()
         for e in jobsHtml.findAll("a"):
             e['href'] = 'http://jobs.ieee.org' + e['href']
+        jobsCount = len(jobsHtml.findAll('a', attrs={"class": "featured"}))
         jobsHtml = jobsHtml.__repr__()
     else:
+        jobsCount = 0
         jobsHtml = ''
 
     file1 = None
@@ -301,9 +303,9 @@ def ajax_tag_content(request, tag_id, ui=None):
         + experts.count() \
         + len(periodicals) \
         + len(standards) \
-        + len(jobsHtml) \
+        + jobsCount \
         
-    if tag.is_taxonomy_term and ((sectors1.count() + societies.count() + len(conferences) + experts.count() + len(periodicals) + len(standards)) + len(jobsHtml) == 0):
+    if tag.is_taxonomy_term and ((sectors1.count() + societies.count() + len(conferences) + experts.count() + len(periodicals) + len(standards)) + jobsCount == 0):
         # This is a term with no resources (except Related Tags), just show the abbreviated content popup.
         return render(request, 'ajax_term_content.html', {
             'tag':tag,
@@ -316,6 +318,7 @@ def ajax_tag_content(request, tag_id, ui=None):
             'tag':tag,
             'societies':societies,
             'jobs':jobsHtml,
+            'jobsCount':jobsCount,
             'conferences': conferences,
             'experts': experts,
             'periodicals': periodicals,
