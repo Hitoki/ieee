@@ -33,7 +33,7 @@ Include file used by both print_resource.html and tag_landing.html
     
     {% if conferences %}
     <div id="tag-conferences">
-        <h3><a name="conferences"></a><span class="index"></span> Conferences related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a name="conferences"></a><span class="index"></span> Conferences related to {{ tag.name }}</h3><a href="#tag_contents" class="topLink" rel="nofollow">Back to Top</a>
         <ul>
     {% if conferences|length %}
         {% for conference in conferences|slice:":1" %}
@@ -61,7 +61,7 @@ Include file used by both print_resource.html and tag_landing.html
     
     {% if xplore_results %}
     <div id="tag-xplore">
-        <h3><a name="xplore"></a><span class="index"></span> Xplore Articles mentioning {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a name="xplore"></a><span class="index"></span> Xplore Articles mentioning {{ tag.name }}</h3><a href="#tag_contents" class="topLink" rel="nofollow">Back to Top</a>
         <ul class="tag_list">
             {% for xplore_result in xplore_results|slice:":5" %}
                 <li>
@@ -87,7 +87,7 @@ Include file used by both print_resource.html and tag_landing.html
     
     {% if jobsHtml %}
     <div id="tag-jobs" class="tag-section">
-        <h3><a href="" name="jobs"></a><span class="index"></span> Jobs related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a href="" name="jobs"></a><span class="index"></span> Jobs related to {{ tag.name }}</h3><a href="#tag_contents" class="topLink" rel="nofollow">Back to Top</a>
         {% if jobsHtml %}
             {{ jobsHtml|safe }}
         {% else %}
@@ -98,7 +98,7 @@ Include file used by both print_resource.html and tag_landing.html
     {% endif %}
     
     <div id="tag-patents" class="tag-section">
-        <h3><a name="patents"></a><span class="index"></span> Patents related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a name="patents"></a><span class="index"></span> Patents related to {{ tag.name }}</h3><a href="#tag_contents" class="topLink" rel="nofollow">Back to Top</a>
         <div class="patent-list"></div>
         <div id="branding"></div>
     </div>
@@ -106,7 +106,7 @@ Include file used by both print_resource.html and tag_landing.html
     
     {% if xplore_edu_results %}
     <div id="tag-xplore_edu">
-        <h3><a name="xplore_edu"></a><span class="index"></span> Educational Resources on {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a name="xplore_edu"></a><span class="index"></span> Educational Resources on {{ tag.name }}</h3><a href="#tag_contents" class="topLink" rel="nofollow">Back to Top</a>
         <ul class="tag_list">
             {% for xplore_result in xplore_edu_results|slice:":5" %}
                 <li>
@@ -132,7 +132,7 @@ Include file used by both print_resource.html and tag_landing.html
     
     {% if standards %}
     <div id="tag-standards">
-        <h3><a name="standards"></a><span class="index"></span> Standards related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a name="standards"></a><span class="index"></span> Standards related to {{ tag.name }}</h3><a href="#tag_contents" class="topLink" rel="nofollow">Back to Top</a>
         <ul class="tag_list">
             {% for standard in standards.all|slice:":5" %}
                 <li>
@@ -155,7 +155,7 @@ Include file used by both print_resource.html and tag_landing.html
     
     {% if periodicals %}
     <div id="tag-periodicals">
-        <h3><a name="periodicals"></a><span class="index"></span> Periodical articles related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a name="periodicals"></a><span class="index"></span> Periodical articles related to {{ tag.name }}</h3><a href="#tag_contents" class="topLink" rel="nofollow">Back to Top</a>
         <ul class="tag_list">
             {% for periodical in periodicals.all|slice:":5" %}
                 <li>
@@ -178,7 +178,7 @@ Include file used by both print_resource.html and tag_landing.html
     
     {% if societies %}
     <div id="tag-societies">
-        <h3><a name="societies"></a><span class="index"></span> IEEE Organizations related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a name="societies"></a><span class="index"></span> IEEE Organizations related to {{ tag.name }}</h3><a href="#tag_contents" class="topLink" rel="nofollow">Back to Top</a>
         <ul>
             {% for society in societies|slice:":5" %}
                 <li>
@@ -196,7 +196,7 @@ Include file used by both print_resource.html and tag_landing.html
     
     {% if related_tags %}
     <div id="tag-related-tags">
-        <h3><a name="concepts"></a><span class="index"></span> Topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a name="concepts"></a><span class="index"></span> Topics related to {{ tag.name }}</h3><a href="#tag_contents" class="topLink" rel="nofollow">Back to Top</a>
         <ul>
             {% for related_tag in related_tags|slice:":5" %}
                 <li>
@@ -214,7 +214,7 @@ Include file used by both print_resource.html and tag_landing.html
 
     {% if sectors %}
     <div id="tag-sectors">
-        <h3><a href="" name="sectors"></a><span class="index"></span> Industry topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a href="" name="sectors"></a><span class="index"></span> Industry topics related to {{ tag.name }}</h3><a href="#tag_contents" class="topLink" rel="nofollow">Back to Top</a>
         <ul>
             {% for parent in sectors|slice:":5" %}
                 <li>
