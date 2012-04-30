@@ -173,7 +173,8 @@ ul.search_results {
 #resource_wrap #tag-periodicals p, 
 #resource_wrap #tag-xplore p,
 #resource_wrap #tag-standards p,
-#resource_wrap #tag-xplore_edu p {
+#resource_wrap #tag-xplore_edu p,
+#resource_wrap #tag-jobs p {
 	margin: 0 0 20px 5px;
 	font-size: .9em;
 }
@@ -184,6 +185,17 @@ ul.search_results {
 	#resource_wrap #tag-xplore_edu p:nth-child(2) {
 		margin-top: 5px;
 	}
+
+#tag-jobs table,
+#tag-patents .patent-list {
+   margin-left: 20px;
+}
+
+#tag-jobs a,
+#tag-patents .gs-patentResult {
+   display: block;
+   margin-top: 15px;
+}
 
 #resource_wrap p.title {
 	font-size: 1em !important;
