@@ -287,7 +287,7 @@ def ajax_tag_content(request, tag_id, ui=None):
             e.extract()
         for e in jobsHtml.findAll("a"):
             e['href'] = 'http://jobs.ieee.org' + e['href']
-        jobsCount = len(jobsHtml.findAll('a', attrs={"class": "featured"}))
+        jobsCount = len(jobsHtml.findAll('a', attrs={"class": "featured"})) - 1 # HACK exclude the "More jobs" link
         jobsHtml = jobsHtml.__repr__()
     else:
         jobsCount = 0
@@ -1801,7 +1801,7 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     jobsUrl = "http://jobs.ieee.org/qjs/?clientid=ieee&stringVar=jsonString&pageSize=25&%s&outFormat=html" % urllib.urlencode({"kOrEntire": tag.name})
     file1 = urllib2.urlopen(jobsUrl).read()
     
-    jobsHtml = BeautifulSoup(file1).find('span', attrs={"class": "Featured"})
+    jobsCount = len(jobsHtml.findAll('a', attrs={"class": "featured"})) - 1 # HACK exclude the "More jobs" link
     if jobsHtml:
         for e in jobsHtml.findAll("br"):
             e.extract()
