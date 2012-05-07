@@ -1286,6 +1286,7 @@ var Tags = {
             
             // Calling special function to avoid code bloat due to duplication. The string "tagid" in the url will be replaced with the
             // actual id.
+            /*
             attachTextUiFlyovers(
                 '#tags',
                 {
@@ -1298,7 +1299,7 @@ var Tags = {
                     , useWaitCursor: true
                 }
             );
-
+            */
             if (this.remainingContent.length > 0) {
                 // Show the loading banner if there is still remaining content.
                 tagWindow.append($(''
