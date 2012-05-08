@@ -504,7 +504,7 @@ var Tags = {
         //var filterStr = implode(',', this.getFilters());
         
         if ($('#tags-live-search').val().length >= 1) {
-            $('#textui-tags-search-clear').show();
+            $('#textui-tags-search-clear').css("display", "inline-block");
         } else {
             $('#textui-tags-search-clear').hide();
         }
