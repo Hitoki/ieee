@@ -1,6 +1,8 @@
 #!/usr/bin/python
 
 import os.path
+import time
+
 
 # Django util functions --------------------------------------------------------
 
@@ -271,7 +273,6 @@ def profiler(view_func):
             import profile
             
         import settings
-        import time
         import sys
         
         # NOTE: Must use this, or the 'filename' global/local var gets messed up.
