@@ -2141,6 +2141,7 @@ ul.errors {
 .nootabs-selected-tab div.group {
     height: 100%;
     overflow: auto;
+    min-height: 359px;
 }
 
 #xplore-results-container div.group {
@@ -2715,4 +2716,13 @@ td.machine-generated-column {
 #brokenLinkGrid {
     table-layout: fixed;
     width: 1200px;
+}
+
+#landingLink {
+    clear: both;
+    a {
+        float: right;
+        text-decoration: none;
+        color: $white;   
+    }
 }
