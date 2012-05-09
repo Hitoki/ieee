@@ -1,7 +1,7 @@
 {% extends "base_table.html" %}
 {% load filters humanize smartif %}
 
-{# NOTE: This the template page for the Resource Results lightbox/popup #}
+{# NOTE: This the template page for the Resource Results lightbox #}
 
 {% block main_table_content %}
 <script type="text/javascript">
@@ -83,15 +83,15 @@
 <!-- *** Content Tabs *** -->
                 <ul class="nootabs-menus">
                     <li id="overview-tab" class="first-menu begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Overview</a></li>
+                    <li id="conferences-tab" class="begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Conferences <span class="right">{{conferences|length}}</span></a></li>
+                    <li id="articles-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">IEEE Xplore<br/>Articles <span class="right" id="num-xplore-results"></span></a></li>
+                    <li id="jobs-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu" rel="nofollow">Jobs <span class="right">{{jobsCount}}</span></a></li>
+                    <li id="patents-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Patents <span class="right">{{patents|length}}</span></a></li>
+                    <li id="educations-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">Educational<br/>Resources <span class="right" id="num-education-results"></span></a></li>
+                    <li id="standards-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Standards <span class="right">{{standards|length}}</span></a></li>
+                    <li id="periodicals-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Periodicals <span class="right">{{periodicals|length}}</span></a></li>
                     <li id="ieee-societies-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">IEEE<br/>Orgs <span class="right">{{ societies.count }}</span></a></li>
                     <li id="related-tags-tab" class="end-group-menu"><a href="" class="two-word-menu" rel="nofollow">Related<br/>Topics <span class="right">{{ tag.related_tags.count }}</span></a></li>
-                    <li id="conferences-tab" class="begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Conferences <span class="right">{{conferences|length}}</span></a></li>
-                    <li id="periodicals-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Periodicals <span class="right">{{periodicals|length}}</span></a></li>
-                    <li id="standards-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Standards <span class="right">{{standards|length}}</span></a></li>
-                    <li id="patents-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Patents <span class="right">{{patents|length}}</span></a></li>
-                    <li id="articles-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">IEEE Xplore<br/>Articles <span class="right" id="num-xplore-results"></span></a></li>
-                    <li id="educations-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">Educational<br/>Resources <span class="right" id="num-education-results"></span></a></li>
-                    <li id="jobs-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu" rel="nofollow">Jobs <span class="right">{{jobsCount}}</span></a></li>
                     {% comment %}
                     <li id="industry-sectors-tab" class="begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Industry<br/>Topics <span class="right">{{ parent_nodes|length }}</span></a></li>
                     <li><a href="" rel="nofollow">Filters ({{ tag.filters.count }})</a></li>
@@ -315,7 +315,6 @@
                                         {% if resource.url and resource.url_status != "bad" %}
                                     </a>
                                     {% endif %}
-
                                     {% if resource.is_machine_generated %}
                                     <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
                                     {% endif %}
@@ -355,7 +354,6 @@
                                 <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
                             </li>
                             {% endfor %}
-
                             {% else %}
                             <p class="no-resources">No standards are currently tagged "{{ tag.name }}"</p>
                             {% endif %}
@@ -390,7 +388,6 @@
                                 </select>
                             </p>
                         </div>
-
                         <div class="group">
                             <ul>
                                 {# NOTE: This will be replaced by AJAX. #}
@@ -404,9 +401,7 @@
                     <div id="education-results-container" class="{ tagId: {{ tag.id }} }">
                         <div class="print-resource">
                             <p id="education-totals"></p>
-
                         </div>
-
                         <div class="group">
                             <ul>
                                 {# NOTE: This will be replaced by AJAX. #}
@@ -491,7 +486,6 @@
                 {% endcomment %}
                 
             </div>
-            
             {% if is_ajax %}
             <div id="landingLink">
                 <a onclick="javascript:window.open('/tag/{{ tag.id }}/{{ tag.name|slugify }}', 'landing');" href="javascript:void(0)" rel="nofollow">*</a>
