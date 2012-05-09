@@ -137,6 +137,7 @@ input.text {
     height:500px;
     /* Need to set min-width so the tabs don't wrap */
     min-width:875px;
+    border-radius: 10px;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border: 1px solid black;
@@ -255,6 +256,7 @@ input.text {
     padding: 10px;
     margin: 0 40px;
     display: none;
+    border-radius: 10px;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px; 
 }
@@ -286,6 +288,7 @@ input.text {
 }
 
 #lightbox .welcome-panels-lightbox-content {
+    border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     background-color: #FFFFFF;
@@ -300,6 +303,7 @@ input.text {
     box-shadow: 1px 1px 5px #3F3F3F inset;
     background: #006699 0 0 none;   
     border: 0px solid #FFFFFF;
+    border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
 }
@@ -386,6 +390,7 @@ input.text {
 }
 
 #lightbox .overview-video-lightbox-content {
+    border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     background-color: #FFFFFF; /*Old blue*/
@@ -422,6 +427,7 @@ input.text {
     background: -ms-linear-gradient(top, #33cc00 40%,#269900 100%); /* IE10+ */
     background: linear-gradient(top, #33cc00 40%,#269900 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33cc00', endColorstr='#269900',GradientType=0 ); /* IE6-9 */
+    border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     box-shadow: 1px 1px 2px #3F3F3F;
@@ -448,6 +454,7 @@ input.text {
 }
 
 #lightbox .tester-message-lightbox-content {
+    border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     background-color: #FFFFFF; /*Old blue*/
@@ -461,6 +468,7 @@ input.text {
 }
 
 #lightbox .tester-survey-lightbox-content {
+    border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     background-color: #FFFFFF; /*Old blue*/

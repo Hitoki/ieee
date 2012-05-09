@@ -111,6 +111,7 @@ height: 32px;
 width: 205px;
 padding: 3px 8px;
 vertical-align: top;
+border-radius: 10px;
 -moz-border-radius: 10px;
 -webkit-border-radius: 10px; 
 display: inline-block;
@@ -228,6 +229,7 @@ margin: 0 0 0 17px !important;
 #tag-conferences .conference-series {
 padding: 0 10px 0;
 margin-left: 15px;
+border-radius: 10px;
 -moz-border-radius: 10px;
 -webkit-border-radius: 10px;   
 }
