@@ -101,7 +101,7 @@ $(function() {
     var browser_cookie = $.cookie("ignoreWarning");
     
     // Show browser compatibility warning
-    if ( browser_cookie != 'ignore' && !isCompatibleBrowser()) {
+    if (document.location.hostname.match(/^\m./) == null && browser_cookie != 'ignore' && !isCompatibleBrowser()) {
         $('html').css('height', '100%');
         $('body').css('height', '100%');
         $('html').css('overflow', 'hidden');
