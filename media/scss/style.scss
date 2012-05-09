@@ -1043,7 +1043,7 @@ ul#sectors, ul#societies {
 
 #alternate-page #tag-galaxy div.node a.level1:hover {
     color: $level1;
-    background: none repeat scroll 0 0 $white;
+    @include no-gradient;
 }
 
 h3.level1 {
@@ -1056,7 +1056,7 @@ h3.level1 {
 
 #alternate-page #tag-galaxy div.node a.level2:hover {
     color: $level2;
-    background: none repeat scroll 0 0 $white;
+    @include no-gradient;
 }
 
 h3.level2 {
@@ -1069,7 +1069,7 @@ h3.level2 {
 
 #alternate-page #tag-galaxy div.node a.level3:hover {
     color: $level3;
-    background: none repeat scroll 0 0 $white;
+    @include no-gradient;
 }
 
 h3.level3 {
@@ -1082,7 +1082,7 @@ h3.level3 {
 
 #alternate-page #tag-galaxy div.node a.level4:hover {
     color: $level4;
-    background: none repeat scroll 0 0 $white;
+    @include no-gradient;
 }
 
 h3.level4 {
@@ -1095,7 +1095,7 @@ h3.level4 {
 
 #alternate-page #tag-galaxy div.node a.level5:hover {
     color: $level5;
-    background: none repeat scroll 0 0 $white;
+    @include no-gradient;
 }
 
 h3.level5 {
@@ -1108,7 +1108,7 @@ h3.level5 {
 
 #alternate-page #tag-galaxy div.node a.level6:hover {
     color: $level6;
-    background: none repeat scroll 0 0 $white;
+    @include no-gradient;
 }
 
 h3.level6 {
