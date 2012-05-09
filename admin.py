@@ -7,6 +7,5 @@ import inspect
 
 objects = inspect.getmembers(models)
 for name, value in objects:
-    # import ipdb; ipdb.set_trace()
-    if inspect.isclass(value) and issubclass(value, django.db.models.Model) and value.__module__ == 'ieeetags.models' and not value._meta.abstract:
+    if inspect.isclass(value) and issubclass(value, django.db.models.Model) and value.__module__ == 'ieeetags.models':
         admin.site.register(value)

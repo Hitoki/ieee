@@ -63,9 +63,7 @@
   
                     <div id="resource-tabs" class="nootabs tag-resources-tabs { useCookies:false, defaultTab:1, useHash:false }">
                         <ul class="nootabs-menus">
-                            {% comment %}
                             <li id="overview-tab" class="first-menu begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Overview</a></li>
-                            {% endcomment %}
                             <li id="industry-sectors-tab" class="begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Industry<br/>Topics <span class="right">{{ parent_nodes|length }}</span></a></li>
                             {% comment %}
                             #TODO: Re-enable clusters
@@ -89,12 +87,10 @@
                         </ul>
                          
                         <!-- Overview -->
-{% comment %}
                         <div id="overview-tab" class="overview-tab" data-printUrl='{% url print_resource tag.id "sectors" %}'>
-
                             <div class="group">
 <table class="node-tooltip-grid">
-
+            {% comment %}
             #<tr>
             #    <td class="filter-block">
             #        Filters:
@@ -105,7 +101,7 @@
             #        {% endfor %}
             #    </td>
             #</tr>
-
+            {% endcomment %}
             <tr>
                 <td>
                     <a href="javascript:Tags.selectTag({{tag.id}}, 'sector-tab');" rel="nofollow" style="cursor:default">
@@ -157,7 +153,7 @@
         </table>
                             </div>
                         </div>
-{% endcomment %}
+
                         <!-- Sectors &amp; Clusters -->
                         <div id="sector-tab" class="sector-tab" data-printUrl='{% url print_resource tag.id "sectors" %}'>
                             <div class="group">
