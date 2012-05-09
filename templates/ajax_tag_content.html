@@ -1,522 +1,503 @@
 {% extends "base_table.html" %}
 {% load filters humanize smartif %}
-  
+
 {# NOTE: This the template page for the Resource Results lightbox/popup #}
-  
+
 {% block main_table_content %}
-     
-    {% if is_ajax %}
-         
-        <div id="printContainer_outter">
-            <div id="printContainer_inner">
-                <span>&nbsp;</span>
-                <ul id="printSelect_options" class="customSelectList">
-                    <li data-value="def"><span>Choose one&nbsp;...&nbsp;</span></li>
-                    <li data-value="cur" ><span>Print Current Tab</span></li>
-                    <li data-value="all"><span>Print All Tabs</span></li>
+<script type="text/javascript">
+    $(function() {
+        var printDropDown = $('#printSelect').imageDropdown({'selectList': $("ul#printSelect_options")});
+        printDropDown.bind('change', function(){
+            var type = printDropDown.val();
+            if (type === "all"){
+                printWin = window.open("{% url print_resource tag.id 'all' %}", "printWindow");
+            } else if (type === "cur"){
+                var printUrl = $('.nootabs-selected-tab[data-printUrl]').eq(0).attr('data-printUrl');
+                printWin = window.open(printUrl, "printWindow");
+            }
+            printDropDown.close();
+            printDropDown.reset();
+        })
+        attachXploreResults('#xplore-results-container');
+    });
+
+    $(function() {
+        attachXploreResults('#education-results-container', 'Educational Courses');
+    });
+</script>
+
+{% if is_ajax %}
+<div id="printContainer_outter">
+    <div id="printContainer_inner">
+        <span>&nbsp;</span>
+        <ul id="printSelect_options" class="customSelectList">
+            <li data-value="def"><span>Choose one&nbsp;...&nbsp;</span></li>
+            <li data-value="cur" ><span>Print Current Tab</span></li>
+            <li data-value="all"><span>Print All Tabs</span></li>
+        </ul>
+    </div>
+    <span id="printSelect" class="customSelectContainer" tabindex="0">
+        <span id="resource-print-icon"></span><span class="selected"></span>
+        <span class="dropIcon" style="float:right;"></span>
+    </span>
+</div>
+
+<div class="dialogAddThis">
+    <script type="text/javascript">
+        var addthis_config = {
+            pubid: "ra-4e02511c660b81ce",
+            data_ga_property: "UA-9482893-{{ GA_SITE_NUM }}",
+            data_track_clickback: true
+        };
+        var addthis_share = {
+            url: "{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}",
+            title: "{{ tag.name }}",
+            description: "Read more about {{ tag.name }} on IEEE TechNav."
+        };
+    </script>
+    <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script> 
+    <div class="addthis_toolbox addthis_default_style ">
+        <a class="addthis_button_email" rel="nofollow"></a>
+        <a class="addthis_button_twitter" rel="nofollow"></a>
+        <a class="addthis_button_facebook" rel="nofollow"></a>
+        <a class="addthis_button_linkedin" rel="nofollow"></a>
+    </div>
+    <script type="text/javascript">
+        $(function(){
+            addthis.toolbox('.addthis_toolbox', addthis_config, addthis_share);
+        });
+    </script>
+</div>
+
+<span class="dialogTitle">
+    <span id="tag-name">"{{ tag.name }}"</span> has <span id="num-related-items" class="{ number: {{ num_related_items }} }"><img src="{{ MEDIA_URL }}images/resource_popup_xplore_loader.gif" /></span> related resources
+</span>
+
+<div class="resources-pad">
+    <div class="alt-box">
+        <div id="content" class="alt-box-pad">
+{# if is_ajax #}{% endif %}
+
+            <div id="resource-tabs" class="nootabs tag-resources-tabs { useCookies:false, defaultTab:1, useHash:false }">
+                
+<!-- *** Content Tabs *** -->
+                <ul class="nootabs-menus">
+                    <li id="overview-tab" class="first-menu begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Overview</a></li>
+                    <li id="ieee-societies-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">IEEE<br/>Orgs <span class="right">{{ societies.count }}</span></a></li>
+                    <li id="related-tags-tab" class="end-group-menu"><a href="" class="two-word-menu" rel="nofollow">Related<br/>Topics <span class="right">{{ tag.related_tags.count }}</span></a></li>
+                    <li id="conferences-tab" class="begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Conferences <span class="right">{{conferences|length}}</span></a></li>
+                    <li id="periodicals-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Periodicals <span class="right">{{periodicals|length}}</span></a></li>
+                    <li id="standards-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Standards <span class="right">{{standards|length}}</span></a></li>
+                    <li id="patents-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Patents <span class="right">{{patents|length}}</span></a></li>
+                    <li id="articles-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">IEEE Xplore<br/>Articles <span class="right" id="num-xplore-results"></span></a></li>
+                    <li id="educations-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">Educational<br/>Resources <span class="right" id="num-education-results"></span></a></li>
+                    <li id="jobs-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu" rel="nofollow">Jobs <span class="right">{{jobsCount}}</span></a></li>
+                    {% comment %}
+                    <li id="industry-sectors-tab" class="begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Industry<br/>Topics <span class="right">{{ parent_nodes|length }}</span></a></li>
+                    <li><a href="" rel="nofollow">Filters ({{ tag.filters.count }})</a></li>
+                    <li><a href="" rel="nofollow">Sectors &amp; Clusters ({{ parent_nodes|length }})</a></li>
+                    <li><a href="" rel="nofollow">Experts <span>({{experts|length}})</span></a></li>
+                    {% endcomment %}
                 </ul>
-            </div>
-            <span id="printSelect" class="customSelectContainer" tabindex="0">
-                <span id="resource-print-icon"></span><span class="selected"></span>
-                <span class="dropIcon" style="float:right;"></span>
-            </span>
-        </div>
-         
-        <div class="dialogAddThis">
-            <!-- AddThis Button BEGIN -->
-            <script type="text/javascript">
-                var addthis_config = {
-                    pubid: "ra-4e02511c660b81ce",
-                    data_ga_property: "UA-9482893-{{ GA_SITE_NUM }}",
-                    data_track_clickback: true
-                };
-                var addthis_share = {
-                    url: "{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}",
-                    title: "{{ tag.name }}",
-                    description: "Read more about {{ tag.name }} on IEEE TechNav."
-               };
-           </script>
-            <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script> 
-            <div class="addthis_toolbox addthis_default_style ">
-                <a class="addthis_button_email" rel="nofollow"></a>
-                <a class="addthis_button_twitter" rel="nofollow"></a>
-                <a class="addthis_button_facebook" rel="nofollow"></a>
-                <a class="addthis_button_linkedin" rel="nofollow"></a>
-            </div>
-            <script type="text/javascript">
-                $(function(){
-                    addthis.toolbox('.addthis_toolbox', addthis_config, addthis_share);
-                });
-            </script>
-            <!-- AddThis Button END -->
-        </div>
-         
-        <span class="dialogTitle"><span id="tag-name">"{{ tag.name }}"</span> has <span id="num-related-items" class="{ number: {{ num_related_items }} }"><img src="{{ MEDIA_URL }}images/resource_popup_xplore_loader.gif" /></span> related resources</span>
-        <div class="resources-pad">
-         
-             
-            <div class="alt-box">
-                <div id="content" class="alt-box-pad">
-    {% else %}
-         
-    {% endif %}
-  
-                    <div id="resource-tabs" class="nootabs tag-resources-tabs { useCookies:false, defaultTab:1, useHash:false }">
-                        <ul class="nootabs-menus">
-                            <li id="overview-tab" class="first-menu begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Overview</a></li>
+                
+<!-- *** Content Panels *** -->
+    
+<!-- Overview-->
+                <div id="overview-tab" class="overview-tab" data-printUrl='{% url print_resource tag.id "sectors" %}'>
+                    <div class="group">
+                        <table class="node-tooltip-grid">
                             {% comment %}
-                            <li id="industry-sectors-tab" class="begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Industry<br/>Topics <span class="right">{{ parent_nodes|length }}</span></a></li>
-                            {% endcomment %}
-                            {% comment %}
-                            #TODO: Re-enable clusters
-                            #<li><a href="" rel="nofollow">Sectors &amp; Clusters ({{ parent_nodes|length }})</a></li>
-                            {% endcomment %}
-                            {% comment %}
-                            #<li><a href="" rel="nofollow">Filters ({{ tag.filters.count }})</a></li>
-                            {% endcomment %}
-                            <li id="ieee-societies-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">IEEE<br/>Orgs <span class="right">{{ societies.count }}</span></a></li>
-                            <li id="related-tags-tab" class="end-group-menu"><a href="" class="two-word-menu" rel="nofollow">Related<br/>Topics <span class="right">{{ tag.related_tags.count }}</span></a></li>
-                            <li id="conferences-tab" class="begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Conferences <span class="right">{{conferences|length}}</span></a></li>
-                            <li id="periodicals-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Periodicals <span class="right">{{periodicals|length}}</span></a></li>
-                            <li id="standards-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Standards <span class="right">{{standards|length}}</span></a></li>
-                            <li id="patents-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Patents <span class="right">{{patents|length}}</span></a></li>
-                            {% comment %}
-                            #    <li><a href="" rel="nofollow">Experts <span>({{experts|length}})</span></a></li>
-                            {% endcomment %}
-                            <li id="articles-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">IEEE Xplore<br/>Articles <span class="right" id="num-xplore-results"></span></a></li>
-                            <li id="educations-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">Educational<br/>Resources <span class="right" id="num-education-results"></span></a></li>
-                            <li id="jobs-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu" rel="nofollow">Jobs <span class="right">{{jobsCount}}</span></a></li>
-                        </ul>
-                         
-                        <!-- Overview -->
-                        <div id="overview-tab" class="overview-tab" data-printUrl='{% url print_resource tag.id "sectors" %}'>
-                            <div class="group">
-<table class="node-tooltip-grid">
-            {% comment %}
-            #<tr>
-            #    <td class="filter-block">
-            #        Filters:
-            #    </td>
-            #    <td class="tooltip-filters">
-            #        {% for filter in tag.filters.all %}
-            #            {{ filter.name }}{% if not forloop.last %}, {% endif %}
-            #        {% endfor %}
-            #    </td>
-            #</tr>
-            {% endcomment %}
-            <tr>
-                <td>
-                    <a href="javascript:Tags.selectTag({{tag.id}}, 'sector-tab');" rel="nofollow" style="cursor:default">
-                        <table class="sector-block vert-center">
                             <tr>
-                                <td class="{{sectorLevel}}">
-                                    Industry Topics
+                                <td class="filter-block">
+                                    Filters:
                                 </td>
-                            </tr>
-                        </table>
-                    </a>
-                </td>
-                <td>
-                    {{ sectors|safe }}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <a href="javascript:Tags.selectTag({{tag.id}}, 'society-tab');" rel="nofollow">
-                        <table class="societies-block vert-center">
-                            <tr>
-                                <td class="{{societyLevel}}">
-                                    IEEE<br/>Orgs
-                                </td>
-                            </tr>
-                        </table>
-                    </a>
-                </td>
-                <td>
-                    {{ societies|safe }}
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <a href="javascript:Tags.selectTag({{tag.id}}, 'related-tab');" rel="nofollow">
-                        <table class="related-tags-block vert-center">
-                            <tr>
-                                <td class="{{relatedTagLevel}}">
-                                    Related Topics
-                                </td>
-                            </tr>
-                        </table>
-                    </a>
-                </td>
-                <td>
-                    {{ related_tags|safe }}
-                </td>
-            </tr>
-        </table>
-                            </div>
-                        </div>
-                        
-                        {% comment %}
-                        <!-- Sectors &amp; Clusters -->
-                        <div id="sector-tab" class="sector-tab" data-printUrl='{% url print_resource tag.id "sectors" %}'>
-                            <div class="group">
-                                {% if parent_nodes|length %}
-                                    {% for parent_node in parent_nodes %}
-                                        <p class="{% cycle 'item_odd' 'item_even' %}">
-                                            {% ifequal ui "textui" %}
-                                            comment!
-                                                <a href="javascript:Tags.selectSector({{ parent_node.sector.id }});" rel="nofollow">
-                                                    <span>{{ parent_node.sector.name }}</span>
-                                                </a>
-                                            endcomment!
-                                            <strong>{{ parent_node.sector.name }}</strong>
-                                            {% else %}
-                                                {% ifequal ui "roamer" %}
-                                                comment!
-                                                    <a href="javascript:Roamer.setNode({{ parent_node.sector.id }});" rel="nofollow">
-                                                        <span>{{ parent_node.sector.name }}</span>
-                                                    </a>
-                                                endcomment!
-                                                <strong>{{ parent_node.sector.name }}</strong>
-                                                {% endifequal %}
-                                            {% endifequal %}
-                                            {% if parent_node.clusters %}
-                                                - {{ parent_node.clusters|textlist }} cluster{{ parent_node.clusters|pluralize }}
-                                            {% endif %}
-                                        </p>
+                                <td class="tooltip-filters">
+                                    {% for filter in tag.filters.all %}
+                                        {{ filter.name }}{% if not forloop.last %}, {% endif %}
                                     {% endfor %}
-                                {% else %}
-                                    <p class="no-resources">No industry topics are currently tagged "{{ tag.name }}"</p>
-                                {% endif %}
-                            </div>
-                        </div>
-                        {% endcomment %}
-                         
-                        {% comment %}
-                        <!-- Filters -->
-                        <div>
-                            <div class="group">
-                                {% for filter in tag.filters.all %}
+                                </td>
+                            </tr>
+                            {% endcomment %}
+                            <tr>
+                                <td>
+                                    <a href="javascript:Tags.selectTag({{tag.id}}, 'sector-tab');" rel="nofollow" style="cursor:default">
+                                        <table class="sector-block vert-center">
+                                            <tr>
+                                                <td class="{{sectorLevel}}">
+                                                    Industry Topics
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </a>
+                                </td>
+                                <td>
+                                    {{ sectors|safe }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="javascript:Tags.selectTag({{tag.id}}, 'society-tab');" rel="nofollow">
+                                        <table class="societies-block vert-center">
+                                            <tr>
+                                                <td class="{{societyLevel}}">
+                                                    IEEE<br/>Orgs
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </a>
+                                </td>
+                                <td>
+                                    {{ societies|safe }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a href="javascript:Tags.selectTag({{tag.id}}, 'related-tab');" rel="nofollow">
+                                        <table class="related-tags-block vert-center">
+                                            <tr>
+                                                <td class="{{relatedTagLevel}}">
+                                                    Related Topics
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </a>
+                                </td>
+                                <td>
+                                    {{ related_tags|safe }}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+<!-- Organizations -->
+                <div id="society-tab" data-printUrl='{% url print_resource tag.id "societies" %}'>
+                    <div class="group">
+                        {% if societies.all %}
+                        <table class="society-images">
+                            {% for society in societies.all %}
+                            <tr>
+                                <td class="society-logo">
+                                    {% if society.logo_thumbnail %}
+                                    <div class="image-container">
+                                        <img src="{{ society.logo_thumbnail.url }}" />
+                                    </div>
+                                    {% else %}
+                                    <div class="image-container">
+                                        <img src="{{ MEDIA_URL }}images/society_logo_none.png" />
+                                    </div>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if society.url %}
+                                    <a href="{{ society.url }}" target="_blank" rel="nofollow">
+                                        {% endif %}
+                                        <span>{{ society.name }} ({{ society.abbreviation }})</span>
+                                        {% if society.url %}
+                                        <img src="{{ MEDIA_URL }}images/popup.png" />
+                                        {% endif %}
+                                        {% if society.url %}
+                                    </a>
+                                    {% endif %}
+                                    {% if society.node_society.is_machine_generated %}
+                                    <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
+                                    {% endif %}
+                                </td>
+                            </tr>    
+                            {% endfor %}
+                        </table>
+                        {% else %}
+                        <p class="no-resources">No organizations are currently tagged "{{ tag.name }}"</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+<!-- Related Topics -->
+                <div id="related-tab" data-printUrl='{% url print_resource tag.id "related_tags" %}'>
+                    <div class="group">
+                        {% if tag.related_tags.all %}
+                        {% for related_tag in tag.related_tags.all %}
+                        <p class="{% cycle 'item_odd' 'item_even' %}">
+                            {% ifequal ui "textui" %}
+                            <a href="javascript:Tags.selectTag({{ related_tag.id }});" rel="nofollow">
+                                <span>{{ related_tag.name }}</span>
+                            </a>
+                            {% else %}
+                            <span>{{ related_tag.name }}</span>
+                            {% endifequal %}
+                        </p>
+                        {% endfor %}
+                        {% else %}
+                        <p class="no-resources">No related topics are currently tagged "{{ tag.name }}"</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+<!-- Conferences -->
+                <div id="conference-tab" data-printUrl='{% url print_resource tag.id "conferences" %}'>
+                    <div class="group">
+                        <ul>
+                            {% if conferences|length %}
+                            {% for resource in conferences %}
+                            <li>
+                                {% if resource.url and resource.url_status != "bad" %}
+                                <a href="{{ resource.url }}" target="_blank" rel="nofollow">
+                                    {% endif %}
                                     <p class="{% cycle 'item_odd' 'item_even' %}">
-                                        {{ filter.name }}
-                                    </p>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        {% endcomment %}
-                         
-                        <!-- Organizations -->
-                        <div id="society-tab" data-printUrl='{% url print_resource tag.id "societies" %}'>
-                            <div class="group">
-                            {% if societies.all %}
-                                <table class="society-images">
-                                    {% for society in societies.all %}
-                                        <tr>
-                                            <td class="society-logo">
-                                                {% if society.logo_thumbnail %}
-                                                    <div class="image-container">
-                                                        <img src="{{ society.logo_thumbnail.url }}" />
-                                                    </div>
-                                                {% else %}
-                                                    <div class="image-container">
-                                                        <img src="{{ MEDIA_URL }}images/society_logo_none.png" />
-                                                    </div>
-                                                {% endif %}
-                                            </td>
-                                            <td>
-                                                {% if society.url %}
-                                                    <a href="{{ society.url }}" target="_blank" rel="nofollow">
-                                                {% endif %}
-                                                <span>{{ society.name }} ({{ society.abbreviation }})</span>
-                                                {% if society.url %}
-                                                    <img src="{{ MEDIA_URL }}images/popup.png" />
-                                                {% endif %}
-                                                {% if society.url %}
-                                                    </a>
-                                                {% endif %}
-                                                {% if society.node_society.is_machine_generated %}
-                                                    <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
-                                                {% endif %}
-                                            </td>
-                                        </tr>    
-                                    {% endfor %}
-                                </table>
-                                {% else %}
-                                    <p class="no-resources">No organizations are currently tagged "{{ tag.name }}"</p>
-                                {% endif %}
-                            </div>
-                        </div>
-                         
-                        <!-- Related Topics -->
-                        <div id="related-tab" data-printUrl='{% url print_resource tag.id "related_tags" %}'>
-                            <div class="group">
-                                {% if tag.related_tags.all %}
-                                    {% for related_tag in tag.related_tags.all %}
-                                        <p class="{% cycle 'item_odd' 'item_even' %}">
-                                            {% ifequal ui "textui" %}
-                                                <a href="javascript:Tags.selectTag({{ related_tag.id }});" rel="nofollow">
-                                                    <span>{{ related_tag.name }}</span>
-                                                </a>
-                                            {% else %}
-                                                <span>{{ related_tag.name }}</span>
-                                            {% endifequal %}
-                                        </p>
-                                    {% endfor %}
-                                {% else %}
-                                    <p class="no-resources">No related topics are currently tagged "{{ tag.name }}"</p>
-                                {% endif %}
-                            </div>
-                        </div>
-                         
-                        <div id="conference-tab" data-printUrl='{% url print_resource tag.id "conferences" %}'>
-                            <!-- Conferences -->
-                            <div class="group">
-                                <ul>
-                                {% if conferences|length %}
-                                    {% for resource in conferences %}
-                                    <li>
+                                        <span>{{resource.name}}</span>
                                         {% if resource.url and resource.url_status != "bad" %}
-                                            <a href="{{ resource.url }}" target="_blank" rel="nofollow">
-                                        {% endif %}
-                                        <p class="{% cycle 'item_odd' 'item_even' %}">
-                                            <span>{{resource.name}}</span>
-                                            {% if resource.url and resource.url_status != "bad" %}
-                                                <img src="{{ MEDIA_URL }}images/popup.png" />
-                                            {% endif %}
-                                            {% if resource.is_machine_generated %}
-                                                <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
-                                            {% endif %}
-                                        </p>
-                                        {% if resource.url and resource.url_status != "bad" %}
-                                            </a>
-                                        {% endif %}
-                                        <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
-                                        {% if resource.is_current_conference and resource.other_conferences|length %}
-                                            <p class="more-conferences">
-                                                <a href="#" id="show-other-conferences-{{ resource.id }}" class="show-other-conferences {id: {{ resource.id }}}" rel="nofollow">
-                                                    <img src="{{ MEDIA_URL }}images/plusbox.png"/>
-                                                    Show {{ resource.other_conferences|length }} more conference{{ resource.other_conferences|pluralize }} in this series...
-                                                </a>
-                                                <a href="#" id="hide-other-conferences-{{ resource.id }}" class="hide-other-conferences {id: {{ resource.id }}}" rel="nofollow">
-                                                    <img src="{{ MEDIA_URL }}images/minusbox.png"/>
-                                                    Hide other conferences in this series
-                                                </a>
-                                            </p>
-                                             
-                                            <div id="other-conferences-{{ resource.id }}" class="other-conferences">
-                                                {% for other_conference in resource.other_conferences %}
-                                                    {% if other_conference.url and other_conference.url_status != "bad" %}
-                                                        <a href="{{ other_conference.url }}" target="_blank" rel="nofollow" rel="nofollow">
-                                                    {% endif %}
-                                                    <p class="{% cycle 'item_odd' 'item_even' %}">
-                                                        <span>{{other_conference.name}}</span>
-                                                        {% if other_conference.url and other_conference.url_status != "bad" %}
-                                                            <img src="{{ MEDIA_URL }}images/popup.png" />
-                                                        {% endif %}
-                                                        {% if other_conference.is_machine_generated %}
-                                                            <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
-                                                        {% endif %}
-                                                    </p>
-                                                    {% if other_conference.url and other_conference.url_status != "bad" %}
-                                                        </a>
-                                                    {% endif %}
-                                                    <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{other_conference.description}}</p>
-                                                {% endfor %}
-                                            </div>
-                                             
-                                        {% endif %}
-                                    </li>    
-                                    {% endfor %}
-                                {% else %}
-                                    <p class="no-resources">No conferences are currently tagged "{{ tag.name }}"</p>
-                                {% endif %}
-                            </ul>
-                            </div>
-                        </div>
-                         
-                        <div id="periodical-tab" data-printUrl='{% url print_resource tag.id "periodicals" %}'>
-                            <!-- Periodicals -->
-                            <div class="group">
-                                <ul>
-                                {% if periodicals|length %}
-                                    {% for resource in periodicals %}
-                                    <li>
-                                        <p class="{% cycle 'item_odd' 'item_even' %}">
-                                            {% if resource.url and resource.url_status != "bad" %}
-                                                <a href="{{ resource.url }}" target="_blank" rel="nofollow">
-                                            {% endif %}
-                                            <span>{{resource.name}}</span>
-                                            {% if resource.url and resource.url_status != "bad" %}
-                                                <img src="{{ MEDIA_URL }}images/popup.png" />
-                                            {% endif %}
-                                            {% if resource.url and resource.url_status != "bad" %}
-                                                </a>
-                                            {% endif %}
-                                             
-                                            {% if resource.is_machine_generated %}
-                                                <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
-                                            {% endif %}
-                                        </p>
-                                        <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
-                                    </li>
-                                    {% endfor %}
-                                {% else %}
-                                    <p class="no-resources">No periodicals are currently tagged "{{ tag.name }}"</p>
-                                {% endif %}
-                            </ul>
-                            </div>
-                        </div>
-                         
-                        <div id="standard-tab" data-printUrl='{% url print_resource tag.id "standards" %}'>
-                            <!-- Standards -->
-                            <div class="group">
-                                <ul>
-                                {% if standards|length %}
-                                    {% for resource in standards %}
-                                    <li>
-                                        <p class="{% cycle 'item_odd' 'item_even' %}">
-                                        {% if resource.url and resource.url_status != "bad" %}
-                                            <a href="{{ resource.url }}" target="_blank" rel="nofollow">
-                                        {% endif %}
-                                            <span>{{resource.name}}</span>
-                                            {% if resource.url and resource.url_status != "bad" %}
-                                                <img src="{{ MEDIA_URL }}images/popup.png" />
-                                            {% endif %}
-                                        {% if resource.url and resource.url_status != "bad" %}
-                                            </a>
+                                        <img src="{{ MEDIA_URL }}images/popup.png" />
                                         {% endif %}
                                         {% if resource.is_machine_generated %}
-                                                <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
+                                        <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
                                         {% endif %}
-                                        </p> 
-                                        <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
-                                    </li>
-                                    {% endfor %}
-                                 
-                                {% else %}
-                                    <p class="no-resources">No standards are currently tagged "{{ tag.name }}"</p>
-                                {% endif %}
-                            </ul>
-                            </div>
-                        </div>
-                         
-                        {% comment %}
-                        #    <div>
-                        #        <!-- Experts -->
-                        #        <div class="group">
-                        #            {% if experts|length %}
-                        #                {% for resource in experts %}
-                        #                    {% if resource.url %}
-                        #                        <a href="{{ resource.url }}" target="_blank" rel="nofollow">
-                        #                    {% endif %}
-                        #                    <p class="{% cycle 'item_odd' 'item_even' %}">{{resource.name}}</p>
-                        #                    {% if resource.url %}
-                        #                        </a>
-                        #                    {% endif %}
-                        #                    <p class="{% cycle 'desc_odd' 'desc_even' %}">{{resource.description}}</p>
-                        #                {% endfor %}
-                        #            {% else %}
-                        #                <p class="no-resources">(no experts)</p>
-                        #            {% endif %}
-                        #        </div>
-                        #    </div>
-                        {% endcomment %}
-                         
-  
-                        <!-- Patents -->
-                        <div id="patents-tab" data-printUrl='{% url print_resource tag.id "patents" %}'>
-                            <div class="group">
-                            </div>
-                            <div id="branding"></div>
-                        </div>
-  
-                        <!-- Xplore Results -->
-                        <div id="xplore-tab" data-printUrl='{% url print_resource tag.id "xplore" %}'>
-                            <div id="xplore-results-container" class="{ tagId: {{ tag.id }} }">
-                                <div class="print-resource">
-                                    <p id="xplore-totals"></p>
-                                    <p id="xplore-nav">
-                                        Sort by
-                                        <select id="xplore-sort">
-                                            <option value="">Relevance (Default)</option>
-                                            <option value="au">Author (A-Z)</option>
-                                            <option value="-au">Author (Z-A)</option>
-                                            <option value="ti">Title (A->Z)</option>
-                                            <option value="-ti">Title (Z->A)</option>
-                                            <option value="jn">Publication (A->Z)</option>
-                                            <option value="-jn">Publication (Z->A)</option>
-                                            <option value="py">Year (Past->Now)</option>
-                                            <option value="-py">Year (Now->Past)</option>
-                                        </select>
                                     </p>
-                                </div>
-                                 
-                                <div class="group">
-                                    <ul>
-                                        {# NOTE: This will be replaced by AJAX. #}
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                         
-                        <script type="text/javascript">
-                            $(function() {
-                                var printDropDown = $('#printSelect').imageDropdown({'selectList': $("ul#printSelect_options")});
-                                printDropDown.bind('change', function(){
-                                    var type = printDropDown.val();
-                                    if (type === "all"){
-                                        printWin = window.open("{% url print_resource tag.id 'all' %}", "printWindow");
-                                    } else if (type === "cur"){
-                                        var printUrl = $('.nootabs-selected-tab[data-printUrl]').eq(0).attr('data-printUrl');
-                                        printWin = window.open(printUrl, "printWindow");
-                                    }
-                                    printDropDown.close();
-                                    printDropDown.reset();
-                                })
-                                 
-                                attachXploreResults('#xplore-results-container');
-                            });
-                        </script>
-                        <!-- Xplore Education Results -->
-                        <div id="education-tab" data-printUrl='{% url print_resource tag.id "education" %}'>
-                            <div id="education-results-container" class="{ tagId: {{ tag.id }} }">
-                                <div class="print-resource">
-                                    <p id="education-totals"></p>
-  
-                                </div>
-                                 
-                                <div class="group">
-                                    <ul>
-                                        {# NOTE: This will be replaced by AJAX. #}
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <script type="text/javascript">
-                            $(function() {
-                                attachXploreResults('#education-results-container', 'Educational Courses');
-                            });
-                        </script>
-  
-  
-                        <div id="job-tab" data-printUrl='{% url print_resource tag.id "jobs" %}'>
-                            <!-- Standards -->
-                            <div class="group">
-                                {% if jobs %}
-                                    {{ jobs|safe }}
-                                {% else %}
-                                <p class="no-resources">No jobs are currently tagged "{{ tag.name }}"</p>
+                                    {% if resource.url and resource.url_status != "bad" %}
+                                </a>
                                 {% endif %}
-                            </div>
-                        </div>
-                     
+                                <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
+                                {% if resource.is_current_conference and resource.other_conferences|length %}
+                                <p class="more-conferences">
+                                    <a href="#" id="show-other-conferences-{{ resource.id }}" class="show-other-conferences {id: {{ resource.id }}}" rel="nofollow">
+                                        <img src="{{ MEDIA_URL }}images/plusbox.png"/>
+                                        Show {{ resource.other_conferences|length }} more conference{{ resource.other_conferences|pluralize }} in this series...
+                                    </a>
+                                    <a href="#" id="hide-other-conferences-{{ resource.id }}" class="hide-other-conferences {id: {{ resource.id }}}" rel="nofollow">
+                                        <img src="{{ MEDIA_URL }}images/minusbox.png"/>
+                                        Hide other conferences in this series
+                                    </a>
+                                </p>
+                                <div id="other-conferences-{{ resource.id }}" class="other-conferences">
+                                    {% for other_conference in resource.other_conferences %}
+                                    {% if other_conference.url and other_conference.url_status != "bad" %}
+                                    <a href="{{ other_conference.url }}" target="_blank" rel="nofollow" rel="nofollow">
+                                        {% endif %}
+                                        <p class="{% cycle 'item_odd' 'item_even' %}">
+                                            <span>{{other_conference.name}}</span>
+                                            {% if other_conference.url and other_conference.url_status != "bad" %}
+                                            <img src="{{ MEDIA_URL }}images/popup.png" />
+                                            {% endif %}
+                                            {% if other_conference.is_machine_generated %}
+                                            <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
+                                            {% endif %}
+                                        </p>
+                                        {% if other_conference.url and other_conference.url_status != "bad" %}
+                                    </a>
+                                    {% endif %}
+                                    <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{other_conference.description}}</p>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                            </li>    
+                            {% endfor %}
+                            {% else %}
+                            <p class="no-resources">No conferences are currently tagged "{{ tag.name }}"</p>
+                            {% endif %}
+                        </ul>
                     </div>
-     
-    {% if is_ajax %}
-        			<div id="landingLink"><a onclick="javascript:window.open('/tag/{{ tag.id }}/{{ tag.name|slugify }}', 'landing');" href="javascript:void(0)" rel="nofollow">*</a></div>
                 </div>
+                
+<!-- Periodicals -->
+                <div id="periodical-tab" data-printUrl='{% url print_resource tag.id "periodicals" %}'>
+                    <div class="group">
+                        <ul>
+                            {% if periodicals|length %}
+                            {% for resource in periodicals %}
+                            <li>
+                                <p class="{% cycle 'item_odd' 'item_even' %}">
+                                    {% if resource.url and resource.url_status != "bad" %}
+                                    <a href="{{ resource.url }}" target="_blank" rel="nofollow">
+                                        {% endif %}
+                                        <span>{{resource.name}}</span>
+                                        {% if resource.url and resource.url_status != "bad" %}
+                                        <img src="{{ MEDIA_URL }}images/popup.png" />
+                                        {% endif %}
+                                        {% if resource.url and resource.url_status != "bad" %}
+                                    </a>
+                                    {% endif %}
+
+                                    {% if resource.is_machine_generated %}
+                                    <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
+                                    {% endif %}
+                                </p>
+                                <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
+                            </li>
+                            {% endfor %}
+                            {% else %}
+                            <p class="no-resources">No periodicals are currently tagged "{{ tag.name }}"</p>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+                
+<!-- Standards -->
+                <div id="standard-tab" data-printUrl='{% url print_resource tag.id "standards" %}'>
+                    <div class="group">
+                        <ul>
+                            {% if standards|length %}
+                            {% for resource in standards %}
+                            <li>
+                                <p class="{% cycle 'item_odd' 'item_even' %}">
+                                    {% if resource.url and resource.url_status != "bad" %}
+                                    <a href="{{ resource.url }}" target="_blank" rel="nofollow">
+                                        {% endif %}
+                                        <span>{{resource.name}}</span>
+                                        {% if resource.url and resource.url_status != "bad" %}
+                                        <img src="{{ MEDIA_URL }}images/popup.png" />
+                                        {% endif %}
+                                        {% if resource.url and resource.url_status != "bad" %}
+                                    </a>
+                                    {% endif %}
+                                    {% if resource.is_machine_generated %}
+                                    <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
+                                    {% endif %}
+                                </p> 
+                                <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
+                            </li>
+                            {% endfor %}
+
+                            {% else %}
+                            <p class="no-resources">No standards are currently tagged "{{ tag.name }}"</p>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+                
+<!-- Patents -->
+                <div id="patents-tab" data-printUrl='{% url print_resource tag.id "patents" %}'>
+                    <div class="group">
+                    </div>
+                    <div id="branding"></div>
+                </div>
+                
+<!-- Xplore Results -->
+                <div id="xplore-tab" data-printUrl='{% url print_resource tag.id "xplore" %}'>
+                    <div id="xplore-results-container" class="{ tagId: {{ tag.id }} }">
+                        <div class="print-resource">
+                            <p id="xplore-totals"></p>
+                            <p id="xplore-nav">
+                                Sort by
+                                <select id="xplore-sort">
+                                    <option value="">Relevance (Default)</option>
+                                    <option value="au">Author (A-Z)</option>
+                                    <option value="-au">Author (Z-A)</option>
+                                    <option value="ti">Title (A->Z)</option>
+                                    <option value="-ti">Title (Z->A)</option>
+                                    <option value="jn">Publication (A->Z)</option>
+                                    <option value="-jn">Publication (Z->A)</option>
+                                    <option value="py">Year (Past->Now)</option>
+                                    <option value="-py">Year (Now->Past)</option>
+                                </select>
+                            </p>
+                        </div>
+
+                        <div class="group">
+                            <ul>
+                                {# NOTE: This will be replaced by AJAX. #}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+<!-- Xplore Education Results -->
+                <div id="education-tab" data-printUrl='{% url print_resource tag.id "education" %}'>
+                    <div id="education-results-container" class="{ tagId: {{ tag.id }} }">
+                        <div class="print-resource">
+                            <p id="education-totals"></p>
+
+                        </div>
+
+                        <div class="group">
+                            <ul>
+                                {# NOTE: This will be replaced by AJAX. #}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+<!-- Standards -->
+                <div id="job-tab" data-printUrl='{% url print_resource tag.id "jobs" %}'>
+                    <div class="group">
+                        {% if jobs %}
+                        {{ jobs|safe }}
+                        {% else %}
+                        <p class="no-resources">No jobs are currently tagged "{{ tag.name }}"</p>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                {% comment %}
+                <!-- Sectors / Clusters -->
+                <div id="sector-tab" class="sector-tab" data-printUrl='{% url print_resource tag.id "sectors" %}'>
+                    <div class="group">
+                    {% if parent_nodes|length %}
+                    {% for parent_node in parent_nodes %}
+                    <p class="{% cycle 'item_odd' 'item_even' %}">
+                        {% ifequal ui "textui" %}
+                        comment!
+                        <a href="javascript:Tags.selectSector({{ parent_node.sector.id }});" rel="nofollow">
+                            <span>{{ parent_node.sector.name }}</span>
+                        </a>
+                        endcomment!
+                        <strong>{{ parent_node.sector.name }}</strong>
+                        {% else %}
+                        {% ifequal ui "roamer" %}
+                        comment!
+                        <a href="javascript:Roamer.setNode({{ parent_node.sector.id }});" rel="nofollow">
+                            <span>{{ parent_node.sector.name }}</span>
+                        </a>
+                        endcomment!
+                        <strong>{{ parent_node.sector.name }}</strong>
+                        {% endifequal %}
+                        {% endifequal %}
+                        {% if parent_node.clusters %}
+                        - {{ parent_node.clusters|textlist }} cluster{{ parent_node.clusters|pluralize }}
+                        {% endif %}
+                    </p>
+                    {% endfor %}
+                    {% else %}
+                    <p class="no-resources">No industry topics are currently tagged "{{ tag.name }}"</p>
+                    {% endif %}
+                </div>
+                <!-- Filters -->
+                <div>
+                    <div class="group">
+                        {% for filter in tag.filters.all %}
+                        <p class="{% cycle 'item_odd' 'item_even' %}">
+                            {{ filter.name }}
+                        </p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- Experts -->
+                <div>
+                    <div class="group">
+                        {% if experts|length %}
+                            {% for resource in experts %}
+                                {% if resource.url %}
+                                    <a href="{{ resource.url }}" target="_blank" rel="nofollow">
+                                {% endif %}
+                                <p class="{% cycle 'item_odd' 'item_even' %}">{{resource.name}}</p>
+                                {% if resource.url %}
+                                    </a>
+                                {% endif %}
+                                <p class="{% cycle 'desc_odd' 'desc_even' %}">{{resource.description}}</p>
+                            {% endfor %}
+                        {% else %}
+                            <p class="no-resources">(no experts)</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endcomment %}
+                
+            </div>
+            
+            {% if is_ajax %}
+            <div id="landingLink">
+                <a onclick="javascript:window.open('/tag/{{ tag.id }}/{{ tag.name|slugify }}', 'landing');" href="javascript:void(0)" rel="nofollow">*</a>
             </div>
         </div>
-    {% endif %}
-  
+    </div>
+</div>
+            {% endif %}
 {% endblock %}
