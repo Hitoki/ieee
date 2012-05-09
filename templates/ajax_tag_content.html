@@ -64,7 +64,9 @@
                     <div id="resource-tabs" class="nootabs tag-resources-tabs { useCookies:false, defaultTab:1, useHash:false }">
                         <ul class="nootabs-menus">
                             <li id="overview-tab" class="first-menu begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Overview</a></li>
+                            {% comment %}
                             <li id="industry-sectors-tab" class="begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Industry<br/>Topics <span class="right">{{ parent_nodes|length }}</span></a></li>
+                            {% endcomment %}
                             {% comment %}
                             #TODO: Re-enable clusters
                             #<li><a href="" rel="nofollow">Sectors &amp; Clusters ({{ parent_nodes|length }})</a></li>
@@ -153,7 +155,8 @@
         </table>
                             </div>
                         </div>
-
+                        
+                        {% comment %}
                         <!-- Sectors &amp; Clusters -->
                         <div id="sector-tab" class="sector-tab" data-printUrl='{% url print_resource tag.id "sectors" %}'>
                             <div class="group">
@@ -161,19 +164,19 @@
                                     {% for parent_node in parent_nodes %}
                                         <p class="{% cycle 'item_odd' 'item_even' %}">
                                             {% ifequal ui "textui" %}
-                                            {% comment %}
+                                            comment!
                                                 <a href="javascript:Tags.selectSector({{ parent_node.sector.id }});" rel="nofollow">
                                                     <span>{{ parent_node.sector.name }}</span>
                                                 </a>
-                                            {% endcomment %}
+                                            endcomment!
                                             <strong>{{ parent_node.sector.name }}</strong>
                                             {% else %}
                                                 {% ifequal ui "roamer" %}
-                                                {% comment %}
+                                                comment!
                                                     <a href="javascript:Roamer.setNode({{ parent_node.sector.id }});" rel="nofollow">
                                                         <span>{{ parent_node.sector.name }}</span>
                                                     </a>
-                                                {% endcomment %}
+                                                endcomment!
                                                 <strong>{{ parent_node.sector.name }}</strong>
                                                 {% endifequal %}
                                             {% endifequal %}
@@ -187,6 +190,7 @@
                                 {% endif %}
                             </div>
                         </div>
+                        {% endcomment %}
                          
                         {% comment %}
                         <!-- Filters -->
