@@ -1149,7 +1149,6 @@ def ajax_textui_nodes(request):
         textui_flyovers_url = textui_flyovers_url.replace('parent_id=null', 'parent_id=all')
     
     # Get page from cache, or generate if needed.
-    
     cache_params = {
         'sector_id': sector_id,
         'society_id': society_id,
@@ -1165,7 +1164,25 @@ def ajax_textui_nodes(request):
         cache = None
     else:
         cache = Cache.objects.get('ajax_textui_nodes', cache_params)
-        
+
+    """ If there's no cache item found. Look for one that matches all
+    params except with an empty search_for string (there should be
+    many pre-populated ones). If we find that retrieve it and filter
+    out all the items that don't match the search_for term. This will
+    be considerably faster than hitting the DB."""
+    if not cache and search_for:
+        cache_params["search_for"] = "None"
+        cache = Cache.objects.get('ajax_textui_nodes', cache_params)
+        if cache:
+            soup = BeautifulSoup(cache.content)
+            non_matches = soup.findAll('a', text=lambda text: search_for not in text)
+            for nm in non_matches:
+                if nm.findParent('div'):
+                    nm.findParent('div').extract()
+            cache = nm.join('')
+            cache_params["search_for"] = search_for
+            
+    # Still no Cache so let's go to the DB.
     if not cache:
         # Create the cache if it doesn't already exist.
         print 'CACHE MISS: Creating new cache page.'
