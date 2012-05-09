@@ -72,7 +72,7 @@ def site_disabled(request):
     
 @login_required
 def index(request):
-    if request.META['PATH_INFO'].startswith('m.'):
+    if request.META['HTTP_HOST'].startswith('m.'):
         return render_to_response('index_mobile.html', {}, context_instance=RequestContext(request))
     'Redirects user to textui page.'
     return HttpResponseRedirect(reverse('textui'))
