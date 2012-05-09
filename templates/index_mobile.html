@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.2//EN" "http://www.openmobilealliance.org/tech/DTD/xhtml-mobile12.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>IEEE - Technology Navigator Mobile</title>
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<meta http-equiv="Cache-Control" content="no-cache,must-revalidate,no-transform" />
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; target-densityDpi=medium-dpi; user-scalable=no;"/>
+<meta http-equiv="pragma" content="no-cache" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="apple-touch-icon-precomposed" href="{{ MEDIA_URL }}images/iphone_icon.png"/>
+<link rel="apple-touch-startup-image"  href="{{ MEDIA_URL }}images/iphone_splash.png">
+<link rel="stylesheet" type="text/css" media="all" href="{{ MEDIA_URL }}css/mobile/default.css" />
+<script type="text/javascript" src="{{ MEDIA_URL }}js/lib/jquery/jquery-1.7.2.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/mobile/jquery_custom.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/mobile/master.js"></script>
+<script type="text/javascript">
+	if ('standalone' in navigator && !navigator.standalone && (/iphone|ipod|ipad/gi).test(navigator.platform) && (/Safari/i).test(navigator.appVersion)) {
+		document.write('<link rel="stylesheet" href="..\/..\/lib\/iphone.css">');
+		document.write('<script type="application\/javascript" src="..\/..\/lib\/js\/iphone.js" charset="utf-8"><\/s' + 'cript>');
+	}
+</script>
+</head>
+<body>
+
+<div id="page_wrap">
+	
+	<div class="logo">
+		<a href="/"><img src="{{ MEDIA_URL }}images/mobile/logo.png" alt="IEEE Technology Navigator Mobile" class="center" border="0" /></a>
+	</div>
+	
+	<div class="search_box">
+		<input type="text" id="q" name="q" title="Enter topic to see matches" autocomplete="off" />
+	</div>
+	
+	<div class="intro_link">
+		<a href="javascript:;" id="intro_open">What is this?</a>
+	</div>
+	
+	<div class="intro">
+		All the IEEE resources in one place, organized by technology topic. Discover, dive deep, share.
+	</div>
+	
+</div>
+<div id="footer">
+	<p><a href="/about/">About</a> | <a href="http://technav.ieee.org/?nomobile=1">Full Site</a> | <a href="http://www.ieee.org/">IEEE.org</a> | <a href="http://aptuscollaborative.wufoo.com/forms/ieee-technology-navigator-feedback/">Feedback</a></p>
+	© 2012 IEEE - All Rights Reserved.
+</div>
+
+</body>
+</html>

@@ -3,7 +3,7 @@ body {
 	margin: 0; 
 	padding: 0;
 	font-size: 1em;
-	background: url(/images/body_bg.png);
+	background: url(/media/images/mobile/body_bg.png);
 	background: #333;
 	color: #333333;
 	width: 100%;
@@ -48,13 +48,13 @@ body {
 			outline: none;
 		}
 		input#q.loading {
-			background: url(/images/loading.gif) no-repeat center right;
+			background: url(/media/images/mobile/loading.gif) no-repeat center right;
 		}
 		input#q.results {
-			background: url(/images/down_arrow.png) no-repeat center right;
+			background: url(/media/images/mobile/down_arrow.png) no-repeat center right;
 		}
 		input#q.no_results {
-			background: url(/images/cross.png) no-repeat center right;
+			background: url(/media/images/mobile/cross.png) no-repeat center right;
 		}
 		input#q.inputhint {
 			color: #e0e0e0 !important;
@@ -86,10 +86,10 @@ ul.search_results {
 		text-decoration: none;
 		text-shadow: 0 1px 1px #e0e0e0;
 		font-weight: 800;
-		background: url(/images/arrow_gray.png) #fff no-repeat center right;
+		background: url(/media/images/mobile/arrow_gray.png) #fff no-repeat center right;
 	}
 	ul.search_results li a:hover {
-		background: url(/images/arrow_white.png) #10669E no-repeat center right;
+		background: url(/media/images/mobile/arrow_white.png) #10669E no-repeat center right;
 		color: #fff;
 	}
 .top_bar {

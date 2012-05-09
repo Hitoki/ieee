@@ -45,7 +45,8 @@ function get_results(q) {
 	/*
 	 * Get the search results from the API and display them
 	*/
-	var api_url = '/lib/search.api.php';
+	//var api_url = '/lib/search.api.php';
+        var api_url = '/ajax/nodes_json';
 	$q = $('#q');
 	
 	if(runningRequest){
@@ -54,13 +55,13 @@ function get_results(q) {
 	      
 	runningRequest = true;
 
-	request = $.getJSON(api_url, {q:q}, function(data) {
+	request = $.getJSON(api_url, {s:q}, function(data) {
 		var items = [];
 		
 		$.each(data, function(i, item) {
 			id = item.pk;
 			name = item.fields.name;
-			name_url = encodeURIComponent(name);
+			name_url = encodeURIComponent(name.toLowerCase().replace(/ /g, '-'));
 			
 			items.push('<li id="resource-' + id + '"><a href="/tag/' + id + '/' + name_url + '/">' + name + '</a></li>');
 			 

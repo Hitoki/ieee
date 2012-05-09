@@ -4,7 +4,7 @@ from django.db.models import Count, Q
 from django.core.mail import mail_admins
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect  
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils import simplejson as json
@@ -72,6 +72,8 @@ def site_disabled(request):
     
 @login_required
 def index(request):
+    if request.META['PATH_INFO'].startswith('m.'):
+        return render_to_response('index_mobile.html', {}, context_instance=RequestContext(request))
     'Redirects user to textui page.'
     return HttpResponseRedirect(reverse('textui'))
 
