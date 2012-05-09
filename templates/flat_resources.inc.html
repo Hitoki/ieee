@@ -60,7 +60,7 @@ Include file used by both print_resource.html and tag_landing.html
         {% if conferences %}
             {% if conferences|length %}
                 <div id="notaccordion">
-                    {% for resource in conferences %}{# grouped conference displayed on the tag landing page #}
+                    {% for resource in conferences|slice:":5" %}{# grouped conference displayed on the tag landing page #}
                         <h3>{{resource.name}}</h3>
                         {% if resource.url and resource.url_status != "bad" %}<a href="{{ resource.url }}" target="_blank" rel="nofollow">Visit website</a>{% endif %}
                         <p style="margin:0 0 10px 25px">{{resource.description}}</p>
@@ -80,6 +80,11 @@ Include file used by both print_resource.html and tag_landing.html
                         </div>
                         <br/>
                     {% endfor %}
+                    {% if conferences|length > 5 %}
+                        <span class="more-link">
+                        <a href="/textui/?autoload={{tag.id}}" rel="nofollow">More Conferences</a>
+                        </span>
+                    {% endif %}
                 </div>
             {% endif %}
             
@@ -110,7 +115,7 @@ Include file used by both print_resource.html and tag_landing.html
         <h3><a name="xplore"></a><span class="index"></span> Xplore Articles related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if xplore_results %}
         <ul class="tag_list">
-            {% for xplore_result in xplore_results %}
+            {% for xplore_result in xplore_results|slice:":5" %}
                 <li>
                     <p class="title">
                     {% if create_links %}
@@ -128,6 +133,11 @@ Include file used by both print_resource.html and tag_landing.html
                 </li>
             {% endfor %}
         </ul>
+                    {% if xplore_results|length > 5 %}
+                        <span class="more-link">
+                        <a href="/textui/?autoload={{tag.id}}" rel="nofollow">More Xplore Articles</a>
+                        </span>
+                    {% endif %}
         {% else %}
         <p class="no-resources">No Xplore Articles are currently tagged "{{ tag.name }}"</p>
         {% endif %}
@@ -157,7 +167,7 @@ Include file used by both print_resource.html and tag_landing.html
         <h3><a name="xplore_edu"></a><span class="index"></span> Educational Resources on {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if xplore_edu_results %}
         <ul class="tag_list">
-            {% for xplore_result in xplore_edu_results %}
+            {% for xplore_result in xplore_edu_results|slice:":5" %}
                 <li>
                     <p class="title">
                     {% if create_links %}
@@ -175,6 +185,11 @@ Include file used by both print_resource.html and tag_landing.html
                 </li>
             {% endfor %}
         </ul>
+                    {% if xplore_edu_results|length > 5 %}
+                        <span> class="more-link">
+                        <a href="/textui/?autoload={{tag.id}}" rel="nofollow">More Educational Resources</a>
+                        </span>
+                    {% endif %}
         {% else %}
         <p class="no-resources">No education resources are currently tagged "{{ tag.name }}"</p>
         {% endif %}
@@ -185,7 +200,7 @@ Include file used by both print_resource.html and tag_landing.html
         <h3><a name="standards"></a><span class="index"></span> Standards related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if standards %}
         <ul class="tag_list">
-            {% for standard in standards.all %}
+            {% for standard in standards.all|slice:":5" %}
                 <li>
                     <p class="title">
                     {% if create_links %}
@@ -200,6 +215,11 @@ Include file used by both print_resource.html and tag_landing.html
                 </li>
             {% endfor %}
         </ul>
+                    {% if standards.all|length > 5 %}
+                        <span class="more-link">
+                        <a href="/textui/?autoload={{tag.id}}" rel="nofollow">More Standards</a>
+                        </span>
+                    {% endif %}
         {% else %}
         <p class="no-resources">No standards are currently tagged "{{ tag.name }}"</p>
         {% endif %}
@@ -210,7 +230,7 @@ Include file used by both print_resource.html and tag_landing.html
         <h3><a name="periodicals"></a><span class="index"></span> Periodicals related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if periodicals %}
         <ul class="tag_list">
-            {% for periodical in periodicals.all %}
+            {% for periodical in periodicals.all|slice:":5" %}
                 <li>
                     <p class="title">
                     {% if create_links %}
@@ -225,6 +245,11 @@ Include file used by both print_resource.html and tag_landing.html
                 </li>
             {% endfor %}
         </ul>
+                    {% if periodicals.all|length > 5 %}
+                        <span class="more-link">
+                        <a href="/textui/?autoload={{tag.id}}" rel="nofollow">More Periodicals</a>
+                        </span>
+                    {% endif %}
         {% else %}
         <p class="no-resources">No periodicals are currently tagged "{{ tag.name }}"</p>
         {% endif %}
@@ -235,7 +260,7 @@ Include file used by both print_resource.html and tag_landing.html
         <h3><a name="societies"></a><span class="index"></span> IEEE Organizations related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if societies %}
         <ul>
-            {% for society in societies %}
+            {% for society in societies|slice:":5" %}
                 <li>
                     {% if create_links %}
                         <a href="{{ society.url }}" rel="nofollow">{{ society.name }}</a>
@@ -244,7 +269,13 @@ Include file used by both print_resource.html and tag_landing.html
                     {% endif %}
                 </li>
             {% endfor %}
+
         </ul>
+                   {% if societies|length > 5 %}
+                        <span class="more-link">
+                        <a href="/textui/?autoload={{tag.id}}" rel="nofollow">More Organizations</a>
+                        </span>
+                    {% endif %}
         {% else %}
         <p class="no-resources">No organizations are currently tagged "{{ tag.name }}"</p>
         {% endif %}
@@ -255,7 +286,7 @@ Include file used by both print_resource.html and tag_landing.html
         <h3><a name="concepts"></a><span class="index"></span> Related topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if related_tags %}
         <ul>
-            {% for related_tag in related_tags %}
+            {% for related_tag in related_tags|slice:":5" %}
                 <li>
                     {% if create_links %}
                         <a href="/tag/{{ related_tag.id }}/{{ related_tag.name|slugify }}">{{ related_tag.name }}</a>
@@ -265,6 +296,11 @@ Include file used by both print_resource.html and tag_landing.html
                 </li>
             {% endfor %}
         </ul>
+                    {% if related_tags|length > 5 %}
+                        <span class="more-link">
+                        <a href="/textui/?autoload={{tag.id}}" rel="nofollow">More Related Tags</a>
+                        </span>
+                    {% endif %}
         {% else %}
         <p class="no-resources">No related topics are currently tagged "{{ tag.name }}"</p>
         {% endif %}
@@ -276,7 +312,7 @@ Include file used by both print_resource.html and tag_landing.html
         <h3><a href="" name="sectors"></a><span class="index"></span> Industry topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if sectors %}
         <ul>
-            {% for parent in sectors %}
+            {% for parent in sectors|slice:":5" %}
                 <li>
                     {% if create_links %}
                         <a href="/tag/{{ parent.id }}/{{ parent.name|slugify }}">{{ parent.name }}</a>
@@ -286,6 +322,11 @@ Include file used by both print_resource.html and tag_landing.html
                 </li>
             {% endfor %}
         </ul>
+                    {% if sectors|length > 5 %}
+                        <span class="more-link">
+                        <a href="/textui/?autoload={{tag.id}}" rel="nofollow">More Sectors</a>
+                        </span>
+                    {% endif %}
         {% else %}
         <p class="no-resources">No industry topics are currently tagged "{{ tag.name }}"</p>
         {% endif %}
@@ -348,7 +389,11 @@ Include file used by both print_resource.html and tag_landing.html
         */
         $('.featured').each(function(){
                 var href = $(this).attr('href');
-                $(this).attr('href', 'http://jobs.ieee.org'+href);
+                //$(this).attr('href', 'http://jobs.ieee.org'+href);
+                if ($(this).text() == "More jobs") {
+                    $(this).attr('href', '/textui/?autoload={{tag.id}}');
+                    $(this).css('margin','0');
+                }
                 var textEl = this.nextSibling;
                 var spanEl = $('<p />').text(textEl.data).addClass('job-desc');
                 $(this).after(spanEl);

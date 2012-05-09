@@ -304,3 +304,8 @@ padding-left: 25px;
 .job-desc {
   margin-bottom: 10px !important;
 }
+
+span.more-link {
+  margin: 25px 0 0 25px;
+  display: inline-block;
+}
