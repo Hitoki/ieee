@@ -2194,14 +2194,15 @@ div#connectedness-container {
   font-size: 16pt; }
 
 .dialogTitle {
-  font-size: 8pt;
   display: inline-block;
-  margin: 10px 0 0 20px;
-  width: 525px; }
+  font-size: 8pt;
+  margin: 15px 0 0 35px;
+  text-indent: -12px;
+  width: 500px; }
 
 .dialogAddThis {
   float: right;
-  margin: 17px 20px 0 0; }
+  margin: 15px 15px 0 0; }
 
 .addthis_32x32_style a {
   display: inline-block !important;
@@ -2262,8 +2263,7 @@ div#connectedness-container {
 #printContainer_outter {
   display: inline-block;
   float: right;
-  margin-top: 15px;
-  margin-right: 15px;
+  margin: 21px 15px 0 0;
   position: relative;
   z-index: 9999999; }
 

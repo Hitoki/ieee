@@ -2371,15 +2371,16 @@ div#connectedness-container {
 }
 
 .dialogTitle {
-    font-size: $smallFont;
     display: inline-block;
-    margin: 10px 0 0 20px; 
-    width: 525px;
+    font-size: $smallFont;
+    margin: 15px 0 0 35px;
+    text-indent: -12px;
+    width: 500px;
 }
 
 .dialogAddThis {
    float: right;
-   margin: 17px 20px 0 0;
+   margin: 15px 15px 0 0;
 }
 
 .addthis_32x32_style a {
@@ -2451,12 +2452,11 @@ padding-left: 3px;
 }
 
 #printContainer_outter {
-    display: inline-block;
-    float: right;
-    margin-top: 15px;
-    margin-right: 15px;
-    position: relative;
-    z-index: 9999999;
+display: inline-block;
+float: right;
+margin: 21px 15px 0 0;
+position: relative;
+z-index: 9999999;
 }
 
 #printContainer_inner {
