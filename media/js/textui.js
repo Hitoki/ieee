@@ -9,8 +9,7 @@ function scaleZoom(zoom, scale) {
 }
 
 var sortDropDown, printDropDown;
-$(document).ready(function(){
-    
+$(document).ready(function(){    
     // Functions for tag landing pages only.
     if ($("body").hasClass("tag_base")) {
         // Adjust content padding depending on height of frozen header on tag landing pages.
@@ -115,7 +114,7 @@ $(document).ready(function(){
     
     var matches = window.location.search.match('autoload=([0-9]*)');
     if (matches){
-        setTimeout(function(){Tags.selectTag(matches[1]);}, 3000);
+        setTimeout(function(){Tags.selectTag(matches[1],"related-tags-tab");}, 3000);
     }
     
     // Handle nootabs.
@@ -965,7 +964,6 @@ var Tags = {
         // Highlight the current tag
         var tagBlock = $('#tag-' + id);
         //tagBlock.addClass('activeTag');
-        
         // Hide the flyover so it doesn't overlap with the lightbox
         Flyover.hide();
 
