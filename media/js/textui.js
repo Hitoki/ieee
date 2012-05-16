@@ -958,7 +958,7 @@ var Tags = {
         //log('  id: ' + id);
         //log('  tabName: ' + tabName);
         this.updateChangedNode();
-        
+
         //$('.tag').removeClass('activeTag');
         
         // Highlight the current tag
@@ -988,6 +988,7 @@ var Tags = {
                 // complete.  The patentSearch object will have results in it.
                 patentSearch.setSearchCompleteCallback(this,
                    function(){
+                       if (typeof patentSearch.cursor != "undefined"){
                        $.each(patentSearch.results, function(i, result){
                            $('#patents-tab div.group').append($(result.html));
                            $('#patents-tab a span').text(patentSearch.cursor.estimatedResultCount); // patentSearch.cursor.estimatedResultCount
@@ -1003,6 +1004,7 @@ var Tags = {
                            moreResultsLink.attr('href', patentSearch.cursor.moreResultsUrl);
                            $('#patents-tab div.group').append(moreResultsLink);
                        }
+                    }
                    }
                    , null);
 
