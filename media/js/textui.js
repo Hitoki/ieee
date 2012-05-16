@@ -112,9 +112,18 @@ $(document).ready(function(){
         $(this).children("#textui-zoom-slider").removeClass("ui-widget-content-hover");
     });
     
-    var matches = window.location.search.match('autoload=([0-9]*)');
+    //var matches = window.location.search.match('autoload=([0-9]*)');
+    var params = window.location.search.substring(1).split("&");
+    
+    var matches = [];
+
+    for (var i=0; i<params.length;i++){
+        val = params[i].split('=');
+        matches.push(val[1]);
+    }
+
     if (matches){
-        setTimeout(function(){Tags.selectTag(matches[1],"related-tags-tab");}, 3000);
+        setTimeout(function(){Tags.selectTag(matches[0],matches[1]);}, 3000);
     }
     
     // Handle nootabs.

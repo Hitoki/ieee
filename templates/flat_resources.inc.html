@@ -82,7 +82,7 @@ Include file used by both print_resource.html and tag_landing.html
                     {% endfor %}
                     {% if conferences|length > 5 %}
                         <span class="more-link">
-                        <a href="/textui/?autoload={{tag.id}}" rel="nofollow">More Conferences</a>
+                        <a href="/textui/?autoload={{tag.id}}&tab=conference-tab" rel="nofollow">More Conferences</a>
                         </span>
                     {% endif %}
                 </div>
@@ -135,7 +135,7 @@ Include file used by both print_resource.html and tag_landing.html
         </ul>
                     {% if xplore_results|length > 5 %}
                         <span class="more-link">
-                        <a href="/textui/?autoload={{tag.id}}" rel="nofollow">More Xplore Articles</a>
+                        <a href="/textui/?autoload={{tag.id}}&tab=xplore-tab" rel="nofollow">More Xplore Articles</a>
                         </span>
                     {% endif %}
         {% else %}
@@ -187,7 +187,7 @@ Include file used by both print_resource.html and tag_landing.html
         </ul>
                     {% if xplore_edu_results|length > 5 %}
                         <span> class="more-link">
-                        <a href="/textui/?autoload={{tag.id}}" rel="nofollow">More Educational Resources</a>
+                        <a href="/textui/?autoload={{tag.id}}&tab=education-tab" rel="nofollow">More Educational Resources</a>
                         </span>
                     {% endif %}
         {% else %}
@@ -217,7 +217,7 @@ Include file used by both print_resource.html and tag_landing.html
         </ul>
                     {% if standards.all|length > 5 %}
                         <span class="more-link">
-                        <a href="/textui/?autoload={{tag.id}}" rel="nofollow">More Standards</a>
+                        <a href="/textui/?autoload={{tag.id}}&tab=standard-tab" rel="nofollow">More Standards</a>
                         </span>
                     {% endif %}
         {% else %}
@@ -247,7 +247,7 @@ Include file used by both print_resource.html and tag_landing.html
         </ul>
                     {% if periodicals.all|length > 5 %}
                         <span class="more-link">
-                        <a href="/textui/?autoload={{tag.id}}" rel="nofollow">More Periodicals</a>
+                        <a href="/textui/?autoload={{tag.id}}&tab=periodical-tab" rel="nofollow">More Periodicals</a>
                         </span>
                     {% endif %}
         {% else %}
@@ -273,7 +273,7 @@ Include file used by both print_resource.html and tag_landing.html
         </ul>
                    {% if societies|length > 5 %}
                         <span class="more-link">
-                        <a href="/textui/?autoload={{tag.id}}" rel="nofollow">More Organizations</a>
+                        <a href="/textui/?autoload={{tag.id}}&tab=society-tab" rel="nofollow">More Organizations</a>
                         </span>
                     {% endif %}
         {% else %}
@@ -298,7 +298,7 @@ Include file used by both print_resource.html and tag_landing.html
         </ul>
                     {% if related_tags|length > 5 %}
                         <span class="more-link">
-                        <a href="/textui/?autoload={{tag.id}}" rel="nofollow">More Related Tags</a>
+                        <a href="/textui/?autoload={{tag.id}}&tab=related-tab" rel="nofollow">More Related Tags</a>
                         </span>
                     {% endif %}
         {% else %}
@@ -324,7 +324,7 @@ Include file used by both print_resource.html and tag_landing.html
         </ul>
                     {% if sectors|length > 5 %}
                         <span class="more-link">
-                        <a href="/textui/?autoload={{tag.id}}" rel="nofollow">More Sectors</a>
+                        <a href="/textui/?autoload={{tag.id}}&tab=sector-tab" rel="nofollow">More Sectors</a>
                         </span>
                     {% endif %}
         {% else %}
@@ -391,7 +391,7 @@ Include file used by both print_resource.html and tag_landing.html
                 var href = $(this).attr('href');
                 //$(this).attr('href', 'http://jobs.ieee.org'+href);
                 if ($(this).text() == "More jobs") {
-                    $(this).attr('href', '/textui/?autoload={{tag.id}}');
+                    $(this).attr('href', '/textui/?autoload={{tag.id}}&tab=job-tab');
                     $(this).css('margin','0');
                 }
                 var textEl = this.nextSibling;
