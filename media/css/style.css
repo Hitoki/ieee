@@ -1048,16 +1048,6 @@ ul#sectors li#cluseter:hover, ul#societies li#cluseter:hover {
   vertical-align: middle; }
 
 /* Textui nodes (tags, clusters) */
-#alternate-page #tag-galaxy div.node {
-  float: left;
-  margin: 4px .5em;
-  padding: 5px 0px;
-  height: 25px;
-  overflow: hidden;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px; }
-
 .tag-icon,
 .cluster-icon {
   vertical-align: middle; }
@@ -1073,6 +1063,7 @@ ul#sectors li#cluseter:hover, ul#societies li#cluseter:hover {
   color: white;
   border: 1px solid transparent;
   display: block;
+  overflow: hidden;
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px; }
@@ -1086,6 +1077,15 @@ ul#sectors li#cluseter:hover, ul#societies li#cluseter:hover {
   border: 1px solid #cfcfcf !important;
   background: #cfcfcf !important;
   color: gray !important; }
+
+#alternate-page #tag-galaxy div.node {
+  float: left;
+  margin: 4px .5em;
+  padding: 5px 0px;
+  height: 25px;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px; }
 
 #alternate-page #tag-galaxy div.node .tag-block-container {
   float: left;

@@ -988,15 +988,6 @@ ul#sectors, ul#societies {
 }
 
 /* Textui nodes (tags, clusters) */
-#alternate-page #tag-galaxy div.node {
-    float: left;
-    margin: 4px .5em;
-	padding: 5px 0px;
-	height: 25px;
-	overflow: hidden;
-	@include default-border-radius;
-}
-
 .tag-icon,
 .cluster-icon {
    vertical-align: middle;
@@ -1014,6 +1005,7 @@ ul#sectors, ul#societies {
     color: $white;
     border: 1px solid transparent;
 	display: block;
+	overflow: hidden;
 	@include default-border-radius;
 }
 
@@ -1027,6 +1019,14 @@ ul#sectors, ul#societies {
     border: 1px solid $light-gray !important;
     background: $light-gray !important;
     color: $gray !important;
+}
+
+#alternate-page #tag-galaxy div.node {
+    float: left;
+    margin: 4px .5em;
+	padding: 5px 0px;
+	height: 25px;
+	@include default-border-radius;
 }
 
 #alternate-page #tag-galaxy div.node .tag-block-container {
