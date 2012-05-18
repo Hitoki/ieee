@@ -114,7 +114,8 @@ $(document).ready(function(){
     
     //var matches = window.location.search.match('autoload=([0-9]*)');
     var params = window.location.search.substring(1).split("&");
-    
+    // filter out empty items
+    params = params.filter(function(i){return i.length;});
     var matches = [];
 
     for (var i=0; i<params.length;i++){
@@ -122,7 +123,7 @@ $(document).ready(function(){
         matches.push(val[1]);
     }
 
-    if (matches){
+    if (matches.length){
         setTimeout(function(){Tags.selectTag(matches[0],matches[1]);}, 3000);
     }
     
