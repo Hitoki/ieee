@@ -1053,6 +1053,7 @@ ul#sectors li#cluseter:hover, ul#societies li#cluseter:hover {
   margin: 4px .5em;
   padding: 5px 0px;
   height: 25px;
+  overflow: hidden;
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px; }

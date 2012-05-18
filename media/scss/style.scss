@@ -993,6 +993,7 @@ ul#sectors, ul#societies {
     margin: 4px .5em;
 	padding: 5px 0px;
 	height: 25px;
+	overflow: hidden;
 	@include default-border-radius;
 }
 
