@@ -85,6 +85,7 @@
                     {% comment %}
                     <li id="overview-tab" class="first-menu begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Overview</a></li>
                     {% endcomment %}
+                    <li id="ieee-societies-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">IEEE<br/>Orgs <span class="right">{{ societies.count }}</span></a></li>
                     <li id="conferences-tab" class="begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Conferences <span class="right">{{conferences|length}}</span></a></li>
                     <li id="articles-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">IEEE Xplore<br/>Articles <span class="right" id="num-xplore-results"></span></a></li>
                     <li id="jobs-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu" rel="nofollow">Jobs <span class="right">{{jobsCount}}</span></a></li>
@@ -92,7 +93,6 @@
                     <li id="educations-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">Educational<br/>Resources <span class="right" id="num-education-results"></span></a></li>
                     <li id="standards-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Standards <span class="right">{{standards|length}}</span></a></li>
                     <li id="periodicals-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Periodicals <span class="right">{{periodicals|length}}</span></a></li>
-                    <li id="ieee-societies-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">IEEE<br/>Orgs <span class="right">{{ societies.count }}</span></a></li>
                     <li id="related-tags-tab" class="end-group-menu"><a href="" class="two-word-menu" rel="nofollow">Related<br/>Topics <span class="right">{{ tag.related_tags.count }}</span></a></li>
                     {% comment %}
                     <li id="industry-sectors-tab" class="begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Industry<br/>Topics <span class="right">{{ parent_nodes|length }}</span></a></li>
@@ -173,6 +173,48 @@
                     </div>
                 </div>
                 {% endcomment %}
+
+<!-- Organizations -->
+                <div id="society-tab" data-printUrl='{% url print_resource tag.id "societies" %}'>
+                    <div class="group">
+                        {% if societies.all %}
+                        <table class="society-images">
+                            {% for society in societies.all %}
+                            <tr>
+                                <td class="society-logo">
+                                    {% if society.logo_thumbnail %}
+                                    <div class="image-container">
+                                        <img src="{{ society.logo_thumbnail.url }}" />
+                                    </div>
+                                    {% else %}
+                                    <div class="image-container">
+                                        <img src="{{ MEDIA_URL }}images/society_logo_none.png" />
+                                    </div>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if society.url %}
+                                    <a href="{{ society.url }}" target="_blank" rel="nofollow">
+                                        {% endif %}
+                                        <span>{{ society.name }} ({{ society.abbreviation }})</span>
+                                        {% if society.url %}
+                                        <img src="{{ MEDIA_URL }}images/popup.png" />
+                                        {% endif %}
+                                        {% if society.url %}
+                                    </a>
+                                    {% endif %}
+                                    {% if society.node_society.is_machine_generated %}
+                                    <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
+                                    {% endif %}
+                                </td>
+                            </tr>    
+                            {% endfor %}
+                        </table>
+                        {% else %}
+                        <p class="no-resources">No organizations are currently tagged "{{ tag.name }}"</p>
+                        {% endif %}
+                    </div>
+                </div>
 
 <!-- Conferences -->
                 <div id="conference-tab" data-printUrl='{% url print_resource tag.id "conferences" %}'>
@@ -359,48 +401,6 @@
                             <p class="no-resources">No periodicals are currently tagged "{{ tag.name }}"</p>
                             {% endif %}
                         </ul>
-                    </div>
-                </div>
-
-<!-- Organizations -->
-                <div id="society-tab" data-printUrl='{% url print_resource tag.id "societies" %}'>
-                    <div class="group">
-                        {% if societies.all %}
-                        <table class="society-images">
-                            {% for society in societies.all %}
-                            <tr>
-                                <td class="society-logo">
-                                    {% if society.logo_thumbnail %}
-                                    <div class="image-container">
-                                        <img src="{{ society.logo_thumbnail.url }}" />
-                                    </div>
-                                    {% else %}
-                                    <div class="image-container">
-                                        <img src="{{ MEDIA_URL }}images/society_logo_none.png" />
-                                    </div>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    {% if society.url %}
-                                    <a href="{{ society.url }}" target="_blank" rel="nofollow">
-                                        {% endif %}
-                                        <span>{{ society.name }} ({{ society.abbreviation }})</span>
-                                        {% if society.url %}
-                                        <img src="{{ MEDIA_URL }}images/popup.png" />
-                                        {% endif %}
-                                        {% if society.url %}
-                                    </a>
-                                    {% endif %}
-                                    {% if society.node_society.is_machine_generated %}
-                                    <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
-                                    {% endif %}
-                                </td>
-                            </tr>    
-                            {% endfor %}
-                        </table>
-                        {% else %}
-                        <p class="no-resources">No organizations are currently tagged "{{ tag.name }}"</p>
-                        {% endif %}
                     </div>
                 </div>
                 
