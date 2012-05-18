@@ -77,7 +77,7 @@ else:
         (r'^admin/', include('ieeetags.site_admin.urls')),
         
         # Django Admin
-        url(r'^djangoadmin/(.*)', django.contrib.admin.site.root, name='admin'),
+        #url(r'^djangoadmin/(.*)', django.contrib.admin.site.root, name='admin'),
         
         # Cached media static serving
         (r'^%s(?P<path>.*)$' % settings.CACHED_MEDIA_URL.lstrip('/'), 'django.views.static.serve', {'document_root': settings.CACHED_MEDIA_ROOT}),

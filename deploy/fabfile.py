@@ -202,7 +202,7 @@ def create_blank_domain():
     run('chmod o+x ~')  # Set up directory traversal permissions for the home directory, so Apache can reach ~/sites
     
     script = """
-    sudo pip install -E "%(site_home)s/python" "Django==1.2.3"
+    sudo pip install -E "%(site_home)s/python" "Django==1.3.1"
     sudo pip install -E "%(site_home)s/python" "MySQL-python>=1.2.3c1"
     sudo pip install -E "%(site_home)s/python" "SPARQLWrapper>=1.4.2"
     sudo pip install -E "%(site_home)s/python" "south"
