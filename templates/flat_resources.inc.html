@@ -35,7 +35,7 @@ Include file used by both print_resource.html and tag_landing.html
     
     {% if toc %}
     <div id="tag_contents">
-        <h1 style="font-size:13pt">{{ related_items_count|intcomma }} related resources for {{ tag.name }}</h1>
+        <h1 style="font-size:13pt">{{ related_items_count|intcomma }} resources related to {{ tag.name }}</h1>
         {# Using break line list method for browser compatibility #}
         <ol style="width:570px">
             <li {% if not conferences %}class="disabled"{% endif %}><a href="#conferences">Conferences related to {{ tag.name }}</a></li>
@@ -48,7 +48,7 @@ Include file used by both print_resource.html and tag_landing.html
             <li {% if not standards %}class="disabled"{% endif %}><a href="#standards">Standards related to {{ tag.name }}</a></li>
             <li {% if not periodicals %}class="disabled"{% endif %}><a href="#periodicals">Periodicals related to {{ tag.name }}</a></li>
             <li {% if not societies %}class="disabled"{% endif %}><a href="#societies">IEEE Organizations related to {{ tag.name }}</a></li>
-            <li {% if not related_tags %}class="disabled"{% endif %}><a href="#concepts">Related topics related to {{ tag.name }}</a></li>
+            <li {% if not related_tags %}class="disabled"{% endif %}><a href="#concepts">Topics related to {{ tag.name }}</a></li>
             {% comment %}<li {% if not sectors %}class="disabled"{% endif %}><a href="#sectors">Industry topics related to {{ tag.name }}</a></li>{% endcomment %}
         </ol>
     </div>
@@ -283,7 +283,7 @@ Include file used by both print_resource.html and tag_landing.html
     <hr/>
     
     <div id="tag-related-tags" class="tag-section">
-        <h3><a name="concepts"></a><span class="index"></span> Related topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a name="concepts"></a><span class="index"></span> Topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if related_tags %}
         <ul>
             {% for related_tag in related_tags|slice:":5" %}
@@ -302,7 +302,7 @@ Include file used by both print_resource.html and tag_landing.html
                         </span>
                     {% endif %}
         {% else %}
-        <p class="no-resources">No related topics are currently tagged "{{ tag.name }}"</p>
+        <p class="no-resources">No topics related to "{{ tag.name }}"</p>
         {% endif %}
     </div>
     <hr/>
