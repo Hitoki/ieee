@@ -635,6 +635,23 @@ class Node(models.Model):
 
     wikipedia_slug = property(_get_wikipedia_slug)
 
+    def _get_closest_conference(self):
+        """Returns the single closest upcoming conference related to the tag"""
+        if self.node_type.name == NodeType.TAG:
+            return Resource.objects.getForNode(self, resourceType=ResourceType.CONFERENCE)
+        else:
+            raise Exception('Node is not a tag')
+    
+    closest_conference = property(_get_closest_conference)
+
+    def _get_single_periodical(self):
+        """Returns single periodical related to the tag"""
+        if self.node_type.name == NodeType.TAG:
+            return Resource.objects.getForNode(self, resourceType=ResourceType.PERIODICAL)
+        else:
+            raise Exception('Node is not a tag')
+    
+    single_periodical = property(_get_single_periodical)
 
     def save(self, add_child_info=True, *args, **kwargs):
         cluster_type = NodeType.objects.getFromName(NodeType.TAG_CLUSTER)
