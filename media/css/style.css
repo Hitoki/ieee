@@ -530,7 +530,7 @@ p.admin-links a:hover {
   text-align: center;
   font-size: 7pt; }
 
-#ieee-home {
+#ieee-home, #opt-link {
   color: white;
   text-decoration: underline; }
 
