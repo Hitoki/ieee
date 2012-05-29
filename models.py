@@ -638,7 +638,9 @@ class Node(models.Model):
     def _get_closest_conference(self):
         """Returns the single closest upcoming conference related to the tag"""
         if self.node_type.name == NodeType.TAG:
-            return Resource.objects.getForNode(self, resourceType=ResourceType.CONFERENCE)
+            #return self.filter(nodes=node, resource_type=ResourceType.CONFERENCE)
+            return Resource.objects.getForNode(self, resourceType=ResourceType.CONFERENCE).filter(year__gte=datetime.today().year).order_by('date', 'year', 'id')[0]
+            #datetime.date.today()
         else:
             raise Exception('Node is not a tag')
     
@@ -647,7 +649,7 @@ class Node(models.Model):
     def _get_single_periodical(self):
         """Returns single periodical related to the tag"""
         if self.node_type.name == NodeType.TAG:
-            return Resource.objects.getForNode(self, resourceType=ResourceType.PERIODICAL)
+            return Resource.objects.getForNode(self, resourceType=ResourceType.PERIODICAL)[0]
         else:
             raise Exception('Node is not a tag')
     
