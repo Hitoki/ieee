@@ -82,9 +82,7 @@
                 
 <!-- *** Content Tabs *** -->
                 <ul class="nootabs-menus">
-                    {% comment %}
                     <li id="overview-tab" class="first-menu begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Overview</a></li>
-                    {% endcomment %}
                     <li id="ieee-societies-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">IEEE<br/>Orgs <span class="right">{{ societies.count }}</span></a></li>
                     <li id="conferences-tab" class="begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Conferences <span class="right">{{conferences|length}}</span></a></li>
                     <li id="educations-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">Educational<br/>Resources <span class="right" id="num-education-results"></span></a></li>
@@ -105,7 +103,6 @@
 <!-- *** Content Panels *** -->
     
 <!-- Overview-->
-                {% comment %}
                 <div id="overview-tab" class="overview-tab" data-printUrl='{% url print_resource tag.id "sectors" %}'>
                     <div class="group">
                         <table class="node-tooltip-grid">
@@ -172,7 +169,6 @@
                         </table>
                     </div>
                 </div>
-                {% endcomment %}
 
 <!-- Organizations -->
                 <div id="society-tab" data-printUrl='{% url print_resource tag.id "societies" %}'>
