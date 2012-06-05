@@ -101,75 +101,27 @@
                 </ul>
                 
 <!-- *** Content Panels *** -->
-    
 <!-- Overview-->
                 <div id="overview-tab" class="overview-tab" data-printUrl='{% url print_resource tag.id "sectors" %}'>
                     <div class="group">
-                        <table class="node-tooltip-grid">
-
-                            <tr>
-                                <td class="filter-block">
-                                    Filters:
-                                </td>
-                                <td class="tooltip-filters">
-                                    {% for filter in tag.filters.all %}
-                                        {{ filter.name }}{% if not forloop.last %}, {% endif %}
-                                    {% endfor %}
-                                </td>
-                            </tr>
-                
-                            <tr>
-                                <td>
-                                    <a href="javascript:Tags.selectTag({{tag.id}}, 'sector-tab');" rel="nofollow" style="cursor:default">
-                                        <table class="sector-block vert-center">
-                                            <tr>
-                                                <td class="{{sectorLevel}}">
-                                                    Industry Topics
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </a>
-                                </td>
-                                <td>
-                                    {{ sectors|safe }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="javascript:Tags.selectTag({{tag.id}}, 'society-tab');" rel="nofollow">
-                                        <table class="societies-block vert-center">
-                                            <tr>
-                                                <td class="{{societyLevel}}">
-                                                    IEEE<br/>Orgs
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </a>
-                                </td>
-                                <td>
-                                    {{ societies|safe }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <a href="javascript:Tags.selectTag({{tag.id}}, 'related-tab');" rel="nofollow">
-                                        <table class="related-tags-block vert-center">
-                                            <tr>
-                                                <td class="{{relatedTagLevel}}">
-                                                    Related Topics
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </a>
-                                </td>
-                                <td>
-                                    {{ related_tags|safe }}
-                                </td>
-                            </tr>
-                        </table>
+                        <ul>
+                            <li>
+                                <p style='padding: 10px 5px 0 15px;color:#6F6F6F;margin:0;'>DEFINITION</p>
+                                <p style='padding: 0 5px 0 15px;margin:0;'>{{ tag.definition }}</p>
+                            </li>
+                            <li>
+                                <p style='padding: 10px 5px 0 15px;color:#6F6F6F;margin:0;'>RECENT RELATED XPLORE ARTICLE</p>
+                            </li>
+                            <li>
+                                <p style='padding: 10px 5px 0 15px;color:#6F6F6F;margin:0;'>UPCOMING RELATED CONFERENCE</p>
+                                <p style='padding: 0 5px 0 15px;margin:0;'><a href="{{ close_conference.url }}">{{ close_conference }}</a></p>                                
+                            </li>
+                            <li>
+                                <p style='padding: 10px 5px 0 15px;color:#6F6F6F;margin:0;'>RECENT RELATED PATENT</p>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-
 <!-- Organizations -->
                 <div id="society-tab" data-printUrl='{% url print_resource tag.id "societies" %}'>
                     <div class="group">
