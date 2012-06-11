@@ -700,8 +700,17 @@ div.image-container {
 #xplore-tab p.item_even,
 #education-tab p.item_odd,
 #education-tab p.item_even {
-   padding: 5px 5px 0 36px;
-   text-indent: -18px;
+   padding: 0 0 0 0;
+   display: inline-block;
+   width: 600px;
+   vertical-align: top;
+}
+
+#xplore-tab, #education-tab {
+    div.group ul li {
+        list-style-type: decimal;
+        margin: 20px 0 20px 25px;
+    }
 }
 
 .xplore-full-results-page p.item_even, .xplore-full-results-page p.item_odd {
@@ -766,7 +775,7 @@ cursor: url(/media/images/wait-cursor.gif), wait;
 #education-tab p.desc_odd, 
 #education-tab p.pub_even,
 #education-tab p.pub_odd {
-    padding: 5px 5px 0 35px;
+    padding: 5px 5px 0 0px;
 }
 
 #content-title {
@@ -2149,7 +2158,7 @@ ul.errors {
 }
 
 #xplore-results-container div.group {
-    margin-top: 52px;
+    margin-top: 45px;
 }
 
 #education-totals {
@@ -2159,7 +2168,7 @@ ul.errors {
 }
 
 #education-results-container div.group {
-   margin-top: 28px;
+   margin-top: 20px;
 }
 
 #xplore-results-container div.group ul {
@@ -2184,11 +2193,11 @@ div.group ul li:first-child {
 
 #xplore-tab div.print-resource {
     height: 42px;
-    margin-top: -52px;   
+    margin-top: -45px;   
 }
 
 #education-tab div.print-resource {
-    margin-top: -28px;
+    margin-top: -20px;
     padding: 5px 0px 3px 10px;
 }
 
