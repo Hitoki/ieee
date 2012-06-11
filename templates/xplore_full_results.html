@@ -34,10 +34,11 @@
                             {% if xplore_results|length %}
                                 {% for result in xplore_results %}
                                     {% if result.url %}
+                                    {{ result.rank }}.&nbsp;
                                         <a href="{{ result.url }}" target="_blank">
                                     {% endif %}
                                     <p class="{% cycle 'item_odd' 'item_even' %}">
-                                        <span>{{ result.rank }}. {{ result.name|safe }}</span>{% if result.url %}&nbsp;<img src="{{ MEDIA_URL }}images/popup.png" />{% endif %}
+                                        <span>{{ result.name|safe }}</span>{% if result.url %}&nbsp;<img src="{{ MEDIA_URL }}images/popup.png" />{% endif %}
                                     </p>
                                     {% if result.url %}
                                         </a>

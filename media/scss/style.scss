@@ -2143,6 +2143,9 @@ ul.errors {
     height: 100%;
     overflow: auto;
     min-height: 359px;
+    a {
+        outline: none;
+    }
 }
 
 #xplore-results-container div.group {

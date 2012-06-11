@@ -2091,6 +2091,8 @@ ul.errors {
   height: 100%;
   overflow: auto;
   min-height: 359px; }
+  .nootabs-selected-tab div.group a {
+    outline: none; }
 
 #xplore-results-container div.group {
   margin-top: 52px; }
