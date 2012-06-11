@@ -23,6 +23,27 @@
 
     $(function() {
         attachXploreResults('#education-results-container', 'Educational Courses');
+        patentSearch1 = new google.search.PatentSearch();
+        patentSearch1.setResultSetSize(1);
+        // Set searchComplete as the callback function when a search is 
+        // complete.  The patentSearch object will have results in it.
+        patentSearch1.setSearchCompleteCallback(this,
+            function(){
+                if (typeof patentSearch1.cursor != "undefined"){
+                    $.each(patentSearch1.results, function(i, result){
+                        $('#patent-overview').append($(result.html));
+                        //$('#patents-tab a span').text(patentSearch.cursor.estimatedResultCount); // patentSearch.cursor.estimatedResultCount
+                    });
+                    //var numRelatedItems = parseInt($('#num-related-items').metadata().number);
+                    //var newTotal = numRelatedItems + parseInt(patentSearch.cursor.estimatedResultCount);
+                    //$('#num-related-items').text(addCommas(newTotal));
+                    //$('#num-related-items').metadata().number = newTotal;
+                }
+            }
+        , null);      
+        patentSearch1.setResultOrder(google.search.Search.ORDER_BY_DATE);
+        // Specify search quer(ies)
+        patentSearch1.execute($('div.[id="tag-' + {{tag.id}} + '"]:first').text());          
     });
 </script>
 
@@ -118,6 +139,7 @@
                             </li>
                             <li>
                                 <p style='padding: 10px 5px 0 15px;color:#6F6F6F;margin:0;'>RECENT RELATED PATENT</p>
+                                <div id="patent-overview" style='padding: 0 5px 0 15px;margin:0;'></div>
                             </li>
                         </ul>
                     </div>
