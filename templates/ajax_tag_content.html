@@ -23,6 +23,7 @@
 
     $(function() {
         attachXploreResults('#education-results-container', 'Educational Courses');
+
         patentSearch1 = new google.search.PatentSearch();
         patentSearch1.setResultSetSize(1);
         // Set searchComplete as the callback function when a search is 
@@ -32,12 +33,7 @@
                 if (typeof patentSearch1.cursor != "undefined"){
                     $.each(patentSearch1.results, function(i, result){
                         $('#patent-overview').append($(result.html));
-                        //$('#patents-tab a span').text(patentSearch.cursor.estimatedResultCount); // patentSearch.cursor.estimatedResultCount
                     });
-                    //var numRelatedItems = parseInt($('#num-related-items').metadata().number);
-                    //var newTotal = numRelatedItems + parseInt(patentSearch.cursor.estimatedResultCount);
-                    //$('#num-related-items').text(addCommas(newTotal));
-                    //$('#num-related-items').metadata().number = newTotal;
                 }
             }
         , null);      
@@ -132,6 +128,9 @@
                             </li>
                             <li>
                                 <p style='padding: 10px 5px 0 15px;color:#6F6F6F;margin:0;'>RECENT RELATED XPLORE ARTICLE</p>
+                                <div id="xplore-overview" style='padding: 0 5px 0 15px;margin:0;'>
+                                    <a href="{{ xplore_article.url }}" target="_blank" rel="nofollow">{{ xplore_article.name }}</a
+                                </div>
                             </li>
                             <li>
                                 <p style='padding: 10px 5px 0 15px;color:#6F6F6F;margin:0;'>UPCOMING RELATED CONFERENCE</p>

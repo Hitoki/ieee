@@ -295,6 +295,8 @@ def ajax_tag_content(request, tag_id, ui=None):
         jobsCount = 0
         jobsHtml = ''
 
+    xplore_article = _get_xplore_results(tag.name, show_all=False, offset=0, sort=XPLORE_SORT_PUBLICATION_YEAR)[0][0]
+
     file1 = None
     # removied sectors from count
     num_related_items =  \
@@ -330,7 +332,8 @@ def ajax_tag_content(request, tag_id, ui=None):
             'parent_nodes': parent_nodes,
             'ui': ui,
             'close_conference': tag._get_closest_conference(),
-            'definition': tag._get_definition_link
+            'definition': tag._get_definition_link,
+            'xplore_article': xplore_article
             #'xplore_error': xplore_error,
             #'xplore_results': xplore_results,
         })
