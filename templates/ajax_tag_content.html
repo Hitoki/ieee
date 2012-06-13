@@ -123,21 +123,38 @@
                     <div class="group">
                         <ul>
                             <li>
-                                <p style='padding: 10px 5px 0 15px;color:#6F6F6F;margin:0;'>DEFINITION</p>
+                                <p style='padding: 10px 5px 5px 15px;color:#6F6F6F;margin:0;'>DEFINITION</p>
                                 <p style='padding: 0 5px 0 15px;margin:0;'>{{ tag.definition }}</p>
                             </li>
                             <li>
-                                <p style='padding: 10px 5px 0 15px;color:#6F6F6F;margin:0;'>RECENT RELATED XPLORE ARTICLE</p>
+                                <p style='padding: 10px 5px 5px 15px;color:#6F6F6F;margin:0;'>RECENT RELATED XPLORE ARTICLE</p>
                                 <div id="xplore-overview" style='padding: 0 5px 0 15px;margin:0;'>
-                                    <a href="{{ xplore_article.url }}" target="_blank" rel="nofollow">{{ xplore_article.name }}</a
+                                    <a href="{{ xplore_article.url }}" target="_blank" rel="nofollow">{{ xplore_article.name|safe }}</a>
+                                    {% if xplore_article.url and xplore_article.url_status != "bad" %}
+                                        <img src="{{ MEDIA_URL }}images/popup.png" />
+                                    {% endif %}
                                 </div>
                             </li>
                             <li>
-                                <p style='padding: 10px 5px 0 15px;color:#6F6F6F;margin:0;'>UPCOMING RELATED CONFERENCE</p>
-                                <p style='padding: 0 5px 0 15px;margin:0;'><a href="{{ close_conference.url }}">{{ close_conference }}</a></p>                                
+                                <p style='padding: 10px 5px 5px 15px;color:#6F6F6F;margin:0;'>UPCOMING RELATED CONFERENCE</p>
+                                {% if close_conference.url and close_conference_status != "bad" %}
+                                <a href="{{ close_conference.url }}" target="_blank" rel="nofollow">
+                                {% endif %}
+                                    <p style='padding: 0 5px 0 15px;margin:0;'>
+                                        <span>{{close_conference.name}}</span>
+                                        {% if close_conference.url and close_conference.url_status != "bad" %}
+                                        <img src="{{ MEDIA_URL }}images/popup.png" />
+                                        {% endif %}
+                                        {% if close_conference.is_machine_generated %}
+                                        <img src="{{ MEDIA_URL }}images/drive.png" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
+                                        {% endif %}
+                                    </p>
+                                {% if close_conference.url and close_conference.url_status != "bad" %}
+                                </a>
+                                {% endif %}                                
                             </li>
                             <li>
-                                <p style='padding: 10px 5px 0 15px;color:#6F6F6F;margin:0;'>RECENT RELATED PATENT</p>
+                                <p style='padding: 10px 5px 5px 15px;color:#6F6F6F;margin:0;'>RECENT RELATED PATENT</p>
                                 <div id="patent-overview" style='padding: 0 5px 0 15px;margin:0;'></div>
                             </li>
                         </ul>
