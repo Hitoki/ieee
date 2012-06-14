@@ -280,7 +280,7 @@ def ajax_tag_content(request, tag_id, ui=None):
     # Hide the TAB society.
     societies = societies.exclude(abbreviation='tab')
 
-    jobsUrl = "http://jobs.ieee.org/jobs/search/results?kwsMustContain=&%s&&rows=25&format=json" % urllib.urlencode({"kOrEntire": tag.name})
+    jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&format=json" % urllib.urlencode({"kwsMustContain": tag.name})
     file1 = urllib2.urlopen(jobsUrl).read()
     jobsJson = json.loads(file1)
     jobsCount = jobsJson.get('Total')
