@@ -287,7 +287,10 @@ def ajax_tag_content(request, tag_id, ui=None):
     jobs = jobsJson.get('Jobs')
     jobsHtml = ""
     for job in jobs:
-        jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured"><b>%(JobTitle)s</b></a> %(Company)s</br>' % job
+        jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured"><b>%(JobTitle)s</b></a> %(Company)s<br>\n' % job
+
+    if len(jobsHtml):
+        jobsHtml = jobsHtml + '<a href="%s" target="_blank">More jobs</a>' % jobsUrl.replace('&format=json','')
 
     xplore_article = _get_xplore_results(tag.name, show_all=False, offset=0, sort=XPLORE_SORT_PUBLICATION_YEAR)[0][0]
 
@@ -303,7 +306,7 @@ def ajax_tag_content(request, tag_id, ui=None):
         + len(standards) \
         + int(jobsCount.replace(',','')) \
         
-    if tag.is_taxonomy_term and ((sectors1.count() + societies.count() + len(conferences) + experts.count() + len(periodicals) + len(standards)) + jobsCount == 0):
+    if tag.is_taxonomy_term and ((sectors1.count() + societies.count() + len(conferences) + experts.count() + len(periodicals) + len(standards)) + int(jobsCount.replace(',','')) == 0):
         # This is a term with no resources (except Related Tags), just show the abbreviated content popup.
         return render(request, 'ajax_term_content.html', {
             'tag':tag,
