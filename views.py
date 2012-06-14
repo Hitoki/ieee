@@ -280,20 +280,14 @@ def ajax_tag_content(request, tag_id, ui=None):
     # Hide the TAB society.
     societies = societies.exclude(abbreviation='tab')
 
-    jobsUrl = "http://jobs.ieee.org/qjs/?clientid=ieee&stringVar=jsonString&pageSize=25&%s&outFormat=html" % urllib.urlencode({"kOrEntire": tag.name})
+    jobsUrl = "http://jobs.ieee.org/jobs/search/results?kwsMustContain=&%s&&rows=25&format=json" % urllib.urlencode({"kOrEntire": tag.name})
     file1 = urllib2.urlopen(jobsUrl).read()
-    
-    jobsHtml = BeautifulSoup(file1).find('span', attrs={"class": "Featured"})
-    if jobsHtml:
-        for e in jobsHtml.findAll("br"):
-            e.extract()
-        for e in jobsHtml.findAll("a"):
-            e['href'] = 'http://jobs.ieee.org' + e['href']
-        jobsCount = len(jobsHtml.findAll('a', attrs={"class": "featured"})) - 1 # HACK exclude the "More jobs" link
-        jobsHtml = jobsHtml.__repr__()
-    else:
-        jobsCount = 0
-        jobsHtml = ''
+    jobsJson = json.loads(file1)
+    jobsCount = jobsJson.get('Total')
+    jobs = jobsJson.get('Jobs')
+    jobsHtml = ""
+    for job in jobs:
+        jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured"><b>%(JobTitle)s</b></a> %(Company)s</br>' % job
 
     xplore_article = _get_xplore_results(tag.name, show_all=False, offset=0, sort=XPLORE_SORT_PUBLICATION_YEAR)[0][0]
 
@@ -307,7 +301,7 @@ def ajax_tag_content(request, tag_id, ui=None):
         + experts.count() \
         + len(periodicals) \
         + len(standards) \
-        + jobsCount \
+        + int(jobsCount.replace(',','')) \
         
     if tag.is_taxonomy_term and ((sectors1.count() + societies.count() + len(conferences) + experts.count() + len(periodicals) + len(standards)) + jobsCount == 0):
         # This is a term with no resources (except Related Tags), just show the abbreviated content popup.
