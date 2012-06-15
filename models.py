@@ -1227,6 +1227,20 @@ class ResourceNodes(models.Model):
 
 # ------------------------------------------------------------------------------
 
+class ResourceNodeNotificationRequest(models.Model):
+    'Tracks the request of a user to be notified when resources are newly related to a node.'
+    node = models.ForeignKey(Node, related_name='notification_node')
+    date_created = models.DateTimeField(blank=False, null=False)
+    email = models.CharField(blank=False, max_length=255)
+
+class ResourceNodeNotification(models.Model):
+    'Tracke the sending a notification email.'
+    request = models.ForeignKey(ResourceNodeNotificationRequest)
+    resourceNodes = models.ForeignKey(ResourceNodes)
+    date_notified = models.DateTimeField(blank=False, null=False)
+
+# ------------------------------------------------------------------------------
+
 class FilterManager(NamedValueTypeManager):
     def get_from_name_list(self, names):
         'Returns a list of filters whose names match the given list of names.'
