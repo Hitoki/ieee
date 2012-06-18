@@ -1,6 +1,7 @@
 from django.core.management.base import NoArgsCommand, BaseCommand, CommandError
 from ieeetags.models import Node, ResourceNodes, ResourceNodeNotificationRequest, ResourceNodeNotification
 from django.core.mail import send_mail
+from datetime import datetime
 import settings
 
 class Command(NoArgsCommand):
@@ -23,6 +24,14 @@ class Command(NoArgsCommand):
                     email_text = email_text + req.node.name + ' has new resources:\n'
                 for nr in new_resources:
                     email_text = email_text + nr.resource.name + '\n'
+                    # Save record of this relationship being notified via email
+                    nt = ResourceNodeNotification()
+                    nt.request = req
+                    nt.resourceNodes = nr
+                    nt.date_notified = datetime.now()
+                    nt.save()
+
 
             if len(email_text):
                 send_mail("IEEE Technav new resource notification", email_text, settings.DEFAULT_FROM_EMAIL, [email.email])
+
