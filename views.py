@@ -21,6 +21,9 @@ import urllib2
 import xml.dom.minidom
 from decorators import optional_login_required as login_required
 
+from django.middleware import csrf
+from django.views.decorators.csrf import csrf_exempt
+
 from ieeetags.models import single_row, Cache, Filter, Node, NodeType, Profile, Resource, ResourceType, Society, ProfileLog
 from ieeetags.forms import *
 #from profiler import Profiler
@@ -524,6 +527,7 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
         
     return xplore_results, xplore_error, totalfound
 
+@csrf_exempt
 def ajax_xplore_results(request):
     '''
     Shows the list of IEEE xplore articles for the given tag.
