@@ -1400,6 +1400,7 @@ def ajax_nodes_xml(request):
     #return HttpResponse(doc.toprettyxml(), 'text/plain')
     return HttpResponse(doc.toprettyxml(), 'text/xml')
 
+@csrf_exempt
 def ajax_notification_request(request):
     rnnr = ResourceNodeNotificationRequest()
     rnnr.email = request.POST['email']
