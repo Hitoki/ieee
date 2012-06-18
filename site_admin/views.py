@@ -4246,7 +4246,7 @@ def save_resource(request):
                     resource_nodes = ResourceNodes()
                     resource_nodes.resource = resource
                     resource_nodes.node = node
-                    resource_nodes.date_created = datetime.now()
+                    resource_nodes.date_created = datetime.utcnow()
                     resource_nodes.save()
             
             if form.cleaned_data['societies'] is not None:

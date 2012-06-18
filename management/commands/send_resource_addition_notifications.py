@@ -28,7 +28,7 @@ class Command(NoArgsCommand):
                     nt = ResourceNodeNotification()
                     nt.request = req
                     nt.resourceNodes = nr
-                    nt.date_notified = datetime.now()
+                    nt.date_notified = datetime.utcnow()
                     nt.save()
 
 
