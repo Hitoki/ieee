@@ -42,8 +42,8 @@
         patentSearch1.execute($('div.[id="tag-' + {{tag.id}} + '"]:first').text());
 
 
-        $('#notificationRequestForm').submit(function(){
-            var input = $(this).children('input').eq(0);
+        $('#notificationRequestButton').click(function(e){
+            var input = $('#notificationRequestEmail');
             $.post(
                '/ajax/notification/request',
                {
@@ -52,6 +52,7 @@
                },
                function(){
                    input.val('');
+                   return false;
                }
             );
         });
@@ -497,10 +498,9 @@
             </div>
 
             <div style="margin-bottom: 0">
-                <form id="notificationRequestForm">
-                    <span>Alert me to updates:</span></br>
-                    <input type="text" style="width: 100px" id="notificationRequestEmail"></input>
-                </form>
+                <span>Alert me to updates:</span></br>
+                <input type="text" style="width: 100px" id="notificationRequestEmail"></input>
+                <input type="button" value="submit" id="notificationRequestButton"/>
             </div>
             {% if is_ajax %}
             <div id="landingLink">
