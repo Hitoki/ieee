@@ -24,7 +24,7 @@ from decorators import optional_login_required as login_required
 from django.middleware import csrf
 from django.views.decorators.csrf import csrf_exempt
 
-from ieeetags.models import single_row, Cache, Filter, Node, NodeType, Profile, Resource, ResourceType, Society, ProfileLog
+from ieeetags.models import single_row, Cache, Filter, Node, NodeType, Profile, Resource, ResourceType, Society, ProfileLog, ResourceNodeNotificationRequest
 from ieeetags.forms import *
 #from profiler import Profiler
 import settings
@@ -1399,6 +1399,15 @@ def ajax_nodes_xml(request):
     
     #return HttpResponse(doc.toprettyxml(), 'text/plain')
     return HttpResponse(doc.toprettyxml(), 'text/xml')
+
+def ajax_notification_request(request):
+    rnnr = ResourceNodeNotificationRequest()
+    rnnr.email = request.POST['email']
+    rnnr.date_created = datetime.datetime.now()
+    rnnr.node = Node.objects.get(id=request.POST['nodeid'])
+    rnnr.save()
+
+    return HttpResponse('success')
 
 @login_required
 def tooltip(request, tag_id=None):

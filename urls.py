@@ -56,6 +56,7 @@ else:
         url(r'^ajax/video$', views.ajax_video, name='ajax_video'),
         url(r'^ajax/welcome$', views.ajax_welcome, name='ajax_welcome'),
         url(r'^ajax/profile_log$', views.ajax_profile_log, name='ajax_profile_log'),
+        url(r'^ajax/notification/request$', views.ajax_notification_request),
         
         url(r'^ajax/javascript_error_log$', views.ajax_javascript_error_log, name='ajax_javascript_error_log'),
         

@@ -39,7 +39,22 @@
         , null);      
         patentSearch1.setResultOrder(google.search.Search.ORDER_BY_DATE);
         // Specify search quer(ies)
-        patentSearch1.execute($('div.[id="tag-' + {{tag.id}} + '"]:first').text());          
+        patentSearch1.execute($('div.[id="tag-' + {{tag.id}} + '"]:first').text());
+
+
+        $('#notificationRequestForm').submit(function(){
+            var input = $(this).children('input').eq(0);
+            $.post(
+               '/ajax/notification/request',
+               {
+                  email: input.val(),
+                  nodeid: {{ tag.id }}
+               },
+               function(){
+                   input.val('');
+               }
+            );
+        });
     });
 </script>
 
@@ -116,7 +131,7 @@
                     <li><a href="" rel="nofollow">Experts <span>({{experts|length}})</span></a></li>
                     {% endcomment %}
                 </ul>
-                
+
 <!-- *** Content Panels *** -->
 {% comment %}
 <!-- Overview-->
@@ -480,10 +495,18 @@
                 {% endcomment %}
                 
             </div>
+
+            <div style="margin-bottom: 0">
+                <form id="notificationRequestForm">
+                    <span>Alert me to updates:</span></br>
+                    <input type="text" style="width: 100px" id="notificationRequestEmail"></input>
+                </form>
+            </div>
             {% if is_ajax %}
             <div id="landingLink">
                 <a onclick="javascript:window.open('/tag/{{ tag.id }}/{{ tag.name|slugify }}', 'landing');" href="javascript:void(0)" rel="nofollow">*</a>
             </div>
+
         </div>
     </div>
 </div>
