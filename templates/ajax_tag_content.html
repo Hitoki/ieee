@@ -53,6 +53,8 @@
                function(){
                    input.val('');
                    return false;
+                   $("#alertForm").hide();
+                   $("#alertSuccess").show();
                }
             );
         });
@@ -497,9 +499,14 @@
             </div>
             <div style="clear:both"></div>
             <div id="alertContainer">
-                <span>Alert me to updates to this topic</span>
-                <input type="text" style="width: 100px" id="notificationRequestEmail"></input>
-                <input type="button" value="Alert me" id="notificationRequestButton"/>
+                <div id="alertForm">
+                    <span>Alert me to updates to this topic</span>
+                    <input type="text" style="width: 100px" id="notificationRequestEmail"></input>
+                    <input type="button" value="Alert me" id="notificationRequestButton"/>
+                </div>
+                <div id="alertSuccess" style="display:none">
+                    You will be alerted to updates to this topic.
+                </div>
             </div>
             {% if is_ajax %}
             <div id="landingLink">

@@ -2737,4 +2737,11 @@ td.machine-generated-column {
    display: block;
    clear: both;
    margin-top: 10px;
+   text-align: center;
+   #notificationRequestButton:hover {
+       background-color: #FFA500;
+   }
+   #alertSuccess {
+       color: white;
+   }
 }
