@@ -2617,3 +2617,5 @@ td.machine-generated-column {
     background-color: #FFA500; }
   #alertContainer #alertSuccess {
     color: white; }
+  #alertContainer #alertError {
+    color: maroon; }
