@@ -906,6 +906,7 @@ class SocietyManager(models.Manager):
     
 class Society(models.Model):
     name = models.CharField(max_length=500)
+    description = models.CharField(blank=True, max_length=5000) 
     abbreviation = models.CharField(max_length=20)
     url = models.CharField(blank=True,max_length=1000)
     logo_thumbnail = models.FileField(upload_to='images/sc_logos/thumbnail',blank=True)

@@ -157,6 +157,7 @@ class SocietyForm(ModifiedFormBase):
     id = IntegerField(widget=HiddenInput(), required=False)
     name = CharField(max_length=500)
     abbreviation = CharField(max_length=20)
+    description = CharField(widget=Textarea, max_length=5000, required=False)
     url = CharField(max_length=1000, required=False)
     users = ModelMultipleChoiceField(queryset=User.objects.all(), required=False)
     tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags')

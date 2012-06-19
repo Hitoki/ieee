@@ -3870,6 +3870,7 @@ def edit_society(request, society_id=None):
             'id': society.id,
             'name': society.name,
             'abbreviation': society.abbreviation,
+            'description': society.description,
             'url': society.url,
             'users': [user.id for user in society.users.all()],
             'tags': society.tags.all(),
@@ -3913,6 +3914,7 @@ def save_society(request):
         
         society.name = form.cleaned_data['name']
         society.abbreviation = form.cleaned_data['abbreviation']
+        society.description = form.cleaned_data['description']
         society.url = form.cleaned_data['url']
         society.users = form.cleaned_data['users']
         
