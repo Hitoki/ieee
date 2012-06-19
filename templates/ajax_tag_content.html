@@ -494,13 +494,12 @@
                     </div>
                 </div>
                 {% endcomment %}
-                
             </div>
-
-            <div style="margin-bottom: 0">
-                <span>Alert me to updates:</span></br>
+            <div style="clear:both"></div>
+            <div id="alertContainer">
+                <span>Alert me to updates to this topic</span>
                 <input type="text" style="width: 100px" id="notificationRequestEmail"></input>
-                <input type="button" value="submit" id="notificationRequestButton"/>
+                <input type="button" value="Alert me" id="notificationRequestButton"/>
             </div>
             {% if is_ajax %}
             <div id="landingLink">

@@ -2607,3 +2607,8 @@ td.machine-generated-column {
     float: right;
     text-decoration: none;
     color: white; }
+
+#alertContainer {
+  display: block;
+  clear: both;
+  margin-top: 10px; }
