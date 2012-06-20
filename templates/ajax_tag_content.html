@@ -44,21 +44,31 @@
 
         $('#notificationRequestButton').click(function(e){
             var input = $('#notificationRequestEmail');
-            $.post(
-               '/ajax/notification/request',
-               {
-                  email: input.val(),
-                  nodeid: {{ tag.id }}
-               },
-               function(){
-                   input.val('');
-                   return false;
-                   $("#alertForm").hide();
-                   $("#alertSuccess").show();
-               }
-            );
+
+            if(isValidEmailAddress(input.val())) {
+                $.post('/ajax/notification/request',
+                    {
+                        email: input.val(),
+                        nodeid: {{ tag.id }}
+                    },
+                    function(){
+                        input.val('');
+                        $("#alertForm").hide();
+                        $("#alertSuccess").show();
+                        return false;
+                    }
+                );                
+            } else {
+                $("#alertError").show();
+                return false;
+            }
         });
     });
+
+function isValidEmailAddress(emailAddress) {
+    var pattern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i);
+    return pattern.test(emailAddress);
+};
 </script>
 
 {% if is_ajax %}
@@ -141,6 +151,7 @@
                 <div id="overview-tab" class="overview-tab" data-printUrl='{% url print_resource tag.id "sectors" %}'>
                     <div class="group">
                         <ul>
+                            <! -- Don't show this section if definition = none -->
                             <li>
                                 <p style='padding: 10px 5px 5px 15px;color:#6F6F6F;margin:0;'>DEFINITION</p>
                                 <p style='padding: 0 5px 0 15px;margin:0;'>{{ tag.definition }}</p>
