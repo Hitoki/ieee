@@ -2615,13 +2615,14 @@ td.machine-generated-column {
 #alertContainer {
   display: block;
   clear: both;
-  margin: 10px 0 0 110px;
+  margin: 10px 0 0 115px;
   text-align: center; }
   #alertContainer #notificationRequestEmail {
     border: 1px solid #006699;
     padding: 3px 3px 1px 3px;
     display: inline-block;
     font-size: 10pt;
+    width: 135px;
     border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px; }
