@@ -904,6 +904,8 @@ div.image-container {
 
 #patents-tab div.group {
   padding-left: 15px; }
+#patents-tab div#branding {
+  margin-top: -9px; }
 
 #patents-tab table {
   margin-top: 10px; }
@@ -2081,7 +2083,7 @@ ul.errors {
   height: 20px;
   text-align: right;
   position: absolute;
-  padding: 5px;
+  padding: 2px 5px 5px;
   background: white;
   box-shadow: 0 5px 5px -4px gray;
   border-bottom: 1px solid #cfcfcf;
@@ -2098,12 +2100,12 @@ ul.errors {
 .nootabs-selected-tab div.group {
   height: 100%;
   overflow: auto;
-  min-height: 359px; }
+  min-height: 347px; }
   .nootabs-selected-tab div.group a {
     outline: none; }
 
 #xplore-results-container div.group {
-  margin-top: 45px; }
+  margin-top: 52px; }
 
 #education-totals {
   float: left;
@@ -2111,7 +2113,7 @@ ul.errors {
   padding-left: 5px; }
 
 #education-results-container div.group {
-  margin-top: 20px; }
+  margin-top: 28px; }
 
 #xplore-results-container div.group ul {
   margin-top: 0px; }
@@ -2129,12 +2131,12 @@ div.group ul li:first-child {
   margin-top: 0; }
 
 #xplore-tab div.print-resource {
-  height: 42px;
+  height: 40px;
   margin-top: -45px; }
 
 #education-tab div.print-resource {
   margin-top: -20px;
-  padding: 5px 0px 3px 10px; }
+  padding: 2px 0px 3px 10px; }
 
 #resource-print-container {
   float: right;
@@ -2613,7 +2615,7 @@ td.machine-generated-column {
 #alertContainer {
   display: block;
   clear: both;
-  margin-top: 10px;
+  margin: 10px 0 0 110px;
   text-align: center; }
   #alertContainer #notificationRequestButton:hover {
     background-color: #FFA500; }
