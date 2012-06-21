@@ -163,11 +163,13 @@ function isValidEmailAddress(emailAddress) {
                 <div id="overview-tab" class="overview-tab" data-printUrl='{% url print_resource tag.id "sectors" %}'>
                     <div class="group">
                         <ul>
-                            <! -- Don't show this section if definition = none -->
+                            <!-- Don't show this section if definition = none -->
+                            {% if tag.definition %}
                             <li>
                                 <p style='padding: 10px 5px 5px 15px;color:#6F6F6F;margin:0;'>DEFINITION</p>
                                 <p style='padding: 0 5px 0 15px;margin:0;'>{{ tag.definition }}</p>
                             </li>
+                            {% endif %}
                             <li>
                                 <p style='padding: 10px 5px 5px 15px;color:#6F6F6F;margin:0;'>RECENT RELATED XPLORE ARTICLE</p>
                                 <div id="xplore-overview" style='padding: 0 5px 0 15px;margin:0;'>
