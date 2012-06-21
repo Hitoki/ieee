@@ -2617,8 +2617,20 @@ td.machine-generated-column {
   clear: both;
   margin: 10px 0 0 110px;
   text-align: center; }
-  #alertContainer #notificationRequestButton:hover {
-    background-color: #FFA500; }
+  #alertContainer #notificationRequestEmail {
+    border: 1px solid #006699;
+    padding: 2px 3px 1px 3px;
+    display: inline-block;
+    font-size: 10pt;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px; }
+  #alertContainer #notificationRequestButton {
+    border: 0 none;
+    padding: 4px 5px 1px;
+    vertical-align: top; }
+    #alertContainer #notificationRequestButton:hover {
+      background-color: #FFA500; }
   #alertContainer #alertSuccess {
     color: white; }
   #alertContainer #alertError {
