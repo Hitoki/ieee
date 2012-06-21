@@ -798,7 +798,12 @@ ul#view-header li {
   border: none; }
 
 #content table.society-images td {
-  padding-bottom: 10px; }
+  padding-bottom: 10px;
+  vertical-align: top; }
+  #content table.society-images td a {
+    font-size: 14pt;
+    margin-bottom: 5px;
+    display: inline-block; }
 
 #content table.society-images td.society-logo {
   padding-right: 10px; }
@@ -846,9 +851,6 @@ div.image-container {
 .group a img, .xplore-totals img, .xplore-full-results-page img {
   cursor: pointer; }
 
-.group .item_odd span:hover, .group .item_even span:hover,
-#xplore-totals span:hover, .society-images span:hover,
-.xplore-full-results-page .item_odd span:hover, .xplore-full-results-page .item_even span:hover,
 .group a:hover, .xplore-full-results-page a:hover {
   color: #ffa500;
   text-decoration: underline;
