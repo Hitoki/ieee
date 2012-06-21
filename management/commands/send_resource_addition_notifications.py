@@ -30,7 +30,7 @@ class Command(NoArgsCommand):
                     nt.resourceNodes = nr
                     nt.date_notified = datetime.utcnow()
                     nt.save()
-
+                email_text = email_text + '<br/>'
 
             if len(email_text):
                 send_mail("IEEE Technav new resource notification", email_text, settings.DEFAULT_FROM_EMAIL, [email.email])
