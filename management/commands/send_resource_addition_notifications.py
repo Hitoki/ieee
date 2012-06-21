@@ -21,16 +21,16 @@ class Command(NoArgsCommand):
                 
                 new_resources = ResourceNodes.objects.filter(node=req.node, date_created__gt=last_update)
                 if new_resources.count():
-                    email_text = email_text + req.node.name + ' has new resources:\n' + '<ul>'
+                    email_text = email_text + req.node.name + ' has new resources:\n'
                 for nr in new_resources:
-                    email_text = '<li'> + email_text + nr.resource.name + '\n' + '</li>'
+                    email_text = email_text + nr.resource.name + '\n'
                     # Save record of this relationship being notified via email
                     nt = ResourceNodeNotification()
                     nt.request = req
                     nt.resourceNodes = nr
                     nt.date_notified = datetime.utcnow()
                     nt.save()
-                email_text = email_text + '</ul><br/>'
+
 
             if len(email_text):
                 send_mail("IEEE Technav new resource notification", email_text, settings.DEFAULT_FROM_EMAIL, [email.email])
