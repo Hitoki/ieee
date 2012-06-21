@@ -1791,7 +1791,7 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     totaledufound = 0
     xplore_results = None
     
-    if resource_type not in ['all', 'sectors', 'related_tags', 'societies', 'conferences', 'periodicals', 'standards', 'xplore_edu', 'xplore']:
+    if resource_type not in ['all', 'sectors', 'related_tags', 'societies', 'conferences', 'periodicals', 'standards', 'xplore_edu', 'xplore', 'jobs']:
         raise Exception('Unknown resource_type "%s"' % resource_type)
 
     if resource_type == 'sectors' or resource_type == 'all':
@@ -1829,18 +1829,14 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     related_items_count = sectors.count() + related_tags.count() + societies.count() + conf_count + periodicals.count() + standards.count() + totaledufound+ totalfound
     
 
-    jobsUrl = "http://jobs.ieee.org/qjs/?clientid=ieee&stringVar=jsonString&pageSize=5&%s&outFormat=html" % urllib.urlencode({"kOrEntire": tag.name})
+    jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&format=json" % urllib.urlencode({"kwsMustContain": tag.name})
     file1 = urllib2.urlopen(jobsUrl).read()
-    
-    jobsHtml = BeautifulSoup(file1).find('span', attrs={"class": "Featured"})
-    if jobsHtml:
-        for e in jobsHtml.findAll("br"):
-            e.extract()
-        for e in jobsHtml.findAll("a"):
-            e['href'] = 'http://jobs.ieee.org' + e['href']
-        jobsHtml = jobsHtml.__repr__()
-    else:
-        jobsHtml = ''
+    jobsJson = json.loads(file1)
+    jobsCount = jobsJson.get('Total')
+    jobs = jobsJson.get('Jobs')
+    jobsHtml = ""
+    for job in jobs:
+        jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured"><b>%(JobTitle)s</b></a> %(Company)s<br>\n' % job
 
     file1 = None
     
