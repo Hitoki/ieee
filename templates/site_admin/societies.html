@@ -20,6 +20,8 @@
             <th>
                 # Resources
             </th>
+            <th>
+            </th>
         </tr>
         {% for society in societies %}
             <tr>
@@ -42,6 +44,9 @@
                 </td>
                 <td>
                     {{ society.resources.all.count }}
+                </td>
+                <td>
+                    <a href="{% url admin_edit_society society.id %}">edit</a>
                 </td>
             </tr>
         {% endfor %}
