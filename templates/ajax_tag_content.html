@@ -182,7 +182,7 @@ function isValidEmailAddress(emailAddress) {
                             <li>
                                 <p style='padding: 10px 5px 5px 15px;color:#6F6F6F;margin:0;'>UPCOMING RELATED CONFERENCE</p>
                                 {% if close_conference.url and close_conference_status != "bad" %}
-                                <a href="{{ close_conference.url }}" target="_blank" rel="nofollow">
+                                <a href="{% if close_conference.url|slice:":4" != 'http' %}http://{% endif %}{{ close_conference.url }}" target="_blank" rel="nofollow">
                                 {% endif %}
                                     <p style='padding: 0 5px 0 15px;margin:0;'>
                                         <span>{{close_conference.name}}</span>
