@@ -42,6 +42,18 @@
         patentSearch1.execute($('div.[id="tag-' + {{tag.id}} + '"]:first').text());
 
 
+        $('#notificationRequestEmail').focus(function() {
+            if (this.value == this.defaultValue){
+                this.value = "";
+                $(this).removeClass('defaultValue');
+            }
+        }).blur(function() {
+            if (this.value === ""){
+                this.value = this.defaultValue;
+                $(this).addClass('defaultValue');
+            }
+        });
+        
         $('#notificationRequestButton').click(function(e){
             var input = $('#notificationRequestEmail');
 
@@ -515,7 +527,7 @@ function isValidEmailAddress(emailAddress) {
             <div id="alertContainer">
                 <div id="alertForm">
                     <span>Alert me to updates to this topic</span>
-                    <input type="text" style="width: 100px" id="notificationRequestEmail"></input>
+                    <input type="text" style="width: 100px" id="notificationRequestEmail" value="Email address" class="defaultValue"></input>
                     <input type="button" value="Alert me" id="notificationRequestButton"/>
                     <span id="alertError" style="display:none">Please enter a valid email</span>
                 </div>

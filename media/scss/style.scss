@@ -2751,14 +2751,17 @@ td.machine-generated-column {
    text-align: center;
    #notificationRequestEmail {
         border: 1px solid $primaryColor;
-        padding: 2px 3px 1px 3px;
+        padding: 3px 3px 1px 3px;
         display: inline-block;
         font-size: 10pt;
         @include default-border-radius;
+        &.defaultValue {
+            color: #9F9F9F;
+        }
    }
    #notificationRequestButton {
        border: 0 none;
-       padding: 4px 5px 1px;
+       padding: 4px 5px 2px;
        vertical-align: top;
         &:hover {
             background-color: #FFA500;

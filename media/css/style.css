@@ -2619,15 +2619,17 @@ td.machine-generated-column {
   text-align: center; }
   #alertContainer #notificationRequestEmail {
     border: 1px solid #006699;
-    padding: 2px 3px 1px 3px;
+    padding: 3px 3px 1px 3px;
     display: inline-block;
     font-size: 10pt;
     border-radius: 5px;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px; }
+    #alertContainer #notificationRequestEmail.defaultValue {
+      color: #9F9F9F; }
   #alertContainer #notificationRequestButton {
     border: 0 none;
-    padding: 4px 5px 1px;
+    padding: 4px 5px 2px;
     vertical-align: top; }
     #alertContainer #notificationRequestButton:hover {
       background-color: #FFA500; }
