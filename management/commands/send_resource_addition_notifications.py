@@ -32,6 +32,8 @@ class Command(NoArgsCommand):
 
                 if new_resources.count():
                     req.new_resources = new_resources
+                else:
+                    req.new_resources = None
 
             context = {
                 "notification_requests": reqs
