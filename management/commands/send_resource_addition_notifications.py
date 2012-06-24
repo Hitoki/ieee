@@ -30,7 +30,6 @@ class Command(NoArgsCommand):
                     nt.date_notified = datetime.utcnow()
                     nt.save()
 
-
                 if new_resources.count():
                     req.new_resources = new_resources
                     reqs_with_new_resources.append(req)

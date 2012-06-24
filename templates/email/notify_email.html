@@ -54,14 +54,18 @@
             <tr>
                 <td>
                     <p>The following IEEE Technology Navigator {% if notification_requests.count > 1 %}topics have{% else %}topic has{% endif %} {% if new_resources.count > 1 %}new resources{% else %}a new resource{% endif %} associated with {% if notification_requests.count > 1 %}them{% else %}it{% endif %}:</p>
-
+                    
+                    {% for req in reqs %}
                     <p class="topicGroup">
-                        <a class="topicName" href="#">Topic</a><br/>
+                        <a class="topicName" href="#">{{ notification_requests }}</a><br/>
+                        {% for nr in new_resources %}
                         <span class="topicResource">
                             In <a href="#">Type</a>:<br/>
-                            Resource (<a href="#">link</a>)<br/>
+                            {{ new_resource }} (<a href="#">link</a>)<br/>
                         </span>
+                        {% endfor %}
                     </p>
+                    {% endfor %}
 
                     <p>You’re receiving this email because you asked to be alerted when new resources related to the above <span class="singleTopic">topic</span><span class="multipleTopic">topics</span> are added to IEEE Technology Navigator. You can <a href="#">unsubscribe from alerts</a> as well.</p>
                 </td>
