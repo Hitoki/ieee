@@ -1,6 +1,7 @@
 from django.core.management.base import NoArgsCommand, BaseCommand, CommandError
 from ieeetags.models import Node, ResourceNodes, ResourceNodeNotificationRequest, ResourceNodeNotification
 from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
 from datetime import datetime
 from django.template import Context, RequestContext, loader
 from html2text import html2text
