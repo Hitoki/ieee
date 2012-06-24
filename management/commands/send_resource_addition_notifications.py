@@ -21,20 +21,6 @@ class Command(NoArgsCommand):
                     last_update = req.date_created
                 
                 new_resources = ResourceNodes.objects.filter(node=req.node, date_created__gt=last_update)
-                if new_resources.count():
-                    req.new_resources = new_resources
-
-                    context = {
-                        "notification_requests": reqs
-                        }
-                    body = loader.get_template('email/notify_email.html').render(context)
-    
-                    htmlbody = body
-                    body = html2text(body)
-                    msg = EmailMultiAlternatives("IEEE Technav new resource notification", body , settings.DEFAULT_FROM_EMAIL, [email.email])
-                    msg.attach_alternative(htmlbody, 'text/html')
-                    msg.send()
-
                 for nr in new_resources:
                     # Save record of this relationship being notified via email
                     nt = ResourceNodeNotification()
@@ -42,4 +28,20 @@ class Command(NoArgsCommand):
                     nt.resourceNodes = nr
                     nt.date_notified = datetime.utcnow()
                     nt.save()
+
+
+                if new_resources.count():
+                    req.new_resources = new_resources
+
+            context = {
+                "notification_requests": reqs
+                }
+            body = loader.get_template('email/notify_email.html').render(context)
+    
+            htmlbody = body
+            body = html2text(body)
+            msg = EmailMultiAlternatives("IEEE Technav new resource notification", body , settings.DEFAULT_FROM_EMAIL, [email.email])
+            msg.attach_alternative(htmlbody, 'text/html')
+            msg.send()
+
 
