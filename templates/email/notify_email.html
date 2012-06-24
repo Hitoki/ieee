@@ -53,7 +53,7 @@
         <tbody>
             <tr>
                 <td>
-                    <p>The following IEEE Technology Navigator <span class="singleTopic">topic has</span><span class="multipleTopic">topics have</span> <span class="singleResource">a new resource</span><span class="multipleResource">new resources</span> associated with <span class="singleTopic">it</span><span class="multipleTopic">them</span>:</p>
+                    <p>The following IEEE Technology Navigator {% if notification_requests.count() > 1 %}topics have{% else $}topic has{% endif %} {% if new_resources.count() > 1 %}new resources{% else %}a new resource{% endif %} associated with {% if notification_requests.count() > 1 %}them{% else $}it{% endif %}:</p>
 
                     <p class="topicGroup">
                         <a class="topicName" href="#">Topic</a><br/>
