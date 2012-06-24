@@ -9,7 +9,7 @@ import settings
 
 class Command(NoArgsCommand):
 
-    def handle_noargs(self, *args, **options):
+    def handle_noargs(request, self, *args, **options):
         def create_context(request, context_dict):
             if request:
                 return RequestContext(request, context_dict)
