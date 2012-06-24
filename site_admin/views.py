@@ -2985,7 +2985,7 @@ def save_tag(request, tag_id):
     return_url = request.GET.get('return_url', '')
     society_id = request.GET.get('society_id', '')
     tag = Node.objects.get(id=tag_id)
-    
+    import ipdb; ipdb.set_trace()
     form = EditTagForm(request.POST)
     if not form.is_valid():
         
