@@ -12,7 +12,6 @@ class Command(NoArgsCommand):
 
         emails = ResourceNodeNotificationRequest.objects.all().distinct('email')
         for email in emails:
-            email_text = ""
             reqs = ResourceNodeNotificationRequest.objects.filter(email=email.email)
             for req in reqs:
                 previous_notifications = ResourceNodeNotification.objects.filter(request=req).order_by('-date_notified')
@@ -23,12 +22,12 @@ class Command(NoArgsCommand):
                 
                 new_resources = ResourceNodes.objects.filter(node=req.node, date_created__gt=last_update)
                 if new_resources.count():
-                    req.new_resource = new_resources
+                    req.new_resources = new_resources
 
                     context = {
-                        request: reqs
+                        "notification_requests": reqs
                         }
-                    body = loader.get_template('notify_email.html').render(context)
+                    body = loader.get_template('email/notify_email.html').render(context)
     
                     htmlbody = body
                     body = html2text(body)
