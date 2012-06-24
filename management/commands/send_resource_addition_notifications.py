@@ -9,12 +9,7 @@ import settings
 
 class Command(NoArgsCommand):
 
-    def handle_noargs(request, self, *args, **options):
-        def create_context(request, context_dict):
-            if request:
-                return RequestContext(request, context_dict)
-            else:
-                return Context(context_dict)
+    def handle_noargs(self, *args, **options):
 
         emails = ResourceNodeNotificationRequest.objects.all().distinct('email')
         for email in emails:
@@ -36,13 +31,14 @@ class Command(NoArgsCommand):
                     nt.date_notified = datetime.utcnow()
                     nt.save()
 
+
                 if new_resources.count():
                     req.new_resources = new_resources
                     reqs_with_new_resources.append(req)
 
-            context = create_context(request, {
+            context = {
                 "notification_requests": reqs_with_new_resources
-            })
+                }
             body = loader.get_template('email/notify_email.html').render(context)
     
             htmlbody = body
