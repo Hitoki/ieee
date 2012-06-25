@@ -56,10 +56,10 @@
                     <p>The following IEEE Technology Navigator {% if notification_requests.count > 1 %}topics have{% else %}topic has{% endif %} {% if new_resources.count > 1 %}new resources{% else %}a new resource{% endif %} associated with {% if notification_requests.count > 1 %}them{% else %}it{% endif %}:</p>
                     
                     {% for topic in notification_requests %}
-                    <p class="topicGroup">
-                        <a class="topicName" href="#">{{ topic.name }}</a><br/>
+                    <p>
+                        {{ topic_name }}<br/>
                         {% for resource in new_resources %}
-                        <span class="topicResource">
+                        <span>
                             In <a href="#">Type</a>:<br/>
                             {{ resource.name }} (<a href="#">link</a>)<br/>
                         </span>
