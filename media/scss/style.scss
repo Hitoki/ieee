@@ -2743,34 +2743,38 @@ td.machine-generated-column {
     }
 }
 
-#alertContainer {
+#alertWrapper {
    display: block;
    clear: both;
    margin: 10px 0 0 115px;
    text-align: center;
-   #notificationRequestEmail {
-        border: 1px solid $primaryColor;
-        padding: 3px 3px 1px 3px;
-        display: inline-block;
-        font-size: 10pt;
-        width: 135px;
-        @include default-border-radius;
-        &.defaultValue {
-            color: #9F9F9F;
-        }
-   }
-   #notificationRequestButton {
-       border: 0 none;
-       padding: 4px 5px 2px;
-       vertical-align: top;
-        &:hover {
-            background-color: #FFA500;
-        }
-   }
-   #alertSuccess {
-       color: white;
-   }
-   #alertError {
-       color: maroon;
+   #alertContainer {
+       background-color: #006699;
+       color: $white;
+       @include default-border-radius;
+       #notificationRequestEmail {
+            border: 1px solid $primaryColor;
+            padding: 3px 3px 1px 3px;
+            display: inline-block;
+            font-size: 10pt;
+            width: 135px;
+            &.defaultValue {
+                color: #9F9F9F;
+            }
+       }
+       #notificationRequestButton {
+           border: 0 none;
+           padding: 4px 5px 2px;
+           vertical-align: top;
+            &:hover {
+                background-color: #FFA500;
+            }
+       }
+       #alertSuccess {
+           color: white;
+       }
+       #alertError {
+           color: maroon;
+       }
    }
 }
