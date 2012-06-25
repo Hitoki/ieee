@@ -2635,14 +2635,27 @@ td.machine-generated-column {
       font-size: 10pt;
       width: 135px;
       margin-right: -5px;
-      margin-left: 5px; }
+      margin-left: 8px; }
       #alertWrapper #alertContainer #notificationRequestEmail.defaultValue {
         color: #9F9F9F; }
     #alertWrapper #alertContainer #notificationRequestButton {
       border: 0 none;
       padding: 5px 10px 3px;
       vertical-align: top;
-      background-color: #33cc00;
+      background: -moz-linear-gradient(top, #33cc00 40%, #269900 100%);
+      /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(40%, #33cc00), color-stop(100%, #269900));
+      /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top, #33cc00 40%, #269900 100%);
+      /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top, #33cc00 40%, #269900 100%);
+      /* Opera 11.10+ */
+      background: -ms-linear-gradient(top, #33cc00 40%, #269900 100%);
+      /* IE10+ */
+      background: linear-gradient(top, #33cc00 40%, #269900 100%);
+      /* W3C */
+      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#33cc00', endColorstr='#269900',GradientType=0 );
+      /* IE6-9 */
       border-radius: 0 3px 3px 0;
       -moz-border-radius-topleft: 0;
       -moz-border-radius-topright: 3px;
@@ -2653,7 +2666,20 @@ td.machine-generated-column {
       -webkit-border-bottom-right-radius: 3px;
       -webkit-border-bottom-left-radius: 0; }
       #alertWrapper #alertContainer #notificationRequestButton:hover {
-        background-color: #FFA500; }
+        background: -moz-linear-gradient(top, #ffd896 0%, #ffa500 100%);
+        /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffd896), color-stop(100%, #ffa500));
+        /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top, #ffd896 0%, #ffa500 100%);
+        /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top, #ffd896 0%, #ffa500 100%);
+        /* Opera 11.10+ */
+        background: -ms-linear-gradient(top, #ffd896 0%, #ffa500 100%);
+        /* IE10+ */
+        background: linear-gradient(top, #ffd896 0%, #ffa500 100%);
+        /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffd896', endColorstr='#ffa500',GradientType=0 );
+        /* IE6-9 */ }
     #alertWrapper #alertContainer #alertSuccess {
       color: white; }
   #alertWrapper .helpicon {
