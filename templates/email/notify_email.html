@@ -57,11 +57,11 @@
                     
                     {% for topic in notification_requests %}
                     <p class="topicGroup">
-                        <a class="topicName" href="#">{{ topic_name }}</a><br/>
+                        <a class="topicName" href="#">{{ topic.name }}</a><br/>
                         {% for resource in new_resources %}
                         <span class="topicResource">
                             In <a href="#">Type</a>:<br/>
-                            {{ resource_name }} (<a href="#">link</a>)<br/>
+                            {{ resource.name }} (<a href="#">link</a>)<br/>
                         </span>
                         {% endfor %}
                     </p>
