@@ -16,7 +16,7 @@ class Command(NoArgsCommand):
             reqs_with_new_resources = []
             for req in reqs:
                 previous_notifications = ResourceNodeNotification.objects.filter(request=req).order_by('-date_notified')
-                if previous_notifications.count():
+                if previous_notifications.count:
                     last_update = previous_notifications[0].date_notified
                 else:
                     last_update = req.date_created
@@ -30,11 +30,11 @@ class Command(NoArgsCommand):
                     nt.date_notified = datetime.utcnow()
                     nt.save()
 
-                if new_resources.count():
+                if new_resources.count:
                     req.new_resources = new_resources
                     reqs_with_new_resources.append(req)
 
-            if reqs_with_new_resources.count():
+            if reqs_with_new_resources.count:
                 context = Context({
                     "notification_requests": reqs_with_new_resources,
                     "topic_name": req.node.name
