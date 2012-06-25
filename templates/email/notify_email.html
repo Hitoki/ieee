@@ -67,7 +67,7 @@
                     </p>
                     {% endfor %}
 
-                    <p>You’re receiving this email because you asked to be alerted when new resources related to the above <span class="singleTopic">topic</span><span class="multipleTopic">topics</span> are added to IEEE Technology Navigator. You can <a href="#">unsubscribe from alerts</a> as well.</p>
+                    <p>You’re receiving this email because you asked to be alerted when new resources related to the above {% if notification_requests.count > 1 %}topics{% else %}topic{% endif %} are added to IEEE Technology Navigator. You can <a href="#">unsubscribe from alerts</a> as well.</p>
                 </td>
             </tr>
         </tbody>
