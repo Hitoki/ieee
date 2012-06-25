@@ -34,17 +34,18 @@ class Command(NoArgsCommand):
                     req.new_resources = new_resources
                     reqs_with_new_resources.append(req)
 
-            context = Context({
-                "notification_requests": reqs_with_new_resources,
-                "topic_name": req.node.name
-                #"resource_name": nr.resource.name
-            })
-            body = loader.get_template('email/notify_email.html').render(context)
-    
-            htmlbody = body
-            body = html2text(body)
-            msg = EmailMultiAlternatives("IEEE Technav new resource notification", body , settings.DEFAULT_FROM_EMAIL, [email.email])
-            msg.attach_alternative(htmlbody, 'text/html')
-            msg.send()
+            if reqs_with_new_resources.count():
+                context = Context({
+                    "notification_requests": reqs_with_new_resources,
+                    "topic_name": req.node.name
+                    #"resource_name": nr.resource.name
+                })
+                body = loader.get_template('email/notify_email.html').render(context)
+        
+                htmlbody = body
+                body = html2text(body)
+                msg = EmailMultiAlternatives("IEEE Technav new resource notification", body , settings.DEFAULT_FROM_EMAIL, [email.email])
+                msg.attach_alternative(htmlbody, 'text/html')
+                msg.send()
 
 
