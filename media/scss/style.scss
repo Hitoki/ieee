@@ -2785,6 +2785,11 @@ td.machine-generated-column {
            color: white;
        }
    }
+   .helpicon {
+        margin-left: 10px;
+        background-color: $white;
+        @include custom-border-radius (10px, 10px, 10px, 10px);
+   }
    #alertError {
       color: maroon;
       margin-left: 10px;
