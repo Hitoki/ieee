@@ -34,7 +34,7 @@ class Command(NoArgsCommand):
                     req.new_resources = new_resources
                     reqs_with_new_resources.append(req)
 
-            if reqs_with_new_resources.count:
+            if len(reqs_with_new_resources):
                 context = Context({
                     "notification_requests": reqs_with_new_resources
                 })
