@@ -36,8 +36,8 @@ class Command(NoArgsCommand):
 
             context = Context({
                 "notification_requests": reqs_with_new_resources,
-                "topic_name": req.node.name,
-                "resource_name": nr.resource.name
+                "topic_name": reqs.name,
+                "resource_name": new_resources.name
             })
             body = loader.get_template('email/notify_email.html').render(context)
     
