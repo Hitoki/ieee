@@ -225,7 +225,6 @@ def xplore_full_results(request, tag_id):
 
 @login_required
 def ajax_tag_content(request, tag_id, ui=None):
-    from html2text import html2text
     'The AJAX resource results popup.'
     if ui is None:
         ui = 'textui'
@@ -298,7 +297,6 @@ def ajax_tag_content(request, tag_id, ui=None):
 
     try:
         xplore_article = _get_xplore_results(tag.name, show_all=False, offset=0, sort=XPLORE_SORT_PUBLICATION_YEAR)[0][0]
-        xplore_article = html2text(xplore_article)
     except IndexError:
         xplore_article = None
 
@@ -313,8 +311,6 @@ def ajax_tag_content(request, tag_id, ui=None):
         + len(periodicals) \
         + len(standards) \
         + int(jobsCount.replace(',','')) \
-
-    close_conference = html2text(tag.closest_conference)
         
     if tag.is_taxonomy_term and ((sectors1.count() + societies.count() + len(conferences) + experts.count() + len(periodicals) + len(standards)) + int(jobsCount.replace(',','')) == 0):
         # This is a term with no resources (except Related Tags), just show the abbreviated content popup.
@@ -338,7 +334,7 @@ def ajax_tag_content(request, tag_id, ui=None):
             'num_related_items': num_related_items,
             'parent_nodes': parent_nodes,
             'ui': ui,
-            'close_conference': close_conference,
+            'close_conference': tag._get_closest_conference(),
             'definition': tag.short_definition,
             'xplore_article': xplore_article
             #'xplore_error': xplore_error,
