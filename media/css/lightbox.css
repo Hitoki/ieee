@@ -178,21 +178,21 @@ input.text {
 }
 
 #lightbox .resources-lightbox-content #patents-tab div.group {
-   min-height: 328px;
+   min-height: 338px;
 }
 
 #lightbox .resources-lightbox-content #xplore-tab div.group {
-    min-height: 295px;
+    min-height: 275px;
     padding: 15px;
 }
 
 #lightbox .resources-lightbox-content #education-tab div.group {
-    min-height: 319px;
+    min-height: 299px;
     padding: 15px;
 }
 
 #lightbox .resources-lightbox-content {
-    min-height: 425px;   
+    min-height: 437px;   
 }
 
 #lightbox .resources-lightbox-content div.nootabs-tab {
@@ -514,7 +514,8 @@ margin-top: 0;
 #patents-tab .group,
 #periodical-tab .group,
 #standard-tab .group,
-#related-tab .group {
+#related-tab .group,
+#society-tab .group {
     padding: 10px 15px 0 15px;
 }
 
