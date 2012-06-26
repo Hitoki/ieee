@@ -823,15 +823,6 @@ div.image-container {
 #content p.item_odd {
   margin: 0px; }
 
-#xplore-tab p.item_odd,
-#xplore-tab p.item_even,
-#education-tab p.item_odd,
-#education-tab p.item_even {
-  padding: 0 0 0 0;
-  display: inline-block;
-  width: 600px;
-  vertical-align: top; }
-
 #xplore-tab div.group ul li, #education-tab div.group ul li {
   list-style-type: none; }
 

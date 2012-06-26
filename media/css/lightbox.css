@@ -515,9 +515,13 @@ margin-top: 0;
 #periodical-tab .group,
 #standard-tab .group,
 #related-tab .group {
-    padding: 5px 15px 0 15px;
+    padding: 10px 15px 0 15px;
 }
 
 .overview-label {
    color: #9F9F9F;
+}
+
+#related-tab .group p {
+    margin-bottom: 15px;
 }
