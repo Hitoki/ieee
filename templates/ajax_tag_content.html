@@ -267,12 +267,10 @@ function isValidEmailAddress(emailAddress) {
                                 {% if resource.is_current_conference and resource.other_conferences|length %}
                                 <p class="more-conferences">
                                     <a href="#" id="show-other-conferences-{{ resource.id }}" class="show-other-conferences {id: {{ resource.id }}}" rel="nofollow">
-                                        <img src="{{ MEDIA_URL }}images/plusbox.png"/>
-                                        Show {{ resource.other_conferences|length }} more conference{{ resource.other_conferences|pluralize }} in this series...
+                                        <img class="toggleIcon" src="{{ MEDIA_URL }}images/plusbox.png"/>Show {{ resource.other_conferences|length }} more conference{{ resource.other_conferences|pluralize }} in this series...
                                     </a>
                                     <a href="#" id="hide-other-conferences-{{ resource.id }}" class="hide-other-conferences {id: {{ resource.id }}}" rel="nofollow">
-                                        <img src="{{ MEDIA_URL }}images/minusbox.png"/>
-                                        Hide other conferences in this series
+                                        <img class="toggleIcon" src="{{ MEDIA_URL }}images/minusbox.png"/>Hide other conferences in this series
                                     </a>
                                 </p>
                                 <div id="other-conferences-{{ resource.id }}" class="other-conferences">

@@ -250,18 +250,23 @@ input.text {
 }
 
 #lightbox .resources-lightbox-content .group p.more-conferences {
-    margin: 0;
+    margin: 5px 0 0 15px;
     padding:0;
 }
 
 #lightbox .resources-lightbox-content .other-conferences {
     background-color: #DFDFDF;
     padding: 10px;
-    margin: 0 40px;
+    margin: 3px 35px 0;
     display: none;
     border-radius: 10px;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px; 
+}
+
+#content .other-conferences p.desc_odd,
+#content .other-conferences p.desc_even {
+    margin-bottom: 20px;
 }
 
 #lightbox .resources-lightbox-content .hide-other-conferences {
