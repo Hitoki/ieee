@@ -323,7 +323,7 @@ function resizeLightboxTab() {
     $('.nootabs-selected-tab div.group').css('height', windowHeight - 310);
     $('#xplore-results-container div.group').css('height', windowHeight - 382);
     $('#education-results-container div.group').css('height', windowHeight - 358);
-    $('#patents-tab div.group').css('height', windowHeight - 319);
+    $('#patents-tab div.group').css('height', windowHeight - 320);
 }
 
 function addCommas(nStr) {
