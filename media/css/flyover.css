@@ -144,3 +144,8 @@ The content is just the contents of the flyover.
 .textui-node-flyover-container .flyover-close-button {
    margin-right: 3px;
 }
+
+.flyover-content {
+    max-height: 200px;
+    overflow-y: auto;
+}
