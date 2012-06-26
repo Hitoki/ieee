@@ -2044,7 +2044,6 @@ ul.errors {
   padding-bottom: 3em; }
 
 #xplore-totals, #education-totals {
-  padding-left: 10px;
   float: left;
   margin: 0; }
 
@@ -2053,11 +2052,12 @@ ul.errors {
   margin: 0; }
 
 .print-resource {
-  width: 677px;
+  width: 667px;
   height: 20px;
+  margin-top: -32px;
   text-align: right;
   position: absolute;
-  padding: 2px 5px 5px;
+  padding: 7px 5px 5px 15px;
   background: white;
   box-shadow: 0 5px 5px -4px gray;
   border-bottom: 1px solid #cfcfcf;
@@ -2078,16 +2078,9 @@ ul.errors {
   .nootabs-selected-tab div.group a {
     outline: none; }
 
-#xplore-results-container div.group {
-  margin-top: 52px; }
-
-#education-totals {
-  float: left;
-  margin: 0;
-  padding-left: 5px; }
-
+#xplore-results-container div.group,
 #education-results-container div.group {
-  margin-top: 28px; }
+  margin-top: 32px; }
 
 #xplore-results-container div.group ul {
   margin-top: 0px; }
@@ -2103,14 +2096,6 @@ div.group ul li {
 
 div.group ul li:first-child {
   margin-top: 0; }
-
-#xplore-tab div.print-resource {
-  height: 40px;
-  margin-top: -45px; }
-
-#education-tab div.print-resource {
-  margin-top: -20px;
-  padding: 2px 0px 3px 10px; }
 
 #resource-print-container {
   float: right;
@@ -2182,6 +2167,8 @@ div.group ul li:first-child {
 .articles-show-count {
   float: left;
   clear: left; }
+  .articles-show-count.newWinIcon {
+    margin: 0; }
 
 #education-tab .articles-search {
   display: none; }

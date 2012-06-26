@@ -321,8 +321,8 @@ function resizeLightboxTab() {
     $('.resources-lightbox-content').css('height', windowHeight - 220); // Blue container
     //$('#resource-tabs .nootabs-selected-tab').css('height', windowHeight - 320); // White container
     $('.nootabs-selected-tab div.group').css('height', windowHeight - 310);
-    $('#xplore-results-container div.group').css('height', windowHeight - 382);
-    $('#education-results-container div.group').css('height', windowHeight - 358);
+    $('#xplore-results-container div.group').css('height', windowHeight - 362);
+    $('#education-results-container div.group').css('height', windowHeight - 362);
     $('#patents-tab div.group').css('height', windowHeight - 320);
 }
 
