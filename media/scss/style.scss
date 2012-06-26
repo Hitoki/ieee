@@ -2728,6 +2728,11 @@ td.machine-generated-column {
     }
 }
 
+.truncatedText {
+    border-bottom: 1px dotted black;
+    display: inline;
+}
+
 #alertWrapper {
    display: block;
    clear: both;

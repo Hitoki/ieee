@@ -118,10 +118,11 @@ function autoTruncate(elems, options) {
             
             shortText = $.trim(shortText) + '...';
             
-            var abbr = $('<abbr></abbr>').appendTo(elem);
+            var abbr = $('<div class="truncatedText"></div>').appendTo(elem);
             abbr.text(shortText);
             if (!options.no_tooltip) {
                 abbr.attr('title', original_text);
+                abbr.addClass("flyover {position:'left-top', width:300}");
             }
             
             if (options.flyover) {

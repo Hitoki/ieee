@@ -2587,6 +2587,10 @@ td.machine-generated-column {
     text-decoration: none;
     color: white; }
 
+.truncatedText {
+  border-bottom: 1px dotted black;
+  display: inline; }
+
 #alertWrapper {
   display: block;
   clear: both;

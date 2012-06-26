@@ -524,6 +524,7 @@ var Flyover = {
             var flyoverWidth = this._flyover[0].offsetWidth;
             var flyoverHeight = this._flyover[0].offsetHeight;
             
+            
             if (this.options.arrow && this.arrow[0]) {
                 arrowWidth = this.arrow[0].offsetWidth;
                 arrowHeight = this.arrow[0].offsetHeight;
