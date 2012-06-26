@@ -183,12 +183,12 @@ input.text {
 
 #lightbox .resources-lightbox-content #xplore-tab div.group {
     min-height: 295px;
-    padding-left: 15px;
+    padding: 15px;
 }
 
 #lightbox .resources-lightbox-content #education-tab div.group {
     min-height: 319px;
-    padding-left: 15px;
+    padding: 15px;
 }
 
 #lightbox .resources-lightbox-content {
@@ -250,7 +250,7 @@ input.text {
 }
 
 #lightbox .resources-lightbox-content .group p.more-conferences {
-    margin:.5em 0 0.4em 3em;
+    margin: 0;
     padding:0;
 }
 
@@ -506,4 +506,18 @@ margin-top: 0;
 
 #lightbox .tester-message-lightbox-content li {
    margin-left: 3em;
+}
+
+#overview-tab .group,
+#conference-tab .group,
+#job-tab .group,
+#patents-tab .group,
+#periodical-tab .group,
+#standard-tab .group,
+#related-tab .group {
+    padding: 5px 15px 0 15px;
+}
+
+.overview-label {
+   color: #9F9F9F;
 }

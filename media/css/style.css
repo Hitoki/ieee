@@ -801,7 +801,6 @@ ul#view-header li {
   padding-bottom: 10px; }
   #content table.society-images td a {
     font-size: 14pt;
-    margin-bottom: 5px;
     display: inline-block; }
 
 #content table.society-images td.society-logo {
@@ -814,12 +813,10 @@ div.image-container {
   border: 1px solid #cfcfcf; }
 
 #content p.item_even {
-  padding: 5px 5px 0 15px;
   margin: 0px;
   vertical-align: top; }
 
 #content p.item_odd {
-  padding: 5px 5px 0 15px;
   margin: 0px; }
 
 #xplore-tab p.item_odd,
@@ -832,8 +829,7 @@ div.image-container {
   vertical-align: top; }
 
 #xplore-tab div.group ul li, #education-tab div.group ul li {
-  list-style-type: decimal;
-  margin: 20px 0 20px 25px; }
+  list-style-type: none; }
 
 .xplore-full-results-page p.item_even, .xplore-full-results-page p.item_odd {
   font-weight: bold; }
@@ -859,40 +855,26 @@ div.image-container {
   cursor: url(/media/images/wait-cursor.gif), wait; }
 
 #content p.desc_even {
-  padding: 5px 5px 0 15px;
   margin: 0px; }
 
 #content p.desc_odd {
-  padding: 5px 5px 0 15px;
   margin: 0px; }
 
 #content p.pub_even {
   font-style: italic;
-  padding: 5px 5px 0 15px;
   margin: 0px; }
 
 #content p.pub_odd {
   font-style: italic;
-  padding: 5px 5px 0 15px;
   margin: 0px; }
-
-#xplore-tab p.desc_even,
-#xplore-tab p.desc_odd,
-#xplore-tab p.pub_even,
-#xplore-tab p.pub_odd,
-#education-tab p.desc_even,
-#education-tab p.desc_odd,
-#education-tab p.pub_even,
-#education-tab p.pub_odd {
-  padding: 5px 5px 0 0px; }
 
 #content-title {
   clear: both; }
 
-.gs-result .gs-title * {
+.gs-result .gs-title, .gs-result .gs-title * {
   color: blue !important;
   text-decoration: none !important; }
-  .gs-result .gs-title *:hover {
+  .gs-result .gs-title:hover, .gs-result .gs-title *:hover {
     color: #FFA500 !important;
     text-decoration: underline !important; }
 
@@ -901,13 +883,8 @@ div.image-container {
 .gs-patentResult img.gs-image {
   border: 1px solid #CFCFCF !important; }
 
-#patents-tab div.group {
-  padding-left: 15px; }
 #patents-tab div#branding {
   margin-top: -9px; }
-
-#patents-tab table {
-  margin-top: 10px; }
 
 .gs-watermark {
   display: none; }
@@ -915,11 +892,13 @@ div.image-container {
 #job-tab a {
   display: block;
   clear: both;
-  margin-top: 15px; }
+  margin-top: 20px; }
   #job-tab a:first-child {
-    margin-top: 10px; }
+    margin-top: 0; }
   #job-tab a:last-child {
-    margin-bottom: 10px; }
+    margin-bottom: 20px; }
+#job-tab b {
+  font-weight: normal; }
 #job-tab td {
   padding-left: 15px; }
 
