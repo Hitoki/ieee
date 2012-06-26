@@ -57,7 +57,7 @@
                     
                     {% for topic in notification_requests %}
                     <p>
-                        <a href="http://{{ domain }}/textui/?autoload=9432">{{ topic.node }}</a><br/>
+                        <a href="http://{{ domain }}/textui/?autoload={% topic.node.id %}">{{ topic.node }}</a><br/>
                         {% for resource in topic.new_resources %}
                         <span>
                             {% ifchanged %}In <a href="">{{ resource.resource.resource_type.name|slice:"0:1"|upper }}{{ resource.resource.resource_type.name|slice:"1:" }}s</a>:{% endifchanged %}
@@ -68,7 +68,7 @@
                     </p>
                     {% endfor %}
 
-                    <p>You’re receiving this email because you asked to be alerted when new resources related to the above {% if notification_requests.count > 1 %}topics{% else %}topic{% endif %} are added to IEEE Technology Navigator. You can <a href="#">unsubscribe from alerts</a> as well.</p>
+                    <p>You’re receiving this email because you asked to be alerted when new resources related to the above {% if notification_requests.count > 1 %}topics{% else %}topic{% endif %} are added to IEEE Technology Navigator. {% comment %}You can <a href="#">unsubscribe from alerts</a> as well.{% endcomment %}</p>
                 </td>
             </tr>
         </tbody>
