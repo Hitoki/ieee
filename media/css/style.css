@@ -2634,8 +2634,12 @@ td.machine-generated-column {
       display: inline-block;
       font-size: 10pt;
       width: 135px;
-      margin-right: -5px;
-      margin-left: 8px; }
+      margin-right: -8px;
+      margin-left: 8px;
+      position: relative;
+      border-radius: 5px;
+      -moz-border-radius: 5px;
+      -webkit-border-radius: 5px; }
       #alertWrapper #alertContainer #notificationRequestEmail.defaultValue {
         color: #9F9F9F; }
     #alertWrapper #alertContainer #notificationRequestButton {

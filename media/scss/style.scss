@@ -2765,8 +2765,10 @@ td.machine-generated-column {
             display: inline-block;
             font-size: 10pt;
             width: 135px;
-            margin-right: -5px;
+            margin-right: -8px;
             margin-left: 8px;
+            position: relative;
+            @include default-border-radius;
             &.defaultValue {
                 color: #9F9F9F;
             }
