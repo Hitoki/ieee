@@ -2580,7 +2580,8 @@ td.machine-generated-column {
   width: 1200px; }
 
 #landingLink {
-  clear: both; }
+  clear: both;
+  margin-top: -25px; }
   #landingLink a {
     float: right;
     text-decoration: none;
