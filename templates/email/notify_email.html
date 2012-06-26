@@ -57,7 +57,7 @@
                     
                     {% for topic in notification_requests %}
                     <p>
-                        <a href="http://{{ domain }}/textui/?autoload={% topic.node.id %}">{{ topic.node }}</a><br/>
+                        <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}">{{ topic.node }}</a><br/>
                         {% for resource in topic.new_resources %}
                         <span>
                             {% ifchanged %}In <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}&tab={{ resource.resource.resource_type.name }}-tab">{{ resource.resource.resource_type.name|slice:"0:1"|upper }}{{ resource.resource.resource_type.name|slice:"1:" }}s</a>:{% endifchanged %}
