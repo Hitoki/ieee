@@ -335,7 +335,7 @@ def ajax_tag_content(request, tag_id, ui=None):
             'parent_nodes': parent_nodes,
             'ui': ui,
             'close_conference': tag._get_closest_conference(),
-            'definition': tag.short_definition,
+            'definition': tag._get_definition_link(),
             'xplore_article': xplore_article
             #'xplore_error': xplore_error,
             #'xplore_results': xplore_results,
