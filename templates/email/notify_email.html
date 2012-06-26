@@ -53,15 +53,16 @@
         <tbody>
             <tr>
                 <td>
-                    <p>The following IEEE Technology Navigator {% if notification_requests.count > 1 %}topics have{% else %}topic has{% endif %} {% if new_resources.count > 1 %}new resources{% else %}a new resource{% endif %} associated with {% if notification_requests.count > 1 %}them{% else %}it{% endif %}:</p>
+                    <p>The following <a href="http://{{ domain }}">IEEE Technology Navigator</a> {% if notification_requests|length > 1 %}topics have{% else %}topic has{% endif %} {% if new_resources|length > 1 %}new resources{% else %}a new resource{% endif %} associated with {% if notification_requests|length > 1 %}them{% else %}it{% endif %}:</p>
                     
                     {% for topic in notification_requests %}
                     <p>
-                        {{ topic.node }}<br/>
-                        {% for resource in new_resources %}
+                        <a href="http://{{ domain }}/textui/?autoload=9432">{{ topic.node }}</a><br/>
+                        {% for resource in topic.new_resources %}
                         <span>
-                            In <a href="#">Type</a>:<br/>
-                            {{ resource.name }} (<a href="#">link</a>)<br/>
+                            {% ifchanged %}In <a href="">{{ resource.resource.resource_type.name|slice:"0:1"|upper }}{{ resource.resource.resource_type.name|slice:"1:" }}s</a>:{% endifchanged %}
+                            <br/>
+                            {{ resource.resource.name }} (<a href="#">link</a>)<br/>
                         </span>
                         {% endfor %}
                     </p>

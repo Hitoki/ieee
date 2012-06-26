@@ -5,6 +5,7 @@ from datetime import datetime
 from django.template import Context, RequestContext, loader
 from html2text import html2text
 import settings
+from django.contrib.sites.models import Site
 
 class Command(NoArgsCommand):
 
@@ -21,7 +22,7 @@ class Command(NoArgsCommand):
                 else:
                     last_update = req.date_created
                 
-                new_resources = ResourceNodes.objects.filter(node=req.node, date_created__gt=last_update)
+                new_resources = ResourceNodes.objects.filter(node=req.node, date_created__gt=last_update).order_by('resource__resource_type')
                 for nr in new_resources:
                     # Save record of this relationship being notified via email
                     nt = ResourceNodeNotification()
@@ -36,7 +37,8 @@ class Command(NoArgsCommand):
 
             if len(reqs_with_new_resources):
                 context = Context({
-                    "notification_requests": reqs_with_new_resources
+                    "notification_requests": reqs_with_new_resources,
+                    "domain": Site.objects.get_current()
                 })
                 body = loader.get_template('email/notify_email.html').render(context)
         
