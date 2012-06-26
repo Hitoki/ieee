@@ -295,7 +295,10 @@ def ajax_tag_content(request, tag_id, ui=None):
     if len(jobsHtml):
         jobsHtml = jobsHtml + '<a href="%s" target="_blank">More jobs</a>' % jobsUrl.replace('&format=json','')
 
-    xplore_article = _get_xplore_results(tag.name, show_all=False, offset=0, sort=XPLORE_SORT_PUBLICATION_YEAR)[0][0]
+    try:
+        xplore_article = _get_xplore_results(tag.name, show_all=False, offset=0, sort=XPLORE_SORT_PUBLICATION_YEAR)[0][0]
+    except IndexError:
+        xplore_article = None
 
     file1 = None
     # removied sectors from count
