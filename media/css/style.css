@@ -534,6 +534,10 @@ p.admin-links a:hover {
   color: white;
   text-decoration: underline; }
 
+img.newWinIcon {
+  display: inline-block;
+  margin: 0 10px; }
+
 .helpicon {
   background-image: url(/media/images/sm_help.png);
   background-position: 0 0;

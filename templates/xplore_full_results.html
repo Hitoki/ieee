@@ -38,7 +38,7 @@
                                         <a href="{{ result.url }}" target="_blank">
                                     {% endif %}
                                     <p class="{% cycle 'item_odd' 'item_even' %}">
-                                        <span>{{ result.name|safe }}</span>{% if result.url %}&nbsp;<img src="{{ MEDIA_URL }}images/popup.png" />{% endif %}
+                                        <span>{{ result.name|safe }}</span>{% if result.url %}<img class="newWinIcon" src="{{ MEDIA_URL }}images/popup.png" />{% endif %}
                                     </p>
                                     {% if result.url %}
                                         </a>

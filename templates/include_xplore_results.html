@@ -6,10 +6,7 @@
             <a href="{{ result.url }}" target="_blank" rel="nofollow">
         {% endif %}
         <p class="{% cycle 'item_odd' 'item_even' %}">
-            <span class="auto-truncate-words {length:165, flyover:true}">{{ result.name|safe }}</span>
-            {% if result.url %}
-                <img src="{{ MEDIA_URL }}images/popup.png" />
-            {% endif %}
+            <span class="auto-truncate-words {length:165, flyover:true}">{{ result.name|safe }}</span>{% if result.url %}<img class="newWinIcon" src="{{ MEDIA_URL }}images/popup.png" />{% endif %}
         </p>
         {% if result.url %}
             </a>

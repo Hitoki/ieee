@@ -580,7 +580,7 @@
 												{% endifequal %}
 											</td>
 											<td>
-												{% if resource.url %}<a href="{{ resource.url }}" target="_blank"><span class="flyover {position:'bottom'}" title="{{ resource.url }}"><img src="{{ MEDIA_URL }}/images/popup.png"/></span></a>{% endif %}
+												{% if resource.url %}<a href="{{ resource.url }}" target="_blank"><span class="flyover {position:'bottom'}" title="{{ resource.url }}"></span></a><img class="newWinIcon" src="{{ MEDIA_URL }}/images/popup.png"/>{% endif %}
 												
 												{% ifequal resource.url_status "bad" %}
 													<!-- Bad URL icon -->
@@ -647,7 +647,7 @@
 													{% endifequal %}
 												</td>
 												<td>
-													{% if sub_conference.url %}<a href="{{ sub_conference.url }}" target="_blank"><span class="flyover {position:'bottom'}" title="{{ sub_conference.url }}"><img src="{{ MEDIA_URL }}/images/popup.png"/></span></a>{% endif %}
+													{% if sub_conference.url %}<a href="{{ sub_conference.url }}" target="_blank"><span class="flyover {position:'bottom'}" title="{{ sub_conference.url }}"></span></a><img class="newWinIcon" src="{{ MEDIA_URL }}/images/popup.png"/>{% endif %}
 												</td>
 												<td>
 													{% if sub_conference.nodes.all %}{{ sub_conference.nodes.all.count }}{% endif %}

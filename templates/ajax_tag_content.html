@@ -175,40 +175,31 @@ function isValidEmailAddress(emailAddress) {
                             <!-- Don't show this section if definition = none -->
                             {% if tag.definition %}
                             <li>
-                                <p style='padding: 10px 5px 5px 15px;color:#6F6F6F;margin:0;'>DEFINITION</p>
-                                <p style='padding: 0 5px 0 15px;margin:0;'>{{ tag.definition }}</p>
+                                <div class="overview-label">Definition</div>
+                                <div>{{ tag.definition }}</div>
                             </li>
                             {% endif %}
                             <li>
-                                <p style='padding: 10px 5px 5px 15px;color:#6F6F6F;margin:0;'>RECENT RELATED XPLORE ARTICLE</p>
-                                <div id="xplore-overview" style='padding: 0 5px 0 15px;margin:0;'>
-                                    <a href="{{ xplore_article.url }}" target="_blank" rel="nofollow">{{ xplore_article.name|safe }}</a>
-                                    {% if xplore_article.url and xplore_article.url_status != "bad" %}
-                                        <img src="{{ MEDIA_URL }}images/popup.png" />
-                                    {% endif %}
+                                <div class="overview-label">Recent Related Xplore Article</div>
+                                <div id="xplore-overview">
+                                    <a href="{{ xplore_article.url }}" target="_blank" rel="nofollow">{{ xplore_article.name|safe }}</a>{% if xplore_article.url and xplore_article.url_status != "bad" %}<img class="newWinIcon" src="{{ MEDIA_URL }}images/popup.png" />{% endif %}
                                 </div>
                             </li>
                             <li>
-                                <p style='padding: 10px 5px 5px 15px;color:#6F6F6F;margin:0;'>UPCOMING RELATED CONFERENCE</p>
+                                <div class="overview-label">Upcoming Related Conference</div>
                                 {% if close_conference.url and close_conference_status != "bad" %}
                                 <a href="{% if close_conference.url|slice:":4" != 'http' %}http://{% endif %}{{ close_conference.url }}" target="_blank" rel="nofollow">
                                 {% endif %}
-                                    <p style='padding: 0 5px 0 15px;margin:0;'>
-                                        <span>{{close_conference.name}}</span>
-                                        {% if close_conference.url and close_conference.url_status != "bad" %}
-                                        <img src="{{ MEDIA_URL }}images/popup.png" />
-                                        {% endif %}
-                                        {% if close_conference.is_machine_generated %}
-                                        <img src="{{ MEDIA_URL }}images/drive.png" class="flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
-                                        {% endif %}
-                                    </p>
+                                    <div>
+                                        <span>{{close_conference.name}}</span>{% if close_conference.url and close_conference.url_status != "bad" %}<img class="newWinIcon" src="{{ MEDIA_URL }}images/popup.png" />{% endif %}{% if close_conference.is_machine_generated %}<img src="{{ MEDIA_URL }}images/drive.png" class="flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />{% endif %}
+                                    </div>
                                 {% if close_conference.url and close_conference_status != "bad" %}
                                 </a>
                                 {% endif %}                                
                             </li>
                             <li>
-                                <p style='padding: 10px 5px 5px 15px;color:#6F6F6F;margin:0;'>RECENT RELATED PATENT</p>
-                                <div id="patent-overview" style='padding: 0 5px 0 15px;margin:0;'></div>
+                                <div class="overview-label">Recent Related Patent</div>
+                                <div id="patent-overview"></div>
                             </li>
                         </ul>
                     </div>
@@ -235,10 +226,7 @@ function isValidEmailAddress(emailAddress) {
                                     {% if society.url %}
                                     <a href="{{ society.url }}" target="_blank" rel="nofollow">
                                         {% endif %}
-                                        <span>{{ society.name }} ({{ society.abbreviation }})</span>
-                                        {% if society.url %}
-                                        <img src="{{ MEDIA_URL }}images/popup.png" />
-                                        {% endif %}
+                                        <span>{{ society.name }} ({{ society.abbreviation }})</span>{% if society.url %}<img class="newWinIcon" src="{{ MEDIA_URL }}images/popup.png" />{% endif %}
                                         {% if society.url %}
                                     </a>
                                     <br/>
@@ -270,13 +258,7 @@ function isValidEmailAddress(emailAddress) {
                                 <a href="{{ resource.url }}" target="_blank" rel="nofollow">
                                     {% endif %}
                                     <p class="{% cycle 'item_odd' 'item_even' %}">
-                                        <span>{{resource.name}}</span>
-                                        {% if resource.url and resource.url_status != "bad" %}
-                                        <img src="{{ MEDIA_URL }}images/popup.png" />
-                                        {% endif %}
-                                        {% if resource.is_machine_generated %}
-                                        <img src="{{ MEDIA_URL }}images/drive.png" class="flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
-                                        {% endif %}
+                                        <span>{{resource.name}}</span>{% if resource.url and resource.url_status != "bad" %}<img class="newWinIcon" src="{{ MEDIA_URL }}images/popup.png" />{% endif %}{% if resource.is_machine_generated %}<img src="{{ MEDIA_URL }}images/drive.png" class="flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />{% endif %}
                                     </p>
                                     {% if resource.url and resource.url_status != "bad" %}
                                 </a>
@@ -299,13 +281,7 @@ function isValidEmailAddress(emailAddress) {
                                     <a href="{{ other_conference.url }}" target="_blank" rel="nofollow" rel="nofollow">
                                         {% endif %}
                                         <p class="{% cycle 'item_odd' 'item_even' %}">
-                                            <span>{{other_conference.name}}</span>
-                                            {% if other_conference.url and other_conference.url_status != "bad" %}
-                                            <img src="{{ MEDIA_URL }}images/popup.png" />
-                                            {% endif %}
-                                            {% if other_conference.is_machine_generated %}
-                                            <img src="{{ MEDIA_URL }}images/drive.png" class="flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
-                                            {% endif %}
+                                            <span>{{other_conference.name}}</span>{% if other_conference.url and other_conference.url_status != "bad" %}<img class="newWinIcon" src="{{ MEDIA_URL }}images/popup.png" />{% endif %}{% if other_conference.is_machine_generated %}<img src="{{ MEDIA_URL }}images/drive.png" class="flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />{% endif %}
                                         </p>
                                         {% if other_conference.url and other_conference.url_status != "bad" %}
                                     </a>
@@ -368,7 +344,7 @@ function isValidEmailAddress(emailAddress) {
                 
 <!-- Jobs -->
                 <div id="job-tab" data-printUrl='{% url print_resource tag.id "jobs" %}'>
-                    <div class="group" style="margin-left: 2ex">
+                    <div class="group">
                         {% if jobs %}
                         {{ jobs|safe }}
                         {% else %}
@@ -395,10 +371,7 @@ function isValidEmailAddress(emailAddress) {
                                     {% if resource.url and resource.url_status != "bad" %}
                                     <a href="{{ resource.url }}" target="_blank" rel="nofollow">
                                         {% endif %}
-                                        <span>{{resource.name}}</span>
-                                        {% if resource.url and resource.url_status != "bad" %}
-                                        <img src="{{ MEDIA_URL }}images/popup.png" />
-                                        {% endif %}
+                                        <span>{{resource.name}}</span>{% if resource.url and resource.url_status != "bad" %}<img class="newWinIcon" src="{{ MEDIA_URL }}images/popup.png" />{% endif %}
                                         {% if resource.url and resource.url_status != "bad" %}
                                     </a>
                                     {% endif %}
@@ -427,10 +400,7 @@ function isValidEmailAddress(emailAddress) {
                                     {% if resource.url and resource.url_status != "bad" %}
                                     <a href="{{ resource.url }}" target="_blank" rel="nofollow">
                                         {% endif %}
-                                        <span>{{resource.name}}</span>
-                                        {% if resource.url and resource.url_status != "bad" %}
-                                        <img src="{{ MEDIA_URL }}images/popup.png" />
-                                        {% endif %}
+                                        <span>{{resource.name}}</span>{% if resource.url and resource.url_status != "bad" %}<img class="newWinIcon" src="{{ MEDIA_URL }}images/popup.png" />{% endif %}
                                         {% if resource.url and resource.url_status != "bad" %}
                                     </a>
                                     {% endif %}
