@@ -1794,7 +1794,7 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     totaledufound = 0
     xplore_results = None
     
-    if resource_type not in ['all', 'sectors', 'related_tags', 'societies', 'conferences', 'periodicals', 'standards', 'xplore_edu', 'xplore', 'jobs']:
+    if resource_type not in ['all', 'sectors', 'related_tags', 'societies', 'conferences', 'periodicals', 'standards', 'xplore_edu', 'xplore', 'jobs', 'patents']:
         raise Exception('Unknown resource_type "%s"' % resource_type)
 
     if resource_type == 'sectors' or resource_type == 'all':
