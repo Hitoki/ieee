@@ -59,11 +59,11 @@
                     <p>
                         <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}">{{ topic.node }}</a><br/>
                         {% for resource in topic.new_resources %}
-                        <span style="margin-left:15px">
-                            <em>{% ifchanged %}In <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}&tab={{ resource.resource.resource_type.name }}-tab">{{ resource.resource.resource_type.name|slice:"0:1"|upper }}{{ resource.resource.resource_type.name|slice:"1:" }}s</a>:{% endifchanged %}</em>
+                        <div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<em>{% ifchanged %}In <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}&tab={{ resource.resource.resource_type.name }}-tab">{{ resource.resource.resource_type.name|slice:"0:1"|upper }}{{ resource.resource.resource_type.name|slice:"1:" }}s</a>:{% endifchanged %}</em>
                             <br/>
-                            {{ resource.resource.name }} {% if resource.resource.url %}(<a href="{{ resource.resource.url }}">link</a>){% endif %}<br/>
-                        </span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;{{ resource.resource.name }} {% if resource.resource.url %}(<a href="{{ resource.resource.url }}">link</a>){% endif %}<br/>
+                        </div>
                         {% endfor %}
                     </p>
                     {% endfor %}
