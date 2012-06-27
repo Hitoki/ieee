@@ -44,7 +44,7 @@ class Command(NoArgsCommand):
         
                 htmlbody = body
                 body = html2text(body)
-                msg = EmailMultiAlternatives("IEEE Technav new resource notification", body , settings.DEFAULT_FROM_EMAIL, [email.email])
+                msg = EmailMultiAlternatives("New resource alert", body , settings.DEFAULT_FROM_EMAIL, [email.email])
                 msg.attach_alternative(htmlbody, 'text/html')
                 msg.send()
 
