@@ -296,7 +296,7 @@ def ajax_tag_content(request, tag_id, ui=None):
         jobsHtml = jobsHtml + '<a href="%s" target="_blank">More jobs</a>' % jobsUrl.replace('&format=json','')
 
     try:
-        xplore_article = _get_xplore_results(tag.name, show_all=False, offset=0, sort=XPLORE_SORT_PUBLICATION_YEAR)[0][0]
+        xplore_article = _get_xplore_results(tag.name, show_all=False, offset=0, sort="py")[0][0]
     except IndexError:
         xplore_article = None
 
