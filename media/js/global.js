@@ -455,7 +455,7 @@ XploreLoader.prototype.loadContent = function(force) {
         var xploreLoader = this;
         this.ajaxToken = (new Date()).getTime() + '-' + Math.random();
         
-        this.loadingElem = $('<div id="loading"><img src="/media/images/ajax-loader.gif" class="loading" /><br/>Loading Xplore articles...</div>').appendTo(this.scrollElem);
+        this.loadingElem = $('<div id="xplore-loading"><img src="/media/images/ajax-loader.gif" class="loading" /><br/>Loading Xplore articles...</div>').appendTo(this.scrollElem);
         
         $.ajax({
             url: '/ajax/xplore_results'
@@ -605,7 +605,7 @@ JobLoader.prototype.loadContent = function(force) {
         var jobLoader = this;
         this.ajaxToken = (new Date()).getTime() + '-' + Math.random();
         
-        this.loadingElem = $('<div id="loading" class="loading"><img src="/media/images/ajax-loader.gif" class="loading" /><br/>Loading Jobs...</div>').appendTo(this.scrollElem);
+        this.loadingElem = $('<div id="job-loading" class="loading"><img src="/media/images/ajax-loader.gif" class="loading" /><br/>Loading Jobs...</div>').appendTo(this.scrollElem);
 
         $.ajax({
             url: '/ajax/jobs_results'
