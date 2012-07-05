@@ -605,7 +605,7 @@ JobLoader.prototype.loadContent = function(force) {
         var jobLoader = this;
         this.ajaxToken = (new Date()).getTime() + '-' + Math.random();
         
-        this.loadingElem = $('<div id="job-loading" class="loading"><img src="/media/images/ajax-loader.gif" class="loading" /><br/>Loading Jobs...</div>').appendTo(this.scrollElem);
+        this.loadingElem = $('<div id="job-loading" class="loading" style="padding-top: 6em;text-align: center;padding-bottom: 3em;"><img src="/media/images/ajax-loader.gif" class="loading" /><br/>Loading Jobs...</div>').appendTo(this.scrollElem);
 
         $.ajax({
             url: '/ajax/jobs_results'
