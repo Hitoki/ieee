@@ -19,6 +19,7 @@
             printDropDown.reset();
         })
         attachXploreResults('#xplore-results-container');
+        attachJobResults('#job-results-container');
     });
 
     $(function() {
@@ -339,12 +340,21 @@ function isValidEmailAddress(emailAddress) {
                 
 <!-- Jobs -->
                 <div id="job-tab" data-printUrl='{% url print_resource tag.id "jobs" %}'>
-                    <div class="group">
-                        {% if jobs %}
-                        {{ jobs|safe }}
-                        {% else %}
-                        <p class="no-resources">No jobs are currently tagged "{{ tag.name }}"</p>
-                        {% endif %}
+                    <div id="job-results-container" class="{ tagId: {{ tag.id }} }">
+                        <div class="print-resource">
+                            <a href="http://jobs.ieee.org/jobs/search/results?{{ tag.name }}" target="_blank">More jobs</a>
+                            </div>
+                            <div class="group" style='margin-top: 32px;'>
+                            <div class="results" style="display:inline;">
+                            {% comment %}
+                            {% if jobs %}
+                            {{ jobs|safe }}
+                            {% else %}
+                            <p class="no-resources">No jobs are currently tagged "{{ tag.name }}"</p>
+                            {% endif %}
+                            {% endcomment %}
+                            </div>
+                        </div>
                     </div>
                 </div>
 

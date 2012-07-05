@@ -182,7 +182,8 @@ input.text {
 }
 
 #lightbox .resources-lightbox-content #xplore-tab div.group,
-#lightbox .resources-lightbox-content #education-tab div.group {
+#lightbox .resources-lightbox-content #education-tab div.group,
+#lightbox .resources-lightbox-content #job-tab div.group {
     min-height: 295px;
     padding: 15px;
 }

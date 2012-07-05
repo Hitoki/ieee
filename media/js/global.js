@@ -322,6 +322,7 @@ function resizeLightboxTab() {
     //$('#resource-tabs .nootabs-selected-tab').css('height', windowHeight - 320); // White container
     $('.nootabs-selected-tab div.group').css('height', windowHeight - 310);
     $('#xplore-results-container div.group').css('height', windowHeight - 362);
+    $('#job-results-container div.group').css('height', windowHeight - 362);
     $('#education-results-container div.group').css('height', windowHeight - 362);
     $('#patents-tab div.group').css('height', windowHeight - 320);
 }
@@ -454,7 +455,7 @@ XploreLoader.prototype.loadContent = function(force) {
         var xploreLoader = this;
         this.ajaxToken = (new Date()).getTime() + '-' + Math.random();
         
-        this.loadingElem = $('<div id="xplore-loading" class="loading"><img src="/media/images/ajax-loader.gif" class="loading" /><br/>Loading Xplore articles...</div>').appendTo(this.scrollElem);
+        this.loadingElem = $('<div id="loading"><img src="/media/images/ajax-loader.gif" class="loading" /><br/>Loading Xplore articles...</div>').appendTo(this.scrollElem);
         
         $.ajax({
             url: '/ajax/xplore_results'
@@ -561,6 +562,115 @@ XploreLoader.prototype.onScroll = function() {
 
 function attachXploreResults(elem, ctype) {
     new XploreLoader(elem, null, null, ctype);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+// This loads the job results via AJAX.
+function JobLoader(elem, showAll) {
+    var jobLoader = this;
+    this.elem = $(elem);
+    this.resultElem = this.elem.find('.results');
+    this.scrollElem = this.elem.find('.group');
+    this.loadingElem = null;
+    this.isLoading = false;
+    this.noResultsElem = null;
+    this.ajaxToken = null;
+    
+    this.scrollElem.scroll(function() {
+        jobLoader.onScroll();
+    });
+    
+    if (showAll == undefined) {
+        showAll = false;
+    }
+    
+    this.offset = 25;
+    
+    this.numJobResultsPerPage = 25;
+    
+    this.tagId = this.elem.metadata().tagId;
+    this.termId = this.elem.metadata().termId;
+    
+    this.showAll = showAll;
+    this.sortDesc = false;
+    
+    this.loadContent();
+}
+
+JobLoader.prototype.loadContent = function(force) {
+    if (!this.isLoading || force) {
+        this.isLoading = true;
+        
+        var jobLoader = this;
+        this.ajaxToken = (new Date()).getTime() + '-' + Math.random();
+        
+        this.loadingElem = $('<div id="loading" class="loading"><img src="/media/images/ajax-loader.gif" class="loading" /><br/>Loading Jobs...</div>').appendTo(this.scrollElem);
+
+        $.ajax({
+            url: '/ajax/jobs_results'
+            , data: {
+                tag_id: this.tagId
+                , term_id: this.termId
+                , show_all: this.showAll
+                , offset: this.offset
+                , token: this.ajaxToken
+            }
+            , type: 'post'
+            , dataType: 'json'
+            , success: function(data) {
+                jobLoader.onLoadData(data);
+            }
+        });
+        
+        this.offset += this.numJobResultsPerPage;
+    }
+}
+
+JobLoader.prototype.onLoadData = function(data) {
+    if (data.token == this.ajaxToken) {
+        this.loadingElem.remove();
+        this.loadingElem = null;
+        
+        if (this.noResultsElem) {
+            this.noResultsElem.remove();
+            this.noResultsElem = null;
+        }
+    
+        if (data.job_error != null && data.num_results != 0) {
+            // Job error, show the error message.
+            this.errorElem = $('<p class="error" style="margin: 50px 0 0 10px;"></p>').appendTo(this.scrollElem);
+            this.errorElem.text(data.job_error);
+        
+        } else {
+            // Normal results, load into the page.
+            
+            this.scrollElem.html(data.html);
+            
+            resizeLightboxTab();
+
+            if (data.num_results == 0) {
+                this.noResultsElem = $('<p class="no-resources">No Jobs are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
+            }
+            
+            // Showing {{ xplore_results|length }} of {{ totalfound|intcomma }} results 
+            
+        }
+        
+        this.isLoading = false;
+    }
+}
+
+JobLoader.prototype.onScroll = function() {
+    var minScrollBottom = 25;
+    var scrollBottom = getScrollBottom(this.scrollElem);
+    if (scrollBottom <= minScrollBottom) {
+        this.loadContent();
+    }
+}
+
+function attachJobResults(elem, ctype) {
+    new JobLoader(elem, null, null, ctype);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

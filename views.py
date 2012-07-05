@@ -594,6 +594,52 @@ def ajax_xplore_results(request):
     
     return HttpResponse(json.dumps(data), 'application/javascript')
 
+@csrf_exempt
+def ajax_jobs_results(request):
+    '''
+    Shows the list of IEEE xplore articles for the given tag.
+    @param tag_id: POST var, specifyies the tag.
+    @param show_all: POST var, ("true" or "false"): if true, return all rows.
+    @param offset: POST var, int: the row to start at.
+    @param token: POST var, the ajax token to pass through.
+    @return: HTML output of results.
+    '''
+    tag_id = request.POST.get('tag_id')
+    
+    if tag_id is not None and tag_id != 'undefined':
+        tag = Node.objects.get(id=tag_id)
+        term = None
+        name = tag.name
+    else:
+        assert False, 'Must specify tag_id.'
+    
+    show_all = (request.POST['show_all'] == 'true')
+    offset = int(request.POST.get('offset', 0))
+    token = request.POST['token']
+    
+    #jobs_results, jobs_error, num_results = _get_xplore_results(name, show_all=show_all, offset=offset, sort=sort, sort_desc=sort_desc, ctype=ctype)
+        
+    jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=%s&format=json" % (urllib.urlencode({"kwsMustContain": tag.name}), offset)
+    file1 = urllib2.urlopen(jobsUrl).read()
+    jobsJson = json.loads(file1)
+    jobsCount = jobsJson.get('Total')
+    jobs = jobsJson.get('Jobs')
+    jobsHtml = ""
+    for job in jobs:
+        jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured"><b>%(JobTitle)s</b></a> %(Company)s<br>\n' % job
+    
+    # DEBUG:
+    #xplore_error = 'BAD ERROR.'
+
+    data = {
+        'num_results': jobsCount,
+        'html': jobsHtml,
+        'search_term': name,
+        'token': token,
+    }
+    
+    return HttpResponse(json.dumps(data), 'application/javascript')
+
 @login_required
 def ajax_node(request):
     "Returns JSON data for the given node, including its parents."
