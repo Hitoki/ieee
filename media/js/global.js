@@ -662,7 +662,7 @@ JobLoader.prototype.onLoadData = function(data) {
 }
 
 JobLoader.prototype.onScroll = function() {
-    var minScrollBottom = 50;
+    var minScrollBottom = 25;
     var scrollBottom = getScrollBottom(this.scrollElem);
     if (scrollBottom <= minScrollBottom) {
         this.loadContent();
