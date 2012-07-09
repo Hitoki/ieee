@@ -585,9 +585,9 @@ function JobLoader(elem, showAll) {
         showAll = false;
     }
     
-    this.offset = 25;
+    this.offset = 1;
     
-    this.numJobResultsPerPage = 25;
+    //this.numJobResultsPerPage = 25;
     
     this.tagId = this.elem.metadata().tagId;
     this.termId = this.elem.metadata().termId;
@@ -623,7 +623,7 @@ JobLoader.prototype.loadContent = function(force) {
             }
         });
         
-        this.offset += this.numJobResultsPerPage;
+        this.offset += 1;
     }
 }
 
@@ -645,7 +645,7 @@ JobLoader.prototype.onLoadData = function(data) {
         } else {
             // Normal results, load into the page.
             
-            this.scrollElem.html(data.html);
+            this.scrollElem.append(data.html);
             
             resizeLightboxTab();
 
@@ -662,7 +662,7 @@ JobLoader.prototype.onLoadData = function(data) {
 }
 
 JobLoader.prototype.onScroll = function() {
-    var minScrollBottom = 25;
+    var minScrollBottom = 50;
     var scrollBottom = getScrollBottom(this.scrollElem);
     if (scrollBottom <= minScrollBottom) {
         this.loadContent();

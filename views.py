@@ -287,14 +287,15 @@ def ajax_tag_content(request, tag_id, ui=None):
     file1 = urllib2.urlopen(jobsUrl).read()
     jobsJson = json.loads(file1)
     jobsCount = jobsJson.get('Total')
-    jobs = jobsJson.get('Jobs')
-    jobsHtml = ""
-    for job in jobs:
-        jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured"><b>%(JobTitle)s</b></a> %(Company)s<br>\n' % job
+    #jobs = jobsJson.get('Jobs')
+    #jobsHtml = ""
+    #for job in jobs:
+    #    jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured"><b>%(JobTitle)s</b></a> %(Company)s<br>\n' % job
 
-    if len(jobsHtml):
-        jobsHtml = jobsHtml + '<a href="%s" target="_blank">More jobs</a>' % jobsUrl.replace('&format=json','')
+    #if len(jobsHtml):
+    #    jobsHtml = jobsHtml + '<a href="%s" target="_blank">More jobs</a>' % jobsUrl.replace('&format=json','')
 
+    jobsUrl = jobsUrl.replace('&format=json','')
     try:
         xplore_article = _get_xplore_results(tag.name, show_all=False, offset=0, sort=XPLORE_SORT_PUBLICATION_YEAR, sort_desc=True)[0][0]
     except IndexError:
@@ -324,8 +325,9 @@ def ajax_tag_content(request, tag_id, ui=None):
         return render(request, 'ajax_tag_content.html', {
             'tag':tag,
             'societies':societies,
-            'jobs':jobsHtml,
+            #'jobs':jobsHtml,
             'jobsCount':jobsCount,
+            'jobsUrl': jobsUrl,
             'conferences': conferences,
             'experts': experts,
             'periodicals': periodicals,
@@ -619,7 +621,7 @@ def ajax_jobs_results(request):
     
     #jobs_results, jobs_error, num_results = _get_xplore_results(name, show_all=show_all, offset=offset, sort=sort, sort_desc=sort_desc, ctype=ctype)
         
-    jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=%s&format=json" % (urllib.urlencode({"kwsMustContain": tag.name}), offset)
+    jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&page=%s&format=json" % (urllib.urlencode({"kwsMustContain": tag.name}), offset)
     file1 = urllib2.urlopen(jobsUrl).read()
     jobsJson = json.loads(file1)
     jobsCount = jobsJson.get('Total')

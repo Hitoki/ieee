@@ -342,7 +342,7 @@ function isValidEmailAddress(emailAddress) {
                 <div id="job-tab" data-printUrl='{% url print_resource tag.id "jobs" %}'>
                     <div id="job-results-container" class="{ tagId: {{ tag.id }} }">
                         <div class="print-resource">
-                            <a href="http://jobs.ieee.org/jobs/search/results?{{ tag.name }}" target="_blank">More jobs</a>
+                            <a href="{{ jobsUrl }}" target="_blank">More jobs</a>
                             </div>
                             <div class="group" style='margin-top: 32px;'>
                             <div class="results" style="display:inline;">
