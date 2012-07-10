@@ -68,6 +68,19 @@
                     </p>
                     {% endfor %}
 
+                    {% for r in societies %}
+                    <p>
+                        <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}">{{ r.node }}</a><br/>
+                        {% for soc in r.new_societies %}
+                        <div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<em>{% ifchanged %}In <a href="http://{{ domain }}/textui/?autoload={{ r.node.id }}&tab={{ resource.resource.resource_type.name }}-tab">{{ soc|slice:"0:1"|upper }}{{ soc|slice:"1:" }}s</a>:{% endifchanged %}</em>
+                            <br/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;{{ soc.society.name }} {% if soc.society.url %}(<a href="{{ resource.resource.url }}">link</a>){% endif %}<br/>
+                        </div>
+                        {% endfor %}
+                    </p>
+                    {% endfor %}
+
                     <p>You’re receiving this email because you asked to be alerted when new resources related to the above {% if notification_requests.count > 1 %}topics{% else %}topic{% endif %} are added to IEEE Technology Navigator. {% comment %}You can <a href="http://{{ domain }}">unsubscribe from alerts</a> as well.{% endcomment %}</p>
                 </td>
             </tr>
