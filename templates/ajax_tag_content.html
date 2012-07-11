@@ -186,6 +186,7 @@ function isValidEmailAddress(emailAddress) {
                                     <a href="{{ xplore_article.url }}" target="_blank" rel="nofollow">{{ xplore_article.name|safe }}</a>{% if xplore_article.url and xplore_article.url_status != "bad" %}<img class="newWinIcon" src="{{ MEDIA_URL }}images/popup.png" />{% endif %}
                                 </div>
                             </li>
+                            {% if conferences|length %}
                             <li>
                                 <div class="overview-label">Upcoming Related Conference</div>
                                 {% if close_conference.url and close_conference_status != "bad" %}
@@ -198,6 +199,7 @@ function isValidEmailAddress(emailAddress) {
                                 </a>
                                 {% endif %}                                
                             </li>
+                            {% endif %}
                             <li>
                                 <div class="overview-label">Recent Related Patent</div>
                                 <div id="patent-overview"></div>
