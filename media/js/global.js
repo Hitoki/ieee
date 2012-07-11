@@ -455,7 +455,7 @@ XploreLoader.prototype.loadContent = function(force) {
         var xploreLoader = this;
         this.ajaxToken = (new Date()).getTime() + '-' + Math.random();
         
-        this.loadingElem = $('<div id="xplore-loading"><img src="/media/images/ajax-loader.gif" class="loading" /><br/>Loading Xplore articles...</div>').appendTo(this.scrollElem);
+        this.loadingElem = $('<div id="xplore-loading" class="loading" style="padding-top: 6em;text-align: center;padding-bottom: 3em;"><img src="/media/images/ajax-loader.gif" class="loading" /><br/>Loading Xplore articles...</div>').appendTo(this.scrollElem);
         
         $.ajax({
             url: '/ajax/xplore_results'
