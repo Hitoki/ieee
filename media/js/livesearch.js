@@ -30,11 +30,16 @@ function LiveSearch(inputElem) {
     
     this.inputElem = $(inputElem);
     this.inputElem.change(function() {
-        liveSearch.update();
+        if (!liveSearch.options.search_on_enter_only) {
+            liveSearch.update();            
+        }
     });
     this.inputElem.keyup(function(event) {
         if (!liveSearch.options.search_on_enter_only || event.keyCode == 13){
-            liveSearch.update();            
+            if (liveSearch.options.search_on_enter_only) {
+                liveSearch.lastValue = null;                
+            }
+            liveSearch.update();
         }
     });
     
