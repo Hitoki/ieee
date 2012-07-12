@@ -776,6 +776,10 @@ $(function() {
         'ajaxError',
         function (event, XMLHttpRequest, textStatus, errorThrown) {
             
+            // Ignore explicit xhr aborts
+            if (XMLHttpRequest.statusText == "abort"){
+                return;
+            }
             // Show the error as a DHTML popup
             Lightbox.hide();
             Flyover.hide();
