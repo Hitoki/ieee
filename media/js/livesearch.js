@@ -9,7 +9,8 @@ function LiveSearch(inputElem) {
     this.options = {
         'url': null,
         'use_tags_callback': false,
-        'search_on_page_load': false
+        'search_on_page_load': false,
+        'search_on_enter_only': false
     };
     this.options = $.extend(this.options, inputElem.metadata());
     
@@ -31,8 +32,10 @@ function LiveSearch(inputElem) {
     this.inputElem.change(function() {
         liveSearch.update();
     });
-    this.inputElem.keyup(function() {
-        liveSearch.update();
+    this.inputElem.keyup(function(event) {
+        if (!liveSearch.options.search_on_enter_only || event.keyCode == 13){
+            liveSearch.update();            
+        }
     });
     
     if (this.options.search_on_page_load) {
