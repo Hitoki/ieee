@@ -507,8 +507,12 @@ var Tags = {
         //log('showSearchResults(): calling updateResults().');
         this.updateResults(showSearchResultsCallback);
     },
-    
+    textuiNodes_xhr: null,
     updateResults: function(showSearchResultsCallback) {
+
+        if (Tags.textuiNodes_xhr){
+            Tags.textuiNodes_xhr.abort();
+        }
         this._showWaitScreen();
         //var filterStr = implode(',', this.getFilters());
         
@@ -541,7 +545,7 @@ var Tags = {
             //log('updateResults(): load sector/cluster');
             var token = createUUID();
             this.ajaxToken = token;
-            $.get(
+            Tags.textuiNodes_xhr = $.get(
                 '/ajax/textui_nodes',
                 {
                     sector_id: this.sectorId
@@ -565,7 +569,7 @@ var Tags = {
             //log('updateResults(): load society');
             var token = createUUID();
             this.ajaxToken = token;
-            $.get(
+            Tags.textuiNodes_xhr = $.get(
                 '/ajax/textui_nodes',
                 {
                     society_id: this.societyId
@@ -600,7 +604,7 @@ var Tags = {
             //log('updateResults(): load search_for');
             var token = createUUID();
             this.ajaxToken = token;
-            $.get(
+            Tags.textuiNodes_xhr = $.get(
                 '/ajax/textui_nodes',
                 {
                                         search_for: search_for
