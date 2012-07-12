@@ -2748,8 +2748,9 @@ td.machine-generated-column {
        }
        #notificationRequestButton {
            border: 0 none;
-           padding: 5px 10px 3px;
+           padding: 4px 15px 2px;
            vertical-align: top;
+           font-size: 12pt;
            @include green-gradient;
            @include custom-border-radius(0, 3px, 3px, 0);
             &:hover {

@@ -2610,8 +2610,9 @@ td.machine-generated-column {
         color: #9F9F9F; }
     #alertWrapper #alertContainer #notificationRequestButton {
       border: 0 none;
-      padding: 5px 10px 3px;
+      padding: 4px 15px 2px;
       vertical-align: top;
+      font-size: 12pt;
       background: -moz-linear-gradient(top, #33cc00 40%, #269900 100%);
       /* FF3.6+ */
       background: -webkit-gradient(linear, left top, left bottom, color-stop(40%, #33cc00), color-stop(100%, #269900));
