@@ -2148,7 +2148,7 @@ div.group ul li:first-child {
 
 .live-search-clear {
   background-image: url(/media/images/clear-search.png);
-  background-position: 0 0;
+  background-position: 0 -1px;
   background-repeat: no-repeat;
   cursor: pointer;
   display: inline-block;
@@ -2174,9 +2174,6 @@ div.group ul li:first-child {
 
 .clear-hover {
   background-color: #ffa500 !important; }
-
-.live-search-clear:hover {
-  background-position: 0 -21px; }
 
 /* Textui zoom slider */
 #textui-zoom-container {
