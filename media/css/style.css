@@ -2200,8 +2200,20 @@ div.group ul li:first-child {
   -webkit-border-bottom-right-radius: 5px;
   -webkit-border-bottom-left-radius: 0; }
   #textui-tags-search-submit:hover {
-    color: #33cc00;
-    background: none 0 0 #FFFFFF; }
+    background: -moz-linear-gradient(top, #ffd896 0%, #ffa500 100%);
+    /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffd896), color-stop(100%, #ffa500));
+    /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #ffd896 0%, #ffa500 100%);
+    /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #ffd896 0%, #ffa500 100%);
+    /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #ffd896 0%, #ffa500 100%);
+    /* IE10+ */
+    background: linear-gradient(top, #ffd896 0%, #ffa500 100%);
+    /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffd896', endColorstr='#ffa500',GradientType=0 );
+    /* IE6-9 */ }
 
 .articles-search {
   float: left;

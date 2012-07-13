@@ -2259,8 +2259,7 @@ div.group ul li:first-child {
     height: 19px;
     @include custom-border-radius (0, 5px, 5px, 0);
     &:hover {
-        color: $green;
-        background: none 0 0 #FFFFFF;
+        @include orange-gradient;
     }
 }
 
