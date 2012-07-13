@@ -2222,18 +2222,19 @@ div.group ul li:first-child {
 .live-search {
     border: 1px solid $primaryColor;
     width: 155px;
-    padding: 2px 0 1px 23px;
+    padding: 3px 0 1px 23px;
     display: inline-block;
     margin-top: 0;
     outline: none;
     font-size: 10pt;
+    vertical-align: top;
     background: $white url(../images/magnifyIcon.png) no-repeat 4px 3px;
-    @include default-border-radius;
+    @include custom-border-radius (5px, 0, 0, 5px);
 }
 
 .live-search-clear {
     background-image: url(/media/images/clear-search.png);
-    background-position: 0 -1px;
+    background-position: 0 0;
     background-repeat: no-repeat;
     cursor: pointer;
     display: inline-block;
@@ -2242,6 +2243,25 @@ div.group ul li:first-child {
     width: 20px;
     display: none;
     position: relative;
+}
+
+#textui-tags-search-submit {
+    @include green-gradient;
+    color: white;
+    font-weight: normal;
+    margin-left: -6px;
+    padding: 0 5px;
+    border: 1px solid #006699;
+    border-left: 0;
+    cursor: pointer;
+    vertical-align: top;
+    display: inline-block;
+    height: 19px;
+    @include custom-border-radius (0, 5px, 5px, 0);
+    &:hover {
+        color: $green;
+        background: none 0 0 #FFFFFF;
+    }
 }
 
 .articles-search {

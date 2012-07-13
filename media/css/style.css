@@ -2136,19 +2136,26 @@ div.group ul li:first-child {
 .live-search {
   border: 1px solid #006699;
   width: 155px;
-  padding: 2px 0 1px 23px;
+  padding: 3px 0 1px 23px;
   display: inline-block;
   margin-top: 0;
   outline: none;
   font-size: 10pt;
+  vertical-align: top;
   background: white url(../images/magnifyIcon.png) no-repeat 4px 3px;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px; }
+  border-radius: 5px 0 0 5px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-topright: 0;
+  -moz-border-radius-bottomright: 0;
+  -moz-border-radius-bottomleft: 5px;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-top-right-radius: 0;
+  -webkit-border-bottom-right-radius: 0;
+  -webkit-border-bottom-left-radius: 5px; }
 
 .live-search-clear {
   background-image: url(/media/images/clear-search.png);
-  background-position: 0 -1px;
+  background-position: 0 0;
   background-repeat: no-repeat;
   cursor: pointer;
   display: inline-block;
@@ -2157,6 +2164,44 @@ div.group ul li:first-child {
   width: 20px;
   display: none;
   position: relative; }
+
+#textui-tags-search-submit {
+  background: -moz-linear-gradient(top, #33cc00 40%, #269900 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(40%, #33cc00), color-stop(100%, #269900));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #33cc00 40%, #269900 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #33cc00 40%, #269900 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #33cc00 40%, #269900 100%);
+  /* IE10+ */
+  background: linear-gradient(top, #33cc00 40%, #269900 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#33cc00', endColorstr='#269900',GradientType=0 );
+  /* IE6-9 */
+  color: white;
+  font-weight: normal;
+  margin-left: -6px;
+  padding: 0 5px;
+  border: 1px solid #006699;
+  border-left: 0;
+  cursor: pointer;
+  vertical-align: top;
+  display: inline-block;
+  height: 19px;
+  border-radius: 0 5px 5px 0;
+  -moz-border-radius-topleft: 0;
+  -moz-border-radius-topright: 5px;
+  -moz-border-radius-bottomright: 5px;
+  -moz-border-radius-bottomleft: 0;
+  -webkit-border-top-left-radius: 0;
+  -webkit-border-top-right-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  -webkit-border-bottom-left-radius: 0; }
+  #textui-tags-search-submit:hover {
+    color: #33cc00;
+    background: none 0 0 #FFFFFF; }
 
 .articles-search {
   float: left;
