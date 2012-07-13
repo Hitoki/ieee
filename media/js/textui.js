@@ -111,7 +111,11 @@ $(document).ready(function(){
     }).live('mouseout', function(){
         $(this).children("#textui-zoom-slider").removeClass("ui-widget-content-hover");
     });
-    
+
+    $('#textui-tags-search-submit').click(function(){
+        Tags.updateResults();
+    });
+
     //var matches = window.location.search.match('autoload=([0-9]*)');
     var params = window.location.search.substring(1).split("&");
     // filter out empty items
