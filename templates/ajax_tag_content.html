@@ -69,6 +69,7 @@
                         $("#alertForm").hide();
                         $("#alertError").hide();
                         $("#alertSuccess").show();
+                        $("#alertHelpIcon").hide();
                         $("#alertContainer").addClass("success");
                         return false;
                     }
@@ -518,7 +519,7 @@ function isValidEmailAddress(emailAddress) {
                     </div>
                 </div>
                 <span id="alertError" style="display:none">Please enter a valid email</span>
-                <span class="helpicon flyover {width:280}" title="Sign up to receive alerts about this topic">&nbsp;</span>
+                <span id="alertHelpIcon" class="helpicon flyover {width:280}" title="Sign up to receive alerts about this topic">&nbsp;</span>
             </div>
             {% if is_ajax %}
             <div id="landingLink">
