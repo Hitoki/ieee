@@ -2749,13 +2749,14 @@ td.machine-generated-column {
        }
        #notificationRequestEmail {
             border: 0 none;
-            padding: 5px 3px 3px;
+            padding: 5px 3px 4px;
             display: inline-block;
             font-size: 10pt;
             width: 135px;
             margin-right: -8px;
             margin-left: 8px;
             position: relative;
+            outline: none;
             @include default-border-radius;
             &.defaultValue {
                 color: #9F9F9F;
