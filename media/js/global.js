@@ -1,4 +1,13 @@
 
+function getUrlParam(name, url){
+    if (typeof url == "undefined"){
+        url = window.location.href;
+    }
+    var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(url);
+    if (!results) { return 0; }
+    return results[1] || 0;
+}
+
 function implode(glue, array) {
     var str = "";
     for (var i=0; i<array.length; i++) {

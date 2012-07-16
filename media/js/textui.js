@@ -22,7 +22,7 @@ $(document).ready(function(){
         });
     }
     
-    if ($.cookie("noShowPanels")){
+    if ($.cookie("noShowPanels") || getUrlParam('autoload')){
         $(".welcome-panels-lightbox-outer").remove();
     } else {
         //Only open panels if on tag galaxy view.
@@ -116,19 +116,10 @@ $(document).ready(function(){
         Tags.updateResults();
     });
 
-    //var matches = window.location.search.match('autoload=([0-9]*)');
-    var params = window.location.search.substring(1).split("&");
-    // filter out empty items
-    params = $.grep(params, function(o, i){return o.length;});
-    var matches = [];
-
-    for (var i=0; i<params.length;i++){
-        val = params[i].split('=');
-        matches.push(val[1]);
-    }
-
-    if (matches.length){
-        setTimeout(function(){Tags.selectTag(matches[0],matches[1]);}, 3000);
+    var qAutoload = getUrlParam('autoload');
+    var qTab = getUrlParam('tab');
+    if (qAutoload && qTab){
+        setTimeout(function(){Tags.selectTag(qAutoload,qTab);}, 3000);
     }
     
     // Handle nootabs.
