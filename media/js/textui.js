@@ -118,8 +118,8 @@ $(document).ready(function(){
 
     var qAutoload = getUrlParam('autoload');
     var qTab = getUrlParam('tab');
-    if (qAutoload && qTab){
-        setTimeout(function(){Tags.selectTag(qAutoload,qTab);}, 3000);
+    if (qAutoload){
+        setTimeout(function(){Tags.selectTag(qAutoload,qTab || null);}, 3000);
     }
     
     // Handle nootabs.
