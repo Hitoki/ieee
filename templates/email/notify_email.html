@@ -65,17 +65,11 @@
                             &nbsp;&nbsp;&nbsp;&nbsp;{{ resource.resource.name }} {% if resource.resource.url %}(<a href="{{ resource.resource.url }}">link</a>){% endif %}<br/>
                         </div>
                         {% endfor %}
-                    </p>
-                    {% endfor %}
-
-                    {% for r in societies %}
-                    <p>
-                        <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}">{{ r.node }}</a><br/>
-                        {% for soc in r.new_societies %}
+                        {% for society in topic.new_societies %}
                         <div>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<em>{% ifchanged %}In <a href="http://{{ domain }}/textui/?autoload={{ r.node.id }}&tab={{ resource.resource.resource_type.name }}-tab">{{ soc|slice:"0:1"|upper }}{{ soc|slice:"1:" }}s</a>:{% endifchanged %}</em>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<em>{% ifchanged %}In <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}&tab={{ society.society.name }}-tab">{{ society.society.name|slice:"0:1"|upper }}{{ society.society.name|slice:"1:" }}s</a>:{% endifchanged %}</em>
                             <br/>
-                            &nbsp;&nbsp;&nbsp;&nbsp;{{ soc.society.name }} {% if soc.society.url %}(<a href="{{ resource.resource.url }}">link</a>){% endif %}<br/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;{{ society.society.name }} {% if society.society.url %}(<a href="{{ society.society.url }}">link</a>){% endif %}<br/>
                         </div>
                         {% endfor %}
                     </p>

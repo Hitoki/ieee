@@ -14,14 +14,24 @@ class Command(NoArgsCommand):
         emails = ResourceNodeNotificationRequest.objects.all().distinct('email')
         for email in emails:
             reqs = ResourceNodeNotificationRequest.objects.filter(email=email.email)
-            reqs_with_new_resources = []
-            reqs_with_new_societies = []
+            #use only one request
+            reqs_with_new_items = []
             for req in reqs:
                 previous_notifications = ResourceNodeNotification.objects.filter(request=req).order_by('-date_notified')
                 if previous_notifications.count():
                     last_update = previous_notifications[0].date_notified
                 else:
                     last_update = req.date_created
+
+                import pdb;pdb.set_trace()
+                new_societies = NodeSocieties.objects.filter(node=req.node, date_created__gt=last_update)
+                for ns in new_societies:
+                    # Save record of this relationship being notified via email
+                    nt = ResourceNodeNotification()
+                    nt.request = req
+                    nt.resourceNodes = ns
+                    nt.date_notified = datetime.utcnow()
+                    nt.save()
                 
                 new_resources = ResourceNodes.objects.filter(node=req.node, date_created__gt=last_update).order_by('resource__resource_type')
                 for nr in new_resources:
@@ -32,27 +42,21 @@ class Command(NoArgsCommand):
                     nt.date_notified = datetime.utcnow()
                     nt.save()
 
-                new_societies = NodeSocieties.objects.filter(node=req.node, date_created__gt=last_update)
-                for ns in new_societies:
-                    # Save record of this relationship being notified via email
-                    nt = ResourceNodeNotification()
-                    nt.request = req
-                    nt.resourceNodes = nr
-                    nt.date_notified = datetime.utcnow()
-                    nt.save()
-
                 if new_resources.count():
                     req.new_resources = new_resources
-                    reqs_with_new_resources.append(req)
+                    if req not in reqs_with_new_items:
+                        reqs_with_new_items.append(req)
 
+                #append if doesn't exist, or deduplicate
                 if new_societies.count():
                     req.new_societies = new_societies
-                    reqs_with_new_societies.append(req)
+                    if req not in reqs_with_new_items:
+                        reqs_with_new_items.append(req)
 
-            if len(reqs_with_new_resources):
+            if len(reqs_with_new_items):
                 context = Context({
-                    "notification_requests": reqs_with_new_resources,
-                    "societies": reqs_with_new_societies,
+                    "notification_requests": reqs_with_new_items,
+                    "societies": reqs_with_new_items,
                     "domain": Site.objects.get_current()
                 })
                 body = loader.get_template('email/notify_email.html').render(context)
