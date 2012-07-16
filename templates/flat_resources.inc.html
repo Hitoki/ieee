@@ -55,6 +55,7 @@ Include file used by both print_resource.html and tag_landing.html
     <hr/>
     {% endif %}
 
+    {% if conferences or toc %}
     <div id="tag-conferences" class="tag-section">
         <h3><a name="conferences"></a><span class="index"></span> Conferences related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if conferences %}
@@ -110,7 +111,9 @@ Include file used by both print_resource.html and tag_landing.html
         {% endif %}
     </div>
     <hr/>
-    
+    {% endif %}
+
+    {% if xplore_results or toc %}
     <div id="tag-xplore" class="tag-section">
         <h3><a name="xplore"></a><span class="index"></span> Xplore Articles related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if xplore_results %}
@@ -143,7 +146,9 @@ Include file used by both print_resource.html and tag_landing.html
         {% endif %}
     </div>
     <hr/>
-    
+    {% endif %}
+
+    {% if jobsHtml or toc %}
     <div id="tag-jobs" class="tag-section">
         <h3><a href="" name="jobs"></a><span class="index"></span> Jobs related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         <div>
@@ -155,14 +160,19 @@ Include file used by both print_resource.html and tag_landing.html
         </div>
     </div>
     <hr/>
+    {% endif %}
     
+
+    {% if patents or toc %}
     <div id="tag-patents" class="tag-section">
         <h3><a name="patents"></a><span class="index"></span> Patents related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         <div class="patent-list"></div>
         <div id="branding"></div>
     </div>
     <hr/>
+    {% endif %}
     
+    {% if xplore_edu_results or toc %}
     <div id="tag-xplore_edu" class="tag-section">
         <h3><a name="xplore_edu"></a><span class="index"></span> Educational Resources on {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if xplore_edu_results %}
@@ -195,7 +205,9 @@ Include file used by both print_resource.html and tag_landing.html
         {% endif %}
     </div>
     <hr/>
-    
+    {% endif %}
+
+    {% if standards or toc %}
     <div id="tag-standards" class="tag-section">
         <h3><a name="standards"></a><span class="index"></span> Standards related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if standards %}
@@ -225,7 +237,9 @@ Include file used by both print_resource.html and tag_landing.html
         {% endif %}
     </div>
     <hr/>
+    {% endif %}
     
+    {% if periodicals or toc %}
     <div id="tag-periodicals" class="tag-section">
         <h3><a name="periodicals"></a><span class="index"></span> Periodicals related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if periodicals %}
@@ -255,7 +269,9 @@ Include file used by both print_resource.html and tag_landing.html
         {% endif %}
     </div>
     <hr/>
+    {% endif %}
     
+    {% if societies or toc %}
     <div id="tag-societies" class="tag-section">
         <h3><a name="societies"></a><span class="index"></span> IEEE Organizations related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if societies %}
@@ -281,7 +297,9 @@ Include file used by both print_resource.html and tag_landing.html
         {% endif %}
     </div>
     <hr/>
+    {% endif %}
     
+    {% if related_tags or toc %}
     <div id="tag-related-tags" class="tag-section">
         <h3><a name="concepts"></a><span class="index"></span> Topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if related_tags %}
@@ -306,6 +324,7 @@ Include file used by both print_resource.html and tag_landing.html
         {% endif %}
     </div>
     <hr/>
+    {% endif %}
     
     {% comment %}
     <div id="tag-sectors" class="tag-section">

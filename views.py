@@ -1834,8 +1834,10 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     related_tags = Node.objects.none()
     societies = Society.objects.none()
     conferences = Node.objects.none()
+    patents = resource_type == 'patents' or resource_type == 'all'
     periodicals = Node.objects.none()
     standards = Node.objects.none()
+    jobsHtml = ''
     conf_count = 0
     totalfound = 0
     xplore_edu_results = None
@@ -1879,18 +1881,17 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     
     related_items_count = sectors.count() + related_tags.count() + societies.count() + conf_count + periodicals.count() + standards.count() + totaledufound+ totalfound
     
+    if resource_type == 'jobs' or resource_type == 'all':
+        jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&format=json" % urllib.urlencode({"kwsMustContain": tag.name})
+        file1 = urllib2.urlopen(jobsUrl).read()
+        jobsJson = json.loads(file1)
+        jobsCount = jobsJson.get('Total')
+        jobs = jobsJson.get('Jobs')
+        for job in jobs:
+            jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured"><b>%(JobTitle)s</b></a> %(Company)s<br>\n' % job
 
-    jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&format=json" % urllib.urlencode({"kwsMustContain": tag.name})
-    file1 = urllib2.urlopen(jobsUrl).read()
-    jobsJson = json.loads(file1)
-    jobsCount = jobsJson.get('Total')
-    jobs = jobsJson.get('Jobs')
-    jobsHtml = ""
-    for job in jobs:
-        jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured"><b>%(JobTitle)s</b></a> %(Company)s<br>\n' % job
-
-    file1 = None
-    
+        file1 = None
+        
 
     return render(request, template_name, {
         'page_date': page_date,
@@ -1899,6 +1900,7 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
         'related_tags': related_tags,
         'societies': societies,
         'conferences': conferences,
+        'patents': patents,
         'periodicals': periodicals,
         'standards': standards,
         'xplore_edu_results': xplore_edu_results,
