@@ -3033,7 +3033,7 @@ def save_tag(request, tag_id):
         
         #tag.node_type = form.cleaned_data['node_type']
         if form.cleaned_data['societies'] is not None:
-            NodeSocieties.objects.update_for_node(tag, form.cleaned_data['societies'])                        
+            NodeSocieties.objects.update_for_node(tag, form.cleaned_data['societies'])
 
         tag.filters = form.cleaned_data['filters']
         tag.related_tags = form.cleaned_data['related_tags']
@@ -4270,6 +4270,7 @@ def save_resource(request):
                         node_societies = NodeSocieties()
                         node_societies.node = node
                         node_societies.society = society
+                        node_societies.date_created = datetime.utcnow()
                         node_societies.save()
             
             # Invalidate all resource-related caches, so they are regenerated.
@@ -4464,6 +4465,7 @@ def ajax_society_add_tags(request):
         node_societies = NodeSocieties()
         node_societies.node = tag
         node_societies.society = society
+        node_societies.date_created = datetime.utcnow()
         try:
             node_societies.save()
         except IntegrityError:

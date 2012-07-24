@@ -67,7 +67,7 @@
                         {% endfor %}
                         {% for society in topic.new_societies %}
                         <div>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<em>{% ifchanged %}In <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}&tab={{ society.society.name }}-tab">{{ society.society.name|slice:"0:1"|upper }}{{ society.society.name|slice:"1:" }}s</a>:{% endifchanged %}</em>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<em>{% ifchanged %}In <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}&tab=society-tab">Societies</a>:{% endifchanged %}</em>
                             <br/>
                             &nbsp;&nbsp;&nbsp;&nbsp;{{ society.society.name }} {% if society.society.url %}(<a href="{{ society.society.url }}">link</a>){% endif %}<br/>
                         </div>

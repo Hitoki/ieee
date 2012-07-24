@@ -820,7 +820,11 @@ class NodeSocietiesManager(models.Manager):
         societies_to_delete.delete()
 
         for society in societies:
-            self.get_or_create(node=node, society=society)
+            ns, created = self.get_or_create(node=node, society=society)
+            if created:
+                ns.date_created = datetime.utcnow()
+                ns.save()
+
 
 class NodeSocieties(models.Model):
     node = models.ForeignKey('Node', related_name='node_societies')
@@ -1231,16 +1235,17 @@ class ResourceNodes(models.Model):
 
 # ------------------------------------------------------------------------------
 
-class ResourceNodeNotificationRequest(models.Model):
+class ResourceAdditionNotificationRequest(models.Model):
     'Tracks the request of a user to be notified when resources are newly related to a node.'
     node = models.ForeignKey(Node, related_name='notification_node')
     date_created = models.DateTimeField(blank=False, null=False)
     email = models.CharField(blank=False, max_length=255)
 
-class ResourceNodeNotification(models.Model):
+class ResourceAdditionNotification(models.Model):
     'Tracke the sending a notification email.'
-    request = models.ForeignKey(ResourceNodeNotificationRequest)
-    resourceNodes = models.ForeignKey(ResourceNodes)
+    request = models.ForeignKey(ResourceAdditionNotificationRequest)
+    resourceNodes = models.ForeignKey(ResourceNodes, null=True)
+    resourceSocieties = models.ForeignKey(NodeSocieties, null=True)
     date_notified = models.DateTimeField(blank=False, null=False)
 
 # ------------------------------------------------------------------------------
