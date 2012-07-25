@@ -1844,7 +1844,7 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     totaledufound = 0
     xplore_results = None
     
-    if resource_type not in ['all', 'sectors', 'related_tags', 'societies', 'conferences', 'periodicals', 'standards', 'xplore_edu', 'xplore', 'jobs', 'patents']:
+    if resource_type not in ['all', 'sectors', 'related_tags', 'societies', 'conferences', 'periodicals', 'standards', 'xplore_edu', 'xplore', 'jobs', 'patents','overview']:
         raise Exception('Unknown resource_type "%s"' % resource_type)
 
     if resource_type == 'sectors' or resource_type == 'all':
@@ -1891,7 +1891,18 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
             jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured"><b>%(JobTitle)s</b></a> %(Company)s<br>\n' % job
 
         file1 = None
-        
+
+    try:
+        xplore_article = _get_xplore_results(tag.name, show_all=False, offset=0, sort=XPLORE_SORT_PUBLICATION_YEAR, sort_desc=True)[0][0]
+    except IndexError:
+        xplore_article = None        
+
+    if resource_type == 'overview':
+        overview = True
+    elif resource_type == 'all':
+        overview = True
+    else:
+        overview = False
 
     return render(request, template_name, {
         'page_date': page_date,
@@ -1908,7 +1919,11 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
         'toc': toc,
         'create_links': create_links,
         'related_items_count': related_items_count,
-        'jobsHtml': jobsHtml
+        'jobsHtml': jobsHtml,
+        'close_conference': tag._get_closest_conference(),
+        'definition': tag._get_definition_link(),
+        'xplore_article': xplore_article,
+        'overview': overview  
     })
 
 def debug_error(request):
