@@ -12,10 +12,7 @@
                 <a href="javascript:Tags.selectTag({{ tag.id }});" onClick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ tag.name }}']);" class="{{ tag.level }}" rel="nofollow"><img src="/media/images/tag_icon.png" class="tag-icon" /> {{ tag.name|truncatechars:30 }}</a>
             {% elif tag.node_type__name == 'tag_cluster' %}
                 {# Cluster #}
-                <a href="javascript:Tags.selectCluster({{ tag.id }}, {{ sector_id|reprjs }}, {{ society_id|reprjs}});" onClick="_gaq.push(['_trackEvent', 'Cluster', 'Click', '{{ tag.name }}']);" class="{{ tag.level }}" rel="nofollow">
-                    <img src="/media/images/icon_cluster_sm.png" class="cluster-icon" />
-                    {{ tag.name|truncatechars:30 }}
-                </a> 
+                <a href="javascript:Tags.selectCluster({{ tag.id }}, {{ sector_id|reprjs }}, {{ society_id|reprjs}});" onClick="_gaq.push(['_trackEvent', 'Cluster', 'Click', '{{ tag.name }}']);" class="{{ tag.level }}" rel="nofollow"><img src="/media/images/icon_cluster_sm.png" class="cluster-icon" />{{ tag.name|truncatechars:30 }}</a> 
             {% else %}
                 UNKNOWN NODE {{ tag.node_type__name }}
             {% endif %}
