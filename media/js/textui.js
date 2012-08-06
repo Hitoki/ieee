@@ -638,12 +638,20 @@ var Tags = {
     onLoadResults: function(data) {
         // Only update the results if the token matches (ie. ignore all but the last AJAX request).
         if (data.token == this.ajaxToken) {
-            this.remainingContent = data.content;
+
+            var content = $(data.content);
+            content.children('a').each(function(){
+                var level = $(this).data('tag-level');
+                $(this).addClass(level);
+            });
+
+            var content = $('<div>').append(content.clone()).html();
+
+            this.remainingContent = content;
             this.textui_flyovers_url = data.textui_flyovers_url;
-            
             $('#tag-counts').html(data.node_count_content);
             var height = $('#tag-counts').outerHeight();
-            
+
             if ($('#tag-galaxy').data('original_min_height') == undefined) {
                 $('#tag-galaxy').data('original_min_height', parseInt($('#tag-galaxy').css('min-height')));
             }
