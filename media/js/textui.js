@@ -643,6 +643,20 @@ var Tags = {
             content.children('a').each(function(){
                 var level = $(this).data('tag-level');
                 $(this).addClass(level);
+
+                var href;
+                var args = $(this).data('href-args')
+                if (args !== undefined) {
+                    args = args.split('-');
+                    
+                    if (args[0] == 'tag'){
+                        href = 'javascript:Tags.selectTag(' + args[1] + ');';
+                    } else if (args[0] == 'cluster'){
+                        href = 'javascript:Tags.selectCluster(' + args[1] + ');'
+                    }
+                    $(this).attr('href',href);                    
+                    }
+   
             });
 
             var content = $('<div>').append(content.clone()).html();
