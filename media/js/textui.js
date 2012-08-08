@@ -646,9 +646,9 @@ var Tags = {
                 $(this).attr('rel','nofollow');
             });
 
-            content.children('div[class~="tag "] > a').prepend($('<img src="/media/images/tag_icon.png" class="tag-icon" />&nbsp;'));
+            content.children('div[class~="tag "] > a').prepend($('<img src="/media/images/tag_icon.png" class="tag-icon" /> &nbsp;'));
 
-            content.children('div[class~="tag_cluster"] > a').prepend($('<img src="/media/images/icon_cluster_sm.png" class="cluster-icon" />&nbsp;'));
+            content.children('div[class~="tag_cluster"] > a').prepend($('<img src="/media/images/icon_cluster_sm.png" class="cluster-icon" /> &nbsp;'));
 
             var content = $('<div>').append(content.clone()).html();
 
