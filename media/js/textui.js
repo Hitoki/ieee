@@ -643,6 +643,7 @@ var Tags = {
             content.children('a').each(function(){
                 var level = $(this).data('tag-level');
                 $(this).addClass(level);
+                $(this).attr('rel','nofollow');
             });
 
             content.children('div[class~="tag "] > a').prepend($('<img src="/media/images/tag_icon.png" class="tag-icon" />&nbsp;'));
