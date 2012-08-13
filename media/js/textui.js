@@ -640,15 +640,24 @@ var Tags = {
         if (data.token == this.ajaxToken) {
 
             var content = $(data.content);
-            content.children('a').each(function(){
+            content.children('div').each(function(){
+                var html;
                 var level = $(this).data('tag-level');
-                $(this).addClass(level);
-                $(this).attr('rel','nofollow');
+                var id = $(this).data('tag-id');
+                var name = $(this).data('tag-name');
+                var type = $(this).data('tag-type');
+                var args = $(this).data('tag-args');
+                if (type == 'Term') {
+                    html = '<a href="javascript:Tags.selectTag('+ id +');" onClick="'+ args +'" class='+ level +'><img src="/media/images/tag_icon.png" class="tag-icon" /> '+ name +'</a>';
+                } else if (type == 'Tag'){
+                    html = '<a href="javascript:Tags.selectTag('+ id +');" onClick="'+ args +'" class='+ level +'><img src="/media/images/icon_cluster_sm.png" class="cluster-icon" /> '+ name +'</a>';
+                } else if (type == 'Cluster') {
+                    html = '<a href="javascript:Tags.selectCluster('+ $(this).data('cluster-args') +');" onClick="'+ args +'" class='+ level +'>'+ name +'</a>';
+                } else {
+                    html = "UNKNOWN NODE" + type;
+                }
+                $(this).prepend(html);
             });
-
-            content.children('div[class~="tag "] > a').prepend($('<img src="/media/images/tag_icon.png" class="tag-icon" /> &nbsp;'));
-
-            content.children('div[class~="tag_cluster"] > a').prepend($('<img src="/media/images/icon_cluster_sm.png" class="cluster-icon" /> &nbsp;'));
 
             var content = $('<div>').append(content.clone()).html();
 
