@@ -640,7 +640,6 @@ var Tags = {
         if (data.token == this.ajaxToken) {
 
             var content = $('<div>').append(data.content);
-            var test = data.content;
             content.find('.node').each(function(){
                 var html;
                 var level = $(this).data('tag-level');
