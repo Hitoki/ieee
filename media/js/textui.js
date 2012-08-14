@@ -653,8 +653,6 @@ var Tags = {
                     html = '<a href="javascript:Tags.selectTag('+ id +');" onClick="'+ args +'" class='+ level +'><img src="/media/images/tag_icon.png" class="tag-icon" /> '+ name +'</a>';
                 } else if (type == 'Cluster') {
                     html = '<a href="javascript:Tags.selectCluster('+ $(this).data('cluster-args') +');" onClick="'+ args +'" class='+ level +'><img src="/media/images/icon_cluster_sm.png" class="cluster-icon" /> '+ name +'</a>';
-                } else {
-                    html = "UNKNOWN NODE" + type;
                 }
                 $(this).prepend(html);
             });
