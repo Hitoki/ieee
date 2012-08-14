@@ -648,13 +648,15 @@ var Tags = {
                 var type = $(this).data('tag-type');
                 var args = $(this).data('tag-args');
                 if (type == 'Term') {
-                    html = '<a href="javascript:Tags.selectTag('+ id +');" onClick="'+ args +'" class='+ level +'><img src="/media/images/tag_icon.png" class="tag-icon" /> '+ name +'</a>';
+                    html = '<a href="javascript:Tags.selectTag('+ id +');" onClick="'+ args +'" class='+ level +' rel="nofollow"><img src="/media/images/tag_icon.png" class="tag-icon" /> '+ name +'</a>';
                 } else if (type == 'Tag') {
-                    html = '<a href="javascript:Tags.selectTag('+ id +');" onClick="'+ args +'" class='+ level +'><img src="/media/images/tag_icon.png" class="tag-icon" /> '+ name +'</a>';
+                    html = '<a href="javascript:Tags.selectTag('+ id +');" onClick="'+ args +'" class='+ level +' rel="nofollow"><img src="/media/images/tag_icon.png" class="tag-icon" /> '+ name +'</a>';
                 } else if (type == 'Cluster') {
-                    html = '<a href="javascript:Tags.selectCluster('+ $(this).data('cluster-args') +');" onClick="'+ args +'" class='+ level +'><img src="/media/images/icon_cluster_sm.png" class="cluster-icon" /> '+ name +'</a>';
+                    html = '<a href="javascript:Tags.selectCluster('+ $(this).data('cluster-args') +');" onClick="'+ args +'" class='+ level +' rel="nofollow"><img src="/media/images/icon_cluster_sm.png" class="cluster-icon" /> '+ name +'</a>';
                 }
-                $(this).prepend(html);
+                if (html !== undefined) {
+                    $(this).prepend(html);
+                }
             });
 
             var content = $('<div>').append(content.clone()).html();
