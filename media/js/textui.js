@@ -639,8 +639,9 @@ var Tags = {
         // Only update the results if the token matches (ie. ignore all but the last AJAX request).
         if (data.token == this.ajaxToken) {
 
-            var content = $(data.content);
-            content.children('div').each(function(){
+            var content = $('<div>').append(data.content);
+            var test = data.content;
+            content.find('.node').each(function(){
                 var html;
                 var level = $(this).data('tag-level');
                 var id = $(this).data('tag-id');
@@ -649,10 +650,10 @@ var Tags = {
                 var args = $(this).data('tag-args');
                 if (type == 'Term') {
                     html = '<a href="javascript:Tags.selectTag('+ id +');" onClick="'+ args +'" class='+ level +'><img src="/media/images/tag_icon.png" class="tag-icon" /> '+ name +'</a>';
-                } else if (type == 'Tag'){
-                    html = '<a href="javascript:Tags.selectTag('+ id +');" onClick="'+ args +'" class='+ level +'><img src="/media/images/icon_cluster_sm.png" class="cluster-icon" /> '+ name +'</a>';
+                } else if (type == 'Tag') {
+                    html = '<a href="javascript:Tags.selectTag('+ id +');" onClick="'+ args +'" class='+ level +'><img src="/media/images/tag_icon.png" class="tag-icon" /> '+ name +'</a>';
                 } else if (type == 'Cluster') {
-                    html = '<a href="javascript:Tags.selectCluster('+ $(this).data('cluster-args') +');" onClick="'+ args +'" class='+ level +'>'+ name +'</a>';
+                    html = '<a href="javascript:Tags.selectCluster('+ $(this).data('cluster-args') +');" onClick="'+ args +'" class='+ level +'><img src="/media/images/icon_cluster_sm.png" class="cluster-icon" /> '+ name +'</a>';
                 } else {
                     html = "UNKNOWN NODE" + type;
                 }
