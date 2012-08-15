@@ -640,18 +640,26 @@ var Tags = {
         if (data.token == this.ajaxToken) {
 
             var content = $('<div>').append(data.content);
-            content.find('.node').each(function(){
+            content.find('div').each(function(){
                 var html;
+                var args;
                 var level = $(this).data('tag-level');
                 var id = $(this).data('tag-id');
                 var name = $(this).data('tag-name');
                 var type = $(this).data('tag-type');
-                var args = $(this).data('tag-args');
-                if (type == 'Term') {
+                var fly = "{ type: '" + type + "'}";
+                $(this).addClass('node '+ type + ' flyover ' + fly);
+                if (type == 'term') {
+                    if ($(this).data('tag-score') == 1) {
+                        $(this).addClass('node-taxonomy-term');
+                    }
+                    args = "_gaq.push(['_trackEvent', 'Terms', 'Click', '"+ name +"']);";
                     html = '<a href="javascript:Tags.selectTag('+ id +');" onClick="'+ args +'" class='+ level +' rel="nofollow"><img src="/media/images/tag_icon.png" class="tag-icon" /> '+ name +'</a>';
-                } else if (type == 'Tag') {
+                } else if (type == 'tag') {
+                    args = "_gaq.push(['_trackEvent', 'Tags', 'Click', '"+ name +"]);";
                     html = '<a href="javascript:Tags.selectTag('+ id +');" onClick="'+ args +'" class='+ level +' rel="nofollow"><img src="/media/images/tag_icon.png" class="tag-icon" /> '+ name +'</a>';
-                } else if (type == 'Cluster') {
+                } else if (type == 'tag_cluster') {
+                    args = "_gaq.push(['_trackEvent', 'Cluster', 'Click', '"+ args +"']);";
                     html = '<a href="javascript:Tags.selectCluster('+ $(this).data('cluster-args') +');" onClick="'+ args +'" class='+ level +' rel="nofollow"><img src="/media/images/icon_cluster_sm.png" class="cluster-icon" /> '+ name +'</a>';
                 }
                 if (html !== undefined) {
