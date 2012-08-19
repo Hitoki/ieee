@@ -656,7 +656,7 @@ var Tags = {
                     args = "_gaq.push(['_trackEvent', 'Terms', 'Click', '"+ name +"']);";
                     html = '<a href="javascript:Tags.selectTag('+ id +');" onClick="'+ args +'" class='+ level +' rel="nofollow"><img src="/media/images/tag_icon.png" class="tag-icon" /> '+ name +'</a>';
                 } else if (type == 'tag') {
-                    args = "_gaq.push(['_trackEvent', 'Tags', 'Click', '"+ name +"]);";
+                    args = "_gaq.push(['_trackEvent', 'Tags', 'Click', '"+ name +"']);";
                     html = '<a href="javascript:Tags.selectTag('+ id +');" onClick="'+ args +'" class='+ level +' rel="nofollow"><img src="/media/images/tag_icon.png" class="tag-icon" /> '+ name +'</a>';
                 } else if (type == 'tag_cluster') {
                     args = "_gaq.push(['_trackEvent', 'Cluster', 'Click', '"+ args +"']);";
