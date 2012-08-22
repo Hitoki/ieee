@@ -57,9 +57,9 @@ Include file used by both print_resource.html and tag_landing.html
 
     {% if overview %}
     <div id="tag-overview" class="tag-section">
-        <h3><a href="" name="overview"></a><span class="index"></span> Overview of {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a href="" name="overview"></a>{% if toc %}<span class="index"></span>{% endif %} Overview of {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         <div>
-            <ul>
+                <ul>
             <!-- Don't show this section if definition = none -->
             {% if tag.definition %}
             <li>
@@ -99,7 +99,7 @@ Include file used by both print_resource.html and tag_landing.html
 
     {% if conferences or toc %}
     <div id="tag-conferences" class="tag-section">
-        <h3><a name="conferences"></a><span class="index"></span> Conferences related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a name="conferences"></a>{% if toc %}<span class="index"></span>{% endif %} Conferences related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if conferences %}
             {% if conferences|length %}
                 <div id="notaccordion">
@@ -157,7 +157,7 @@ Include file used by both print_resource.html and tag_landing.html
 
     {% if xplore_results or toc %}
     <div id="tag-xplore" class="tag-section">
-        <h3><a name="xplore"></a><span class="index"></span> Xplore Articles related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a name="xplore"></a>{% if toc %}<span class="index"></span>{% endif %} Xplore Articles related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if xplore_results %}
         <ul class="tag_list">
             {% for xplore_result in xplore_results|slice:":5" %}
@@ -192,7 +192,7 @@ Include file used by both print_resource.html and tag_landing.html
 
     {% if jobsHtml or toc %}
     <div id="tag-jobs" class="tag-section">
-        <h3><a href="" name="jobs"></a><span class="index"></span> Jobs related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a href="" name="jobs"></a>{% if toc %}<span class="index"></span>{% endif %} Jobs related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         <div>
             {% if jobsHtml %}
                 {{ jobsHtml|safe }}
@@ -207,7 +207,7 @@ Include file used by both print_resource.html and tag_landing.html
 
     {% if patents or toc %}
     <div id="tag-patents" class="tag-section">
-        <h3><a name="patents"></a><span class="index"></span> Patents related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a name="patents"></a>{% if toc %}<span class="index"></span>{% endif %} Patents related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         <div class="patent-list"></div>
         <div id="branding"></div>
     </div>
@@ -216,7 +216,7 @@ Include file used by both print_resource.html and tag_landing.html
     
     {% if xplore_edu_results or toc %}
     <div id="tag-xplore_edu" class="tag-section">
-        <h3><a name="xplore_edu"></a><span class="index"></span> Educational Resources on {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a name="xplore_edu"></a>{% if toc %}<span class="index"></span>{% endif %} Educational Resources on {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if xplore_edu_results %}
         <ul class="tag_list">
             {% for xplore_result in xplore_edu_results|slice:":5" %}
@@ -251,7 +251,7 @@ Include file used by both print_resource.html and tag_landing.html
 
     {% if standards or toc %}
     <div id="tag-standards" class="tag-section">
-        <h3><a name="standards"></a><span class="index"></span> Standards related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a name="standards"></a>{% if toc %}<span class="index"></span>{% endif %} Standards related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if standards %}
         <ul class="tag_list">
             {% for standard in standards.all|slice:":5" %}
@@ -283,7 +283,7 @@ Include file used by both print_resource.html and tag_landing.html
     
     {% if periodicals or toc %}
     <div id="tag-periodicals" class="tag-section">
-        <h3><a name="periodicals"></a><span class="index"></span> Periodicals related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a name="periodicals"></a>{% if toc %}<span class="index"></span>{% endif %} Periodicals related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if periodicals %}
         <ul class="tag_list">
             {% for periodical in periodicals.all|slice:":5" %}
@@ -315,7 +315,7 @@ Include file used by both print_resource.html and tag_landing.html
     
     {% if societies or toc %}
     <div id="tag-societies" class="tag-section">
-        <h3><a name="societies"></a><span class="index"></span> IEEE Organizations related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a name="societies"></a>{% if toc %}<span class="index"></span>{% endif %} IEEE Organizations related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if societies %}
         <ul>
             {% for society in societies|slice:":5" %}
@@ -343,7 +343,7 @@ Include file used by both print_resource.html and tag_landing.html
     
     {% if related_tags or toc %}
     <div id="tag-related-tags" class="tag-section">
-        <h3><a name="concepts"></a><span class="index"></span> Topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a name="concepts"></a>{% if toc %}<span class="index"></span>{% endif %} Topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if related_tags %}
         <ul>
             {% for related_tag in related_tags|slice:":5" %}
@@ -370,7 +370,7 @@ Include file used by both print_resource.html and tag_landing.html
     
     {% comment %}
     <div id="tag-sectors" class="tag-section">
-        <h3><a href="" name="sectors"></a><span class="index"></span> Industry topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <h3><a href="" name="sectors"></a>{% if toc %}<span class="index"></span>{% endif %} Industry topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if sectors %}
         <ul>
             {% for parent in sectors|slice:":5" %}
@@ -445,9 +445,11 @@ Include file used by both print_resource.html and tag_landing.html
 
     // Dynamically number the section content blocks.
     $(document).ready(function(){
+        {% if toc %}
         $('h3 span.index').each(function(i, obj){
             $(this).text((i+1) + '.');
         });
+        {% endif %}
         var mainWidth = $("#inner-container").outerWidth();    
         $("#tag_frozen_header").css('width', mainWidth);
         /*
