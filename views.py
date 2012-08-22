@@ -1897,7 +1897,9 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     except IndexError:
         xplore_article = None        
 
-    if resource_type == 'overview':
+    if toc is True:
+        overview = False
+    elif resource_type == 'overview':
         overview = True
     elif resource_type == 'all':
         overview = True
