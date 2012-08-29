@@ -10,7 +10,8 @@ function LiveSearch(inputElem) {
         'url': null,
         'use_tags_callback': false,
         'search_on_page_load': false,
-        'search_on_enter_only': false
+        'search_on_enter_only': false,
+        'search_key_delay': 1000
     };
     this.options = $.extend(this.options, inputElem.metadata());
     
@@ -29,17 +30,25 @@ function LiveSearch(inputElem) {
     this.searchingFor = null;
     
     this.inputElem = $(inputElem);
+    /*
     this.inputElem.change(function() {
         if (!liveSearch.options.search_on_enter_only) {
             liveSearch.update();            
         }
     });
+    */
+    
+    var timer = null;
+
     this.inputElem.keyup(function(event) {
         if (!liveSearch.options.search_on_enter_only || event.keyCode == 13){
             if (liveSearch.options.search_on_enter_only) {
-                liveSearch.lastValue = null;                
+                liveSearch.lastValue = null;
+                liveSearch.update();        
+            } else {
+                clearTimeout(time);
+                timer = setTimeout(liveSearch.update(),this.search_key_delay);
             }
-            liveSearch.update();
         }
     });
     
