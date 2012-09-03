@@ -39,6 +39,7 @@ function LiveSearch(inputElem) {
     */
     
     var timer = null;
+    var self = this;
 
     this.inputElem.keyup(function(event) {
         if (!liveSearch.options.search_on_enter_only || event.keyCode == 13){
@@ -46,8 +47,8 @@ function LiveSearch(inputElem) {
                 liveSearch.lastValue = null;
                 liveSearch.update();        
             } else {
-                clearTimeout(time);
-                timer = setTimeout(liveSearch.update(),this.search_key_delay);
+                clearTimeout(timer);
+                timer = setTimeout(liveSearch.update,self.options.search_key_delay,null,self);
             }
         }
     });
@@ -62,15 +63,28 @@ function LiveSearch(inputElem) {
     }
 }
 
-LiveSearch.prototype.update = function(useDelayValue) {
+LiveSearch.prototype.update = function(useDelayValue,self) {
     //log('LiveSearch.update()');
-    var liveSearch = this;
-    var value = this.inputElem.val();
+    //set up variables so we don't have to rely on "this"
+    if (self == null){
+        var liveSearch = this;
+        var value = this.inputElem.val();
+        var lastVal = this.lastValue;
+        var useCallback = this.options.use_tags_callback;
+        var url = this.options.url;
+    } else {
+        var liveSearch = self;
+        var value = self.inputElem.val();
+        var lastVal = self.lastValue;
+        var useCallback = self.options.use_tags_callback;
+        var url = self.options.url;
+    }
+    
 	//log('  value: ' + value);
 	//log('  useDelayValue: ' + useDelayValue);
 	//log('  this.lastValue: ' + this.lastValue);
 	// Check if the value has changed, or the delay has expired for this value.
-    if (value != this.lastValue || value == useDelayValue) {
+    if (value != lastVal || value == useDelayValue) {
         
 		if (value.length == 2 && value != useDelayValue) {
 			// Found a new 2 char value, set the delay timer.
@@ -90,7 +104,7 @@ LiveSearch.prototype.update = function(useDelayValue) {
 			//log('Searching for "' + value + '"');
 			
 			// Do the search
-			if (this.options.use_tags_callback) {
+			if (useCallback) {
                 //log('calling callback');
                 
                 // TODO: Fix this use of this.searchingFor
@@ -119,7 +133,7 @@ LiveSearch.prototype.update = function(useDelayValue) {
 			} else {
 				//log('calling ajax url');
 				$.ajax({
-					url: this.options.url,
+					url: url,
 					data: {
 						search_for: value
 					},
