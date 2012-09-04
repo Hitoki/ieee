@@ -138,7 +138,6 @@ INSTALLED_APPS = [
     'ieeetags',
     'ieeetags.site_admin',
     'noomake',
-    'devserver',
 ]
 
 TEMPLATE_CONTEXT_PROCESSORS = (
