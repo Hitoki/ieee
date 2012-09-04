@@ -2165,6 +2165,12 @@ div.group ul li:first-child {
   display: none;
   position: relative; }
 
+.live-search-button-disabled {
+  -moz-border-radius: 5px !important;
+  -webkit-border-radius: 5px !important;
+  border-radius: 5px;
+}
+
 #textui-tags-search-submit {
   background: -moz-linear-gradient(top, #33cc00 40%, #269900 100%);
   /* FF3.6+ */
