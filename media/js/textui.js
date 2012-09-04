@@ -554,6 +554,9 @@ var Tags = {
                 },
                 function(data) {
                     Tags.onLoadResults(data);
+                    if($('#tag-counts').css('display') == 'none') {
+                        $('#tag-counts').show();
+                    }
                 },
                 'json'
             );
@@ -578,6 +581,9 @@ var Tags = {
                 },
                 function(data) {
                     Tags.onLoadResults(data);
+                    if($('#tag-counts').css('display') == 'none') {
+                        $('#tag-counts').show();
+                    }
                 },
                 'json'
             );
@@ -616,6 +622,9 @@ var Tags = {
                     if (showSearchResultsCallback) {
                         showSearchResultsCallback(search_for, data);
                     }
+                    if($('#tag-counts').css('display') == 'none') {
+                        $('#tag-counts').show();
+                    }
                 },
                 'json'
             );            
@@ -623,13 +632,13 @@ var Tags = {
         } else {
             // Nothing selected
             Tags.selectSector('all');
-            
         }
         
     },
     
     clearSearchResults: function() {
         //log('clearSearchResults()');
+        $('#tag-counts').hide();
         $('#tags-live-search').val('');
         //log('clearSearchResults(): calling updateResults().');
         this.updateResults();

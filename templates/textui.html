@@ -46,6 +46,7 @@
             
             // Attach event to tags-search clear button.
             $('#textui-tags-search-clear').click(function() {
+                //$('#tag-counts').css('display','none');
                 Tags.clearSearchResults();
                 $("#tags-live-search").focus();
             });
