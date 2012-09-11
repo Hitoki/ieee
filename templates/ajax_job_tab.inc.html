@@ -1,0 +1,18 @@
+                <div id="job-tab" data-printUrl='{% url print_resource tag.id "jobs" %}'>
+                    <div id="job-results-container" class="{ tagId: {{ tag.id }} }">
+                        <div class="print-resource">
+                            <a href="{{ jobsUrl }}" target="_blank">View jobs on the IEEE Job Site <span class='newWindowIcon'></span></a>
+                            </div>
+                            <div class="group" style='margin-top: 32px;'>
+                            <div class="results" style="display:inline;">
+                            {% comment %}
+                            {% if jobs %}
+                            {{ jobs|safe }}
+                            {% else %}
+                            <p class="no-resources">No jobs are currently tagged "{{ tag.name }}"</p>
+                            {% endif %}
+                            {% endcomment %}
+                            </div>
+                        </div>
+                    </div>
+                </div>

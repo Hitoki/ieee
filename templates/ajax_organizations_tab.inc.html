@@ -1,0 +1,38 @@
+                <div id="society-tab" data-printUrl='{% url print_resource tag.id "societies" %}'>
+                    <div class="group">
+                        {% if societies.all %}
+                        <table class="society-images">
+                            {% for society in societies.all %}
+                            <tr>
+                                <td class="society-logo">
+                                    {% if society.logo_thumbnail %}
+                                    <div class="image-container">
+                                        <img src="{{ society.logo_thumbnail.url }}" />
+                                    </div>
+                                    {% else %}
+                                    <div class="image-container">
+                                        <img src="{{ MEDIA_URL }}images/society_logo_none.png" />
+                                    </div>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if society.url %}
+                                    <a href="{{ society.url }}" target="_blank" rel="nofollow">
+                                        {% endif %}
+                                        <span>{{ society.name }} ({{ society.abbreviation }})</span>{% if society.url %}<img class="newWinIcon" src="{{ MEDIA_URL }}images/popup.png" />{% if society.node_society.is_machine_generated %}<img src="{{ MEDIA_URL }}images/drive.png" class="flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />{% endif %}{% endif %}
+                                        {% if society.url %}
+                                    </a>
+                                    <br/>
+                                    <span>
+                                        {{ society.description }}
+                                    </span>
+                                    {% endif %}
+                                </td>
+                            </tr>    
+                            {% endfor %}
+                        </table>
+                        {% else %}
+                        <p class="no-resources">No organizations are currently tagged "{{ tag.name }}"</p>
+                        {% endif %}
+                    </div>
+                </div>
