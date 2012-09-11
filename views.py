@@ -408,6 +408,9 @@ def ajax_tag_content(request, tag_id, ui=None, initial_tab='overview', load_all=
         })
     else:
         # Show the normal tag content popup.
+        print '--------------------'
+        print context
+        print '--------------------'
         return render(request, 'ajax_tag_content.html', context)
 
 #@login_required
