@@ -1016,7 +1016,7 @@ var Tags = {
         Flyover.hide();
 
         // Show resource results in a lightbox
-        Lightbox.show('/ajax/tag_content/' + id + '/textui', {
+        Lightbox.show('/ajax/tag_content/' + id + '/textui/overview', {
             verticalCenter: false
             , customClass: 'resources'
             , onShowCallback: function() {

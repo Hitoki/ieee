@@ -272,16 +272,28 @@ def profile(log_file):
 
 @login_required
 @profile("ajax_tag.prof")
-def ajax_tag_content(request, tag_id, ui=None):
+def ajax_tag_content(request, tag_id, ui=None, initial_tab='overview', load_all=None):
+
+    context = {}
+
     'The AJAX resource results popup.'
     if ui is None:
         ui = 'textui'
     assert ui in ['roamer', 'textui'], 'Unrecognized ui "%s"' % ui
-    
-    tag = Node.objects.get(id=tag_id)
-    
+
+    context['ui'] = ui
+
+    tag = Node.objects.get(id=tag_id)    
+    context['tag'] = tag
+
+    counts = 0
+    jobsCount = "0"
+
     sectors1 = tag.get_sectors()
+    counts += sectors1.count()
+
     clusters1 = tag.get_parent_clusters()
+    
     
     # Build a list of sectors and clusters, grouped by sector
     parent_nodes = []
@@ -295,73 +307,99 @@ def ajax_tag_content(request, tag_id, ui=None):
             'sector': sector,
             'clusters': clusters,
         })
+    context['parent_nodes'] = parent_nodes
     
     num_resources = Resource.objects.getForNode(tag).count()
+    context['num_resources'] = num_resources
+
     experts = Resource.objects.getForNode(tag, resourceType=ResourceType.EXPERT)
+    counts += experts.count()
+    context['experts'] = experts
+
     # Grab standards with is_machine_generated field.
-    standards_resource_nodes = tag.resource_nodes.filter(resource__resource_type__name=ResourceType.STANDARD)
-    standards = []
-    for standards_resource_node in standards_resource_nodes:
-        standard = standards_resource_node.resource
-        standard.is_machine_generated = standards_resource_node.is_machine_generated
-        standards.append(standard)
-    
-    # Grab periodicals with is_machine_generated field.
-    periodicals_resource_nodes = tag.resource_nodes.filter(resource__resource_type__name=ResourceType.PERIODICAL)
-    periodicals = []
-    for periodicals_resource_node in periodicals_resource_nodes:
-        periodical = periodicals_resource_node.resource
-        periodical.is_machine_generated = periodicals_resource_node.is_machine_generated
-        periodicals.append(periodical)
+    if initial_tab is 'standards':
+        standards_resource_nodes = tag.resource_nodes.filter(resource__resource_type__name=ResourceType.STANDARD)
+        standards = []
+        for standards_resource_node in standards_resource_nodes:
+            standard = standards_resource_node.resource
+            standard.is_machine_generated = standards_resource_node.is_machine_generated
+            standards.append(standard)
+
+        counts += len(standards)
+        context['standards'] = standards
+
+    if initial_tab is 'periodicals':
+        # Grab periodicals with is_machine_generated field.
+        periodicals_resource_nodes = tag.resource_nodes.filter(resource__resource_type__name=ResourceType.PERIODICAL)
+        periodicals = []
+        for periodicals_resource_node in periodicals_resource_nodes:
+            periodical = periodicals_resource_node.resource
+            periodical.is_machine_generated = periodicals_resource_node.is_machine_generated
+            periodicals.append(periodical)
+
+        counts += len(periodicals)            
+        context['periodicals'] = periodicals
         
-    # Sort the conferences by year latest to earliest.
-    conferences_resource_nodes = tag.resource_nodes.filter(resource__resource_type__name=ResourceType.CONFERENCE)
-    conferences = []
-    for conferences_resource_node in conferences_resource_nodes:
-        conference = conferences_resource_node.resource
-        conference.is_machine_generated = conferences_resource_node.is_machine_generated
-        if not re.compile('^https?://').match(conference.url):
-            conference.url = 'http://' + conference.url
-        conferences.append(conference)
+    if initial_tab is 'conferences':    
+        # Sort the conferences by year latest to earliest.
+        conferences_resource_nodes = tag.resource_nodes.filter(resource__resource_type__name=ResourceType.CONFERENCE)
+        conferences = []
+        for conferences_resource_node in conferences_resource_nodes:
+            conference = conferences_resource_node.resource
+            conference.is_machine_generated = conferences_resource_node.is_machine_generated
+            if not re.compile('^https?://').match(conference.url):
+                conference.url = 'http://' + conference.url
+            conferences.append(conference)
         
-    conferences = list(sorted(conferences, key=lambda resource: resource.year, reverse=True))
-    conferences = util.group_conferences_by_series(conferences)
+        conferences = list(sorted(conferences, key=lambda resource: resource.year, reverse=True))
+        conferences = util.group_conferences_by_series(conferences)
+        counts += len(conferences)
+        context['conferences'] = conferences
     
-    societies = tag.societies.all()
-    # Hide the TAB society.
-    societies = societies.exclude(abbreviation='tab')
+    if initial_tab is 'orgs':
+        societies = tag.societies.all()
+        # Hide the TAB society.
+        societies = societies.exclude(abbreviation='tab')
+        counts += societies.count()
+        context['societies'] = societies
 
-    jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&format=json" % urllib.urlencode({"kwsMustContain": tag.name})
-    file1 = urllib2.urlopen(jobsUrl).read()
-    jobsJson = json.loads(file1)
-    jobsCount = jobsJson.get('Total')
-    #jobs = jobsJson.get('Jobs')
-    #jobsHtml = ""
-    #for job in jobs:
-    #    jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured"><b>%(JobTitle)s</b></a> %(Company)s<br>\n' % job
+    if initial_tab is 'jobs':
+        jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&format=json" % urllib.urlencode({"kwsMustContain": tag.name})
+        file1 = urllib2.urlopen(jobsUrl).read()
+        jobsJson = json.loads(file1)
+        jobsCount = jobsJson.get('Total')
+        context['jobsCount'] = jobsCount
+        context['jobsUrl'] = jobsUrl
+        #jobs = jobsJson.get('Jobs')
+        #jobsHtml = ""
+        #for job in jobs:
+        #    jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured"><b>%(JobTitle)s</b></a> %(Company)s<br>\n' % job
 
-    #if len(jobsHtml):
-    #    jobsHtml = jobsHtml + '<a href="%s" target="_blank">More jobs</a>' % jobsUrl.replace('&format=json','')
+        #if len(jobsHtml):
+        #    jobsHtml = jobsHtml + '<a href="%s" target="_blank">More jobs</a>' % jobsUrl.replace('&format=json','')
 
-    jobsUrl = jobsUrl.replace('&format=json','')
-    try:
-        xplore_article = _get_xplore_results(tag.name, show_all=False, offset=0, sort=XPLORE_SORT_PUBLICATION_YEAR, sort_desc=True)[0][0]
-    except IndexError:
-        xplore_article = None
+        jobsUrl = jobsUrl.replace('&format=json','')
+
+    if initial_tab is 'overview':        
+        try:
+            xplore_article = _get_xplore_results(tag.name, show_all=False, offset=0, sort=XPLORE_SORT_PUBLICATION_YEAR, sort_desc=True)[0][0]
+        except IndexError:
+            xplore_article = None
+
+        context['xplore_article'] = xplore_article
+        context['close_conference'] = tag._get_closest_conference()
+        context['definition'] = tag._get_definition_link()
 
     file1 = None
     # removied sectors from count
     num_related_items =  \
-        clusters1.count() \
-        + societies.count() \
-        + tag.related_tags.count() \
-        + len(conferences) \
-        + experts.count() \
-        + len(periodicals) \
-        + len(standards) \
-        + int(jobsCount.replace(',','')) \
+        counts \
+        + clusters1.count() \
+        + tag.related_tags.count() 
+
+    context['num_related_items'] = num_related_items
         
-    if tag.is_taxonomy_term and ((sectors1.count() + societies.count() + len(conferences) + experts.count() + len(periodicals) + len(standards)) + int(jobsCount.replace(',','')) == 0):
+    if tag.is_taxonomy_term and (counts + int(jobsCount.replace(',','')) == 0):
         # This is a term with no resources (except Related Tags), just show the abbreviated content popup.
         return render(request, 'ajax_term_content.html', {
             'tag':tag,
@@ -370,26 +408,7 @@ def ajax_tag_content(request, tag_id, ui=None):
         })
     else:
         # Show the normal tag content popup.
-        return render(request, 'ajax_tag_content.html', {
-            'tag':tag,
-            'societies':societies,
-            #'jobs':jobsHtml,
-            'jobsCount':jobsCount,
-            'jobsUrl': jobsUrl,
-            'conferences': conferences,
-            'experts': experts,
-            'periodicals': periodicals,
-            'standards': standards,
-            'num_resources': num_resources,
-            'num_related_items': num_related_items,
-            'parent_nodes': parent_nodes,
-            'ui': ui,
-            'close_conference': tag._get_closest_conference(),
-            'definition': tag._get_definition_link(),
-            'xplore_article': xplore_article
-            #'xplore_error': xplore_error,
-            #'xplore_results': xplore_results,
-        })
+        return render(request, 'ajax_tag_content.html', context)
 
 #@login_required
 #def ajax_term_content(request, term_id, ui=None):
