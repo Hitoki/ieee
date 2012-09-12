@@ -272,7 +272,7 @@ def profile(log_file):
 
 @login_required
 @profile("ajax_tag.prof")
-def ajax_tag_content(request, tag_id, ui=None, initial_tab='overview', load_all=None):
+def ajax_tag_content(request, tag_id, ui=None, initial_tab='overview', load_remainder=None):
 
     context = {}
 
@@ -317,7 +317,7 @@ def ajax_tag_content(request, tag_id, ui=None, initial_tab='overview', load_all=
     context['experts'] = experts
 
     # Grab standards with is_machine_generated field.
-    if initial_tab is 'standards':
+    if initial_tab == 'standards':
         standards_resource_nodes = tag.resource_nodes.filter(resource__resource_type__name=ResourceType.STANDARD)
         standards = []
         for standards_resource_node in standards_resource_nodes:
@@ -328,7 +328,7 @@ def ajax_tag_content(request, tag_id, ui=None, initial_tab='overview', load_all=
         counts += len(standards)
         context['standards'] = standards
 
-    if initial_tab is 'periodicals':
+    if initial_tab == 'periodicals':
         # Grab periodicals with is_machine_generated field.
         periodicals_resource_nodes = tag.resource_nodes.filter(resource__resource_type__name=ResourceType.PERIODICAL)
         periodicals = []
@@ -340,7 +340,7 @@ def ajax_tag_content(request, tag_id, ui=None, initial_tab='overview', load_all=
         counts += len(periodicals)            
         context['periodicals'] = periodicals
         
-    if initial_tab is 'conferences':    
+    if initial_tab == 'conferences':    
         # Sort the conferences by year latest to earliest.
         conferences_resource_nodes = tag.resource_nodes.filter(resource__resource_type__name=ResourceType.CONFERENCE)
         conferences = []
@@ -356,14 +356,14 @@ def ajax_tag_content(request, tag_id, ui=None, initial_tab='overview', load_all=
         counts += len(conferences)
         context['conferences'] = conferences
     
-    if initial_tab is 'orgs':
+    if initial_tab == 'orgs':
         societies = tag.societies.all()
         # Hide the TAB society.
         societies = societies.exclude(abbreviation='tab')
         counts += societies.count()
         context['societies'] = societies
 
-    if initial_tab is 'jobs':
+    if initial_tab == 'jobs':
         jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&format=json" % urllib.urlencode({"kwsMustContain": tag.name})
         file1 = urllib2.urlopen(jobsUrl).read()
         jobsJson = json.loads(file1)
@@ -380,7 +380,7 @@ def ajax_tag_content(request, tag_id, ui=None, initial_tab='overview', load_all=
 
         jobsUrl = jobsUrl.replace('&format=json','')
 
-    if initial_tab is 'overview':        
+    if initial_tab == 'overview':        
         try:
             xplore_article = _get_xplore_results(tag.name, show_all=False, offset=0, sort=XPLORE_SORT_PUBLICATION_YEAR, sort_desc=True)[0][0]
         except IndexError:
@@ -408,9 +408,6 @@ def ajax_tag_content(request, tag_id, ui=None, initial_tab='overview', load_all=
         })
     else:
         # Show the normal tag content popup.
-        print '--------------------'
-        print context
-        print '--------------------'
         return render(request, 'ajax_tag_content.html', context)
 
 #@login_required

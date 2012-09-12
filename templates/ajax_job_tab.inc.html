@@ -1,3 +1,8 @@
+<script type="text/javascript">
+    $(function(){
+        attachJobResults('#job-results-container');
+    });
+</script>
                 <div id="job-tab" data-printUrl='{% url print_resource tag.id "jobs" %}'>
                     <div id="job-results-container" class="{ tagId: {{ tag.id }} }">
                         <div class="print-resource">

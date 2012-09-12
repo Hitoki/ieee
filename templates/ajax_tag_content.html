@@ -18,31 +18,9 @@
             printDropDown.close();
             printDropDown.reset();
         })
-        attachXploreResults('#xplore-results-container');
-        attachJobResults('#job-results-container');
     });
 
     $(function() {
-        attachXploreResults('#education-results-container', 'Educational Courses');
-
-        patentSearch1 = new google.search.PatentSearch();
-        patentSearch1.setResultSetSize(1);
-        // Set searchComplete as the callback function when a search is 
-        // complete.  The patentSearch object will have results in it.
-        patentSearch1.setSearchCompleteCallback(this,
-            function(){
-                if (typeof patentSearch1.cursor != "undefined"){
-                    $.each(patentSearch1.results, function(i, result){
-                        $('#patent-overview').append($(result.html));
-                    });
-                }
-            }
-        , null);      
-        patentSearch1.setResultOrder(google.search.Search.ORDER_BY_DATE);
-        // Specify search quer(ies)
-        patentSearch1.execute($('div.[id="tag-' + {{tag.id}} + '"]:first').text());
-
-
         $('#notificationRequestEmail').focus(function() {
             if (this.value == this.defaultValue){
                 this.value = "";
