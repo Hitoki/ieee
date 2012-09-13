@@ -1028,39 +1028,39 @@ var Tags = {
                 $('#tag-name').effect("highlight", {}, 2000);
 
                 // populate the patent tab.
-                patentSearch = new google.search.PatentSearch();
-                patentSearch.setResultSetSize(8);
+                //patentSearch = new google.search.PatentSearch();
+                //patentSearch.setResultSetSize(8);
                 //patentSearch.setNoHtmlGeneration();
 
                 // Set searchComplete as the callback function when a search is 
                 // complete.  The patentSearch object will have results in it.
-                patentSearch.setSearchCompleteCallback(this,
-                   function(){
-                       if (typeof patentSearch.cursor != "undefined"){
-                       $.each(patentSearch.results, function(i, result){
-                           $('#patents-tab div.group').append($(result.html));
-                           $('#patents-tab a span').text(patentSearch.cursor.estimatedResultCount); // patentSearch.cursor.estimatedResultCount
-                       });
-                       var numRelatedItems = parseInt($('#num-related-items').metadata().number);
-                       var newTotal = numRelatedItems + parseInt(patentSearch.cursor.estimatedResultCount);
-                       $('#num-related-items').text(addCommas(newTotal));
-                       $('#num-related-items').metadata().number = newTotal;
+                //patentSearch.setSearchCompleteCallback(this,
+                //   function(){
+                //       if (typeof patentSearch.cursor != "undefined"){
+                //       $.each(patentSearch.results, function(i, result){
+                //           $('#patents-tab div.group').append($(result.html));
+                //           $('#patents-tab a span').text(patentSearch.cursor.estimatedResultCount); // patentSearch.cursor.estimatedResultCount
+                //       });
+                //       var numRelatedItems = parseInt($('#num-related-items').metadata().number);
+                //       var newTotal = numRelatedItems + parseInt(patentSearch.cursor.estimatedResultCount);
+                //       $('#num-related-items').text(addCommas(newTotal));
+                //       $('#num-related-items').metadata().number = newTotal;
 
-                       $("<span class='newWindowIcon'></span>").insertAfter("a.gs-title");
-                       if (patentSearch.cursor.estimatedResultCount > 8) {
-                           var moreResultsLink = $('<a target="_blank">More results on Google</a>');
-                           moreResultsLink.attr('href', patentSearch.cursor.moreResultsUrl);
-                           $('#patents-tab div.group').append(moreResultsLink);
-                       }
-                    }
-                   }
-                   , null);
+                //       $("<span class='newWindowIcon'></span>").insertAfter("a.gs-title");
+                //       if (patentSearch.cursor.estimatedResultCount > 8) {
+                //           var moreResultsLink = $('<a target="_blank">More results on Google</a>');
+                //           moreResultsLink.attr('href', patentSearch.cursor.moreResultsUrl);
+                //           $('#patents-tab div.group').append(moreResultsLink);
+                //       }
+                //    }
+                //   }
+                //   , null);
 
                 // Specify search quer(ies)
-                patentSearch.execute($('div.[id="tag-' + id + '"]:first').text());
+                //patentSearch.execute($('div.[id="tag-' + id + '"]:first').text());
                 
                 // Include the required Google branding
-                google.search.Search.getBranding('branding');
+                //google.search.Search.getBranding('branding');
 
                 $(document).trigger('onShowLightboxTab');
 

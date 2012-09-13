@@ -1,3 +1,4 @@
+{% comment %}
 <script type="text/javascript">
     $(function(){
         patentSearch1 = new google.search.PatentSearch();
@@ -20,6 +21,7 @@
         patentSearch1.execute('{{ tag }}');
     });
 </script>
+{% endcomment %}
 
         <div id="overview-tab" class="overview-tab" data-printUrl='{% url print_resource tag.id "overview" %}'>
                     <div class="group">
