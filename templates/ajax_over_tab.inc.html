@@ -1,0 +1,56 @@
+<script type="text/javascript">
+    $(function(){
+        patentSearch1 = new google.search.PatentSearch();
+        
+        patentSearch1.setResultSetSize(1);
+        // Set searchComplete as the callback function when a search is 
+        // complete.  The patentSearch object will have results in it.
+        patentSearch1.setSearchCompleteCallback(this,
+            function(){
+                if (typeof patentSearch1.cursor != "undefined"){
+                    $('#overview-list').append('<li><div class="overview-label">Recent Related Patent</div><div id="patent-overview"></div></li>');
+                    $.each(patentSearch1.results, function(i, result){
+                        $('#patent-overview').append($(result.html));
+                    });
+                }
+            }
+        , null);      
+        patentSearch1.setResultOrder(google.search.Search.ORDER_BY_DATE);
+        // Specify search quer(ies)
+        patentSearch1.execute('{{ tag }}');
+    });
+</script>
+
+        <div id="overview-tab" class="overview-tab" data-printUrl='{% url print_resource tag.id "overview" %}'>
+                    <div class="group">
+                        <ul id='overview-list'>
+                            <!-- Don't show this section if definition = none -->
+                            {% if tag.definition %}
+                            <li>
+                                <div class="overview-label">Definition</div>l
+                                <div>{{ tag.definition }}</div>
+                            </li>
+                            {% endif %}
+                            <li>
+                                <div class="overview-label">Recent Related Xplore Article</div>
+                                <div id="xplore-overview">
+                                    <a href="{{ xplore_article.url }}" target="_blank" rel="nofollow">{{ xplore_article.name|safe }}</a>{% if xplore_article.url and xplore_article.url_status != "bad" %}<img class="newWinIcon" src="{{ MEDIA_URL }}images/popup.png" />{% endif %}
+                                </div>
+                            </li>
+                            {% if close_conference %}
+                            <li>
+                                <div class="overview-label">Upcoming Related Conference</div>
+                                {% if close_conference.url and close_conference_status != "bad" %}
+                                <a href="{% if close_conference.url|slice:":4" != 'http' %}http://{% endif %}{{ close_conference.url }}" target="_blank" rel="nofollow">
+                                {% endif %}
+                                    <div>
+                                        <span>{{close_conference.name}}</span>{% if close_conference.url and close_conference.url_status != "bad" %}<img class="newWinIcon" src="{{ MEDIA_URL }}images/popup.png" />{% endif %}{% if close_conference.is_machine_generated %}<img src="{{ MEDIA_URL }}images/drive.png" class="flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />{% endif %}
+                                    </div>
+                                {% if close_conference.url and close_conference_status != "bad" %}
+                                </a>
+                                {% endif %}                                
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
