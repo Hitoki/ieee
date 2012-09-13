@@ -1,0 +1,26 @@
+<div id="xplore-tab" data-printUrl='{% url print_resource tag.id "xplore" %}'>
+    <div id="xplore-results-container" class="{ tagId: {{ tag.id }} }">
+        <div class="print-resource">
+            <p id="xplore-totals"></p>
+            <p id="xplore-nav">
+                Sort by
+                <select id="xplore-sort">
+                    <option value="">Relevance (Default)</option>
+                    <option value="au">Author (A-Z)</option>
+                    <option value="-au">Author (Z-A)</option>
+                    <option value="ti">Title (A->Z)</option>
+                    <option value="-ti">Title (Z->A)</option>
+                    <option value="jn">Publication (A->Z)</option>
+                    <option value="-jn">Publication (Z->A)</option>
+                    <option value="py">Year (Past->Now)</option>
+                    <option value="-py">Year (Now->Past)</option>
+                </select>
+            </p>
+        </div>
+        <div class="group">
+            <ul>
+                {# NOTE: This will be replaced by AJAX. #}
+            </ul>
+        </div>
+    </div>
+</div>
