@@ -84,6 +84,10 @@ LiveSearch.prototype.update = function(useDelayValue,self) {
 	//log('  useDelayValue: ' + useDelayValue);
 	//log('  this.lastValue: ' + this.lastValue);
 	// Check if the value has changed, or the delay has expired for this value.
+    if (value == ""){
+        Tags.clearSearchResults();
+        return;
+    }
     if (value != lastVal || value == useDelayValue) {
         
 		if (value.length == 2 && value != useDelayValue) {
