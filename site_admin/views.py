@@ -4416,6 +4416,8 @@ def ajax_search_tags(request):
     
     return HttpResponse(json.dumps(data, sort_keys=True, indent=4, use_decimal=True), mimetype="application/json")
 
+from django.views.decorators.csrf import csrf_exempt
+@csrf_exempt
 @login_required
 @society_manager_or_admin_required
 def ajax_search_tags_new(request):
