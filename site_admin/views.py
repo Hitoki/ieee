@@ -4445,6 +4445,7 @@ def ajax_search_tags_new(request):
     
     return HttpResponse(json.dumps(data), mimetype="application/json")
 
+@csrf_exempt
 @login_required
 @society_manager_or_admin_required
 def ajax_society_add_tags(request):
