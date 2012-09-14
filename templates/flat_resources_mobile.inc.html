@@ -19,7 +19,7 @@ Include file used by both print_resource.html and tag_landing.html
             {% if conferences %}<li><a href="#conferences">Conferences</a></li>{% endif %}
             {% if xplore_results %}<li><a href="#xplore">Xplore Articles</a></li>{% endif %}
             {% if jobsHtml %}<li><a href="#jobs">Jobs</a></li>{% endif %}
-            <li><a href="#patents">Patents</a></li>
+            {% comment %}<li><a href="#patents">Patents</a></li>{% endcomment %}
             {% if xplore_edu_results %}<li><a href="#xplore_edu">Educational Resources</a></li>{% endif %}
             {% if standards %}<li><a href="#standards">Standards</a></li>{% endif %}
             {% if periodicals %}<li><a href="#periodicals">Periodicals</a></li>{% endif %}
@@ -97,12 +97,14 @@ Include file used by both print_resource.html and tag_landing.html
     <hr/>
     {% endif %}
     
+    {% comment %}
     <div id="tag-patents" class="tag-section">
         <h3><a name="patents"></a><span class="index"></span> Patents related to {{ tag.name }}</h3><a href="#tag_contents" class="topLink" rel="nofollow">Back to Top</a>
         <div class="patent-list"></div>
         <div id="branding"></div>
     </div>
     <hr/>
+    {% endcomment %}
     
     {% if xplore_edu_results %}
     <div id="tag-xplore_edu">
@@ -236,23 +238,23 @@ Include file used by both print_resource.html and tag_landing.html
 
 <script type="text/javascript">
     // Initialize Google Patent Search
-    var id = '{{ tag.name }}';
-    patentSearch = new google.search.PatentSearch();
-    patentSearch.setSearchCompleteCallback(this,
-    function(){
-        $.each(patentSearch.results, function(i, result){
-          $('.patent-list').append($(result.html));
+    //var id = '{{ tag.name }}';
+    //patentSearch = new google.search.PatentSearch();
+    //patentSearch.setSearchCompleteCallback(this,
+    //function(){
+    //    $.each(patentSearch.results, function(i, result){
+    //      $('.patent-list').append($(result.html));
           //$('.patent-list a span').text(patentSearch.results.length); // patentSearch.cursor.estimatedResultCount
-        });
+    //    });
         //$("<span class='newWindowIcon'></span>").insertAfter("a.gs-title");
-    }
-    , null);
+    //}
+    //, null);
 
     // Specify search quer(ies)
-    patentSearch.execute($('h1.title > span').eq(0).text());
+    //patentSearch.execute($('h1.title > span').eq(0).text());
 
     // Include the required Google branding
-    google.search.Search.getBranding('branding');
+    //google.search.Search.getBranding('branding');
 
     // Dynamically number the section content blocks.
     $(document).ready(function(){
