@@ -1302,7 +1302,7 @@ def ajax_textui_nodes(request):
                 if nm.findParent('div'):
                     nm.findParent('div').extract()
             cache = nm.join('')
-            cache_params["search_for"] = search_for
+        cache_params["search_for"] = search_for
             
     # Still no Cache so let's go to the DB.
     if not cache:
