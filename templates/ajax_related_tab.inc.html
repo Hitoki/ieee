@@ -1,4 +1,3 @@
-                <div id="related-tab" data-printUrl='{% url print_resource tag.id "related_tags" %}'>
                     <div class="group">
                         {% if tag.related_tags.all %}
                         {% for related_tag in tag.related_tags.all %}
@@ -16,4 +15,3 @@
                         <p class="no-resources">No related topics are currently tagged "{{ tag.name }}"</p>
                         {% endif %}
                     </div>
-                </div>

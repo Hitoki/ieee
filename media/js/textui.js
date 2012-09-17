@@ -1025,6 +1025,7 @@ var Tags = {
                     log('  calling Tags.onSelectTag()');
                     Tags.onSelectTag(tabName);
                 }
+                Lightbox.show('/ajax/tag_content/' + id + '/textui/all');
                 $('#tag-name').effect("highlight", {}, 2000);
 
                 // populate the patent tab.

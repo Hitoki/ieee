@@ -63,7 +63,7 @@
                 $('#notificationRequestButton').click();
             }
         });
-        
+
     });
 
 function isValidEmailAddress(emailAddress) {
@@ -134,7 +134,9 @@ function isValidEmailAddress(emailAddress) {
                     <li id="educations-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">Educational<br/>Resources <span class="right" id="num-education-results"></span></a></li>
                     <li id="articles-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">IEEE Xplore<br/>Articles <span class="right" id="num-xplore-results"></span></a></li>
                     <li id="jobs-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu" rel="nofollow">Jobs <span class="right">{{jobsCount}}</span></a></li>
+                    {% comment %}
                     <li id="patents-tab" class="middle-group-menu" style="display:none"><a href="" class="two-word-menu" rel="nofollow">Patents <span class="right">{{patents|length}}</span></a></li>
+                    {% endcomment %}
                     <li id="periodicals-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Periodicals <span class="right">{{periodicals|length}}</span></a></li>
                     <li id="standards-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Standards <span class="right">{{standards|length}}</span></a></li>
                     <li id="related-tags-tab" class="end-group-menu"><a href="" class="two-word-menu" rel="nofollow">Related<br/>Topics <span class="right">{{ tag.related_tags.count }}</span></a></li>
@@ -149,33 +151,53 @@ function isValidEmailAddress(emailAddress) {
 <!-- *** Content Panels *** -->
 
 <!-- Overview-->
-                {% include 'ajax_over_tab.inc.html' %}
+            <div id="overview-tab" class="overview-tab" data-printUrl='{% url print_resource tag.id "overview" %}'>
+                    {% include 'ajax_over_tab.inc.html' %}
+            </div>
+
 <!-- Organizations -->
+            <div id="society-tab" data-printUrl='{% url print_resource tag.id "societies" %}'>
                 {% include 'ajax_organizations_tab.inc.html' %}
+            </div>
 
 <!-- Conferences -->
+            <div id="conference-tab" data-printUrl='{% url print_resource tag.id "conferences" %}'>
                 {% include 'ajax_conferences_tab.inc.html' %}
+            </div>
 
 <!-- Xplore Education Results -->
+            <div id="education-results-container" class="{ tagId: {{ tag.id }} }">
                 {% include 'ajax_education_tab.inc.html' %}
-
+            </div>
 
 <!-- Xplore Results -->
+            <div id="xplore-tab" data-printUrl='{% url print_resource tag.id "xplore" %}'>
                 {% include 'ajax_xplore_tab.inc.html' %}
+            </div>
                 
 <!-- Jobs -->
+            <div id="job-tab" data-printUrl='{% url print_resource tag.id "jobs" %}'>
                 {% include 'ajax_job_tab.inc.html' %}
-
+            </div>
+{% comment %}
 <!-- Patents -->
                 {% include 'ajax_patents_tab.inc.html' %}
-                
+{% endcomment %}              
+
 <!-- Periodicals -->
+            <div id="periodical-tab" data-printUrl='{% url print_resource tag.id "periodicals" %}'>
                 {% include 'ajax_periodical_tab.inc.html' %}
+            </div>
+
 <!-- Standards -->
+            <div id="standard-tab" data-printUrl='{% url print_resource tag.id "standards" %}'>
                 {% include 'ajax_standard_tab.inc.html' %}
+            </div>
                 
 <!-- Related Topics -->
+            <div id="related-tab" data-printUrl='{% url print_resource tag.id "related_tags" %}'>
                 {% include 'ajax_related_tab.inc.html' %}
+            </div>
                 
 <!-- Disabled Items -->                       
                 {% comment %}

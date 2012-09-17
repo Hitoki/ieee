@@ -3,7 +3,6 @@
         attachJobResults('#job-results-container');
     });
 </script>
-                <div id="job-tab" data-printUrl='{% url print_resource tag.id "jobs" %}'>
                     <div id="job-results-container" class="{ tagId: {{ tag.id }} }">
                         <div class="print-resource">
                             <a href="{{ jobsUrl }}" target="_blank">View jobs on the IEEE Job Site <span class='newWindowIcon'></span></a>
@@ -20,4 +19,3 @@
                             </div>
                         </div>
                     </div>
-                </div>
