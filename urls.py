@@ -43,8 +43,8 @@ else:
 
         # AJAX
         #url(r'^ajax/tag_content$', views.ajax_tag_content, name='ajax_tag_content'),
-        url(r'^ajax/tag_content/(?P<tag_id>\d+)/(?P<ui>\S+)/(?P<initial_tab>\S+)$', views.ajax_tag_content, name='ajax_tag_content'),
-        url(r'^ajax/tag_content/(?P<tag_slug>\d+)/(?P<ui>\S+/(?P<initial_tab>\S+))$', views.ajax_tag_content, name='ajax_tag_content'),
+        url(r'^ajax/tag_content/(?P<tag_id>\d+)/(?P<ui>\S+)/(?P<tab>\S+)$', views.ajax_tag_content, name='ajax_tag_content'),
+        url(r'^ajax/tag_content/(?P<tag_slug>\d+)/(?P<ui>\S+/(?P<tab>\S+))$', views.ajax_tag_content, name='ajax_tag_content'),
         #url(r'^ajax/term_content/(?P<term_id>\d+)/(?P<ui>\S+)$', views.ajax_term_content, name='ajax_term_content'),
         url(r'^ajax/xplore_results$', views.ajax_xplore_results, name='ajax_xplore_results'),
         url(r'^ajax/jobs_results$', views.ajax_jobs_results, name='ajax_jobs_results'),

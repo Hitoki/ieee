@@ -272,15 +272,22 @@ def profile(log_file):
 
 @login_required
 @profile("ajax_tag.prof")
-def ajax_tag_content(request, tag_id, ui=None, initial_tab='overview', load_remainder=None):
+def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
 
     context = {}
+    tab_template = None
+
+    try:
+        if request.GET['load_framework'] == 'True':
+            load_framework = True
+    except:
+        load_framework = None
 
     'The AJAX resource results popup.'
     if ui is None:
         ui = 'textui'
     assert ui in ['roamer', 'textui'], 'Unrecognized ui "%s"' % ui
-
+    context['tab'] = tab
     context['ui'] = ui
 
     tag = Node.objects.get(id=tag_id)    
@@ -317,7 +324,7 @@ def ajax_tag_content(request, tag_id, ui=None, initial_tab='overview', load_rema
     context['experts'] = experts
 
     # Grab standards with is_machine_generated field.
-    if initial_tab == 'standards' or initial_tab == 'all':
+    if tab == 'standard':
         standards_resource_nodes = tag.resource_nodes.filter(resource__resource_type__name=ResourceType.STANDARD)
         standards = []
         for standards_resource_node in standards_resource_nodes:
@@ -327,8 +334,9 @@ def ajax_tag_content(request, tag_id, ui=None, initial_tab='overview', load_rema
 
         counts += len(standards)
         context['standards'] = standards
+        tab_template = 'ajax_standard_tab.inc.html'
 
-    if initial_tab == 'periodicals' or initial_tab == 'all':
+    if tab == 'periodical':
         # Grab periodicals with is_machine_generated field.
         periodicals_resource_nodes = tag.resource_nodes.filter(resource__resource_type__name=ResourceType.PERIODICAL)
         periodicals = []
@@ -339,8 +347,9 @@ def ajax_tag_content(request, tag_id, ui=None, initial_tab='overview', load_rema
 
         counts += len(periodicals)            
         context['periodicals'] = periodicals
+        tab_template = 'ajax_periodical_tab.inc.html'
         
-    if initial_tab == 'conferences' or initial_tab == 'all':    
+    if tab == 'conference':    
         # Sort the conferences by year latest to earliest.
         conferences_resource_nodes = tag.resource_nodes.filter(resource__resource_type__name=ResourceType.CONFERENCE)
         conferences = []
@@ -355,15 +364,17 @@ def ajax_tag_content(request, tag_id, ui=None, initial_tab='overview', load_rema
         conferences = util.group_conferences_by_series(conferences)
         counts += len(conferences)
         context['conferences'] = conferences
+        tab_template = 'ajax_conferences_tab.inc.html'
     
-    if initial_tab == 'orgs' or initial_tab == 'all':
+    if tab == 'society':
         societies = tag.societies.all()
         # Hide the TAB society.
         societies = societies.exclude(abbreviation='tab')
         counts += societies.count()
         context['societies'] = societies
+        tab_template = 'ajax_organizations_tab.inc.html'
 
-    if initial_tab == 'jobs' or initial_tab == 'all':
+    if tab == 'jobs':
         jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&format=json" % urllib.urlencode({"kwsMustContain": tag.name})
         file1 = urllib2.urlopen(jobsUrl).read()
         jobsJson = json.loads(file1)
@@ -379,8 +390,9 @@ def ajax_tag_content(request, tag_id, ui=None, initial_tab='overview', load_rema
         #    jobsHtml = jobsHtml + '<a href="%s" target="_blank">More jobs</a>' % jobsUrl.replace('&format=json','')
 
         jobsUrl = jobsUrl.replace('&format=json','')
+        tab_template = 'ajax_job_tab.inc.html'
 
-    if initial_tab == 'overview' or initial_tab == 'all':        
+    if tab == 'overview':        
         try:
             xplore_article = _get_xplore_results(tag.name, show_all=False, offset=0, sort=XPLORE_SORT_PUBLICATION_YEAR, sort_desc=True)[0][0]
         except IndexError:
@@ -389,6 +401,7 @@ def ajax_tag_content(request, tag_id, ui=None, initial_tab='overview', load_rema
         context['xplore_article'] = xplore_article
         context['close_conference'] = tag._get_closest_conference()
         context['definition'] = tag._get_definition_link()
+        tab_template = 'ajax_over_tab.inc.html'
 
     file1 = None
     # removied sectors from count
@@ -406,9 +419,12 @@ def ajax_tag_content(request, tag_id, ui=None, initial_tab='overview', load_rema
             'num_related_items': num_related_items,
             'ui': ui,
         })
-    else:
+    elif load_framework:
         # Show the normal tag content popup.
         return render(request, 'ajax_tag_content.html', context)
+    else:
+        # return the specific tab's template
+        return render(request, tab_template, context)
 
 #@login_required
 #def ajax_term_content(request, term_id, ui=None):

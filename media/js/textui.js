@@ -1016,7 +1016,12 @@ var Tags = {
         Flyover.hide();
 
         // Show resource results in a lightbox
-        Lightbox.show('/ajax/tag_content/' + id + '/textui/overview', {
+        if (tabName == undefined) {
+            initialTab = 'overview';
+        } else {
+            initialTab = tabName;
+        }
+        Lightbox.show('/ajax/tag_content/' + id + '/textui/' + initialTab + '?load_framework=True', {
             verticalCenter: false
             , customClass: 'resources'
             , onShowCallback: function() {
@@ -1025,7 +1030,6 @@ var Tags = {
                     log('  calling Tags.onSelectTag()');
                     Tags.onSelectTag(tabName);
                 }
-                Lightbox.show('/ajax/tag_content/' + id + '/textui/all');
                 $('#tag-name').effect("highlight", {}, 2000);
 
                 // populate the patent tab.
