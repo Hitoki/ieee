@@ -335,6 +335,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         counts += len(standards)
         context['standards'] = standards
         tab_template = 'ajax_standard_tab.inc.html'
+        context['loaded'] = True
 
     if tab == 'periodical':
         # Grab periodicals with is_machine_generated field.
@@ -348,6 +349,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         counts += len(periodicals)            
         context['periodicals'] = periodicals
         tab_template = 'ajax_periodical_tab.inc.html'
+        context['loaded'] = True
         
     if tab == 'conference':    
         # Sort the conferences by year latest to earliest.
@@ -365,6 +367,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         counts += len(conferences)
         context['conferences'] = conferences
         tab_template = 'ajax_conferences_tab.inc.html'
+        context['loaded'] = True
     
     if tab == 'society':
         societies = tag.societies.all()
@@ -373,8 +376,9 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         counts += societies.count()
         context['societies'] = societies
         tab_template = 'ajax_organizations_tab.inc.html'
+        context['loaded'] = True
 
-    if tab == 'jobs':
+    if tab == 'job':
         jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&format=json" % urllib.urlencode({"kwsMustContain": tag.name})
         file1 = urllib2.urlopen(jobsUrl).read()
         jobsJson = json.loads(file1)
@@ -391,6 +395,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
 
         jobsUrl = jobsUrl.replace('&format=json','')
         tab_template = 'ajax_job_tab.inc.html'
+        context['loaded'] = True
 
     if tab == 'overview':        
         try:

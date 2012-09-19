@@ -1,6 +1,7 @@
 <script type="text/javascript">
     $(function(){
         attachJobResults('#job-results-container');
+        $('#jobs-tab span.right').html('{{ jobsCount }}'); 
     });
 </script>
                     <div id="job-results-container" class="{ tagId: {{ tag.id }} }">

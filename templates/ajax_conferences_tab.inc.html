@@ -1,46 +1,55 @@
+<script type="text/javascript">
+    $(function(){
+        $('#conferences-tab span.right').html('{{ conferences|length }}');
+    });
+</script>                    
                     <div class="group">
                         <ul>
-                            {% if conferences|length %}
-                            {% for resource in conferences %}
-                            <li>
-                                {% if resource.url and resource.url_status != "bad" %}
-                                <a href="{{ resource.url }}" target="_blank" rel="nofollow">
-                                    {% endif %}
-                                    <p class="{% cycle 'item_odd' 'item_even' %}">
-                                        <span>{{resource.name}}</span>{% if resource.url and resource.url_status != "bad" %}<img class="newWinIcon" src="{{ MEDIA_URL }}images/popup.png" />{% endif %}{% if resource.is_machine_generated %}<img src="{{ MEDIA_URL }}images/drive.png" class="flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />{% endif %}
-                                    </p>
+                            {% if loaded %}
+                                {% if conferences|length %}
+                                {% for resource in conferences %}
+                                <li>
                                     {% if resource.url and resource.url_status != "bad" %}
-                                </a>
-                                {% endif %}
-                                <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
-                                {% if resource.is_current_conference and resource.other_conferences|length %}
-                                <p class="more-conferences">
-                                    <a href="#" id="show-other-conferences-{{ resource.id }}" class="show-other-conferences {id: {{ resource.id }}}" rel="nofollow">
-                                        <img class="toggleIcon" src="{{ MEDIA_URL }}images/plusbox.png"/>Show {{ resource.other_conferences|length }} more conference{{ resource.other_conferences|pluralize }} in this series...
-                                    </a>
-                                    <a href="#" id="hide-other-conferences-{{ resource.id }}" class="hide-other-conferences {id: {{ resource.id }}}" rel="nofollow">
-                                        <img class="toggleIcon" src="{{ MEDIA_URL }}images/minusbox.png"/>Hide other conferences in this series
-                                    </a>
-                                </p>
-                                <div id="other-conferences-{{ resource.id }}" class="other-conferences">
-                                    {% for other_conference in resource.other_conferences %}
-                                    {% if other_conference.url and other_conference.url_status != "bad" %}
-                                    <a href="{{ other_conference.url }}" target="_blank" rel="nofollow" rel="nofollow">
+                                    <a href="{{ resource.url }}" target="_blank" rel="nofollow">
                                         {% endif %}
                                         <p class="{% cycle 'item_odd' 'item_even' %}">
-                                            <span>{{other_conference.name}}</span>{% if other_conference.url and other_conference.url_status != "bad" %}<img class="newWinIcon" src="{{ MEDIA_URL }}images/popup.png" />{% endif %}{% if other_conference.is_machine_generated %}<img src="{{ MEDIA_URL }}images/drive.png" class="flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />{% endif %}
+                                            <span>{{resource.name}}</span>{% if resource.url and resource.url_status != "bad" %}<img class="newWinIcon" src="{{ MEDIA_URL }}images/popup.png" />{% endif %}{% if resource.is_machine_generated %}<img src="{{ MEDIA_URL }}images/drive.png" class="flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />{% endif %}
                                         </p>
-                                        {% if other_conference.url and other_conference.url_status != "bad" %}
+                                        {% if resource.url and resource.url_status != "bad" %}
                                     </a>
                                     {% endif %}
-                                    <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{other_conference.description}}</p>
-                                    {% endfor %}
-                                </div>
+                                    <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
+                                    {% if resource.is_current_conference and resource.other_conferences|length %}
+                                    <p class="more-conferences">
+                                        <a href="#" id="show-other-conferences-{{ resource.id }}" class="show-other-conferences {id: {{ resource.id }}}" rel="nofollow">
+                                            <img class="toggleIcon" src="{{ MEDIA_URL }}images/plusbox.png"/>Show {{ resource.other_conferences|length }} more conference{{ resource.other_conferences|pluralize }} in this series...
+                                        </a>
+                                        <a href="#" id="hide-other-conferences-{{ resource.id }}" class="hide-other-conferences {id: {{ resource.id }}}" rel="nofollow">
+                                            <img class="toggleIcon" src="{{ MEDIA_URL }}images/minusbox.png"/>Hide other conferences in this series
+                                        </a>
+                                    </p>
+                                    <div id="other-conferences-{{ resource.id }}" class="other-conferences">
+                                        {% for other_conference in resource.other_conferences %}
+                                        {% if other_conference.url and other_conference.url_status != "bad" %}
+                                        <a href="{{ other_conference.url }}" target="_blank" rel="nofollow" rel="nofollow">
+                                            {% endif %}
+                                            <p class="{% cycle 'item_odd' 'item_even' %}">
+                                                <span>{{other_conference.name}}</span>{% if other_conference.url and other_conference.url_status != "bad" %}<img class="newWinIcon" src="{{ MEDIA_URL }}images/popup.png" />{% endif %}{% if other_conference.is_machine_generated %}<img src="{{ MEDIA_URL }}images/drive.png" class="flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />{% endif %}
+                                            </p>
+                                            {% if other_conference.url and other_conference.url_status != "bad" %}
+                                        </a>
+                                        {% endif %}
+                                        <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{other_conference.description}}</p>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </li>    
+                                {% endfor %}
+                                {% else %}
+                                <p class="no-resources">No conferences are currently tagged "{{ tag.name }}"</p>
                                 {% endif %}
-                            </li>    
-                            {% endfor %}
-                            {% else %}
-                            <p class="no-resources">No conferences are currently tagged "{{ tag.name }}"</p>
+                            {% else %}     
+                                <div class="loading" style="padding-top: 6em;text-align: center;padding-bottom: 3em;"><img src="/media/images/ajax-loader.gif" class="loading" /></div>
                             {% endif %}
                         </ul>
                     </div>

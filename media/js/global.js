@@ -663,7 +663,6 @@ JobLoader.prototype.onLoadData = function(data) {
             }
             
             // Showing {{ xplore_results|length }} of {{ totalfound|intcomma }} results 
-            
         }
         
         this.isLoading = false;

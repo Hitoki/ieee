@@ -64,7 +64,7 @@
             }
         });
 
-        var tabs = ['overview','society','conference','periodical','standard'];
+        var tabs = ['overview','society','conference','periodical','standard','job'];
         var tab = '{{ tab }}';
         for (var i = 0; i < tabs.length; i++) {
             if ( tab != tabs[i] ) {
@@ -174,7 +174,7 @@ function isValidEmailAddress(emailAddress) {
             </div>
 
 <!-- Xplore Education Results -->
-            <div id="education-results-container" class="{ tagId: {{ tag.id }} }">
+            <div id="education-tab" data-printUrl='{% url print_resource tag.id "xplore_edu" %}'>
                 {% include 'ajax_education_tab.inc.html' %}
             </div>
 

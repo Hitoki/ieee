@@ -1,22 +1,31 @@
+<script type="text/javascript">
+    $(function(){
+        $('#standards-tab span.right').html('{{ standards|length }}');
+    });
+</script>                    
                     <div class="group">
                         <ul>
-                            {% if standards|length %}
-                            {% for resource in standards %}
-                            <li>
-                                <p class="{% cycle 'item_odd' 'item_even' %}">
-                                    {% if resource.url and resource.url_status != "bad" %}
-                                    <a href="{{ resource.url }}" target="_blank" rel="nofollow">
-                                        {% endif %}
-                                        <span>{{resource.name}}</span>{% if resource.url and resource.url_status != "bad" %}<img class="newWinIcon" src="{{ MEDIA_URL }}images/popup.png" />{% if resource.is_machine_generated %}<img src="{{ MEDIA_URL }}images/drive.png" class="flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />{% endif %}{% endif %}
+                            {% if loaded %}   
+                                {% if standards|length %}
+                                {% for resource in standards %}
+                                <li>
+                                    <p class="{% cycle 'item_odd' 'item_even' %}">
                                         {% if resource.url and resource.url_status != "bad" %}
-                                    </a>
-                                    {% endif %}
-                                </p> 
-                                <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
-                            </li>
-                            {% endfor %}
-                            {% else %}
-                            <p class="no-resources">No standards are currently tagged "{{ tag.name }}"</p>
+                                        <a href="{{ resource.url }}" target="_blank" rel="nofollow">
+                                            {% endif %}
+                                            <span>{{resource.name}}</span>{% if resource.url and resource.url_status != "bad" %}<img class="newWinIcon" src="{{ MEDIA_URL }}images/popup.png" />{% if resource.is_machine_generated %}<img src="{{ MEDIA_URL }}images/drive.png" class="flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />{% endif %}{% endif %}
+                                            {% if resource.url and resource.url_status != "bad" %}
+                                        </a>
+                                        {% endif %}
+                                    </p> 
+                                    <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
+                                </li>
+                                {% endfor %}
+                                {% else %}
+                                <p class="no-resources">No standards are currently tagged "{{ tag.name }}"</p>
+                                {% endif %}
+                            {% else %}     
+                                <div class="loading" style="padding-top: 6em;text-align: center;padding-bottom: 3em;"><img src="/media/images/ajax-loader.gif" class="loading" /></div>
                             {% endif %}
                         </ul>
                     </div>
