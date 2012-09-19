@@ -296,32 +296,32 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
     counts = 0
     jobsCount = "0"
 
-    sectors1 = tag.get_sectors()
-    counts += sectors1.count()
+    #sectors1 = tag.get_sectors()
+    #counts += sectors1.count()
 
     clusters1 = tag.get_parent_clusters()
     
     
     # Build a list of sectors and clusters, grouped by sector
-    parent_nodes = []
-    for sector in sectors1:
-        clusters = []
-        for cluster in clusters1:
-            if sector in cluster.parents.all():
-                clusters.append(cluster)
-        
-        parent_nodes.append({
-            'sector': sector,
-            'clusters': clusters,
-        })
-    context['parent_nodes'] = parent_nodes
+    #parent_nodes = []
+    #for sector in sectors1:
+    #    clusters = []
+    #    for cluster in clusters1:
+    #        if sector in cluster.parents.all():
+    #            clusters.append(cluster)
+    #    
+    #    parent_nodes.append({
+    #        'sector': sector,
+    #        'clusters': clusters,
+    #    })
+    #context['parent_nodes'] = parent_nodes
     
-    num_resources = Resource.objects.getForNode(tag).count()
-    context['num_resources'] = num_resources
+    #num_resources = Resource.objects.getForNode(tag).count()
+    #context['num_resources'] = num_resources
 
-    experts = Resource.objects.getForNode(tag, resourceType=ResourceType.EXPERT)
-    counts += experts.count()
-    context['experts'] = experts
+    #experts = Resource.objects.getForNode(tag, resourceType=ResourceType.EXPERT)
+    #counts += experts.count()
+    #context['experts'] = experts
 
     # Grab standards with is_machine_generated field.
     if tab == 'standard':
@@ -399,7 +399,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
 
     if tab == 'overview':        
         try:
-            xplore_article = _get_xplore_results(tag.name, show_all=False, offset=0, sort=XPLORE_SORT_PUBLICATION_YEAR, sort_desc=True)[0][0]
+            xplore_article = _get_xplore_results(tag.name, show_all=False, offset=0, sort=XPLORE_SORT_PUBLICATION_YEAR, sort_desc=True, recent=True)[0][0]
         except IndexError:
             xplore_article = None
 
@@ -464,7 +464,7 @@ XPLORE_SORTS = [
     XPLORE_SORT_PUBLICATION_YEAR,
 ]
 
-def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, offset=0, sort=None, sort_desc=False, ctype=None):
+def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, offset=0, sort=None, sort_desc=False, ctype=None, recent=False):
     '''
     Get xplore results for the given tag_name from the IEEE Xplore search gateway.  Searches all fields for the tag_name phrase, returns results.
     @return: a 3-tuple of (results, errors, total_results).  'errors' is a string of any errors that occurred, or None.  'total_results' is the total number of results (regardless of how many are returned in 'results'.  'results' is an array of dicts:
@@ -482,6 +482,8 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
     if show_all:
         # Some arbitrarily big number...
         max_num_results = 10000
+    elif recent:
+        max_num_results = 1
     else:
         max_num_results = 10
     
