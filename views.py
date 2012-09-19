@@ -707,16 +707,8 @@ def recent_xplore_result(tag_name):
             xplore_results = []
 
             for document1 in xml1.documentElement.getElementsByTagName('document'):
-                rank = getElementValueByTagName(document1, 'rank')
                 title = getElementValueByTagName(document1, 'title')
-                abstract = getElementValueByTagName(document1, 'abstract')
                 pdf = getElementValueByTagName(document1, 'pdf')
-                authors = getElementValueByTagName(document1, 'authors')
-                pub_title = getElementValueByTagName(document1, 'pubtitle')
-                pub_year = getElementValueByTagName(document1, 'py')
-                    
-                # Escape here, since we're going to output this as |safe on the template
-                # title = cgi.escape(title)
                       
                 result = {
                     'name': title,
@@ -724,6 +716,7 @@ def recent_xplore_result(tag_name):
                 }
 
                 xplore_results.append(result)
+                
     return xplore_results[0]
 
 
