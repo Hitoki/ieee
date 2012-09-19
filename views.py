@@ -634,11 +634,6 @@ def recent_xplore_result(tag_name):
     params['sortorder'] = 'desc'
     params['sortfield'] = XPLORE_SORT_PUBLICATION_YEAR
 
-    param_options = [
-        {'key': 'md', 'value': '"%s"' % tag_name.encode('utf-8')},
-        {'key': 'md', 'value': '%s' % tag_name.encode('utf-8')}
-    ]
-
     def getElementByTagName(node, tag_name):
         nodes = node.getElementsByTagName(tag_name)
         if len(nodes) == 0:
@@ -661,6 +656,17 @@ def recent_xplore_result(tag_name):
                     value += child_node.nodeValue
                     
             return value
+
+    tax_term_count = Node.objects.filter(name=tag_name, is_taxonomy_term=True).count()
+
+    param_options = [
+        {'key': 'thsrsterms', 'value': '"%s"' % tag_name.encode('utf-8')},    
+        {'key': 'md', 'value': '"%s"' % tag_name.encode('utf-8')},
+        {'key': 'md', 'value': '%s' % tag_name.encode('utf-8')}
+    ]
+
+    if not tax_term_count:
+        del param_options[0] # no need for thsrsterm so toss out the first item    
 
     for obj in param_options:
         # clear any previous values
@@ -699,6 +705,7 @@ def recent_xplore_result(tag_name):
             xml1 = xml.dom.minidom.parseString(xml_body)
                     
             xplore_results = []
+
             for document1 in xml1.documentElement.getElementsByTagName('document'):
                 rank = getElementValueByTagName(document1, 'rank')
                 title = getElementValueByTagName(document1, 'title')
@@ -712,16 +719,12 @@ def recent_xplore_result(tag_name):
                 # title = cgi.escape(title)
                       
                 result = {
-                    'rank': rank,
                     'name': title,
-                    'description': abstract,
                     'url': pdf,
-                    'authors': authors,
-                    'pub_title': pub_title,
-                    'pub_year': pub_year,
                 }
 
-                return result
+                xplore_results.append(result)
+    return xplore_results[0]
 
 
 @csrf_exempt
