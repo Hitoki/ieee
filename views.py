@@ -399,7 +399,8 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
 
     if tab == 'overview':        
         try:
-            xplore_article = _get_xplore_results(tag.name, show_all=False, offset=0, sort=XPLORE_SORT_PUBLICATION_YEAR, sort_desc=True, recent=True)[0][0]
+            xplore_article = recent_xplore_result(tag.name)
+            #xplore_article = _get_xplore_results(tag.name, show_all=False, offset=0, sort=XPLORE_SORT_PUBLICATION_YEAR, sort_desc=True, recent=True)[0][0]
         except IndexError:
             xplore_article = None
 
@@ -619,8 +620,109 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
                     }
                 
                 xplore_results.append(result)
-        
+
     return xplore_results, xplore_error, totalfound
+
+def recent_xplore_result(tag_name):
+    params = {
+        # Number of results
+        'hc': 1,
+        # Specifies the result # to start from
+        'rs': 1
+    }
+
+    params['sortorder'] = 'desc'
+    params['sortfield'] = XPLORE_SORT_PUBLICATION_YEAR
+
+    param_options = [
+        {'key': 'md', 'value': '"%s"' % tag_name.encode('utf-8')},
+        {'key': 'md', 'value': '%s' % tag_name.encode('utf-8')}
+    ]
+
+    def getElementByTagName(node, tag_name):
+        nodes = node.getElementsByTagName(tag_name)
+        if len(nodes) == 0:
+            return None
+        elif len(nodes) == 1:
+            return nodes[0]
+        else:
+            raise Exception('More than one element found for topic name "%s"' % tag_name)    
+
+    def getElementValueByTagName(node, tag_name):
+        node1 = getElementByTagName(node, tag_name)
+        if node1 is None:
+            return None
+        else:
+            value = ''
+            # print '  len(node1.childNodes): %r' % len(node1.childNodes)
+            for child_node in node1.childNodes:
+                # print '  child_node: %r' % child_node
+                if child_node.nodeType == child_node.TEXT_NODE or child_node.nodeType == child_node.CDATA_SECTION_NODE:
+                    value += child_node.nodeValue
+                    
+            return value
+
+    for obj in param_options:
+        # clear any previous values
+        if 'thsrsterms' in params:
+            del params['thsrsterms']
+        if 'md' in params:
+            del params['md']
+
+        params[obj['key']] = obj['value']
+
+        url = settings.EXTERNAL_XPLORE_URL + urllib.urlencode(params)
+                
+        try:
+            file1 = urllib2.urlopen(url)
+            
+            # Get the charset of the request and decode/re-encode the response text into UTF-8 so we can parse it
+            info = file1.info()
+            temp, charset = info['content-type'].split('charset=')
+
+        except urllib2.URLError:
+            xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
+            xplore_results = []
+            totalfound = 0
+        except KeyError:
+            xplore_error = 'Error: Could not determine content type of the IEEE Xplore response.'
+            xplore_results = []
+            totalfound = 0
+
+        else:
+            xplore_error = None
+
+            xml_body = file1.read()
+            file1.close()
+            xml_body = xml_body.decode(charset).encode('utf-8')
+                
+            xml1 = xml.dom.minidom.parseString(xml_body)
+                    
+            xplore_results = []
+            for document1 in xml1.documentElement.getElementsByTagName('document'):
+                rank = getElementValueByTagName(document1, 'rank')
+                title = getElementValueByTagName(document1, 'title')
+                abstract = getElementValueByTagName(document1, 'abstract')
+                pdf = getElementValueByTagName(document1, 'pdf')
+                authors = getElementValueByTagName(document1, 'authors')
+                pub_title = getElementValueByTagName(document1, 'pubtitle')
+                pub_year = getElementValueByTagName(document1, 'py')
+                    
+                # Escape here, since we're going to output this as |safe on the template
+                # title = cgi.escape(title)
+                      
+                result = {
+                    'rank': rank,
+                    'name': title,
+                    'description': abstract,
+                    'url': pdf,
+                    'authors': authors,
+                    'pub_title': pub_title,
+                    'pub_year': pub_year,
+                }
+
+                return result
+
 
 @csrf_exempt
 def ajax_xplore_results(request):
