@@ -479,7 +479,16 @@ MultiSearch.prototype.onGetOptions = function(data) {
 
 MultiSearch.prototype.showPopupLoading = function() {
     this.showPopup();
-    this.popupElem.html('<div class="multi-search-popup-loading"><img src="/media/images/ajax-loader.gif" /></div>');
+    this.popupElem.html('<div class="multi-search-popup-loading"></div>');
+    $(".multi-search-popup-loading").spin({
+        lines: 9, // The number of lines to draw
+        length: 10, // The length of each line
+        width: 8, // The line thickness
+        radius: 15, // The radius of the inner circle
+        corners: 1.0, // Corner roundness (0..1)
+        speed: 2.2, // Rounds per second
+        trail: 25, // Afterglow percentage
+    });
 }
 
 MultiSearch.prototype.addSearchOption = function(searchOption) {
