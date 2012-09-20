@@ -1076,7 +1076,16 @@ var Tags = {
             }
             , showCloseButton: true
         });
-	$('.resources-lightbox-content').append($('<div class="resource-loading">'));
+    	$('.resources-lightbox-content').append($('<div class="resource-loading">'));
+    	$(".resource-loading").spin({
+            lines: 9, // The number of lines to draw
+            length: 10, // The length of each line
+            width: 8, // The line thickness
+            radius: 15, // The radius of the inner circle
+            corners: 1.0, // Corner roundness (0..1)
+            speed: 2.2, // Rounds per second
+            trail: 25, // Afterglow percentage
+        });
     },
     
     onSelectTag: function(tabName) {
