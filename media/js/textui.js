@@ -512,6 +512,7 @@ var Tags = {
     showSearchResults: function(search_for, showSearchResultsCallback) {
         this.isSearching = true;
         $('#tags-searching-msg').text('Filtering for "' + search_for + '"...').show();
+        $('#tag-counts').hide();
         this.updateHighlightedNode();
         this._showWaitScreen();
         
