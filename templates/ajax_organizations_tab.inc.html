@@ -24,7 +24,7 @@
                                             {% if society.url %}
                                             <a href="{{ society.url }}" target="_blank" rel="nofollow">
                                                 {% endif %}
-                                                <span>{{ society.name }} ({{ society.abbreviation }})</span>{% if society.url %}<img class="newWinIcon" src="{{ MEDIA_URL }}images/popup.png" />{% if society.node_society.is_machine_generated %}<img src="{{ MEDIA_URL }}images/drive.png" class="flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />{% endif %}{% endif %}
+                                                <span>{{ society.name }} ({{ society.abbreviation }})</span>{% if society.url %}<span class="sprite-popup newWinIcon"></span>{% if society.node_society.is_machine_generated %}<span class="sprite-drive flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;"></span>{% endif %}{% endif %}
                                                 {% if society.url %}
                                             </a>
                                             <br/>

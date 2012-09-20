@@ -27,9 +27,9 @@
     
     <p id="tag-and-cluster-counts">
         Showing 
-        {% if num_clusters %}<img src="/media/images/icon_cluster_sm.png" class="cluster-icon" /> {{ num_clusters }} topic area{{ num_clusters|pluralize }} and{% endif %}
-        <img src="/media/images/tag_icon.png" class="tag-icon" /> {{ num_tags }} {% comment %}{% if not cluster %}unclustered{% endif %}{% endcomment %} topic{{ num_tags|pluralize }}
-        {% if num_terms %} (<img src="/media/images/tag_icon.png" class="tag-icon" />{{ num_terms }} terms){% endif %}
-        {% if cluster %} in the <img src="/media/images/icon_cluster_sm.png" class="cluster-icon" /> topic area "{{ cluster.name }}"{% endif %}{% if sector %} in the industry sector "{{ sector }}"{% endif %}
+        {% if num_clusters %}<span class="sprite-icon_cluster_sm cluster-icon"></span> {{ num_clusters }} topic area{{ num_clusters|pluralize }} and{% endif %}
+        <span class="sprite-tag_icon"></span> {{ num_tags }} {% comment %}{% if not cluster %}unclustered{% endif %}{% endcomment %} topic{{ num_tags|pluralize }}
+        {% if num_terms %} (<span class="sprite-tag_icon"></span> {{ num_terms }} terms){% endif %}
+        {% if cluster %} in the <span class="sprite-icon_cluster_sm cluster-icon"></span> topic area "{{ cluster.name }}"{% endif %}{% if sector %} in the industry sector "{{ sector }}"{% endif %}
     </p>
 {% endif %}

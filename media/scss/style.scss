@@ -426,8 +426,7 @@ p.admin-links a:hover {
    text-decoration: underline;
 }
 
-img.newWinIcon {
-    display: inline-block;
+.newWinIcon {
     margin: 0 10px;
 }
 
@@ -437,17 +436,7 @@ img.toggleIcon {
 }
 
 .helpicon {
-   background-image: url(/media/images/sm_help.png);
-   background-position: 0 0;
-   background-repeat: no-repeat;
-   display: inline-block;
-   height: 12px;
-   width: 12px;
    cursor: pointer;
-}
-
-.helpicon:hover {
-   background-position: 0 -33px;
 }
 
 #connectedness-help {
@@ -2600,21 +2589,7 @@ float: left;
 }
 
 .dropIcon {
-width: 20px;
-height: 19px;
-background: url(/media/images/drop_down.png) no-repeat 0px 0px;
-}
-
-.dropIcon.open {
-background: url(/media/images/drop_down_open.png) no-repeat 0px 0px;
-}
-
-.dropIcon.active {
-background: url(/media/images/drop_down_active.png) no-repeat 0px 0px;
-}
-
-.dropIcon.openActive {
-background: url(/media/images/drop_down_openactive.png) no-repeat 0px 0px;
+float: right;
 }
 
 #utility-links {

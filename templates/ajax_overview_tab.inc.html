@@ -11,7 +11,7 @@
                             <li>
                                 <div class="overview-label">Recent Related Xplore Article</div>
                                 <div id="xplore-overview">
-                                    <a href="{{ xplore_article.url }}" target="_blank" rel="nofollow">{{ xplore_article.name|safe }}</a>{% if xplore_article.url and xplore_article.url_status != "bad" %}<img class="newWinIcon" src="{{ MEDIA_URL }}images/popup.png" />{% endif %}
+                                    <a href="{{ xplore_article.url }}" target="_blank" rel="nofollow">{{ xplore_article.name|safe }}</a>{% if xplore_article.url and xplore_article.url_status != "bad" %}<span class="sprite-popup newWinIcon"></span>{% endif %}
                                 </div>
                             </li>
                             {% if conferences|length %}
@@ -21,7 +21,7 @@
                                 <a href="{% if close_conference.url|slice:":4" != 'http' %}http://{% endif %}{{ close_conference.url }}" target="_blank" rel="nofollow">
                                 {% endif %}
                                     <div>
-                                        <span>{{close_conference.name}}</span>{% if close_conference.url and close_conference.url_status != "bad" %}<img class="newWinIcon" src="{{ MEDIA_URL }}images/popup.png" />{% endif %}{% if close_conference.is_machine_generated %}<img src="{{ MEDIA_URL }}images/drive.png" class="flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />{% endif %}
+                                        <span>{{close_conference.name}}</span>{% if close_conference.url and close_conference.url_status != "bad" %}<span class="sprite-popup newWinIcon"></span>{% endif %}{% if close_conference.is_machine_generated %}<span class="sprite-drive flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;"></span>{% endif %}
                                     </div>
                                 {% if close_conference.url and close_conference_status != "bad" %}
                                 </a>

@@ -82,7 +82,7 @@
             <td>
                 {% for resource_node in resource_nodes %}
                     {% if resource_node.is_machine_generated %}
-                        <img src="{{ MEDIA_URL }}images/drive.png" class="flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;" />
+                        <span class="sprite-drive flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;"></span>
                     {% endif %}
                     <a href="{% url admin_view_resource resource_node.resource.id %}?return_url={{ current_url|urlencode }}">{{ resource_node.resource.name }}</a><br/>
                 {% endfor %}
