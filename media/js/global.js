@@ -332,7 +332,7 @@ function resizeLightboxTab() {
     $('.nootabs-selected-tab div.group').css('height', windowHeight - 310);
     $('#xplore-results-container div.group').css('height', windowHeight - 362);
     $('#job-results-container div.group').css('height', windowHeight - 362);
-    $('#education-results-container div.group').css('height', windowHeight - 362);
+    $('#education-results-container div.group').css('height', windowHeight - 310);
     $('#patents-tab div.group').css('height', windowHeight - 320);
 }
 

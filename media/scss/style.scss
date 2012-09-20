@@ -2160,8 +2160,7 @@ ul.errors {
     }
 }
 
-#xplore-results-container div.group,
-#education-results-container div.group {
+#xplore-results-container div.group {
     margin-top: 32px;
 }
 
@@ -2239,7 +2238,7 @@ div.group ul li:first-child {
     font-size: 10pt;
     vertical-align: top;
     background: $white url(../images/magnifyIcon.png) no-repeat 4px 3px;
-    @include custom-border-radius (5px, 0, 0, 5px);
+    @include default-border-radius;
 }
 
 .live-search-clear {
@@ -2568,7 +2567,7 @@ cursor: pointer;
 text-align: left;
 padding: 2px 0;
 color: $primaryColor;
-@include-default-border-radius;
+@include default-border-radius;
 }
 
 .customSelectList li:hover {

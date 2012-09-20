@@ -516,7 +516,8 @@ margin-top: 0;
 #periodical-tab .group,
 #standard-tab .group,
 #related-tab .group,
-#society-tab .group {
+#society-tab .group,
+#lightbox .resources-lightbox-content #education-tab div.group {
     padding: 10px 15px 0 15px;
 }
 
