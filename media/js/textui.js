@@ -496,6 +496,7 @@ var Tags = {
     
     showSearchResults: function(search_for, showSearchResultsCallback) {
         this.isSearching = true;
+        $('#tags-searching-msg').text('Filtering for "' + search_for + '"...').show();
         this.updateHighlightedNode();
         this._showWaitScreen();
         
@@ -583,6 +584,9 @@ var Tags = {
                     Tags.onLoadResults(data);
                     if($('#tag-counts').css('display') == 'none') {
                         $('#tag-counts').show();
+                    }
+                    if (showSearchResultsCallback) {
+                        showSearchResultsCallback(search_for, data);
                     }
                 },
                 'json'

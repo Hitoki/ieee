@@ -128,6 +128,7 @@ LiveSearch.prototype.update = function(useDelayValue,self) {
                 
                 Tags.showSearchResults(value, function(searchFor, data) {
                     liveSearch.onUpdate(searchFor, data);
+                    $('#tags-searching-msg').hide();
                 });
 				
                 /*

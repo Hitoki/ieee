@@ -218,6 +218,7 @@
                                 <input id="tags-live-search" type="text" class="live-search defaultValue { use_tags_callback: true, search_key_delay: {{ SEARCH_KEY_DELAY }}, search_on_enter_only: {% if ENABLE_SEARCH_BUTTON %}true }{% else %}false } live-search-button-disabled{% endif %}" value="Enter term &amp; press return" />
                                 <span id="textui-tags-search-clear" class="live-search-clear">&nbsp;</span>
                                 {% if ENABLE_SEARCH_BUTTON %}<span id="textui-tags-search-submit">Go</span>{% endif %}
+                                <p id="tags-searching-msg" style="display: none"></p>
                             </div>
                         </div>
                         
