@@ -2381,6 +2381,13 @@ div#connectedness-container {
     margin: 15px 0 0 35px;
     text-indent: -12px;
     width: 500px;
+    #num-related-items-loading {
+        display: inline-block;
+        height: 15px;
+        position: relative;
+        width: 15px;
+        vertical-align: text-bottom;
+    }
 }
 
 .dialogAddThis {

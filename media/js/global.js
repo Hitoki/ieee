@@ -524,6 +524,7 @@ XploreLoader.prototype.onLoadData = function(data) {
                 totalElem = $('#xplore-totals')
             }
             
+            $("#num-related-items-loading").remove();
             var numRelatedItems = parseInt($('#num-related-items').metadata().number);
             var newTotal = numRelatedItems + data.num_results;
             $('#num-related-items').text(addCommas(newTotal));

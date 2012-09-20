@@ -1035,6 +1035,16 @@ var Tags = {
                     Tags.onSelectTag(tabName);
                 }
                 $('#tag-name').effect("highlight", {}, 2000);
+                
+                $("#num-related-items-loading").spin({
+                    lines: 9, // The number of lines to draw
+                    length: 2, // The length of each line
+                    width: 2, // The line thickness
+                    radius: 3, // The radius of the inner circle
+                    corners: 1.0, // Corner roundness (0..1)
+                    speed: 2.2, // Rounds per second
+                    trail: 25, // Afterglow percentage
+                });
 
                 // populate the patent tab.
                 //patentSearch = new google.search.PatentSearch();
