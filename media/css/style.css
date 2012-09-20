@@ -1310,8 +1310,15 @@ table.vert-center td {
   text-align: center;
   color: #aaa; }
 
+.empty-loading {
+  margin-top: 75px; }
+  .empty-loading div {
+    margin-top: 25px; }
+
 .please-wait {
-  top: 35% !important; }
+  top: 25% !important; }
+  .please-wait div {
+    margin-top: 25px; }
 
 #loading {
   margin: 2em; }

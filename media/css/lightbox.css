@@ -527,3 +527,7 @@ margin-top: 0;
 #related-tab .group p {
     margin-bottom: 15px;
 }
+
+.loading div {
+    margin: 20px 0 0;
+}

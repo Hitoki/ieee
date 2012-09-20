@@ -464,7 +464,17 @@ XploreLoader.prototype.loadContent = function(force) {
         var xploreLoader = this;
         this.ajaxToken = (new Date()).getTime() + '-' + Math.random();
         
-        this.loadingElem = $('<div id="xplore-loading" class="loading" style="padding-top: 6em;text-align: center;padding-bottom: 3em;"><img src="/media/images/ajax-loader.gif" class="loading" /><br/>Loading Xplore articles...</div>').appendTo(this.scrollElem);
+        this.loadingElem = $('<div id="xplore-loading" class="loading" style="padding-top: 6em;text-align: center;padding-bottom: 3em;">Loading Xplore articles...<div></div></div>').appendTo(this.scrollElem);
+        
+        $("#xplore-loading div").spin({
+            lines: 9, // The number of lines to draw
+            length: 10, // The length of each line
+            width: 8, // The line thickness
+            radius: 15, // The radius of the inner circle
+            corners: 1.0, // Corner roundness (0..1)
+            speed: 2.2, // Rounds per second
+            trail: 25, // Afterglow percentage
+        });
         
         $.ajax({
             url: '/ajax/xplore_results'
@@ -615,7 +625,17 @@ JobLoader.prototype.loadContent = function(force) {
         var jobLoader = this;
         this.ajaxToken = (new Date()).getTime() + '-' + Math.random();
         
-        this.loadingElem = $('<div id="job-loading" class="loading" style="padding-top: 6em;text-align: center;padding-bottom: 3em;"><img src="/media/images/ajax-loader.gif" class="loading" /><br/>Loading Jobs...</div>').appendTo(this.scrollElem);
+        this.loadingElem = $('<div id="job-loading" class="loading" style="padding-top: 6em;text-align: center;padding-bottom: 3em;">Loading Jobs...<div></div></div>').appendTo(this.scrollElem);
+
+        $("#job-loading div").spin({
+            lines: 9, // The number of lines to draw
+            length: 10, // The length of each line
+            width: 8, // The line thickness
+            radius: 15, // The radius of the inner circle
+            corners: 1.0, // Corner roundness (0..1)
+            speed: 2.2, // Rounds per second
+            trail: 25, // Afterglow percentage
+        });
 
         $.ajax({
             url: '/ajax/jobs_results'

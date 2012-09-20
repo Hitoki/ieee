@@ -402,11 +402,18 @@ var Tags = {
         tagWindow.empty();
         tagWindow.html(
             '<div id="loading" class="please-wait">'
-            + '<h1>Please wait...</h1>'
-            + '<img src="' + MEDIA_URL + '/images/ajax-loader-bar.gif" />'
+            + '<h1>Please wait...</h1><div></div>'
             + '</div>'
         );
-        
+        $(".please-wait div").spin({
+            lines: 9, // The number of lines to draw
+            length: 10, // The length of each line
+            width: 8, // The line thickness
+            radius: 15, // The radius of the inner circle
+            corners: 1.0, // Corner roundness (0..1)
+            speed: 2.2, // Rounds per second
+            trail: 25, // Afterglow percentage
+        });
     },
     
     // This is like _showWaitScreen(), but it shows the "Please wait" on top of the tags instead of replacing them.  Used for zooming.
@@ -425,8 +432,7 @@ var Tags = {
         
         Lightbox.show(null, {
             content:
-                '<h1>Please wait...</h1>'
-                + '<img src="' + MEDIA_URL + '/images/ajax-loader-bar.gif" />'
+                '<div class="please-wait"><h1>Please wait...</h1><div></div></div>'
             , useBackground: false
             , onShowCallback: function() {
                 // NOTE: Use a small delay to make sure the loading screen shows before the browser gets busy.
@@ -435,6 +441,15 @@ var Tags = {
             , parentElement: $('#tags')
             , customClass: 'lightbox-waiting-over'
             , closeOnClickOutside: false
+        });
+        $(".please-wait div").spin({
+            lines: 9, // The number of lines to draw
+            length: 10, // The length of each line
+            width: 8, // The line thickness
+            radius: 15, // The radius of the inner circle
+            corners: 1.0, // Corner roundness (0..1)
+            speed: 2.2, // Rounds per second
+            trail: 25, // Afterglow percentage
         });
     },
     
@@ -916,7 +931,17 @@ var Tags = {
         
         var tagWindow = $("#tags");
         tagWindow.empty();
-        tagWindow.html("<h1 id=\"wait\">Please wait...</h1>");
+        tagWindow.html("<div class=\"empty-loading\"><h1 id=\"wait\">Please wait...</h1><div></div></div>");
+        
+        $(".empty-loading div").spin({
+            lines: 9, // The number of lines to draw
+            length: 10, // The length of each line
+            width: 8, // The line thickness
+            radius: 15, // The radius of the inner circle
+            corners: 1.0, // Corner roundness (0..1)
+            speed: 2.2, // Rounds per second
+            trail: 25, // Afterglow percentage
+        });
         
         var filterStr = implode(',', this.getFilters());
         
@@ -1380,8 +1405,7 @@ var Tags = {
                 // Show the loading banner if there is still remaining content.
                 tagWindow.append($(''
                     + '<div id="tags-chunk-loading">'
-                        + '<p>Loading...</p>'
-                        + '<img src="/media/images/ajax-loader.gif" />'
+                        + '<p>Loading...</p><div></div>'
                     + '</div>'
                 ));
                 // Add another content chunk if we haven't filled the container yet.

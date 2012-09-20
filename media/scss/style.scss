@@ -1235,8 +1235,18 @@ table.vert-center td {
     color:#aaa;
 }
 
+.empty-loading {
+    margin-top: 75px;
+    div {
+        margin-top:25px;
+    }
+}
+
 .please-wait {
-    top:35% !important;
+    top:25% !important;
+    div {
+        margin-top: 25px;
+    }
 }
 
 #loading {
