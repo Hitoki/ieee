@@ -98,7 +98,7 @@ GA_SITE_NUM = 1
 
 # Live search options
 ENABLE_SEARCH_BUTTON = False
-SEARCH_KEY_DELAY = 1000
+SEARCH_KEY_DELAY = 500
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
