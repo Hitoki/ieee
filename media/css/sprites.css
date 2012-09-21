@@ -1,0 +1,71 @@
+.drive, .drop_down_active, .drop_down_openactive, .icon_cluster_sm, .orgIcon, .popup, .sm-logo, .smHelpIcon, .technav_banner, .drop_down, .tag_icon{
+	background: url(/media/images/sprites.png) no-repeat;
+	display: inline-block;
+}
+
+.drive{
+	background-position: -225px -75px ;
+	width: 16px;
+	height: 16px;
+}
+
+.drop_down.active{
+	background-position: -245px -72px ;
+	width: 20px;
+	height: 19px;
+}
+
+.drop_down.openactive{
+	background-position: -246px -89px ;
+	width: 20px;
+	height: 19px;
+}
+
+.icon_cluster_sm{
+	background-position: -198px -76px ;
+	width: 18px;
+	height: 17px;
+}
+
+.orgIcon{
+	background-position: -160px -76px ;
+	width: 32px;
+	height: 32px;
+}
+
+.popup{
+	background-position: -145px -76px ;
+	width: 13px;
+	height: 13px;
+}
+
+.sm-logo{
+	background-position: -6px -73px ;
+	width: 106px;
+	height: 32px;
+}
+
+.smHelpIcon{
+	background-position: -124px -76px ;
+	width: 12px;
+	height: 12px;
+}
+
+.technav_banner{
+	background-position: -5px 0;
+	width: 359px;
+	height: 73px;
+}
+
+.drop_down{
+	background-position: -247px -105px ;
+	width: 20px;
+	height: 19px;
+}
+
+.tag_icon{
+	background-position: -200px -98px ;
+	width: 16px;
+	height: 16px;
+}
+

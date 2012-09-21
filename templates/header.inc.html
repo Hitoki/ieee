@@ -1,7 +1,7 @@
 {% load humanize %}
 <div id="header">
     <span id="header-links">
-        <a href="http://ieee.org" rel="nofollow" style="float:right"><span class="sprite-sm-logo"></span></a>
+        <a href="http://ieee.org" rel="nofollow" style="float:right"><span class="sm-logo"></span></a>
         <span id="tagline">Connecting You to the IEEE Universe of Information</span>
         <span class="header-btns">
             {% comment %}
@@ -24,7 +24,7 @@
     </span>
     <div id="header-logo">
         <a href="{{ LOGO_HREF }}" class="home" rel="nofollow">
-            <span class="sprite-technav_banner"></span>
+            <span class="technav_banner"></span>
         </a>
         <a href="/tags/all" id="totalTagLink">We cover <span id="totalTagCount">{{ total_tag_count|intcomma  }}</span> topics {% if tag %}besides {{ tag.name }}{% endif %}</a> &nbsp;&nbsp;
     </div>

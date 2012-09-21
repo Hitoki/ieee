@@ -13,7 +13,7 @@
                                         {% if resource.url and resource.url_status != "bad" %}
                                         <a href="{{ resource.url }}" target="_blank" rel="nofollow">
                                             {% endif %}
-                                            <span>{{resource.name}}</span>{% if resource.url and resource.url_status != "bad" %}<span class="sprite-popup newWinIcon"></span>{% if resource.is_machine_generated %}<span class="sprite-drive flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;"></span>{% endif %}{% endif %}
+                                            <span>{{resource.name}}</span>{% if resource.url and resource.url_status != "bad" %}<span class="popup newWinIcon"></span>{% if resource.is_machine_generated %}<span class="drive flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;"></span>{% endif %}{% endif %}
                                             {% if resource.url and resource.url_status != "bad" %}
                                         </a>
                                         {% endif %}
