@@ -1,28 +1,28 @@
-.drive, .drop_down_active, .drop_down_openactive, .icon_cluster_sm, .orgIcon, .popup, .sm-logo, .smHelpIcon, .technav_banner, .drop_down, .tag_icon{
+.drive, .drop_down_active, .drop_down_openactive, .icon_cluster_sm, .orgIcon, .popup, .sm-logo, .smHelpIcon, .technav_banner, .drop_down, .tag_icon, .frequency-indicator, .nextArrow, .help-arrow-dark, .help-arrow-left-dark, .help-arrow-right-dark, .icon_cluster_lg, .industryIcon, .job_icon, .period_icon, .society_icon, .standard_icon, .tag_icon_lg, .conf_icon, .education_icon, .lightbox-close{
 	background: url(/media/images/sprites.png) no-repeat;
 	display: inline-block;
 }
 
 .drive{
-	background-position: -225px -75px ;
+	background-position: -230px -75px ;
 	width: 16px;
 	height: 16px;
 }
 
 .drop_down.active{
-	background-position: -245px -72px ;
+	background-position: -250px -72px ;
 	width: 20px;
 	height: 19px;
 }
 
 .drop_down.openactive{
-	background-position: -246px -89px ;
+	background-position: -250px -90px ;
 	width: 20px;
 	height: 19px;
 }
 
 .icon_cluster_sm{
-	background-position: -198px -76px ;
+	background-position: -202px -76px ;
 	width: 18px;
 	height: 17px;
 }
@@ -58,14 +58,104 @@
 }
 
 .drop_down{
-	background-position: -247px -105px ;
+	background-position: -249px -104.99998474121094px ;
 	width: 20px;
 	height: 19px;
 }
 
 .tag_icon{
-	background-position: -200px -98px ;
+	background-position: -203px -98px ;
 	width: 16px;
 	height: 16px;
+}
+
+.frequency-indicator{
+	background-position: -8px -115px ;
+	width: 166px;
+	height: 23px;
+}
+
+.nextArrow{
+	background-position: -274px -72.99998474121094px ;
+	width: 24px;
+	height: 24px;
+}
+
+.help-arrow-dark{
+	background-position: -425px -56px ;
+	width: 24px;
+	height: 24px;
+}
+
+.help-arrow-left-dark{
+	background-position: -425px -103px ;
+	width: 24px;
+	height: 24px;
+}
+
+.help-arrow-right-dark{
+	background-position: -427px -11px ;
+	width: 24px;
+	height: 24px;
+}
+
+.icon_cluster_lg{
+	background-position: -370px -98.99998474121094px ;
+	width: 25px;
+	height: 24px;
+}
+
+.industryIcon{
+	background-position: -367px -64.99998474121094px ;
+	width: 29px;
+	height: 29px;
+}
+
+.job_icon{
+	background-position: -339px -101.99998474121094px ;
+	width: 19px;
+	height: 24px;
+}
+
+.period_icon{
+	background-position: -336px -70.99998474121094px ;
+	width: 24px;
+	height: 24px;
+}
+
+.society_icon{
+	background-position: -302px -99.99998474121094px ;
+	width: 24px;
+	height: 24px;
+}
+
+.standard_icon{
+	background-position: -273px -100.99998474121094px ;
+	width: 24px;
+	height: 24px;
+}
+
+.tag_icon_lg{
+	background-position: -306px -72.99998474121094px ;
+	width: 24px;
+	height: 24px;
+}
+
+.conf_icon{
+	background-position: -304px -134px ;
+	width: 24px;
+	height: 24px;
+}
+
+.education_icon{
+	background-position: -336px -133px ;
+	width: 24px;
+	height: 24px;
+}
+
+.lightbox-close{
+	background-position: -208px -119px ;
+	width: 38px;
+	height: 38px;
 }
 
