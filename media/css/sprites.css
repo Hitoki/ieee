@@ -4,158 +4,166 @@
 }
 
 .drive{
-	background-position: -230px -75px ;
+	background-position: -225px -75px ;
 	width: 16px;
 	height: 16px;
 }
 
-.drop_down.active{
-	background-position: -250px -72px ;
+.drop_down_active{
+	background-position: -245px -72px ;
 	width: 20px;
 	height: 19px;
 }
 
-.drop_down.openactive{
-	background-position: -250px -90px ;
+.drop_down_openactive{
+	background-position: -245px -90px ;
 	width: 20px;
 	height: 19px;
 }
 
 .icon_cluster_sm{
-	background-position: -202px -76px ;
+	background-position: -197px -76px ;
 	width: 18px;
 	height: 17px;
 }
 
 .orgIcon{
-	background-position: -160px -76px ;
+	background-position: -155px -76px ;
 	width: 32px;
 	height: 32px;
 }
 
 .popup{
-	background-position: -145px -76px ;
+	background-position: -140px -76px ;
 	width: 13px;
 	height: 13px;
 }
 
 .sm-logo{
-	background-position: -6px -73px ;
+	background-position: -1px -73px ;
 	width: 106px;
 	height: 32px;
 }
 
 .smHelpIcon{
-	background-position: -124px -76px ;
+	background-position: -119px -76px ;
 	width: 12px;
 	height: 12px;
 }
 
+.smHelpIcon:hover {
+    background-position: -119px -92px ;
+}
+
 .technav_banner{
-	background-position: -5px 0;
+	background-position: 0 0;
 	width: 359px;
 	height: 73px;
 }
 
 .drop_down{
-	background-position: -249px -104.99998474121094px ;
+	background-position: -244px -105px ;
 	width: 20px;
 	height: 19px;
 }
 
 .tag_icon{
-	background-position: -203px -98px ;
+	background-position: -198px -98px ;
 	width: 16px;
 	height: 16px;
 }
 
 .frequency-indicator{
-	background-position: -8px -115px ;
+	background-position: -3px -115px ;
 	width: 166px;
 	height: 23px;
 }
 
 .nextArrow{
-	background-position: -274px -72.99998474121094px ;
+	background-position: -269px -73px ;
 	width: 24px;
 	height: 24px;
 }
 
 .help-arrow-dark{
-	background-position: -425px -56px ;
+	background-position: -420px -56px ;
 	width: 24px;
 	height: 24px;
 }
 
 .help-arrow-left-dark{
-	background-position: -425px -103px ;
+	background-position: -420px -103px ;
 	width: 24px;
 	height: 24px;
 }
 
 .help-arrow-right-dark{
-	background-position: -427px -11px ;
+	background-position: -422px -11px ;
 	width: 24px;
 	height: 24px;
 }
 
 .icon_cluster_lg{
-	background-position: -370px -98.99998474121094px ;
+	background-position: -365px -104px ;
 	width: 25px;
 	height: 24px;
 }
 
 .industryIcon{
-	background-position: -367px -64.99998474121094px ;
+	background-position: -362px -65px ;
 	width: 29px;
 	height: 29px;
 }
 
 .job_icon{
-	background-position: -339px -101.99998474121094px ;
+	background-position: -334px -106px ;
 	width: 19px;
 	height: 24px;
 }
 
 .period_icon{
-	background-position: -336px -70.99998474121094px ;
+	background-position: -333px -74px ;
 	width: 24px;
 	height: 24px;
 }
 
 .society_icon{
-	background-position: -302px -99.99998474121094px ;
+	background-position: -301px -107px ;
 	width: 24px;
 	height: 24px;
 }
 
 .standard_icon{
-	background-position: -273px -100.99998474121094px ;
+	background-position: -268px -101px ;
 	width: 24px;
 	height: 24px;
 }
 
 .tag_icon_lg{
-	background-position: -306px -72.99998474121094px ;
+	background-position: -301px -75px ;
 	width: 24px;
 	height: 24px;
 }
 
 .conf_icon{
-	background-position: -304px -134px ;
+	background-position: -302px -139px ;
 	width: 24px;
 	height: 24px;
 }
 
 .education_icon{
-	background-position: -336px -133px ;
+	background-position: -334px -139px ;
 	width: 24px;
 	height: 24px;
 }
 
 .lightbox-close{
-	background-position: -208px -119px ;
+	background-position: -203px -119px ;
 	width: 38px;
 	height: 38px;
+}
+
+.lightbox-close:hover{
+	background-position: -203px -163px ;
 }
 
