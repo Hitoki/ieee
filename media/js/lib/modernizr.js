@@ -552,7 +552,9 @@ window.Modernizr = (function( window, document, undefined ) {
         // If the UA supports multiple backgrounds, there should be three occurrences
         //   of the string "url(" in the return value for elemStyle.background
 
-        return /(url\s*\(.*?){3}/.test(mStyle.background);
+        // Fix that works with jsmin.py
+        return new RegExp("(url\s*.*?){3}").test(mStyle.background);
+        //return /(url\s*.*?){3}/.test(mStyle.background);
     };
 
 
