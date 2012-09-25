@@ -559,7 +559,7 @@ XploreLoader.prototype.onLoadData = function(data) {
                     html += ', sorted by ' + getXploreSortName(this.sort);
                 }
                 if (!this.ctype){
-                    html += ' (<a href="http://xploreuat.ieee.org/search/freesearchresult.jsp?newsearch=true&queryText=' + escape(data.search_term) + '&x=0&y=0' + (this.ctype ? '&ctype=' + this.ctype : '') + '" target="_blank" rel="nofollow"><span>show search in Xplore instead</span><img class="newWinIcon" src="' + MEDIA_URL + 'images/popup.png" /></a>)</div>'
+                    html += ' (<a href="http://xploreuat.ieee.org/search/freesearchresult.jsp?newsearch=true&queryText=' + escape(data.search_term) + '&x=0&y=0' + (this.ctype ? '&ctype=' + this.ctype : '') + '" target="_blank" rel="nofollow"><span>show search in Xplore instead</span><span class="popup newWinIcon"></span></a>)</div>'
                 }
                 totalElem.html(html);
             }
