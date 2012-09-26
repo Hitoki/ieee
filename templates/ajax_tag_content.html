@@ -71,6 +71,22 @@
                 $('#' + tabs[i] + '-tab').load("/ajax/tag_content/{{ tag.id }}/textui/" + tabs[i]);
             }
         }
+        $.ajax({
+            url: '/ajax/recent_xplore',
+            data: {
+                tag_name: "{{ tag }}"
+            }, 
+            type: 'post', 
+            dataType: 'json',
+            success: function(data) {
+                if (data != undefined) {
+                    var html = '<a href="' + data.url + '" target="_blank" rel="nofollow">' + data.name + '</a><span class="popup newWinIcon"></span>';
+                } else {
+                    var html = 'No recent Xplore Article';
+                }
+                $('#xplore-overview').html(html);
+            }
+        });        
 
     });
 
@@ -136,7 +152,7 @@ function isValidEmailAddress(emailAddress) {
                 
 <!-- *** Content Tabs *** -->
                 <ul class="nootabs-menus">
-                    <li id="overview-tab" class="first-menu begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Overview</a></li>
+                    <li id="over-tab" class="first-menu begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Overview</a></li>
                     <li id="ieee-societies-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">IEEE<br/>Orgs <span class="right">{{ societies.count }}</span></a></li>
                     <li id="conferences-tab" class="begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Conferences <span class="right">{{conferences|length}}</span></a></li>
                     <li id="educations-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">Educational<br/>Resources <span class="right" id="num-education-results"></span></a></li>

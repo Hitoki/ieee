@@ -271,7 +271,7 @@ def profile(log_file):
     return _outer
 
 @login_required
-@profile("ajax_tag.prof")
+#@profile("ajax_tag.prof")
 def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
 
     context = {}
@@ -398,13 +398,13 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         context['loaded'] = True
 
     if tab == 'overview':        
-        try:
-            xplore_article = recent_xplore_result(tag.name)
+        #try:
+            #xplore_article = ajax_recent_xplore(tag.name)
             #xplore_article = _get_xplore_results(tag.name, show_all=False, offset=0, sort=XPLORE_SORT_PUBLICATION_YEAR, sort_desc=True, recent=True)[0][0]
-        except IndexError:
-            xplore_article = None
+        #except IndexError:
+        #    xplore_article = None
 
-        context['xplore_article'] = xplore_article
+        #context['xplore_article'] = xplore_article
         context['close_conference'] = tag._get_closest_conference()
         context['definition'] = tag._get_definition_link()
         tab_template = 'ajax_over_tab.inc.html'
@@ -537,7 +537,7 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
         {'key': 'thsrsterms', 'value': '"%s"' % tag_name.encode('utf-8')},
         {'key': 'md', 'value': '"%s"' % tag_name.encode('utf-8')},
         {'key': 'md', 'value': '%s' % tag_name.encode('utf-8')}
-        ]
+    ]
 
     if not tax_term_count:
         del param_options[0] # no need for thsrsterm so toss out the first item
@@ -623,7 +623,9 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
 
     return xplore_results, xplore_error, totalfound
 
-def recent_xplore_result(tag_name):
+def ajax_recent_xplore(request):
+    tag_name = request.POST.get('tag_name')
+
     params = {
         # Number of results
         'hc': 1,
@@ -716,8 +718,17 @@ def recent_xplore_result(tag_name):
                 }
 
                 xplore_results.append(result)
-                
-    return xplore_results[0]
+
+    try:
+        xplore_result = xplore_results[0]
+        data = {
+            'name': xplore_result['name'],
+            'url': xplore_result['url']
+        }
+    except IndexError:
+        data = None
+
+    return HttpResponse(json.dumps(data), 'application/javascript')
 
 
 @csrf_exempt

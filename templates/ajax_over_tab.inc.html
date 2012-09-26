@@ -35,7 +35,10 @@
                             <li>
                                 <div class="overview-label">Recent Related Xplore Article</div>
                                 <div id="xplore-overview">
+                                    Retrieving latest article from IEEE Xplore...
+                                    {% comment %}
                                     <a href="{{ xplore_article.url }}" target="_blank" rel="nofollow">{{ xplore_article.name|safe }}</a>{% if xplore_article.url and xplore_article.url_status != "bad" %}<span class="popup newWinIcon"></span>{% endif %}
+                                    {% endcomment %}
                                 </div>
                             </li>
                             {% if close_conference %}
