@@ -623,6 +623,7 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
 
     return xplore_results, xplore_error, totalfound
 
+@csrf_exempt
 def ajax_recent_xplore(request):
     tag_name = request.POST.get('tag_name')
 
