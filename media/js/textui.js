@@ -386,6 +386,9 @@ var Tags = {
     */
     
     _showWaitScreen: function() {
+        // Hide the counts while loading.
+        $('#tag-counts').hide();
+        
         // Hide the content lightbox if it's visible.
         Lightbox.hide();
         
@@ -683,7 +686,7 @@ var Tags = {
                         $(this).addClass('node-taxonomy-term');
                     }
                     args = "_gaq.push(['_trackEvent', 'Terms', 'Click', '"+ name +"']);";
-                    html = '<a href="javascript:Tags.selectTag('+ id +');" onClick="'+ args +'" class='+ level +' rel="nofollow"><span class="tag_icon"></span> '+ name +'</a>';
+                    html = '<a href="javascript:Tags.selectTag('+ id +');" onClick="'+ args +'" class='+ level +' rel="nofollow"><span class="tag_icon tag-icon"></span> '+ name +'</a>';
                 } else if (type == 'tag') {
                     args = "_gaq.push(['_trackEvent', 'Tags', 'Click', '"+ name +"']);";
                     html = '<a href="javascript:Tags.selectTag('+ id +');" onClick="'+ args +'" class='+ level +' rel="nofollow"><span class="tag_icon tag-icon"></span> '+ name +'</a>';
