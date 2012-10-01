@@ -1242,13 +1242,12 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
     if search_for is not None:
         final_punc =  ('.', ':')[len(child_nodes) > 0]
         str = ''
+        if cluster_id is not None:
+            str += ' in the topic area "%s"' % (cluster.name)
         if sector_id is not None:
             str += ' in the industry sector "%s"' % (sector.name)
         elif society_id is not None:
             str += ' in the organization "%s"' % (society.name)
-        
-        if cluster_id is not None:
-            str += ' in the topic area "%s"' % (cluster.name)
         
         str += final_punc
         
