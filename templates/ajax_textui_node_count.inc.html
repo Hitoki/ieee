@@ -7,7 +7,7 @@
     {% else %}
         {# If the view returned results summary, use it. If not (happens when "All Sectors" or "All Organizations" are chosen), construct one. #}
         {% if search_page_title %}
-            {{ search_page_title.num }} results for <b>{{ search_page_title.search_for }}</b> {{search_page_title.node_desc }}
+            {{ search_page_title.num }} results for <b>{{ search_page_title.search_for }}</b>{{search_page_title.node_desc }}
         {% else %}
             {{ child_nodes|length }} result{{ child_nodes|length|pluralize }} for "{{ search_for }}"{% if cluster %} in the "{{ cluster.name }}" cluster{% endif %}{% if sector %} in the industry sector "{{ sector }}"{% endif %}{% ifnotequal child_nodes|length 0 %}:{% else %}{% endifnotequal %}
         {% endif %}
