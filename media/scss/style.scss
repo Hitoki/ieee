@@ -2651,21 +2651,20 @@ background: url(/media/images/inner-top.png) no-repeat scroll 0 0;
 #misc-bar {
 	overflow: hidden;
 	padding: 15px 0 14px;
-	height: 19px;
+	height: 16px;
 }
 
 #tag-counts h2 {
     color: $primaryColor;
 }
 
+#tags-searching-msg,
 #tag-counts {
     margin: 0;
-    font-weight: normal;
-    font-size: 11pt;
+    text-align: center;
 }
 
 p#tag-and-cluster-counts {
-    font-weight: bold;
     margin: 0;
 }
 
