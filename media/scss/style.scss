@@ -2649,9 +2649,8 @@ background: url(/media/images/inner-top.png) no-repeat scroll 0 0;
 }
 
 #misc-bar {
-	overflow: hidden;
-	padding: 15px 0 14px;
-	height: 16px;
+    height: 45px;
+    overflow: hidden;
 }
 
 #tag-counts h2 {
@@ -2660,7 +2659,7 @@ background: url(/media/images/inner-top.png) no-repeat scroll 0 0;
 
 #tags-searching-msg,
 #tag-counts {
-    margin: 0;
+    margin: 10px 0 0 0;
     text-align: center;
 }
 
