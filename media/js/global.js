@@ -464,7 +464,7 @@ XploreLoader.prototype.loadContent = function(force) {
         var xploreLoader = this;
         this.ajaxToken = (new Date()).getTime() + '-' + Math.random();
         
-        this.loadingElem = $('<div id="xplore-loading" class="loading" style="padding-top: 6em;text-align: center;padding-bottom: 3em;">Loading Xplore articles...<div></div></div>').appendTo(this.scrollElem);
+        this.loadingElem = $('<div id="xplore-loading" class="loading" style="height: 115px;margin: 6em 0;text-align: center;">Loading Xplore articles...<div></div></div>').appendTo(this.scrollElem);
         
         $("#xplore-loading div").spin({
             lines: 9, // The number of lines to draw
@@ -625,7 +625,7 @@ JobLoader.prototype.loadContent = function(force) {
         var jobLoader = this;
         this.ajaxToken = (new Date()).getTime() + '-' + Math.random();
         
-        this.loadingElem = $('<div id="job-loading" class="loading" style="padding-top: 6em;text-align: center;padding-bottom: 3em;">Loading Jobs...<div></div></div>').appendTo(this.scrollElem);
+        this.loadingElem = $('<div id="job-loading" class="loading" style="height: 115px;margin: 6em 0;text-align: center;">Loading Jobs...<div></div></div>').appendTo(this.scrollElem);
 
         $("#job-loading div").spin({
             lines: 9, // The number of lines to draw
