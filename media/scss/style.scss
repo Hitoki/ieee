@@ -440,8 +440,8 @@ img.toggleIcon {
 }
 
 #connectedness-help {
-    margin-left: 3px;
-    margin-top: 6px;
+    margin-left: 5px;
+    margin-top: 5px;
 }
 
 .row-container {
@@ -894,7 +894,7 @@ span.roamer-note {
 }
 
 #alternate-page .alt-box .alt-box-pad {
-    padding: 3px 5px;
+    padding: 4px 5px;
 }
 
 ul#sectors, ul#societies {
@@ -1300,13 +1300,12 @@ table.vert-center td {
 }
 
 .frequency-indicator {
-    padding: 0 0 0 2px;
     float: left;
     color: $white;
     text-align: center;
-    padding-top: 1px;
-    margin-top: 1px;
     cursor: default;
+    padding-top: 1px;
+    @include default-border-radius;
 }
 
 .frequency-indicator .small {
@@ -1316,12 +1315,6 @@ table.vert-center td {
 .nextArrow {
     vertical-align: middle;
 }
-
-/*
-.frequency-indicator img {
-    margin-top: -4px;
-}
-*/
 
 #tag-model-left,
 #tag-model-indicator {
@@ -2649,7 +2642,7 @@ background: url(/media/images/inner-top.png) no-repeat scroll 0 0;
 }
 
 #misc-bar {
-    height: 45px;
+    height: 47px;
     overflow: hidden;
 }
 
