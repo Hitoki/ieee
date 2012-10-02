@@ -303,18 +303,21 @@
                     </div>
                     
                     <div id="misc-bar">
-                        <div id="tag-counts"></div>
-                        {% if ENABLE_SHOW_CLUSTERS_CHECKBOX or ENABLE_SHOW_TERMS_CHECKBOX %}
-                        <p id="show-clusters-terms-box">
-                            {% if ENABLE_SHOW_CLUSTERS_CHECKBOX %}
-                                <input id="show-clusters" type="checkbox" /> <label for="show-clusters">Show Clusters</label>
+                        <div id="center-prime">
+                            <div id="tag-counts"></div>
+                            {% if ENABLE_SHOW_CLUSTERS_CHECKBOX or ENABLE_SHOW_TERMS_CHECKBOX %}
+                            <p id="show-clusters-terms-box">
+                                {% if ENABLE_SHOW_CLUSTERS_CHECKBOX %}
+                                    <input id="show-clusters" type="checkbox" /> <label for="show-clusters">Show Clusters</label>
+                                {% endif %}
+                                {% if ENABLE_SHOW_TERMS_CHECKBOX %}
+                                    <input id="show-terms" type="checkbox" /> <label for="show-terms">Show Terms</label>
+                                {% endif %}
+                            </p>
                             {% endif %}
-                            {% if ENABLE_SHOW_TERMS_CHECKBOX %}
-                                <input id="show-terms" type="checkbox" /> <label for="show-terms">Show Terms</label>
-                            {% endif %}
-                        </p>
-                        {% endif %}
-                        <div id="tags-searching-msg" style="display:none"></div>
+                            <div id="tags-searching-msg" style="display:none"></div>
+                        </div>
+                        <div id='center-comp'></div>
                     </div>
                     
                     <div id="tag-galaxy" class="alt-box">

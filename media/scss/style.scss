@@ -1001,6 +1001,8 @@ ul#sectors, ul#societies {
     border: 1px solid transparent;
 	display: block;
 	overflow: hidden;
+	-webkit-transition: background-color 0.15s ease-in;
+    -moz-transition : background-color 0.15s ease-in;
 	@include default-border-radius;
 }
 
@@ -2647,8 +2649,8 @@ background: url(/media/images/inner-top.png) no-repeat scroll 0 0;
 }
 
 #misc-bar {
-    height: 47px;
     overflow: hidden;
+    height: 47px;
 }
 
 #tag-counts h2 {
@@ -2657,8 +2659,19 @@ background: url(/media/images/inner-top.png) no-repeat scroll 0 0;
 
 #tags-searching-msg,
 #tag-counts {
-    margin: 10px 0 0 0;
     text-align: center;
+}
+
+#center-prime {
+    display: inline-block;
+    vertical-align: middle; 
+    width: 99%;
+}
+
+#center-comp {
+    height: 47px;
+    vertical-align: middle;
+    display: inline-block;
 }
 
 p#tag-and-cluster-counts {
