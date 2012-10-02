@@ -2627,6 +2627,7 @@ background: url(/media/images/inner-top.png) no-repeat scroll 0 0;
     text-align: center;
     color: $medium-gray;
     padding: 1em;
+    min-height: 175px;
     @include custom-border-radius (18px, 18px, 18px, 18px);
 }
 
