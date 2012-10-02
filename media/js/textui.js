@@ -1065,7 +1065,7 @@ var Tags = {
                 }
                 $('#tag-name').effect("highlight", {}, 2000);
                 
-                $("#num-related-items-loading").spin({
+                $("#xplore-overview-loading, #num-related-items-loading").spin({
                     lines: 9, // The number of lines to draw
                     length: 2, // The length of each line
                     width: 2, // The line thickness

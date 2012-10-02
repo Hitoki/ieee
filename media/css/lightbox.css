@@ -525,3 +525,10 @@ margin-top: 0;
 .loading div {
     margin: 20px 0 0;
 }
+
+#xplore-overview-loading {
+    float: left;
+    height: 16px;
+    margin: 0 3px 0 0;
+    width: 16px;
+}
