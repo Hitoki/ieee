@@ -145,7 +145,8 @@ ul.nootabs-menus li.both-menu a {
 }
 
 /* Page-specific styling below: */
-.tag-resources-tabs ul.nootabs-menus {
+.tag-resources-tabs ul.nootabs-menus,
+.term-resources-tabs ul.nootabs-menus {
     float: left;
     clear: none;
     width: 138px;
