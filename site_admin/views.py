@@ -4480,6 +4480,7 @@ def ajax_society_add_tags(request):
     
     return HttpResponse('success', 'text/plain')
 
+@csrf_exempt
 @login_required
 @society_manager_or_admin_required
 def ajax_society_remove_tags(request):
