@@ -788,6 +788,9 @@ var mouseY = null;
 $(function() {
     log('global.js');
     
+    // Use the old style of ajax param serialization
+    $.ajaxSettings.traditional = true;
+    
     $('.select-checkbox-on-click').click(function() {
         $(this).find('input[type="checkbox"]').click();
         $(this).find('input[type="checkbox"]').change();
