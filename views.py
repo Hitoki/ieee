@@ -383,8 +383,6 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         file1 = urllib2.urlopen(jobsUrl).read()
         jobsJson = json.loads(file1)
         jobsCount = jobsJson.get('Total')
-        context['jobsCount'] = jobsCount
-        context['jobsUrl'] = jobsUrl
         #jobs = jobsJson.get('Jobs')
         #jobsHtml = ""
         #for job in jobs:
@@ -395,6 +393,8 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
 
         jobsUrl = jobsUrl.replace('&format=json','')
         tab_template = 'ajax_job_tab.inc.html'
+        context['jobsCount'] = jobsCount
+        context['jobsUrl'] = jobsUrl        
         context['loaded'] = True
 
     if tab == 'overview':        
