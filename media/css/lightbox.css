@@ -194,10 +194,6 @@ input.text {
     height: 100%;
 }
 
-#lightbox .resources-lightbox-content .resources-pad img {
-    border:none;
-}
-
 #lightbox .resources-lightbox-content .alt-box {
     clear:both;
     padding: 0 10px 0 10px;
