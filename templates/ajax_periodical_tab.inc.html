@@ -1,6 +1,13 @@
 <script type="text/javascript">
     $(function(){
         $('#periodicals-tab span.right').html('{{ periodicals|length }}');
+        var count = parseInt($("#num-related-items").metadata().number);
+        var newNum = parseInt('{{ periodicals|length }}');
+        if (!isNaN(newNum)){        
+            count += newNum;
+            //$("#num-related-items").text(count);
+            $('#num-related-items').metadata().number = count;
+        }
     });
 </script>                    
                     <div class="group">

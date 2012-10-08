@@ -2,6 +2,13 @@
     $(function(){
         attachJobResults('#job-results-container');
         $('#jobs-tab span.right').html('{{ jobsCount }}'); 
+        var count = parseInt($("#num-related-items").metadata().number);
+        var newNum = parseInt('{{ jobsCount }}'.replace(/\,/g,''));
+        if (!isNaN(newNum)){
+            count += newNum;
+            //$("#num-related-items").text(count);
+            $('#num-related-items').metadata().number = count;
+        }        
     });
 </script>
                     <div id="job-results-container" class="{ tagId: {{ tag.id }} }">

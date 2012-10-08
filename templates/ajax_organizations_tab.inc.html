@@ -1,6 +1,13 @@
 <script type="text/javascript">
     $(function(){
         $('#ieee-societies-tab span.right').html('{{ societies.count }}');
+        var count = parseInt($("#num-related-items").metadata().number);
+        var newNum = parseInt('{{ societies.count }}');
+        if (!isNaN(newNum)){    
+            count += newNum;
+            //$("#num-related-items").text(count);  
+            $('#num-related-items').metadata().number = count;      
+        }
     });
 </script>            
                     <div class="group">

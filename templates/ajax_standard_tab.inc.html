@@ -1,6 +1,13 @@
 <script type="text/javascript">
     $(function(){
         $('#standards-tab span.right').html('{{ standards|length }}');
+        var count = parseInt($("#num-related-items").metadata().number);
+        var newNum = parseInt('{{ standards|length }}');
+        if (!isNaN(newNum)){        
+            count += newNum;
+            //$("#num-related-items").text(count);       
+            $('#num-related-items').metadata().number = count; 
+        }
     });
 </script>                    
                     <div class="group">

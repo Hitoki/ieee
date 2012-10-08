@@ -140,7 +140,7 @@ function isValidEmailAddress(emailAddress) {
 </div>
 
 <span class="dialogTitle">
-    <span id="tag-name">"{{ tag.name }}"</span> has <span id="num-related-items-loading"></span><span id="num-related-items" class="{ number: {{ num_related_items }} }"></span> related resources
+    <span id="tag-name">"{{ tag.name }}"</span> has <span id="num-related-items-loading"></span><span id="num-related-items" class="{ number: {{ tag.related_tags.count }} }"></span> related resources
 </span>
 
 <div class="resources-pad">
