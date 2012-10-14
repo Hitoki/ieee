@@ -46,9 +46,8 @@ function LiveSearch(inputElem) {
             if (liveSearch.options.search_on_enter_only) {
                 liveSearch.lastValue = null;
                 liveSearch.update();        
-            } else if (self.inputElem.val().length < 3) {
-                var clickaction = "$('#textui-tags-search-clear').click()";
-                $('#tag-counts').html('The filter phrase <b>'+ self.inputElem.val() +'</b> is too short. Please enter more characters above OR <a href="javascript:void(0)" onclick="'+ clickaction +'">clear the filter now</a>.');
+            } else if (self.inputElem.val().length < 3 && self.inputElem.val().length != 0) {
+                $('#tag-counts').html('Please enter more characters above.');
             } else {
                 clearTimeout(timer);
                 timer = setTimeout(liveSearch.update,self.options.search_key_delay,null,self);
