@@ -46,6 +46,9 @@ function LiveSearch(inputElem) {
             if (liveSearch.options.search_on_enter_only) {
                 liveSearch.lastValue = null;
                 liveSearch.update();        
+            } else if (self.inputElem.val().length < 3) {
+                var clickaction = "$('#textui-tags-search-clear').click()";
+                $('#tag-counts').html('The filter phrase <b>'+ self.inputElem.val() +'</b> is too short. Please enter more characters above OR <a href="javascript:void(0)" onclick="'+ clickaction +'">clear the filter now</a>.');
             } else {
                 clearTimeout(timer);
                 timer = setTimeout(liveSearch.update,self.options.search_key_delay,null,self);
@@ -125,13 +128,12 @@ LiveSearch.prototype.update = function(useDelayValue,self) {
                     ajax_report_error('Error in LiveSearch.update(): Tags is not defined.')
                     return;
                 }
-                
+
                 Tags.showSearchResults(value, function(searchFor, data) {
                     liveSearch.onUpdate(searchFor, data);
                     $('#tags-searching-msg').hide();
                     $('#tag-counts').show();
                 });
-				
                 /*
                 }
                 */
