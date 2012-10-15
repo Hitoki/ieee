@@ -1281,7 +1281,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
         'cluster': cluster,
         'num_terms': num_terms,
         'sector': sector,
-        'society': society,
+        'society': Society.objects.get(id=society_id),
     })
     
     return [content, node_count_content]
