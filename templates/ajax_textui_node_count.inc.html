@@ -26,6 +26,6 @@
     {# For non-search-phrases #}
     
     <p id="tag-and-cluster-counts">
-        Showing{% if num_clusters %} <span class="icon_cluster_sm cluster-icon"></span> {{ num_clusters|intcomma }} topic area{{ num_clusters|pluralize }} &amp;{% endif %} <span class="tag_icon tag-icon"></span> {{ num_tags|intcomma }} topic{{ num_tags|pluralize }}{% if num_terms %} (<span class="tag_icon tag-icon"></span> {{ num_terms|intcomma }} terms){% endif %}{% if cluster %} in the <span class="icon_cluster_sm cluster-icon"></span> topic area "{{ cluster.name }}"{% endif %}{% if sector %} in the industry sector "{{ sector }}"{% endif %}:
+        Showing{% if num_clusters %} <span class="icon_cluster_sm cluster-icon"></span> {{ num_clusters|intcomma }} topic area{{ num_clusters|pluralize }} &amp;{% endif %} <span class="tag_icon tag-icon"></span> {{ num_tags|intcomma }} topic{{ num_tags|pluralize }}{% if num_terms %} (<span class="tag_icon tag-icon"></span> {{ num_terms|intcomma }} terms){% endif %}{% if cluster %} in the <span class="icon_cluster_sm cluster-icon"></span> topic area "{{ cluster.name }}"{% endif %}{% if sector %} in the industry sector "{{ sector }}"{% endif %}{% if society %} in the organization "{{ society }}"{% endif %}:
     </p>
 {% endif %}
