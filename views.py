@@ -1257,6 +1257,13 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
     #log('  num_tags: %s' % num_tags)
     #log('    # real tags: %s' % len(child_nodes2))
     
+    if not society:
+        try:
+            society = Society.objects.get(id=society_id)
+        except Society.DoesNotExist:
+            society = None
+
+
     from django.template.loader import render_to_string
     content = render_to_string('ajax_textui_nodes.html', {
         'child_nodes': child_nodes,
@@ -1281,7 +1288,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
         'cluster': cluster,
         'num_terms': num_terms,
         'sector': sector,
-        'society': Society.objects.get(id=society_id),
+        'society': society,
     })
     
     return [content, node_count_content]
