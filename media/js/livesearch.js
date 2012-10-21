@@ -46,9 +46,9 @@ function LiveSearch(inputElem) {
             if (liveSearch.options.search_on_enter_only) {
                 liveSearch.lastValue = null;
                 liveSearch.update();        
-            } else if (self.inputElem.val().length < 3 && self.inputElem.val().length != 0) {
+            } else if ($.trim(self.inputElem.val()).length < 3 && $.trim(self.inputElem.val()).length != 0) {
                 $('#tag-counts').html('Please enter more characters above.');
-            } else if (self.inputElem.val().length == 0) {
+            } else if ($.trim(self.inputElem.val()).length == 0) {
                 $('#tags-searching-msg').hide();
             } else {
                 clearTimeout(timer);
