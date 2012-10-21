@@ -48,6 +48,8 @@ function LiveSearch(inputElem) {
                 liveSearch.update();        
             } else if (self.inputElem.val().length < 3 && self.inputElem.val().length != 0) {
                 $('#tag-counts').html('Please enter more characters above.');
+            } else if (self.inputElem.val().length == 0) {
+                $('#tags-searching-msg').hide();
             } else {
                 clearTimeout(timer);
                 timer = setTimeout(liveSearch.update,self.options.search_key_delay,null,self);
