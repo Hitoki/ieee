@@ -9,9 +9,7 @@
 
         {% comment %}
         {% if search_page_title %}
-            
             {{ search_page_title.num|intcomma }} result{{ search_page_title.num|pluralize }} for <b>{{ search_page_title.search_for }}</b>{{search_page_title.node_desc }}
-            {% endcomment %}
         {% else %}
             {{ child_nodes|length|intcomma }} result{{ child_nodes|length|pluralize }} for "{{ search_for }}"{% if cluster %} in the "{{ cluster.name }}" cluster{% endif %}{% if sector %} in the industry sector "{{ sector }}"{% endif %}{% ifnotequal child_nodes|length 0 %}:{% else %}{% endifnotequal %}
         {% endif %}
