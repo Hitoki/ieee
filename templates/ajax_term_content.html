@@ -6,7 +6,6 @@
 {% block main_table_content %}
     
     {% if is_ajax %}
-        
         <span class="lightbox-close"></span>        
         <div id="printContainer_outter">
             <div id="printContainer_inner">
@@ -23,7 +22,7 @@
             </span>
         </div>
         
-        <span class="dialogTitle"><span id="term-name">"{{ tag.name }}"</span> has <span id="num-related-items" class="{ number: {{ num_related_items }} }"><img src="{{ MEDIA_URL }}images/resource_popup_xplore_loader.gif" /></span> related resources</span>
+        <span class="dialogTitle"><span id="term-name">"{{ tag.name }}"</span> has <span id="num-related-items" class="{ number: {{ tag.related_tags.count }} }"><img src="{{ MEDIA_URL }}images/resource_popup_xplore_loader.gif" /></span> related resources</span>
         <div class="resources-pad">
         
             
@@ -39,23 +38,7 @@
                         
                         <!-- Related Topics -->
                         <div id="related-tab" data-printUrl='{% url print_resource tag.id "related_tags" %}'>
-                            <div class="group">
-                                {% if tag.related_tags.all %}
-                                    {% for related_node in tag.related_tags.all %}
-                                        <p class="{% cycle 'item_odd' 'item_even' %}">
-                                            {% ifequal ui "textui" %}
-                                                <a href="javascript:Tags.selectTag({{ related_node.id }});">
-                                                    <span>{{ related_node.name }}</span>
-                                                </a>
-                                            {% else %}
-                                                <span>{{ related_node.name }}</span>
-                                            {% endifequal %}
-                                        </p>
-                                    {% endfor %}
-                                {% else %}
-                                    <p class="no-resources">No related topics are currently tagged "{{ tag.name }}"</p>
-                                {% endif %}
-                            </div>
+                            {% include 'ajax_related_tab.inc.html' %}
                         </div>
                         
                         <!-- Xplore Results -->
