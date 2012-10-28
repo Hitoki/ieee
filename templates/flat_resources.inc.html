@@ -106,9 +106,9 @@ Include file used by both print_resource.html and tag_landing.html
             {% if conferences|length %}
                 <div id="notaccordion">
                     {% for resource in conferences|slice:":5" %}{# grouped conference displayed on the tag landing page #}
-                        <h3>{{resource.name}}</h3>
+                        <p class="title">{{resource.name}}</p>
                         {% if resource.url and resource.url_status != "bad" %}<a href="{{ resource.url }}" target="_blank" rel="nofollow">Visit website</a>{% endif %}
-                        <p style="margin:0 0 10px 25px">{{resource.description}}</p>
+                        <p class='description'>{{resource.description}}</p>
                         <div style="display:none">
                             {% if resource.is_current_conference and resource.other_conferences|length %}
                             <ul class="conference-series">
@@ -241,7 +241,7 @@ Include file used by both print_resource.html and tag_landing.html
             {% endfor %}
         </ul>
                     {% if xplore_edu_results|length > 5 %}
-                        <span> class="more-link">
+                        <span class="more-link">
                         <a href="/textui/?autoload={{tag.id}}&tab=education-tab" rel="nofollow">More Educational Resources</a>
                         </span>
                     {% endif %}
