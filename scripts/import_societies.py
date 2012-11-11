@@ -2,12 +2,12 @@ from sys import argv
 import csv
 import MySQLdb
 
-script, filepath, society_name = argv
+script, filepath, society_name, society_id = argv
 
-host = ''
-user = ''
-pw = ''
-db = ''
+host = 'localhost'
+user = 'root'
+pw = 'root'
+db = 'ieeetagsnewdev'
 
 mydb = MySQLdb.connect (host = host,
                  user = user,
@@ -17,13 +17,13 @@ mydb = MySQLdb.connect (host = host,
 cursor = mydb.cursor()
 reader = csv.reader(open(filepath, "rb"))
 
-cursor.execute('INSERT INTO ieeetags_society(name) VALUES(%s)', society_name)
-
-society_id = cursor.lastrowid
+if society_id == None:
+        cursor.execute('INSERT INTO ieeetags_society(name) VALUES(%s)', society_name)
+        society_id = cursor.lastrowid
 
 for row in reader:
 	if row[2] == '1':
-		cursor.execute('INSERT INTO ieeetags_node_societies(node_id, society_id) VALUES(%s, %s)', 
+		cursor.execute('INSERT INTO ieeetags_node_societies(node_id, society_id, date_created) VALUES(%s, %s, NOW())', 
 	    (row[0], society_id))
 
 mydb.commit()
