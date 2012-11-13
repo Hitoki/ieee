@@ -825,6 +825,15 @@ class NodeSocietiesManager(models.Manager):
                 ns.date_created = datetime.utcnow()
                 ns.save()
 
+    def update_for_society(self, society, nodes):
+        nodes_to_delete = self.filter(society=society).exclude(node__in=nodes)
+        nodes_to_delete.delete()
+
+        for node in nodes:
+            ns, created = self.get_or_create(node=node, society=society)
+            if created:
+                ns.date_created = datetime.utcnow()
+                ns.save()
 
 class NodeSocieties(models.Model):
     node = models.ForeignKey('Node', related_name='node_societies')
