@@ -1461,6 +1461,9 @@ input[type=submit], input[type=button] {
     /*min-width: 40px;
     width: auto;*/
     @include default-border-radius;
+    &:hover {
+        background-color: $linkColor-hover;
+    }
 } 
 
 input[type=submit]:focus, input[type=button]:focus {
@@ -1555,12 +1558,11 @@ form.block-labels label {
     font-weight: bold;
 }
 
-.cancel-link {
+a.cancel-link {
     margin-left: 5px;
-}
-
-a.cancel-link:visited {
-    color: $linkColor;
+    &:hover {
+        color: $linkColor-hover;
+    }
 }
 
 div.submit {

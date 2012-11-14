@@ -225,6 +225,10 @@ ul.nootabs-menus li.both-menu a {
     margin: 0em 0em -6px -1px;
 }
 
+.full-grid ul.nootabs-menus li.nootabs-first-menu {
+    margin-left: 0;
+}
+
 ul.nootabs-menus li a {
     color:#666;
     background:#EEEEEE;
