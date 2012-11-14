@@ -3920,6 +3920,15 @@ def save_society(request):
         if form.cleaned_data['tags'] is not None:
             NodeSocieties.objects.update_for_society(society, form.cleaned_data['tags'])
 
+        # Add/remove society-resource relationships
+        allr = society.resources.all()
+        for r in allr:
+            if not r in form.cleaned_data['resources']:
+                society.resources.remove(r)
+        for r in form.cleaned_data['resources']:
+            if not r in allr:
+                society.resources.add(r)
+
         society.save()
         
         # Invalidate all resource-related caches, so they are regenerated.
