@@ -2223,14 +2223,14 @@ div.group ul li:first-child {
 .live-search {
     border: 1px solid $primaryColor;
     width: 155px;
-    padding: 3px 0 1px 23px;
+    padding: 2px 0 1px 23px;
     display: inline-block;
     margin-top: 0;
     outline: none;
     font-size: 10pt;
     vertical-align: top;
     background: $white url(../images/magnifyIcon.png) no-repeat 4px 3px;
-    @include default-border-radius;
+    @include custom-border-radius (5px, 0, 0, 5px);
 }
 
 .live-search-clear {
@@ -2240,7 +2240,7 @@ div.group ul li:first-child {
     cursor: pointer;
     display: inline-block;
     height: 20px;
-    margin-left: -25px;
+    margin-left: -24px;
     width: 20px;
     display: none;
     position: relative;
