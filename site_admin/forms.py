@@ -91,7 +91,7 @@ class EditTagForm(Form):
     name = CharField(max_length=100, label='Topic Name')
     parents = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), label='Sectors', widget=CheckboxSelectMultipleColumns(columns=3))
     definition = CharField(widget=Textarea(), required=False)
-    societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies', label='Societies', widget=MultiSearchWidget(remove_link_flyover_text='Remove Society from Topic'))
+    societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies', label='Organization', widget=MultiSearchWidget(remove_link_flyover_text='Remove Organization from Topic'))
     filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultipleColumns(columns=2), required=False, label='Filters')
     related_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Related Topics', widget_label='Associate Related Topics with this Topic',show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Tag from Tag', blur_text='Type a few characters to bring up matching topics'))
 
@@ -143,7 +143,7 @@ class EditResourceForm(Form):
     description = CharField(widget=Textarea, max_length=1000, required=False)
     url = CharField(max_length=1000, required=False, label='URL')
     nodes = MultiSearchField(label='Tags', model=Node, search_url='/admin/ajax/search_tags', widget_label='Associate Topics with this Resource', show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Topic from Resource', blur_text='Type a few characters to bring up matching topics'))
-    societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies', label='Societies', widget=MultiSearchWidget(remove_link_flyover_text='Remove Society from Resource'))
+    societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies', label='Organization', widget=MultiSearchWidget(remove_link_flyover_text='Remove Organization from Resource'))
     priority_to_tag = BooleanField(required=False)
     completed = BooleanField(required=False)
     standard_status = ChoiceField(choices=_make_choices(Resource.STANDARD_STATUSES), required=False)
@@ -199,7 +199,7 @@ UserForm = autostrip(UserForm)
 class ManageSocietyForm(Form):
     # No longer used, page is live-edit (resources are just links)
     #resources = MultiSearchField(model=Resource, search_url='/admin/ajax/search_resources')
-    tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget_label='Associate Topics with this Society', show_create_tag_link=True, widget=MultiSearchWidget(attrs={'classMetadata':'showSelectedOptions:false' }))
+    tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget_label='Associate Topics with this Organization', show_create_tag_link=True, widget=MultiSearchWidget(attrs={'classMetadata':'showSelectedOptions:false' }))
 
 class MissingResourceForm(Form):
     society = ModelChoiceField(queryset=Society.objects.all(), widget=HiddenInput())

@@ -582,7 +582,7 @@ def home(request):
             return HttpResponseRedirect(reverse('admin_societies'))
         
         else:
-            raise Exception('User is a society manager but is not assigned to any societies.')
+            raise Exception('User is an organization manager but is not assigned to any organization.')
     
     else:
         raise Exception('Unknown role %s' % role)
@@ -952,7 +952,7 @@ def import_societies(request):
         # Display form
         form = ImportFileForm()
         return render(request, 'site_admin/import_file.html', {
-            'page_title': 'Import Societies',
+            'page_title': 'Import Organization',
             'form': form,
             'submit_url': reverse('admin_import_societies'),
         })
@@ -975,7 +975,7 @@ def import_societies(request):
         Cache.objects.delete('ajax_textui_nodes')
         
         return render(request, 'site_admin/import_file.html', {
-            'page_title': 'Import Societies',
+            'page_title': 'Import Organization',
             'errors': errors,
             'results': results,
         })
