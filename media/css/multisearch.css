@@ -5,7 +5,7 @@
 }
 
 .multi-search-input {
-    width: 350px;
+    width: 360px;
 }
 
 .multi-search-input-blur {
@@ -13,6 +13,7 @@
 }
 
 .multi-search-selected-options {
+    margin-top:1em;
 }
 
 .remove-link {
@@ -126,5 +127,4 @@
     float:left;
     font-size: 8pt;
     color: #AAA;
-    width:10em;
 }

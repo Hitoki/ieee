@@ -167,11 +167,11 @@ table.edit-create {
     width:100%;
 }
 
-table.edit-create th {
+/*table.edit-create th {
     background: white;
     color: black;
     width: 20%;
-}
+}*/
 
 table.edit-create td {
     width: 80%;
@@ -180,7 +180,6 @@ table.edit-create td {
 table.edit-create th, 
 table.edit-create td {
     padding: 10px;
-    border: none;
 }
 
 #id_ieee_id, #id_standard_status {
@@ -199,8 +198,10 @@ table.edit-create td {
 .grid,
 .full-grid
 {
+    width: 100%;
     border-collapse:collapse;
     margin-bottom:1em;
+    background-color: white;
 }
 
 .manage-grid {
@@ -213,7 +214,7 @@ table.edit-create td {
 .full-grid th
 {
     border:1px solid #ddd;
-    padding:.1em .5em;
+    padding:10px;
 }
 
 .grid th,
@@ -223,7 +224,7 @@ table.edit-create td {
     text-align:left;
     background:#006599;
     color:white;
-    border:1px solid #005888;
+    width: 20%;
 }
 
 /* Forms */
@@ -231,7 +232,6 @@ table.edit-create td {
 .grid select,
 .full-grid select
 {
-    width:100%;
     padding:2px;
 }
 
@@ -609,7 +609,7 @@ tr.form-row-highlight p.form-warning {
     font-weight:bold;
     margin-top:0px;
     color:orange;
-    width: 150px;
+    width: 180px;
     float: left;
 }
 
