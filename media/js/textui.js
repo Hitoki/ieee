@@ -416,6 +416,7 @@ var Tags = {
             corners: 1.0, // Corner roundness (0..1)
             speed: 2.2, // Rounds per second
             trail: 25, // Afterglow percentage
+            zIndex: 99999 //Z-index
         });
     },
     
