@@ -69,9 +69,13 @@ $xlargeFont: 16pt;
 }
 
 @mixin light-blue-gradient {
-    background: -moz-linear-gradient(center top , #F2F5FF, #B5C7FF) repeat scroll 0 0 #F2F5FF;
-    background: -webkit-gradient(linear, left top, left bottom, from(#F2F5FF), to(#B5C7FF)) repeat scroll 0 0 #F2F5FF;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F2F5FF', endColorstr='#B5C7FF');   
+    background: -moz-linear-gradient(top, #F2F5FF 0%, #B5C7FF 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F2F5FF), color-stop(100%,#B5C7FF)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #F2F5FF 0%, #B5C7FF 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #F2F5FF 0%, #B5C7FF 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #F2F5FF 0%, #B5C7FF 100%); /* IE10+ */
+    background: linear-gradient(top, #F2F5FF 0%, #B5C7FF 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#F2F5FF', endColorstr='#B5C7FF',GradientType=0 ); /* IE6-9 */  
 }
 
 @mixin orange-gradient {
