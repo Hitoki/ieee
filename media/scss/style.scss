@@ -2228,6 +2228,7 @@ div.group ul li:first-child {
     margin-top: 0;
     outline: none;
     font-size: 10pt;
+    height: 16px;
     vertical-align: top;
     background: $white url(../images/magnifyIcon.png) no-repeat 4px 3px;
     @include custom-border-radius (5px, 0, 0, 5px);
