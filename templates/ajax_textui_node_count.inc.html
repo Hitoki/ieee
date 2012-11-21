@@ -3,7 +3,7 @@
     {# For search phrases #}
     
     {% if search_for_too_short %}
-        The filter phrase <b>{{ search_for }}</b> is too short. Please enter more characters above OR <a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">clear the filter now</a>.
+        <a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">Clear the filter phrase now</a>.
     {% else %}
         {# If the view returned results summary, use it. If not (happens when "All Sectors" or "All Organizations" are chosen), construct one. #}
 
