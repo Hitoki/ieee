@@ -46,6 +46,58 @@
         a.level6, div.level6, span.level6 {
             @include level6-gradient;
         }
+        &.newTag {
+            a.level1, div.level1, span.level1 {
+                background: white;
+                color: $level1;
+            }
+            a.level2, div.level2, span.level2 {
+                background: white;
+                color: $level1;
+            }
+            a.level3, div.level3, span.level3 {
+                background: white;
+                color: $level3;
+            }
+            a.level4, div.level4, span.level4 {
+                background: white;
+                color: $level4;
+            }
+            a.level5, div.level5, span.level5 {
+                background: white;
+                color: $level5;
+            }
+            a.level6, div.level6, span.level6 {
+                background: white;
+                color: $level6;
+            }
+            &:hover {
+                a.level1, div.level1, span.level1 {
+                    color: $white;
+                    @include level1-gradient;
+                }
+                a.level2, div.level2, span.level2 {
+                    color: $white;
+                    @include level2-gradient;
+                }
+                a.level3, div.level3, span.level3 {
+                    color: $white;
+                    @include level3-gradient;
+                }
+                a.level4, div.level4, span.level4 {
+                    color: $white;
+                    @include level4-gradient;
+                }
+                a.level5, div.level5, span.level5 {
+                    color: $white;
+                    @include level5-gradient;
+                }
+                a.level6, div.level6, span.level6 {
+                    color: $white;
+                    @include level6-gradient;
+                }
+            }
+        }
     }
     .flyover-container {
         td {
@@ -993,18 +1045,23 @@ ul#sectors, ul#societies {
    padding-top: 7px;
 }
 
-#alternate-page #tag-galaxy div.node a {
-    text-decoration: none;
-    font-weight: normal;
-    white-space: nowrap;
-    padding: .2em .5em;
-    color: $white;
-    border: 1px solid transparent;
-	display: block;
-	overflow: hidden;
-	-webkit-transition: background-color 0.15s ease-in;
-    -moz-transition : background-color 0.15s ease-in;
-	@include default-border-radius;
+#alternate-page #tag-galaxy div.node {
+    &.newTag a {
+        @include custom-border-radius (15px, 15px, 15px, 15px);
+    }
+    a {
+        text-decoration: none;
+        font-weight: normal;
+        white-space: nowrap;
+        padding: .2em .5em;
+        color: $white;
+        border: 1px solid transparent;
+    	display: block;
+    	overflow: hidden;
+    	-webkit-transition: background-color 0.15s ease-in;
+        -moz-transition : background-color 0.15s ease-in;
+    	@include default-border-radius;
+	}
 }
 
 #alternate-page #tag-galaxy div.tag_cluster a {

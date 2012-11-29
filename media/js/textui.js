@@ -681,7 +681,7 @@ var Tags = {
                 var name = $(this).data('tag-name');
                 var type = $(this).data('tag-type');
                 var fly = "{ type: '" + type + "'}";
-                $(this).addClass('node '+ type + ' flyover ' + fly);
+                $(this).addClass('newTag node '+ type + ' flyover ' + fly);
                 if (type == 'term') {
                     if ($(this).data('tag-score') == 1) {
                         $(this).addClass('node-taxonomy-term');
