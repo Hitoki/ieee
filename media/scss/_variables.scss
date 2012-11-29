@@ -58,6 +58,14 @@ $xlargeFont: 16pt;
     -webkit-border-bottom-left-radius: $bottomleft;
 }
 
+@mixin default-transition($property, $duration, $delay) {
+    -webkit-transition: $property $duration linear $delay;
+	-moz-transition: $property $duration linear $delay;
+	-o-transition: $property $duration linear $delay;
+	-ms-transition: $property $duration linear $delay;
+	transition: $property $duration linear $delay;
+}
+
 @mixin blue-gradient {
     background: -moz-linear-gradient(top, #77bddd 0%, #006699 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#77bddd), color-stop(100%,$primaryColor)); /* Chrome,Safari4+ */
