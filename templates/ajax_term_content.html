@@ -22,6 +22,34 @@
             </span>
         </div>
         
+        <div class="dialogAddThis">
+            <script type="text/javascript">
+                var addthis_config = {
+                    pubid: "ra-4e02511c660b81ce",
+                    data_ga_property: "UA-9482893-{{ GA_SITE_NUM }}",
+                    data_track_clickback: true
+                };
+                var addthis_share = {
+                    url: "{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}",
+                    title: "{{ tag.name }}",
+                    description: "Read more about {{ tag.name }} on IEEE TechNav."
+                };
+            </script>
+            <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script> 
+            <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+                <a class="addthis_button_email" rel="nofollow"></a>
+                <a class="addthis_button_twitter" rel="nofollow"></a>
+                <a class="addthis_button_facebook" rel="nofollow"></a>
+                <a class="addthis_button_linkedin" rel="nofollow"></a>
+            </div>
+            <script type="text/javascript">
+                $(function(){
+                    addthis.toolbox('.addthis_toolbox', addthis_config, addthis_share);
+                });
+            </script>
+        </div>
+
+        
         <span class="dialogTitle"><span id="term-name">"{{ tag.name }}"</span> has <span id="num-related-items" class="{ number: {{ tag.related_tags.count }} }"><img src="{{ MEDIA_URL }}images/resource_popup_xplore_loader.gif" /></span> related resources</span>
         <div class="resources-pad">
         
