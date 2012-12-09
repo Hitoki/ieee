@@ -335,7 +335,8 @@ var Flyover = {
             
             // Remove title so the browser doesn't show its own tooltip
             this._elemTitle = this._elem.attr('title');
-            this._elem.attr('title', null);
+            this._elem.removeAttr('title');
+            //this._elem.attr('title', null);
             
             // Parse contents
             var content = this._elemTitle;

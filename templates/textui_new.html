@@ -1,0 +1,219 @@
+{% extends 'base.html' %}
+  
+{% block extra_head %}
+
+    <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/style-newui.css" />
+
+    <script src="https://www.google.com/jsapi?key=ABQIAAAAET-l-_pKVFbYTFwkzUZFuxQqXNOgVZsVxxAJPjYxgMwG3sAPmRRUT1Aw1TCcL7OyNBCohYUcq2aExA"></script>
+    <script type="text/javascript">
+  
+        google.load('search', '1');
+  
+        var start, end;
+        var tags_callback = null;
+
+        $(function() {
+             
+            // NOTE: .change() doesn't fire in IE till the checkbox loses focus, must use 'propertychange' for IE.
+            $('#show-clusters').bind($.browser.msie ? 'propertychange': 'change', function() {
+                Tags.updateResults();
+                $.cookie('show_clusters', this.checked, { expires: 100 });
+            });
+             
+            $('#show-terms').bind($.browser.msie ? 'propertychange': 'change', function() {
+                Tags.updateResults();
+                $.cookie('show_terms', this.checked, { expires: 100 });
+            });
+             
+            start = new Date();
+            log('Starting at ' + start);
+             
+            var tagGalaxyWidth = $('#tag-galaxy').width();
+            $('#tag-help-box').css('width', tagGalaxyWidth - 5);
+             
+            var resizeTagGalaxy = function() {
+                var windowHeight = $(window).height();
+                 
+                // Set heights for galaxy and nav panels
+                $("#tags").css('height', windowHeight - 300);
+                $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 295);
+                 
+                //Set width for help box
+                var tagGalaxyWidth = $('#tag-galaxy').width();
+                $('#tag-help-box').css('width', tagGalaxyWidth - 19);
+            };
+             
+            resizeTagGalaxy();
+            $(window).resize(resizeTagGalaxy).resize(resizeLightboxTab);
+            $(document).bind('onShowLightboxTab', resizeLightboxTab);
+             
+            // Attach event to tags-search clear button.
+            $('#textui-tags-search-clear').click(function() {
+                Tags.clearSearchResults();
+                $("#tags-live-search").focus();
+            });
+             
+            $(".live-search-clear").hover(function(){
+                $(".live-search").addClass("clear-hover");
+            }, function(){ 
+                $(".live-search").removeClass("clear-hover");
+            });
+             
+            // Attach the zoom slider.
+            $("#textui-zoom-slider").slider({
+                min: 50,
+                max: 150,
+                value: 100,
+                orientation: 'vertical',
+                slide: function(e, ui) {
+                    $('#textui-zoom-value').text(ui.value + '%');
+                },
+                change: function(e, ui) {
+                    $('#textui-zoom-value').text(ui.value + '%');
+                    Tags.updateZoom();
+                }    
+            });
+             
+            // Attach event to default-zoom image.
+            $('#textui-zoom-default-zoom').click(function() {
+                $('#textui-zoom-slider').slider('value', 100);
+            });
+  
+            var show_clusters = $.cookie('show_clusters');
+            if (show_clusters == null) {
+                // Set the default.
+                show_clusters = true;
+                $.cookie('show_clusters', show_clusters, { expires: 100 });
+            } else {
+                show_clusters = (show_clusters == 'true')
+            }
+            $('#show-clusters').attr('checked', show_clusters);
+             
+            var show_terms = $.cookie('show_terms');
+            if (show_terms == null) {
+                // Set the default.
+                show_terms = true;
+                $.cookie('show_terms', show_terms, { expires: 100 });
+            } else {
+                show_terms = (show_terms == 'true')
+            }
+            $('#show-terms').attr('checked', show_terms);
+             
+            Tags.init();
+             
+            $('#left-column').hide();
+             
+        });
+    </script>
+{% endblock %}
+  
+{% block content %}
+<div id="alternate-page">
+    <div id="tag-tools">
+        <div class="inner">
+            <div id="misc-bar">
+                    <div id="tag-counts"></div>
+                    {% if ENABLE_SHOW_CLUSTERS_CHECKBOX or ENABLE_SHOW_TERMS_CHECKBOX %}
+                    <p id="show-clusters-terms-box">
+                        {% if ENABLE_SHOW_CLUSTERS_CHECKBOX %}
+                        <input id="show-clusters" type="checkbox" /> <label for="show-clusters">Show Clusters</label>
+                        {% endif %}
+                        {% if ENABLE_SHOW_TERMS_CHECKBOX %}
+                        <input id="show-terms" type="checkbox" /> <label for="show-terms">Show Terms</label>
+                        {% endif %}
+                    </p>
+                    {% endif %}
+                    <div id="tags-searching-msg" style="display:none"></div>
+                    <div id='center-comp'></div>
+            </div>
+            <div id="frequencybar-tags">
+                <div id="connectedness-container">
+                    <span class="frequency-indicator"><span class="small">Few</span>&nbsp;&#8592;&nbsp;Linkages&nbsp;&#8594;&nbsp;<span class="small">Many</span></span>
+                    <span id="connectedness-help" class="helpicon smHelpIcon flyover {width:300}" title="A tag's color shows how linked it is within Technology Navigator to other topics, industry topics, IEEE organizations, and IEEE resources."></span>
+                </div>
+                <div id="textui-tags-search">
+                    <div style="float:left;width:341px;white-space:nowrap">
+                        <span class="feature_label">Show items containing:</span>
+                        <input id="tags-live-search" type="text" class="live-search defaultValue { use_tags_callback: true, search_key_delay: {{ SEARCH_KEY_DELAY }}, search_on_enter_only: {% if ENABLE_SEARCH_BUTTON %}true }{% else %}false } live-search-button-disabled{% endif %}" value="Enter term &amp; press return" />
+                        <span id="textui-tags-search-clear" class="live-search-clear">&nbsp;</span>
+                        {% if ENABLE_SEARCH_BUTTON %}<span id="textui-tags-search-submit">Go</span>{% endif %}
+                    </div>
+                </div>
+                <div id="textui-tags-sort">
+                    <span class="feature_label">Sort by:</span>
+                    <div id="sortContainer_outter">
+                        <div id="sortContainer_inner">
+                            <span>&nbsp;</span>
+                            <ul id="sortSelect_options" class="customSelectList">
+                                <li data-value="connectedness"><span>Linkages</span></li>
+                                <li data-value="alphabetical"><span>Alphabetical</span></li>
+                                <li data-value="frequency" ><span>Resources</span></li>
+                                <li data-value="num_sectors"><span>Industry Topics</span></li>
+                                <li data-value="num_related_tags"><span>Related Topics</span></li>
+                                <li data-value="num_societies"><span>IEEE Organizations</span></li>
+                            </ul>
+                        </div>
+                        <span id="sortSelect" class="customSelectContainer" tabindex="0">
+                            <span class="selected"></span>
+                            <span class="drop_down dropIcon"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="tag-container">
+        <div class="inner">
+            <div id="left-column">
+                <span class="feature_label">Navigate by:</span>
+                <div id="left-column-container" class="{ useCookies:false, useHash:false }">
+                    <ul id="galaxy-tabs" class="nootabs-menus">
+                        <li class="both-menu"><a href="" rel="nofollow"><span class="orgIcon"></span> <span style="width: 26px;">IEEE Org</span></a></li>
+                        <li style="display:none;"><a href="" rel="nofollow">&nbsp;</a></li> {# used to compensate for filters div #}
+                    </ul>
+                    <div id="societies-tab" style="height:392px">
+                        <ul id="societies">
+                            <li id="society-list-item-all"><a href="javascript:Tags.selectSociety('all');" rel="nofollow">All IEEE Organizations</a></li>                         
+                            {% for society in societies %}
+                            <li id="society-list-item-{{ society.id }}"><a href="javascript:Tags.selectSociety({{ society.id }});" rel="nofollow">{{ society.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {# NOTE: Filters are hidden from end-user for now, but must still exist on page for JS to function #}
+                    <div style="display:none;">
+                        <h2 class="feature_label">View Filters:</h2>
+                        <div class="filters-vert-box alt-box">
+                            <ul id="views">
+                                {% for filter in filters %}
+                                <li id="{{filter.value}}_highlight" class="filter_background">
+                                    <input id="{{filter.value}}" value="{{filter.value}}" type="checkbox" onclick="Tags.refresh();" class="filter highlight-checkbox { highlightElem: '#{{filter.value}}_highlight' }" checked="checked" />
+                                    <label for="{{filter.value}}">{{filter.name}}</label>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            <div id="right-column">
+                <div id="tag-galaxy" class="alt-box">
+                    <!-- NOTE: This is only used by javascript to get the default height/padding/margin/etc. -->
+                    <div id="default-height-tag" class="node tag_cluster">
+                        <a href="" rel="nofollow">
+                            <span class="icon_cluster_sm cluster-icon"></span>
+                            Test Node
+                        </a>
+                    </div>
+                    <div id="tags" class="alt-box-pad"></div>
+                </div>
+                <div id="textui-zoom-container" style="display:none">
+                    <div id="textui-zoom-slider"></div>
+                    <div id="textui-zoom-value">100%</div>
+                    <span id="textui-zoom-default-zoom" style="display:none">Reset</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  
+{% endblock %}
