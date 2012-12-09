@@ -43,6 +43,12 @@
 
     {% cssmin css/h5bp.css css/lightbox.css css/nootabs.css css/multisearch.css css/flyover.css css/vert-center.css css/jquery-ui-1.7.2.custom.css css/slidedeck.skin.css css/sprites.css %}
 
+    {% if NEWUI %}
+    <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/style-newui.css" />
+    {% else %}
+    <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/style.css" />
+    {% endif %}
+
     <!--[if IE 7]>
     <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/style-ie7.css" title="Style for IE7" />
     <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/vert-center-ie.css" title="Vert Center Style for IE" />
