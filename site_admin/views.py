@@ -3656,6 +3656,10 @@ def manage_society(request, society_id):
     
     resources1 = society.resources
     num_unfiltered_resources = resources1.count()
+
+    num_clusters = society.tags.get_clusters().count()
+
+    num_tags = society.tags.filter(node_type__name=NodeType.TAG).count()
     
     if resource_filter != '':
         keywords = resource_filter.split(' ')
@@ -3813,6 +3817,8 @@ def manage_society(request, society_id):
         'tag_page': tag_page,
         'num_tag_pages': num_tag_pages,
         'tag_page_url': tag_page_url,
+        'num_clusters': num_clusters,
+        'num_tags': num_tags,
         
         'return_url': request.get_full_path(),
         'items_per_page': items_per_page,
