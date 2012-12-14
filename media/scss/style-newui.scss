@@ -25,69 +25,49 @@
         }
     }
     #alternate-page #tag-galaxy div.node {
+        a, div {
+            background: $white;
+            @include default-transition(background, 0.2, 0);
+        }
         a.level1, div.level1, span.level1 {
-            @include level1-gradient;
+            color: $level1;
         }
         a.level2, div.level2, span.level2 {
-            @include level2-gradient;
+            color: $level1;
         }
         a.level3, div.level3, span.level3 {
-            @include level3-gradient;
+            color: $level3;
         }
         a.level4, div.level4, span.level4 {
-            @include level4-gradient;
+            color: $level4;
         }
         a.level5, div.level5, span.level5 {
-            @include level5-gradient;
+            color: $level5;
         }
         a.level6, div.level6, span.level6 {
-            @include level6-gradient;
+            color: $level6;
         }
-        &.newTag {
+        &:hover {
             a, div {
-                background: $white;
-                @include default-transition(background, 0.2, 0);
+                color: $white;
             }
             a.level1, div.level1, span.level1 {
-                color: $level1;
+                background: $level1;
             }
             a.level2, div.level2, span.level2 {
-                color: $level1;
+                background: $level2;
             }
             a.level3, div.level3, span.level3 {
-                color: $level3;
+                background: $level3;
             }
             a.level4, div.level4, span.level4 {
-                color: $level4;
+                background: $level4;
             }
             a.level5, div.level5, span.level5 {
-                color: $level5;
+                background: $level5;
             }
             a.level6, div.level6, span.level6 {
-                color: $level6;
-            }
-            &:hover {
-                a, div {
-                    color: $white;
-                }
-                a.level1, div.level1, span.level1 {
-                    background: $level1;
-                }
-                a.level2, div.level2, span.level2 {
-                    background: $level2;
-                }
-                a.level3, div.level3, span.level3 {
-                    background: $level3;
-                }
-                a.level4, div.level4, span.level4 {
-                    background: $level4;
-                }
-                a.level5, div.level5, span.level5 {
-                    background: $level5;
-                }
-                a.level6, div.level6, span.level6 {
-                    background: $level6;
-                }
+                background: $level6;
             }
         }
     }
@@ -970,9 +950,6 @@ ul#sectors, ul#societies {
 }
   
 #alternate-page #tag-galaxy div.node {
-    &.newTag a {
-        @include custom-border-radius (15px, 15px, 15px, 15px);
-    }
     a {
         text-decoration: none;
         font-weight: normal;
@@ -984,7 +961,7 @@ ul#sectors, ul#societies {
         overflow: hidden;
         -webkit-transition: background-color 0.15s ease-in;
         -moz-transition : background-color 0.15s ease-in;
-        @include default-border-radius;
+        @include custom-border-radius (15px, 15px, 15px, 15px);
     }
 }
   
