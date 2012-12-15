@@ -1,6 +1,12 @@
 {% load filters smartif %}
 
 {% spaceless %}
+    
+    {# Extra message for when there are zero results #}
+    {% ifequal child_nodes|length 0 %}
+        <span style="width:100%;text-align:center;display:block;position:absolute;top:50%;font-size:12pt;">Try entering fewer characters or <a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">clearing the filter phrase now</a><span>
+    {% endifequal %}
+
     {% for tag in child_nodes %}
         <div id="tag-{{ tag.id }}" data-tag-score="{% if not tag.score1 %}1{% endif %}" data-tag-level="{{ tag.level }}" data-tag-id="{{ tag.id }}" data-tag-name="{{ tag.name|truncatechars:30 }}" data-tag-type="{% if tag.is_taxonomy_term %}term{% elif tag.node_type__name == 'tag' %}tag{% elif tag.node_type__name == 'tag_cluster' %}tag_cluster{% else %}{{ tag.node_type__name }}{% endif %}" data-cluster-args="{{ tag.id }}, {{ sector_id|reprjs }}, {{ society_id|reprjs}}">
             {% comment %}

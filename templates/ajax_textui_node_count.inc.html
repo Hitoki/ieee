@@ -19,12 +19,13 @@
                 Showing{% if num_clusters %} <span class="icon_cluster_sm cluster-icon"></span> {{ num_clusters|intcomma }} topic area{{ num_clusters|pluralize }}{% if num_clusters %} &amp; {% else %}&#47;{% endif %}{% endif %} <span class="tag_icon tag-icon"></span> {{ num_tags|intcomma }} topic{{ num_tags|pluralize }}{% if num_terms %} (<span class="tag_icon tag-icon"></span> {{ num_terms|intcomma }} terms){% endif %}{% if cluster %} in the <span class="icon_cluster_sm cluster-icon"></span> topic area "{{ cluster.name }}"{% endif %}{% if sector %} in the industry sector "{{ sector }}"{% endif %}{% if society %} in the <span class="orgIcon"></span> organization "{{ society }}"{% endif %}:
             </p>    
         
-
+        {% comment %}
         {# Extra message for when there are zero results #}
         {% ifequal child_nodes|length 0 %}
             Try entering fewer characters or <a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">clearing the filter phrase now</a>.
         {% endifequal %}
-        
+        {% endcomment %}
+
     {% endif %}
     
 {% else %}
