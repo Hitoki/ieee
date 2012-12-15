@@ -14,17 +14,17 @@
             {% endcomment %}
             <tr>
                 <th>
-                    <label for="id_assign_tags">{{ form.assign_tags.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title='Typing a portion of a word or phrase will bring up a list of all matching tags. Choose "Create a new tag" if a matching tag does not exist.'>[?]</span>:</label>
+                    <label for="id_assign_tags">{{ form.assign_tags.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title='Typing a portion of a word or phrase will bring up a list of all matching topics. Choose "Create a new topic" if a matching topic does not exist.'>[?]</span>:</label>
                 </th>
                 <td>
                     {{ form.assign_tags.errors }}
                     {{ form.assign_tags }}
-                    <div class="multisearch-note">Type * to show all<br/>of this organization's tags</div>
+                    <div class="multisearch-note">Type * to show all<br/>of this organization's topics</div>
                 </td>
             </tr>
             <tr>
                 <th>
-                    Remove Tags <span class="help_icon flyover {position: 'top', customeClass:'editForm'}" title="Remove selected tags">[?]</span>:
+                    Remove Topics <span class="help_icon flyover {position: 'top', customeClass:'editForm'}" title="Remove selected topics">[?]</span>:
                 </th>
                 <td>
                     {% if not common_tags %}
@@ -42,7 +42,7 @@
             </tr>
             <tr>
                 <th>
-                    <label for="id_priority">{{ form.priority.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title='If "yes", these resources should be as complete as possible. Tags, Description, and URL.'>[?]</span>:</label>
+                    <label for="id_priority">{{ form.priority.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title='If "yes", these resources should be as complete as possible. Topics, Description, and URL.'>[?]</span>:</label>
                 </th>
                 <td>
                     {{ form.priority.errors }}
@@ -53,7 +53,7 @@
             </tr>
             <tr>
                 <th>
-                    <label for="id_completed">{{ form.completed.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title='If "yes", these resources are completed. At least one Tag is mapped. Description, and URL are added/validated.'>[?]</span>:</label>
+                    <label for="id_completed">{{ form.completed.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title='If "yes", these resources are completed. At least one Topic is mapped. Description, and URL are added/validated.'>[?]</span>:</label>
                 </th>
                 <td>
                     {{ form.completed.errors }}
@@ -75,7 +75,7 @@
                     Name
                 </th>
                 <th>
-                    Tags
+                    Topics
                 </th>
                 <th>
                     Priority

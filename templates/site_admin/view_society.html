@@ -52,14 +52,14 @@
                 
                 <div id="society-resource-tabs" class="nootabs {useCookies:false}">
                     <ul class="nootabs-menus">
-                        <li><a href="">Tags</a></li>
+                        <li><a href="">Topics</a></li>
                         <li class="last-menu"><a href="">Resources</a></li>
                     </ul>
                     <div>
                         {% if not society.tags.all %}
-                            <em>No tags associated yet with this organization.</em>
+                            <em>No topics associated yet with this organization.</em>
                         {% else %}
-                            {% for tag in society.tags.all %}
+                            {% for topic in society.tags.all %}
                                 <a href="{% url admin_view_tag tag.id %}">{{ tag.name_with_sector }}</a><br/>
                             {% endfor %}
                         {% endif %}

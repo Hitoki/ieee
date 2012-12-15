@@ -69,7 +69,7 @@
             -->
             <tr>
                 <th>
-                    Last Processed Tag
+                    Last Processed Topic
                 </th>
                 <td>
                     {{ process.last_processed_tag }}
@@ -145,7 +145,7 @@
             {% if process.last_processed_tag %}
                 <!-- Resume -->
                 <p>
-                    <a href="{% url admin_import_xplore %}?action=launch_resume">Resume the Import Process from the "{{ process.last_processed_tag.name }}" tag.</a>
+                    <a href="{% url admin_import_xplore %}?action=launch_resume">Resume the Import Process from the "{{ process.last_processed_tag.name }}" topic.</a>
                 </p>
             {% endif %}
         {% endif %}

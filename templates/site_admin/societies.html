@@ -15,7 +15,7 @@
                 URL
             </th>
             <th>
-                # Tags
+                # Topics
             </th>
             <th>
                 # Resources
@@ -38,7 +38,7 @@
                             <a href="{% url admin_view_tag tag.id %}">{{ tag.name_with_sector }}</a>, 
                         {% endfor %}
                         {% if society.more_tags %}
-                            <em>... {{ society.more_tags }} more tags</em>
+                            <em>... {{ society.more_tags }} more topics</em>
                         {% endif %}
                     {% endcomment %}
                 </td>

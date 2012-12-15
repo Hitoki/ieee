@@ -2,12 +2,12 @@
 
 {% block main_table_content %}
     
-    <h1>{{ cluster.name_with_sector }} Cluster</h1>
+    <h1>{{ cluster.name_with_sector }} Topic Area</h1>
     
     <p>
-        <a href="{% url admin_edit_cluster cluster.id %}">Edit cluster</a>
-        | <a href="{% url admin_delete_cluster cluster.id %}" onclick="return confirm('Delete this cluster?');">Delete cluster</a>
-        | <a href="{% url admin_clusters_report %}">Back to All Clusters</a>
+        <a href="{% url admin_edit_cluster cluster.id %}">Edit topic area</a>
+        | <a href="{% url admin_delete_cluster cluster.id %}" onclick="return confirm('Delete this topic area?');">Delete topic area</a>
+        | <a href="{% url admin_clusters_report %}">Back to All Topic Areas</a>
     </p>
     
     <table class="grid">
@@ -53,7 +53,7 @@
         </tr>
         <tr>
             <th>
-                Tags
+                Topics
             </th>
             <td>
                 <ul>

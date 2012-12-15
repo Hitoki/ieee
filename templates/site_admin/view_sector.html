@@ -5,11 +5,11 @@
     <h1>"{{ sector.name }}" Sector</h1>
     
     {% if sector.get_child_clusters %}
-        <h2>Clusters</h2>
+        <h2>Topic Areas</h2>
         <table class="grid">
             <tr>
                 <th>
-                    Cluster Name
+                    Topic Area Name
                 </th>
             </tr>
             {% for cluster in sector.get_child_clusters %}
@@ -21,20 +21,20 @@
             {% endfor %}
         </table>
         
-        <h2>Tags</h2>
+        <h2>Topics</h2>
     {% endif %}
     
     <table class="grid">
         <tr>
             <th>
-                Tag
+                Topic
             </th>
             <th>
                 Resources
             </th>
             <th>
                 Related<br/>
-                Tags
+                Topics
             </th>
             <th>
                 Filters
@@ -67,7 +67,7 @@
     <p>
         {% comment %}
         TODO: Fix this link
-        <a href="{% url admin_show_create_tag_form sector.id %}">Create a tag</a>
+        <a href="{% url admin_show_create_tag_form sector.id %}">Create a topic</a>
         {% endcomment %}
     </p>
     

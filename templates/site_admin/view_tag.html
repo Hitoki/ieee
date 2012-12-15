@@ -2,9 +2,9 @@
 
 {% block main_table_content %}
     
-    <h1>{{ tag.name_with_sector }} Tag</h1>
+    <h1>{{ tag.name_with_sector }} Topic</h1>
     
-    <p><a href="{% url admin_edit_tag tag.id %}">Edit tag</a></p>
+    <p><a href="{% url admin_edit_tag tag.id %}">Edit topic</a></p>
     
     <table class="grid">
         {% comment %}
@@ -29,7 +29,7 @@
         </tr>
         <tr>
             <th>
-                Clusters
+                Topic Areas
             </th>
             <td>
                 {% for cluster in tag.get_parent_clusters.all %}

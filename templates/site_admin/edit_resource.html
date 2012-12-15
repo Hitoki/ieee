@@ -156,24 +156,24 @@
             </tr>
             <tr>
                 <th>
-                    <label for="id_nodes">{{ form.nodes.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title='Typing a portion of a word or phrase will bring up a list of all matching tags. Choose "Create a new tag" if a matching tag does not exist.'>[?]</span>:</label>
+                    <label for="id_nodes">{{ form.nodes.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title='Typing a portion of a word or phrase will bring up a list of all matching topics. Choose "Create a new topic" if a matching topic does not exist.'>[?]</span>:</label>
                     <br/>
-                    <a href="#" class="copy-tags-to-clipboard { resourceId: {{ resource.id }} }"><img src="{{ MEDIA_URL }}images/copy_to_clipboard2.png" /> <span>Copy tags to clipboard</span></a>
+                    <a href="#" class="copy-tags-to-clipboard { resourceId: {{ resource.id }} }"><img src="{{ MEDIA_URL }}images/copy_to_clipboard2.png" /> <span>Copy topics to clipboard</span></a>
                     {% if user.get_profile.copied_resource %}
-                        <a href="#" class="paste-tags { resourceId: {{ resource.id }} }"><img src="{{ MEDIA_URL }}images/copy_to_clipboard2.png" /> <span>Paste tags from clipboard</span></a>
+                        <a href="#" class="paste-tags { resourceId: {{ resource.id }} }"><img src="{{ MEDIA_URL }}images/copy_to_clipboard2.png" /> <span>Paste topics from clipboard</span></a>
                     {% endif %}
                 </th>
                 <td>
                     {{ form.nodes.errors }}
                     {{ form.nodes }}
                     {% if resource %}
-                        <div class="multisearch-note">Type * to show all<br/>of this organization's tags</div>
+                        <div class="multisearch-note">Type * to show all<br/>of this organization's topics</div>
                     {% endif %}
                 </td>
             </tr>
             <tr>
                 <th>
-                    <label for="id_priority_to_tag">{{ form.priority_to_tag.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title='If "yes", this resource should be as complete as possible. Tags, Description, and URL.'>[?]</span>:</label>
+                    <label for="id_priority_to_tag">{{ form.priority_to_tag.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title='If "yes", this resource should be as complete as possible. Topics, Description, and URL.'>[?]</span>:</label>
                 </th>
                 <td>
                     {{ form.priority_to_tag.errors }}
@@ -182,7 +182,7 @@
             </tr>
             <tr>
                 <th>
-                    <label for="id_completed">{{ form.completed.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title='If "yes", this resource is completed. At least one Tag is mapped. Description, and URL are added/validated.'>[?]</span>:</label>
+                    <label for="id_completed">{{ form.completed.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title='If "yes", this resource is completed. At least one Topic is mapped. Description, and URL are added/validated.'>[?]</span>:</label>
                 </th>
                 <td>
                     {{ form.completed.errors }}
@@ -191,7 +191,7 @@
             </tr>
             <tr>
                 <th>
-                    <label for="id_keywords">{{ form.keywords.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title="IEEE-provided keywords in the resource libraries. These may serve as Tag suggestions.">[?]</span>:</label>
+                    <label for="id_keywords">{{ form.keywords.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title="IEEE-provided keywords in the resource libraries. These may serve as Topic suggestions.">[?]</span>:</label>
                 </th>
                 <td>
                     {{ form.keywords.errors }}

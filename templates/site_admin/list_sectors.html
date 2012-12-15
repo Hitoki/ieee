@@ -12,7 +12,7 @@
                 Industry Sector
             </th>
             <th>
-                # Tags
+                # Topics
             </th>
         </tr>
         {% for sector in sectors %}
@@ -27,6 +27,6 @@
         {% endfor %}
     </table>
     
-    <a href="{% url admin_create_tag %}?return_url={{ current_url|urlencode }}">Create a new Tag</a>
+    <a href="{% url admin_create_tag %}?return_url={{ current_url|urlencode }}">Create a new Topic</a>
     
 {% endblock %}

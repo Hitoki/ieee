@@ -360,7 +360,7 @@
 									<span class="edit-selected-resources-flyover">
 										<input type="submit" class="submit-button edit-selected-resources" value="Edit Selected Resources" />
 									</span>
-									<span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 5px;" title="Select 2 or more resources below and click this button to batch edit their tags, priority and whether or not they are completed.">[?]</span>
+									<span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 5px;" title="Select 2 or more resources below and click this button to batch edit their topics, priority and whether or not they are completed.">[?]</span>
 								</p>
 								
 								<ul class="pages">
@@ -455,7 +455,7 @@
 											</div>
 										</th>
 										<th>
-											Tags <span class="help_icon flyover" title="List of key words or phrases for related concepts and technology areas.">[?]</span>
+											Topics <span class="help_icon flyover" title="List of key words or phrases for related concepts and technology areas.">[?]</span>
 										
 											<div class="table-sort">
 											<a href="{% url admin_manage_society society.id %}?resource_sort=num_tags_ascending" class="live-num_tags {hashOnly:true}">
@@ -495,7 +495,7 @@
 											</div>
 										</th>
 										<th>
-											Priority <span class="help_icon flyover" title='If "yes", this resource should be as complete as possible. Tags, Description, and URL.'>[?]</span>
+											Priority <span class="help_icon flyover" title='If "yes", this resource should be as complete as possible. Topics, Description, and URL.'>[?]</span>
 										
 											<div class="table-sort">
 											<a href="{% url admin_manage_society society.id %}?resource_sort=priority_ascending" class="live-priority {hashOnly:true}">
@@ -515,7 +515,7 @@
 											</div>
 										</th>
 										<th>
-											Completed <span class="help_icon flyover" title='If "yes", this resource is completed. At least one Tag is mapped. Description, and URL are added/validated.'>[?]</span>
+											Completed <span class="help_icon flyover" title='If "yes", this resource is completed. At least one Topic is mapped. Description, and URL are added/validated.'>[?]</span>
 										
 											<div class="table-sort">
 											<a href="{% url admin_manage_society society.id %}?resource_sort=completed_ascending" class="live-completed {hashOnly:true}">
@@ -684,7 +684,7 @@
 									<span class="edit-selected-resources-flyover">
 										<input type="submit" value="Edit Selected Resources" class="submit-button edit-selected-resources" />
 									</span>
-									<span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 5px;" title="Select 2 or more resources above and click this button to batch edit their tags, priority and whether or not they are completed.">[?]</span>
+									<span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 5px;" title="Select 2 or more resources above and click this button to batch edit their topics, priority and whether or not they are completed.">[?]</span>
 								</p>
 						
 							</form>
@@ -706,15 +706,15 @@
 					<div id="tags-tab" class="nootabs-tab">
 						<input type="button" id="create-tag-float" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic" />
 						
-						Add Tags: <input id="add-tags-input" />
+						Add Topics: <input id="add-tags-input" />
 						<select id="add-tags-select" size="5" multiple="multiple">
 						</select>
-                        <input id="add-tags-button" type="button" value="Add Tags" />
+                        <input id="add-tags-button" type="button" value="Add Topics" />
 						
 						
 						{% comment %}
 						<!-- Show the "Associate Tags with this Organization" input: -->
-						<form autocomplete="off">{% eval form['tags'] %}<div class="multisearch-note">Type * to show all<br/>of this organization's tags</div></form>
+						<form autocomplete="off">{% eval form['tags'] %}<div class="multisearch-note">Type * to show all<br/>of this organization's topics</div></form>
 						{% endcomment %}
 						
 						<div id="tags-table-content">
@@ -756,7 +756,7 @@
 							<br/>
 							<br/>
 							
-							<h3>Managing Tags in the Administrative Interface</h3>
+							<h3>Managing Topics in the Administrative Interface</h3>
 							
 							<object id='stU09QREBIR11cQ1tbXl9dUlNU' width='425' height='344' type='application/x-shockwave-flash' data='http://www.screentoaster.com/swf/STPlayer.swf'  codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0'>
 								<param name='movie' value='http://www.screentoaster.com/swf/STPlayer.swf'/>

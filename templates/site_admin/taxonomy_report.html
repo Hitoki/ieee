@@ -4,7 +4,7 @@
     
     <h1>Taxonomy Report</h1>
     
-    Total # clusters: {{ clusters.count }}<br/>
+    Total # topic areas: {{ clusters.count }}<br/>
     Total # terms: {{ terms.count }}<br/>
     
     <h2>Term</h2>
@@ -15,10 +15,10 @@
                 Name:
             </th>
             <th>
-                Clusters:
+                Topic Areas:
             </th>
             <th>
-                Tags:
+                Topics:
             </th>
         </tr>
         {% for term in terms %}
@@ -41,15 +41,15 @@
     </table>
     
     {% comment %}
-    <h2>Clusters</h2>
+    <h2>Topic Areas</h2>
     
     <table class="grid">
         <tr>
             <th>
-                Cluster Name:
+                Topic Area Name:
             </th>
             <th>
-                Tags:
+                Topics:
             </th>
         </tr>
         {% for cluster in clusters %}
