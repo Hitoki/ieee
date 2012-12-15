@@ -108,6 +108,26 @@
                 </div>
             </th>
             <th>
+                Topic Areas </span>
+                
+                <div class="table-sort">
+                <a href="{% url admin_manage_society society.id %}?tag_sort=topic_area_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
+                    {% ifequal tag_sort "topic_area_ascending" %}
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
+                    {% else %}
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
+                    {% endifequal %}
+                </a>
+                <a href="{% url admin_manage_society society.id %}?tag_sort=topic_area_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
+                    {% ifequal tag_sort "topic_area_descending" %}
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
+                    {% else %}
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
+                    {% endifequal %}
+                </a>
+                </div>
+            </th>
+            <th>
                 Organizations <span class="help_icon flyover" title="IEEE organizations that have associated Topic with their domain.">[?]</span>
                 
                 <div class="table-sort">
@@ -203,6 +223,9 @@
                     {{ tag.parents.all|join:", " }}
                 </td>
                 <td>
+                    {{ tag.get_parent_clusters.all|join:", " }}
+                </td>                
+                <td>
                     {% if tag.societies.all.count %}
                         {{ tag.societies.all.count }}
                     {% endif %}
@@ -223,7 +246,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="javascript:removeTagFromSociety({{ tag.id }});" onclick="return confirm('Remove this tag?');"><span class="flyover" title="Remove Topic from Organization">[x]</span></a>
+                    <a href="javascript:removeTagFromSociety({{ tag.id }});" onclick="return confirm('Remove this topic?');"><span class="flyover" title="Remove Topic from Organization">[x]</span></a>
                 </td>
             </tr>
         {% endfor %}

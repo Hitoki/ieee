@@ -3512,7 +3512,7 @@ def send_login_info(request, reason):
 @login_required
 @society_manager_or_admin_required
 def societies(request):
-    societies = Society.objects.getForUser(request.user)
+    societies = Society.objects.getForUser(request.user)   
     return render(request, 'site_admin/societies.html', {
         'societies': societies,
     })
@@ -3558,6 +3558,31 @@ def _get_paged_tags(items_per_page, society, tag_sort, tag_page):
             """,
         }, order_by=[
             '-sectors_list',
+        ])
+    elif tag_sort == 'topic_area_ascending':
+        tags = society.tags.extra(select={
+            'topic_area': """
+                SELECT GROUP_CONCAT(sectors.name ORDER BY sectors.name SEPARATOR ', ')
+                FROM ieeetags_node_parents INNER JOIN ieeetags_node AS sectors
+                ON ieeetags_node_parents.to_node_id = sectors.id
+                WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id
+                GROUP BY ieeetags_node_parents.from_node_id
+            """,
+        }, order_by=[
+            'topic_area',
+        ])
+
+    elif tag_sort == 'topic_area_descending':
+        tags = society.tags.extra(select={
+            'topic_area': """
+                SELECT GROUP_CONCAT(sectors.name ORDER BY sectors.name SEPARATOR ', ')
+                FROM ieeetags_node_parents INNER JOIN ieeetags_node AS sectors
+                ON ieeetags_node_parents.to_node_id = sectors.id
+                WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id
+                GROUP BY ieeetags_node_parents.from_node_id
+            """,
+        }, order_by=[
+            '-topic_area',
         ])
     
     elif tag_sort == 'num_societies_ascending':
