@@ -295,6 +295,10 @@ table.resources td.count {
     color:gray;
 }
 
+table.tags tr.tag_cluster {
+    background: silver;
+}
+
 .table-sort {
     text-align: center;
 }

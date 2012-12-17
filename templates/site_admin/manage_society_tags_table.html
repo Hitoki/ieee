@@ -212,7 +212,7 @@
             </th>
         </tr>
         {% for tag in tags %}
-            <tr>
+            <tr class="{{ tag.node_type }}">
                 <td class="select-checkbox-on-click">
                     <input type="checkbox" name="tag_ids" value="{{ tag.id }}" class="select-tags" />
                 </td>
