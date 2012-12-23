@@ -5,7 +5,9 @@
     {# Extra message for when there are zero results #}
     {% ifequal child_nodes|length 0 %}
         <span style="width:100%;text-align:center;display:block;position:absolute;top:50%;font-size:12pt;">Try entering fewer characters or <a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">clearing the filter phrase now</a><br />
-        <a href="javascript:Tags.selectSociety('all');">Search all organizations</a>
+        {% if society_id %}
+            <a href="javascript:Tags.selectSociety('all');">Search all organizations</a>
+        {% endif %}
         <span>
     {% endifequal %}
 
