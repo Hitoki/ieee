@@ -35,7 +35,7 @@
                     name_link: data.tag.name_link,
                     value: data.tag.value,
                     tag_name: data.tag.tag_name,
-                    sector_names: data.tag.sector_names,
+                    //sector_names: data.tag.sector_names,
                     num_societies: data.tag.num_societies.toString(),
                     num_related_tags: data.tag.num_related_tags.toString(),
                     num_filters: data.tag.num_filters.toString(),
@@ -84,11 +84,13 @@
     
     <h1>Create New Topic</h1>
     
+    {% comment %}
     {% if sector %}
         <p>
             <a href="{% url admin_view_sector sector.id %}">back</a>
         </p>
     {% endif %}
+    {% endcomment %}
     
     <form action="{% url admin_create_tag %}?society_id={{ society_id }}&amp;add_to_society={{ add_to_society }}&amp;return_url={{ return_url|urlencode }}" method="post">
         {% csrf_token %}
@@ -103,6 +105,7 @@
                     {{ form.name }}
                 </td>
             </tr>
+            {% comment %}
             <tr>
                 <th>
                     <label for="id_sector">{{ form.sectors.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="Industry Sector for which the Topic is relevant, from the domain perspective of the S/C.">[?]</span>:</label>
@@ -112,6 +115,7 @@
                     {{ form.sectors }}
                 </td>
             </tr>
+            {% endcomment %}
             <tr>
                 <th>
                     <label for="id_filters">{{ form.filters.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="Choose one or multiple categories that describe the Topic. If none are chosen, this Topic will not be displayed to end users.">[?]</span>:</label>
@@ -140,9 +144,11 @@
                 {% if return_url %}
                     <a href="{{ return_url }}" class="cancel-link">Cancel</a>
                 {% endif %}
+                {% comment %}
                 {% if sector %}
                     <a href="{% url admin_view_sector sector.id %}" class="cancel-link">Cancel</a>
                 {% endif %}
+                {% endcomment %}
             {% endif %}
         </div>
     </form>

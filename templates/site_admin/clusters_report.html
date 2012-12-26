@@ -13,9 +13,11 @@
             <th>
                 Topic Area Name:
             </th>
+            {% comment %}
             <th>
-                Sector:
+                Industry Topics:
             </th>
+            {% endcomment %}
             <th>
                 Topics:
             </th>
@@ -25,11 +27,13 @@
                 <td>
                     <a href="{% url admin_view_cluster cluster.id %}">{{ cluster.name }}</a>
                 </td>
+                {% comment %}
                 <td>
                     {% for sector in cluster.get_sectors %}
                         <a href="{% url admin_view_sector sector.id %}">{{ sector.name }}</a>{% if not forloop.last %},{% endif %}
                     {% endfor %}
                 </td>
+                {% endcomment %}
                 <td>
                     {% for tag in cluster.child_nodes.all %}
                         <a href="{% url admin_view_tag tag.id %}">{{ tag.name }}</a>{% if not forloop.last %},{% endif %}

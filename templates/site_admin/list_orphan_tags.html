@@ -13,7 +13,8 @@
     <table class="grid">
         <tr>
             <th width="66%">
-                Topic (Related Topics)
+                Topic 
+                {% comment %}(Related Topics){% endcomment %}
             </th>
             <th width="34%">
                 Organizations
@@ -23,11 +24,13 @@
             <tr>
                 <td>
                     <a href="{% url admin_view_tag tag.id %}">{{tag.name}}</a>
+                    {% comment %}
                     (
                         {% for sector in tag.parents.all %}
                             <a href="{% url admin_view_sector sector.id %}">{{ sector.name }}</a>{% if not forloop.last %},{% endif %}
                         {% endfor %}
                     )
+                    {% endcomment %}
                 </td>
                 <td>
                     {{ tag.societies.all|join:", " }}

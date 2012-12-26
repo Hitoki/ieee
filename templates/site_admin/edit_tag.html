@@ -31,7 +31,7 @@
                     name_link: data.tag.name_link,
                     value: data.tag.value,
                     tag_name: data.tag.tag_name,
-                    sector_names: data.tag.sector_names,
+                    //sector_names: data.tag.sector_names,
                     num_societies: data.tag.num_societies.toString(),
                     num_related_tags: data.tag.num_related_tags.toString(),
                     num_filters: data.tag.num_filters.toString(),
@@ -80,15 +80,17 @@
                     {{ form.societies }}
                 </td>
             </tr>
+            {% comment %}
             <tr>
                 <th>
-                    <label for="id_parents">{{ form.parents.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="Industry Sector for which the Topic is relevant, from the domain perspective of the S/C.">[?]</span>:</label>
+                    <label for="id_parents">{{ form.parents.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="Industry Topic for which the Topic is relevant, from the domain perspective of the S/C.">[?]</span>:</label>
                 </th>
                 <td>
                     {{ form.parents.errors }}
                     {{ form.parents }}
                 </td>
             </tr>
+            {% endcomment %}
             <tr {% if not num_filters %}class="form-row-highlight"{% endif %} >
                 <th>
                     <label for="id_filters">{{ form.filters.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="Choose one or multiple categories that describe the Topic. If none are chosen, this Topic will not be displayed to end users.">[?]</span>:</label>
