@@ -87,6 +87,7 @@
                 </div>
 
             </th>
+            {% comment %}
             <th>
                 Industry Topics <span class="help_icon flyover" title="Industry Sector for which the Topic is relevant, from the domain perspective of the S/C.">[?]</span>
                 
@@ -107,6 +108,7 @@
                 </a>
                 </div>
             </th>
+            {% endcomment %}
             <th>
                 Topic Areas </span>
                 
@@ -219,9 +221,11 @@
                 <td class="first-item">
                     <a href="{% url admin_edit_tag tag.id %}?return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}&amp;society_id={{ society.id }}">{{ tag.name }}</a>
                 </td>
+                {% comment %}
                 <td>
                     {{ tag.parents.all|join:", " }}
                 </td>
+                {% endcomment %}
                 <td>
                     {{ tag.get_parent_clusters.all|join:", " }}
                 </td>                

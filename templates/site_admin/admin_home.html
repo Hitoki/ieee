@@ -18,7 +18,7 @@
             <ul>
                 <li>{{ num_societies }} IEEE organizations</li>
                 <li>{{ num_society_managers }} organization managers</li>
-                <li>{{ num_sectors }} industry topics</li>
+                {% comment %}<li>{{ num_sectors }} industry topics</li>{% endcomment %}
                 <li>{{ num_clusters }} topic areas</li>
                 <li>{{ num_tags }} topics</li>
                 <li>{{ num_unclustered_tags }} unclustered topics</li>
@@ -70,7 +70,7 @@
             <ul>
                 <li><a href="{% url admin_users %}">Users</a></li>
                 <li><a href="{% url admin_send_email_all_users %}">Send email to all users</a></li>
-                <li><a href="{% url admin_list_sectors %}">Industry Topics</a></li>
+                {% comment %}<li><a href="{% url admin_list_sectors %}">Industry Topics</a></li>{% endcomment %}
                 <li><a href="{% url admin_societies %}">Organizations</a></li>
                 <li><a href="{% url admin_search_societies %}">Search Organizations</a></li>
             </ul>

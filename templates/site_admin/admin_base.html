@@ -22,9 +22,11 @@
                 <li class="{% block nav_users %}{% endblock %}">
                     <a href="{% url admin_users %}">Users</a>
                 </li>            
+                {% comment %}
                 <li class="{% block nav_sectors %}{% endblock %}">
                     <a href="{% url admin_list_sectors %}">Industry Topics</a>
                 </li>
+                {% endcomment %}
                 <li class="{% block nav_societies %}{% endblock %}">
                     <a href="{% url admin_societies %}">IEEE Organizations</a>
                 </li>
