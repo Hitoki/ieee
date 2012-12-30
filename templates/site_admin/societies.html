@@ -13,10 +13,13 @@
             </th>
             <th>
                 URL
-            </th>
+            </th>    
             <th>
                 # Topics
             </th>
+            <th>
+                # Topic Areas
+            </th>                    
             <th>
                 # Resources
             </th>
@@ -30,9 +33,9 @@
                 </td>
                 <td>
                     {{ society.url }}
-                </td>
+                </td> 
                 <td>
-                    {{ society.tags.all.count }}
+                    {{ society.tags.get_tags.count }}
                     {% comment %}
                         {% for tag in society.tags.all %}
                             <a href="{% url admin_view_tag tag.id %}">{{ tag.name_with_sector }}</a>, 
@@ -42,6 +45,9 @@
                         {% endif %}
                     {% endcomment %}
                 </td>
+                <td>
+                    {{ society.tags.get_clusters.count }}
+                </td>                               
                 <td>
                     {{ society.resources.all.count }}
                 </td>
