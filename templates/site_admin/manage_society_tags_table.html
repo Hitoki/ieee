@@ -68,7 +68,7 @@
                 <img class="batch-edit-arrow" src="{{ MEDIA_URL }}images/arrow2-down-white.gif" />
             </th>
             <th>
-                Topic Name <span class="help_icon flyover" title="Keyword or phrase for related concept or technology area. Click topic to edit.">[?]</span>
+                Topic/Topic Area <span class="help_icon flyover" title="Keyword or phrase for related concept or technology area. Click topic to edit.">[?]</span>
                 <div class="table-sort">
                 <a href="{% url admin_manage_society society.id %}?tag_sort=name_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "name_ascending" %}
@@ -149,6 +149,7 @@
                 </a>
                 </div>
             </th>
+            {% comment %}
             <th>
                 Filters <span class="help_icon flyover" title="Categories that detail the concept or technology area.">[?]</span>
                 
@@ -169,6 +170,7 @@
                 </a>
                 </div>
             </th>
+            {% endcomment %}
             <th>
                 Resources <span class="help_icon flyover" title="IEEE Products or Services mapped to this Topic.">[?]</span>
                 
@@ -227,18 +229,24 @@
                 </td>
                 {% endcomment %}
                 <td>
-                    {{ tag.get_parent_clusters.all|join:", " }}
+                    {% if tag.node_type|stringformat:"s" == 'tag_cluster' %}
+                        N/A
+                    {% else %}
+                        {{ tag.get_parent_clusters.all|join:", " }}
+                    {% endif %}
                 </td>                
                 <td>
                     {% if tag.societies.all.count %}
                         {{ tag.societies.all.count }}
                     {% endif %}
                 </td>
+                {% comment %}
                 <td>
                     {% if tag.filters.all.count %}
                         {{ tag.filters.all.count }}
                     {% endif %}
                 </td>
+                {% endcomment %}
                 <td>
                     {% if tag.resources.all.count %}
                         {{ tag.resources.all.count }}
