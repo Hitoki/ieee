@@ -21,6 +21,9 @@
             <th>
                 Topics:
             </th>
+            <th>
+                Related
+            </th>
         </tr>
         {% for cluster in clusters %}
             <tr>
@@ -38,6 +41,9 @@
                     {% for tag in cluster.child_nodes.all %}
                         <a href="{% url admin_view_tag tag.id %}">{{ tag.name }}</a>{% if not forloop.last %},{% endif %}
                     {% endfor %}
+                </td>
+                <td>
+                    {{ cluster.related_tags.all.count }}
                 </td>
             </tr>
         {% endfor %}
