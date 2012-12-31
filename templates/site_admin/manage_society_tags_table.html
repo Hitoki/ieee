@@ -254,13 +254,21 @@
                 </td>
                 {% endcomment %}
                 <td>
-                    {% if tag.resources.all.count %}
-                        {{ tag.resources.all.count }}
+                    {% if tag.node_type|stringformat:"s" == 'tag_cluster' %}
+                        N/A
+                    {% else %}                    
+                        {% if tag.resources.all.count %}
+                            {{ tag.resources.all.count }}
+                        {% endif %}
                     {% endif %}
                 </td>
                 <td>
-                    {% if tag.related_tags.all.count %}
-                        {{ tag.related_tags.all.count }}
+                    {% if tag.node_type|stringformat:"s" == 'tag_cluster' %}
+                        N/A
+                    {% else %}
+                        {% if tag.related_tags.all.count %}
+                            {{ tag.related_tags.all.count }}
+                        {% endif %}
                     {% endif %}
                 </td>
                 <td>
