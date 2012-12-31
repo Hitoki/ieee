@@ -464,7 +464,7 @@ ul.pages {
     /* Enable enclosing the LI floats in Fx3/IE7 */
     overflow:auto;
     float: left;
-    margin: 1em 0 1em 1em;
+    margin: 1em 0 1em 0;
     padding-top: 5px;
 }
 

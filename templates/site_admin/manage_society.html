@@ -117,6 +117,7 @@
         //}
 		
         // Only enable the batch edit button when 2 or more items are selected
+        /*
         function updateBatchEditResourcesButtons() {
             var num_selected = 0;
             $('input.select-resources').each(function() {
@@ -140,7 +141,7 @@
             }
             
         }
-		
+		*/
 		function AddWidget(elem, resultsElem) {
 			var addWidget = this;
 			
@@ -270,6 +271,7 @@
         var addWidget = null;
         
         $(function() {
+            /*
             updateBatchEditResourcesButtons();
             
             $('input.select-resources').change(function() {
@@ -279,6 +281,7 @@
                 updateBatchEditResourcesButtons();
             });
 			
+            */
 			addWidget = new AddWidget('#add-tags-input', '#add-tags-select');
             $('#add-tags-button').click(function() {
                 addWidget.onClickAdd();
@@ -355,14 +358,15 @@
 							</form>
 							
 							<form action="{% url admin_edit_resources %}?return_url={{ current_url|urlencode }}&amp;society_id={{ society.id }}" method="post">
-							
+							     {% comment %}
 								<p class="batch-editing-button">
 									<span class="edit-selected-resources-flyover">
 										<input type="submit" class="submit-button edit-selected-resources" value="Edit Selected Resources" />
 									</span>
 									<span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 5px;" title="Select 2 or more resources below and click this button to batch edit their topics, priority and whether or not they are completed.">[?]</span>
 								</p>
-								
+								{% endcomment %}
+
 								<ul class="pages">
 									<li class="paginationTitle">Pages:</li>
 									{% pages resource_page num_resource_pages resource_page_url 13 %}
@@ -370,9 +374,11 @@
 							
 								<table class="resources">
 									<tr>
+                                        {% comment %}
 										<th>
 											<img class="batch-edit-arrow" src="{{ MEDIA_URL }}images/arrow2-down-white.gif" />
 										</th>
+                                        {% endcomment %}
 										<th>
 											Resource Name <span class="help_icon flyover" title="Name of the Product or Service. Click resource to edit.">[?]</span>
 										
@@ -558,7 +564,7 @@
 									{% for resource in resources %}
 									
 										<tr class="{{ resource.classes }}">
-										
+										    {% comment %}
 											{% if resource.is_current_conference %}
 												<td>
 												</td>
@@ -567,6 +573,7 @@
 													<input type="checkbox" name="resource_ids" class="select-resources" value="{{ resource.id }}" />
 												</td>
 											{% endif %}
+                                            {% endcomment %}
 											<td class="first-item">
 												<a href="{% url admin_edit_resource resource.id %}?return_url={{ current_url|urlencode }}&amp;society_id={{ society.id }}">{{ resource.name }}</a>
 											</td>
@@ -630,10 +637,11 @@
 													{% endif %}
 												{% endif %}
 											{% endif %}
-											
+											     {% comment %}
 												<td class="select-checkbox-on-click">
 													<input type="checkbox" name="resource_ids" class="select-resources" value="{{ sub_conference.id }}" />
 												</td>
+                                                {% endcomment %}
 												<td class="first-item">
 													<a href="{% url admin_edit_resource sub_conference.id %}?return_url={{ current_url|urlencode }}&amp;society_id={{ society.id }}">{{ sub_conference.name }}</a>
 												</td>
@@ -679,13 +687,14 @@
 										
 									{% endfor %}
 								</table>
-							
+							     {% comment %}
 								<p class="batch-editing-button">
 									<span class="edit-selected-resources-flyover">
 										<input type="submit" value="Edit Selected Resources" class="submit-button edit-selected-resources" />
 									</span>
 									<span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 5px;" title="Select 2 or more resources above and click this button to batch edit their topics, priority and whether or not they are completed.">[?]</span>
 								</p>
+                                {% endcomment %}
 						
 							</form>
 						

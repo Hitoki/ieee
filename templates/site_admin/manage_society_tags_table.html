@@ -1,5 +1,5 @@
 {% load pagination %}
-
+{% comment %}
 <script type="text/javascript">
 
     // Only enable the batch edit button when 2 or more items are selected
@@ -39,7 +39,7 @@
     });
     
 </script>
-
+{% endcomment %}
 <form action="{% url admin_manage_society society.id %}#tab-tags-tab" method="get" class="items-per-page">
     <input type="hidden" name="tag_sort" value="{{ tag_sort }}" />
     <p class="items-per-page">
@@ -50,13 +50,15 @@
 </form>
 
 <form action="{% url admin_edit_tags %}?return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}" method="post">
+    {% comment %}
     <p class="batch-editing-button">
         <span class="edit-selected-tags-flyover">
             <input type="submit" value="Edit Selected Topics" class="submit-button edit-selected-tags" />
         </span>
         <span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 5px;" title="Select 2 or more topics below and click this button to batch edit their filters.">[?]</span>
     </p>
-    
+    {% endcomment %}
+
     <ul class="pages" id="pages-tags-top">
         <li class="paginationTitle">Pages:</li>
         {% pages tag_page num_tag_pages tag_page_url 13 %}
@@ -64,9 +66,11 @@
 
     <table class="tags">
         <tr>
+            {% comment %}
             <th>
                 <img class="batch-edit-arrow" src="{{ MEDIA_URL }}images/arrow2-down-white.gif" />
             </th>
+            {% endcomment %}
             <th>
                 Topic/Topic Area <span class="help_icon flyover" title="Keyword or phrase for related concept or technology area. Click topic to edit.">[?]</span>
                 <div class="table-sort">
@@ -217,9 +221,11 @@
         </tr>
         {% for tag in tags %}
             <tr class="{{ tag.node_type }}">
+                {% comment %}
                 <td class="select-checkbox-on-click">
                     <input type="checkbox" name="tag_ids" value="{{ tag.id }}" class="select-tags" />
                 </td>
+                {% endcomment %}
                 <td class="first-item">
                     <a href="{% url admin_edit_tag tag.id %}?return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}&amp;society_id={{ society.id }}">{{ tag.name }}</a>
                 </td>
@@ -263,12 +269,14 @@
             </tr>
         {% endfor %}
     </table>
+    {% comment %}
     <p class="batch-editing-button">
         <span class="edit-selected-tags-flyover">
             <input type="submit" value="Edit Selected Topics" class="submit-button edit-selected-tags" />
         </span>
         <span class="help_icon flyover {customClass:'batch-editing-help'}" style="margin-left: 5px;" title="Select 2 or more topics above and click this button to batch edit their filters.">[?]</span>
     </p>
+    {% endcomment %}
 </form>
 
 <div>
