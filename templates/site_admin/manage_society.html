@@ -142,9 +142,15 @@
             
         }
 		*/
-		function AddWidget(elem, resultsElem) {
+		function AddWidget(elem, resultsElem, topicAreas) {
 			var addWidget = this;
 			
+            if (typeof topicAreas == 'undefined'){
+                this.topicAreas = false;
+            } else {
+                this.topicAreas = true;
+            }
+
 			this.elem = $(elem);
 			this.resultsElem = $(resultsElem);
 			this.resultsElem.hide();
@@ -177,9 +183,15 @@
                     
                     var child = $('<option></option>').appendTo(this.resultsElem);
                     child.text('Searching...');
+
+                    if (this.topicAreas == true) {
+                        var url = '{% url ajax_search_topic_areas_new %}';
+                    } else {
+                        var url = '{% url ajax_search_tags_new %}';
+                    }
                     
                     $.post(
-                        '{% url ajax_search_tags_new %}'
+                        url
                         , {
                             society_id: {{ society.id }}
                             , search_for: this.searching_for
@@ -264,11 +276,13 @@
                 }
                 , function() {
                     addWidget.onDoneAddingRemovingTags();
+                    addWidget_topic_areas.onDoneAddingRemovingTags();
                 }
             );
         }
 		
         var addWidget = null;
+        var addWidget_topic_areas = null;
         
         $(function() {
             /*
@@ -285,6 +299,11 @@
 			addWidget = new AddWidget('#add-tags-input', '#add-tags-select');
             $('#add-tags-button').click(function() {
                 addWidget.onClickAdd();
+            });
+
+            addWidget_topic_areas = new AddWidget('#add-topic-areas-input', '#add-topic-areas-select', true);
+            $('#add-topic-areas-button').click(function() {
+                addWidget_topic_areas.onClickAdd();
             });
             
         });
@@ -720,6 +739,10 @@
 						</select>
                         <input id="add-tags-button" type="button" value="Add Topics" />
 						
+                        Add Topic Areas: <input id="add-topic-areas-input" />
+                        <select id="add-topic-areas-select" size="5" multiple="multiple">
+                        </select>
+                        <input id="add-topic-areas-button" type="button" value="Add Topic Areas" />
 						
 						{% comment %}
 						<!-- Show the "Associate Tags with this Organization" input: -->

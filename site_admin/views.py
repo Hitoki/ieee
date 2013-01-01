@@ -4490,6 +4490,36 @@ def ajax_search_tags_new(request):
 @csrf_exempt
 @login_required
 @society_manager_or_admin_required
+def ajax_search_topic_areas_new(request):
+    society_id = request.REQUEST['society_id']
+    search_for = request.REQUEST['search_for']
+    
+    assert search_for != '', 'search_for (%r) is empty.' % search_for
+    
+    tag_type = NodeType.objects.getFromName(NodeType.TAG_CLUSTER)
+
+    topic_areas = Node.objects.searchTagsByNameSubstring(search_for, tag_type=tag_type).order_by('name')
+    print 'topic_areas.count(): %r' % topic_areas.count()
+    topic_areas = Node.objects.searchTagsByNameSubstring(search_for, exclude_society_id=society_id, tag_type=tag_type).order_by('name')
+    print 'topic_areas.count(): %r' % topic_areas.count()
+    
+    data = {
+        'search_for': search_for,
+        'options': [],
+    }
+    
+    if topic_areas:
+        for topic_area in topic_areas:
+            data['options'].append({
+                'name': topic_area.name,
+                'value': topic_area.id,
+            })
+    
+    return HttpResponse(json.dumps(data), mimetype="application/json")
+
+@csrf_exempt
+@login_required
+@society_manager_or_admin_required
 def ajax_society_add_tags(request):
     'Add a list of tags to the society.'
     #print 'ajax_society_add_tags()'
