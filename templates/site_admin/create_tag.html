@@ -93,6 +93,21 @@
     {% endcomment %}
     
     <form action="{% url admin_create_tag %}?society_id={{ society_id }}&amp;add_to_society={{ add_to_society }}&amp;return_url={{ return_url|urlencode }}" method="post">
+        <div class="submit">
+            <input type="submit" value="Save" class="button submit-button" />
+            {% if is_ajax %}
+                <a href="javascript:Lightbox.hide();" class="cancel-link">Cancel</a>
+            {% else %}
+                {% if return_url %}
+                    <a href="{{ return_url }}" class="cancel-link">Cancel</a>
+                {% endif %}
+                {% comment %}
+                {% if sector %}
+                    <a href="{% url admin_view_sector sector.id %}" class="cancel-link">Cancel</a>
+                {% endif %}
+                {% endcomment %}
+            {% endif %}
+        </div>
         {% csrf_token %}
         <table class="grid edit-create">
             {{ form.id }}
@@ -116,6 +131,7 @@
                 </td>
             </tr>
             {% endcomment %}
+            {% comment %}
             <tr>
                 <th>
                     <label for="id_filters">{{ form.filters.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="Choose one or multiple categories that describe the Topic. If none are chosen, this Topic will not be displayed to end users.">[?]</span>:</label>
@@ -125,6 +141,7 @@
                     {{ form.filters }}
                 </td>
             </tr>
+            {% endcomment %}
             <tr>
                 <th>
                     <label for="id_related_tags">{{ form.related_tags.label }} <span class="help_icon flyover {position:'top', customClass:'editForm'}" title='Typing a portion of a word or phrase will bring up a list of all matching topics. Choose "Create a new topic" if a matching topic does not exist.'>[?]</span>:</label>

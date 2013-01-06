@@ -64,7 +64,7 @@ def autostrip(cls):
 # ------------------------------------------------------------------------------
 
 class CreateTagForm(Form):
-    name = CharField(max_length=100, label='Topic Name', show_hidden_initial=True)
+    name = CharField(max_length=100, label='Name', show_hidden_initial=True)
     sectors = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), label='Sectors', widget=CheckboxSelectMultipleColumns(columns=3))
     filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultipleColumns(columns=2), required=False, label='Filters')
     related_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Related Topics', widget_label='Associate Related Topics', show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Topic from Topic', blur_text='Type a few characters to bring up matching topics'))
@@ -88,7 +88,7 @@ CreateTagForm = autostrip(CreateTagForm)
 
 class EditTagForm(Form):
     id = IntegerField(widget=HiddenInput(), required=False)
-    name = CharField(max_length=100, label='Topic Name')
+    name = CharField(max_length=100, label='Name')
     parents = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), label='Sectors', widget=CheckboxSelectMultipleColumns(columns=3))
     definition = CharField(widget=Textarea(), required=False)
     societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies', label='Organization', widget_label='Associate organizations',widget=MultiSearchWidget(remove_link_flyover_text='Remove Organization from Topic',blur_text='Type a few characters to bring up matching organizations'))
@@ -225,10 +225,10 @@ class EditTagsForm(Form):
     market_areas_filter = ChoiceField(choices=TRISTATE_CHOICES_TAGS, widget=RadioSelect(), label='Market Areas')
 
 class EditClusterForm(ModelForm):
-    tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget=MultiSearchWidget(remove_link_flyover_text='Remove Topic from this Topic Area', blur_text='Type a few characters to bring up matching topics'))
+    #tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget=MultiSearchWidget(remove_link_flyover_text='Remove Topic from this Topic Area', blur_text='Type a few characters to bring up matching topics'))
     class Meta:
         model = Node
-        fields = ['name']
+        fields = ['id','name','societies']
 
 class ItemsPerPageForm(Form):
     _ITEMS_PER_PAGE = [

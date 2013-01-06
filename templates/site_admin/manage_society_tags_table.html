@@ -227,7 +227,11 @@
                 </td>
                 {% endcomment %}
                 <td class="first-item">
-                    <a href="{% url admin_edit_tag tag.id %}?return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}&amp;society_id={{ society.id }}">{{ tag.name }}</a>
+                    {% if tag.node_type|stringformat:"s" == 'tag_cluster' %}
+                        <a href="{% url admin_edit_cluster tag.id %}?return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}&amp;society_id={{ society.id }}">{{ tag.name }}</a>
+                    {% else %}
+                        <a href="{% url admin_edit_tag tag.id %}?return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}&amp;society_id={{ society.id }}">{{ tag.name }}</a>
+                    {% endif %}
                 </td>
                 {% comment %}
                 <td>
