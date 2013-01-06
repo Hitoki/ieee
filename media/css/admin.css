@@ -356,12 +356,18 @@ a.edit {
     cursor: default;
 }
 
-#create-tag-float, #create-tag {
+#create-tag-float, #create-tag,
+#create-topic-area-float, #create-topic-area {
     float:right;
 }
 
-#create-tag {
+#create-tag,
+#create-topic-area {
     margin-top: 1em;
+}
+
+#create-topic-area, #create-topic-area-float{
+    margin-left: .2em;
 }
 
 /* */

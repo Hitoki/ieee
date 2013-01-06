@@ -732,6 +732,8 @@
 					
 					<!-- Tags Tab -->
 					<div id="tags-tab" class="nootabs-tab">
+                        <input type="button" id="create-topic-area-float" onclick="location.href='{% url admin_create_cluster %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic Area" />
+                        
 						<input type="button" id="create-tag-float" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic" />
 						
 						Add Topics: <input id="add-tags-input" />

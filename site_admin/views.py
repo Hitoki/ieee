@@ -3224,6 +3224,8 @@ def edit_cluster(request, cluster_id=None):
         cluster = Node.objects.get(id=cluster_id)
     else:
         cluster = None
+
+    return_url = request.GET.get('return_url', '')        
     
     if request.method == 'GET':
         # Show the form
@@ -3263,6 +3265,7 @@ def edit_cluster(request, cluster_id=None):
     return render(request, 'site_admin/edit_cluster.html', {
         'cluster': cluster,
         'form': form,
+        'return_url': return_url,
     })
 
 @login_required
