@@ -226,6 +226,7 @@ class EditTagsForm(Form):
 
 class EditClusterForm(ModelForm):
     #tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget=MultiSearchWidget(remove_link_flyover_text='Remove Topic from this Topic Area', blur_text='Type a few characters to bring up matching topics'))
+    societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies', label='Organization', widget_label='Associate organizations',widget=MultiSearchWidget(remove_link_flyover_text='Remove Organization from Topic Area',blur_text='Type a few characters to bring up matching organizations'))
     class Meta:
         model = Node
         fields = ['id','name','societies']

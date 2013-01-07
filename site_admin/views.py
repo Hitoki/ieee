@@ -3238,6 +3238,7 @@ def edit_cluster(request, cluster_id=None):
             tags = cluster.get_tags()
             form = EditClusterForm(instance=cluster, initial={
                 'tags': tags,
+                'societies': cluster.societies.all(),
             })
     else:
         # Process the form
