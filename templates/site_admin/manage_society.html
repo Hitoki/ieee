@@ -305,6 +305,17 @@
             $('#add-topic-areas-button').click(function() {
                 addWidget_topic_areas.onClickAdd();
             });
+
+            $("#add-topics-topic-areas").change(function () {
+                var val = $(this).val();
+                if (val == 'topics') {
+                    $('#add-topic-areas-container').hide();
+                    $('#add-tags-container').show();
+                } else {
+                    $('#add-tags-container').hide();
+                    $('#add-topic-areas-container').show();
+                }
+            });
             
         });
         
@@ -736,15 +747,28 @@
                         
 						<input type="button" id="create-tag-float" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic" />
 						
-						Add Topics: <input id="add-tags-input" />
-						<select id="add-tags-select" size="5" multiple="multiple">
-						</select>
-                        <input id="add-tags-button" type="button" value="Add Topics" />
-						
-                        Add Topic Areas: <input id="add-topic-areas-input" />
-                        <select id="add-topic-areas-select" size="5" multiple="multiple">
+                        Add <select id="add-topics-topic-areas">
+                            <option value="topics">Topics</option>
+                            <option value="topic-areas">Topic Areas</option>
                         </select>
-                        <input id="add-topic-areas-button" type="button" value="Add Topic Areas" />
+
+                        Containing
+                        
+						<!--Add Topics: -->
+                        <div id='add-tags-container'>
+                            <input id="add-tags-input" />
+    						<select id="add-tags-select" size="5" multiple="multiple">
+    						</select>
+                            <input id="add-tags-button" type="button" value="Add" />
+						</div>
+
+                        <!--Add Topic Areas: -->
+                        <div id='add-topic-areas-container' style='display:none;'>
+                            <input id="add-topic-areas-input" />
+                            <select id="add-topic-areas-select" size="5" multiple="multiple">
+                            </select>
+                            <input id="add-topic-areas-button" type="button" value="Add" />
+                        </div>
 						
 						{% comment %}
 						<!-- Show the "Associate Tags with this Organization" input: -->
