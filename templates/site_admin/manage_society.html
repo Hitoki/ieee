@@ -747,29 +747,30 @@
                         
 						<input type="button" id="create-tag-float" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic" />
 						
-                        Add <select id="add-topics-topic-areas">
-                            <option value="topics">Topics</option>
-                            <option value="topic-areas">Topic Areas</option>
-                        </select>
-
-                        Containing
-                        
-						<!--Add Topics: -->
-                        <div id='add-tags-container'>
-                            <input id="add-tags-input" />
-    						<select id="add-tags-select" size="5" multiple="multiple">
-    						</select>
-                            <input id="add-tags-button" type="button" value="Add" />
-						</div>
-
-                        <!--Add Topic Areas: -->
-                        <div id='add-topic-areas-container' style='display:none;'>
-                            <input id="add-topic-areas-input" />
-                            <select id="add-topic-areas-select" size="5" multiple="multiple">
+                        <div id="add-topic-topic-area">
+                            Add <select id="add-topics-topic-areas">
+                                <option value="topics">Topics</option>
+                                <option value="topic-areas">Topic Areas</option>
                             </select>
-                            <input id="add-topic-areas-button" type="button" value="Add" />
-                        </div>
-						
+
+                            Containing
+                            
+    						<!--Add Topics: -->
+                            <div id='add-tags-container'>
+                                <input id="add-tags-input" />
+        						<select id="add-tags-select" size="5" multiple="multiple">
+        						</select>
+                                <input id="add-tags-button" type="button" value="Add" />
+    						</div>
+
+                            <!--Add Topic Areas: -->
+                            <div id='add-topic-areas-container' style='display:none;'>
+                                <input id="add-topic-areas-input" />
+                                <select id="add-topic-areas-select" size="5" multiple="multiple">
+                                </select>
+                                <input id="add-topic-areas-button" type="button" value="Add" />
+                            </div>
+						</div>
 						{% comment %}
 						<!-- Show the "Associate Tags with this Organization" input: -->
 						<form autocomplete="off">{% eval form['tags'] %}<div class="multisearch-note">Type * to show all<br/>of this organization's topics</div></form>

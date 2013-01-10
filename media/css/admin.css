@@ -651,7 +651,25 @@ ul.nootabs-menus li a {
     padding: 5px 10px;
 }
 
+#add-topic-topic-area {
+    position: absolute;
+    display: inline-block;
+    width: 75%;
+}
+
+#add-topic-topic-area input {
+    vertical-align: top;
+}
+
 #add-tags-container,
 #add-topic-areas-container {
     display: inline;
+    position: absolute;
+    margin-left: 5px;
+}
+
+#add-tags-select,
+#add-topic-areas-select {
+    width: 300px;
+    position: relative;
 }
