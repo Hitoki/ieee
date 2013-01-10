@@ -36,9 +36,11 @@
                 Related<br/>
                 Topics
             </th>
+           {% comment %}
             <th>
                 Filters
             </th>
+           {% endcomment %}
             <th>
                 Organizations
             </th>
@@ -54,9 +56,11 @@
                 <td>
                     {{ tag.related_tags.count }}
                 </td>
+                {% comment %}
                 <td>
                     {{ tag.filters.all|join:", " }}
                 </td>
+                {% endcomment %}
                 <td>
                     {{ tag.societies.all|join:", " }}
                 </td>
