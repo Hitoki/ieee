@@ -175,6 +175,10 @@
 			if (force || this.elem.val() != this.searching_for) {
 				this.searching_for = this.elem.val();
                 
+                if ( !this.elem.val() ){
+                    this.resultsElem.hide();
+                }
+
                 // Clear all options.
                 this.resultsElem.find('option').remove();
                 
