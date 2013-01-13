@@ -673,3 +673,9 @@ ul.nootabs-menus li a {
     width: 300px;
     position: relative;
 }
+
+#topic-area-note {
+    float:left;
+    margin:1em 0 0 2em;
+    padding-top:5px;
+}
