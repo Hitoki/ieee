@@ -26,11 +26,4 @@
         <a href="{{ LOGO_HREF }}" class="home" rel="nofollow"><span class="technav_banner"></span></a>
         <a href="/tags/all" id="totalTagLink">We cover <span id="totalTagCount">{{ total_tag_count|intcomma  }}</span> topics {% if tag %}besides {{ tag.name }}{% endif %}</a> &nbsp;&nbsp;
     </div>
-    {% if user.is_authenticated %}
-        <div id="admin_header" class='admin-user-links' style='text-align:center;'>
-            <span id="left">
-            {{ user.username }} ({{ user.get_profile.role }}) | <a href="{% url change_password %}?return_url=" class="changePassword { varName:'return_url' }">Change Password</a> | <a href="{% url admin_logout %}" class="logout">Log Out</a>
-        </span>
-        </div>
-    {% endif %}    
 </div>

@@ -9,6 +9,14 @@
 {% block extra_header %}{% endblock %}
 
 {% block main_content_nopad %}
+
+    {% if user.is_authenticated %}
+        <div id="admin_header" class='admin-user-links' style='text-align:center;'>
+            <span id="left">
+            {{ user.username }} ({{ user.get_profile.role }}) | <a href="{% url change_password %}?return_url=" class="changePassword { varName:'return_url' }">Change Password</a> | <a href="{% url admin_logout %}" class="logout">Log Out</a>
+        </span>
+        </div>
+    {% endif %}    
     
 {% if not is_ajax %}    
     {% if user.is_authenticated %}
