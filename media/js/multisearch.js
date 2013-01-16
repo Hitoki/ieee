@@ -951,7 +951,7 @@ MultiSearch.prototype.closePopup = function(clear_value) {
     this.popupVisible = false;
     this.popupElem.html('');
     if (this.options.society_tags_first) {
-        this.popupFirstElem = $('<div><div class="multi-search-popup-first">This Society&#39;s Tags:</div></div>').appendTo(this.popupElem);
+        this.popupFirstElem = $('<div><div class="multi-search-popup-first">This Organization&#39;s Topics:</div></div>').appendTo(this.popupElem);
         this.popupSecondElem = $('<div><div class="multi-search-popup-second">Other Tags:</div></div>').appendTo(this.popupElem);
     }
     this.popupElem.hide();
