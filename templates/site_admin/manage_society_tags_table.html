@@ -218,7 +218,7 @@
                 </div>
             </th>
             <th>
-                Remove <span class="help_icon flyover" title="Remove this topic from this organization.">[?]</span>
+                Remove <span class="help_icon flyover" title="Remove this {% if tag.node_type|stringformat:'s' == 'tag_cluster' %}topic area{% else %}topic{% endif %} from this organization.">[?]</span>
             </th>
         </tr>
         {% for tag in tags %}
@@ -278,7 +278,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="javascript:removeTagFromSociety({{ tag.id }});" onclick="return confirm('Remove this topic?');"><span class="flyover" title="Remove Topic from Organization">[x]</span></a>
+                    <a href="javascript:removeTagFromSociety({{ tag.id }});" onclick="return confirm('Remove this {% if tag.node_type|stringformat:"s" == 'tag_cluster' %}topic area{% else %} topic{% endif %}?');"><span class="flyover" title="Remove {% if tag.node_type|stringformat:'s' == 'tag_cluster' %}Topic Area{% else %}Topic{% endif %} from Organization">[x]</span></a>
                 </td>
             </tr>
         {% endfor %}
