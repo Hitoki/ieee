@@ -89,7 +89,7 @@ CreateTagForm = autostrip(CreateTagForm)
 class EditTagForm(Form):
     id = IntegerField(widget=HiddenInput(), required=False)
     name = CharField(max_length=100, label='Name')
-    parents = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), label='Sectors', widget=CheckboxSelectMultipleColumns(columns=3))
+    parents = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), label='Sectors', widget=CheckboxSelectMultipleColumns(columns=3), required=False)
     definition = CharField(widget=Textarea(), required=False)
     societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies', label='Organization', widget_label='Associate organizations',widget=MultiSearchWidget(remove_link_flyover_text='Remove Organization from Topic',blur_text='Type a few characters to bring up matching organizations'))
     filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultipleColumns(columns=2), required=False, label='Filters')
