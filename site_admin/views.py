@@ -2837,7 +2837,11 @@ def create_tag(request):
     society_id = request.GET.get('society_id', '')
     add_to_society = request.GET.get('add_to_society', '')
     default_tag_name = request.GET.get('default_tag_name', '')
-    
+    if society_id:
+        society = Society.objects.get(id=society_id)
+    else:
+        society = None
+
     if request.method == 'GET':
         # Show the create tag form
         form = CreateTagForm(initial={
@@ -2861,7 +2865,7 @@ def create_tag(request):
             
         if society_id != '':
             form.fields['related_tags'].widget.set_society_id(society_id)
-            
+         
         if form.is_valid():
             tag = Node.objects.create(
                 name=form.cleaned_data['name'],
@@ -2872,7 +2876,7 @@ def create_tag(request):
             # Don't add society if "add_to_society" is 0
             if society_id != '' and add_to_society != '0':
                 society = Society.objects.get(id=int(society_id))
-                tag.societies = [society]
+                NodeSocieties.objects.update_for_node(tag, [society])
             
             tag.filters = form.cleaned_data['filters']
             tag.related_tags = form.cleaned_data['related_tags']
@@ -2926,6 +2930,7 @@ def create_tag(request):
         'form': form,
         'sector': sector,
         'society_id': society_id,
+        'society': society,
         'add_to_society': add_to_society,
         'done_action': done_action,
         'return_url': return_url,

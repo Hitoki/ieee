@@ -82,7 +82,7 @@
 <div class="create-tag-lightbox">
 {% endif %}
     
-    <h1>Create New Topic</h1>
+    <h1>Create New Topic {% if society %}&#40;for {{ society.name }}&#41;{% endif %}</h1>
     
     {% comment %}
     {% if sector %}
