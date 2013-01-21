@@ -3231,7 +3231,13 @@ def edit_cluster(request, cluster_id=None):
         cluster = None
 
     return_url = request.GET.get('return_url', '')        
-    
+    society_id = request.GET.get('society_id', '')        
+
+    if society_id and cluster is None:
+        society = Society.objects.get(id=society_id)
+    else:
+        society = None
+
     if request.method == 'GET':
         # Show the form
         if cluster is None:
@@ -3277,6 +3283,7 @@ def edit_cluster(request, cluster_id=None):
         'cluster': cluster,
         'form': form,
         'return_url': return_url,
+        'society': society,
     })
 
 @login_required
