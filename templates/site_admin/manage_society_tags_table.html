@@ -298,7 +298,9 @@
         <li class="paginationTitle">Pages:</li>
         {% pages tag_page num_tag_pages tag_page_url 13 %}
     </ul>
-    <input type="button" id="create-topic-area" onclick="location.href='{% url admin_create_cluster %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic Area" />
+    {% if user.get_profile.role == 'admin' %}
+        <input type="button" id="create-topic-area" onclick="location.href='{% url admin_create_cluster %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic Area" />
+    {% endif %}
     <input type="button" id="create-tag" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.
     id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic" />
         <span style="clear:both;">&nbsp;</span>

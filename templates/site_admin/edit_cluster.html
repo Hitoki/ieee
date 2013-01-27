@@ -3,9 +3,9 @@
 {% block main_table_content %}
     <h1>{% if cluster %} Edit {% else %} Create {% endif %} Topic Area {% if society %}&#40;for {{ society.name }}&#41;{% endif %}</h1>
     {% if cluster %}
-        <form action="{% url admin_edit_cluster cluster.id %}" method="post">
+        <form action="{% url admin_edit_cluster cluster.id %}?return_url={{ return_url|urlencode }}&amp;society_id={{ society_id }}" method="post">
     {% else %}
-        <form action="{% url admin_create_cluster %}" method="post">
+        <form action="{% url admin_create_cluster %}?return_url={{ return_url|urlencode }}&amp;society_id={{ society_id }}" method="post">
     {% endif %}
         <div class="submit">
             <input type="submit" value="Save" class="submit-button" />

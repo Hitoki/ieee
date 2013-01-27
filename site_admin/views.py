@@ -3212,7 +3212,7 @@ def combine_tags(request):
     return HttpResponseRedirect(return_url)
 
 @login_required
-@admin_required
+@society_manager_or_admin_required
 def view_cluster(request, cluster_id):
     'Shows a cluster.'
     cluster = Node.objects.get(id=cluster_id)
@@ -3221,7 +3221,7 @@ def view_cluster(request, cluster_id):
     })
 
 @login_required
-@admin_required
+@society_manager_or_admin_required
 @transaction.commit_on_success
 def edit_cluster(request, cluster_id=None):
     'Edit Cluster page.'
@@ -3276,8 +3276,11 @@ def edit_cluster(request, cluster_id=None):
             
             # Invalidate all resource-related caches, so they are regenerated.
             Cache.objects.delete('ajax_textui_nodes')
-            
-            return HttpResponseRedirect(reverse('admin_view_cluster', args=[cluster.id]))
+
+            if return_url != '':
+                return HttpResponseRedirect(return_url)
+            else:
+                return HttpResponseRedirect(reverse('admin_view_cluster', args=[cluster.id]))
         
     return render(request, 'site_admin/edit_cluster.html', {
         'cluster': cluster,
