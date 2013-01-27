@@ -4176,11 +4176,14 @@ def edit_resource(request, resource_id=None):
     society_id = request.GET.get('society_id', '')
     ignore_url_error = int(request.POST.get('ignore_url_error', 0))
     
+    if society_id:
+        society = Society.objects.get(id=society_id)
+    else:
+        society = None
+
     if resource_id is None:
         # creating a new resource
-        if 'society_id' in request.GET:
-            #raise Exception('query variable "society_id" not found')
-            society = Society.objects.get(id=int(request.GET['society_id']))
+        if society is not None:
             societies = [society]
         else:
             societies = []
@@ -4188,11 +4191,12 @@ def edit_resource(request, resource_id=None):
         form = CreateResourceForm(initial={
             'societies': societies,
         })
-        if not request.user.is_superuser:
-            make_display_only(form.fields['conference_series'])
-            make_display_only(form.fields['year'])
-            make_display_only(form.fields['date'])
-            make_display_only(form.fields['societies'], is_multi_search=True)
+
+        #if not request.user.is_superuser:
+            #make_display_only(form.fields['conference_series'])
+            #make_display_only(form.fields['year'])
+            #make_display_only(form.fields['date'])
+            #make_display_only(form.fields['societies'], is_multi_search=True)
         show_standard_status = True
         
     else:
@@ -4244,6 +4248,7 @@ def edit_resource(request, resource_id=None):
         'form': form,
         'show_standard_status': show_standard_status,
         'ignore_url_error': '',
+        'society': society,
     })
 
 @login_required

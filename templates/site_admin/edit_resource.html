@@ -56,9 +56,9 @@
     </script>
     
     {% if resource %}
-        <h1>Edit Resource</h1>
+        <h1>Edit Resource {% if society %}&#40;for {{ society.name }}&#41;{% endif %}</h1>
     {% else %}
-        <h1>Create Resource</h1>
+        <h1>Create Resource {% if society %}&#40;for {{ society.name }}&#41;{% endif %}</h1>
     {% endif %}
     
     {% if errors %}

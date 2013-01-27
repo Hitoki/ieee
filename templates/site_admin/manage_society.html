@@ -355,6 +355,7 @@
 					
 					<!-- Resources Tab -->
 					<div id="resources-tab" class="nootabs-tab">
+                            <input type="button" id="create-resource-float" onclick="location.href='{% url admin_create_resource %}?return_url={{ current_url|urlencode }}&amp;society_id={{ society.id }}';" value="Create New Resource" />
 						
 						{% if num_unfiltered_resources %}
 							<form action="{% url admin_manage_society society.id %}" method="get">
@@ -736,6 +737,7 @@
 								<li class="paginationTitle">Pages:</li>
 								{% pages resource_page num_resource_pages resource_page_url 13 %}
 							</ul>
+                            <input type="button" id="create-resource" onclick="location.href='{% url admin_create_resource %}?return_url={{ current_url|urlencode }}&amp;society_id={{ society.id }}';" value="Create New Resource" />                            
 						{% endif %}
 						
 						<div style="margin-top: 1em; clear: both;">

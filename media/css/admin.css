@@ -358,13 +358,19 @@ a.edit {
 }
 
 #create-tag-float, #create-tag,
-#create-topic-area-float, #create-topic-area {
+#create-topic-area-float, #create-topic-area,
+#create-resource-float, #create-resource {
     float:right;
 }
 
+#create-resource-float {
+    margin-top: .5em;
+}
+
 #create-tag,
-#create-topic-area {
-    margin-top: 1em;
+#create-topic-area,
+#create-resource {
+    margin-top: 1em !important;
 }
 
 #create-topic-area, #create-topic-area-float{
