@@ -262,6 +262,9 @@
                         addWidget.onDoneAddingRemovingTags();
                     }
                 );
+                
+                $('#add-tags-select').hide();
+                $('#add-tags-input').val('');
             }
 		}
 		
@@ -319,6 +322,11 @@
                     $('#add-tags-container').hide();
                     $('#add-topic-areas-container').show();
                 }
+            });
+            
+            $('#add-tags-select').blur(function(){
+                $('#add-tags-select').hide();
+                $('#add-tags-input').val('');
             });
             
         });
