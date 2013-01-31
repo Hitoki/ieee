@@ -263,8 +263,6 @@
                     }
                 );
                 
-                $('#add-tags-select').hide();
-                $('#add-tags-input').val('');
             }
 		}
 		
@@ -272,6 +270,13 @@
             log('onDoneAddingRemovingTags()');
             this.onChange(true);
             refreshTagsTable();
+            if (this.topicAreas == true) {
+                $('#add-topic-areas-select').hide();
+                $('#add-topic-areas-input').val('');
+            } else {
+                $('#add-tags-select').hide();
+                $('#add-tags-input').val('');
+            }
 		}
         
         function removeTagFromSociety(tag_id) {
@@ -317,18 +322,23 @@
                 var val = $(this).val();
                 if (val == 'topics') {
                     $('#add-topic-areas-container').hide();
-                    $('#add-tags-container').show();
+                    $('#add-tags-container').show().css('display','inline');
                 } else {
                     $('#add-tags-container').hide();
-                    $('#add-topic-areas-container').show();
+                    $('#add-topic-areas-container').show().css('display','inline');
                 }
             });
-            
+            /*
             $('#add-tags-select').blur(function(){
                 $('#add-tags-select').hide();
                 $('#add-tags-input').val('');
             });
-            
+
+            $('#add-topic-areas-select').blur(function(){
+                $('#add-topic-areas-select').hide();
+                $('#add-topic-areas-input').val('');
+            });
+            */
         });
         
     </script>
