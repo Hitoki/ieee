@@ -473,7 +473,7 @@ XploreLoader.prototype.loadContent = function(force) {
             radius: 15, // The radius of the inner circle
             corners: 1.0, // Corner roundness (0..1)
             speed: 2.2, // Rounds per second
-            trail: 25, // Afterglow percentage
+            trail: 25 // Afterglow percentage
         });
         
         $.ajax({
