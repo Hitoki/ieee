@@ -239,7 +239,7 @@
             log('  this.resultsElem.val(): ' + this.resultsElem.val());
             
             var selectedOptions = this.resultsElem.val();
-            
+
             if (selectedOptions) {
                 log('selectedOptions:');
                 log(selectedOptions);
@@ -258,17 +258,46 @@
                         society_id: {{ society.id }}
                         , tag_ids: selectedOptions
                     }
-                    , function() {
+                    , function(data) {
                         addWidget.onDoneAddingRemovingTags();
+
+                        if (addWidget.topicAreas) {
+                            $('#added-title').html('The following Topic Areas were added');    
+                        } else {
+                            $('#added-title').html('The following Topics were added');
+                        }
+                        
+                        $('#added-values').html('');
+
+                        $.each(data,function(){
+                            $('#added-values').append(this.toString() + '<br />');
+                        });           
+                        
+                        $('#items-added').dialog({
+                            width: 460,
+                            modal: false,
+                            hide: 'fade',
+                            show: 'fade',
+                            height: 'auto',
+                            bgiframe: false,
+                            position: ['center', 110],
+                            resizable: false,
+                            zIndex: 9999,
+                            dialogClass: 'topic-topic-areas-added'
+                        });
+                        setTimeout(function () {
+                            $("#items-added").dialog('destroy');
+                        }, 2500);             
                     }
-                );
-                
+                );                
+
             }
 		}
 		
 		AddWidget.prototype.onDoneAddingRemovingTags = function() {
             log('onDoneAddingRemovingTags()');
             this.onChange(true);
+
             refreshTagsTable();
             if (this.topicAreas == true) {
                 $('#add-topic-areas-select').hide();
@@ -892,5 +921,10 @@
         </tr>
         
     </table>
+
+<div id="items-added">
+    <div id='added-title'></div>
+    <div id='added-values'></div>
+</div>
     
 {% endblock %}

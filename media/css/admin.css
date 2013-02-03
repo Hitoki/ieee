@@ -689,3 +689,25 @@ ul.nootabs-menus li a {
 .admin-user-links {
     text-align: center;
 }
+
+.topic-topic-areas-added .ui-dialog-titlebar {
+    display: none;
+}
+
+.topic-topic-areas-added #items-added {
+    background-color: #0695d6;
+    color: white;
+    border-top: 0 none;
+    text-align: center;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+.topic-topic-areas-added #items-added #added-title {
+    display: inline-block;
+}
+
+.topic-topic-areas-added #items-added #added-title {
+    font-weight: bold;   
+}

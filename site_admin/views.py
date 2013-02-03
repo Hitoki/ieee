@@ -4561,9 +4561,11 @@ def ajax_society_add_tags(request):
     society = Society.objects.get(id=society_id)
     
     tags = []
+    tag_list = []
     for tag_id in tag_ids:
         tag = Node.objects.get(id=tag_id)
         tags.append(tag)
+        tag_list.append(tag.name)
     
     for tag in tags:
         node_societies = NodeSocieties()
@@ -4579,7 +4581,7 @@ def ajax_society_add_tags(request):
     # Invalidate all resource-related caches, so they are regenerated.
     cache = Cache.objects.delete('ajax_textui_nodes')
     
-    return HttpResponse('success', 'text/plain')
+    return HttpResponse(json.dumps(tag_list), content_type='application/json')
 
 @csrf_exempt
 @login_required
