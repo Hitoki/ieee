@@ -154,10 +154,6 @@ p#xplore-totals {
     white-space: nowrap;
 }
 
-.nootabs-menu span {
-   margin-top: -35px;
-}
-
 #tag-and-cluster-counts {
    margin-top: 10px;
 }
@@ -206,4 +202,12 @@ p#xplore-totals {
 
 #tag_page h1.title {
    display: inline-block;
+}
+
+#center-comp {
+  display: none !important;
+}
+
+#alertWrapper #alertContainer {
+  float: left;
 }
