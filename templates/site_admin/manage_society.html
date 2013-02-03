@@ -269,9 +269,12 @@
                         
                         $('#added-values').html('');
 
-                        $.each(data,function(){
+                        $.each(data['added_items'],function(){
                             $('#added-values').append(this.toString() + '<br />');
                         });           
+
+                        $('#society-tag-count').html(data['num_tags']);
+                        $('#society-cluster-count').html(data['num_clusters']);
                         
                         $('#items-added').dialog({
                             width: 460,
@@ -315,9 +318,11 @@
                     society_id: {{ society.id }}
                     , tag_ids: [tag_id]
                 }
-                , function() {
+                , function(data) {
                     addWidget.onDoneAddingRemovingTags();
                     addWidget_topic_areas.onDoneAddingRemovingTags();
+                    $('#society-tag-count').html(data['num_tags']);
+                    $('#society-cluster-count').html(data['num_clusters']);
                 }
             );
         }
@@ -393,7 +398,7 @@
 				<div id="society-resource-tabs" class="nootabs {useCookies:false, useHash:true}">
 					<ul class="nootabs-menus">
 						<li><a href="">Manage this Organization's Resources ({{ num_unfiltered_resources }})</a></li>
-						<li {% if not DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB %}class="last-menu"{% endif %}><a href="">Manage this Organization's Topics ({{ num_tags }}) and Topic Areas ({{ num_clusters }})<span id="tag-count"></span></a></li>
+						<li {% if not DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB %}class="last-menu"{% endif %}><a href="">Manage this Organization's Topics (<span id='society-tag-count'>{{ num_tags }}</span>) and Topic Areas (<span id='society-cluster-count'>{{ num_clusters }}</span>)<span id="tag-count"></span></a></li>
 						{% if DEBUG_ENABLE_MANAGE_SOCIETY_HELP_TAB %}
 							<li class="last-menu"><a href="">Help</a></li>
 						{% endif %}

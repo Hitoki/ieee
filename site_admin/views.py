@@ -4559,13 +4559,13 @@ def ajax_society_add_tags(request):
     #print '  tag_ids: %r' % tag_ids
     
     society = Society.objects.get(id=society_id)
-    
+
     tags = []
-    tag_list = []
+    added_items = []
     for tag_id in tag_ids:
         tag = Node.objects.get(id=tag_id)
         tags.append(tag)
-        tag_list.append(tag.name)
+        added_items.append(tag.name)
     
     for tag in tags:
         node_societies = NodeSocieties()
@@ -4580,8 +4580,17 @@ def ajax_society_add_tags(request):
     
     # Invalidate all resource-related caches, so they are regenerated.
     cache = Cache.objects.delete('ajax_textui_nodes')
+
+    num_clusters = society.tags.get_clusters().count()
+    num_tags = society.tags.filter(node_type__name=NodeType.TAG).count()
+
+    output = {
+        "added_items": added_items,
+        "num_clusters": num_clusters,
+        "num_tags": num_tags
+    }
     
-    return HttpResponse(json.dumps(tag_list), content_type='application/json')
+    return HttpResponse(json.dumps(output), content_type='application/json')
 
 @csrf_exempt
 @login_required
@@ -4604,8 +4613,16 @@ def ajax_society_remove_tags(request):
     
     # Invalidate all resource-related caches, so they are regenerated.
     cache = Cache.objects.delete('ajax_textui_nodes')
+
+    num_clusters = society.tags.get_clusters().count()
+    num_tags = society.tags.filter(node_type__name=NodeType.TAG).count()
     
-    return HttpResponse('success', 'text/plain')
+    output = {
+        "num_clusters": num_clusters,
+        "num_tags": num_tags
+    }
+
+    return HttpResponse(json.dumps(output), content_type='application/json')
 
 @login_required
 @society_manager_or_admin_required
