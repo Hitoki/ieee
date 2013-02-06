@@ -149,7 +149,7 @@
                 <td>
                     {{ form.related_tags.errors }}
                     {{ form.related_tags }}
-                    <div class="multisearch-note">Type * to show all<br/>of this organization's topics</div>
+                    {% if society_id  %}<div class="multisearch-note">Type * to show all<br/>of this organization's topics</div>{% endif %}
                 </td>
             </tr>
         </table>
