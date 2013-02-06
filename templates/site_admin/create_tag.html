@@ -82,7 +82,7 @@
 <div class="create-tag-lightbox">
 {% endif %}
     
-    <h1>Create New Topic {% if society %}&#40;for {{ society.name }}&#41;{% endif %}</h1>
+    <h1>Create New Topic</h1>
     
     {% comment %}
     {% if sector %}
@@ -150,6 +150,15 @@
                     {{ form.related_tags.errors }}
                     {{ form.related_tags }}
                     {% if society_id  %}<div class="multisearch-note">Type * to show all<br/>of this organization's topics</div>{% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_societies">{{ form.societies.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title="IEEE organizations that sponsor this resource.">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.societies.errors }}
+                    {{ form.societies }}
                 </td>
             </tr>
         </table>

@@ -910,7 +910,7 @@ class SocietyManager(models.Manager):
         if substring.strip() == '':
             return None
         return self.filter(name__icontains=substring)
-    
+
     def getForUser(self, user):
         'Returns all societies that the given user has access to.'
         if user.get_profile().role == Profile.ROLE_ADMIN:
@@ -921,6 +921,12 @@ class SocietyManager(models.Manager):
             return self.filter(users=user)
         else:
             raise Exception('Unknown role "%s"' % user.get_profile().role)
+
+    def searchByNameSubstringForUser(self, substring, user):
+        'Returns all societies that the given user has access to and that match the search phrase.'
+        if substring.strip() == '':
+            return None
+        return self.getForUser(user).filter(name__icontains=substring)
     
 class Society(models.Model):
     name = models.CharField(max_length=500)

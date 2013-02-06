@@ -2844,9 +2844,11 @@ def create_tag(request):
 
     if request.method == 'GET':
         # Show the create tag form
+
         form = CreateTagForm(initial={
             'sector': sector_id,
             'name': default_tag_name,
+            'societies': (society,)
         })
         
         if request.is_ajax():
@@ -2854,6 +2856,7 @@ def create_tag(request):
         
         if society_id != '':
             form.fields['related_tags'].widget.set_society_id(society_id)
+
         
     else:
         # Process the form
@@ -2875,8 +2878,7 @@ def create_tag(request):
             
             # Don't add society if "add_to_society" is 0
             if society_id != '' and add_to_society != '0':
-                society = Society.objects.get(id=int(society_id))
-                NodeSocieties.objects.update_for_node(tag, [society])
+                NodeSocieties.objects.update_for_node(tag, form.cleaned_data['societies'])
             
             tag.filters = form.cleaned_data['filters']
             tag.related_tags = form.cleaned_data['related_tags']
@@ -2933,7 +2935,7 @@ def create_tag(request):
         'society': society,
         'add_to_society': add_to_society,
         'done_action': done_action,
-        'return_url': return_url,
+        'return_url': return_url
     })
 
 @login_required
@@ -4660,7 +4662,7 @@ def ajax_search_societies(request):
     
     search_for = request.GET['search_for']
     #societies = Society.objects.searchByNameSubstring(search_for)[:MAX_RESULTS+1]
-    societies = Society.objects.searchByNameSubstring(search_for)
+    societies = Society.objects.searchByNameSubstringForUser(search_for, request.user)
     
     #if len(societies) > MAX_RESULTS:
     #    societies = societies[:MAX_RESULTS]
