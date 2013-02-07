@@ -1456,15 +1456,15 @@ table.vert-center td {
 /* */
 
 input[type=submit], input[type=button] {
-    border: 1px solid #005177;
-    background-color: #016797;
+    border: 1px solid #004363;
     color: $white;
     cursor: pointer;
     padding: 2px 8px;
+    @include button-gradient;
     @include default-border-radius;
     &:hover {
         border: 1px solid #C78100;
-        background-color: $linkColor-hover;
+        @include button-hover-gradient;
     }
 } 
 
