@@ -2848,7 +2848,7 @@ def create_tag(request):
         form = CreateTagForm(initial={
             'sector': sector_id,
             'name': default_tag_name,
-            'societies': (society,)
+            'societies': (society,) if society else None
         })
         
         if request.is_ajax():
@@ -2861,7 +2861,8 @@ def create_tag(request):
     else:
         # Process the form
         form = CreateTagForm(request.POST)
-        form.user_role = request.user.get_profile().role
+        up = request.user.get_profile()
+        form.user_role = up.role
         
         if request.is_ajax():
             form.fields['related_tags'].widget.set_show_create_tag_link(False)
@@ -2877,7 +2878,8 @@ def create_tag(request):
             tag.parents=form.cleaned_data['sectors']
             
             # Don't add society if "add_to_society" is 0
-            if society_id != '' and add_to_society != '0':
+            # Unless we're an admin
+            if up.role == up.ROLE_ADMIN or (society_id != '' and add_to_society != '0'):
                 NodeSocieties.objects.update_for_node(tag, form.cleaned_data['societies'])
             
             tag.filters = form.cleaned_data['filters']
