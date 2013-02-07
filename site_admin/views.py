@@ -2845,11 +2845,14 @@ def create_tag(request):
     if request.method == 'GET':
         # Show the create tag form
 
-        form = CreateTagForm(initial={
-            'sector': sector_id,
-            'name': default_tag_name,
-            'societies': (society,) if society else None
-        })
+        form = CreateTagForm(
+            initial={
+                'sector': sector_id,
+                'name': default_tag_name,
+                'societies': (society,) if society else None
+                },
+            user = request.user
+        )
         
         if request.is_ajax():
             form.fields['related_tags'].widget.set_show_create_tag_link(False)
@@ -2860,7 +2863,7 @@ def create_tag(request):
         
     else:
         # Process the form
-        form = CreateTagForm(request.POST)
+        form = CreateTagForm(request.user, request.POST)
         up = request.user.get_profile()
         form.user_role = up.role
         

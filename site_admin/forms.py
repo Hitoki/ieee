@@ -68,8 +68,11 @@ class CreateTagForm(Form):
     sectors = ModelMultipleChoiceField(queryset=Node.objects.getSectors(), label='Sectors', widget=CheckboxSelectMultipleColumns(columns=3), required=False)
     filters = ModelMultipleChoiceField(queryset=Filter.objects.all(), widget=CheckboxSelectMultipleColumns(columns=2), required=False, label='Filters')
     related_tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', label='Related Topics', widget_label='Associate Related Topics', show_create_tag_link=True, widget=MultiSearchWidget(remove_link_flyover_text='Remove Topic from Topic', blur_text='Type a few characters to bring up matching topics'))
-    societies = MultiSearchField(model=Society, search_url='/admin/ajax/search_societies', label='Organization', widget_label='Associate organizations',widget=MultiSearchWidget(remove_link_flyover_text='Remove Organization from Topic',blur_text='Type a few characters to bring up matching organizations'))
         
+    def __init__(self, user, *args, **kwargs):
+        super(CreateTagForm, self).__init__(*args, **kwargs)
+        self.fields['societies'] = ModelMultipleChoiceField(queryset=Society.objects.getForUser(user), label='Organization', widget=CheckboxSelectMultipleColumns(columns=3))
+
     def clean_name(self):
         data = self.cleaned_data['name']
         
