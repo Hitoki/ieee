@@ -229,7 +229,7 @@ class EditTagsForm(Form):
     market_areas_filter = ChoiceField(choices=TRISTATE_CHOICES_TAGS, widget=RadioSelect(), label='Market Areas')
 
 class EditClusterForm(ModelForm):
-    #tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget=MultiSearchWidget(remove_link_flyover_text='Remove Topic from this Topic Area', blur_text='Type a few characters to bring up matching topics'))
+    tags = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget=MultiSearchWidget(remove_link_flyover_text='Remove Topic from this Topic Area', blur_text='Type a few characters to bring up matching topics'))
     societies = ModelMultipleChoiceField(queryset=Society.objects.all(), label='Organization', widget=CheckboxSelectMultipleColumns(columns=3))
 
     class Meta:
