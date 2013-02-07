@@ -3249,7 +3249,9 @@ def edit_cluster(request, cluster_id=None):
         # Show the form
         if cluster is None:
             # New cluster
-            form = EditClusterForm()
+            form = EditClusterForm(initial={
+                'societies': (society,) if society else None
+            })
                 
         else:
             # Existing cluster
