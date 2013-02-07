@@ -59,7 +59,7 @@
     height:170px;
     border:1px solid silver;
     background:white;
-    z-index:3;
+    z-index:9999;
     overflow:auto;
     opacity: 0.8;
     -moz-opacity: 0.8;
