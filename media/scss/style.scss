@@ -1456,16 +1456,14 @@ table.vert-center td {
 /* */
 
 input[type=submit], input[type=button] {
-    border: 1px outset #53595F;
+    border: 1px solid #005177;
     background-color: #016797;
     color: $white;
     cursor: pointer;
-    padding: 2px;
-    /* NOTE: This causes IE7 to truncate button widths */
-    /*min-width: 40px;
-    width: auto;*/
+    padding: 2px 8px;
     @include default-border-radius;
     &:hover {
+        border: 1px solid #C78100;
         background-color: $linkColor-hover;
     }
 } 
