@@ -236,9 +236,12 @@ ul.nootabs-menus li a {
 }
 
 ul.nootabs-menus li.nootabs-selected-menu a {
-    /*background:#006599;*/
     background: white;
     color: #006699;
+    padding-bottom: 6px;
+    margin-bottom: -1px;
+    z-index: 88;
+    position: relative;
 }
 
 ul.nootabs-menus li.nootabs-selected-menu a:hover {
