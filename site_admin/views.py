@@ -3271,7 +3271,7 @@ def edit_cluster(request, cluster_id=None):
                 # Updating an existing cluster
                 if form.cleaned_data['societies'] is not None:
                     NodeSocieties.objects.update_for_node(cluster, form.cleaned_data['societies'])
-                cluster.child_nodes = form.cleaned_data['tags']
+                cluster.child_nodes = form.cleaned_data['topics']
                 cluster.save()
             else:
                 # Saving a new cluster
@@ -3279,7 +3279,7 @@ def edit_cluster(request, cluster_id=None):
                 cluster.node_type = NodeType.objects.getFromName(NodeType.TAG_CLUSTER)
                 cluster.save()
                 
-                cluster.child_nodes = form.cleaned_data['tags']
+                cluster.child_nodes = form.cleaned_data['topics']
                 if form.cleaned_data['societies'] is not None:
                     NodeSocieties.objects.update_for_node(cluster, form.cleaned_data['societies'])
                 cluster.save()
