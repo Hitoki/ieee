@@ -520,7 +520,8 @@ input#id_username, input#id_password, input#id_email {
     margin: 1em 0;
 }
 
-#resource_filter {
+#resource_filter,
+#tag-filter {
     width: 350px;
 }
 
