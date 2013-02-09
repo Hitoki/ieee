@@ -521,7 +521,7 @@ input#id_username, input#id_password, input#id_email {
 }
 
 #resource_filter,
-#tag-filter {
+#tag_filter {
     width: 350px;
 }
 
