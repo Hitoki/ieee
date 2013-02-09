@@ -46,10 +46,10 @@
         <input type="hidden" name="items_per_page" value="{{ items_per_page }}" />
         <p>
             <input name="tag_filter" value="{{ tag_filter }}" class="blur-text {text: '(Enter whole or partial words)', blurClass:'multi-search-input-blur'}" id="tag_filter" />
-            <input type="submit" value="Filter By Tag Name" class="submit-button" />
+            <input type="submit" value="Filter By Topic / Topic Area Name" class="submit-button" />
             <input type="button" value="Remove Filter" class="submit-button" onclick="window.location='{% url admin_manage_society society.id %}?tag_sort={{ tag_sort }}&amp;items_per_page={{ items_per_page }}';" />
             {% ifnotequal num_filtered_tags num_unfiltered_tags %}
-                <span class="matching-filter">{{ num_filtered_tags }} Matching Tag{{ num_filtered_tags|pluralize }}</span>
+                <span class="matching-filter">{{ num_filtered_tags }} Matching Topics / Topic Areas{{ num_filtered_tags|pluralize }}</span>
             {% endifnotequal %}
             </p>
     </form>
