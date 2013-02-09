@@ -275,7 +275,13 @@
 
                         $('#society-tag-count').html(data['num_tags']);
                         $('#society-cluster-count').html(data['num_clusters']);
-                        
+
+                        $( "#position1" ).position({
+                          my: "center",
+                          at: "center",
+                          of: "#society-tag-count"
+                        });
+
                         $('#items-added').dialog({
                             width: 460,
                             modal: false,
@@ -283,11 +289,13 @@
                             show: 'fade',
                             height: 'auto',
                             bgiframe: false,
-                            position: ['center', 110],
+                            //position: ['center', top],
                             resizable: false,
                             zIndex: 9999,
                             dialogClass: 'topic-topic-areas-added'
                         });
+
+
                         setTimeout(function () {
                             $("#items-added").dialog('destroy');
                         }, 4500);             
@@ -406,13 +414,14 @@
 					
 					<!-- Tags Tab -->
 					<div id="tags-tab" class="nootabs-tab">
+                    <div>
                         {% if user.get_profile.role == 'admin' %}
                             <input type="button" id="create-topic-area-float" onclick="location.href='{% url admin_create_cluster %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic Area" />
                         {% endif %}
                         
-						<input type="button" id="create-tag-float" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic" />
-						
-                        <div id="add-topic-topic-area">
+                        <input type="button" id="create-tag-float" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic" />
+                        
+                        <div id="add-topic-topic-area" style='display:absolute;width:100%;'>
                             Add <select id="add-topics-topic-areas">
                                 <option value="topics">Topics</option>
                                 <option value="topic-areas">Topic Areas</option>
@@ -420,13 +429,13 @@
 
                             Containing
                             
-    						<!--Add Topics: -->
+                            <!--Add Topics: -->
                             <div id='add-tags-container'>
                                 <input id="add-tags-input" />
-        						<select id="add-tags-select" size="5" multiple="multiple">
-        						</select>
+                                <select id="add-tags-select" size="5" multiple="multiple">
+                                </select>
                                 <input id="add-tags-button" type="button" value="Add" />
-    						</div>
+                            </div>
 
                             <!--Add Topic Areas: -->
                             <div id='add-topic-areas-container' style='display:none;'>
@@ -435,7 +444,9 @@
                                 </select>
                                 <input id="add-topic-areas-button" type="button" value="Add" />
                             </div>
-						</div>
+                        </div>
+                        <br style='clear:both;' />
+                    </div>
 						{% comment %}
 						<!-- Show the "Associate Tags with this Organization" input: -->
 						<form autocomplete="off">{% eval form['tags'] %}<div class="multisearch-note">Type * to show all<br/>of this organization's topics</div></form>
@@ -460,7 +471,7 @@
                                     <input type="submit" value="Filter By Resource Name" class="submit-button" />
                                     <input type="button" value="Remove Filter" class="submit-button" onclick="window.location='{% url admin_manage_society society.id %}?resource_sort={{ resource_sort }}&amp;items_per_page={{ items_per_page }}';" />
                                     {% ifnotequal num_resources num_unfiltered_resources %}
-                                        <span class="matching-filter">{{ num_resources }} Matching Resources</span>
+                                        <span class="matching-filter">{{ num_resources }} Matching Resource{{ num_resources|pluralize }}</span>
                                     {% endifnotequal %}
                                 </p>
                             </form>

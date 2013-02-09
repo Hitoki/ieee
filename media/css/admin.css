@@ -711,3 +711,8 @@ ul.nootabs-menus li a {
 .topic-topic-areas-added #items-added #added-title {
     font-weight: bold;   
 }
+
+#topic-filter {
+    position: absolute;
+    width: 100%;
+}

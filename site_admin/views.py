@@ -3559,7 +3559,7 @@ def view_society(request, society_id):
         'society': society,
     })
 
-def _get_paged_tags(items_per_page, society, tag_sort, tag_page):
+def _get_paged_tags(items_per_page, society, tag_sort, tag_page, tag_filter):
     'Gets a list of a certain number of tags, sorted appropriately, for a society.'
     assert type(items_per_page) is int
     assert type(tag_page) is int
@@ -3569,6 +3569,7 @@ def _get_paged_tags(items_per_page, society, tag_sort, tag_page):
     elif tag_sort == 'name_descending':
         tags = society.tags.order_by('-name')
     
+
     elif tag_sort == 'sector_list_ascending':
         tags = society.tags.extra(select={
             'sectors_list': """
@@ -3673,15 +3674,26 @@ def _get_paged_tags(items_per_page, society, tag_sort, tag_page):
     
     else:
         raise Exception('Unknown tag_sort "%s"' % tag_sort)
-    
+
+    num_unfiltered_tags = tags.count()
+
+    if tag_filter != '':
+        keywords = tag_filter.split(' ')
+        for keyword in keywords:
+            tags = tags.filter(name__icontains=keyword)  
+
     num_tags = tags.count()
+
     num_tag_pages = int(math.ceil(num_tags / float(items_per_page)))
     
     tag_start_count = (tag_page-1) * items_per_page
     tag_end_count = (tag_page) * items_per_page
+
+    num_filtered_tags = tags.count()
+
     tags = tags[tag_start_count:tag_end_count]
     
-    return (tags, num_tag_pages)
+    return (tags, num_tag_pages, num_unfiltered_tags, num_filtered_tags)
 
 @login_required
 @society_manager_or_admin_required
@@ -3702,7 +3714,8 @@ def manage_society(request, society_id):
     })
     
     resource_filter = request.GET.get('resource_filter', '').strip()
-    
+    tag_filter  = request.GET.get('tag_filter', '').strip()
+
     # Default to name/ascending resource_sort
     resource_sort = request.GET.get('resource_sort', 'priority_ascending')
     resource_page = int(request.GET.get('resource_page', 1))
@@ -3830,8 +3843,10 @@ def manage_society(request, society_id):
     
     resources1 = resources1[resource_start_count:resource_end_count]
     resource_page_url = reverse('admin_manage_society', args=[society.id]) + '?resource_sort=' + quote(resource_sort) + '&amp;resource_filter=' + quote(resource_filter) + '&amp;resource_filter=' + quote(resource_filter) + '&amp;items_per_page=' + quote(str(items_per_page)) + '&amp;resource_page={{ page }}#tab-resources-tab'
-    
-    (tags, num_tag_pages) = _get_paged_tags(items_per_page, society, tag_sort, tag_page)
+
+
+    (tags, num_tag_pages, num_unfiltered_tags, num_filtered_tags) = _get_paged_tags(items_per_page, society, tag_sort, tag_page, tag_filter)
+
     tag_page_url = reverse('admin_manage_society', args=[society.id]) + '?tag_sort=' + quote(tag_sort) + '&amp;items_per_page=' + quote(str(items_per_page)) + '&amp;tag_page={{ page }}#tab-tags-tab'
     
     # For each resource, get a list of society abbreviations in alphabetical order
@@ -3878,6 +3893,9 @@ def manage_society(request, society_id):
         'tag_page_url': tag_page_url,
         'num_clusters': num_clusters,
         'num_tags': num_tags,
+        'tag_filter': tag_filter,
+        'num_unfiltered_tags': num_unfiltered_tags,
+        'num_filtered_tags': num_filtered_tags,
         
         'return_url': request.get_full_path(),
         'items_per_page': items_per_page,
@@ -3891,9 +3909,10 @@ def manage_society(request, society_id):
 def manage_society_tags_table(request, society_id, tag_sort, tag_page, items_per_page):
     'Loads the AJAX content for the tags table, so it can be updated whenever it\'s changed on the page.'
     society = Society.objects.get(id=society_id)
+    num_unfiltered_tags = society.tags.filter(node_type__name=NodeType.TAG).count()
     tag_page = int(tag_page)
     items_per_page = int(items_per_page)
-    (tags, num_tag_pages) = _get_paged_tags(items_per_page, society, tag_sort, tag_page)
+    (tags, num_tag_pages, num_unfiltered_tags, num_filtered_tags) = _get_paged_tags(items_per_page, society, tag_sort, tag_page, tag_filter)
     tag_page_url = reverse('admin_manage_society', args=[society.id]) + '?tag_sort=' + quote(tag_sort) + '&amp;items_per_page=' + quote(str(items_per_page)) + '&amp;tag_page={{ page }}#tab-tags-tab'
 
     return_url = reverse('admin_manage_society', args=[society.id]) + '?' + urlencode({
@@ -3904,7 +3923,7 @@ def manage_society_tags_table(request, society_id, tag_sort, tag_page, items_per
     items_per_page_form = ItemsPerPageForm(initial={
         'items_per_page': items_per_page,
     })
-    
+
     return render(request, 'site_admin/manage_society_tags_table.html', {
         'tag_sort': tag_sort,
         'tag_page': tag_page,
@@ -3915,6 +3934,9 @@ def manage_society_tags_table(request, society_id, tag_sort, tag_page, items_per
         'return_url': return_url,
         'items_per_page': items_per_page,
         'items_per_page_form': items_per_page_form,
+        'tag_filter': tag_filter,
+        'num_unfiltered_tags': num_unfiltered_tags,
+        'num_filtered_tags': num_tags,
     })
 
 @login_required
