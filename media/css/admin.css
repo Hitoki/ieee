@@ -363,6 +363,10 @@ a.edit {
     float:right;
 }
 
+#create-tag-float {
+    margin-right: 5px;
+}
+
 #create-resource-float {
     margin-top: .5em;
 }
@@ -371,10 +375,6 @@ a.edit {
 #create-topic-area,
 #create-resource {
     margin-top: 1em !important;
-}
-
-#create-topic-area, #create-topic-area-float{
-    margin-left: .2em;
 }
 
 /* */
@@ -659,9 +659,8 @@ ul.nootabs-menus li a {
 }
 
 #add-topic-topic-area {
-    position: absolute;
-    display: inline-block;
-    width: 75%;
+    float: left;
+    width: 400px;
 }
 
 #add-topic-topic-area input {
@@ -714,6 +713,6 @@ ul.nootabs-menus li a {
 }
 
 #topic-filter {
-    position: absolute;
+    margin: 20px 0 0px;
     width: 100%;
 }

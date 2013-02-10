@@ -418,10 +418,10 @@
                         {% if user.get_profile.role == 'admin' %}
                             <input type="button" id="create-topic-area-float" onclick="location.href='{% url admin_create_cluster %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic Area" />
                         {% endif %}
-                        
+                        &nbsp; 
                         <input type="button" id="create-tag-float" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic" />
                         
-                        <div id="add-topic-topic-area" style='display:absolute;width:100%;'>
+                        <div id="add-topic-topic-area">
                             Add <select id="add-topics-topic-areas">
                                 <option value="topics">Topics</option>
                                 <option value="topic-areas">Topic Areas</option>
@@ -467,7 +467,7 @@
                                 <input type="hidden" name="resource_sort" value="{{ resource_sort }}" />
                                 <input type="hidden" name="items_per_page" value="{{ items_per_page }}" />
                                 <p>
-                                    <input name="resource_filter" value="{{ resource_filter }}" class="blur-text {text: '(Enter whole or partial words)', blurClass:'multi-search-input-blur'}" id="resource_filter" />
+                                    <input name="resource_filter" value="{{ resource_filter }}" class="blur-text {text: 'Enter whole or partial words', blurClass:'multi-search-input-blur'}" id="resource_filter" />
                                     <input type="submit" value="Filter By Resource Name" class="submit-button" />
                                     <input type="button" value="Remove Filter" class="submit-button" onclick="window.location='{% url admin_manage_society society.id %}?resource_sort={{ resource_sort }}&amp;items_per_page={{ items_per_page }}';" />
                                     {% ifnotequal num_resources num_unfiltered_resources %}
