@@ -2794,3 +2794,12 @@ td.machine-generated-column {
       margin-left: 10px;
   }
 }
+
+#bottom_fade {
+    height: 145px;
+    z-index: 99;
+    position: absolute;
+    bottom: 11px;
+    background: url(/media/images/bottom-fade.png) bottom center repeat-x;
+    @include custom-border-radius (0, 0, 10px, 10px);
+}

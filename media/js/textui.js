@@ -51,6 +51,7 @@ $(document).ready(function(){
     $("#tags-live-search").focus();
     
     var tagGalaxyWidth = $('#tag-galaxy').width();
+    $('#bottom_fade').css('width', tagGalaxyWidth);
     $('#tag-help-box').css('width', tagGalaxyWidth - 19);
     
     // Functions to handle opening Help and resizing UI    
