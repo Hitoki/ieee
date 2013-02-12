@@ -96,14 +96,14 @@
         <div class="submit">
             <input type="submit" value="Save" class="button submit-button" />
             {% if is_ajax %}
-                <a href="javascript:Lightbox.hide();" class="cancel-link">Cancel</a>
+                <input type='button' value='Cancel' class='submit-button' onclick='javascript:Lightbox.hide();"' /> 
             {% else %}
                 {% if return_url %}
-                    <a href="{{ return_url }}" class="cancel-link">Cancel</a>
+                    <input type='button' value='Cancel' class='submit-button' onclick='window.location="{{ return_url }};"' /> 
                 {% endif %}
                 {% comment %}
                 {% if sector %}
-                    <a href="{% url admin_view_sector sector.id %}" class="cancel-link">Cancel</a>
+                    <input type='button' value='Cancel' class='submit-button' onclick='window.location="{% url admin_view_sector sector.id %};"' /> 
                 {% endif %}
                 {% endcomment %}
             {% endif %}
@@ -164,14 +164,14 @@
         <div class="submit">
             <input type="submit" value="Save" class="button submit-button" />
             {% if is_ajax %}
-                <a href="javascript:Lightbox.hide();" class="cancel-link">Cancel</a>
+                <input type='button' value='Cancel' class='submit-button' onclick='javascript:Lightbox.hide();"' /> 
             {% else %}
                 {% if return_url %}
-                    <a href="{{ return_url }}" class="cancel-link">Cancel</a>
+                    <input type='button' value='Cancel' class='submit-button' onclick='window.location="{{ return_url }};"' /> 
                 {% endif %}
                 {% comment %}
                 {% if sector %}
-                    <a href="{% url admin_view_sector sector.id %}" class="cancel-link">Cancel</a>
+                    <input type='button' value='Cancel' class='submit-button' onclick='window.location="{% url admin_view_sector sector.id %};"' /> 
                 {% endif %}
                 {% endcomment %}
             {% endif %}
