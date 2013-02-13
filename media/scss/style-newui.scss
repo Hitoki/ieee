@@ -2580,10 +2580,6 @@ header {
        top: 5px;
        left: 0px;
    }
-   p#tag-and-cluster-counts {
-       margin: 0;
-       font-size: 14pt;
-   }
 }
   
 #inner-container {
@@ -2596,6 +2592,10 @@ header {
 #tag-tools {
     background-color: #2B5C85; // TODO: change to variable
     color: $white;
+    p#tag-and-cluster-counts {
+       margin: 0;
+       font-size: 12pt;
+    }
     .inner {
         width: 85%;
         margin: 0 auto;
