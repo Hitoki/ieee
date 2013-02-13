@@ -92,7 +92,9 @@ var Flyover = {
             $(elem).hoverIntent({
                 sensitivity: 7,
                 interval: 100,
-                over: function() {Flyover.show(this, options);} ,
+                over: function() {
+                    Flyover.show(this, options);
+                } ,
                 timeout: 0,   
                 out: function(event){
 					Flyover.onMouseOut();
@@ -334,6 +336,7 @@ var Flyover = {
             // Use the elem's title as the content
             
             // Remove title so the browser doesn't show its own tooltip
+            this._elemTitle = this._elem.attr('title');
             this._elem.attr('title', null);
             
             // Parse contents
