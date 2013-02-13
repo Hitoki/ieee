@@ -4,6 +4,7 @@ import os.path
 
 import site_admin.views
 import settings
+from django.views.generic.simple import direct_to_template
 import views
 
 from ieeetags.sitemaps import *
@@ -92,6 +93,9 @@ else:
         # Debug
         url(r'^debug/error$', views.debug_error, name='debug_error'),
         url(r'^debug/send_email$', views.debug_send_email, name='debug_send_email'),
+
+        # Faux page for demo
+        (r'^scss/$', direct_to_template, {'template': 'scss.html'}),
     )
 
 if settings.DEBUG:
