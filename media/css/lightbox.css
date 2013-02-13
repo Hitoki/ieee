@@ -514,12 +514,23 @@ margin-top: 0;
    color: #9F9F9F;
 }
 
+#xplore-loading,
+#job-loading {
+    display: inline-block;
+    width: 100%;
+    position: relative;
+    text-align: center;
+    height: 115px;
+    padding: 110px 0 0;
+}
+
 #related-tab .group p {
     margin-bottom: 15px;
 }
 
 .loading div {
-    margin: 20px 0 0;
+    left: 110px !important;
+    top: 15px !important;
 }
 
 #xplore-overview-loading {
