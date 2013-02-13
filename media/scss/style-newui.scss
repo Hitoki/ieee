@@ -167,6 +167,7 @@
 // Global Styles//
 html {
     overflow-y: scroll;
+    min-width: 1100px;
 }
   
 body {
@@ -363,7 +364,7 @@ p.admin-links {
 }
   
 footer {
-   background-color: #1c3a78;
+   background-color: #2B5C85; // TODO: change to variable
    #footer {
        clear: both;
        margin: 0 auto;
@@ -2522,33 +2523,35 @@ width: 100%;
 }
   
 #utility-links {
-    .inner {
-        width: 85%;
-        text-align: right;
-        margin: 5px auto 10px;
-        padding-right: 80px;
-        a {
-           font-size: 9pt;  
-       }
+    background-color: #8D8D8D;
+    padding: 5px 0;
+    text-align: right;
+    color: $white;
+    padding-right: 40px;
+    a {
+       font-size: 9pt;  
+       color: $white;
     }
+}
+
+#corner-notch {
+   position: absolute;
+   right: 0;
+   height: 27px;
+   width: 27px;
+   background: url(/media/images/corner-notch.png) no-repeat scroll 0 0;   
 }
   
 header {
-   background-color: $dark-gray;
+   background-color: $white;
    width: 85%;
    margin: 0 auto;
    position: relative;
-   #corner-notch {
-       position: absolute;
-       right: 0;
-       height: 27px;
-       width: 27px;
-       background: url(/media/images/inner-top.png) no-repeat scroll 0 0;   
-   }
    #header {
        height: 85px;
        text-align: left;
        position: relative;
+       padding-top: 15px;
    }
    #header-links {
        float: right;
@@ -2564,9 +2567,11 @@ header {
    }
    #totalTagLink {
        display: inline-block;
-       margin-top: 20px;
+       margin-top: 36px;
        margin-left: 15px;
-       color: $white;
+       color: #222;
+       vertical-align: top;
+       text-decoration: underline;
    }
   
    #header-logo img {
@@ -2585,11 +2590,11 @@ header {
     min-width: 1100px;
     margin: 0 auto;
     position: relative;
-    background-color: $dark-gray;
+    background-color: #8D8D8D; // TODO: change to variable
 }
   
 #tag-tools {
-    background-color: #1c3a78;
+    background-color: #2B5C85; // TODO: change to variable
     color: $white;
     .inner {
         width: 85%;

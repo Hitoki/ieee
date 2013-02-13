@@ -69,9 +69,10 @@
     {% block server_info %}{% endblock %}
     <div id="page-container">
         <div id="inner-container">    
-            <div id="corner-notch"></div>    
+            {% if not NEWUI %}<div id="corner-notch"></div>{% endif %}
             <header>
                 {% include "utility_links.inc.html" %}
+                {% if NEWUI %}<div id="corner-notch"></div>{% endif %}
                 {% include "header.inc.html" %}
             </header>
 {% endif %}
