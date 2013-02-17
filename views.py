@@ -137,9 +137,11 @@ def textui(request, survey=False):
     if request.path == '/textui_new':
         template = 'textui_new.html'
         NEWUI = True
+        newui_search_button = False
     else:
         template = 'textui.html'
         NEWUI = False
+        newui_search_button = settings.ENABLE_SEARCH_BUTTON
 
     return render(request, template, {
         'sectorId':sectorId,
@@ -151,7 +153,8 @@ def textui(request, survey=False):
         'ENABLE_SHOW_TERMS_CHECKBOX': settings.ENABLE_SHOW_TERMS_CHECKBOX,
         'ENABLE_SEARCH_BUTTON': settings.ENABLE_SEARCH_BUTTON,
         'SEARCH_KEY_DELAY': settings.SEARCH_KEY_DELAY,
-        'NEWUI':NEWUI
+        'NEWUI':NEWUI,
+        'ENABLE_SEARCH_BUTTON': newui_search_button
     })
 
 @login_required
