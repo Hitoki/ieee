@@ -134,7 +134,7 @@ def textui(request, survey=False):
     # NOTE: Hide TAB society from the nav.
     societies = societies.exclude(abbreviation__in=['tab', 'ieee-usa'])
     
-    if settings.ENABLE_TEXTUI_NEW:
+    if request.path == '/textui_new':
         template = 'textui_new.html'
         NEWUI = True
     else:
@@ -1271,7 +1271,11 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
         except Society.DoesNotExist:
             society = None
 
-    if settings.ENABLE_TEXTUI_NEW:
+    print '-----------------------------------'
+    print request.path
+    print '-----------------------------------'
+
+    if request.path.startswidth('/textui_new'):
         NEWUI = True
     else:
         NEWUI = False
@@ -1288,7 +1292,6 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
         'num_clusters': num_clusters,
         'cluster_id': cluster_id,
         'page': page,
-        'NEWUI': NEWUI,
     })
 
     node_count_content = render_to_string('ajax_textui_node_count.inc.html', {
