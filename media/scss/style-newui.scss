@@ -942,14 +942,17 @@ ul#sectors, ul#societies {
    vertical-align: middle;
 }
   
-#alternate-page #tag-galaxy div.tag {
-   padding-top: 7px;
-}
-  
 #alternate-page #tag-galaxy {
     background-color: $white;
     overflow: hidden;
+    div.tag {
+       padding-top: 7px;
+    }
     div.node {
+        float: left;
+        margin: 4px .5em;
+        padding: 5px 0px;
+        height: 25px;
         a {
             text-decoration: none;
             font-weight: normal;
@@ -967,34 +970,23 @@ ul#sectors, ul#societies {
                 background-color: $orange;
             }
         }
+        .tag-block-container {
+            float: left;
+            margin-left: 7px;
+        }
     }
-}
-  
-#alternate-page #tag-galaxy div.tag_cluster a {
-    //border-color: transparent;
-    //background: $white;
-    padding: 0.4em 0.5em;
-}
-  
-#alternate-page #tag-galaxy div.node-taxonomy-term a {
-    border: 1px solid $light-gray !important;
-    background: $light-gray !important;
-    color: $gray !important;
-}
-  
-#alternate-page #tag-galaxy div.node {
-    float: left;
-    margin: 4px .5em;
-    padding: 5px 0px;
-    height: 25px;
-    @include default-border-radius;
-}
-  
-#alternate-page #tag-galaxy div.node .tag-block-container {
-    float: left;
-    margin-left: 7px;
-}
-  
+    div.node-taxonomy-term a {
+        border: 1px solid $light-gray !important;
+        background: $light-gray !important;
+        color: $gray !important;
+    }
+    div.tag_cluster a {
+        //border-color: transparent;
+        //background: $white;
+        padding: 0.4em 0.5em;
+    }
+} 
+    
 .node-tooltip h3 {
     font-weight: normal;   
     font-size: 20pt;
