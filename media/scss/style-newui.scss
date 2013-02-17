@@ -969,6 +969,10 @@ ul#sectors, ul#societies {
             &:hover {
                 background-color: $orange;
             }
+            .cluster-icon,
+            .tag-icon {
+                display: none !important;
+            }
         }
         .tag-block-container {
             float: left;
