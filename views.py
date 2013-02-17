@@ -1274,7 +1274,7 @@ def _render_textui_nodes(request, sort, search_for, sector_id, sector, society_i
         except Society.DoesNotExist:
             society = None
 
-    if request.path.startswith('/textui_new'):
+    if request.META['HTTP_REFERER'].endswith('/textui_new'):
         NEWUI = True
     else:
         NEWUI = False
