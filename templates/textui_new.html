@@ -124,7 +124,27 @@
                     <div id="tags-searching-msg" style="display:none"></div>
                     <div id='center-comp'></div>
             </div>
-            <div id="frequencybar-tags">
+            <div id="narrow-tags">
+                <div id="textui-tags-sort">
+                    <span class="feature_label">sorted by</span>
+                    <div id="sortContainer_outter">
+                        <div id="sortContainer_inner">
+                            <span>&nbsp;</span>
+                            <ul id="sortSelect_options" class="customSelectList">
+                                <li data-value="connectedness"><span>Linkages</span></li>
+                                <li data-value="alphabetical"><span>Alphabetical</span></li>
+                                <li data-value="frequency" ><span>Resources</span></li>
+                                {% comment %}<li data-value="num_sectors"><span>Industry Topics</span></li>{% endcomment %}
+                                <li data-value="num_related_tags"><span>Related Topics</span></li>
+                                <li data-value="num_societies"><span>IEEE Organizations</span></li>
+                            </ul>
+                        </div>
+                        <span id="sortSelect" class="customSelectContainer" tabindex="0">
+                            <span class="selected"></span>
+                            <span class="drop_down dropIcon"></span>
+                        </span>
+                    </div>
+                </div>
                 <div id="textui-society-list">
                     <span class="feature_label">within</span>
                     <div id="societyContainer_outter">
@@ -148,32 +168,10 @@
                     {% endcomment %}
                 </div>
                 <div id="textui-tags-search">
-                    <div style="float:left;width:250px;white-space:nowrap">
-                        <span class="feature_label">matching</span>
-                        <input id="tags-live-search" type="text" class="live-search defaultValue { use_tags_callback: true, search_key_delay: {{ SEARCH_KEY_DELAY }}, search_on_enter_only: {% if ENABLE_SEARCH_BUTTON %}true }{% else %}false } live-search-button-disabled{% endif %}" placeholder="Enter term" />
-                        <span id="textui-tags-search-clear" class="live-search-clear">&nbsp;</span>
-                        {% if ENABLE_SEARCH_BUTTON %}<span id="textui-tags-search-submit">Go</span>{% endif %}
-                    </div>
-                </div>
-                <div id="textui-tags-sort">
-                    <span class="feature_label">sorted by</span>
-                    <div id="sortContainer_outter">
-                        <div id="sortContainer_inner">
-                            <span>&nbsp;</span>
-                            <ul id="sortSelect_options" class="customSelectList">
-                                <li data-value="connectedness"><span>Linkages</span></li>
-                                <li data-value="alphabetical"><span>Alphabetical</span></li>
-                                <li data-value="frequency" ><span>Resources</span></li>
-                                {% comment %}<li data-value="num_sectors"><span>Industry Topics</span></li>{% endcomment %}
-                                <li data-value="num_related_tags"><span>Related Topics</span></li>
-                                <li data-value="num_societies"><span>IEEE Organizations</span></li>
-                            </ul>
-                        </div>
-                        <span id="sortSelect" class="customSelectContainer" tabindex="0">
-                            <span class="selected"></span>
-                            <span class="drop_down dropIcon"></span>
-                        </span>
-                    </div>
+                    <span class="feature_label">matching</span>
+                    <input id="tags-live-search" type="text" class="live-search defaultValue { use_tags_callback: true, search_key_delay: {{ SEARCH_KEY_DELAY }}, search_on_enter_only: {% if ENABLE_SEARCH_BUTTON %}true }{% else %}false } live-search-button-disabled{% endif %}" placeholder="Enter term" />
+                    <span id="textui-tags-search-clear" class="live-search-clear">&nbsp;</span>
+                    {% if ENABLE_SEARCH_BUTTON %}<span id="textui-tags-search-submit">Go</span>{% endif %}
                 </div>
             </div>
         </div>
