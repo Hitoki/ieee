@@ -1,37 +1,39 @@
 {% load humanize %}
 {% if search_for %}
     {# For search phrases #}
-    
     {% if search_for_too_short %}
         <a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">Clear the filter phrase now</a>.
     {% else %}
         {# If the view returned results summary, use it. If not (happens when "All Sectors" or "All Organizations" are chosen), construct one. #}
-
-        {% comment %}
-        {% if search_page_title %}
-            {{ search_page_title.num|intcomma }} result{{ search_page_title.num|pluralize }} for <b>{{ search_page_title.search_for }}</b>{{search_page_title.node_desc }}
-        {% else %}
-            {{ child_nodes|length|intcomma }} result{{ child_nodes|length|pluralize }} for "{{ search_for }}"{% if cluster %} in the "{{ cluster.name }}" cluster{% endif %}{% if sector %} in the industry sector "{{ sector }}"{% endif %}{% ifnotequal child_nodes|length 0 %}:{% else %}{% endifnotequal %}
-        {% endif %}
-        {% endcomment %}
-
-            <p id="tag-and-cluster-counts">
-                Showing{% if num_clusters %} <span class="icon_cluster_sm cluster-icon"></span> {{ num_clusters|intcomma }} topic area{{ num_clusters|pluralize }}{% if num_clusters %} &amp; {% else %}&#47;{% endif %}{% endif %} <span class="tag_icon tag-icon"></span> {{ num_tags|intcomma }} {% if num_tags %}topic{% else %}item{% endif %}{{ num_tags|pluralize }}{% if num_terms %} (<span class="tag_icon tag-icon"></span> {{ num_terms|intcomma }} terms){% endif %}{% if cluster %} in the <span class="icon_cluster_sm cluster-icon"></span> topic area "{{ cluster.name }}"{% endif %}{% if sector %} in the industry sector "{{ sector }}"{% endif %}{% if society %} in the <span class="orgIcon-sm"></span> organization "{{ society }}"{% endif %}:
-            </p>    
-        
-        {% comment %}
-        {# Extra message for when there are zero results #}
-        {% ifequal child_nodes|length 0 %}
-            Try entering fewer characters or <a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">clearing the filter phrase now</a>.
-        {% endifequal %}
-        {% endcomment %}
-
+        <p id="tag-and-cluster-counts">
+            {% if NEWUI %}
+            <span class="tag_icon tag-icon"></span> {{ num_tags|intcomma }} {% if num_tags %}topic{% else %}item{% endif %}{{ num_tags|pluralize }}
+            {% if num_terms %} (<span class="tag_icon tag-icon"></span> {{ num_terms|intcomma }} terms){% endif %}
+            {% if num_clusters %} &amp; <span class="icon_cluster_sm cluster-icon"></span> {{ num_clusters|intcomma }} topic area{{ num_clusters|pluralize }}{% endif %}
+            {% if cluster %} in the <span class="icon_cluster_sm cluster-icon"></span> topic area "{{ cluster.name }}" <a href="javascript:Tags.selectSociety('all');" class="filter-clear"></span>{% endif %}
+            {% if sector %} in the industry sector "{{ sector }}"{% endif %}
+            {% if society %} in the <span class="orgIcon-sm"></span> organization "{{ society }}"{% endif %}
+            
+            {% else %}
+            Showing{% if num_clusters %} <span class="icon_cluster_sm cluster-icon"></span> {{ num_clusters|intcomma }} topic area{{ num_clusters|pluralize }}{% if num_clusters %} &amp; {% else %}&#47;{% endif %}{% endif %} <span class="tag_icon tag-icon"></span> {{ num_tags|intcomma }} {% if num_tags %}topic{% else %}item{% endif %}{{ num_tags|pluralize }}{% if num_terms %} (<span class="tag_icon tag-icon"></span> {{ num_terms|intcomma }} terms){% endif %}{% if cluster %} in the <span class="icon_cluster_sm cluster-icon"></span> topic area "{{ cluster.name }}"{% endif %}{% if sector %} in the industry sector "{{ sector }}"{% endif %}{% if society %} in the <span class="orgIcon-sm"></span> organization "{{ society }}"{% endif %}:
+            {% endif %}
+            {% endif %}
+        </p>    
     {% endif %}
-    
 {% else %}
     {# For non-search-phrases #}
-    
     <p id="tag-and-cluster-counts">
+        if NEWUI %}
+        <span class="tag_icon tag-icon"></span> {{ num_tags|intcomma }} {% if num_tags %}topic{% else %}item{% endif %}{{ num_tags|pluralize }}
+        {% if num_terms %} (<span class="tag_icon tag-icon"></span> {{ num_terms|intcomma }} terms){% endif %}
+        {% if num_clusters %} &amp; <span class="icon_cluster_sm cluster-icon"></span> {{ num_clusters|intcomma }} topic area{{ num_clusters|pluralize }}{% endif %}
+        {% if cluster %} in the <span class="icon_cluster_sm cluster-icon"></span> topic area "{{ cluster.name }}" <a href="javascript:Tags.selectSociety('all');" class="filter-clear"></span>{% endif %}
+        {% if sector %} in the industry sector "{{ sector }}"{% endif %}
+        {% if society %} in the <span class="orgIcon-sm"></span> organization "{{ society }}"{% endif %}
+        
+        {% else %}
         Showing{% if num_clusters %} <span class="icon_cluster_sm cluster-icon"></span> {{ num_clusters|intcomma }} topic area{{ num_clusters|pluralize }}{% if num_clusters %} &amp; {% else %}&#47;{% endif %}{% endif %} <span class="tag_icon tag-icon"></span> {{ num_tags|intcomma }} {% if num_tags %}topic{% else %}item{% endif %}{{ num_tags|pluralize }}{% if num_terms %} (<span class="tag_icon tag-icon"></span> {{ num_terms|intcomma }} terms){% endif %}{% if cluster %} in the <span class="icon_cluster_sm cluster-icon"></span> topic area "{{ cluster.name }}"{% endif %}{% if sector %} in the industry sector "{{ sector }}"{% endif %}{% if society %} in the <span class="orgIcon-sm"></span> organization "{{ society }}"{% endif %}:
+        {% endif %}
+        {% endif %}
     </p>
 {% endif %}

@@ -1,4 +1,4 @@
-.drive, .drop_down_active, .drop_down_openactive, .icon_cluster_sm, .orgIcon, .orgIcon-sm, .popup, .sm-logo, .smHelpIcon, .technav_banner, .drop_down, .tag_icon, .frequency-indicator, .nextArrow, .help-arrow-dark, .help-arrow-left-dark, .help-arrow-right-dark, .icon_cluster_lg, .industryIcon, .job_icon, .period_icon, .society_icon, .standard_icon, .tag_icon_lg, .conf_icon, .education_icon, .lightbox-close{
+.drive, .drop_down_active, .drop_down_openactive, .icon_cluster_sm, .orgIcon, .orgIcon-sm, .popup, .sm-logo, .smHelpIcon, .technav_banner, .drop_down, .tag_icon, .frequency-indicator, .nextArrow, .help-arrow-dark, .help-arrow-left-dark, .help-arrow-right-dark, .icon_cluster_lg, .industryIcon, .job_icon, .period_icon, .society_icon, .standard_icon, .tag_icon_lg, .conf_icon, .education_icon, .lightbox-close, .filter-clear {
 	background: url(/media/images/sprites-newui.png) no-repeat;
 	display: inline-block;
 }
@@ -184,5 +184,18 @@
 
 .lightbox-close:hover{
 	background-position: -203px -163px ;
+}
+
+.filter-clear {
+    background-position: -373px -104px;
+	width: 17px;
+	height: 17px;
+}
+
+.filter-clear:hover {
+    background-position: -373px -124px;
+	width: 17px;
+	height: 17px;
+	cursor: pointer;
 }
 
