@@ -24,78 +24,79 @@
             }
         }
     }
-    #alternate-page #tag-galaxy div.node {
-        a, div {
-            background: $white;
-            @include default-transition(background, 0.2, 0);
-        }
-        a.level1, div.level1, span.level1 {
-            color: $level1;
-        }
-        a.level2, div.level2, span.level2 {
-            color: $level1;
-        }
-        a.level3, div.level3, span.level3 {
-            color: $level3;
-        }
-        a.level4, div.level4, span.level4 {
-            color: $level4;
-        }
-        a.level5, div.level5, span.level5 {
-            color: $level5;
-        }
-        a.level6, div.level6, span.level6 {
-            color: $level6;
-        }
-        &:hover {
-            a, div {
-                color: $white;
-            }
-            a.level1, div.level1, span.level1 {
-                background: $level1;
-            }
-            a.level2, div.level2, span.level2 {
-                background: $level2;
-            }
-            a.level3, div.level3, span.level3 {
-                background: $level3;
-            }
-            a.level4, div.level4, span.level4 {
-                background: $level4;
-            }
-            a.level5, div.level5, span.level5 {
-                background: $level5;
-            }
-            a.level6, div.level6, span.level6 {
-                background: $level6;
-            }
-        }
-    }
-    .flyover-container {
-        td {
-            &.level1 {
-                @include level1-gradient;
-            }
-            &.level2 {
-                @include level2-gradient;
-            }
-            &.level3 {
-                @include level3-gradient;
-            }
-            &.level4 {
-                @include level4-gradient;
-            }
-            &.level5 {
-                @include level5-gradient;
-            }
-            &.level6 {
-                @include level6-gradient;
-            }
-            &:hover a {
-                text-decoration: none;
-            }
-        }
-    }
+    //#alternate-page #tag-galaxy div.node {
+        //a, div {
+        //    background: $white;
+        //    background-color: #009FDA;
+        //    @include default-transition(background, 0.2, 0);
+        //}
+        //a.level1, div.level1, span.level1 {
+        //    color: $level1;
+        //}
+        //a.level2, div.level2, span.level2 {
+        //    color: $level1;
+        //}
+        //a.level3, div.level3, span.level3 {
+        //    color: $level3;
+        //}
+        //a.level4, div.level4, span.level4 {
+        //    color: $level4;
+        //}
+        //a.level5, div.level5, span.level5 {
+        //    color: $level5;
+        //}
+        //a.level6, div.level6, span.level6 {
+        //    color: $level6;
+        //}
+        //&:hover {
+            //a, div {
+            //    color: $white;
+            //}
+            //a.level1, div.level1, span.level1 {
+            //    background: $level1;
+            //}
+            //a.level2, div.level2, span.level2 {
+            //    background: $level2;
+            //}
+            //a.level3, div.level3, span.level3 {
+            //    background: $level3;
+            //}
+            //a.level4, div.level4, span.level4 {
+            //    background: $level4;
+            //}
+            //a.level5, div.level5, span.level5 {
+            //    background: $level5;
+            //}
+            //a.level6, div.level6, span.level6 {
+            //    background: $level6;
+            //}
+        //}
+    //}
+    //.flyover-container {
+    //    td {
+    //        &.level1 {
+    //            @include level1-gradient;
+    //        }
+    //        &.level2 {
+    //            @include level2-gradient;
+    //        }
+    //        &.level3 {
+    //            @include level3-gradient;
+    //        }
+    //        &.level4 {
+    //            @include level4-gradient;
+    //        }
+    //        &.level5 {
+    //            @include level5-gradient;
+    //        }
+    //        &.level6 {
+    //            @include level6-gradient;
+    //        }
+    //        &:hover a {
+    //            text-decoration: none;
+    //        }
+    //    }
+    //}
 }
   
 // Non-Supported Browser Styles //
@@ -120,48 +121,48 @@
     .nootabs-menus li.nootabs-menu a:hover {
         background: $orange;
     }
-    #alternate-page #tag-galaxy div.node {
-        a.level1, div.level1, span.level1 {
-            background: $level1;
-        }
-        a.level2, div.level2, span.level2 {
-            background: $level2;
-        }
-        a.level3, div.level3, span.level3 {
-            background: $level3;
-        }
-        a.level4, div.level4, span.level4 {
-            background:$level4;
-        }
-        a.level5, div.level5, span.level5 {
-            background: $level5;
-        }
-        a.level6, div.level6, span.level6 {
-            background: $level6
-        }
-    }
-    .flyover-container {
-        td {
-            &.level1 {
-                background: $level1;
-            }
-            &.level2 {
-                background: $level2;
-            }
-            &.level3 {
-                background: $level3;
-            }
-            &.level4 {
-                background: $level4;
-            }
-            &.level5 {
-                background: $level5;
-            }
-            &.level6 {
-                background: $level6;
-            }
-        }
-    }
+    //#alternate-page #tag-galaxy div.node {
+    //    a.level1, div.level1, span.level1 {
+    //        background: $level1;
+    //    }
+    //    a.level2, div.level2, span.level2 {
+    //        background: $level2;
+    //    }
+    //    a.level3, div.level3, span.level3 {
+    //        background: $level3;
+    //    }
+    //    a.level4, div.level4, span.level4 {
+    //        background:$level4;
+    //    }
+    //    a.level5, div.level5, span.level5 {
+    //        background: $level5;
+    //    }
+    //    a.level6, div.level6, span.level6 {
+    //        background: $level6
+    //    }
+    //}
+    //.flyover-container {
+    //    td {
+    //        &.level1 {
+    //            background: $level1;
+    //        }
+    //        &.level2 {
+    //            background: $level2;
+    //        }
+    //        &.level3 {
+    //            background: $level3;
+    //        }
+    //        &.level4 {
+    //            background: $level4;
+    //        }
+    //        &.level5 {
+    //            background: $level5;
+    //        }
+    //        &.level6 {
+    //            background: $level6;
+    //        }
+    //    }
+    //}
 }
   
 // Global Styles//
@@ -919,12 +920,7 @@ ul#sectors, ul#societies {
     height: 390px;
     overflow: hidden;
     position: relative;
-}
-  
-#alternate-page #tag-galaxy {
-    background-color: $white;
-    overflow: hidden;
-}             
+}      
   
 #alternate-page #tag-galaxy .alt-box-pad {
     min-height: 388px !important;
@@ -950,25 +946,33 @@ ul#sectors, ul#societies {
    padding-top: 7px;
 }
   
-#alternate-page #tag-galaxy div.node {
-    a {
-        text-decoration: none;
-        font-weight: normal;
-        white-space: nowrap;
-        padding: .2em .5em;
-        color: $white;
-        border: 1px solid transparent;
-        display: block;
-        overflow: hidden;
-        -webkit-transition: background-color 0.15s ease-in;
-        -moz-transition : background-color 0.15s ease-in;
-        @include custom-border-radius (15px, 15px, 15px, 15px);
+#alternate-page #tag-galaxy {
+    background-color: $white;
+    overflow: hidden;
+    div.node {
+        a {
+            text-decoration: none;
+            font-weight: normal;
+            white-space: nowrap;
+            padding: .2em .5em;
+            color: $white;
+            border: 1px solid transparent;
+            display: block;
+            overflow: hidden;
+            background-color: #009FDA;
+            //-webkit-transition: background-color 0.15s ease-in;
+            //-moz-transition : background-color 0.15s ease-in;
+            //@include custom-border-radius (15px, 15px, 15px, 15px);
+            &:hover {
+                background-color: $orange;
+            }
+        }
     }
 }
   
 #alternate-page #tag-galaxy div.tag_cluster a {
-    border-color: transparent;
-    background: $white;
+    //border-color: transparent;
+    //background: $white;
     padding: 0.4em 0.5em;
 }
   
@@ -996,124 +1000,124 @@ ul#sectors, ul#societies {
     font-size: 20pt;
 }
   
-#alternate-page #tag-galaxy div.node a.level1 {
-    border-color: $level1;
-}
+//#alternate-page #tag-galaxy div.node a.level1 {
+//    border-color: $level1;
+//}
   
-#alternate-page #tag-galaxy div.node a.level1:hover {
-    color: $level1;
-    @include no-gradient;
-}
+//#alternate-page #tag-galaxy div.node a.level1:hover {
+//    color: $level1;
+//    @include no-gradient;
+//}
   
-h3.level1 {
-    color: $primaryColor !important;
-}
+//h3.level1 {
+//    color: $primaryColor !important;
+//}
   
-#alternate-page #tag-galaxy div.node a.level2 {
-    border-color: $level2;
-}
+//#alternate-page #tag-galaxy div.node a.level2 {
+//    border-color: $level2;
+//}
   
-#alternate-page #tag-galaxy div.node a.level2:hover {
-    color: $level2;
-    @include no-gradient;
-}
+//#alternate-page #tag-galaxy div.node a.level2:hover {
+//    color: $level2;
+//    @include no-gradient;
+//}
   
-h3.level2 {
-    color: $level2 !important;
-}
+//h3.level2 {
+//    color: $level2 !important;
+//}
   
-#alternate-page #tag-galaxy div.node a.level3 {
-    border-color: $level3;
-}
+//#alternate-page #tag-galaxy div.node a.level3 {
+//    border-color: $level3;
+//}
   
-#alternate-page #tag-galaxy div.node a.level3:hover {
-    color: $level3;
-    @include no-gradient;
-}
+//#alternate-page #tag-galaxy div.node a.level3:hover {
+//    color: $level3;
+//    @include no-gradient;
+//}
   
-h3.level3 {
-    color: $level3 !important;
-}
+//h3.level3 {
+//    color: $level3 !important;
+//}
   
-#alternate-page #tag-galaxy div.node a.level4 {
-    border-color: $level4;
-}
+//#alternate-page #tag-galaxy div.node a.level4 {
+//    border-color: $level4;
+//}
   
-#alternate-page #tag-galaxy div.node a.level4:hover {
-    color: $level4;
-    @include no-gradient;
-}
+//#alternate-page #tag-galaxy div.node a.level4:hover {
+//    color: $level4;
+//    @include no-gradient;
+//}
   
-h3.level4 {
-    color: $level4 !important;
-}
+//h3.level4 {
+//    color: $level4 !important;
+//}
   
-#alternate-page #tag-galaxy div.node a.level5 {
-    border-color: $level5;
-}
+//#alternate-page #tag-galaxy div.node a.level5 {
+//    border-color: $level5;
+//}
   
-#alternate-page #tag-galaxy div.node a.level5:hover {
-    color: $level5;
-    @include no-gradient;
-}
+//#alternate-page #tag-galaxy div.node a.level5:hover {
+//    color: $level5;
+//    @include no-gradient;
+//}
   
-h3.level5 {
-    color: $level5 !important;
-}
+//h3.level5 {
+//    color: $level5 !important;
+//}
   
-#alternate-page #tag-galaxy div.node a.level6 {
-    border-color: $level6
-}
+//#alternate-page #tag-galaxy div.node a.level6 {
+//    border-color: $level6
+//}
   
-#alternate-page #tag-galaxy div.node a.level6:hover {
-    color: $level6;
-    @include no-gradient;
-}
+//#alternate-page #tag-galaxy div.node a.level6:hover {
+//    color: $level6;
+//    @include no-gradient;
+//}
   
-h3.level6 {
-    color: $level6 !important;
-}
+//h3.level6 {
+//    color: $level6 !important;
+//}
   
-td.no-level {
-    background: $light-gray;
-    color:$black;
-}
+//td.no-level {
+//    background: $light-gray;
+//    color:$black;
+//}
   
-div.level1,
-span.level1,
-td.level1 {
-    color:$white;
-}
+//div.level1,
+//span.level1,
+//td.level1 {
+//    color:$white;
+//}
   
-div.level2,
-span.level2,
-td.level2 {
-    color:$white;
-}
+//div.level2,
+//span.level2,
+//td.level2 {
+//    color:$white;
+//}
   
-div.level3,
-span.level3,
-td.level3 {
-    color: $white;
-}
+//div.level3,
+//span.level3,
+//td.level3 {
+//    color: $white;
+//}
   
-div.level4,
-span.level4,
-td.level4 {
-    color: $white;
-}
+//div.level4,
+//span.level4,
+//td.level4 {
+//    color: $white;
+//}
   
-div.level5,
-span.level5,
-td.level5 {
-    color: $white;
-}
+//div.level5,
+//span.level5,
+//td.level5 {
+//    color: $white;
+//}
   
-div.level6,
-span.level6,
-td.level6 {
-    color: $white;
-}
+//div.level6,
+//span.level6,
+//td.level6 {
+//    color: $white;
+//}
   
 /* */
 /* sector key */

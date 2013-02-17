@@ -33,6 +33,9 @@ $mediumFont: 10pt;
 $largeFont: 12pt;
 $xlargeFont: 16pt;
 
+// New UI Colors //
+$secondaryColor: #009FDA;
+
 // Mix-Ins //
 @mixin default-border-radius {
     border-radius: 5px;
