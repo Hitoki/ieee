@@ -1271,10 +1271,6 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
         except Society.DoesNotExist:
             society = None
 
-    print '-----------------------------------'
-    print request.path
-    print '-----------------------------------'
-
     if request.path.startswidth('/textui_new'):
         NEWUI = True
     else:
@@ -1305,6 +1301,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
         'num_terms': num_terms,
         'sector': sector,
         'society': society,
+        'NEWUI': NEWUI,
     })
     
     return [content, node_count_content]
