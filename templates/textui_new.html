@@ -125,9 +125,27 @@
                     <div id='center-comp'></div>
             </div>
             <div id="frequencybar-tags">
-                <div id="connectedness-container">
+                <div id="textui-society-list">
+                    <span class="feature_label">within</span>
+                    <div id="societyContainer_outter">
+                        <div id="societyContainer_inner">
+                            <span>&nbsp;</span>
+                            <ul id="societySelect_options" class="customSelectList">
+                                <li data-value="all"><span>All IEEE Organizations</span></li>                         
+                                {% for society in societies %}
+                                    <li data-value="{{ society.id }}"><span>{{ society.name }}</span></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <span id="societySelect" class="customSelectContainer" tabindex="0">
+                            <span class="selected"></span>
+                            <span class="drop_down dropIcon"></span>
+                        </span>                        
+                    </div>
+                    {% comment %}                    
                     <span class="frequency-indicator"><span class="small">Few</span>&nbsp;&#8592;&nbsp;Linkages&nbsp;&#8594;&nbsp;<span class="small">Many</span></span>
                     <span id="connectedness-help" class="helpicon smHelpIcon flyover {width:300}" title="A tag's color shows how linked it is within Technology Navigator to other topics, industry topics, IEEE organizations, and IEEE resources."></span>
+                    {% endcomment %}
                 </div>
                 <div id="textui-tags-search">
                     <div style="float:left;width:250px;white-space:nowrap">

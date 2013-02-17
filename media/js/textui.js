@@ -8,7 +8,7 @@ function scaleZoom(zoom, scale) {
     }
 }
 
-var sortDropDown, printDropDown;
+var sortDropDown, printDropDown, societyDropDown;
 $(document).ready(function(){    
     // Functions for tag landing pages only.
     if ($("body").hasClass("tag_base")) {
@@ -79,6 +79,14 @@ $(document).ready(function(){
     }
     printDropDown = $('#printSelect').imageDropdown({'selectList': $("ul#printSelect_options"), 'initialIndex': 0});
     
+    societyDropDown = $('#societySelect').imageDropdown({'selectList': $("ul#societySelect_options"), 'initialIndex': 0});
+    if (societyDropDown) {
+        societyDropDown.bind('change', function(){
+            Tags.selectSociety(societyDropDown.val());
+        });
+    }
+
+
     //Removes hover state from selected text when other option is chosen in dropdowns
     $(".customSelectList li").click(function() {
          $(".selected").removeClass("selected-hover");
