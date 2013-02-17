@@ -134,7 +134,7 @@ def textui(request, survey=False):
     # NOTE: Hide TAB society from the nav.
     societies = societies.exclude(abbreviation__in=['tab', 'ieee-usa'])
     
-    if request.path == '/textui_new':
+    if settings.ENABLE_TEXTUI_NEW:
         template = 'textui_new.html'
         NEWUI = True
     else:
@@ -1271,6 +1271,10 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
         except Society.DoesNotExist:
             society = None
 
+    if settings.ENABLE_TEXTUI_NEW:
+        NEWUI = True
+    else:
+        NEWUI = False
 
     from django.template.loader import render_to_string
     content = render_to_string('ajax_textui_nodes.html', {
