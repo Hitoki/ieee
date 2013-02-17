@@ -1288,6 +1288,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
         'num_clusters': num_clusters,
         'cluster_id': cluster_id,
         'page': page,
+        'NEWUI': NEWUI,
     })
 
     node_count_content = render_to_string('ajax_textui_node_count.inc.html', {
