@@ -2147,21 +2147,20 @@ div.group ul li:first-child {
 #textui-tags-sort span.feature_label {
     margin: 0 5px 0 0;
     display: inline-block;
-    float: left;
 }
   
 .live-search {
     border: 1px solid $primaryColor;
-    width: 155px;
-    padding: 2px 0 1px 23px;
+    width: 140px;
+    padding: 5px 35px 5px 35px;
     display: inline-block;
     margin-top: 0;
     outline: none;
-    font-size: 10pt;
-    height: 16px;
-    vertical-align: top;
-    background: $white url(../images/magnifyIcon.png) no-repeat 4px 3px;
-    @include custom-border-radius (5px, 0, 0, 5px);
+    font-size: 11pt;
+    height: 19px;
+    text-align: center;
+    vertical-align: middle;
+    background: $white url(../images/magnifyIcon.png) no-repeat 7px 7px;
 }
   
 .live-search-clear {
@@ -2357,9 +2356,15 @@ div.group ul li:first-child {
   
 /*DropDowns*/
 #sortContainer_outter {
-    float: right;
+    display: inline-block;
+    vertical-align: middle;
     position: relative;
     z-index: 9999999;
+    font-size: 11pt;
+}
+
+#sortSelect_options {
+    width: 205px;
 }
   
 #sortContainer_inner {
@@ -2374,13 +2379,11 @@ padding-left: 3px;
   
 #sortSelect {
 width: 165px;
-}
-  
-#sortSelect {
 font-weight: bold;
-padding: 0;
+padding: 5px 5px 5px 35px;
 z-index: 99;
 outline: none;
+background: $white url(../images/sortIcon.png) no-repeat 7px 6px;
 }
   
 #sortSelect .selected {
@@ -2435,10 +2438,8 @@ cursor: pointer;
 display: inline-block;
 height: 19px;
 vertical-align: bottom;
-color: $primaryColor;
+color: #222;
 background-color: $white;
-border:1px solid $primaryColor;
-@include default-border-radius;
 }
   
 .customSelectContainer .selected {
@@ -2459,15 +2460,12 @@ margin-left: 4px;
 display: none;
 background-color: $white;
 position: relative;
-margin: 5px 0 0 0;
+margin: 11px 0 0 -1px;
 padding: 0;
 border: 1px solid $primaryColor;
 cursor: pointer;
 list-style-position: outside;
-margin-top: 4px;
 z-index: 999999; 
-margin-top: 3px;
-@include custom-border-radius (0, 0, 5px, 5px);
 }
   
 .customSelectList span {
@@ -2480,9 +2478,8 @@ margin-left: 0px;
 vertical-align: middle;
 cursor: pointer;
 text-align: left;
-padding: 2px 0;
-color: $primaryColor;
-@include default-border-radius;
+padding: 5px 0;
+color: #222;
 }
   
 .customSelectList li:hover {
@@ -2669,6 +2666,7 @@ header {
 #tags-searching-msg,
 #tag-counts {
     text-align: center;
+    font-size: 12pt;
 }
   
 #center-comp {
