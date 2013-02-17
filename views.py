@@ -933,7 +933,7 @@ def _get_popularity_level(min, max, count, node=None):
     
     return 'level' + str(level)
 
-def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, society, cluster_id, cluster, show_clusters, show_terms, is_staff, page):
+def _render_textui_nodes(request, sort, search_for, sector_id, sector, society_id, society, cluster_id, cluster, show_clusters, show_terms, is_staff, page):
 
     order_by = None
     extra_order_by = None
@@ -1271,7 +1271,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
         except Society.DoesNotExist:
             society = None
 
-    if request.path.startswidth('/textui_new'):
+    if request.path.startswith('/textui_new'):
         NEWUI = True
     else:
         NEWUI = False
@@ -1461,7 +1461,7 @@ def ajax_textui_nodes(request):
     if not cache:
         # Create the cache if it doesn't already exist.
         print 'CACHE MISS: Creating new cache page.'
-        content, node_count_content = _render_textui_nodes(sort, search_for, sector_id, sector, society_id, society, cluster_id, cluster, show_clusters, show_terms, request.user.is_staff, page)
+        content, node_count_content = _render_textui_nodes(request, sort, search_for, sector_id, sector, society_id, society, cluster_id, cluster, show_clusters, show_terms, request.user.is_staff, page)
         cache_content = json.dumps({
             'content': content,
             'node_count_content': node_count_content,
