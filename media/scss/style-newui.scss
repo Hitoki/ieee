@@ -1,170 +1,5 @@
 @import "media/scss/variables";
   
-// CSS Gradients //
-// Supported Browser Styles //
-.cssgradients {
-    .header-btns .btn.help {
-        @include green-gradient;
-    }
-    .header-btns .btn.admin {
-        @include red-gradient;
-    }
-    ul#societies, ul#sectors {
-        a {
-            &.active-society,
-            &.active-sector {
-                &:hover {
-                    @include blue-gradient;
-                    cursor: default;
-                }
-                @include blue-gradient;
-            }
-            &:hover {
-                @include orange-gradient;
-            }
-        }
-    }
-    //#alternate-page #tag-galaxy div.node {
-        //a, div {
-        //    background: $white;
-        //    background-color: #009FDA;
-        //    @include default-transition(background, 0.2, 0);
-        //}
-        //a.level1, div.level1, span.level1 {
-        //    color: $level1;
-        //}
-        //a.level2, div.level2, span.level2 {
-        //    color: $level1;
-        //}
-        //a.level3, div.level3, span.level3 {
-        //    color: $level3;
-        //}
-        //a.level4, div.level4, span.level4 {
-        //    color: $level4;
-        //}
-        //a.level5, div.level5, span.level5 {
-        //    color: $level5;
-        //}
-        //a.level6, div.level6, span.level6 {
-        //    color: $level6;
-        //}
-        //&:hover {
-            //a, div {
-            //    color: $white;
-            //}
-            //a.level1, div.level1, span.level1 {
-            //    background: $level1;
-            //}
-            //a.level2, div.level2, span.level2 {
-            //    background: $level2;
-            //}
-            //a.level3, div.level3, span.level3 {
-            //    background: $level3;
-            //}
-            //a.level4, div.level4, span.level4 {
-            //    background: $level4;
-            //}
-            //a.level5, div.level5, span.level5 {
-            //    background: $level5;
-            //}
-            //a.level6, div.level6, span.level6 {
-            //    background: $level6;
-            //}
-        //}
-    //}
-    //.flyover-container {
-    //    td {
-    //        &.level1 {
-    //            @include level1-gradient;
-    //        }
-    //        &.level2 {
-    //            @include level2-gradient;
-    //        }
-    //        &.level3 {
-    //            @include level3-gradient;
-    //        }
-    //        &.level4 {
-    //            @include level4-gradient;
-    //        }
-    //        &.level5 {
-    //            @include level5-gradient;
-    //        }
-    //        &.level6 {
-    //            @include level6-gradient;
-    //        }
-    //        &:hover a {
-    //            text-decoration: none;
-    //        }
-    //    }
-    //}
-}
-  
-// Non-Supported Browser Styles //
-.no-cssgradients {
-    .header-btns .btn.help {
-        background: $green;
-    }
-    .header-btns .btn.admin {
-        background: $red;
-    }
-    ul#societies, ul#sectors {
-        a {
-            &.active-society,
-            &.active-sector {
-                background: $primaryColor;
-            }
-            &:hover {
-                background: $orange;
-            }
-        }
-    }
-    .nootabs-menus li.nootabs-menu a:hover {
-        background: $orange;
-    }
-    //#alternate-page #tag-galaxy div.node {
-    //    a.level1, div.level1, span.level1 {
-    //        background: $level1;
-    //    }
-    //    a.level2, div.level2, span.level2 {
-    //        background: $level2;
-    //    }
-    //    a.level3, div.level3, span.level3 {
-    //        background: $level3;
-    //    }
-    //    a.level4, div.level4, span.level4 {
-    //        background:$level4;
-    //    }
-    //    a.level5, div.level5, span.level5 {
-    //        background: $level5;
-    //    }
-    //    a.level6, div.level6, span.level6 {
-    //        background: $level6
-    //    }
-    //}
-    //.flyover-container {
-    //    td {
-    //        &.level1 {
-    //            background: $level1;
-    //        }
-    //        &.level2 {
-    //            background: $level2;
-    //        }
-    //        &.level3 {
-    //            background: $level3;
-    //        }
-    //        &.level4 {
-    //            background: $level4;
-    //        }
-    //        &.level5 {
-    //            background: $level5;
-    //        }
-    //        &.level6 {
-    //            background: $level6;
-    //        }
-    //    }
-    //}
-}
-  
 // Global Styles//
 html {
     overflow-y: scroll;
@@ -257,6 +92,7 @@ table.main {
         }
     }
     .btn.help {
+        background: $green;
         border: 1px solid $green;
         &:hover {
             color: $green;
@@ -271,6 +107,7 @@ table.main {
         }
     }
     .btn.admin {
+        background: $red;
         border: 1px solid $red;
         margin: 0 5px 0 0;
         &:hover {
@@ -279,6 +116,21 @@ table.main {
         }
     }
 } 
+
+ul#societies, ul#sectors {
+    a {
+        &.active-society,
+        &.active-sector {
+            background: $primaryColor;
+        }
+        &:hover {
+            background: $orange;
+        }
+    }
+}
+.nootabs-menus li.nootabs-menu a:hover {
+    background: $orange;
+}
   
 #header #tagline {
     color: $primaryColor;
@@ -1437,7 +1289,7 @@ table#login-table td {
     text-decoration: none;
     font-size: 7pt;
     clear: left;
-    @include default-border-radius;
+    @include small-border-radius;
 }
   
 #testerBtn:hover,
