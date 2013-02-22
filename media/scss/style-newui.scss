@@ -351,7 +351,7 @@ ul#view-header li {
 }
   
 #left-column ul li a:hover {
-    @include orange-gradient;
+    background-color: $orange;
 }
   
 #galaxy-tabs {
@@ -846,6 +846,12 @@ ul#sectors, ul#societies {
 .node-tooltip h3 {
     font-weight: normal;   
     font-size: 20pt;
+}
+
+.slidedeck-navBtns .nav-next,
+#lightbox .slidedeck-navBtns .lightbox-close {
+    @include no-gradient;
+    background: $green;
 }
   
 //#alternate-page #tag-galaxy div.node a.level1 {
@@ -2022,7 +2028,7 @@ div.group ul li:first-child {
 }
   
 #textui-tags-search-submit {
-    @include green-gradient;
+    background-color: $green;
     color: white;
     font-weight: normal;
     margin-left: -6px;
@@ -2035,7 +2041,7 @@ div.group ul li:first-child {
     height: 19px;
     @include custom-border-radius (0, 5px, 5px, 0);
     &:hover {
-        @include orange-gradient;
+        background-color: $orange;
     }
 }
   
@@ -2612,10 +2618,10 @@ td.machine-generated-column {
            border: 0 none;
            padding: 4px 15px 5px;
            vertical-align: top;
-           @include green-gradient;
+           background-color: $green;
            @include custom-border-radius(0, 3px, 3px, 0);
             &:hover {
-                @include orange-gradient;
+                background-color: $orange;
             }
        }
        #alertSuccess {
