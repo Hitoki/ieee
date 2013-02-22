@@ -498,7 +498,7 @@ var Tags = {
         //log('selectSociety()');
         //log('  societyId: ' + societyId);
         //log('  setHash: ' + setHash);
-        
+
         if (this.page != this.PAGE_SOCIETY || this.societyId != societyId) {
             this.page = this.PAGE_SOCIETY
             
@@ -547,7 +547,13 @@ var Tags = {
             $('#textui-tags-search-clear').hide();
         }
         
-        var search_for = $('#tags-live-search').val();
+        var search_for;
+
+        if ($('#tags-live-search').val() == $('#tags-live-search').data('default')) {
+            search_for = null;
+        } else {
+            search_for = $('#tags-live-search').val();
+        }
         
         var showClusters;
         if ($('#show-clusters').length) {
@@ -913,7 +919,13 @@ var Tags = {
             return;
         }
         
-        var search_for = $('#tags-live-search').val();
+        var search_for;
+
+        if ($('#tags-live-search').val() == $('#tags-live-search').data('default')) {
+            search_for = null;
+        } else {
+            search_for = $('#tags-live-search').val();
+        }
         
         var page;
         if (sectorId != null) {
