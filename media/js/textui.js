@@ -494,7 +494,7 @@ var Tags = {
         this.updateResults();
     },
     
-    selectSociety: function(societyId, setHash) {
+    selectSociety: function(societyId, setHash, reset) {
         //log('selectSociety()');
         //log('  societyId: ' + societyId);
         //log('  setHash: ' + setHash);
@@ -503,9 +503,12 @@ var Tags = {
             this.page = this.PAGE_SOCIETY
             
             this.societyId = societyId;
-            this.sectorId = null;
-            this.clusterId = null;
-            this.nodeType = null;
+            
+            if (reset) {
+                this.sectorId = null;
+                this.clusterId = null;
+                this.nodeType = null;
+            }
             
             if (setHash == undefined) {
                 setHash = true;
@@ -766,6 +769,8 @@ var Tags = {
         $('#societies a.active-society').removeClass('active-society');
         $('#cluster').remove();
         
+        $('#societySelect span span').html($('li#society-list-item-'+ this.societyId + ' a').html());
+
         if (this.page == this.PAGE_SECTOR) {
             // Highlight the selected sector
             $('#sector-list-item-' + this.sectorId + ' a').addClass('active-sector');
