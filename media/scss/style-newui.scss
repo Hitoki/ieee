@@ -85,7 +85,6 @@ table.main {
         font-size: 8pt;
         margin: 0;
         padding: 1px 8px;
-        @include small-border-radius;
         &:hover {
             text-decoration: none;
             background-color: $white;
@@ -840,6 +839,7 @@ ul#sectors, ul#societies {
         //border-color: transparent;
         //background: $white;
         padding: 0.4em 0.5em;
+        border: 1px solid $primaryColor;
     }
 } 
     
@@ -1295,7 +1295,6 @@ table#login-table td {
     text-decoration: none;
     font-size: 7pt;
     clear: left;
-    @include small-border-radius;
 }
   
 #testerBtn:hover,
