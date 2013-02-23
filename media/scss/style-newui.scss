@@ -243,7 +243,7 @@ footer {
    #footer-login {
       float: right;
       a {
-         color: $dark-gray;
+         color: $secondaryColor;
          &:hover {
             color: $white;
             text-decoration: none;
@@ -1277,6 +1277,16 @@ table#login-table td {
     cursor: pointer;
     text-decoration: none;
     @include default-border-radius;
+}
+
+#welcome-link {
+    float: left;
+    font-size: 8pt;
+    color: $secondaryColor;
+    &:hover {
+        color: $white;
+        text-decoration: none;
+    }
 }
   
 #testerBtn-container {
