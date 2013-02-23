@@ -25,7 +25,7 @@ Instead of a list of all class selectors,
 you can use the generic selector below, but it's slower:
 [class*="icon-"]:before {
 */
-.icon-tab:before, .icon-users:before, .icon-tag:before, .icon-tags:before, .icon-filter:before {
+.icon-tab:before, .icon-users:before, .icon-tag:before, .icon-tags:before, .icon-filter:before, .icon-drop-arrow:before {
 	font-family: 'icomoon';
 	speak: none;
 	font-style: normal;
@@ -47,4 +47,7 @@ you can use the generic selector below, but it's slower:
 }
 .icon-filter:before {
 	content: "\e004";
+}
+.icon-drop-arrow:before {
+	content: "\e005";
 }

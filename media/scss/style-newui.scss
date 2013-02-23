@@ -2244,12 +2244,17 @@ background: $white url(../images/sortIcon.png) no-repeat 7px 6px;
 }
 
 #societySelect {
-width: 205px;
+width: 240px;
 font-weight: bold;
-padding: 5px 5px 5px 40px;
+padding: 5px;
 z-index: 99;
 outline: none;
-background: $white url(../images/orgIcon.png) no-repeat 7px 6px;
+.icon-users {
+    color: $secondaryColor;
+    font-size: 25px;
+    float: left;
+    margin-top: -5px;
+}
 }
  
 #societySelect .selected, 
@@ -2379,8 +2384,9 @@ float: left;
 -webkit-border-bottom-right-radius: 0px !important;  
 }
   
-.dropIcon {
+.icon-drop-arrow {
 float: right;
+color: $secondaryColor;
 }
   
 #page-container {

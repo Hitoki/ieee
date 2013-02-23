@@ -36,7 +36,7 @@ jQuery.fn.imageDropdown = function(options) {
     this.setSelectedIndex = function(index){
         
         // The element that will display the selection when the menu closes
-        var selectedDisplayElem = this.children("span:first");
+        var selectedDisplayElem = this.children(".selected");
         
         var selectedElem = opts.selectList.children().eq(index);
         
