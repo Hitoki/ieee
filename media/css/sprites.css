@@ -174,3 +174,17 @@
 	background-position: -203px -163px ;
 }
 
+.filter-clear {
+    background: url(/media/images/sprites-newui.png) no-repeat -373px -104px;
+    display: inline-block;
+	width: 17px;
+	height: 17px;
+}
+
+.filter-clear:hover {
+    background: url(/media/images/sprites-newui.png) no-repeat -373px -124px;
+    display: inline-block;
+	width: 17px;
+	height: 17px;
+	cursor: pointer;
+}
