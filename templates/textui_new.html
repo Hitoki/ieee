@@ -151,8 +151,9 @@
                             </ul>
                         </div>
                         <span id="sortSelect" class="customSelectContainer" tabindex="0">
+                            <span aria-hidden="true" class="icon-tab"></span>
                             <span class="selected"></span>
-                            <span class="drop_down dropIcon"></span>
+                            <span aria-hidden="true" class="icon-drop-arrow"></span>
                         </span>
                     </div>
                 </div>
@@ -169,8 +170,9 @@
                             </ul>
                         </div>
                         <span id="societySelect" class="customSelectContainer" tabindex="0">
+                            <span aria-hidden="true" class="icon-users"></span>
                             <span class="selected"></span>
-                            <span class="drop_down dropIcon"></span>
+                            <span aria-hidden="true" class="icon-drop-arrow"></span>
                         </span>                        
                     </div>
                     {% comment %}                    
@@ -178,11 +180,14 @@
                     <span id="connectedness-help" class="helpicon smHelpIcon flyover {width:300}" title="A tag's color shows how linked it is within Technology Navigator to other topics, industry topics, IEEE organizations, and IEEE resources."></span>
                     {% endcomment %}
                 </div>
-                <div id="textui-tags-search">
+                <div class="search-container">
                     <span class="feature_label">matching</span>
-                    <input id="tags-live-search" type="text" value='Enter term' class="live-search defaultValue { use_tags_callback: true, search_key_delay: {{ SEARCH_KEY_DELAY }}, search_on_enter_only: {% if ENABLE_SEARCH_BUTTON %}true }{% else %}false } live-search-button-disabled{% endif %}" data-default="Enter term" />
-                    <span id="textui-tags-search-clear" class="live-search-clear">&nbsp;</span>
-                    {% if ENABLE_SEARCH_BUTTON %}<span id="textui-tags-search-submit">Go</span>{% endif %}
+                    <div id="textui-tags-search">
+                        <span aria-hidden="true" class="icon-filter"></span>
+                        <input id="tags-live-search" type="text" value='Enter term' class="live-search defaultValue { use_tags_callback: true, search_key_delay: {{ SEARCH_KEY_DELAY }}, search_on_enter_only: {% if ENABLE_SEARCH_BUTTON %}true }{% else %}false } live-search-button-disabled{% endif %}" data-default="Enter term" />
+                        <span id="textui-tags-search-clear" class="live-search-clear">&nbsp;</span>
+                        {% if ENABLE_SEARCH_BUTTON %}<span id="textui-tags-search-submit">Go</span>{% endif %}
+                    </div>
                 </div>
             </div>
         </div>

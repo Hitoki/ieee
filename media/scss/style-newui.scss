@@ -1986,24 +1986,21 @@ div.group ul li:first-child {
     margin-right: 20px;
 }
   
-#textui-tags-search {
+.search-container {
     margin: 0 auto;
-    font-weight: bold;
-    line-height: 1.4;
-    width: 283px;
+    width: 311px;
 }
   
-#textui-tags-search span.feature_label,
+.search-container span.feature_label,
 #textui-tags-sort span.feature_label,
 #textui-society-list span.feature_label {
     margin: 0 5px 0 0;
     display: inline-block;
 }
   
-.live-search {
-    border: 1px solid $primaryColor;
-    width: 140px;
-    padding: 5px 35px 5px 35px;
+#textui-tags-search {
+    width: 230px;
+    padding: 5px;
     display: inline-block;
     margin-top: 0;
     outline: none;
@@ -2011,7 +2008,18 @@ div.group ul li:first-child {
     height: 19px;
     text-align: center;
     vertical-align: middle;
-    background: $white url(../images/magnifyIcon.png) no-repeat 7px 7px;
+    background-color: $white;
+    .icon-filter {
+        color: $secondaryColor;
+        float: left;
+    }
+    input {
+        border: 0 none;
+        float: left;
+        margin-left: 5px;
+        outline: none;
+        width: 188px;
+    }
 }
   
 .live-search-clear {
@@ -2021,7 +2029,6 @@ div.group ul li:first-child {
     cursor: pointer;
     display: inline-block;
     height: 20px;
-    margin-left: -24px;
     width: 20px;
     display: none;
     position: relative;
@@ -2235,12 +2242,16 @@ padding-left: 3px;
 }
 
 #sortSelect {
-width: 165px;
+width: 195px;
 font-weight: bold;
-padding: 5px 5px 5px 35px;
+padding: 5px;
 z-index: 99;
 outline: none;
-background: $white url(../images/sortIcon.png) no-repeat 7px 6px;
+.icon-tab {
+    color: $secondaryColor;
+    font-size: 17px;
+    float: left;
+}
 }
 
 #societySelect {
