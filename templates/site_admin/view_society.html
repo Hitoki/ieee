@@ -60,7 +60,7 @@
                             <em>No topics associated yet with this organization.</em>
                         {% else %}
                             {% for topic in society.tags.all %}
-                                <a href="{% url admin_view_tag tag.id %}">{{ tag.name_with_sector }}</a><br/>
+                                <a href="{% url admin_view_tag tag.id %}">{{ tag.name }}</a><br/>
                             {% endfor %}
                         {% endif %}
                     </div>

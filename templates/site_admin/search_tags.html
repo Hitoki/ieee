@@ -15,7 +15,7 @@
     {% if tag_results %}
         <b>Results:</b><br/>
         {% for tag in tag_results %}
-            &nbsp;&nbsp; <a href="{% url admin_view_tag tag.id %}">{{ tag.name_with_sector }} ({{ tag.id }})</a><br/>
+            &nbsp;&nbsp; <a href="{% url admin_view_tag tag.id %}">{{ tag.name }} ({{ tag.id }})</a><br/>
         {% endfor %}
     {% endif %}
 

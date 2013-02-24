@@ -94,7 +94,7 @@
             </th>
             <td>
                 {% for tag in resource.nodes.all %}
-                    <a href="{% url admin_view_tag tag.id %}">{{ tag.name_with_sector }}</a>{% if not forloop.last %},{% endif %}
+                    <a href="{% url admin_view_tag tag.id %}">{{ tag.name }}</a>{% if not forloop.last %},{% endif %}
                 {% endfor %}
             </td>
         </tr>

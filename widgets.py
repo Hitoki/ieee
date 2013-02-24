@@ -87,7 +87,7 @@ class MultiSearchWidget(widgets.Widget):
                     })
                 elif self.format == 'full_tags_table':
                     results.append({
-                        'name': object.name_with_sector(),
+                        'name': object.name,
                         'name_link': reverse('admin_edit_tag', args=[object.id]) + '?return_url=%s' % quote('/admin/?hash=' + quote('#tab-tags-tab')),
                         'value': object.id,
                         'tag_name': object.name,

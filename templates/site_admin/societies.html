@@ -40,7 +40,7 @@
                     {{ society.tags.get_tags.count }}
                     {% comment %}
                         {% for tag in society.tags.all %}
-                            <a href="{% url admin_view_tag tag.id %}">{{ tag.name_with_sector }}</a>, 
+                            <a href="{% url admin_view_tag tag.id %}">{{ tag.name }}</a>, 
                         {% endfor %}
                         {% if society.more_tags %}
                             <em>... {{ society.more_tags }} more topics</em>

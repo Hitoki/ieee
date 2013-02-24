@@ -5,7 +5,7 @@ def make_options(objects):
     for object in objects:
         if type(object) is Node:
             results.append({
-                'name': object.name_with_sector(),
+                'name': object.name,
                 'value': object.id,
             })
         else:

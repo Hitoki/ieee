@@ -2927,7 +2927,7 @@ def create_tag(request):
                 #            'id': tag.id,
                 #            'name': tag.name,
                 #            'sector_name': tag.parent.name,
-                #            'name_with_sector': tag.name_with_sector(),
+                #            'name': tag.name,
                 #        }
                 #    })
                 #)

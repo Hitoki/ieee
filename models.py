@@ -518,12 +518,6 @@ class Node(models.Model):
     def parent_cluster_names(self):
         return ', '.join([cluster.name for cluster in self.get_parent_clusters()])
     
-    def name_with_sector(self):
-        if self.node_type.name == NodeType.TAG:
-            return '%s (%s)' % (self.name, self.sector_names())
-        else:
-            return self.name
-    
     def get_sectors(self):
         'Returns all parent sectors for this node.'
         return self.parents.filter(node_type__name=NodeType.SECTOR)
