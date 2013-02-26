@@ -1155,7 +1155,8 @@ def _render_textui_nodes(request, sort, search_for, sector_id, sector, society_i
     # This saves time when we check child_node.node_type later on (prevents DB hit for every single child_node)
     child_nodes = child_nodes.select_related('node_type')
     
-    if is_staff:
+    # remove 'False and' below to enable the term count (for staff only) 
+    if False and is_staff:
         num_terms = child_nodes.filter(is_taxonomy_term=True).count()
     else:
         num_terms = None
