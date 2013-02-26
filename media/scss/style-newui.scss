@@ -752,7 +752,7 @@ ul#sectors, ul#societies {
             text-decoration: none;
             font-weight: normal;
             white-space: nowrap;
-            padding: .2em .5em;
+            padding: 0.4em 0.6em;
             color: $white;
             display: block;
             overflow: hidden;
@@ -774,12 +774,11 @@ ul#sectors, ul#societies {
         }
     }
     div.node-taxonomy-term a {
-        border: 1px solid $light-gray !important;
         background-color: $light-gray !important;
         color: $gray !important;
     }
     div.tag_cluster a {
-        padding: 0.4em 0.5em;
+        padding: 0.6em 0.6em;
         background-color: $primaryColor;
     }
 } 
