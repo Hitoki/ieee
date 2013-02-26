@@ -115,10 +115,18 @@ ul.nootabs-menus li a:hover {
 .nootabs-selected-tab div.group {
     height: 100%;
     overflow: auto;
-    min-height: 435px;
+    height: 345px;
     a {
         outline: none;
     }
+}
+
+#job-tab div.group {
+    height: 313px;
+}
+
+#xplore-tab div.group {
+    height: 323px;
 }
 
 
@@ -165,8 +173,8 @@ ul.nootabs-menus li a:hover {
 .term-resources-tabs ul.nootabs-menus {
     float: left;
     clear: none;
-    width: 138px;
-    margin-right: -2px;
+    width: 136px;
+    margin-top: 25px;
 }
 
 #resource-tabs ul.nootabs-menus li {

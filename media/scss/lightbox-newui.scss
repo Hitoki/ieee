@@ -150,6 +150,7 @@ input.text {
     margin-top: 15px;
     font-size: 14pt;
     color: #9F9F9F;
+    margin-left: 5px;
     #num-related-items-loading {
         display: inline-block;
         height: 15px;
@@ -185,31 +186,10 @@ input.text {
     cursor: pointer;
 }
 
-#lightbox .resources-lightbox-content #sector-tab div.group,
-#lightbox .resources-lightbox-content #society-tab div.group,
-#lightbox .resources-lightbox-content #related-tab div.group,
-#lightbox .resources-lightbox-content #conference-tab div.group,
-#lightbox .resources-lightbox-content #periodical-tab div.group,
-#lightbox .resources-lightbox-content #standard-tab div.group {
-    min-height: 435px;
-}
-
-#lightbox .resources-lightbox-content #patents-tab div.group {
-   min-height: 435px;
-}
-
-#lightbox .resources-lightbox-content #xplore-tab div.group,
-#lightbox .resources-lightbox-content #education-tab div.group,
-#lightbox .resources-lightbox-content #job-tab div.group {
-    min-height: 435px;
-    padding: 15px;
-}
-
 #lightbox .resources-lightbox-content div.nootabs-tab {
     float: right;  
     clear: none;
-    width: 687px;  
-    margin-top: -60px;
+    width: 687px;
 }
 
 #lightbox .resources-lightbox-content .resources-pad {
@@ -575,4 +555,63 @@ margin-top: 0;
 #lightbox .slidedeck-navBtns .lightbox-close {
     @include no-gradient;
     background: $green;
+}
+
+#alertWrapper {
+   display: block;
+   clear: both;
+   margin: -45px 0 0 137px;
+   #alertContainer {
+       background-color: #CFCFCF;
+       width: 687px;
+       &.success {
+           background-color: $green;
+           padding: 3px 74px 4px;
+       }
+       .notificationLabel {
+            float: left;
+            padding: 15px;
+       }
+       #notificationRequestEmail {
+            border: 0 none;
+            padding: 15px;
+            display: inline-block;
+            font-size: 10pt;
+            width: 250px;
+            position: relative;
+            outline: none;
+            border-left: 1px solid black;
+            border-right: 1px solid black;
+            vertical-align: top;
+            &.defaultValue {
+                color: #9F9F9F;
+            }
+       }
+       #notificationRequestButton {
+           border: 0 none;
+           padding: 15px;
+           width: 152px;
+           margin-left: -5px;
+           vertical-align: top;
+           background-color: $green;
+           @include custom-border-radius (0, 0, 0, 0);
+            &:hover {
+                background-color: $orange;
+            }
+       }
+       #alertSuccess {
+           color: white;
+       }
+   }
+   #alertError {
+      color: maroon;
+      margin-left: 10px;
+  }
+}
+
+#resource-footer {
+    background-color: #CFCFCF;
+    width: 657px;
+    padding: 15px;
+    margin-left: 137px;
 }

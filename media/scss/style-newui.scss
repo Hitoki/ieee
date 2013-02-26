@@ -414,12 +414,6 @@ ul#view-header li {
 /* Content */
 #resource_container {
     padding-right: 5%;
-}   
-  
-#content {
-    clear: both;
-    margin-top: 16px;
-    display: inline-block;
 }
   
 #content .sc_img {
@@ -2508,62 +2502,6 @@ td.machine-generated-column {
 .truncatedText {
     border-bottom: 1px dotted black;
     display: inline;
-}
-  
-#alertWrapper {
-   display: block;
-   clear: both;
-   margin: 10px 0 0 150px;
-   text-align: center;
-   #alertContainer {
-       background-color: $primaryColor;
-       color: $white;
-       display: inline-block;
-       padding-left: 10px;
-       border: 1px solid $black;
-       @include default-border-radius;
-       &.success {
-           background-color: $green;
-           padding: 3px 74px 4px;
-       }
-       #notificationRequestEmail {
-            border: 0 none;
-            padding: 5px 3px 4px;
-            display: inline-block;
-            font-size: 10pt;
-            width: 135px;
-            margin: -1px -8px -1px 8px;
-            position: relative;
-            outline: none;
-            border: 1px solid black;
-            @include default-border-radius;
-            &.defaultValue {
-                color: #9F9F9F;
-            }
-       }
-       #notificationRequestButton {
-           border: 0 none;
-           padding: 4px 15px 5px;
-           vertical-align: top;
-           background-color: $green;
-           @include custom-border-radius(0, 3px, 3px, 0);
-            &:hover {
-                background-color: $orange;
-            }
-       }
-       #alertSuccess {
-           color: white;
-       }
-   }
-   .helpicon {
-        margin-left: 10px;
-        background-color: $white;
-        @include custom-border-radius (10px, 10px, 10px, 10px);
-   }
-   #alertError {
-      color: maroon;
-      margin-left: 10px;
-  }
 }
 
 #tags-live-search.defaultValue {
