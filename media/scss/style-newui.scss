@@ -980,6 +980,10 @@ table.vert-center td {
     text-align:center;
     color:#aaa;
 }
+
+#tags #loading .spinner {
+    left: 50% !important;
+}
   
 .empty-loading {
     margin-top: 75px;
