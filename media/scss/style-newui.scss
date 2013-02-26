@@ -2518,3 +2518,7 @@ td.machine-generated-column {
     background: url(/media/images/bottom-fade.png) bottom center repeat-x;
     @include custom-border-radius (0, 0, 10px, 10px);
 }
+
+a#zenbox_tab {
+    top: 50% !important;
+}
