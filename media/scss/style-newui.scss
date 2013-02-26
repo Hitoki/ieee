@@ -740,9 +740,6 @@ ul#sectors, ul#societies {
 #alternate-page #tag-galaxy {
     background-color: $white;
     overflow: hidden;
-    div.tag {
-       padding-top: 7px;
-    }
     div.node {
         float: left;
         margin: 4px .5em;
@@ -757,6 +754,7 @@ ul#sectors, ul#societies {
             display: block;
             overflow: hidden;
             background-color: #009FDA;
+            margin-top: 5px;
             background: $secondaryColor url(/media/images/tag-corner.png) no-repeat top right;
             -webkit-transition: background-color 0.15s ease-in;
             -moz-transition : background-color 0.15s ease-in;
@@ -778,6 +776,7 @@ ul#sectors, ul#societies {
         color: $gray !important;
     }
     div.tag_cluster a {
+        margin-top: 0;
         padding: 0.6em 0.6em;
         background-color: $primaryColor;
     }
