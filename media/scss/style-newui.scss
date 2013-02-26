@@ -754,13 +754,10 @@ ul#sectors, ul#societies {
             white-space: nowrap;
             padding: .2em .5em;
             color: $white;
-            border: 1px solid transparent;
             display: block;
             overflow: hidden;
             background-color: #009FDA;
-            //-webkit-transition: background-color 0.15s ease-in;
-            //-moz-transition : background-color 0.15s ease-in;
-            //@include custom-border-radius (15px, 15px, 15px, 15px);
+            background: $secondaryColor url(/media/images/tag-corner.png) no-repeat top right;
             &:hover {
                 background-color: $orange;
             }
@@ -776,14 +773,12 @@ ul#sectors, ul#societies {
     }
     div.node-taxonomy-term a {
         border: 1px solid $light-gray !important;
-        background: $light-gray !important;
+        background-color: $light-gray !important;
         color: $gray !important;
     }
     div.tag_cluster a {
-        //border-color: transparent;
-        //background: $white;
         padding: 0.4em 0.5em;
-        border: 3px solid $primaryColor;
+        background-color: $primaryColor;
     }
 } 
     
