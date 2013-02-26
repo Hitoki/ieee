@@ -1926,7 +1926,8 @@ div.group ul li:first-child {
   
 .search-container {
     margin: 0 auto;
-    width: 311px;
+    width: 333px;
+    text-align: right;
 }
   
 .search-container span.feature_label,
@@ -2141,6 +2142,8 @@ div.group ul li:first-child {
 
 #societySelect_options {
     width: 250px;
+    overflow-y: scroll;
+    height: 300px;
 }
   
 #societyContainer_inner,
@@ -2151,7 +2154,9 @@ display: inline;
   
 #societySelect_options li,
 #sortSelect_options li {
-padding-left: 3px;
+padding-left: 5px;
+text-indent: -4px;
+padding-right: 5px;
 }
 
 #sortSelect {
