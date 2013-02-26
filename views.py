@@ -307,6 +307,12 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
     counts = 0
     jobsCount = "0"
 
+    if request.META['HTTP_REFERER'].endswith('/textui_new'):
+        NEWUI = True
+    else:
+        NEWUI = False
+    context['NEWUI'] = NEWUI
+
     #sectors1 = tag.get_sectors()
     #counts += sectors1.count()
 
