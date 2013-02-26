@@ -213,7 +213,7 @@ p.admin-links {
 }
   
 footer {
-   background-color: #2B5C85; // TODO: change to variable
+   background-color: $primaryColor;
    #footer {
        clear: both;
        margin: 0 auto;
@@ -758,6 +758,8 @@ ul#sectors, ul#societies {
             overflow: hidden;
             background-color: #009FDA;
             background: $secondaryColor url(/media/images/tag-corner.png) no-repeat top right;
+            -webkit-transition: background-color 0.15s ease-in;
+            -moz-transition : background-color 0.15s ease-in;
             &:hover {
                 background-color: $orange;
             }
@@ -2385,7 +2387,7 @@ header {
 }
   
 #tag-tools {
-    background-color: #2B5C85; // TODO: change to variable
+    background-color: $primaryColor;
     color: $white;
     p#tag-and-cluster-counts {
        margin: 0;
@@ -2506,4 +2508,14 @@ td.machine-generated-column {
 
 #tags-live-search.defaultValue {
     color: #9F9F9F;
+}
+
+#bottom_fade {
+    height: 45px;
+    z-index: 99;
+    position: absolute;
+    bottom: 11px;
+    pointer-events: none;
+    background: url(/media/images/bottom-fade.png) bottom center repeat-x;
+    @include custom-border-radius (0, 0, 10px, 10px);
 }
