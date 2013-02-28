@@ -55,9 +55,9 @@
         
         //////////
         
-        function refreshTagsTable() {
+        function refreshTagsTable(type) {
             CreateOverShadow($('#tags-table-content'), '<div class="tags-table-loading">Loading...</div>');
-            $('#tags-table-content').load("{% url admin_manage_society_tags_table society.id tag_sort tag_page items_per_page %}", refreshTagsTable2);
+            $('#tags-table-content').load("{% url admin_manage_society_tags_table society.id tag_sort tag_page items_per_page %}?tag_type="+type, refreshTagsTable2);
         }
         
         function refreshTagsTable2() {
@@ -381,7 +381,12 @@
                 $('#add-topic-areas-input').val('');
             });
             */
-        });
+        $("#show-topics-topic-areas").change(function () {
+            var val = $(this).val();
+            refreshTagsTable(val);
+        });        
+    });        
+
         
     </script>
 
@@ -421,6 +426,13 @@
                         &nbsp; 
                         <input type="button" id="create-tag-float" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic" />
                         
+    Show:
+    <select id="show-topics-topic-areas">
+        <option value="both">Topics & Topic Areas</option>
+        <option value="topic">Topics Only</option>
+        <option value="topic-areas">Topic Areas Only</option>
+    </select>
+
                         <div id="add-topic-topic-area">
                             Add <select id="add-topics-topic-areas">
                                 <option value="topics">Topics</option>

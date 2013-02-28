@@ -3559,19 +3559,26 @@ def view_society(request, society_id):
         'society': society,
     })
 
-def _get_paged_tags(items_per_page, society, tag_sort, tag_page, tag_filter):
+def _get_paged_tags(items_per_page, society, tag_sort, tag_page, tag_filter, tag_type):
     'Gets a list of a certain number of tags, sorted appropriately, for a society.'
     assert type(items_per_page) is int
     assert type(tag_page) is int
     
+    node_types = [NodeType.TAG,NodeType.TAG_CLUSTER]
+
+    if tag_type == 'topic':
+        node_types.remove(NodeType.TAG_CLUSTER)
+    elif tag_type == 'topic-areas':
+        node_types.remove(NodeType.TAG)
+
     if tag_sort == 'name_ascending':
-        tags = society.tags.order_by('name')
+        tags = society.tags.filter(node_type__name__in=node_types).order_by('name')
     elif tag_sort == 'name_descending':
-        tags = society.tags.order_by('-name')
+        tags = society.tags.filter(node_type__name__in=node_types).order_by('-name')
     
 
     elif tag_sort == 'sector_list_ascending':
-        tags = society.tags.extra(select={
+        tags = society.tags.filter(node_type__name__in=node_types).extra(select={
             'sectors_list': """
                 SELECT GROUP_CONCAT(sectors.name ORDER BY sectors.name SEPARATOR ', ')
                 FROM ieeetags_node_parents INNER JOIN ieeetags_node AS sectors
@@ -3583,7 +3590,7 @@ def _get_paged_tags(items_per_page, society, tag_sort, tag_page, tag_filter):
             'sectors_list',
         ])
     elif tag_sort == 'sector_list_descending':
-        tags = society.tags.extra(select={
+        tags = society.tags.filter(node_type__name__in=node_types).extra(select={
             'sectors_list': """
                 SELECT GROUP_CONCAT(sectors.name ORDER BY sectors.name SEPARATOR ', ')
                 FROM ieeetags_node_parents INNER JOIN ieeetags_node AS sectors
@@ -3595,7 +3602,7 @@ def _get_paged_tags(items_per_page, society, tag_sort, tag_page, tag_filter):
             '-sectors_list',
         ])
     elif tag_sort == 'topic_area_ascending':
-        tags = society.tags.extra(select={
+        tags = society.tags.filter(node_type__name__in=node_types).extra(select={
             'topic_area': """
                 SELECT GROUP_CONCAT(sectors.name ORDER BY sectors.name SEPARATOR ', ')
                 FROM ieeetags_node_parents INNER JOIN ieeetags_node AS sectors
@@ -3608,7 +3615,7 @@ def _get_paged_tags(items_per_page, society, tag_sort, tag_page, tag_filter):
         ])
 
     elif tag_sort == 'topic_area_descending':
-        tags = society.tags.extra(select={
+        tags = society.tags.filter(node_type__name__in=node_types).extra(select={
             'topic_area': """
                 SELECT GROUP_CONCAT(sectors.name ORDER BY sectors.name SEPARATOR ', ')
                 FROM ieeetags_node_parents INNER JOIN ieeetags_node AS sectors
@@ -3621,52 +3628,52 @@ def _get_paged_tags(items_per_page, society, tag_sort, tag_page, tag_filter):
         ])
     
     elif tag_sort == 'num_societies_ascending':
-        tags = society.tags.extra(select={
+        tags = society.tags.filter(node_type__name__in=node_types).extra(select={
             'num_societies': 'SELECT COUNT(ieeetags_node_societies.id) FROM ieeetags_node_societies WHERE ieeetags_node_societies.node_id = ieeetags_node.id',
         }, order_by=[
             'num_societies',
         ])
     elif tag_sort == 'num_societies_descending':
-        tags = society.tags.extra(select={
+        tags = society.tags.filter(node_type__name__in=node_types).extra(select={
             'num_societies': 'SELECT COUNT(ieeetags_node_societies.id) FROM ieeetags_node_societies WHERE ieeetags_node_societies.node_id = ieeetags_node.id',
         }, order_by=[
             '-num_societies',
         ])
     
     elif tag_sort == 'num_filters_ascending':
-        tags = society.tags.extra(select={
+        tags = society.tags.filter(node_type__name__in=node_types).extra(select={
             'num_filters': 'SELECT COUNT(ieeetags_node_filters.id) FROM ieeetags_node_filters WHERE ieeetags_node_filters.node_id = ieeetags_node.id',
         }, order_by=[
             'num_filters',
         ])
     elif tag_sort == 'num_filters_descending':
-        tags = society.tags.extra(select={
+        tags = society.tags.filter(node_type__name__in=node_types).extra(select={
             'num_filters': 'SELECT COUNT(ieeetags_node_filters.id) FROM ieeetags_node_filters WHERE ieeetags_node_filters.node_id = ieeetags_node.id',
         }, order_by=[
             '-num_filters',
         ])
     
     elif tag_sort == 'num_resources_ascending':
-        tags = society.tags.extra(select={
+        tags = society.tags.filter(node_type__name__in=node_types).extra(select={
             'num_resources1': 'SELECT COUNT(ieeetags_resource_nodes.id) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id',
         }, order_by=[
             'num_resources1',
         ])
     elif tag_sort == 'num_resources_descending':
-        tags = society.tags.extra(select={
+        tags = society.tags.filter(node_type__name__in=node_types).extra(select={
             'num_resources1': 'SELECT COUNT(ieeetags_resource_nodes.id) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id',
         }, order_by=[
             '-num_resources1',
         ])
     
     elif tag_sort == 'num_related_tags_ascending':
-        tags = society.tags.extra(select={
+        tags = society.tags.filter(node_type__name__in=node_types).extra(select={
             'num_related_tags1': 'SELECT COUNT(ieeetags_node_related_tags.id) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id',
         }, order_by=[
             'num_related_tags1',
         ])
     elif tag_sort == 'num_related_tags_descending':
-        tags = society.tags.extra(select={
+        tags = society.tags.filter(node_type__name__in=node_types).extra(select={
             'num_related_tags1': 'SELECT COUNT(ieeetags_node_related_tags.id) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id',
         }, order_by=[
             '-num_related_tags1',
@@ -3845,7 +3852,7 @@ def manage_society(request, society_id):
     resource_page_url = reverse('admin_manage_society', args=[society.id]) + '?resource_sort=' + quote(resource_sort) + '&amp;resource_filter=' + quote(resource_filter) + '&amp;resource_filter=' + quote(resource_filter) + '&amp;items_per_page=' + quote(str(items_per_page)) + '&amp;resource_page={{ page }}#tab-resources-tab'
 
 
-    (tags, num_tag_pages, num_unfiltered_tags, num_filtered_tags) = _get_paged_tags(items_per_page, society, tag_sort, tag_page, tag_filter)
+    (tags, num_tag_pages, num_unfiltered_tags, num_filtered_tags) = _get_paged_tags(items_per_page, society, tag_sort, tag_page, tag_filter, None)
 
     tag_page_url = reverse('admin_manage_society', args=[society.id]) + '?tag_sort=' + quote(tag_sort) + '&amp;items_per_page=' + quote(str(items_per_page)) + '&amp;tag_page={{ page }}#tab-tags-tab'
     
@@ -3912,7 +3919,9 @@ def manage_society_tags_table(request, society_id, tag_sort, tag_page, items_per
     num_unfiltered_tags = society.tags.filter(node_type__name=NodeType.TAG).count()
     tag_page = int(tag_page)
     items_per_page = int(items_per_page)
-    (tags, num_tag_pages, num_unfiltered_tags, num_filtered_tags) = _get_paged_tags(items_per_page, society, tag_sort, tag_page, tag_filter)
+    tag_filter = ''
+    tag_type = request.GET.get('tag_type', '')
+    (tags, num_tag_pages, num_unfiltered_tags, num_filtered_tags) = _get_paged_tags(items_per_page, society, tag_sort, tag_page, tag_filter, tag_type)
     tag_page_url = reverse('admin_manage_society', args=[society.id]) + '?tag_sort=' + quote(tag_sort) + '&amp;items_per_page=' + quote(str(items_per_page)) + '&amp;tag_page={{ page }}#tab-tags-tab'
 
     return_url = reverse('admin_manage_society', args=[society.id]) + '?' + urlencode({
@@ -3936,7 +3945,7 @@ def manage_society_tags_table(request, society_id, tag_sort, tag_page, items_per
         'items_per_page_form': items_per_page_form,
         'tag_filter': tag_filter,
         'num_unfiltered_tags': num_unfiltered_tags,
-        'num_filtered_tags': num_tags,
+        'num_filtered_tags': num_filtered_tags,
     })
 
 @login_required
