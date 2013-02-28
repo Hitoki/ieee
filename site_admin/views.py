@@ -3240,7 +3240,7 @@ def edit_cluster(request, cluster_id=None):
     return_url = request.GET.get('return_url', '')        
     society_id = request.GET.get('society_id', '')        
 
-    if society_id and cluster is None:
+    if society_id:
         society = Society.objects.get(id=society_id)
     else:
         society = None
@@ -3249,20 +3249,20 @@ def edit_cluster(request, cluster_id=None):
         # Show the form
         if cluster is None:
             # New cluster
-            form = EditClusterForm(initial={
+            form = EditClusterForm(role = request.user.get_profile().role, initial={
                 'societies': (society,) if society else None
             })
                 
         else:
             # Existing cluster
             tags = cluster.get_tags()
-            form = EditClusterForm(instance=cluster, initial={
+            form = EditClusterForm(user=request.user, instance=cluster, initial={
                 'tags': tags,
                 'societies': cluster.societies.all(),
             })
     else:
         # Process the form
-        form = EditClusterForm(request.POST, instance=cluster)
+        form = EditClusterForm(request.POST, user=request.user, instance=cluster)
         if form.is_valid():
             #tags = form.cleaned_data['tags']
             

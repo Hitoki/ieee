@@ -232,6 +232,22 @@ class EditClusterForm(ModelForm):
     topics = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget=MultiSearchWidget(remove_link_flyover_text='Remove Topic from this Topic Area', blur_text='Type a few characters to bring up matching topics'))
     societies = ModelMultipleChoiceField(queryset=Society.objects.all(), label='Organization', widget=CheckboxSelectMultipleColumns(columns=3))
 
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super(EditClusterForm, self).__init__(*args, **kwargs)
+        
+        user_role = user.get_profile().role
+        if user_role  == Profile.ROLE_SOCIETY_MANAGER:
+            # Name is read-only
+            self.fields['name'] = CharField(widget=DisplayOnlyWidget(field_type=CharField))
+            # Organizations are hidden
+            self.fields['societies'].widget =  self.fields['societies'].hidden_widget()
+            # Topics are a checkbox list
+            allnodes = Node.objects.get_tags_for_user(user)
+            self.fields['topics'] = ModelMultipleChoiceField(queryset=allnodes, widget=CheckboxSelectMultipleColumns(columns=3), required=False)
+            initialnodes = allnodes.filter(parents__id__contains=self.instance.pk);
+            self.fields['topics'].initial = initialnodes
+
     class Meta:
         model = Node
         fields = ['id','name','societies']
