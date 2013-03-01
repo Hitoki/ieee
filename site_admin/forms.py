@@ -244,11 +244,12 @@ class EditClusterForm(ModelForm):
             # Organizations are hidden
             self.fields['societies'].widget =  self.fields['societies'].hidden_widget()
 
+            # Show all topics associated with this topic area
+            allnodes = self.instance.child_nodes.all()            
+
             # Topics are a checkbox list
             self.fields['topics'] = ModelMultipleChoiceField(queryset=allnodes, widget=CheckboxSelectMultipleColumns(columns=3), required=False)
 
-            # Show all topics associated with this topic area
-            allnodes = self.instance.child_nodes.all()            
             # Topics already associated with this society are prechecked.
             initialnodes = allnodes.filter(societies__id__contains=society.id);
             self.fields['topics'].initial = initialnodes
