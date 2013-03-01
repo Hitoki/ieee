@@ -3249,7 +3249,7 @@ def edit_cluster(request, cluster_id=None):
         # Show the form
         if cluster is None:
             # New cluster
-            form = EditClusterForm(role = request.user.get_profile().role, initial={
+            form = EditClusterForm(user=request.user, initial={
                 'societies': (society,) if society else None
             })
                 
