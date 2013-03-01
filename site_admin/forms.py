@@ -234,6 +234,7 @@ class EditClusterForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
+        society = kwargs.pop('society', None)
         super(EditClusterForm, self).__init__(*args, **kwargs)
         
         user_role = user.get_profile().role
@@ -242,10 +243,14 @@ class EditClusterForm(ModelForm):
             self.fields['name'] = CharField(widget=DisplayOnlyWidget(field_type=CharField))
             # Organizations are hidden
             self.fields['societies'].widget =  self.fields['societies'].hidden_widget()
+
             # Topics are a checkbox list
-            allnodes = Node.objects.get_tags_for_user(user)
             self.fields['topics'] = ModelMultipleChoiceField(queryset=allnodes, widget=CheckboxSelectMultipleColumns(columns=3), required=False)
-            initialnodes = allnodes.filter(parents__id__contains=self.instance.pk);
+
+            # Show all topics associated with this topic area
+            allnodes = self.instance.child_nodes.all()            
+            # Topics already associated with this society are prechecked.
+            initialnodes = allnodes.filter(societies__id__contains=society.id);
             self.fields['topics'].initial = initialnodes
 
     class Meta:

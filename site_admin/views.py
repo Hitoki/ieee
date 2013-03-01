@@ -3249,14 +3249,14 @@ def edit_cluster(request, cluster_id=None):
         # Show the form
         if cluster is None:
             # New cluster
-            form = EditClusterForm(user=request.user, initial={
+            form = EditClusterForm(user=request.user, socieyt=society, initial={
                 'societies': (society,) if society else None
             })
                 
         else:
             # Existing cluster
             tags = cluster.get_tags()
-            form = EditClusterForm(user=request.user, instance=cluster, initial={
+            form = EditClusterForm(user=request.user, society=society, instance=cluster, initial={
                 'tags': tags,
                 'societies': cluster.societies.all(),
             })

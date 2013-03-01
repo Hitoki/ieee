@@ -134,18 +134,6 @@ class NodeManager(models.Manager):
             raise Exception('Require 1 root node, found ' + str(len(nodes)))
         return nodes[0]
 
-    def get_tags_for_user(self, user):
-        'Returns all societies that the given user has access to.'
-        if user.get_profile().role == Profile.ROLE_ADMIN:
-            return self.getNodesForType(NodeType.TAG)
-        elif user.get_profile().role == Profile.ROLE_SOCIETY_ADMIN:
-            return self.getNodesForType(NodeType.TAG)
-        elif user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER:
-            return self.getNodesForType(NodeType.TAG).filter(societies__contains=Society.objects.getForUser(user))
-        else:
-            raise Exception('Unknown role "%s"' % user.get_profile().role)
-
-
     def getSectors(self):
         'Gets all sectors.'
         return self.filter(node_type__name=NodeType.SECTOR)
