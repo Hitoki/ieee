@@ -3731,7 +3731,7 @@ def manage_society(request, society_id):
     tag_sort = request.GET.get('tag_sort', 'name_ascending')
     tag_page = int(request.GET.get('tag_page', 1))
 
-    tag_type = request.GET.get('tag_type', 'topic-areas')
+    tag_type = request.GET.get('tag_type', '').strip()
     
     society = Society.objects.get(id=society_id)
     
@@ -3921,8 +3921,8 @@ def manage_society_tags_table(request, society_id, tag_sort, tag_page, items_per
     num_unfiltered_tags = society.tags.filter(node_type__name=NodeType.TAG).count()
     tag_page = int(tag_page)
     items_per_page = int(items_per_page)
-    tag_type = request.GET.get('tag_type', '')
-    tag_filter = request.GET.get('tag_filter', '')
+    tag_type = request.GET.get('tag_type', '').strip()
+    tag_filter = request.GET.get('tag_filter', '').strip()
     (tags, num_tag_pages, num_unfiltered_tags, num_filtered_tags) = _get_paged_tags(items_per_page, society, tag_sort, tag_page, tag_filter, tag_type)
     tag_page_url = reverse('admin_manage_society', args=[society.id]) + '?tag_sort=' + quote(tag_sort) + '&amp;items_per_page=' + quote(str(items_per_page)) + '&amp;tag_page={{ page }}#tab-tags-tab&amp;tag_type=' + tag_type
 
