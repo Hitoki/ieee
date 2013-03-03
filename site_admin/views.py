@@ -3699,7 +3699,7 @@ def _get_paged_tags(items_per_page, society, tag_sort, tag_page, tag_filter, tag
     num_filtered_tags = tags.count()
 
     tags = tags[tag_start_count:tag_end_count]
-    
+
     return (tags, num_tag_pages, num_unfiltered_tags, num_filtered_tags)
 
 @login_required
@@ -3730,6 +3730,8 @@ def manage_society(request, society_id):
     # Default to name/ascending tag_sort
     tag_sort = request.GET.get('tag_sort', 'name_ascending')
     tag_page = int(request.GET.get('tag_page', 1))
+
+    tag_type = request.GET.get('tag_type', 'topic-areas')
     
     society = Society.objects.get(id=society_id)
     
@@ -3851,8 +3853,7 @@ def manage_society(request, society_id):
     resources1 = resources1[resource_start_count:resource_end_count]
     resource_page_url = reverse('admin_manage_society', args=[society.id]) + '?resource_sort=' + quote(resource_sort) + '&amp;resource_filter=' + quote(resource_filter) + '&amp;resource_filter=' + quote(resource_filter) + '&amp;items_per_page=' + quote(str(items_per_page)) + '&amp;resource_page={{ page }}#tab-resources-tab'
 
-
-    (tags, num_tag_pages, num_unfiltered_tags, num_filtered_tags) = _get_paged_tags(items_per_page, society, tag_sort, tag_page, tag_filter, None)
+    (tags, num_tag_pages, num_unfiltered_tags, num_filtered_tags) = _get_paged_tags(items_per_page, society, tag_sort, tag_page, tag_filter, tag_type)
 
     tag_page_url = reverse('admin_manage_society', args=[society.id]) + '?tag_sort=' + quote(tag_sort) + '&amp;items_per_page=' + quote(str(items_per_page)) + '&amp;tag_page={{ page }}#tab-tags-tab'
     
@@ -3878,7 +3879,7 @@ def manage_society(request, society_id):
     
     # Invalidate all resource-related caches, so they are regenerated.
     Cache.objects.delete('ajax_textui_nodes')
-    
+
     return render(request, 'site_admin/manage_society.html', {
         'society': society,
         'form': form,
@@ -3903,6 +3904,7 @@ def manage_society(request, society_id):
         'tag_filter': tag_filter,
         'num_unfiltered_tags': num_unfiltered_tags,
         'num_filtered_tags': num_filtered_tags,
+        'tag_type': tag_type,
         
         'return_url': request.get_full_path(),
         'items_per_page': items_per_page,
@@ -3919,10 +3921,10 @@ def manage_society_tags_table(request, society_id, tag_sort, tag_page, items_per
     num_unfiltered_tags = society.tags.filter(node_type__name=NodeType.TAG).count()
     tag_page = int(tag_page)
     items_per_page = int(items_per_page)
-    tag_filter = ''
     tag_type = request.GET.get('tag_type', '')
+    tag_filter = request.GET.get('tag_filter', '')
     (tags, num_tag_pages, num_unfiltered_tags, num_filtered_tags) = _get_paged_tags(items_per_page, society, tag_sort, tag_page, tag_filter, tag_type)
-    tag_page_url = reverse('admin_manage_society', args=[society.id]) + '?tag_sort=' + quote(tag_sort) + '&amp;items_per_page=' + quote(str(items_per_page)) + '&amp;tag_page={{ page }}#tab-tags-tab'
+    tag_page_url = reverse('admin_manage_society', args=[society.id]) + '?tag_sort=' + quote(tag_sort) + '&amp;items_per_page=' + quote(str(items_per_page)) + '&amp;tag_page={{ page }}#tab-tags-tab&amp;tag_type=' + tag_type
 
     return_url = reverse('admin_manage_society', args=[society.id]) + '?' + urlencode({
         'tag_sort':tag_sort,
@@ -3946,6 +3948,7 @@ def manage_society_tags_table(request, society_id, tag_sort, tag_page, items_per
         'tag_filter': tag_filter,
         'num_unfiltered_tags': num_unfiltered_tags,
         'num_filtered_tags': num_filtered_tags,
+        'tag_type': tag_type,
     })
 
 @login_required

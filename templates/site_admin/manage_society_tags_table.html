@@ -36,14 +36,17 @@
         $('input.select-tags').click(function() {
             updateBatchEditTagsButtons();
         });
+
     });
     
 </script>
 {% endcomment %}
+
 <div id='topic-filter'>
     <form action="{% url admin_manage_society society.id %}" method="get">
         <input type="hidden" name="tag_sort" value="{{ tag_sort }}" />
         <input type="hidden" name="items_per_page" value="{{ items_per_page }}" />
+        <input type="hidden" id="tag_type" name="tag_type" value="{{ tag_type }}" />
         <p>
             <input name="tag_filter" value="{{ tag_filter }}" class="blur-text {text: 'Enter whole or partial words', blurClass:'multi-search-input-blur'}" id="tag_filter" />
             <input type="submit" value="Filter By Topic / Topic Area Name" class="submit-button" />
@@ -56,6 +59,7 @@
 </div>
 <form action="{% url admin_manage_society society.id %}#tab-tags-tab" method="get" class="items-per-page">
     <input type="hidden" name="tag_sort" value="{{ tag_sort }}" />
+    <input type="hidden" name="tag_type" value="{{ tag_type }}" />
     <p class="items-per-page">
         Show
         {{ items_per_page_form.items_per_page }}

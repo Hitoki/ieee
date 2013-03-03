@@ -55,9 +55,10 @@
         
         //////////
         
-        function refreshTagsTable(type) {
+        function refreshTagsTable() {
+            var type = $("#show-topics-topic-areas").val();
             CreateOverShadow($('#tags-table-content'), '<div class="tags-table-loading">Loading...</div>');
-            $('#tags-table-content').load("{% url admin_manage_society_tags_table society.id tag_sort tag_page items_per_page %}?tag_type="+type, refreshTagsTable2);
+            $('#tags-table-content').load("{% url admin_manage_society_tags_table society.id tag_sort tag_page items_per_page %}?tag_type="+type+"&tag_filter={{ tag_filter }}", refreshTagsTable2);
         }
         
         function refreshTagsTable2() {
@@ -382,9 +383,11 @@
             });
             */
         $("#show-topics-topic-areas").change(function () {
-            var val = $(this).val();
-            refreshTagsTable(val);
+            refreshTagsTable();
         });        
+
+        $('#show-topics-topic-areas option[value={{ tag_type }}]').attr('selected', 'selected');
+
     });        
 
         
