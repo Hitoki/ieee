@@ -291,6 +291,10 @@ table.main {
     }
 } 
 
+.header-btns .btn.admin {
+    @include red-gradient;
+}
+
 #header #tagline {
     color: $primaryColor;
 	display: none;

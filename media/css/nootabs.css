@@ -36,7 +36,8 @@ ul.nootabs-menus li {
 }
 
 ul.nootabs-menus li a:hover {
-    color: orange;
+    color: #FFA500;
+    background-color: #EEEEEE;
     text-decoration: underline;
 }
 
