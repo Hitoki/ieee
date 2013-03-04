@@ -63,7 +63,7 @@
                                 <table id='roamer-header'>
                                     <tr>
                                         <td class="roamer-beta-warning-cell">
-                                            <span id="roamer-beta-warning">This beta interface uses a subset of data from the tags with the highest "Linkages". To explore all the data, switch to the <a href="{% url textui %}">Textual Interface</a>.
+                                            <span id="roamer-beta-warning">This beta interface uses a subset of data from the topics with the highest "Linkages". To explore all the data, switch to the <a href="{% url textui %}">Textual Interface</a>.
                                             </span>
                                         </td>
                                         <td class="key-cell">
@@ -74,7 +74,7 @@
                                                 #TODO: Re-enable when we have clusters in.
                                                 #Cluster: <img src="{{MEDIA_URL}}images/cluster.png" alt="cluster" height="15" />
                                                 {% endcomment %}
-                                                <span id="roamer-key-tag">Tag <img src="{{MEDIA_URL}}images/tag.png" alt="tag" height="15" /></span>
+                                                <span id="roamer-key-tag">Topic <img src="{{MEDIA_URL}}images/tag.png" alt="tag" height="15" /></span>
                                             </span>
                                         </td>
                                     </tr>
@@ -132,13 +132,13 @@
                             <div id="resources-explanation" class="alt-box">
                                 <div id="content" class="alt-box-pad">
                                     <p id="resources-explanation-text" class="hide-initally">
-                                        Click a tag above to display associated resources.
+                                        Click a topic above to display associated resources.
                                     </p>
                                     <p id="no-resources" class="hide-initally">
                                         There are no Resources Tagged for the "<span class="resources-tag-name"></span>" Tag
                                     </p>
                                     <a id="resources-link" href="javascript:Roamer.showResourceResultsLightbox();" class="hide-initally">
-                                        View the <span id="resources-count"></span>&nbsp;Resource<span id="resources-plural"></span> Tagged for the "<span class="resources-tag-name"></span>" Tag
+                                        View the <span id="resources-count"></span>&nbsp;Resource<span id="resources-plural"></span> Tagged for the "<span class="resources-tag-name"></span>" Topic
                                     </a>
                                 </div>
                             </div>

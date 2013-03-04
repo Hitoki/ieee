@@ -67,23 +67,23 @@ $('input:checkbox').change(function(event){
 
 <div style="padding: 2em 0">
 <div>
-<span class="countLbl">Tags shown: </span><span class="countVal">{{ tags.count }}</spn>
+<span class="countLbl">Topics shown: </span><span class="countVal">{{ tags.count }}</spn>
 <a href="{{ LOGO_HREF }}" id="countLink">Take me back to Technology Navigator</a>
 </div>
 <div>
-<span class="countLbl">Tags with old Wikipedia definitions: </span><span class="countVal">{{ preexisting_wiki_def_count }}</spn>
+<span class="countLbl">Topics with old Wikipedia definitions: </span><span class="countVal">{{ preexisting_wiki_def_count }}</spn>
 </div>
 <div>
-<span class="countLbl">Tags with new Wikipedia definitions: </span><span class="countVal">{{ new_wiki_def_count }}</spn>
+<span class="countLbl">Topics with new Wikipedia definitions: </span><span class="countVal">{{ new_wiki_def_count }}</spn>
 </div>
 <div>
-<span class="countLbl">Tags with other definitions: </span><span class="countVal">{{ other_def_count }}</spn>
+<span class="countLbl">Topics with other definitions: </span><span class="countVal">{{ other_def_count }}</spn>
 </div>
 <br/> 
  <table style="width: 400px;">
     <tbody>
       <tr>
-          <th>Tag Name</th>
+          <th>Topic Name</th>
           <th>Definition Type</th>
           <th>Definition</th>
       </tr>
@@ -95,7 +95,7 @@ $('input:checkbox').change(function(event){
         <td>{{ tag.short_definition }} {{ tag.definition_link|safe }} </td>
       </tr>
       {% empty %}
-       <td colspan="4">Sorry no matching tags found.</td>
+       <td colspan="4">Sorry no matching topics found.</td>
       {% endfor %}
     </tbody>
   </table>

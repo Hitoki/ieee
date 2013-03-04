@@ -61,7 +61,7 @@ $('input:checkbox').change(function(event){
 
 <div style="padding: 2em 0">
 <div>
-<span class="countLbl">Tags shown: </span><span class="countVal">{{ tags.count }}</span>
+<span class="countLbl">Topics shown: </span><span class="countVal">{{ tags.count }}</span>
 <a href="{{ LOGO_HREF }}" id="countLink">Take me back to Technology Navigator</a>
 </div>
 <br/> 
@@ -83,7 +83,7 @@ $('input:checkbox').change(function(event){
 	{% if show_checkbox %}<td class="cb"><input type="checkbox" data-nodeId="{{ tag.pk }}" {% if tag.high_potency %} checked="checked"{% endif %}></input></td><td class="result"></td>{% endif %}
       </tr>
       {% empty %}
-       <td colspan="4">Sorry no matching tags found.</td>
+       <td colspan="4">Sorry no matching topics found.</td>
       {% endfor %}
     </tbody>
   </table>
