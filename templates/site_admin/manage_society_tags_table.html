@@ -319,8 +319,8 @@
     {% if user.get_profile.role == 'admin' %}
         <input type="button" id="create-topic-area" onclick="location.href='{% url admin_create_cluster %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic Area" />
     {% endif %}
-    {% endcomment %}
     <input type="button" id="create-tag" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.
     id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic" />
+    {% endcomment %}
         <span style="clear:both;">&nbsp;</span>
 </div>
