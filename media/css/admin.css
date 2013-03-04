@@ -718,6 +718,15 @@ ul.nootabs-menus li a {
 }
 
 #topic-filter form {
-    display: inline-block;
-    margin-right: 15px;
+    float: right;
 }
+
+#topic-filter form p {
+    margin: 0;
+}
+
+#topic-filter div {
+    float: left;
+    margin-top: 3px;
+}
+
