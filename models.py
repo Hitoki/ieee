@@ -832,7 +832,7 @@ class NodeSocietiesManager(models.Manager):
                 ns.save()
 
     def update_for_society_cluster(self, nodes, society, cluster):
-        nodes_to_delete = cluster.child_nodes.all().filter(societies__id__contains=society.id).exclude(id__in=nodes.values_list('id'))
+        nodes_to_delete = self.filter(society=society, node__parents__id__contains=cluster.id).exclude(node__in=nodes)
         nodes_to_delete.delete()
 
         for node in nodes:
