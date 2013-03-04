@@ -831,6 +831,18 @@ class NodeSocietiesManager(models.Manager):
                 ns.date_created = datetime.utcnow()
                 ns.save()
 
+    def update_for_society_cluster(self, nodes, society, cluster):
+        import ipdb; ipdb.set_trace()
+        nodes_to_delete = cluster.child_nodes.all().filter(societies__id__contains=society.id).exclude(id__in=nodes.values_list('id'))
+        nodes_to_delete.delete()
+
+        for node in nodes:
+            ns, created = self.get_or_create(node=node, society=society)
+            if created:
+                ns.date_created = datetime.utcnow()
+                ns.save()
+        
+
 class NodeSocieties(models.Model):
     node = models.ForeignKey('Node', related_name='node_societies')
     society = models.ForeignKey('Society', related_name='node_societies')

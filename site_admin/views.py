@@ -3276,8 +3276,7 @@ def edit_cluster(request, cluster_id=None):
                 if user_role == Profile.ROLE_ADMIN:
                     cluster.child_nodes = form.cleaned_data['topics']
                 if user_role == Profile.ROLE_SOCIETY_MANAGER:
-                    # TODO implement save
-                    pass
+                    NodeSocieties.objects.update_for_society_cluster(form.cleaned_data['topics'], society, cluster)
 
                 cluster.save()
             else:
