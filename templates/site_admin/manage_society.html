@@ -57,7 +57,8 @@
         
         function refreshTagsTable() {
             var type = $("#show-topics-topic-areas").val();
-            CreateOverShadow($('#tags-table-content'), '<div class="tags-table-loading">Loading...</div>');
+            // Disabling loading message
+            //CreateOverShadow($('#tags-table-content'), '<div class="tags-table-loading">Loading...</div>');
             $('#tags-table-content').load("{% url admin_manage_society_tags_table society.id tag_sort tag_page items_per_page %}?tag_type="+type+"&tag_filter={{ tag_filter }}", refreshTagsTable2);
         }
         
@@ -451,6 +452,14 @@
                                 <select id="add-topic-areas-select" size="5" multiple="multiple">
                                 </select>
                                 <input id="add-topic-areas-button" type="button" value="Add" />
+                            </div>
+
+                            <div style="margin:25px 0 -40px;">
+                                Show <select id="show-topics-topic-areas">
+                                    <option value="both">Topics &amp; Topic Areas</option>
+                                    <option value="topic">Topics Only</option>
+                                    <option value="topic-areas">Topic Areas Only</option>
+                                </select>
                             </div>
                         </div>
                         <br style='clear:both;' />
