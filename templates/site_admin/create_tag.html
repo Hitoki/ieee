@@ -120,6 +120,16 @@
                     {{ form.name }}
                 </td>
             </tr>
+            <tr>
+                <th>
+                    <label for="id_name">{{ form.definition.label }} <span class="help_icon flyover {position: 'top', customClass:'editForm'}" title="Longer description of the key concept or technology area.">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.definition.errors }}
+                    {{ form.definition }}
+                </td>
+            </tr>
+
             {% comment %}
             <tr>
                 <th>

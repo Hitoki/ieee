@@ -2876,6 +2876,7 @@ def create_tag(request):
         if form.is_valid():
             tag = Node.objects.create(
                 name=form.cleaned_data['name'],
+                definition=form.cleaned_data['definition'],
                 node_type=NodeType.objects.getFromName(NodeType.TAG),
             )
             tag.parents=form.cleaned_data['sectors']
