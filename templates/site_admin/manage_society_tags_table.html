@@ -56,6 +56,11 @@
             {% endifnotequal %}
             </p>
     </form>
+    Show <select id="show-topics-topic-areas">
+        <option value="both">Topics &amp; Topic Areas</option>
+        <option value="topic">Topics Only</option>
+        <option value="topic-areas">Topic Areas Only</option>
+    </select>
 </div>
 <form action="{% url admin_manage_society society.id %}#tab-tags-tab" method="get" class="items-per-page">
     <input type="hidden" name="tag_sort" value="{{ tag_sort }}" />

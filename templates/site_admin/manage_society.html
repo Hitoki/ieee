@@ -428,13 +428,6 @@
                         {% endif %}
                         &nbsp; 
                         <input type="button" id="create-tag-float" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic" />
-                        
-    Show:
-    <select id="show-topics-topic-areas">
-        <option value="both">Topics & Topic Areas</option>
-        <option value="topic">Topics Only</option>
-        <option value="topic-areas">Topic Areas Only</option>
-    </select>
 
                         <div id="add-topic-topic-area">
                             Add <select id="add-topics-topic-areas">
@@ -491,8 +484,7 @@
                                 </p>
                             </form>
                         {% endif %}
-                        
-                        
+
                         {% if not resources %}
                             {% if  not num_unfiltered_resources %}
                                 <h1 class="no-resources-message">There are no resources assigned to this organization yet</h1>
