@@ -5,6 +5,7 @@
 
 {% block main_table_content %}
 <script type="text/javascript">
+    {% comment %}
     $(function() {
         var printDropDown = $('#printSelect').imageDropdown({'selectList': $("ul#printSelect_options")});
         printDropDown.bind('change', function(){
@@ -19,6 +20,7 @@
             printDropDown.reset();
         })
     });
+    {% endcomment %}
 
     $(function() {
         $('#notificationRequestEmail').focus(function() {
@@ -97,6 +99,7 @@ function isValidEmailAddress(emailAddress) {
 </script>
 
 {% if is_ajax %}
+{% comment %}
 <div id="printContainer_outter">
     <div id="printContainer_inner">
         <span>&nbsp;</span>
@@ -111,6 +114,7 @@ function isValidEmailAddress(emailAddress) {
         <span class="drop_down dropIcon"></span>
     </span>
 </div>
+{% endcomment %}
 
 <div class="dialogAddThis">
     <script type="text/javascript">
