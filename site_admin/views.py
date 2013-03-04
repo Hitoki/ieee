@@ -3262,7 +3262,7 @@ def edit_cluster(request, cluster_id=None):
             })
     else:
         # Process the form
-        form = EditClusterForm(request.POST, user=request.user, instance=cluster)
+        form = EditClusterForm(request.POST, user=request.user, society=society, instance=cluster)
         if form.is_valid():
             #tags = form.cleaned_data['tags']
             
@@ -3271,7 +3271,14 @@ def edit_cluster(request, cluster_id=None):
                 # Updating an existing cluster
                 if form.cleaned_data['societies'] is not None:
                     NodeSocieties.objects.update_for_node(cluster, form.cleaned_data['societies'])
-                cluster.child_nodes = form.cleaned_data['topics']
+
+                user_role = request.user.get_profile().role
+                if user_role == Profile.ROLE_ADMIN:
+                    cluster.child_nodes = form.cleaned_data['topics']
+                if user_role == Profile.ROLE_SOCIETY_MANAGER:
+                    # TODO implement save
+                    pass
+
                 cluster.save()
             else:
                 # Saving a new cluster
@@ -3296,7 +3303,7 @@ def edit_cluster(request, cluster_id=None):
         'cluster': cluster,
         'form': form,
         'return_url': return_url,
-        'society': society,
+        'society': society
     })
 
 @login_required
@@ -4529,7 +4536,12 @@ def ajax_search_tags(request):
                 'societies': societies,
             })
     
-    return HttpResponse(json.dumps(data, sort_keys=True, indent=4, use_decimal=True), mimetype="application/json")
+    try:
+        return HttpResponse(json.dumps(data, sort_keys=True, indent=4, use_decimal=True), mimetype="application/json")
+    except TypeError:
+        import simplejson
+        return HttpResponse(simplejson.dumps(data, sort_keys=True, indent=4, use_decimal=True), mimetype="application/json")
+
 
 from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
