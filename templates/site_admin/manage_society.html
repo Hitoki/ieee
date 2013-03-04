@@ -424,13 +424,11 @@
 					<!-- Tags Tab -->
 					<div id="tags-tab" class="nootabs-tab">
                     <div>
-                        {% comment %}
                         {% if user.get_profile.role == 'admin' %}
                             <input type="button" id="create-topic-area-float" onclick="location.href='{% url admin_create_cluster %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic Area" />
                         {% endif %}
                         &nbsp; 
                         <input type="button" id="create-tag-float" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic" />
-                        {% endcomment %}
                         
                         <div id="add-topic-topic-area">
                             Add <select id="add-topics-topic-areas">
