@@ -236,6 +236,7 @@
         var tags_callback = null;
         
         $(function() {
+            /*
             var Content = {
                 text: $('#connectedness-help').next().html()
             };
@@ -275,6 +276,7 @@
                     }
                 }                
             });
+            */
             
             // NOTE: .change() doesn't fire in IE till the checkbox loses focus, must use 'propertychange' for IE.
             $('#show-clusters').bind($.browser.msie ? 'propertychange': 'change', function() {
@@ -474,8 +476,11 @@
                         
                         <div id="connectedness-container">
                             <span class="frequency-indicator"><span class="small">Few</span>&nbsp;&#8592;&nbsp;Linkages&nbsp;&#8594;&nbsp;<span class="small">Many</span></span>
+                            <span id="connectedness-help" class="helpicon smHelpIcon flyover {width:300}" title="A tag's color shows how linked it is within Technology Navigator to other topics, industry topics, IEEE organizations, and IEEE resources."></span>
+                            {% comment %}
                             <span id="connectedness-help" class="helpicon smHelpIcon"></span>
                             <span class='tooltip-text' style='display:none;'>A tag's color shows how linked it is within Technology Navigator to other topics, industry topics, IEEE organizations, and IEEE resources.</span>
+                            {% endcomment %}
                         </div>
                             
                         <div id="textui-tags-search">
