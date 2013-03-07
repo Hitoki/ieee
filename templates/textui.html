@@ -236,47 +236,7 @@
         var tags_callback = null;
         
         $(function() {
-            /*
-            var Content = {
-                text: $('#connectedness-help').next().html()
-            };
-            var defaultPosition = {
-                my: 'bottom center',
-                at: 'top center'
-            };
-
-            $('#connectedness-help').qtip({
-                content: Content,
-                style: {
-                    tip: {
-                        corner: true,
-                        width: 15,
-                        height: 10
-                    },
-                    classes: 'qtip-default'
-                },
-                position: defaultPosition,
-                show: {
-                    solo: true,
-                    event: 'mouseenter'
-                },
-                hide: {
-                    delay: 300,
-                    fixed: true
-                },
-                events: {
-                    show: function (event, api) {
-                        api.elements.target.one('click', function () {
-                            api.set('hide.event', 'unfocus');
-                        });
-                    },
-                    hide: function  (event, api) {
-                        api.set('hide.event', 'mouseleave');
-                        event: 'unfocus';
-                    }
-                }                
-            });
-            */
+            setupQtips('#connectedness-help');
             
             // NOTE: .change() doesn't fire in IE till the checkbox loses focus, must use 'propertychange' for IE.
             $('#show-clusters').bind($.browser.msie ? 'propertychange': 'change', function() {
@@ -476,11 +436,8 @@
                         
                         <div id="connectedness-container">
                             <span class="frequency-indicator"><span class="small">Few</span>&nbsp;&#8592;&nbsp;Linkages&nbsp;&#8594;&nbsp;<span class="small">Many</span></span>
-                            <span id="connectedness-help" class="helpicon smHelpIcon flyover {width:300}" title="A tag's color shows how linked it is within Technology Navigator to other topics, industry topics, IEEE organizations, and IEEE resources."></span>
-                            {% comment %}
                             <span id="connectedness-help" class="helpicon smHelpIcon"></span>
                             <span class='tooltip-text' style='display:none;'>A tag's color shows how linked it is within Technology Navigator to other topics, industry topics, IEEE organizations, and IEEE resources.</span>
-                            {% endcomment %}
                         </div>
                             
                         <div id="textui-tags-search">

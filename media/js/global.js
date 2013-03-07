@@ -851,3 +851,62 @@ $(function() {
 	}); 
 
 });
+
+function setupQtips(sel, position, content, classes, showEvents) {
+    var defaultPosition = {
+        my: 'bottom center',
+        at: 'top center'
+    };
+    $.extend(defaultPosition, {"my": $(sel).data('my'), "at": $(sel).data('at')});
+
+    var defaultContent = {
+        text: $(sel).next().html()
+    };
+    if (typeof position == "undefined" || !position) {
+        position = {};
+    }
+    if (typeof content == "undefined" || !content) {
+        content = {};
+    }
+    if (typeof showEvents == "undefined" || showEvents == null) {
+        showEvents = 'mouseenter';
+    }
+    var defaultClasses = {
+        classes: ''
+    };
+    position = $.extend(defaultPosition, position);
+    content = $.extend(defaultContent, content);
+    classes = $.extend(defaultClasses, classes);
+    $(sel).qtip({
+        content: content,
+        style: {
+            tip: {
+                corner: true,
+                width: 15,
+                height: 10
+            }
+            //},
+            //classes: classes
+        },
+        position: position,
+        show: {
+            solo: true,
+            event: showEvents
+        },
+        hide: {
+            delay: 300,
+            fixed: true
+        },
+        events: {
+            show: function (event, api) {
+                api.elements.target.one('click', function () {
+                    api.set('hide.event', 'unfocus');
+                });
+            },
+            hide: function  (event, api) {
+                api.set('hide.event', 'mouseleave');
+                event: 'unfocus';
+            }
+        }
+    });
+}
