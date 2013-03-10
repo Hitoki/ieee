@@ -8,10 +8,23 @@
             <span id='no-results' style='font-weight:bold;'>No results</span><br /><br />
             Try one or more of the following:<br /><br />
             <ul id='no-results-choices' style='list-style-type: circle'>
-                {% if search_length > 3 %}<li>Shorten the search phrase</li>{% endif %}
-                <li><a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">Clear the search phrase</a></li>
-                {% if cluster_id and society_id %}<li><a href="javascript:Tags.selectSociety({{ society_id }},null,1);">Search across the entire "{{ society.name }}" organization</li></a>{% endif %}
-                {% if society_id %}<li><a href="javascript:Tags.selectSociety('all');">Search across all organizations</a></li>{% endif %}
+                {% if search_length > 3 %}
+                    <li>Shorten the search phrase</li>
+                {% endif %}
+                <li><a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click();">Clear the search phrase</a></li>
+                {% if cluster_id and society_id %}
+                    <li><a href="javascript:Tags.selectSociety({{ society_id }},null,1);">Search across the entire "{{ society.name }}" organization</li></a>
+                {% endif %}
+                {% if society_id %}
+                    <li><a href="javascript:Tags.selectSociety('all');">Search across all organizations</a></li>
+                {% endif %}
+                {% if cluster_id %}
+                    {% if society_id %}
+                        <li><a href="javascript:Tags.selectSociety({{ society_id }},null,1);">Expand search beyond the topic area "{{ cluster }}"</a></li>
+                    {% else %}
+                        <li><a href="javascript:Tags.selectSociety('all',null,1);">Expand search beyond the topic area "{{ cluster }}"</a></li>
+                    {% endif %}
+                {% endif %}
             </ul>
         {% comment %}
         Try entering more or fewer characters or <a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">clearing the filter phrase now</a><br />

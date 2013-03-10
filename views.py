@@ -1300,6 +1300,7 @@ def _render_textui_nodes(request, sort, search_for, sector_id, sector, society_i
         'num_tags': num_tags,
         'num_clusters': num_clusters,
         'cluster_id': cluster_id,
+        'cluster': cluster,
         'page': page,
         'society': society,
         'search_length': search_length
