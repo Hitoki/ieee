@@ -1257,8 +1257,11 @@ def _render_textui_nodes(request, sort, search_for, sector_id, sector, society_i
     
     child_nodes = clusters + child_nodes2
     
+    search_length = 0
+
     if search_for is not None:
         final_punc =  ('.', ':')[len(child_nodes) > 0]
+        search_length = len(search_for)
         str = ''
         if cluster_id is not None:
             str += ' in the topic area "%s"' % (cluster.name)
@@ -1298,6 +1301,8 @@ def _render_textui_nodes(request, sort, search_for, sector_id, sector, society_i
         'num_clusters': num_clusters,
         'cluster_id': cluster_id,
         'page': page,
+        'society': society,
+        'search_length': search_length
     })
 
     node_count_content = render_to_string('ajax_textui_node_count.inc.html', {
