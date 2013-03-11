@@ -27,7 +27,7 @@
                 {% endif %}
             </ul>
         {% comment %}
-        Try entering more or fewer characters or <a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">clearing the filter phrase now</a><br />
+        Try {% if search_length > 3 %} entering more or fewer characters or {% endif %}<a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">clearing the filter phrase now</a><br />
         {% if society_id %}
             <a href="javascript:Tags.selectSociety('all');">Search all organizations</a>
         {% endif %}
