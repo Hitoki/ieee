@@ -22,11 +22,13 @@
     });
     {% endcomment %}
 
+    var errorText = "Please enter a valid email";
+
     $(function() {
         $('#notificationRequestEmail').focus(function() {
-            if (this.value == this.defaultValue){
+            if (this.value == this.defaultValue || errorText){
                 this.value = "";
-                $(this).removeClass('defaultValue');
+                $(this).removeClass('defaultValue').removeClass('error');
             }
         }).blur(function() {
             if (this.value === ""){
@@ -55,7 +57,11 @@
                     }
                 );                
             } else {
+                {% if NEWUI %}
+                $("#notificationRequestEmail").val(errorText).addClass('error');
+                {% else %}
                 $("#alertError").show();
+                {% endif %}
                 return false;
             }
         });

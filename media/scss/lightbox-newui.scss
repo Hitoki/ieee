@@ -586,6 +586,9 @@ margin-top: 0;
             &.defaultValue {
                 color: #9F9F9F;
             }
+            &.error {
+                color: red;
+            }
        }
        #notificationRequestButton {
            border: 0 none;
