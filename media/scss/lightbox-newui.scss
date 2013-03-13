@@ -612,6 +612,37 @@ margin-top: 0;
 #resource-footer {
     background-color: #CFCFCF;
     width: 657px;
-    padding: 15px;
+    padding: 10px 15px;
     margin-left: 137px;
+    .icon-printer {
+        float: right;
+        font-size: 25px;
+        color: $secondaryColor;
+        cursor: pointer;
+        &:hover {
+            color: $orange;
+        }
+    }
+    .share-links {
+        float: left;
+        span {
+            color: $secondaryColor;
+            font-size: 25px;
+            margin-right: 5px;
+            vertical-align: middle;
+            cursor: pointer;
+            &:hover {
+                color: $orange;
+            }
+        }
+    }
+}
+
+#landingLink {
+    clear: both;
+    a {
+        float: right;
+        text-decoration: none;
+        color: $white;   
+    }
 }

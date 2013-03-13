@@ -15,6 +15,8 @@
 	content: attr(data-icon);
 	speak: none;
 	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
 	line-height: 1;
 	-webkit-font-smoothing: antialiased;
 }
@@ -25,11 +27,13 @@ Instead of a list of all class selectors,
 you can use the generic selector below, but it's slower:
 [class*="icon-"]:before {
 */
-.icon-tab:before, .icon-users:before, .icon-tag:before, .icon-tags:before, .icon-filter:before, .icon-drop-arrow:before {
+.icon-tab:before, .icon-users:before, .icon-tag:before, .icon-tags:before, .icon-filter:before, .icon-drop-arrow:before, .icon-new-tab:before, .icon-cancel:before, .icon-printer:before, .icon-twitter:before, .icon-facebook:before, .icon-mail:before {
 	font-family: 'icomoon';
 	speak: none;
 	font-style: normal;
 	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
 	line-height: 1;
 	-webkit-font-smoothing: antialiased;
 }
@@ -50,4 +54,22 @@ you can use the generic selector below, but it's slower:
 }
 .icon-drop-arrow:before {
 	content: "\e005";
+}
+.icon-new-tab:before {
+	content: "\e006";
+}
+.icon-cancel:before {
+	content: "\e007";
+}
+.icon-printer:before {
+	content: "\e008";
+}
+.icon-twitter:before {
+	content: "\e009";
+}
+.icon-facebook:before {
+	content: "\e00a";
+}
+.icon-mail:before {
+	content: "\e00b";
 }

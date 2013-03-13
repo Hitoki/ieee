@@ -55,6 +55,10 @@ li {
     margin: 0px;
     padding: 0px;
 }
+
+.clear {
+    clear: both;
+}
   
 // Main Structure //
 table.main {
@@ -2398,7 +2402,7 @@ header {
     .inner {
         width: 85%;
         margin: 0 auto;
-        padding: 15px 10px;
+        padding: 25px 10px 22px 10px;
     }
     #narrow-tags {
         display: inline-block;
@@ -2435,7 +2439,7 @@ header {
   
 #misc-bar {
     overflow: hidden;
-    height: 47px;
+    height: 55px;
 }
   
 #tag-counts h2 {
@@ -2491,16 +2495,6 @@ td.machine-generated-column {
 #brokenLinkGrid {
     table-layout: fixed;
     width: 1200px;
-}
-  
-#landingLink {
-    clear: both;
-    margin-top: -25px;
-    a {
-        float: right;
-        text-decoration: none;
-        color: $white;   
-    }
 }
   
 .truncatedText {
