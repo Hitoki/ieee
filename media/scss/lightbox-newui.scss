@@ -149,7 +149,7 @@ input.text {
     text-align: center;
     margin-top: 15px;
     font-size: 14pt;
-    color: #9F9F9F;
+    color: #FFFFFF;
     margin-left: 5px;
     #num-related-items-loading {
         display: inline-block;
@@ -161,7 +161,7 @@ input.text {
     }
     .count-label {
         font-size: 9pt;
-        color: $white;
+        color: #9F9F9F;
     }
 }
 
@@ -566,7 +566,7 @@ margin-top: 0;
        width: 687px;
        &.success {
            background-color: $green;
-           padding: 3px 74px 4px;
+           padding: 15px 0;
        }
        .notificationLabel {
             float: left;
@@ -604,6 +604,7 @@ margin-top: 0;
        }
        #alertSuccess {
            color: white;
+           margin-left: 15px;
        }
    }
    #alertError {
