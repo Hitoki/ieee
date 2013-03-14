@@ -1938,10 +1938,11 @@ div.group ul li:first-child {
 #textui-society-list span.feature_label {
     margin: 0 5px 0 0;
     display: inline-block;
+    font-size: 11pt;
 }
   
 #textui-tags-search {
-    width: 230px;
+    width: 210px;
     padding: 5px;
     display: inline-block;
     margin-top: 0;
@@ -1960,7 +1961,7 @@ div.group ul li:first-child {
         float: left;
         margin-left: 5px;
         outline: none;
-        width: 188px;
+        width: 168px;
     }
 }
   
@@ -2140,7 +2141,7 @@ div.group ul li:first-child {
 }
 
 #sortSelect_options {
-    width: 205px;
+    width: 190px;
 }
 
 #societySelect_options {
@@ -2163,7 +2164,7 @@ padding-right: 5px;
 }
 
 #sortSelect {
-width: 195px;
+width: 180px;
 font-weight: bold;
 padding: 5px;
 z-index: 99;
