@@ -2398,6 +2398,13 @@ header {
     p#tag-and-cluster-counts {
        margin: 0;
        font-size: 12pt;
+       .icon-users {
+            font-size: 25px;
+            height: 25px;
+            display: inline-block;
+            vertical-align: bottom;
+            margin-top: -4px;
+        }
     }
     .inner {
         width: 85%;
