@@ -1858,7 +1858,6 @@ ul.errors {
     position: absolute;
     padding: 7px 5px 5px 15px;
     background: $white;
-    box-shadow: 0 5px 5px -4px $gray;
     border-bottom: 1px solid $light-gray;
     @include custom-border-radius (0, 5px, 0, 0);
 }
