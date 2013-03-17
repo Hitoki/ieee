@@ -389,6 +389,10 @@
 
         $('#show-topics-topic-areas option[value={{ tag_type }}]').attr('selected', 'selected');
 
+        $('.tip').each(function(){
+            setupQtips($(this));
+        });
+
     });        
 
         
@@ -538,7 +542,8 @@
                                         </th>
                                         {% endcomment %}
                                         <th>
-                                            Resource Name <span class="help_icon flyover" title="Name of the Product or Service. Click resource to edit.">[?]</span>
+                                            Resource Name <span class="help_icon tip">[?]</span>
+                                            <span class='tooltip-text' style='display:none;'>Name of the Product or Service. Click resource to edit.</span>
                                         
                                             <div class="table-sort">
                                             <a href="{% url admin_manage_society society.id %}?resource_sort=name_ascending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
@@ -559,7 +564,8 @@
                                         
                                         </th>
                                         <th>
-                                            ID <span class="help_icon flyover" title="IEEE unique identifier.">[?]</span>
+                                            ID <span class="help_icon tip">[?]</span>
+                                            <span class='tooltip-text' style='display:none;'>IEEE unique identifier.</span>
                                         
                                             <div class="table-sort">
                                             <a href="{% url admin_manage_society society.id %}?resource_sort=ieee_id_ascending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
@@ -579,7 +585,8 @@
                                             </div>
                                         </th>
                                         <th>
-                                            Resource Type <span class="help_icon flyover" title="Publication, Conference, or Standard. If Standard, its status appears parenthetically.">[?]</span>
+                                            Resource Type <span class="help_icon tip">[?]</span>
+                                            <span class='tooltip-text' style='display:none;'>"Publication, Conference, or Standard. If Standard, its status appears parenthetically</span>
                                         
                                             <div class="table-sort">
                                             <a href="{% url admin_manage_society society.id %}?resource_sort=resource_type_ascending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
@@ -599,7 +606,8 @@
                                             </div>
                                         </th>
                                         <th>
-                                            URL <span class="help_icon flyover" title="Web link for the Resource.">[?]</span>
+                                            URL <span class="help_icon tip">[?]</span>
+                                            <span class='tooltip-text' style='display:none;'>Web link for the Resource</span>
                                         
                                             <div class="table-sort">
                                             <a href="{% url admin_manage_society society.id %}?resource_sort=url_ascending&amp;resource_filter={{ resource_filter }}&amp;items_per_page={{ items_per_page }}#tab-resources-tab">
@@ -619,7 +627,8 @@
                                             </div>
                                         </th>
                                         <th>
-                                            Topics <span class="help_icon flyover" title="List of key words or phrases for related concepts and technology areas.">[?]</span>
+                                            Topics <span class="help_icon tip">[?]</span>
+                                            <span class='tooltip-text' style='display:none;'>List of key words or phrases for related concepts and technology areas.</span>
                                         
                                             <div class="table-sort">
                                             <a href="{% url admin_manage_society society.id %}?resource_sort=num_tags_ascending" class="live-num_tags {hashOnly:true}">
@@ -639,7 +648,8 @@
                                             </div>
                                         </th>
                                         <th>
-                                            Organizations <span class="help_icon flyover" title="IEEE organizations that sponsor this resource.">[?]</span>
+                                            Organizations <span class="help_icon tip">[?]</span>
+                                            <span class='tooltip-text' style='display:none;'>IEEE organizations that sponsor this resource.</span>
                                         
                                             <div class="table-sort">
                                             <a href="{% url admin_manage_society society.id %}?resource_sort=num_societies_ascending" class="live-num_societies {hashOnly:true}">
@@ -659,7 +669,8 @@
                                             </div>
                                         </th>
                                         <th>
-                                            Priority <span class="help_icon flyover" title='If "yes", this resource should be as complete as possible. Topics, Description, and URL.'>[?]</span>
+                                            Priority <span class="help_icon tip">[?]</span>
+                                            <span class='tooltip-text' style='display:none;'>If "yes", this resource should be as complete as possible. Topics, Description, and URL.</span>
                                         
                                             <div class="table-sort">
                                             <a href="{% url admin_manage_society society.id %}?resource_sort=priority_ascending" class="live-priority {hashOnly:true}">
@@ -679,7 +690,8 @@
                                             </div>
                                         </th>
                                         <th>
-                                            Completed <span class="help_icon flyover" title='If "yes", this resource is completed. At least one Topic is mapped. Description, and URL are added/validated.'>[?]</span>
+                                            Completed <span class="help_icon tip">[?]</span>
+                                            <span class='tooltip-text' style='display:none;'>If "yes", this resource is completed. At least one Topic is mapped. Description, and URL are added/validated.</span>
                                         
                                             <div class="table-sort">
                                             <a href="{% url admin_manage_society society.id %}?resource_sort=completed_ascending" class="live-completed {hashOnly:true}">
@@ -699,7 +711,8 @@
                                             </div>
                                         </th>
                                         <th>
-                                            Description <span class="help_icon flyover" title="Short description of the Resource. 1-3 short sentences recommended.">[?]</span>
+                                            Description <span class="help_icon tip">[?]</span>
+                                            <span class='tooltip-text' style='display:none;'>Short description of the Resource. 1-3 short sentences recommended.</span>
                                         
                                             <div class="table-sort">
                                             <a href="{% url admin_manage_society society.id %}?resource_sort=description_ascending" class="live-description {hashOnly:true}">
@@ -745,13 +758,14 @@
                                                 {% endifequal %}
                                             </td>
                                             <td>
-                                                {% if resource.url %}<a href="{{ resource.url }}" target="_blank"><span class="flyover {position:'bottom'}" title="{{ resource.url }}"></span></a><span class="popup newWinIcon"></span>{% endif %}
+                                                {% if resource.url %}<a href="{{ resource.url }}" target="_blank"><span class="tip">&nbsp;</span><span class='tooltip-text' style='display:none;'>{{ resource.url }}</span></a><span class="popup newWinIcon"></span>{% endif %}
                                                 
                                                 {% ifequal resource.url_status "bad" %}
                                                     <!-- Bad URL icon -->
-                                                    <span class="flyover" title="{{ resource.url_error }}">
+                                                    <span class="tip">
                                                         <img src="{{ MEDIA_URL }}images/red_circle_x.png" />
                                                     </span>
+                                                    <span class='tooltip-text' style='display:none;'>{{ resource.url_error }}</span>
                                                 {% endifequal %}
                                             </td>
                                             <td>
@@ -774,9 +788,10 @@
                                             </td>
                                             <td>
                                                 {% if resource.description %}
-                                                    <span class="flyover { position:'left', customClass:'resource-description'} " title="{{ resource.description }}">
+                                                    <span class="tip">
                                                         <img src="{{ MEDIA_URL }}images/notes_icon.jpg" />
                                                     </span>
+                                                    <span class='tooltip-text' style='display:none;'>{{ resource.description }}</span>
                                                 {% endif %}
                                             </td>
                                         </tr>
@@ -813,7 +828,7 @@
                                                     {% endifequal %}
                                                 </td>
                                                 <td>
-                                                    {% if sub_conference.url %}<a href="{{ sub_conference.url }}" target="_blank"><span class="flyover {position:'bottom'}" title="{{ sub_conference.url }}"></span></a><span class="popup newWinIcon"></span>{% endif %}
+                                                    {% if sub_conference.url %}<a href="{{ sub_conference.url }}" target="_blank"><span class="tip"></span><span class='tooltip-text' style='display:none;'>{{ sub_conference.url }}</span></a><span class="popup newWinIcon"></span>{% endif %}
                                                 </td>
                                                 <td>
                                                     {% if sub_conference.nodes.all %}{{ sub_conference.nodes.all.count }}{% endif %}
@@ -835,9 +850,10 @@
                                                 </td>
                                                 <td>
                                                     {% if sub_conference.description %}
-                                                        <span class="flyover { position:'left', customClass:'sub_conference-description'} " title="{{ sub_conference.description }}">
+                                                        <span class="tip">
                                                             <img src="{{ MEDIA_URL }}images/notes_icon.jpg" />
                                                         </span>
+                                                        <span class='tooltip-text' style='display:none;'>{{ sub_conference.description }}</span>
                                                     {% endif %}
                                                 </td>
                                             </tr>

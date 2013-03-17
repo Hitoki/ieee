@@ -42,6 +42,14 @@
 </script>
 {% endcomment %}
 
+<script type='text/javascript'>
+    $(function(){
+        $('.tip').each(function(){
+            setupQtips($(this));
+        });
+    });
+</script>
+
 <div id='topic-filter'>
     <form action="{% url admin_manage_society society.id %}" method="get">
         <input type="hidden" name="tag_sort" value="{{ tag_sort }}" />
@@ -91,7 +99,7 @@
             </th>
             {% endcomment %}
             <th>
-                Topic/Topic Area <span class="help_icon flyover" title="Keyword or phrase for related concept or technology area. Click topic to edit.">[?]</span>
+                Topic/Topic Area <span class="help_icon tip">[?]</span><span class='tooltip-text' style='display:none;'>Keyword or phrase for related concept or technology area. Click topic to edit.</span>
                 <div class="table-sort">
                 <a href="{% url admin_manage_society society.id %}?tag_sort=name_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "name_ascending" %}
@@ -112,7 +120,8 @@
             </th>
             {% comment %}
             <th>
-                Industry Topics <span class="help_icon flyover" title="Industry Topic for which the Topic is relevant, from the domain perspective of the S/C.">[?]</span>
+                Industry Topics <span class="help_icon tip">[?]</span>
+                <span class='tooltip-text' style='display:none;'>Industry Topic for which the Topic is relevant, from the domain perspective of the S/C.</span>
                 
                 <div class="table-sort">
                 <a href="{% url admin_manage_society society.id %}?tag_sort=sector_list_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
@@ -153,7 +162,8 @@
                 </div>
             </th>
             <th>
-                Organizations <span class="help_icon flyover" title="IEEE organizations that have associated Topic with their domain.">[?]</span>
+                Organizations <span class="help_icon tip">[?]</span>
+                <span class='tooltip-text' style='display:none;'>IEEE organizations that have associated Topic with their domain.</span>
                 
                 <div class="table-sort">
                 <a href="{% url admin_manage_society society.id %}?tag_sort=num_societies_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
@@ -174,7 +184,8 @@
             </th>
             {% comment %}
             <th>
-                Filters <span class="help_icon flyover" title="Categories that detail the concept or technology area.">[?]</span>
+                Filters <span class="help_icon tip">[?]</span>
+                <span class='tooltip-text' style='display:none;'>Categories that detail the concept or technology area.</span>
                 
                 <div class="table-sort">
                 <a href="{% url admin_manage_society society.id %}?tag_sort=num_filters_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
@@ -195,7 +206,8 @@
             </th>
             {% endcomment %}
             <th>
-                Resources <span class="help_icon flyover" title="IEEE Products or Services mapped to this Topic.">[?]</span>
+                Resources <span class="help_icon tip">[?]</span>
+                <span class='tooltip-text' style='display:none;'>IEEE Products or Services mapped to this Topic.</span>
                 
                 <div class="table-sort">
                 <a href="{% url admin_manage_society society.id %}?tag_sort=num_resources_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
@@ -215,7 +227,8 @@
                 </div>
             </th>
             <th>
-                Related Topics <span class="help_icon flyover" title="Topics that are related concepts or technology areas.">[?]</span>
+                Related Topics <span class="help_icon tip" title="Topics that are related concepts or technology areas.">[?]</span>
+                <span class='tooltip-text' style='display:none;'>Topics that are related concepts or technology areas.</span>
                 
                 <div class="table-sort">
                 <a href="{% url admin_manage_society society.id %}?tag_sort=num_related_tags_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
@@ -235,7 +248,8 @@
                 </div>
             </th>
             <th>
-                Remove <span class="help_icon flyover" title="Remove this {% if tag.node_type|stringformat:'s' == 'tag_cluster' %}topic area{% else %}topic{% endif %} from this organization.">[?]</span>
+                Remove <span class="help_icon tip">[?]</span>
+                <span class='tooltip-text' style='display:none;'>Remove this {% if tag.node_type|stringformat:'s' == 'tag_cluster' %}topic area{% else %}topic{% endif %} from this organization.</span>
             </th>
         </tr>
         {% for tag in tags %}
@@ -295,7 +309,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="javascript:removeTagFromSociety({{ tag.id }});" onclick="return confirm('Remove this {% if tag.node_type|stringformat:"s" == 'tag_cluster' %}topic area{% else %} topic{% endif %}?');"><span class="flyover" title="Remove {% if tag.node_type|stringformat:'s' == 'tag_cluster' %}Topic Area{% else %}Topic{% endif %} from Organization">[x]</span></a>
+                    <a href="javascript:removeTagFromSociety({{ tag.id }});" onclick="return confirm('Remove this {% if tag.node_type|stringformat:"s" == 'tag_cluster' %}topic area{% else %} topic{% endif %}?');"><span class="tip">[x]</span><span class='tooltip-text' style='display:none;'>Remove {% if tag.node_type|stringformat:'s' == 'tag_cluster' %}Topic Area{% else %}Topic{% endif %} from Organization</span></a>
                 </td>
             </tr>
         {% endfor %}
