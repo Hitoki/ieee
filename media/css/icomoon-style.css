@@ -25,51 +25,53 @@
 /*
 Instead of a list of all class selectors,
 you can use the generic selector below, but it's slower:
-[class*="icon-"]:before {
+[class*="icon-"] {
 */
-.icon-tab:before, .icon-users:before, .icon-tag:before, .icon-tags:before, .icon-filter:before, .icon-drop-arrow:before, .popup:before, .icon-cancel:before, .icon-printer:before, .icon-twitter:before, .icon-facebook:before, .icon-mail:before {
+.icon-tab, .icon-drop-arrow, .icon-printer, .drive, .icon-users, .icon-cancel, .icon-filter, .icon-facebook, .icon-mail, .icon-twitter, .icon-tags, .icon-tag, .popup {
 	font-family: 'icomoon';
 	speak: none;
 	font-style: normal;
 	font-weight: normal;
 	font-variant: normal;
 	text-transform: none;
-	line-height: 1;
 	-webkit-font-smoothing: antialiased;
 }
 .icon-tab:before {
 	content: "\e000";
 }
-.icon-users:before {
-	content: "\e002";
-}
-.icon-tag:before {
-	content: "\e001";
-}
-.icon-tags:before {
-	content: "\e003";
-}
-.icon-filter:before {
-	content: "\e004";
-}
 .icon-drop-arrow:before {
 	content: "\e005";
 }
-.popup:before {
-	content: "\e006";
+.icon-printer:before {
+	content: "\e00d";
+}
+.drive:before {
+	content: "\e00e";
+}
+.icon-users:before {
+	content: "\e00f";
 }
 .icon-cancel:before {
-	content: "\e007";
+	content: "\e010";
 }
-.icon-printer:before {
-	content: "\e008";
-}
-.icon-twitter:before {
-	content: "\e009";
+.icon-filter:before {
+	content: "\e011";
 }
 .icon-facebook:before {
-	content: "\e00a";
+	content: "\e012";
 }
 .icon-mail:before {
-	content: "\e00b";
+	content: "\e014";
+}
+.icon-twitter:before {
+	content: "\e015";
+}
+.icon-tags:before {
+	content: "\e016";
+}
+.icon-tag:before {
+	content: "\e017";
+}
+.popup:before {
+	content: "\e001";
 }
