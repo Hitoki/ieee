@@ -574,26 +574,7 @@ cursor: url(/media/images/wait-cursor.gif), wait;
 .gs-watermark {
    display: none;
 }
-  
-#job-tab{
-    a {
-        display: block;
-        clear: both;
-        margin-top: 20px;
-        &:first-child {
-            margin-top: 0;
-        }
-        &:last-child {
-            margin-bottom: 20px;
-        }
-    }
-    b {
-        font-weight: normal;
-    }
-    td {
-        padding-left: 15px;
-    }
-}
+
   
 /* */
 .backtotop, .backtoptop:hover, .backtotop img {
@@ -1831,49 +1812,6 @@ p.warning {
 ul.errors {
     background: $red;
     color: $white;
-}
-  
-#xplore-results-container div.loading,
-#education-results-container div.loading {
-    height: 115px;
-    margin-bottom: 6em;
-    text-align: center;
-}
-  
-#xplore-totals, #education-totals{
-    float: left;
-    margin: 0;
-}
-  
-#xplore-nav {
-    float: right;
-    margin: 0;
-}
-  
-.print-resource {
-    width: 667px;
-    height: 20px;
-    margin-top: -32px;
-    text-align: right;
-    position: absolute;
-    padding: 7px 5px 5px 15px;
-    background: $white;
-    border-bottom: 1px solid $light-gray;
-    @include custom-border-radius (0, 5px, 0, 0);
-}
-  
-#xplore-results-container div.group {
-    margin-top: 32px;
-}
-  
-#xplore-results-container div.group ul {
-   margin-top: 0px;
-}
-  
-  
-#xplore-results-container .error {
-    margin-top: 20px;
-    padding: 1em;
 }
   
 div.group ul li {
