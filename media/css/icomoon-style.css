@@ -27,7 +27,7 @@ Instead of a list of all class selectors,
 you can use the generic selector below, but it's slower:
 [class*="icon-"]:before {
 */
-.icon-tab:before, .icon-users:before, .icon-tag:before, .icon-tags:before, .icon-filter:before, .icon-drop-arrow:before, .icon-new-tab:before, .icon-cancel:before, .icon-printer:before, .icon-twitter:before, .icon-facebook:before, .icon-mail:before {
+.icon-tab:before, .icon-users:before, .icon-tag:before, .icon-tags:before, .icon-filter:before, .icon-drop-arrow:before, .popup:before, .icon-cancel:before, .icon-printer:before, .icon-twitter:before, .icon-facebook:before, .icon-mail:before {
 	font-family: 'icomoon';
 	speak: none;
 	font-style: normal;
@@ -55,7 +55,7 @@ you can use the generic selector below, but it's slower:
 .icon-drop-arrow:before {
 	content: "\e005";
 }
-.icon-new-tab:before {
+.popup:before {
 	content: "\e006";
 }
 .icon-cancel:before {

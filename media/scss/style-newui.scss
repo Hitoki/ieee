@@ -59,6 +59,10 @@ li {
 .clear {
     clear: both;
 }
+
+.icon-new-tab {
+    margin-left: 5px;
+}
   
 // Main Structure //
 table.main {
@@ -162,11 +166,7 @@ p.admin-links {
     display: inline-block;
 }
   
-.newWindowIcon {
-   display: inline-block;
-   background: transparent url(/media/images/popup.png) no-repeat scroll 0 0;
-   height: 13px;
-   width: 13px;
+.popup {
    margin-left: 5px;
 }
   
