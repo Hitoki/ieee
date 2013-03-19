@@ -434,15 +434,8 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         + tag.related_tags.count() 
 
     #context['num_related_items'] = num_related_items
-        
-    if tag.is_taxonomy_term and (counts + int(jobsCount.replace(',','')) == 0):
-        # This is a term with no resources (except Related Tags), just show the abbreviated content popup.
-        return render(request, 'ajax_term_content.html', {
-            'tag':tag,
-            'num_related_items': num_related_items,
-            'ui': ui,
-        })
-    elif load_framework:
+
+    if load_framework:
         # Show the normal tag content popup.
         return render(request, 'ajax_tag_content.html', context)
     else:
