@@ -126,7 +126,9 @@ function autoTruncate(elems, options) {
             }
             
             if (options.flyover) {
-                Flyover.attach(abbr, flyoverOptions);
+                var content = {text: true, attr: 'title'};
+                setupQtips($(abbr),content=content);
+                //Flyover.attach(abbr, flyoverOptions);
             }
         }
         

@@ -704,6 +704,124 @@ function attachJobResults(elem, ctype) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+// This loads the tv results via AJAX.
+function TvLoader(elem, showAll) {
+    var tvLoader = this;
+    this.elem = $(elem);
+    this.resultElem = this.elem.find('.results');
+    this.scrollElem = this.elem.find('.group');
+    this.loadingElem = null;
+    this.isLoading = false;
+    this.noResultsElem = null;
+    this.ajaxToken = null;
+    
+    this.scrollElem.scroll(function() {
+        tvLoader.onScroll();
+    });
+    
+    if (showAll == undefined) {
+        showAll = false;
+    }
+    
+    this.offset = 1;
+    
+    //this.numJobResultsPerPage = 25;
+    
+    this.tagId = this.elem.metadata().tagId;
+    this.termId = this.elem.metadata().termId;
+    
+    this.showAll = showAll;
+    this.sortDesc = false;
+    
+    this.loadContent();
+}
+
+TvLoader.prototype.loadContent = function(force) {
+    if (!this.isLoading || force) {
+        this.isLoading = true;
+        
+        var tvLoader = this;
+        this.ajaxToken = (new Date()).getTime() + '-' + Math.random();
+        
+        this.loadingElem = $('<div id="job-loading" class="loading">Loading Tv...<div></div></div>').appendTo(this.scrollElem);
+
+        $("#tv-loading div").spin({
+            lines: 9, // The number of lines to draw
+            length: 10, // The length of each line
+            width: 8, // The line thickness
+            radius: 15, // The radius of the inner circle
+            corners: 1.0, // Corner roundness (0..1)
+            speed: 2.2, // Rounds per second
+            trail: 25 // Afterglow percentage
+        });
+
+        $.ajax({
+            url: '/ajax/tv_results'
+            , data: {
+                tag_id: this.tagId
+                , term_id: this.termId
+                , show_all: this.showAll
+                , offset: this.offset
+                , token: this.ajaxToken
+            }
+            , type: 'post'
+            , dataType: 'json'
+            , success: function(data) {
+                tvLoader.onLoadData(data);
+            }
+        });
+        
+        this.offset += 1;
+    }
+}
+
+TvLoader.prototype.onLoadData = function(data) {
+    if (data.token == this.ajaxToken) {
+        this.loadingElem.remove();
+        this.loadingElem = null;
+        
+        if (this.noResultsElem) {
+            this.noResultsElem.remove();
+            this.noResultsElem = null;
+        }
+    
+        if (data.tv_error != null && data.num_results != 0) {
+            // Job error, show the error message.
+            this.errorElem = $('<p class="error" style="margin: 50px 0 0 10px;"></p>').appendTo(this.scrollElem);
+            this.errorElem.text(data.job_error);
+        
+        } else {
+            // Normal results, load into the page.
+            
+            this.scrollElem.append(data.html);
+            
+            resizeLightboxTab();
+
+            if (data.num_results == 0) {
+                this.noResultsElem = $('<p class="no-resources">No Tv are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
+            }
+            
+            // Showing {{ xplore_results|length }} of {{ totalfound|intcomma }} results 
+        }
+        
+        this.isLoading = false;
+    }
+}
+
+TvLoader.prototype.onScroll = function() {
+    var minScrollBottom = 25;
+    var scrollBottom = getScrollBottom(this.scrollElem);
+    if (scrollBottom <= minScrollBottom) {
+        this.loadContent();
+    }
+}
+
+function attachTvResults(elem, ctype) {
+    new TvLoader(elem, null, null, ctype);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
 // Call elem whenever new content is created dynamically to attach any scripts
 function attachScripts(elem) {
     elem = $(elem);
