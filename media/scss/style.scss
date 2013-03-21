@@ -2811,7 +2811,7 @@ td.machine-generated-column {
       font-size: 13px;
       background-color: #fffdcf;
       @include custom-border-radius(5px, 5px, 5px, 5px);
-      z-index: 10000;
+      z-index: 999999999;
     }
 }
 

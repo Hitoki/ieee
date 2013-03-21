@@ -2810,7 +2810,7 @@ td.machine-generated-column {
     -webkit-border-top-right-radius: 5px;
     -webkit-border-bottom-right-radius: 5px;
     -webkit-border-bottom-left-radius: 5px;
-    z-index: 10000; }
+    z-index: 999999999; }
 
 /* #bottom_fade {
     height: 45px;
