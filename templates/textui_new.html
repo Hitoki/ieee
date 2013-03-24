@@ -113,10 +113,27 @@
                 }
             });
         });
+
+    $(window).load(function() {
+        $("#chooseID").joyride({
+          /* Options will go here */
+          autoStart : true
+        });
+    });
+
     </script>
 {% endblock %}
-  
+
 {% block content %}
+
+<ol id="chooseID" style='display:none;'>
+  /* data-id needs to be the same as the parent it will attach to */
+  <li data-id="textui-society-list">This is the first stop</li>
+  <li data-id="textui-tags-search">This is the second stop</li>
+  <li data-class="node">This is the first stop</li>
+  <li data-id="textui-tags-sort">This is the last stop</li>
+</ol>
+  
 <div id="alternate-page" class="new">
     <div id="tag-tools">
         <div class="inner">
