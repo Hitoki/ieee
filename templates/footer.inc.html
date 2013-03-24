@@ -1,8 +1,14 @@
+<script type="text/javascript">
+    $(function(){
+        var content = {text: true, attr: 'title'};
+        setupQtips('#ieee-home',content=content);
+    });
+</script>
 <div id="footer">
     <a id="testerSurveyBtn" href="{% url tester_survey %}" class="lightbox {customClass: 'tester-survey'}" rel="nofollow">User Survey</a>
     <a id="welcome-link" href="{% url ajax_welcome %}" class="lightbox {customClass: 'welcome-panels'}" {% if not NEWUI %}style="color:#FFFFFF;float:left;color:#4F4F4F;font-size:8pt;{% ifnotequal user.get_profile.role 'admin' %}visibility:hidden{% endifnotequal %}"{% endif %} rel="nofollow">&nbsp;**</a>
     <div id="copyright">
-        &copy; Copyright 2012 <a href="http://ieee.org" class="flyover {width:110}" title="Visit IEEE Home" id="ieee-home" rel="nofollow">IEEE</a> – All rights reserved. Use of this Web site signifies your agreement to the terms and conditions. <a href="http://www.ieee.org/privacy" id="opt-link">Privacy &amp; Opting Out of Cookies</a>
+        &copy; Copyright 2012 <a href="http://ieee.org" title="Visit IEEE Home" id="ieee-home" rel="nofollow">IEEE</a> – All rights reserved. Use of this Web site signifies your agreement to the terms and conditions. <a href="http://www.ieee.org/privacy" id="opt-link">Privacy &amp; Opting Out of Cookies</a>
         <span id="footer-login">
             {% if user %}
                 <p class="admin-links">                                
