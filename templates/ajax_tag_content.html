@@ -121,7 +121,7 @@ function isValidEmailAddress(emailAddress) {
     </span>
 </div>
 {% endcomment %}
-
+{% comment %}
 <div class="dialogAddThis">
     <script type="text/javascript">
         var addthis_config = {
@@ -148,7 +148,7 @@ function isValidEmailAddress(emailAddress) {
         });
     </script>
 </div>
-
+{% endcomment %}
 <span class="dialogTitle">
     {% if NEWUI %}
     <span aria-hidden="true" class="icon-tag"></span> &nbsp;<span id="tag-name">{{ tag.name }}</span>
@@ -192,6 +192,9 @@ function isValidEmailAddress(emailAddress) {
                 <li id="educations-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">Education <span class="right" id="num-education-results"></span></a></li>
                 <li id="articles-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">Xplore Articles <span class="right" id="num-xplore-results"></span></a></li>
                 <li id="jobs-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu" rel="nofollow">Jobs <span class="right">{{jobsCount}}</span></a></li>
+                {% comment %}
+                <li id="tv-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu" rel="nofollow">Tv <span class="right">{{tvCount}}</span></a></li>
+                {% endcomment %}
                 {% comment %}
                 <li id="patents-tab" class="middle-group-menu" style="display:none"><a href="" class="two-word-menu" rel="nofollow">Patents <span class="right">{{patents|length}}</span></a></li>
                 {% endcomment %}
@@ -237,6 +240,12 @@ function isValidEmailAddress(emailAddress) {
             <div id="job-tab" data-printUrl='{% url print_resource tag.id "jobs" %}'>
                 {% include 'ajax_job_tab.inc.html' %}
             </div>
+{% comment %}
+<!-- Tv -->
+            <div id="tv-tab" data-printUrl='{% url print_resource tag.id "tv" %}'>
+                {% include 'ajax_tv_tab.inc.html' %}
+            </div>
+{% endcomment %}
 {% comment %}
 <!-- Patents -->
                 {% include 'ajax_patents_tab.inc.html' %}
@@ -325,12 +334,31 @@ function isValidEmailAddress(emailAddress) {
             {% if NEWUI %}
             <div style="clear:both"></div>
             <div id="resource-footer">
-                <div class="share-links">
+                    <script type="text/javascript">
+                        var addthis_config = {
+                            pubid: "ra-4e02511c660b81ce",
+                            data_ga_property: "UA-9482893-{{ GA_SITE_NUM }}",
+                            data_track_clickback: true
+                        };
+                        var addthis_share = {
+                            url: "{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}",
+                            title: "{{ tag.name }}",
+                            description: "Read more about {{ tag.name }} on IEEE TechNav."
+                        };
+                    </script>
+                <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script> 
+                <div class="share-links addthis_toolbox">
                     Share: 
-                    <span aria-hidden="true" class="icon-twitter"></span>
-                    <span aria-hidden="true" class="icon-facebook"></span>
-                    <span aria-hidden="true" class="icon-mail"></span>
+                    <a class="addthis_button_twitter" rel="nofollow"><span aria-hidden="true" class="icon-twitter"></span></a>
+                    <a class="addthis_button_facebook" rel="nofollow"><span aria-hidden="true" class="icon-facebook"></span></a>
+                    <a class="addthis_button_email" rel="nofollow"><span aria-hidden="true" class="icon-mail"></span></a>
                 </div>
+                <script type="text/javascript">
+                    $(function(){
+                        addthis.toolbox('.addthis_toolbox', addthis_config, addthis_share);
+                        alert('hi');
+                    });
+                </script>
                 <span aria-hidden="true" class="icon-printer"></span>
                 <div class="clear"></div>
             </div>
