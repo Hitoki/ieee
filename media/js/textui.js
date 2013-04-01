@@ -1061,7 +1061,7 @@ var Tags = {
         return null;
     },
     
-    selectTag: function(id, tabName) {
+    selectTag: function(id, tabName, tour) {
         //log('selectTag()');
         //log('  id: ' + id);
         //log('  tabName: ' + tabName);
@@ -1091,6 +1091,9 @@ var Tags = {
                     Tags.onSelectTag(tabName);
                 }
                 $('#tag-name').effect("highlight", {}, 2000);
+                if (tour != undefined) {
+                    $('.resources-lightbox-content').append('<ol id="modal-tour" style="display:none;"><li>hi</li></ol>');
+                }                
                 
                 $("#xplore-overview-loading, #num-related-items-loading").spin({
                     lines: 9, // The number of lines to draw

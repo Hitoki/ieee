@@ -117,9 +117,7 @@
     $(window).load(function() {
         $("#chooseID").joyride({
             /* Options will go here */
-            autoStart : true,
-            cookieMonster: true,           // true/false for whether cookies are used
-            cookieName: 'JoyRide'
+            'autoStart' : true
         });
     });
 
@@ -132,7 +130,7 @@
   /* data-id needs to be the same as the parent it will attach to */
   <li data-id="textui-society-list">This is the first stop</li>
   <li data-id="textui-tags-search"></li>
-  <li data-class="node">This is the first stop</li>
+  <li data-class="node"><a href='javascript:Tags.selectTag(6265,null,true);'>Modal</a></li>
   <li data-id="textui-tags-sort">This is the last stop</li>
 </ol>
   
