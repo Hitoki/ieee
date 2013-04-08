@@ -571,7 +571,11 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
         
             # Get the charset of the request and decode/re-encode the response text into UTF-8 so we can parse it
             info = file1.info()
-            temp, charset = info['content-type'].split('charset=')
+            try:
+                temp, charset = info['content-type'].split('charset=')
+            except ValueError:
+                charset = 'utf-8'
+
 
         except urllib2.URLError:
             xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
@@ -697,7 +701,10 @@ def ajax_recent_xplore(request):
             
             # Get the charset of the request and decode/re-encode the response text into UTF-8 so we can parse it
             info = file1.info()
-            temp, charset = info['content-type'].split('charset=')
+            try:
+                temp, charset = info['content-type'].split('charset=')
+            except ValueError:
+                charset = 'utf-8'
 
         except urllib2.URLError:
             xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'

@@ -233,7 +233,10 @@ def main(*args):
                     errors = []
                     
                     # Need to correctly handle UTF8 responses from urlopen() above, avoid UnicodeEncodeError.
-                    encoding = file.headers['content-type'].split('charset=')[-1]
+                    try:
+                        temp, encoding = file.headers['content-type'].split('charset=')
+                    except ValueError:
+                        encoding = 'utf-8'
                     ucontents = unicode(file.read(), encoding)
                     dom1 = parseString(ucontents.encode('utf-8'))
                     
