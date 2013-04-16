@@ -64,7 +64,7 @@
                 
             {% if feedback %}
                 <div style="margin-top: -16px;" id="overview-video-link">
-                    <a href="http://www.ieee.org/portal/ieeetv/viewer.html?progId=122237" onclick="openIEEEtv('http://www.ieee.org/portal/ieeetv/viewer.html?progId=122237'); return false;" target="ieeeTV"><span class="lightbox {customClass: 'overview-video'}" style="margin-left: 16px;">Watch the overview video</span><img src='{{ MEDIA_URL}}images/video-still.png' alt="IEEE Video Still" style="width: 223px; height: 125px; vertical-align: middle" /></a>
+                    <a href="http://www.ieee.org/portal/ieeetv/viewer.html?progId=122237" onclick="openIEEEtv('http://www.ieee.org/portal/ieeetv/viewer.html?progId=122237'); return false;" target="ieeeTV"><span class="lightbox {customClass: 'overview-video'}" style="margin-left: 16px;">Watch the overview video</span><img src='{{ STATIC_URL}}images/video-still.png' alt="IEEE Video Still" style="width: 223px; height: 125px; vertical-align: middle" /></a>
                 </div>
                 
                 <div id="logout-message">
@@ -80,18 +80,18 @@
             {% else %} 
                 {% comment %}
                 <div style="text-align:center;">
-                    <script type="text/javascript" src="{{ MEDIA_URL }}js/AC_RunActiveContent.js"></script>
+                    <script type="text/javascript" src="{{ STATIC_URL }}js/AC_RunActiveContent.js"></script>
                     <script>
                         AC_FL_RunContent(
                             'codebase','http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,28,0',
                             'width','640',
                             'height','410',
                             'title','Technology Navigator Promo',
-                            'src','{{ MEDIA_URL }}flash/TechNav-640-false',
+                            'src','{{ STATIC_URL }}flash/TechNav-640-false',
                             'quality','high',
                             'allowFullScreen','true',
                             'pluginspage','http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash',
-                            'movie','{{ MEDIA_URL }}flash/TechNav-640-false'
+                            'movie','{{ STATIC_URL }}flash/TechNav-640-false'
                         );
                         //end AC code
                     </script>
@@ -102,11 +102,11 @@
                             width="640"
                             height="410"
                             title="Technology Navigator Promo">
-                            <param name="movie" value="{{ MEDIA_URL }}flash/TechNav-640-false.swf" />
+                            <param name="movie" value="{{ STATIC_URL }}flash/TechNav-640-false.swf" />
                             <param name="quality" value="high" />
                             <param name="allowFullScreen" value="true" />
                             <embed
-                                src="{{ MEDIA_URL }}flash/TechNav-640-false.swf"
+                                src="{{ STATIC_URL }}flash/TechNav-640-false.swf"
                                 quality="high"
                                 pluginspage="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash"
                                 type="application/x-shockwave-flash"
@@ -199,7 +199,7 @@
                 Allan Tear
             </p>
             <p>
-                <img src="{{ MEDIA_URL }}images/about_team_allan.jpg" />
+                <img src="{{ STATIC_URL }}images/about_team_allan.jpg" />
                 An expert consultant in new product and service launches, Allan is the Managing Partner of Aptus Collaborative. Aptus assists large organizations with technology-enabled innovation strategy. Allan previously was a founder of three venture-funded startups. He advises students and schools on entrepreneurship through the Betaspring startup accelerator, the RI Center for Innovation and Entrepreneurship, and the Carnegie Mellon Dean's Leadership Council. He was selected in 2008 for the Providence Business News "40 Under Forty" list. Allan is a graduate of Carnegie Mellon University, with B.S. degrees in Electrical & Computer Engineering, and Public Policy.
             </p>
 
@@ -207,7 +207,7 @@
                 Jack Templin
             </p>
             <p>
-                <img src="{{ MEDIA_URL }}images/about_team_jack.jpg" />
+                <img src="{{ STATIC_URL }}images/about_team_jack.jpg" />
                 Jack specializes in online business strategy, experience design and web application development. Prior to moving to Rhode Island from New York City, Jack was a Lead Strategist at iXL (now Microsoft), and co-founded Arc, a venture-backed consultancy widely recognized as a leader in the field of customer experience design. As a Co-Founder of Providence Geeks and the RI Nexus program, Jack plays a leading role in Rhode Island's burgeoning info-tech and digital media sector. Jack is a graduate of Middlebury College with a B.A. in Economics., and has a Masters from New York University's Interactive Telecommunications Program (ITP). The Providence Journal recently named Jack one of 9 Rhode Islanders "to watch" in 2009.
             </p>
 
@@ -215,7 +215,7 @@
                 Hilary Mason
             </p>
             <p>
-                <img src="{{ MEDIA_URL }}images/about_team_hillary.jpg" />
+                <img src="{{ STATIC_URL }}images/about_team_hillary.jpg" />
                 Hilary is a computer science professor and data scientist focused on web applications and data mining. She's generally interested in techniques for finding insight in the large, unstructured data sets. Hilary has a M.S. Computer Science from Brown University, is an assistant professor at Johnson &amp; Wales University and is the Chief Scientist at Path101, Inc.
             </p>
 
@@ -223,7 +223,7 @@
                 TJ Sondermann
             </p>
             <p>
-                <img src="{{ MEDIA_URL }}images/about_team_tj.jpg" />
+                <img src="{{ STATIC_URL }}images/about_team_tj.jpg" />
                 TJ combines his broad knowledge in the area of User Experience Design with formal training as a librarian and seven plus years of information search and retrieval experience. He has a B.S. in Management from Binghamton University and an MLIS from the University of Rhode Island.
             </p>
             
@@ -231,7 +231,7 @@
                 James Yoneda
             </p>
             <p>
-                <img src="{{ MEDIA_URL }}images/about_team_james.jpg" />
+                <img src="{{ STATIC_URL }}images/about_team_james.jpg" />
                 James Yoneda is a senior software developer specializing in data-driven web applications. Over the past 10 years, James has built a wide variety of systems for clients ranging from Fortune 1000 companies to start-ups. James has a B.S. in Computer Engineering from the University of Rhode Island.
             </p>
             

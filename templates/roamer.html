@@ -27,7 +27,7 @@
                         
                         <!-- Navigation links -->
                         <div id="left-column">
-                            <span id="homeico"><a href="javascript:Roamer.setNode(1);"><img src="{{MEDIA_URL}}images/home_icon.png" alt="home" height="18" /></a></span>
+                            <span id="homeico"><a href="javascript:Roamer.setNode(1);"><img src="{{STATIC_URL}}images/home_icon.png" alt="home" height="18" /></a></span>
                             <h2 class="feature_label">Choose Sector:</h2>
                             <div id="left-column-container">  
                             
@@ -69,12 +69,12 @@
                                         <td class="key-cell">
                                             <span style="float: right;">
                                                 <span class="feature_label">Key:</span>
-                                                <span id="roamer-key-sector">Sector <img src="{{MEDIA_URL}}images/sector.png" alt="sector" height="15" /></span>
+                                                <span id="roamer-key-sector">Sector <img src="{{STATIC_URL}}images/sector.png" alt="sector" height="15" /></span>
                                                 {% comment %}
                                                 #TODO: Re-enable when we have clusters in.
-                                                #Cluster: <img src="{{MEDIA_URL}}images/cluster.png" alt="cluster" height="15" />
+                                                #Cluster: <img src="{{STATIC_URL}}images/cluster.png" alt="cluster" height="15" />
                                                 {% endcomment %}
-                                                <span id="roamer-key-tag">Topic <img src="{{MEDIA_URL}}images/tag.png" alt="tag" height="15" /></span>
+                                                <span id="roamer-key-tag">Topic <img src="{{STATIC_URL}}images/tag.png" alt="tag" height="15" /></span>
                                             </span>
                                         </td>
                                     </tr>
@@ -99,7 +99,7 @@
                                     var instanceID = "1";
                                     
                                     // The path to the config xml file
-                                    var configURL = "/media/flash/constellation_config.xml";
+                                    var configURL = "/static/flash/constellation_config.xml";
                                     
                                     var flashvars = 'selected_node_id=' + selectedNodeID + '&instance_id=' + instanceID + "&config_url=" + configURL;
                                     
@@ -110,13 +110,13 @@
                                         + 'height="' + constellationHeight + '" '
                                         + 'id="constellation-roamer-object">'
                                             + '<param name="allowScriptAccess" value="sameDomain">'
-                                            + '<param name="movie" value="{{MEDIA_URL}}flash/constellation_roamer.swf">'
+                                            + '<param name="movie" value="{{STATIC_URL}}flash/constellation_roamer.swf">'
                                             + '<param name="quality" value="high">'
                                             + '<param name="bgcolor" value="' + backgroundColor + '">'
                                             + '<param name="scale" value="noscale">'
                                             + '<param name="flashvars" value="' + flashvars + '">'
                                             + '<param name="wmode" value="transparent">'
-                                        + '<embed id="constellation-roamer-embed" src="{{MEDIA_URL}}flash/constellation_roamer.swf" quality="high" '
+                                        + '<embed id="constellation-roamer-embed" src="{{STATIC_URL}}flash/constellation_roamer.swf" quality="high" '
                                             + 'bgcolor="' + backgroundColor + '" '
                                             + 'width="' + constellationWidth + '" '
                                             + 'height="' + constellationHeight + '" '
@@ -158,8 +158,8 @@
                                 <a id="feedback-link" href="{% url feedback %}" class="floating lightbox { customClass:'feedback' }">&nbsp;</a>
                             </div>
                             
-                        <img class="leftCorner" src="{{MEDIA_URL}}images/mainBottomLeftCorner.png" width="26" height="40" />
-                        <img class="rightCorner" src="{{MEDIA_URL}}images/mainBottomRightCorner.png" width="26" height="40" />
+                        <img class="leftCorner" src="{{STATIC_URL}}images/mainBottomLeftCorner.png" width="26" height="40" />
+                        <img class="rightCorner" src="{{STATIC_URL}}images/mainBottomRightCorner.png" width="26" height="40" />
                         <div id="copyright">
                             &copy; Copyright 2011 IEEE – All rights reserved. Use of this Web site signifies your agreement to the terms and conditions.
                             <span id="footer-login">

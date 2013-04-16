@@ -1,3 +1,4 @@
+{% load static %}
 <script type="text/javascript">
     $(function(){
         $('#ieee-societies-tab span.right').html('{{ societies.count }}');
@@ -23,7 +24,7 @@
                                             </div>
                                             {% else %}
                                             <div class="image-container">
-                                                <img src="{{ MEDIA_URL }}images/society_logo_none.png" />
+                                                <img src="{{ STATIC_URL }}images/society_logo_none.png" />
                                             </div>
                                             {% endif %}
                                         </td>
@@ -47,6 +48,6 @@
                                 <p class="no-resources">No organizations are currently tagged "{{ tag.name }}"</p>
                                 {% endif %}
                             {% else %}     
-                                <div class="loading" style="padding-top: 6em;text-align: center;padding-bottom: 3em;"><img src="/media/images/ajax-loader.gif" class="loading" /></div>
+                                <div class="loading" style="padding-top: 6em;text-align: center;padding-bottom: 3em;"><img src="{% static 'images/ajax-loader.gif' %}" class="loading" /></div>
                             {% endif %}
                     </div>

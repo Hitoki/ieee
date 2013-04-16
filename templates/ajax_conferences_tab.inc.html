@@ -1,3 +1,4 @@
+{% load static %}
 <script type="text/javascript">
     $(function(){
         $('#conferences-tab span.right').html('{{ conferences|length }}');
@@ -30,10 +31,10 @@
                                     {% if resource.is_current_conference and resource.other_conferences|length %}
                                     <p class="more-conferences">
                                         <a href="#" id="show-other-conferences-{{ resource.id }}" class="show-other-conferences {id: {{ resource.id }}}" rel="nofollow">
-                                            <img class="toggleIcon" src="{{ MEDIA_URL }}images/plusbox.png"/>Show {{ resource.other_conferences|length }} more conference{{ resource.other_conferences|pluralize }} in this series...
+                                            <img class="toggleIcon" src="{{ STATIC_URL }}images/plusbox.png"/>Show {{ resource.other_conferences|length }} more conference{{ resource.other_conferences|pluralize }} in this series...
                                         </a>
                                         <a href="#" id="hide-other-conferences-{{ resource.id }}" class="hide-other-conferences {id: {{ resource.id }}}" rel="nofollow">
-                                            <img class="toggleIcon" src="{{ MEDIA_URL }}images/minusbox.png"/>Hide other conferences in this series
+                                            <img class="toggleIcon" src="{{ STATIC_URL }}images/minusbox.png"/>Hide other conferences in this series
                                         </a>
                                     </p>
                                     <div id="other-conferences-{{ resource.id }}" class="other-conferences">
@@ -57,7 +58,7 @@
                                 <p class="no-resources">No conferences are currently tagged "{{ tag.name }}"</p>
                                 {% endif %}
                             {% else %}     
-                                <div class="loading" style="padding-top: 6em;text-align: center;padding-bottom: 3em;"><img src="/media/images/ajax-loader.gif" class="loading" /></div>
+                                <div class="loading" style="padding-top: 6em;text-align: center;padding-bottom: 3em;"><img src="{% static 'images/ajax-loader.gif' %}" class="loading" /></div>
                             {% endif %}
                         </ul>
                     </div>

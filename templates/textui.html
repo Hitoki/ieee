@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block extra_head %}
 
     <script src="https://www.google.com/jsapi?key=ABQIAAAAET-l-_pKVFbYTFwkzUZFuxQqXNOgVZsVxxAJPjYxgMwG3sAPmRRUT1Aw1TCcL7OyNBCohYUcq2aExA"></script>
@@ -139,8 +139,8 @@
                 <div id="left-column-container" class="{ useCookies:false, useHash:false }">
                     <ul id="galaxy-tabs" class="nootabs-menus">
                         {% comment %}
-                        <li class="first-menu"><a href="" class="disabled flyover {width:370}" title="Navigating by Industry Topic is currently not available" rel="nofollow"><img src="/media/images/industryIcon.png"/> <span style="width: 46px;">Industry Topic</span></a></li>
-                        <li class="last-menu"><a href="" rel="nofollow"><img src="/media/images/orgIcon.png"/> <span style="width: 26px;">IEEE Org</span></a></li>
+                        <li class="first-menu"><a href="" class="disabled flyover {width:370}" title="Navigating by Industry Topic is currently not available" rel="nofollow"><img src="{% static 'images/industryIcon.png' %}"/> <span style="width: 46px;">Industry Topic</span></a></li>
+                        <li class="last-menu"><a href="" rel="nofollow"><img src="{% static 'images/orgIcon.png' %}"/> <span style="width: 26px;">IEEE Org</span></a></li>
                         {% endcomment %}
                         <li class="both-menu"><a href="" rel="nofollow"><span class="orgIcon"></span> <span style="width: 26px;">IEEE Org</span></a></li>
                         <li style="display:none;"><a href="" rel="nofollow">&nbsp;</a></li> {# used to compensate for filters div #}
@@ -201,11 +201,11 @@
                                             # of Resources 
                                         </td>
                                         <td>
-                                            <span class="flyover helpbracket" title="The number of IEEE products or services mapped to this tag" style="margin-right: 3px;">[?]</span><img src="/media/images/arrow-right.png" class="tag-model-arrow" />
+                                            <span class="flyover helpbracket" title="The number of IEEE products or services mapped to this tag" style="margin-right: 3px;">[?]</span><img src="{% static 'images/arrow-right.png' %}" class="tag-model-arrow" />
                                         </td>
                                     </tr>
                                 </table>
-                                <img style="margin-top:-4px;" src="/media/images/model-tag-simplified.png"/>
+                                <img style="margin-top:-4px;" src="{% static 'images/model-tag-simplified.png' %}"/>
                             </div>
                         {% endcomment %}
                         
@@ -255,19 +255,19 @@
                     <div id="tag-help-box" style="display:none">
                         <div class="help-col-left" class="help-col">
                             <table><tr>
-                                <td class="help-arrow-container"><img src="{{MEDIA_URL}}images/help-arrow.png"/></td>
+                                <td class="help-arrow-container"><img src="{{STATIC_URL}}images/help-arrow.png"/></td>
                                 <td>A topic's color shows how linked it is to industry topics, to other topics, and to IEEE resources.</td>
                             </tr></table>
                             <div>
                                 <table><tr>
-                                    <td class="help-arrow-container"><img src="{{MEDIA_URL}}images/help-arrow-left.png"/></td>
+                                    <td class="help-arrow-container"><img src="{{STATIC_URL}}images/help-arrow-left.png"/></td>
                                     <td>Browse technology concepts (topics) by Industry Sector or IEEE Organization. The matching topics will then appear below.</td>
                                 </tr></table>
                             </div>
                         </div>
                         <div class="help-col-mid" class="help-col">
                             <table><tr>
-                                <td class="help-arrow-container"><img src="{{MEDIA_URL}}images/help-arrow.png"/></td>
+                                <td class="help-arrow-container"><img src="{{STATIC_URL}}images/help-arrow.png"/></td>
                                 <td>Narrow the results by searching for topics that contain your keyword.</td>
                             </tr></table>
                             <div id="links-help-box">
@@ -291,12 +291,12 @@
                         <div class="help-col-right" class="help-col">
                             <table><tr>
                                 <td>Order topics by alpha, overall linkages, or more detailed statistics.</td>
-                                <td class="help-arrow-container-right"><img src="{{MEDIA_URL}}images/help-arrow.png" style="padding-left:5px"/></td>
+                                <td class="help-arrow-container-right"><img src="{{STATIC_URL}}images/help-arrow.png" style="padding-left:5px"/></td>
                             </tr></table>
                             <div style="padding-top:28px">
                                 <table><tr>
                                     <td>Zoom in or out to see more or fewer topics at once.</td>
-                                    <td class="help-arrow-container-right"><img src="{{MEDIA_URL}}images/help-arrow-right.png" style="padding-left:5px"/></td>
+                                    <td class="help-arrow-container-right"><img src="{{STATIC_URL}}images/help-arrow-right.png" style="padding-left:5px"/></td>
                                 </tr></table>
                             </div>
                             <div id="hide-help-box">

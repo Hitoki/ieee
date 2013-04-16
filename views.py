@@ -36,7 +36,7 @@ from BeautifulSoup import BeautifulSoup
 TOOLTIP_MAX_CHARS = 120
 
 def render(request, template, dictionary=None):
-    "Use this instead of 'render_to_response' to enable custom context processors, which add things like MEDIA_URL to the page automatically."
+    "Use this instead of 'render_to_response' to enable custom context processors, which add things like STATIC_URL to the page automatically."
     return render_to_response(template, dictionary=dictionary, context_instance=RequestContext(request))
 
 # ------------------------------------------------------------------------------
@@ -790,7 +790,7 @@ def ajax_xplore_results(request):
     
     from django.template.loader import render_to_string
     content = render_to_string('include_xplore_results.html', {
-        'MEDIA_URL': settings.MEDIA_URL,
+        'STATIC_URL': settings.STATIC_URL,
         'xplore_results': xplore_results,
         #'name': name,
         # TODO: This should use quote(), not replace()...
