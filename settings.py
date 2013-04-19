@@ -3,9 +3,7 @@ Django settings for the ieeetags project.
 '''
 
 import logging
-
-from os import path as os_path
-PROJECT_PATH = os_path.abspath(os_path.split(__file__)[0])
+import os
 
 from util import relpath
 
@@ -20,15 +18,12 @@ MANAGERS = ADMINS
 
 # Database Settings
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': None,
-        'USER': None,
-        'PASSWORD': None
-    }
-}
-
+DATABASE_ENGINE = 'mysql'
+DATABASE_NAME = None			 # Or path to database file if using sqlite3.
+DATABASE_USER = None			 # Not used with sqlite3.
+DATABASE_PASSWORD = None		 # Not used with sqlite3.
+DATABASE_HOST = ''			 # Set to empty string for localhost. Not used with sqlite3.
+DATABASE_PORT = ''			 # Set to empty string for default. Not used with sqlite3.
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -50,34 +45,7 @@ USE_I18N = True
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = relpath(__file__, 'media')
-CACHED_MEDIA_ROOT = os_path.join(MEDIA_ROOT, 'caches')
-
-# Absolute path to the directory static files should be collected to.
-# Don't put anything in this directory yourself; store your static files
-# in apps' "static/" subdirectories and in STATICFILES_DIRS.
-# Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = os_path.join(PROJECT_PATH, 'static-root')
-CACHED_STATIC_ROOT = os_path.join(STATIC_ROOT, 'caches')
-
-
-STATIC_URL = '/static/'
-
-CACHED_STATIC_URL = STATIC_URL + 'caches/'
-
-# Additional locations of static files
-STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    os_path.join(PROJECT_PATH, 'static'),
-)
-
-# List of finder classes that know how to find static files in
-# various locations.
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-)
+CACHED_MEDIA_ROOT = os.path.join(MEDIA_ROOT, 'caches')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -134,8 +102,9 @@ SEARCH_KEY_DELAY = 500
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader'
+    'django.template.loaders.filesystem.load_template_source',
+    'django.template.loaders.app_directories.load_template_source',
+#	 'django.template.loaders.eggs.load_template_source',
 )
 
 MIDDLEWARE_CLASSES = [
@@ -165,7 +134,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.humanize',
     'django.contrib.sitemaps',
-    'django.contrib.staticfiles',
     'south',
     'ieeetags',
     'ieeetags.site_admin',
@@ -173,10 +141,8 @@ INSTALLED_APPS = [
 ]
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.contrib.auth.context_processors.auth",
-    'django.core.context_processors.request',
-    "django.core.context_processors.static",
-    'ieeetags.context_processors.static_url',
+    'django.core.context_processors.auth',
+    'ieeetags.context_processors.media_url',
     'ieeetags.context_processors.logo_href',
     'ieeetags.context_processors.external_help_url',
     'ieeetags.context_processors.user',
