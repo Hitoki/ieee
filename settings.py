@@ -274,11 +274,6 @@ if 'test' in sys.argv:
 # Check for mandatory settings -------------------------------------------------
 
 MANDATORY_VARS = [
-    'DATABASE_NAME',
-    'DATABASE_USER',
-    'DATABASE_PASSWORD',
-    #'EMAIL_HOST',
-    #'SERVER_EMAIL',
     'DEFAULT_FROM_EMAIL',
     'XPLORE_IMPORT_LOG_PATH',
 ]
