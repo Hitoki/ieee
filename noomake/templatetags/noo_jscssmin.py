@@ -37,17 +37,17 @@ enable it by adding settings to local_settings.py:
 FORCE_AGGREGATE_CSS = True
 FORCE_AGGREGATE_JS = True
 
-There are optional settings for managing static in multi-directory projects,
+There are optional settings for managing media in multi-directory projects,
 where NooEngine may be installed outside the main project.
 
-ADDITIONAL_STATIC_ROOTS (optional) is a list of additional search paths for JS
+ADDITIONAL_MEDIA_ROOTS (optional) is a list of additional search paths for JS
 and CSS aggregation.
 
-CACHED_STATIC_ROOT (optional) specifies where CSS and JS static caches are
-placed. By default, they are placed in {STATIC_ROOT}/caches.
+CACHED_MEDIA_ROOT (optional) specifies where CSS and JS media caches are
+placed. By default, they are placed in {MEDIA_ROOT}/caches.
 
-CACHED_STATIC_URL (optional) specifies how that directory appears in URLs.
-It defaults to {STATIC_URL}/caches/.
+CACHED_MEDIA_URL (optional) specifies how that directory appears in URLs.
+It defaults to {MEDIA_URL}/caches/.
 
 Created by Andrew P Shearer on 2008-04-27
 Copyright (c) 2008-2009 Noosphere Networks, Inc. All rights reserved.
@@ -63,7 +63,7 @@ from django.template.defaultfilters import stringfilter
 from django.utils.html import conditional_escape, escape
 from django.utils.http import urlquote
 from django.utils.safestring import mark_safe
-from noomake import (jsmin, get_static_roots, expand_css_variables,
+from noomake import (jsmin, get_media_roots, expand_css_variables,
     is_js_aggregation_on, is_css_aggregation_on)
 #from nooprofile import get_mce_plugin_list
     # TODO: Get rid of above import. It introduces a dependency
@@ -118,14 +118,14 @@ def jsmintag(parser, token):
             {% jsmin js/myscript.js js/myscript2.js %}
         </head>
     
-    when debug is on, inserts (with ``MY_STATIC_URL`` substituted)::
+    when debug is on, inserts (with ``MY_MEDIA_URL`` substituted)::
     
-        <script type="text/javascript" href="MY_STATIC_URL/js/myscript.js"></script>
-        <script type="text/javascript" href="MY_STATIC_URL/js/myscript2.js"></script>
+        <script type="text/javascript" href="MY_MEDIA_URL/js/myscript.js"></script>
+        <script type="text/javascript" href="MY_MEDIA_URL/js/myscript2.js"></script>
     
     when debug is off, inserts a reference to a cached compacted JS file::
     
-        <script type="text/javascript" href="MY_STATIC_URL/cachedjs/8fdsa23jc93.js"></script>
+        <script type="text/javascript" href="MY_MEDIA_URL/cachedjs/8fdsa23jc93.js"></script>
     
     """
     
@@ -150,14 +150,14 @@ def cssmintag(parser, token):
             {% cssmin media="screen,print" style.css style2.css %}
         </head>
     
-    when debug is on, inserts (with ``MY_STATIC_URL`` substituted)::
+    when debug is on, inserts (with ``MY_MEDIA_URL`` substituted)::
     
-        <link rel="stylesheet" type="text/css" href="MY_STATIC_URL/style.css" media="screen,print" />
-        <link rel="stylesheet" type="text/css" href="MY_STATIC_URL/style2.css" media="screen,print" />
+        <link rel="stylesheet" type="text/css" href="MY_MEDIA_URL/style.css" media="screen,print" />
+        <link rel="stylesheet" type="text/css" href="MY_MEDIA_URL/style2.css" media="screen,print" />
     
     when debug is off, inserts a reference to a cached compacted CSS file::
     
-        <link rel="stylesheet" type="text/css" href="MY_STATIC_URL/caches/css/432143214f2.css" media="screen,print" />
+        <link rel="stylesheet" type="text/css" href="MY_MEDIA_URL/caches/css/432143214f2.css" media="screen,print" />
     
     """
     
@@ -182,7 +182,7 @@ def mcemintag(parser, token):
     creates a url that jQuery can load to get all of tinymce::
     
         <script type="text/javascript">
-            var mceUrl = "/static/caches/js/c77992ecbb2818fc83e1caa87e3a1757b.js";
+            var mceUrl = "/site_media/caches/js/c77992ecbb2818fc83e1caa87e3a1757b.js";
         </script>
     
     the contents of the cached js file would include tinymce, and all
@@ -213,7 +213,7 @@ def get_cache(sourceurls, cachedirname, extension, aggregator, root_paths=None,
     import os
     from django.conf import settings
     if root_paths is None:
-        root_paths = get_static_roots()
+        root_paths = get_media_roots()
     root_paths = [os.path.normpath(root_path) for root_path in root_paths]
     md5data = ''
     sourceurlsandpaths = []
@@ -231,10 +231,10 @@ def get_cache(sourceurls, cachedirname, extension, aggregator, root_paths=None,
                 filepath = None
             else:
                 break
-        # TODO: check that normpath(filepath) is still within STATIC_ROOT
+        # TODO: check that normpath(filepath) is still within MEDIA_ROOT
         if not filepath:
             raise template.TemplateSyntaxError(
-                'File not found in theme or main static directory: "%s"' % url)
+                'File not found in theme or main media directory: "%s"' % url)
         md5data += str(os.path.getmtime(filepath))
         
         sourceurlsandpaths.append((url, filepath))
@@ -252,15 +252,15 @@ def get_cache(sourceurls, cachedirname, extension, aggregator, root_paths=None,
             lambda: make_css_urls_absolute(aggregator(open(path, 'rb').read()),sourceurl)) #expand_css_variables(open(path, 'rb').read(), css_vars))
             for sourceurl, path in sourceurlsandpaths]
 
-def get_cached_STATIC_URL():
+def get_cached_media_url():
     from django.conf import settings
-    return getattr(settings, 'CACHED_STATIC_URL',
-        settings.STATIC_URL.rstrip('/') + '/caches/')
+    return getattr(settings, 'CACHED_MEDIA_URL',
+        settings.MEDIA_URL.rstrip('/') + '/caches/')
     
-def get_cached_static_root():
+def get_cached_media_root():
     from django.conf import settings
-    return getattr(settings, 'CACHED_STATIC_ROOT',
-        os.path.join(settings.STATIC_ROOT, 'caches'))
+    return getattr(settings, 'CACHED_MEDIA_ROOT',
+        os.path.join(settings.MEDIA_ROOT, 'caches'))
 
 def ensure_cache_file(cachedirname, cachefilename, creator):
     """
@@ -269,9 +269,9 @@ def ensure_cache_file(cachedirname, cachefilename, creator):
     callable.
     Return the URL of the cache file.
     """
-    cachefileurl = ''.join([get_cached_STATIC_URL(), cachedirname.rstrip('/'),
+    cachefileurl = ''.join([get_cached_media_url(), cachedirname.rstrip('/'),
         '/', cachefilename])
-    cacheroot = os.path.join(get_cached_static_root(), cachedirname)
+    cacheroot = os.path.join(get_cached_media_root(), cachedirname)
     cachefilepath = os.path.join(cacheroot, cachefilename)
     if not os.path.exists(cachefilepath):
         if not os.path.exists(cacheroot):
@@ -317,7 +317,7 @@ def _parse_css_vars():
     
     css_vars = {}
     var_names_in_order = []
-    root_paths = get_static_roots()
+    root_paths = get_media_roots()
     root_paths = [os.path.normpath(root_path) for root_path in root_paths]
     # reversing allows templates to over-ride base variables
     root_paths.reverse()
@@ -366,13 +366,13 @@ def make_css_urls_absolute(source, url):
     Fix up embedded relative URLs in CSS file data though a simple regular
     expression, in preparation for serving their content from a different
     location on the same server. The given url is used as a base for making
-    relative URLs absolute. It in turn can be relative to STATIC_URL.
+    relative URLs absolute. It in turn can be relative to MEDIA_URL.
     
     (The CSS files may not be in a position to use absolute URLs themselves,
-    since they don't know the STATIC_URL to use as a base.)
+    since they don't know the MEDIA_URL to use as a base.)
     
     For each "url(...)" in the original file, call urljoin to construct
-    a new URL from settings.STATIC_URL, the source stylesheet's URL path,
+    a new URL from settings.MEDIA_URL, the source stylesheet's URL path,
     and the argument to url().
 
     The regular expression used to find URLs isn't as accurate as a
@@ -383,7 +383,7 @@ def make_css_urls_absolute(source, url):
     """
     from urlparse import urljoin
     from django.conf import settings
-    url = urljoin(settings.STATIC_URL, url)  # make base URL absolute
+    url = urljoin(settings.MEDIA_URL, url)  # make base URL absolute
     return css_url_pattern.sub(
         lambda m: 'url(%s)' % urljoin(url, m.group(1)), source)
 
@@ -397,7 +397,7 @@ class CachedJSNode(template.Node):
             resulturls = get_js_cache(self.urls)
         else:
             from django.conf import settings
-            resulturls = [settings.STATIC_URL + url for url in self.urls]
+            resulturls = [settings.MEDIA_URL + url for url in self.urls]
         return ''.join([
             ('<script type="text/javascript" src="%s"></script>' % cgi.escape(url, 1))
             for url in resulturls])
@@ -474,7 +474,7 @@ class CachedCSSNode(template.Node):
             resulturls = get_expanded_css_cache(self.urls)
         else:
             from django.conf import settings
-            resulturls = [settings.STATIC_URL + url for url in self.urls]
+            resulturls = [settings.MEDIA_URL + url for url in self.urls]
         return ''.join([
             ('<link rel="stylesheet" type="text/css" href="%s" %s/>'
                 % (url, (self.attrtext and self.attrtext + ' ') or ''))

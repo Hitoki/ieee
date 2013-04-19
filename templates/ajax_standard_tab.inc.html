@@ -1,4 +1,3 @@
-{% load static %}
 <script type="text/javascript">
     $(function(){
         $('#standards-tab span.right').html('{{ standards|length }}');
@@ -33,7 +32,7 @@
                                 <p class="no-resources">No standards are currently tagged "{{ tag.name }}"</p>
                                 {% endif %}
                             {% else %}     
-                                <div class="loading" style="padding-top: 6em;text-align: center;padding-bottom: 3em;"><img src="{% static 'images/ajax-loader.gif' %}" class="loading" /></div>
+                                <div class="loading" style="padding-top: 6em;text-align: center;padding-bottom: 3em;"><img src="/media/images/ajax-loader.gif" class="loading" /></div>
                             {% endif %}
                         </ul>
                     </div>

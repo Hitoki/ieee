@@ -85,7 +85,7 @@ else:
         #url(r'^djangoadmin/(.*)', django.contrib.admin.site.root, name='admin'),
         
         # Cached media static serving
-        (r'^%s(?P<path>.*)$' % settings.CACHED_STATIC_URL.lstrip('/'), 'django.views.static.serve', {'document_root': settings.CACHED_MEDIA_ROOT}),
+        (r'^%s(?P<path>.*)$' % settings.CACHED_MEDIA_URL.lstrip('/'), 'django.views.static.serve', {'document_root': settings.CACHED_MEDIA_ROOT}),
         
         # Media
         url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),

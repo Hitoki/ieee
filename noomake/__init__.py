@@ -35,7 +35,7 @@ def get_cached_image_tag(attrs):
         path, filename = fileandpath.rsplit('/', 1)       
         new_dimensions = "x".join([width, height])
         new_filename = ".".join(["_".join([filename, new_dimensions]), ext]) 
-        new_url = urlunparse((url_parts[0], url_parts[1], '%s%s' % (settings.RESIZED_STATIC_URL, new_filename), '', '', ''))
+        new_url = urlunparse((url_parts[0], url_parts[1], '%s%s' % (settings.RESIZED_MEDIA_URL, new_filename), '', '', ''))
         
     return '<img src="%(src)s" alt="%(alt)s" width="%(width)s" height="%(height)s" />' % \
         {'src': new_url, 'alt': alt, 'width': width, \
@@ -93,21 +93,21 @@ def get_attr_value(attr_name, attrs):
         # if attr was not found, silently return nothing
         return ""
 
-def get_static_roots():
+def get_media_roots():
     """
-    Get the static search path, the list of folders we'll use to search for
-    CSS and JS files. This is a list instead of only settings.STATIC_ROOT
-    because of the theme system. Projects can also contribute more static roots
-    to the search path through an ADDITIONAL_STATIC_ROOTs setting in
-    local_settings.py, which is useful for keeping their own static separate
+    Get the media search path, the list of folders we'll use to search for
+    CSS and JS files. This is a list instead of only settings.MEDIA_ROOT
+    because of the theme system. Projects can also contribute more media roots
+    to the search path through an ADDITIONAL_MEDIA_ROOTs setting in
+    local_settings.py, which is useful for keeping their own media separate
     from NooEngine's.
     """
     from django.conf import settings
     result = []
-    if getattr(settings, 'THEME_STATIC_ROOT', None):
-        result.append(settings.THEME_STATIC_ROOT)
-    result.append(settings.STATIC_ROOT)
-    result.extend(getattr(settings, 'ADDITIONAL_STATIC_ROOTS', []))
+    if getattr(settings, 'THEME_MEDIA_ROOT', None):
+        result.append(settings.THEME_MEDIA_ROOT)
+    result.append(settings.MEDIA_ROOT)
+    result.extend(getattr(settings, 'ADDITIONAL_MEDIA_ROOTS', []))
     return result
 
 def expand_css_variables(source, vars, var_name_order = [], current_name = ""):
@@ -151,7 +151,7 @@ def parse_css_vars():
 
     css_vars = {}
     var_names_in_order = []
-    root_paths = get_static_roots()
+    root_paths = get_media_roots()
     root_paths = [os.path.normpath(root_path) for root_path in root_paths]
     # reversing allows templates to over-ride base variables
     root_paths.reverse()

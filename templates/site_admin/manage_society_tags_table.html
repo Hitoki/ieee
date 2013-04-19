@@ -95,7 +95,7 @@
         <tr>
             {% comment %}
             <th>
-                <img class="batch-edit-arrow" src="{{ STATIC_URL }}images/arrow2-down-white.gif" />
+                <img class="batch-edit-arrow" src="{{ MEDIA_URL }}images/arrow2-down-white.gif" />
             </th>
             {% endcomment %}
             <th>
@@ -103,16 +103,16 @@
                 <div class="table-sort">
                 <a href="{% url admin_manage_society society.id %}?tag_sort=name_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "name_ascending" %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_up_active.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                     {% else %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_up_inactive.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                     {% endifequal %}
                 </a>
                 <a href="{% url admin_manage_society society.id %}?tag_sort=name_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "name_descending" %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_down_active.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                     {% else %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_down_inactive.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
                     {% endifequal %}
                 </a>
                 </div>
@@ -126,16 +126,16 @@
                 <div class="table-sort">
                 <a href="{% url admin_manage_society society.id %}?tag_sort=sector_list_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "sector_list_ascending" %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_up_active.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                     {% else %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_up_inactive.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                     {% endifequal %}
                 </a>
                 <a href="{% url admin_manage_society society.id %}?tag_sort=sector_list_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "sector_list_descending" %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_down_active.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                     {% else %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_down_inactive.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
                     {% endifequal %}
                 </a>
                 </div>
@@ -147,16 +147,16 @@
                 <div class="table-sort">
                 <a href="{% url admin_manage_society society.id %}?tag_sort=topic_area_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "topic_area_ascending" %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_up_active.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                     {% else %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_up_inactive.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                     {% endifequal %}
                 </a>
                 <a href="{% url admin_manage_society society.id %}?tag_sort=topic_area_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "topic_area_descending" %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_down_active.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                     {% else %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_down_inactive.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
                     {% endifequal %}
                 </a>
                 </div>
@@ -168,16 +168,16 @@
                 <div class="table-sort">
                 <a href="{% url admin_manage_society society.id %}?tag_sort=num_societies_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_societies_ascending" %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_up_active.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                     {% else %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_up_inactive.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                     {% endifequal %}
                 </a>
                 <a href="{% url admin_manage_society society.id %}?tag_sort=num_societies_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_societies_descending" %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_down_active.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                     {% else %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_down_inactive.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
                     {% endifequal %}
                 </a>
                 </div>
@@ -190,16 +190,16 @@
                 <div class="table-sort">
                 <a href="{% url admin_manage_society society.id %}?tag_sort=num_filters_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_filters_ascending" %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_up_active.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                     {% else %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_up_inactive.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                     {% endifequal %}
                 </a>
                 <a href="{% url admin_manage_society society.id %}?tag_sort=num_filters_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_filters_descending" %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_down_active.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                     {% else %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_down_inactive.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
                     {% endifequal %}
                 </a>
                 </div>
@@ -212,16 +212,16 @@
                 <div class="table-sort">
                 <a href="{% url admin_manage_society society.id %}?tag_sort=num_resources_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_resources_ascending" %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_up_active.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                     {% else %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_up_inactive.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                     {% endifequal %}
                 </a>
                 <a href="{% url admin_manage_society society.id %}?tag_sort=num_resources_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_resources_descending" %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_down_active.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                     {% else %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_down_inactive.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
                     {% endifequal %}
                 </a>
                 </div>
@@ -233,16 +233,16 @@
                 <div class="table-sort">
                 <a href="{% url admin_manage_society society.id %}?tag_sort=num_related_tags_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_related_tags_ascending" %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_up_active.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                     {% else %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_up_inactive.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                     {% endifequal %}
                 </a>
                 <a href="{% url admin_manage_society society.id %}?tag_sort=num_related_tags_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_related_tags_descending" %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_down_active.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                     {% else %}
-                        <img src="{{ STATIC_URL }}images/sort_arrow_down_inactive.png" />
+                        <img src="{{ MEDIA_URL }}images/sort_arrow_down_inactive.png" />
                     {% endifequal %}
                 </a>
                 </div>

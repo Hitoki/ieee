@@ -9,17 +9,17 @@
 <meta http-equiv="pragma" content="no-cache" />
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<link rel="shortcut icon" href="{{ STATIC_URL }}images/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="{{ MEDIA_URL }}images/favicon.ico" type="image/x-icon" />
 <link rel="apple-touch-icon-precomposed" href="/iphone_icon.png"/>
 <link rel="apple-touch-startup-image"  href="/iphone_splash.png">
-<link rel="stylesheet" type="text/css" media="all" href="{{ STATIC_URL }}css/mobile/default.css" />
+<link rel="stylesheet" type="text/css" media="all" href="{{ MEDIA_URL }}css/mobile/default.css" />
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/jquery-1.3.2.js"><\/script>')</script>
 
 
-<script type="text/javascript" src="{{ STATIC_URL }}js/mobile/jquery_custom.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/mobile/master.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/mobile/jquery_custom.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/mobile/master.js"></script>
 <script type="text/javascript">
 	if ('standalone' in navigator && !navigator.standalone && (/iphone|ipod|ipad/gi).test(navigator.platform) && (/Safari/i).test(navigator.appVersion)) {
 		document.write('<link rel="stylesheet" href="..\/..\/lib\/iphone.css">');
@@ -32,14 +32,14 @@
 <div id="page_wrap">
 	
 	<div class="logo">
-		<a href="/"><img src="{{ STATIC_URL }}images/mobile/logo.png" alt="IEEE Technology Navigator Mobile" class="center" border="0" /></a>
+		<a href="/"><img src="{{ MEDIA_URL }}images/mobile/logo.png" alt="IEEE Technology Navigator Mobile" class="center" border="0" /></a>
 	</div>
 	
 	<div class="top_bar">
 		<div class="left">
-			<a href="https://www.facebook.com/dialog/feed?app_id=348030178564981&link=http://technav.ieee.org/tag/{{ tag.id }}/{{ tag.name|urlencode }}/&name=IEEE TechNav: {{ tag.name|urlencode }}&description=Check out these great resources on {{ tag.name|urlencode }} from the IEEE TechNav&redirect_uri=http://technav.ieee.org/tag/{{ tag.id }}/{{ tag.name|urlencode }}/"><img src="{{ STATIC_URL }}images/mobile/facebook.png" width="24" /></a>
-			<a href="https://twitter.com/share?url=&text=Check out these great resources on {{ tag.name }} from the IEEE TechNav http://technav.ieee.org/tag/{{ tag.id }}/{{ tag.name|urlencode }}/"><img src="{{ STATIC_URL }}images/mobile/twitter.png" width="24" /></a>
-			<a href="mailto:%20?subject=IEEE Resources for {{ tag.name }}&body=Check out these great resources on {{ tag.name }} from the IEEE TechNav http://technav.ieee.org/tag/{{ tag.id }}/{{ tag.name|urlencode }}/"><img src="{{ STATIC_URL }}images/mobile/email.png" width="24" /></a>
+			<a href="https://www.facebook.com/dialog/feed?app_id=348030178564981&link=http://technav.ieee.org/tag/{{ tag.id }}/{{ tag.name|urlencode }}/&name=IEEE TechNav: {{ tag.name|urlencode }}&description=Check out these great resources on {{ tag.name|urlencode }} from the IEEE TechNav&redirect_uri=http://technav.ieee.org/tag/{{ tag.id }}/{{ tag.name|urlencode }}/"><img src="{{ MEDIA_URL }}images/mobile/facebook.png" width="24" /></a>
+			<a href="https://twitter.com/share?url=&text=Check out these great resources on {{ tag.name }} from the IEEE TechNav http://technav.ieee.org/tag/{{ tag.id }}/{{ tag.name|urlencode }}/"><img src="{{ MEDIA_URL }}images/mobile/twitter.png" width="24" /></a>
+			<a href="mailto:%20?subject=IEEE Resources for {{ tag.name }}&body=Check out these great resources on {{ tag.name }} from the IEEE TechNav http://technav.ieee.org/tag/{{ tag.id }}/{{ tag.name|urlencode }}/"><img src="{{ MEDIA_URL }}images/mobile/email.png" width="24" /></a>
 		</div>
 
 		<div class="right">
@@ -54,7 +54,7 @@
 
 <div id="share_wrap">
 	
-	<a id="share_email"><img src="{{ STATIC_URL }}images/mobile/email.png" style="margin-bottom: 8px;" /></a>
+	<a id="share_email"><img src="{{ MEDIA_URL }}images/mobile/email.png" style="margin-bottom: 8px;" /></a>
 
 </div>
 
