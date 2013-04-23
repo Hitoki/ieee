@@ -2800,6 +2800,7 @@ td.machine-generated-column {
 }
 
 .ui-tooltip.ui-tooltip-default {
+  z-index: 99999999;
   box-shadow: 2px 3px 18px 0 #aaaaaa;
   -moz-box-shadow: 2px 3px 18px 0 #aaaaaa;
   -webkit-box-shadow: 2px 3px 18px 0 #aaaaaa;
