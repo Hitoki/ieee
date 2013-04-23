@@ -1,7 +1,10 @@
 /* Artfully masterminded by ZURB */
+/*
+Commenting this out since it breaks lightbox overlays.
 body {
   position: relative;
 }
+*/
 
 #joyRideTipContent { display: none; }
 
