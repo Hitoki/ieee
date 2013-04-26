@@ -2336,6 +2336,8 @@ header {
     p#tag-and-cluster-counts {
        margin: 0;
        font-size: 12pt;
+       width: auto;
+       display: inline-block;
        .icon-users {
             font-size: 25px;
             height: 25px;
@@ -2477,4 +2479,8 @@ td.machine-generated-column {
 
 a#zenbox_tab {
     top: 50% !important;
+}
+
+.joyride-next-tip {
+    float: right;
 }
