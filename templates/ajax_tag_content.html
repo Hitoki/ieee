@@ -151,7 +151,7 @@ function isValidEmailAddress(emailAddress) {
 {% endcomment %}
 <span class="dialogTitle">
     {% if NEWUI %}
-    <span aria-hidden="true" class="icon-tag"></span> &nbsp;<span id="tag-name">{{ tag.name }}</span>
+    <span id="tag-name">{{ tag.name }}</span>
     <div id="resources-lightbox-count">
         <span id="num-related-items-loading"></span><span id="num-related-items" class="{ number: {{ tag.related_tags.count }} }"></span>
         <br/>
