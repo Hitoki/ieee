@@ -2345,6 +2345,18 @@ header {
             vertical-align: bottom;
             margin-top: -4px;
         }
+        .first-value {
+            padding: 5px 10px;
+            border: 1px solid $white;
+            background-color: darken($primaryColor, 15%);
+            display: inline-block;
+        }
+        .second-value {
+            padding: 5px 10px;
+            border: 1px solid $white;
+            background-color: $secondaryColor;
+            display: inline-block;
+        }
     }
     .inner {
         width: 85%;
