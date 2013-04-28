@@ -27,7 +27,6 @@
             log('Starting at ' + start);
              
             var tagGalaxyWidth = $('#tag-galaxy').width();
-            $('#tag-help-box').css('width', tagGalaxyWidth - 5);
              
             var resizeTagGalaxy = function() {
                 var windowHeight = $(window).height();
@@ -35,10 +34,6 @@
                 // Set heights for galaxy and nav panels
                 $("#tags").css('height', windowHeight - 300);
                 $('div#sectors-tab, div#societies-tab').css('height', windowHeight - 295);
-                 
-                //Set width for help box
-                var tagGalaxyWidth = $('#tag-galaxy').width();
-                $('#tag-help-box').css('width', tagGalaxyWidth - 19);
             };
              
             resizeTagGalaxy();
@@ -114,11 +109,16 @@
             });
         });
 
-    $(window).load(function() {
-        $("#chooseID").joyride({
+    // Starts tour when help button is clicked.
+    function startTour() {
+        $("#joyrideTour").joyride({
             /* Options will go here */
             'autoStart' : true
         });
+    }
+
+    $(window).load(function() {
+        startTour();
     });
 
     </script>
@@ -126,7 +126,7 @@
 
 {% block content %}
 
-<ol id="chooseID" style='display:none;'>
+<ol id="joyrideTour" style='display:none;'>
   /* data-id needs to be the same as the parent it will attach to */
   <li data-id="header-logo">Welcome to Technology Navigator (TN) &mdash; a new tool from IEEE for finding resources across our</li>
   <li data-id="tag-and-cluster-counts">TN is based around 8,601 "topics" Topic areas and topics</li>
