@@ -1,3 +1,6 @@
+from decorators import optional_login_required as login_required
+from django.views.decorators.csrf import csrf_exempt
+
 XPLORE_SORT_AUTHOR = 'au'
 XPLORE_SORT_TITLE = 'ti'
 XPLORE_SORT_AUTHOR_AFFILIATIONS = 'cs'
