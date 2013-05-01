@@ -5,7 +5,7 @@ import os.path
 import site_admin.views
 import settings
 from django.views.generic.simple import direct_to_template
-from import views, ajax, xplore
+from views import *
 
 from ieeetags.sitemaps import *
 
@@ -18,12 +18,12 @@ if not settings.DEBUG:
 if settings.DISABLE_SITE:
     # Disable the entire site!
     urlpatterns = patterns('',
-        url(r'^.*$', views.views.site_disabled, name='site_disabled'),
+        url(r'^.*$', views.site_disabled, name='site_disabled'),
     )
     
 else:
     urlpatterns = patterns('',
-        url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.views.sitemap',
+        url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap',
             {'sitemaps': {
                     'OneOffs':        OneOffsSitemap
                     ,'TagsStartWith': TagsStartWithSitemap
@@ -31,52 +31,52 @@ else:
                     }
              }
         ),
-        url(r'^$', views.views.index, name='index'),
-        url(r'^roamer$', views.views.roamer, name='roamer'),
-        url(r'^textui/(survey)?$', views.views.textui, name='textui'),
-        url(r'^textui_new$', views.views.textui, name='textui_new'),
-        url(r'^textui_help$', views.views.textui_help, name='textui_help'),
-        url(r'^textui_home$', views.views.textui_home, name='textui_home'),
-        url(r'^feedback$', views.views.feedback, name='feedback'),
-        url(r'^browser_warning$', views.views.browser_warning, name='browser_warning'),
-        url(r'^xplore_full_results/(?P<tag_id>\d+)$', views.xplore.xplore_full_results, name='xplore_full_results'),
-        url(r'^tester_message$', views.views.tester_message, name='tester_message'),
-        url(r'^tester_survey$', views.views.tester_survey, name='tester_survey'),
+        url(r'^$', views.index, name='index'),
+        url(r'^roamer$', views.roamer, name='roamer'),
+        url(r'^textui/(survey)?$', views.textui, name='textui'),
+        url(r'^textui_new$', views.textui, name='textui_new'),
+        url(r'^textui_help$', views.textui_help, name='textui_help'),
+        url(r'^textui_home$', views.textui_home, name='textui_home'),
+        url(r'^feedback$', views.feedback, name='feedback'),
+        url(r'^browser_warning$', views.browser_warning, name='browser_warning'),
+        url(r'^xplore_full_results/(?P<tag_id>\d+)$', xplore.xplore_full_results, name='xplore_full_results'),
+        url(r'^tester_message$', views.tester_message, name='tester_message'),
+        url(r'^tester_survey$', views.tester_survey, name='tester_survey'),
 
         # AJAX
-        #url(r'^ajax/tag_content$', views.views.ajax_tag_content, name='ajax_tag_content'),
-        url(r'^ajax/tag_content/(?P<tag_id>\d+)/(?P<ui>\S+)/(?P<tab>\S+)$', views.ajax.ajax_tag_content, name='ajax_tag_content'),
-        url(r'^ajax/tag_content/(?P<tag_slug>\d+)/(?P<ui>\S+/(?P<tab>\S+))$', views.ajax.ajax_tag_content, name='ajax_tag_content'),
-        #url(r'^ajax/term_content/(?P<term_id>\d+)/(?P<ui>\S+)$', views.views.ajax_term_content, name='ajax_term_content'),
-        url(r'^ajax/xplore_results$', views.xplore.ajax_xplore_results, name='ajax_xplore_results'),
-        url(r'^ajax/recent_xplore$', views.xplore.ajax_recent_xplore, name='ajax_recent_xplore'),
-        url(r'^ajax/jobs_results$', views.ajax.ajax_jobs_results, name='ajax_jobs_results'),
-        url(r'^ajax/node$', views.ajax.ajax_node, name='ajax_node'),
-        url(r'^ajax/nodes_xml$', views.ajax.ajax_nodes_xml, name='ajax_nodes_xml'),
-        url(r'^ajax/nodes_json$', views.ajax.ajax_nodes_json, name='ajax_nodes_json'),
-        url(r'^ajax/textui_nodes$', views.ajax.ajax_textui_nodes, name='ajax_textui_nodes'),
-        url(r'^ajax/tooltip/(?P<tag_id>\d+)$', views.ajax.tooltip, name='tooltip'),
-        url(r'^ajax/tooltip$', views.ajax.tooltip, name='tooltip'),
-        url(r'^ajax/video$', views.ajax.ajax_video, name='ajax_video'),
-        url(r'^ajax/welcome$', views.ajax.ajax_welcome, name='ajax_welcome'),
-        url(r'^ajax/profile_log$', views.ajax.ajax_profile_log, name='ajax_profile_log'),
-        url(r'^ajax/notification/request$', views.ajax.ajax_notification_request),
+        #url(r'^ajax/tag_content$', views.ajax_tag_content, name='ajax_tag_content'),
+        url(r'^ajax/tag_content/(?P<tag_id>\d+)/(?P<ui>\S+)/(?P<tab>\S+)$', ajax.ajax_tag_content, name='ajax_tag_content'),
+        url(r'^ajax/tag_content/(?P<tag_slug>\d+)/(?P<ui>\S+/(?P<tab>\S+))$', ajax.ajax_tag_content, name='ajax_tag_content'),
+        #url(r'^ajax/term_content/(?P<term_id>\d+)/(?P<ui>\S+)$', views.ajax_term_content, name='ajax_term_content'),
+        url(r'^ajax/xplore_results$', xplore.ajax_xplore_results, name='ajax_xplore_results'),
+        url(r'^ajax/recent_xplore$', xplore.ajax_recent_xplore, name='ajax_recent_xplore'),
+        url(r'^ajax/jobs_results$', ajax.ajax_jobs_results, name='ajax_jobs_results'),
+        url(r'^ajax/node$', ajax.ajax_node, name='ajax_node'),
+        url(r'^ajax/nodes_xml$', ajax.ajax_nodes_xml, name='ajax_nodes_xml'),
+        url(r'^ajax/nodes_json$', ajax.ajax_nodes_json, name='ajax_nodes_json'),
+        url(r'^ajax/textui_nodes$', ajax.ajax_textui_nodes, name='ajax_textui_nodes'),
+        url(r'^ajax/tooltip/(?P<tag_id>\d+)$', ajax.tooltip, name='tooltip'),
+        url(r'^ajax/tooltip$', ajax.tooltip, name='tooltip'),
+        url(r'^ajax/video$', ajax.ajax_video, name='ajax_video'),
+        url(r'^ajax/welcome$', ajax.ajax_welcome, name='ajax_welcome'),
+        url(r'^ajax/profile_log$', ajax.ajax_profile_log, name='ajax_profile_log'),
+        url(r'^ajax/notification/request$', ajax.ajax_notification_request),
         
-        url(r'^ajax/javascript_error_log$', views.ajax.ajax_javascript_error_log, name='ajax_javascript_error_log'),
+        url(r'^ajax/javascript_error_log$', ajax.ajax_javascript_error_log, name='ajax_javascript_error_log'),
         
         # Print
-        url(r'^print/resource/(?P<tag_id>\d+)/(?P<resource_type>.+)$', views.views.print_resource, name='print_resource'),
+        url(r'^print/resource/(?P<tag_id>\d+)/(?P<resource_type>.+)$', views.print_resource, name='print_resource'),
         
         # SEO-style pages
-        url(r'^tags/?$', views.views.tags_list, name='tags_list'),
-        url(r'^tags/starts/(?P<starts_with>.+)/?$', views.views.tags_starts, name='tags_starts'),
-        url(r'^tags/all/?$', views.views.tags_all,name='tags_all'),
-        url(r'^tag/(?P<tag_id>\d+)/[0-9a-zA-Z_-]*/?$', views.views.tag_landing, name='tag_landing'),
-        url(r'^clusters/', views.views.clusters_list, name='clusters_list'),
-        url(r'^cluster/(?P<cluster_id>\d+)/[0-9a-zA-Z_-]*/?$', views.views.cluster_landing, name='cluster_landing'),
+        url(r'^tags/?$', views.tags_list, name='tags_list'),
+        url(r'^tags/starts/(?P<starts_with>.+)/?$', views.tags_starts, name='tags_starts'),
+        url(r'^tags/all/?$', views.tags_all,name='tags_all'),
+        url(r'^tag/(?P<tag_id>\d+)/[0-9a-zA-Z_-]*/?$', views.tag_landing, name='tag_landing'),
+        url(r'^clusters/', views.clusters_list, name='clusters_list'),
+        url(r'^cluster/(?P<cluster_id>\d+)/[0-9a-zA-Z_-]*/?$', views.cluster_landing, name='cluster_landing'),
         
         # Single static SWF file, for Flash player bug
-        url(r'^admin/(?P<path>SkinUnderAllNoCaption.swf)$', 'django.views.views.static.serve', {'document_root': '%s/flash' % settings.MEDIA_ROOT}),
+        url(r'^admin/(?P<path>SkinUnderAllNoCaption.swf)$', 'django.views.static.serve', {'document_root': '%s/flash' % settings.MEDIA_ROOT}),
         
         # Site Admin
         (r'^admin/', include('ieeetags.site_admin.urls')),
@@ -85,14 +85,14 @@ else:
         #url(r'^djangoadmin/(.*)', django.contrib.admin.site.root, name='admin'),
         
         # Cached media static serving
-        (r'^%s(?P<path>.*)$' % settings.CACHED_MEDIA_URL.lstrip('/'), 'django.views.views.static.serve', {'document_root': settings.CACHED_MEDIA_ROOT}),
+        (r'^%s(?P<path>.*)$' % settings.CACHED_MEDIA_URL.lstrip('/'), 'django.views.static.serve', {'document_root': settings.CACHED_MEDIA_ROOT}),
         
         # Media
-        url(r'^media/(?P<path>.*)$', 'django.views.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
         
         # Debug
-        url(r'^debug/error$', views.views.debug_error, name='debug_error'),
-        url(r'^debug/send_email$', views.views.debug_send_email, name='debug_send_email'),
+        url(r'^debug/error$', views.debug_error, name='debug_error'),
+        url(r'^debug/send_email$', views.debug_send_email, name='debug_send_email'),
 
         # Faux page for demo
         (r'^scss/$', direct_to_template, {'template': 'scss.html'}),
@@ -101,7 +101,7 @@ else:
 if settings.DEBUG:
     # Test views.views
     urlpatterns += patterns('',
-        url(r'^test/error$', views.views.test_error, name='test_error'),
-        url(r'^test/lightbox_error$', views.views.test_lightbox_error, name='test_lightbox_error'),
-        url(r'^test/browsers$', views.views.test_browsers, name='test_browsers'),
+        url(r'^test/error$', views.test_error, name='test_error'),
+        url(r'^test/lightbox_error$', views.test_lightbox_error, name='test_lightbox_error'),
+        url(r'^test/browsers$', views.test_browsers, name='test_browsers'),
     )
