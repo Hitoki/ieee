@@ -38,7 +38,7 @@ from ieeetags import permissions
 from ieeetags import url_checker
 from ieeetags.util import *
 from ieeetags.models import Cache, Node, NodeSocieties, NodeType, Permission, Resource, ResourceType, ResourceNodes, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager, FailedLoginLog, UrlCheckerLog, TaxonomyTerm, TaxonomyCluster, ProfileLog, ProcessControl, PROCESS_CONTROL_TYPES
-from ieeetags.views import render
+from ieeetags.views.views import render
 from ieeetags.widgets import DisplayOnlyWidget
 from forms import *
 from widgets import make_display_only
