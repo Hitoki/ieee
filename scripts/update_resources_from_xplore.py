@@ -481,9 +481,9 @@ def main(*args):
         
         from django.core.mail import send_mail
         from django.conf import settings
-        if alert_email != None and alert_url != None:
-            message = "Visit %s for details." % alert_url
-            send_mail('Import-from-Xplore complete', message, settings.DEFAULT_FROM_EMAIL, [alert_email])
+        # if alert_email != None and alert_url != None:
+        #     message = "Visit %s for details." % alert_url
+        #     send_mail('Import-from-Xplore complete', message, settings.DEFAULT_FROM_EMAIL, [alert_email])
     
     finally:
         pass
