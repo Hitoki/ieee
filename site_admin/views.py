@@ -1943,10 +1943,10 @@ def import_xplore(request):
             resume = 1
         else:
             resume = 0
-        
+
         print '  Launching process %r' % script_path
         proc = subprocess.Popen(
-            [sys.executable, '-u', script_path, '--pid=%s' % pidfilename, '--log=%s' % log_filename_abs, '--xplore_hc=%d' % settings.XPLORE_IMPORT_MAX_QUERY_RESULTS, '--path=%s' % paths, '--resume=%s' % resume, '--alert_email=%s' % request.user.email, '--alert_url=%s' % request.build_absolute_uri(reverse('admin_import_xplore'))],
+            [sys.executable, '-u', script_path, '--pid=%s' % pidfilename, '--log=%s' % log_filename_abs, '--xplore_hc=%d' % settings.XPLORE_IMPORT_MAX_QUERY_RESULTS, '--path=%s' % paths, '--resume=%s' % resume] #, '--alert_email=%s' % request.user.email, '--alert_url=%s' % request.build_absolute_uri(reverse('admin_import_xplore'))],
             cwd=scripts_path,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
