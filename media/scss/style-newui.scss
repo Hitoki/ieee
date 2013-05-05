@@ -2498,3 +2498,12 @@ a#zenbox_tab {
 .joyride-next-tip {
     float: right;
 }
+
+.joyride-tip-guide {
+    width: 415px;
+    line-height: 1.5;
+    z-index: 9999999;
+    ul {
+        margin: 15px;
+    }
+}
