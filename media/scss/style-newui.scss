@@ -2504,6 +2504,7 @@ a#zenbox_tab {
     font-size: $largeFont;
     line-height: 1.5;
     z-index: 9999999;
+    margin-top: 5px;
     @include custom-border-radius (0, 0, 0, 0);
     ul {
         margin: 15px;
