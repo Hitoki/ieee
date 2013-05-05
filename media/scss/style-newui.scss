@@ -2349,17 +2349,15 @@ header {
         }
         .first-value {
             padding: 0.6em;
-            border: 1px solid $white;
-            background-color: darken($primaryColor, 15%);
             display: inline-block;
             font-size: $mediumFont;
+            background: darken($primaryColor, 15%) url(/media/images/count-corner.png) no-repeat top right;
         }
         .second-value {
             padding: 0.4em 0.6em;
-            border: 1px solid $white;
-            background-color: $secondaryColor;
             display: inline-block;
             font-size: $mediumFont;
+            background: $secondaryColor url(/media/images/count-corner.png) no-repeat top right;
         }
     }
     .inner {
