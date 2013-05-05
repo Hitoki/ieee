@@ -2506,6 +2506,13 @@ a#zenbox_tab {
     ul {
         margin: 15px;
     }
+    &.firstStop {
+        margin-left: -3px;
+    }
+    &.lastStop {
+        margin-top: -390px;
+        margin-left: 355px;
+    }
 }
 
 .joyride-tip-guide .joyride-next-tip {
@@ -2521,8 +2528,5 @@ a#zenbox_tab {
     &:hover {
         border: 0 none !important;
         background: $orange;
-    }
-    &.firstStop {
-        margin-left: -3px;
     }
 }
