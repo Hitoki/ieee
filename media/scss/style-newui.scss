@@ -2522,4 +2522,7 @@ a#zenbox_tab {
         border: 0 none !important;
         background: $orange;
     }
+    &.firstStop {
+        margin-left: -3px;
+    }
 }
