@@ -2503,6 +2503,7 @@ a#zenbox_tab {
     width: 415px;
     line-height: 1.5;
     z-index: 9999999;
+    @include custom-border-radius (0, 0, 0, 0);
     ul {
         margin: 15px;
     }
@@ -2524,7 +2525,7 @@ a#zenbox_tab {
     box-shadow: 0 0;
     margin-top: 25px;
     margin-bottom: 10px;
-    @include default-border-radius;
+    @include custom-border-radius (0, 0, 0, 0);
     &:hover {
         border: 0 none !important;
         background: $orange;
