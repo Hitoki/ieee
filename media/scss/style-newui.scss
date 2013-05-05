@@ -761,10 +761,11 @@ ul#sectors, ul#societies {
         background-color: $light-gray !important;
         color: $gray !important;
     }
-    div.tag_cluster a {
+    div.tag_cluster
+     a {
         margin-top: 0;
         padding: 0.6em 0.6em;
-        background-color: $primaryColor;
+        background-color: darken($primaryColor, 15%);
     }
 } 
     
@@ -2347,16 +2348,18 @@ header {
             margin-top: -4px;
         }
         .first-value {
-            padding: 5px 10px;
+            padding: 0.6em;
             border: 1px solid $white;
             background-color: darken($primaryColor, 15%);
             display: inline-block;
+            font-size: $mediumFont;
         }
         .second-value {
-            padding: 5px 10px;
+            padding: 0.4em 0.6em;
             border: 1px solid $white;
             background-color: $secondaryColor;
             display: inline-block;
+            font-size: $mediumFont;
         }
     }
     .inner {
