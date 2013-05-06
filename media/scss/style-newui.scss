@@ -217,6 +217,57 @@ p.admin-links {
 #roamerswitchlink-container a:hover {
     color: $orange;
 }
+
+footer {
+   background-color: $primaryColor;
+   #footer {
+       clear: both;
+       margin: 0 auto;
+       position: relative;
+       width: 85%;
+       z-index: 1;
+       text-align: center;
+       padding: 15px 0;
+   }
+   a.floating img {
+       vertical-align: middle;
+       border: none;
+   }
+   .survey-button {
+       float: right;
+       margin: -15px 34px 10px 0;
+   }
+   p.admin-links a {
+       color: $gray;
+       &:hover {
+           color: $orange;
+       }
+   }
+   #footer-login {
+      float: right;
+      a {
+         color: $secondaryColor;
+         &:hover {
+            color: $white;
+            text-decoration: none;
+         }
+      }
+   }
+   #copyright {
+       color: $white;
+       font-size: $smallFont;
+   }
+   #surveyFooter {
+      color: $dark-gray;
+      text-align: center;
+      font-size: 7pt;
+   }
+  
+   #ieee-home, #opt-link {
+      color: $white;
+      text-decoration: underline;
+   }
+}
   
 .newWinIcon {
     margin: 0 10px;
@@ -1162,6 +1213,25 @@ table#login-table td {
         color: $white;
         text-decoration: none;
     }
+}
+
+#testerSurveyBtn {
+    background-color: #FD7400;
+    border: 1px solid transparent;
+    color: $white;
+    padding: 2px 5px;
+    float: left;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 7pt;
+    clear: left;
+}
+  
+#testerBtn:hover,
+#testerSurveyBtn:hover {
+    background-color: $white;
+    color: #FD7400;
+    border: 1px solid $orange;
 }
   
 #testerBtn-container {
@@ -2248,12 +2318,26 @@ header {
        left: 0px;
    }
 }
+
+#corner-notch {
+   position: absolute;
+   right: 0;
+   height: 27px;
+   width: 27px;
+   background: url(/media/images/corner-notch.png) no-repeat scroll 0 0;   
+}
   
 #inner-container {
     min-width: 1100px;
     margin: 0 auto;
     position: relative;
     background-color: $backgroundColor;
+}
+
+#inner-container .center-pad {
+    width: 85%;
+background-color: #FFFFFF;
+margin: 0 auto;
 }
   
 #tag-tools {

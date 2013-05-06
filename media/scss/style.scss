@@ -374,57 +374,6 @@ p.admin-links {
     color: $orange;
 }
 
-footer {
-   background-color: $primaryColor;
-   #footer {
-       clear: both;
-       margin: 0 auto;
-       position: relative;
-       width: 85%;
-       z-index: 1;
-       text-align: center;
-       padding: 15px 0;
-   }
-   a.floating img {
-       vertical-align: middle;
-       border: none;
-   }
-   .survey-button {
-       float: right;
-       margin: -15px 34px 10px 0;
-   }
-   p.admin-links a {
-       color: $gray;
-       &:hover {
-           color: $orange;
-       }
-   }
-   #footer-login {
-      float: right;
-      a {
-         color: $secondaryColor;
-         &:hover {
-            color: $white;
-            text-decoration: none;
-         }
-      }
-   }
-   #copyright {
-       color: $white;
-       font-size: $smallFont;
-   }
-   #surveyFooter {
-      color: $dark-gray;
-      text-align: center;
-      font-size: 7pt;
-   }
-  
-   #ieee-home, #opt-link {
-      color: $white;
-      text-decoration: underline;
-   }
-}
-
 #ieee-home, #opt-link {
    color: $white;
    text-decoration: underline;
@@ -1516,25 +1465,6 @@ table#login-table td {
     margin-top: 28px;   
 }
 
-#testerSurveyBtn {
-    background-color: #FD7400;
-    border: 1px solid transparent;
-    color: $white;
-    padding: 2px 5px;
-    float: left;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 7pt;
-    clear: left;
-}
-  
-#testerBtn:hover,
-#testerSurveyBtn:hover {
-    background-color: $white;
-    color: #FD7400;
-    border: 1px solid $orange;
-}
-
 .tags-table-loading {
     text-align: center;
     font-weight: bold;
@@ -2618,14 +2548,6 @@ min-width: 1100px;
 margin: 30px auto 0;
 padding: 0 10px 10px 10px;
 position: relative;
-}
-
-#corner-notch {
-   position: absolute;
-   right: 0;
-   height: 27px;
-   width: 27px;
-   background: url(/media/images/corner-notch.png) no-repeat scroll 0 0;   
 }
 
 .lightbox-waiting-over-lightbox-content {
