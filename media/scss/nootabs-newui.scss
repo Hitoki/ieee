@@ -115,18 +115,18 @@ ul.nootabs-menus li a:hover {
 .nootabs-selected-tab div.group {
     height: 100%;
     overflow: auto;
-    height: 345px;
+    height: 370px;
     a {
         outline: none;
     }
 }
 
 #job-tab div.group {
-    height: 313px;
+    height: 330px;
 }
 
 #xplore-tab div.group {
-    height: 313px;
+    height: 330px;
 }
 
 
@@ -174,7 +174,6 @@ ul.nootabs-menus li a:hover {
     float: left;
     clear: none;
     width: 136px;
-    margin-top: 25px;
 }
 
 #resource-tabs ul.nootabs-menus li {
@@ -215,10 +214,11 @@ ul.nootabs-menus li a:hover {
 }
 
 #resource-tabs ul.nootabs-menus li a span.right {
-    float: right;
     font-size: 7pt;
     vertical-align: baseline;
-    margin: 4px 5px 0 0;
+    margin: 0;
+    display: block;
+    text-align: left;
 }
 
 .full-grid ul.nootabs-menus li {
