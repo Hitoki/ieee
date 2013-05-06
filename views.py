@@ -134,14 +134,9 @@ def textui(request, survey=False):
     # NOTE: Hide TAB society from the nav.
     societies = societies.exclude(abbreviation__in=['tab', 'ieee-usa'])
     
-    if request.path == '/textui_new':
-        template = 'textui_new.html'
-        NEWUI = True
-        newui_search_button = False
-    else:
-        template = 'textui.html'
-        NEWUI = False
-        newui_search_button = settings.ENABLE_SEARCH_BUTTON
+    template = 'textui_new.html'
+    NEWUI = True
+    newui_search_button = False
 
     return render(request, template, {
         'sectorId':sectorId,
@@ -307,10 +302,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
     counts = 0
     jobsCount = "0"
 
-    if request.META['HTTP_REFERER'].endswith('/textui_new'):
-        NEWUI = True
-    else:
-        NEWUI = False
+    NEWUI = True
     context['NEWUI'] = NEWUI
 
     #sectors1 = tag.get_sectors()
@@ -1284,10 +1276,7 @@ def _render_textui_nodes(request, sort, search_for, sector_id, sector, society_i
         except Society.DoesNotExist:
             society = None
 
-    if request.META['HTTP_REFERER'].endswith('/textui_new'):
-        NEWUI = True
-    else:
-        NEWUI = False
+    NEWUI = True
 
     from django.template.loader import render_to_string
     content = render_to_string('ajax_textui_nodes.html', {
@@ -1970,10 +1959,7 @@ def ajax_video(request):
     
 def ajax_welcome(request):
     'Returns the HTML content for the welcome lightbox.'
-    if request.path == '/textui_new':
-        NEWUI = True
-    else:
-        NEWUI = False
+    NEWUI = True
     return render(request, 'ajax_welcome.html', {
         'NEWUI': NEWUI
     })
