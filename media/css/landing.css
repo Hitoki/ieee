@@ -18,12 +18,11 @@ font-size: 11pt;
 }
 
 #tag_frozen_header #corner-notch {
-height: 27px;
-position: absolute;
-right: 0;
-top: 0;
-width: 27px;
-z-index: 99;
+   position: absolute;
+   right: 0;
+   height: 27px;
+   width: 27px;
+   background: url(/media/images/corner-notch.png) no-repeat scroll 0 0;   
 }
 
 .tag_header_inner {
