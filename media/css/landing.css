@@ -2,33 +2,28 @@ body.tag_base  {
 line-height: 1.5;   
 }
 
-.tag_base #inner-container {
-   background: none repeat scroll 0 0 white;
-   filter: none;
-   width: 1205px; /*Required to match frozen header width*/
-}
-
 .tag_base #welcome-link {
    display: none;
 }
 
 /* Tag Page Styling */
-#tag_page {
-font-size: 11pt;
+#tag_frozen_header {
+  position: relative;
+
 }
 
-#tag_frozen_header #corner-notch {
-   position: absolute;
-   right: 0;
-   height: 27px;
-   width: 27px;
-   background: url(/media/images/corner-notch.png) no-repeat scroll 0 0;   
+#header {
+  padding: 15px 35px 0 15px;
+}
+
+#tag_page {
+font-size: 11pt;
 }
 
 .tag_header_inner {
 display: block;
 clear: both;
-margin: 0 0 10px 0;
+padding: 15px;
 }
 
 #tag_page h1 {
@@ -178,7 +173,7 @@ background: transparent url(/media/images/topLink.png) no-repeat 83px -11px;
 #tag_contents {
 clear: both;
 display: inline-block;
-padding: 40px 0 0 0;
+padding: 40px 15px 0;
 line-height: 1.2;
 }
 
@@ -248,7 +243,8 @@ margin-left: 130px;
 }
 
 .tag-section {
-margin-top: 40px;   
+margin-top: 40px;
+padding: 0 15px;
 }
 
 hr {
