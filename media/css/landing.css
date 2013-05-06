@@ -101,9 +101,10 @@ color: #006699;
 }
 
 #tag_technav {
-height: 32px;
+height: 29px;
 width: 205px;
 padding: 3px 8px;
+margin-right: 25px;
 vertical-align: top;
 display: inline-block;
 float: right;
@@ -115,17 +116,13 @@ background: #FFA500;
 background: #33cc00;
 }
 
-#tag_technav:hover div {
-background: transparent url(/media/images/tag-technavlogo.png) no-repeat 65px 3px;
-}
-
 #tag_technav div {
 color: white;   
 text-decoration: none;
 height: 32px;
 width: 205px;
 display: inline-block;
-background: transparent url(/media/images/tag-technavlogo.png) no-repeat 65px -32px;
+background: transparent url(/media/images/tag-technavlogo.png) no-repeat 65px 2px;
 }
 
 #tag_technav span {
