@@ -3,9 +3,6 @@
 // CSS Gradients //
 // Supported Browser Styles //
 .cssgradients {
-    #inner-container {
-        @include light-blue-gradient;
-    }
     .header-btns .btn.help {
         @include green-gradient;
     }
@@ -75,70 +72,68 @@
 }
 
 // Non-Supported Browser Styles //
-.no-cssgradients {
-    #inner-container {
-        background-color: $light-blue;
-    }
-    .header-btns .btn.help {
-        background: $green;
-    }
-    .header-btns .btn.admin {
-        background: $red;
-    }
-    ul#societies, ul#sectors {
-        a {
-            &.active-society,
-            &.active-sector {
-                background: $primaryColor;
-            }
-            &:hover {
-                background: $orange;
-            }
+#inner-container {
+    background-color: $white;
+}
+.header-btns .btn.help {
+    background: $green;
+}
+.header-btns .btn.admin {
+    background: $red;
+}
+ul#societies, ul#sectors {
+    a {
+        &.active-society,
+        &.active-sector {
+            background: $primaryColor;
+        }
+        &:hover {
+            background: $orange;
         }
     }
-    .nootabs-menus li.nootabs-menu a:hover {
-        background: $orange;
+}
+.nootabs-menus li.nootabs-menu a:hover {
+    background: $orange;
+}
+#alternate-page #tag-galaxy div.node {
+    a.level1, div.level1, span.level1 {
+        background: $level1;
     }
-    #alternate-page #tag-galaxy div.node {
-        a.level1, div.level1, span.level1 {
+    a.level2, div.level2, span.level2 {
+        background: $level2;
+    }
+    a.level3, div.level3, span.level3 {
+        background: $level3;
+    }
+    a.level4, div.level4, span.level4 {
+        background:$level4;
+    }
+    a.level5, div.level5, span.level5 {
+        background: $level5;
+    }
+    a.level6, div.level6, span.level6 {
+        background: $level6
+    }
+}
+.flyover-container {
+    td {
+        &.level1 {
             background: $level1;
         }
-        a.level2, div.level2, span.level2 {
+        &.level2 {
             background: $level2;
         }
-        a.level3, div.level3, span.level3 {
+        &.level3 {
             background: $level3;
         }
-        a.level4, div.level4, span.level4 {
-            background:$level4;
+        &.level4 {
+            background: $level4;
         }
-        a.level5, div.level5, span.level5 {
+        &.level5 {
             background: $level5;
         }
-        a.level6, div.level6, span.level6 {
-            background: $level6
-        }
-    }
-    .flyover-container {
-        td {
-            &.level1 {
-                background: $level1;
-            }
-            &.level2 {
-                background: $level2;
-            }
-            &.level3 {
-                background: $level3;
-            }
-            &.level4 {
-                background: $level4;
-            }
-            &.level5 {
-                background: $level5;
-            }
-            &.level6 {
-                background: $level6;
-            }
+        &.level6 {
+            background: $level6;
         }
     }
 }
@@ -379,55 +374,55 @@ p.admin-links {
     color: $orange;
 }
 
-#footer a.floating img {
-    vertical-align: middle;
-    border: none;
-}
-
-div.survey-button {
-    float: right;
-    margin: -15px 34px 10px 0;
-}
-
-p.admin-links a {
-    color: $gray;
-}
-
-p.admin-links a:hover {
-    color: $orange;
-}
-
-#footer {
-    clear: both;
-    margin: 15px auto;
-    position: relative;
-    width: 86%;
-    z-index: 1;
-    text-align: center;
-}
-
-#footer-login {
-   float: right;
-}
-
-#footer-login a {
-   color: $dark-gray;
-}
-
-#footer-login a:hover {
-   color: $white;
-   text-decoration: none;
-}
-
-#copyright {
-    color: $white;
-    font-size: $smallFont;
-}
-
-#surveyFooter {
-   color: $dark-gray;
-   text-align: center;
-   font-size: 7pt;
+footer {
+   background-color: $primaryColor;
+   #footer {
+       clear: both;
+       margin: 0 auto;
+       position: relative;
+       width: 85%;
+       z-index: 1;
+       text-align: center;
+       padding: 15px 0;
+   }
+   a.floating img {
+       vertical-align: middle;
+       border: none;
+   }
+   .survey-button {
+       float: right;
+       margin: -15px 34px 10px 0;
+   }
+   p.admin-links a {
+       color: $gray;
+       &:hover {
+           color: $orange;
+       }
+   }
+   #footer-login {
+      float: right;
+      a {
+         color: $secondaryColor;
+         &:hover {
+            color: $white;
+            text-decoration: none;
+         }
+      }
+   }
+   #copyright {
+       color: $white;
+       font-size: $smallFont;
+   }
+   #surveyFooter {
+      color: $dark-gray;
+      text-align: center;
+      font-size: 7pt;
+   }
+  
+   #ieee-home, #opt-link {
+      color: $white;
+      text-decoration: underline;
+   }
 }
 
 #ieee-home, #opt-link {
@@ -1531,9 +1526,8 @@ table#login-table td {
     text-decoration: none;
     font-size: 7pt;
     clear: left;
-    @include default-border-radius;
 }
-
+  
 #testerBtn:hover,
 #testerSurveyBtn:hover {
     background-color: $white;
@@ -2621,18 +2615,17 @@ width: 100%;
 #inner-container {
 width: 85%;
 min-width: 1100px;
-margin: 30px auto 5px;
+margin: 30px auto 0;
 padding: 0 10px 10px 10px;
 position: relative;
-@include custom-border-radius (10, 0, 10px, 10px);
 }
 
 #corner-notch {
-position: absolute;
-right: 0;
-height: 27px;
-width: 27px;
-background: url(/media/images/inner-top.png) no-repeat scroll 0 0;   
+   position: absolute;
+   right: 0;
+   height: 27px;
+   width: 27px;
+   background: url(/media/images/corner-notch.png) no-repeat scroll 0 0;   
 }
 
 .lightbox-waiting-over-lightbox-content {

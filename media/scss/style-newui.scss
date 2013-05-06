@@ -98,6 +98,7 @@ table.main {
             background-color: $white;
         }
     }
+
     .btn.startTour,
     .btn.help {
         background: $green;
@@ -217,57 +218,6 @@ p.admin-links {
     color: $orange;
 }
   
-footer {
-   background-color: $primaryColor;
-   #footer {
-       clear: both;
-       margin: 0 auto;
-       position: relative;
-       width: 85%;
-       z-index: 1;
-       text-align: center;
-       padding: 15px 0;
-   }
-   a.floating img {
-       vertical-align: middle;
-       border: none;
-   }
-   .survey-button {
-       float: right;
-       margin: -15px 34px 10px 0;
-   }
-   p.admin-links a {
-       color: $gray;
-       &:hover {
-           color: $orange;
-       }
-   }
-   #footer-login {
-      float: right;
-      a {
-         color: $secondaryColor;
-         &:hover {
-            color: $white;
-            text-decoration: none;
-         }
-      }
-   }
-   #copyright {
-       color: $white;
-       font-size: $smallFont;
-   }
-   #surveyFooter {
-      color: $dark-gray;
-      text-align: center;
-      font-size: 7pt;
-   }
-  
-   #ieee-home, #opt-link {
-      color: $white;
-      text-decoration: underline;
-   }
-}
-  
 .newWinIcon {
     margin: 0 10px;
 }
@@ -384,7 +334,7 @@ ul#view-header li {
     @include custom-border-radius (0, 0, 5px, 5px);
     overflow-y:scroll;
     overflow-x:hidden;
-    border-top: 1px solid #006699;
+    border-top: 1px solid $primaryColor;
     /*display: inline; Prevents them from snapping into place on load*/
 }
   
@@ -1220,25 +1170,6 @@ table#login-table td {
     margin-top: 28px;   
 }
   
-#testerSurveyBtn {
-    background-color: #FD7400;
-    border: 1px solid transparent;
-    color: $white;
-    padding: 2px 5px;
-    float: left;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 7pt;
-    clear: left;
-}
-  
-#testerBtn:hover,
-#testerSurveyBtn:hover {
-    background-color: $white;
-    color: #FD7400;
-    border: 1px solid $orange;
-}
-  
 .tags-table-loading {
     text-align: center;
     font-weight: bold;
@@ -1923,7 +1854,7 @@ div.group ul li:first-child {
     font-weight: normal;
     margin-left: -6px;
     padding: 0 5px;
-    border: 1px solid #006699;
+    border: 1px solid $primaryColor;
     border-left: 0;
     cursor: pointer;
     vertical-align: top;
@@ -2267,7 +2198,7 @@ width: 100%;
 }
   
 #utility-links {
-    background-color: #8D8D8D;
+    background-color: $backgroundColor;
     padding: 5px 0;
     text-align: right;
     color: $white;
@@ -2276,14 +2207,6 @@ width: 100%;
        font-size: 9pt;  
        color: $white;
     }
-}
-
-#corner-notch {
-   position: absolute;
-   right: 0;
-   height: 27px;
-   width: 27px;
-   background: url(/media/images/corner-notch.png) no-repeat scroll 0 0;   
 }
   
 header {
@@ -2330,7 +2253,7 @@ header {
     min-width: 1100px;
     margin: 0 auto;
     position: relative;
-    background-color: #8D8D8D; // TODO: change to variable
+    background-color: $backgroundColor;
 }
   
 #tag-tools {
