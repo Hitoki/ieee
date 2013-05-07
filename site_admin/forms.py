@@ -264,6 +264,11 @@ class EditClusterForm(ModelForm):
 
             # Topics are a checkbox list
             self.fields['topics'] = ModelMultipleChoiceField(queryset=allnodes, widget=CheckboxSelectMultipleColumns(columns=3), required=False)
+
+            # Topics already associated with this society are prechecked.
+            initialnodes = allnodes.filter(societies__id__contains=society.id);
+            self.fields['topics'].initial = initialnodes
+
                 
 
     class Meta:
