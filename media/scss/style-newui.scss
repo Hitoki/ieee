@@ -98,6 +98,7 @@ table.main {
             background-color: $white;
         }
     }
+
     .btn.startTour,
     .btn.help {
         background: $green;
@@ -216,7 +217,7 @@ p.admin-links {
 #roamerswitchlink-container a:hover {
     color: $orange;
 }
-  
+
 footer {
    background-color: $primaryColor;
    #footer {
@@ -384,7 +385,7 @@ ul#view-header li {
     @include custom-border-radius (0, 0, 5px, 5px);
     overflow-y:scroll;
     overflow-x:hidden;
-    border-top: 1px solid #006699;
+    border-top: 1px solid $primaryColor;
     /*display: inline; Prevents them from snapping into place on load*/
 }
   
@@ -706,6 +707,7 @@ ul#sectors, ul#societies {
 #alternate-page #tag-galaxy .alt-box-pad {
     min-height: 388px !important;
     overflow: auto;
+    padding: 5px 10px;
 }
   
 #alternate-page #tag-galaxy #tags a.back-link {
@@ -1144,17 +1146,17 @@ table.vert-center td {
 }
   
 /* */
+
+input {
+    outline: none;
+}
   
 input[type=submit], input[type=button] {
-    border: 1px outset #53595F;
-    background-color: #016797;
+    border: 0 none;
+    background-color: $primaryColor;
     color: $white;
     cursor: pointer;
-    padding: 2px;
-    /* NOTE: This causes IE7 to truncate button widths */
-    /*min-width: 40px;
-    width: auto;*/
-    @include default-border-radius;
+    padding: 5px 10px;
     &:hover {
         background-color: $linkColor-hover;
     }
@@ -1212,13 +1214,7 @@ table#login-table td {
         text-decoration: none;
     }
 }
-  
-#testerBtn-container {
-    float: left;
-    margin-left: 40px;
-    margin-top: 28px;   
-}
-  
+
 #testerSurveyBtn {
     background-color: #FD7400;
     border: 1px solid transparent;
@@ -1236,6 +1232,12 @@ table#login-table td {
     background-color: $white;
     color: #FD7400;
     border: 1px solid $orange;
+}
+  
+#testerBtn-container {
+    float: left;
+    margin-left: 40px;
+    margin-top: 28px;   
 }
   
 .tags-table-loading {
@@ -1922,7 +1924,7 @@ div.group ul li:first-child {
     font-weight: normal;
     margin-left: -6px;
     padding: 0 5px;
-    border: 1px solid #006699;
+    border: 1px solid $primaryColor;
     border-left: 0;
     cursor: pointer;
     vertical-align: top;
@@ -2266,7 +2268,7 @@ width: 100%;
 }
   
 #utility-links {
-    background-color: #8D8D8D;
+    background-color: $backgroundColor;
     padding: 5px 0;
     text-align: right;
     color: $white;
@@ -2275,6 +2277,50 @@ width: 100%;
        font-size: 9pt;  
        color: $white;
     }
+}
+  
+header {
+   background-color: $white;
+   width: 85%;
+   margin: 0 auto;
+   position: relative;
+}
+
+#header {
+   height: 85px;
+   text-align: left;
+   position: relative;
+   padding-top: 15px;
+}
+#totalTagLink {
+   display: inline-block;
+   margin-top: 36px;
+   margin-left: 15px;
+   color: #222;
+   vertical-align: top;
+   text-decoration: underline;
+}
+
+#header-logo img {
+   float: left;
+   position: relative;
+   top: 5px;
+   left: 0px;
+}
+
+#header-logo {
+  float: left;
+  margin-left: 15px;
+  a {
+    float: left;
+  }
+}
+
+#header-links {
+   position: absolute;
+   white-space: nowrap;
+   right: 41px;
+   top: 10px;
 }
 
 #corner-notch {
@@ -2285,51 +2331,18 @@ width: 100%;
    background: url(/media/images/corner-notch.png) no-repeat scroll 0 0;   
 }
   
-header {
-   background-color: $white;
-   width: 85%;
-   margin: 0 auto;
-   position: relative;
-   #header {
-       height: 85px;
-       text-align: left;
-       position: relative;
-       padding-top: 15px;
-   }
-   #header-links {
-       float: right;
-       position: absolute;
-       white-space: nowrap;
-       right: 41px;
-       top: 10px;
-   }
-   #header-logo {
-      float: left;
-      margin-top: 2px;
-      margin-left: 15px;
-   }
-   #totalTagLink {
-       display: inline-block;
-       margin-top: 36px;
-       margin-left: 15px;
-       color: #222;
-       vertical-align: top;
-       text-decoration: underline;
-   }
-  
-   #header-logo img {
-       float: left;
-       position: relative;
-       top: 5px;
-       left: 0px;
-   }
-}
-  
 #inner-container {
     min-width: 1100px;
     margin: 0 auto;
     position: relative;
-    background-color: #8D8D8D; // TODO: change to variable
+    background-color: $backgroundColor;
+}
+
+#inner-container .center-pad {
+    width: 83%;
+    background-color: #FFFFFF;
+    margin: 0 auto;
+    padding: 0 1%;
 }
   
 #tag-tools {
@@ -2449,7 +2462,7 @@ td.machine-generated-column {
 #countLink {
     float: right;
     font-weight: bold;
-    margin-right: 33px;
+    margin-right: 30px;
     text-decoration: underline;   
 }
   

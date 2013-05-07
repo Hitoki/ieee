@@ -1,5 +1,4 @@
                     <div class="group">
-                        {% if tag.related_tags.all %}
                         {% for related_tag in tag.related_tags.all %}
                         <p class="{% cycle 'item_odd' 'item_even' %}">
                             {% ifequal ui "textui" %}
@@ -11,7 +10,4 @@
                             {% endifequal %}
                         </p>
                         {% endfor %}
-                        {% else %}
-                        <p class="no-resources">No related topics are currently tagged "{{ tag.name }}"</p>
-                        {% endif %}
                     </div>
