@@ -1953,7 +1953,6 @@ def ajax_video(request):
 def ajax_welcome(request):
     'Returns the HTML content for the welcome lightbox.'
     return render(request, 'ajax_welcome.html')
-    
 
 def ajax_profile_log(request):
     url = request.REQUEST['url']
