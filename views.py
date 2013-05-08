@@ -1971,8 +1971,11 @@ def ajax_video(request):
 def ajax_welcome(request):
     'Returns the HTML content for the welcome lightbox.'
 <<<<<<< HEAD
+<<<<<<< HEAD
     return render(request, 'ajax_welcome.html')
 =======
+=======
+>>>>>>> parent of be4a479... remove newui flags in django code
     if request.path == '/textui_new':
         NEWUI = True
     else:
