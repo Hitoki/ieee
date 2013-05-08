@@ -85,14 +85,8 @@ ul.nav {
     list-style:none;
     /* NOTE: This allows the UL to contain the floating LI's, IE7 & Fx3 */
     overflow:auto;
-    margin: 0 auto;
-    width: 83%;
-    padding: 0 1%;
-}
-
-#inner-container .center-pad {
-    padding-top: 10px;
-    padding-bottom: 10px;
+    margin: 10px -10px 0;
+    padding: 0 10px;
 }
 
 ul.nav li {
@@ -693,16 +687,7 @@ ul.nootabs-menus li a {
 }
 
 .admin-user-links {
-    width: 85%;
-    margin: 0 auto;
-    text-align: right;
-    background-color: #FFFFFF;
-}
-
-#admin_header #left {
-    margin-right: 15px;
-    padding-bottom: 5px;
-    display: inline-block;
+    text-align: center;
 }
 
 .topic-topic-areas-added .ui-dialog-titlebar {
