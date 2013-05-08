@@ -3,6 +3,9 @@
 // CSS Gradients //
 // Supported Browser Styles //
 .cssgradients {
+    #inner-container {
+        @include light-blue-gradient;
+    }
     .header-btns .btn.help {
         @include green-gradient;
     }
@@ -72,68 +75,70 @@
 }
 
 // Non-Supported Browser Styles //
-#inner-container {
-    background-color: $white;
-}
-.header-btns .btn.help {
-    background: $green;
-}
-.header-btns .btn.admin {
-    background: $red;
-}
-ul#societies, ul#sectors {
-    a {
-        &.active-society,
-        &.active-sector {
-            background: $primaryColor;
+.no-cssgradients {
+    #inner-container {
+        background-color: $light-blue;
+    }
+    .header-btns .btn.help {
+        background: $green;
+    }
+    .header-btns .btn.admin {
+        background: $red;
+    }
+    ul#societies, ul#sectors {
+        a {
+            &.active-society,
+            &.active-sector {
+                background: $primaryColor;
+            }
+            &:hover {
+                background: $orange;
+            }
         }
-        &:hover {
-            background: $orange;
-        }
     }
-}
-.nootabs-menus li.nootabs-menu a:hover {
-    background: $orange;
-}
-#alternate-page #tag-galaxy div.node {
-    a.level1, div.level1, span.level1 {
-        background: $level1;
+    .nootabs-menus li.nootabs-menu a:hover {
+        background: $orange;
     }
-    a.level2, div.level2, span.level2 {
-        background: $level2;
-    }
-    a.level3, div.level3, span.level3 {
-        background: $level3;
-    }
-    a.level4, div.level4, span.level4 {
-        background:$level4;
-    }
-    a.level5, div.level5, span.level5 {
-        background: $level5;
-    }
-    a.level6, div.level6, span.level6 {
-        background: $level6
-    }
-}
-.flyover-container {
-    td {
-        &.level1 {
+    #alternate-page #tag-galaxy div.node {
+        a.level1, div.level1, span.level1 {
             background: $level1;
         }
-        &.level2 {
+        a.level2, div.level2, span.level2 {
             background: $level2;
         }
-        &.level3 {
+        a.level3, div.level3, span.level3 {
             background: $level3;
         }
-        &.level4 {
-            background: $level4;
+        a.level4, div.level4, span.level4 {
+            background:$level4;
         }
-        &.level5 {
+        a.level5, div.level5, span.level5 {
             background: $level5;
         }
-        &.level6 {
-            background: $level6;
+        a.level6, div.level6, span.level6 {
+            background: $level6
+        }
+    }
+    .flyover-container {
+        td {
+            &.level1 {
+                background: $level1;
+            }
+            &.level2 {
+                background: $level2;
+            }
+            &.level3 {
+                background: $level3;
+            }
+            &.level4 {
+                background: $level4;
+            }
+            &.level5 {
+                background: $level5;
+            }
+            &.level6 {
+                background: $level6;
+            }
         }
     }
 }
@@ -372,6 +377,57 @@ p.admin-links {
 
 #roamerswitchlink-container a:hover {
     color: $orange;
+}
+
+#footer a.floating img {
+    vertical-align: middle;
+    border: none;
+}
+
+div.survey-button {
+    float: right;
+    margin: -15px 34px 10px 0;
+}
+
+p.admin-links a {
+    color: $gray;
+}
+
+p.admin-links a:hover {
+    color: $orange;
+}
+
+#footer {
+    clear: both;
+    margin: 15px auto;
+    position: relative;
+    width: 86%;
+    z-index: 1;
+    text-align: center;
+}
+
+#footer-login {
+   float: right;
+}
+
+#footer-login a {
+   color: $dark-gray;
+}
+
+#footer-login a:hover {
+   color: $white;
+   text-decoration: none;
+}
+
+#copyright {
+    color: $white;
+    font-size: $smallFont;
+}
+
+#surveyFooter {
+   color: $dark-gray;
+   text-align: center;
+   font-size: 7pt;
 }
 
 #ieee-home, #opt-link {
@@ -1465,6 +1521,26 @@ table#login-table td {
     margin-top: 28px;   
 }
 
+#testerSurveyBtn {
+    background-color: #FD7400;
+    border: 1px solid transparent;
+    color: $white;
+    padding: 2px 5px;
+    float: left;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 7pt;
+    clear: left;
+    @include default-border-radius;
+}
+
+#testerBtn:hover,
+#testerSurveyBtn:hover {
+    background-color: $white;
+    color: #FD7400;
+    border: 1px solid $orange;
+}
+
 .tags-table-loading {
     text-align: center;
     font-weight: bold;
@@ -2545,9 +2621,18 @@ width: 100%;
 #inner-container {
 width: 85%;
 min-width: 1100px;
-margin: 30px auto 0;
+margin: 30px auto 5px;
 padding: 0 10px 10px 10px;
 position: relative;
+@include custom-border-radius (10, 0, 10px, 10px);
+}
+
+#corner-notch {
+position: absolute;
+right: 0;
+height: 27px;
+width: 27px;
+background: url(/media/images/inner-top.png) no-repeat scroll 0 0;   
 }
 
 .lightbox-waiting-over-lightbox-content {

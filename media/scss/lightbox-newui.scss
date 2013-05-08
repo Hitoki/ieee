@@ -168,10 +168,10 @@ input.text {
 #lightbox .resources-lightbox-content {
     margin-top:5em;
     padding-bottom: 30px;
-    height:530px;
+    height:500px;
     min-width:875px;
     background-color: $primaryColor;
-    min-height: 530px;   
+    min-height: 500px;   
 }
 
 .resources-lightbox-content .resource-loading {
@@ -296,7 +296,7 @@ input.text {
     height: 400px;
     width: 915px;
     box-shadow: 1px 1px 5px #3F3F3F inset;
-    background: $primaryColor 0 0 none;   
+    background: #006699 0 0 none;   
     border: 0px solid #FFFFFF;
     border-radius: 5px;
     -moz-border-radius: 5px;
@@ -331,14 +331,14 @@ input.text {
 
 .skin-slidedeck dl.slidedeck > dd.slide_1,
 .skin-slidedeck dl.slidedeck > dd.slide_2 {
-    background: url(/media/images/slidedeck/panel.png) no-repeat 42px 0 $primaryColor;
-    border-right: 5px solid $primaryColor;
+    background: url(/media/images/slidedeck/panel.png) no-repeat 42px 0 #006699;
+    border-right: 5px solid #006699;
 }
 
 .skin-slidedeck dl.slidedeck > dd.slide_3 {
-    background: url(/media/images/get-started-diagram.png) no-repeat 42px 0 $primaryColor;
+    background: url(/media/images/get-started-diagram.png) no-repeat 42px 0 #006699;
     font-size: 13pt;
-    border-right: 5px solid $primaryColor;
+    border-right: 5px solid #006699;
 }
 
 .slidedeck .slide_1 p,
@@ -348,7 +348,7 @@ input.text {
 }
 
 .skin-slidedeck dl.slidedeck > dt {
-   background-color: $primaryColor !important;
+   background-color: #006699 !important;
 }
 
 .slidedeck .frequency-indicator {

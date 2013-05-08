@@ -4,16 +4,6 @@
 <script src="https://www.google.com/jsapi?key=ABQIAAAAET-l-_pKVFbYTFwkzUZFuxQqXNOgVZsVxxAJPjYxgMwG3sAPmRRUT1Aw1TCcL7OyNBCohYUcq2aExA"></script>
 <script type="text/javascript">
     google.load('search', '1');
-    // Google Analytics Outbound Link Tracking
-    function trackOutboundLink(link, category, action) { 
-        try { 
-        _gaq.push(['_trackEvent', category , action]); 
-        } catch(err){}
-         
-        setTimeout(function() {
-        document.location.href = link.href;
-        }, 100);
-    }
 </script>
 {% endblock %}
 
@@ -21,9 +11,10 @@
 Include file used by both print_resource.html and tag_landing.html
 {% endcomment %}
 <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/landing.css" title="Style for tag landing pages" />
-<div id="tag_frozen_header">
-        {% include "utility_links.inc.html" %}
+<div id="tag_page">
+    <div id="tag_frozen_header">
         <div id="corner-notch"></div>
+        {% include "utility_links.inc.html" %}
         {% include "header.inc.html" %}
         <div class="tag_header_inner">
             <h1 class="title">{{ tag.name }}</h1>
@@ -39,7 +30,6 @@ Include file used by both print_resource.html and tag_landing.html
             {% endif %}
         </div>
     </div>
-<div id="tag_page">
     
     <hr/>
     
@@ -117,7 +107,7 @@ Include file used by both print_resource.html and tag_landing.html
                 <div id="notaccordion">
                     {% for resource in conferences|slice:":5" %}{# grouped conference displayed on the tag landing page #}
                         <p class="title">{{resource.name}}</p>
-                        {% if resource.url and resource.url_status != "bad" %}<a href="{{ resource.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ resource.url }}'); return false;">Visit website</a>{% endif %}
+                        {% if resource.url and resource.url_status != "bad" %}<a href="{{ resource.url }}" target="_blank" rel="nofollow">Visit website</a>{% endif %}
                         <p class='description'>{{resource.description}}</p>
                         <div style="display:none">
                             {% if resource.is_current_conference and resource.other_conferences|length %}
@@ -176,7 +166,7 @@ Include file used by both print_resource.html and tag_landing.html
                 <li>
                     <p class="title">
                     {% if create_links %}
-                        <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ xplore_result.url }}'); return false;">{{ xplore_result.name }}</a>
+                        <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow">{{ xplore_result.name }}</a>
                     {% else %}
                         {{ xplore_result.name }}
                     {% endif %}
@@ -236,7 +226,7 @@ Include file used by both print_resource.html and tag_landing.html
                 <li>
                     <p class="title">
                     {% if create_links %}
-                        <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ xplore_result.url }}'); return false;">{{ xplore_result.name }}</a>
+                        <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow">{{ xplore_result.name }}</a>
                     {% else %}
                         {{ xplore_result.name }}
                     {% endif %}
@@ -271,7 +261,7 @@ Include file used by both print_resource.html and tag_landing.html
                 <li>
                     <p class="title">
                     {% if create_links %}
-                        <a href="{{ standard.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ standard.url }}'); return false;">{{ standard.name }}</a>
+                        <a href="{{ standard.url }}" target="_blank" rel="nofollow">{{ standard.name }}</a>
                     {% else %}
                         {{ standard.name }}
                     {% endif %}
@@ -303,7 +293,7 @@ Include file used by both print_resource.html and tag_landing.html
                 <li>
                     <p class="title">
                     {% if create_links %}
-                        <a href="{{ periodical.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ periodical.url }}'); return false;">{{ periodical.name }}</a>
+                        <a href="{{ periodical.url }}" target="_blank" rel="nofollow">{{ periodical.name }}</a>
                     {% else %}
                         {{ periodical.name }}
                     {% endif %}
@@ -334,7 +324,7 @@ Include file used by both print_resource.html and tag_landing.html
             {% for society in societies|slice:":5" %}
                 <li>
                     {% if create_links %}
-                        <a href="{{ society.url }}" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ society.url }}'); return false;">{{ society.name }}</a>
+                        <a href="{{ society.url }}" rel="nofollow">{{ society.name }}</a>
                     {% else %}
                         {{ society.name }}
                     {% endif %}
@@ -463,6 +453,8 @@ Include file used by both print_resource.html and tag_landing.html
             $(this).text((i+1) + '.');
         });
         {% endif %}
+        var mainWidth = $("#inner-container").outerWidth();    
+        $("#tag_frozen_header").css('width', mainWidth);
         /*
         $.ajax('http://jobs.ieee.org/qjs/', jobsQstr,
           function(data) {

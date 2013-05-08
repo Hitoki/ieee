@@ -1,9 +1,8 @@
 // Begin Variables //
 // Colors //
 $primaryColor: #006699;
-$backgroundColor: #8D8D8D;
-$secondaryColor: #009FDA;
-$linkColor: $secondaryColor;
+$backgroundColor: #333333;
+$linkColor: #0000FF;
 $linkColor-hover: #FFA500;
 
 $white: #FFFFFF;
@@ -34,6 +33,8 @@ $mediumFont: 10pt;
 $largeFont: 12pt;
 $xlargeFont: 16pt;
 
+// New UI Colors //
+$secondaryColor: #009FDA;
 
 // Mix-Ins //
 @mixin default-border-radius {
