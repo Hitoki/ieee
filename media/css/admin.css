@@ -381,6 +381,7 @@ a.edit {
 #create-topic-area,
 #create-resource {
     margin-top: 1em !important;
+    margin-left: 5px;
 }
 
 /* */
