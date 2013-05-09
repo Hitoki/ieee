@@ -58,6 +58,10 @@ $(document).ready(function(){
         startTour();
     });
 
+    if ($('#tags').length) {
+        $('.btn.startTour').show();
+    }
+
     // OLDUI
     $('#tag-help-box').css('width', tagGalaxyWidth - 19);
     
