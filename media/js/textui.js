@@ -61,26 +61,6 @@ $(document).ready(function(){
     if ($('#tags').length) {
         $('.btn.startTour').show();
     }
-
-    // OLDUI
-    $('#tag-help-box').css('width', tagGalaxyWidth - 19);
-    
-    // Functions to handle opening Help and resizing UI    
-    function showHelpBox() {
-        $("#tag-help-box").show();
-    }
-    
-    function hideHelpBox() {
-        $('#tag-help-box').hide();
-    }
-    
-    $(".help").click(function() {                
-        showHelpBox();
-    });
-    
-    $('#help-close-button').click(function(){
-        hideHelpBox();
-    });
     
     sortDropDown = $('#sortSelect').imageDropdown({'selectList': $("ul#sortSelect_options"), 'initialIndex': 0});
     if (sortDropDown) {
