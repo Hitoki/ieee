@@ -1,6 +1,27 @@
+import datetime
+from django.core.urlresolvers import reverse
+from django.db.models import Count, Q
+from django.http import HttpResponse
+from django.utils import simplejson as json
+from logging import debug as log
+import re
+import string
+import urllib
+import urllib2
+import xml.dom.minidom
 from decorators import optional_login_required as login_required
+
+from django.middleware import csrf
 from django.views.decorators.csrf import csrf_exempt
 
+from ieeetags.models import single_row, Cache, Filter, Node, NodeType, Profile, Resource, ResourceType, Society, ProfileLog, ResourceAdditionNotificationRequest
+from ieeetags.forms import *
+#from profiler import Profiler
+import settings
+import util
+from BeautifulSoup import BeautifulSoup
+
+from .views import render
 
 @login_required
 #@profile("ajax_tag.prof")
@@ -946,3 +967,434 @@ def ajax_javascript_error_log(request):
 
     return HttpResponse('success')
 
+def _render_textui_nodes(request, sort, search_for, sector_id, sector, society_id, society, cluster_id, cluster, show_clusters, show_terms, is_staff, page):
+
+    order_by = None
+    extra_order_by = None
+    search_page_title = None
+    
+    if sort is None or sort == 'alphabetical':
+        order_by = 'name'
+    elif sort == 'frequency':
+        order_by = '-num_resources1'
+    elif sort == 'num_sectors':
+        extra_order_by = ['-num_sectors1', 'name']
+    elif sort == 'num_related_tags':
+        extra_order_by = ['-num_related_tags1', 'name']
+    #elif sort == 'clusters_first_alpha':
+    #    # See below
+    #    pass
+    elif sort == 'connectedness':
+        extra_order_by = ['-score1', 'name']
+    elif sort == 'num_societies':
+        extra_order_by = ['num_societies1', 'name']
+    else:
+        raise Exception('Unrecognized sort "%s"' % sort)
+    
+    # TODO: Filters disabled for now
+    #filterIds = []
+    #if filterValues != '' and filterValues is not None:
+    #    for filterValue in filterValues.split(','):
+    #        filterIds.append(Filter.objects.getFromValue(filterValue).id)
+    # TODO: Just select all filters for now
+    filterIds = [filter.id for filter in Filter.objects.all()]
+    
+    search_for_too_short = False
+    
+    num_tags = 0
+    num_clusters = 0
+    
+    def and_query(query1, query2):
+        if query1 is not None:
+            return query1 & query2
+        else:
+            return query2
+    
+    def or_query(query1, query2):
+        if query1 is not None:
+            return query1 | query2
+        else:
+            return query2
+    
+    word_queries = None
+    if search_for is not None:
+        # Search for nodes with a phrase
+        # NOTE: <= 2 char searches take a long time (2-3 seconds), vs 200ms average for anything longer
+        
+        # Require >= 3 chars for general search, or >= 2 chars for in-node/in-society search.
+        if len(search_for) >= 3 or (len(search_for) >= 2 and (sector_id is not None or society_id is not None)):
+            # Search phrase was long enough.
+            log('  Searching by keyword %r' % search_for)
+            
+            search_words = re.split(r'\s', search_for)
+            #log('search_words: %s' % search_words)
+            
+            or_flag = False
+            for word in search_words:
+                if word != '':
+                    #log('  word: %r' % word)
+                    log('  word: %r' % word)
+                    if word == 'OR':
+                        or_flag = True
+                        continue
+                    
+                    if or_flag:
+                        word_queries = or_query(word_queries, Q(name__icontains=word))
+                        or_flag = False
+                    else:
+                        word_queries = and_query(word_queries, Q(name__icontains=word))
+                
+        else:
+            # Search phrase was too short, return empty results.
+            child_nodes = Node.objects.none()
+            search_for_too_short = True
+    
+    if search_for_too_short:
+        child_nodes = Node.objects.none()
+    else:
+        # Start filtering the nodes.
+        child_nodes = Node.objects.all()
+    
+    if word_queries:
+        child_nodes = child_nodes.filter(word_queries)
+    
+    if sector:
+        # Search within a sector.
+        #log('  searching by sector %r' % sector_id)
+        child_nodes = child_nodes.filter(parents__id=sector_id)
+    
+    elif society:
+        # Search within a society.
+        #log('  searching by society %r' % society_id)
+        child_nodes = child_nodes.filter(societies__id=society_id)
+    
+    if cluster:
+        # Search within a cluster (in addition to any sector/society filtering above).
+        #log('  searching by cluster %r' % cluster_id)
+        child_nodes = child_nodes.filter(parents__id=cluster_id)
+        
+    if show_clusters:
+        # Restrict to only tags & clusters.
+        child_nodes = child_nodes.filter(Q(node_type__name=NodeType.TAG) | Q(node_type__name=NodeType.TAG_CLUSTER))
+    else:
+        # Restrict to only tags.
+        child_nodes = child_nodes.filter(node_type__name=NodeType.TAG)
+    child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by, filterIds)
+    print child_nodes.query
+    if word_queries:
+        log('  using min/max for all results.')
+        # Get the min/max scores for these search results
+        min_score = None
+        max_score = None
+        min_cluster_score = None
+        max_cluster_score = None
+
+        for node1 in child_nodes:
+            if node1.node_type.name == NodeType.TAG_CLUSTER:
+                if min_cluster_score is None:
+                    min_cluster_score = node1.score1
+                else:
+                    min_cluster_score = min(min_cluster_score, node1.score1)
+                if max_cluster_score is None:
+                    max_cluster_score = node1.score1
+                else:
+                    max_cluster_score = max(max_cluster_score, node1.score1)
+            else:
+                if min_score is None:
+                    min_score = node1.score1
+                else:
+                    min_score = min(min_score, node1.score1)
+                if max_score is None:
+                    max_score = node1.score1
+                else:
+                    max_score = max(max_score, node1.score1)
+
+    if show_terms and (word_queries or (cluster and show_terms and not word_queries and sector is None and society is None)):
+        # Show empty terms if we're:
+        # 1. Searching by phrase, or
+        # 2. Searching within a cluster, but not in any sector/society.
+        show_empty_terms = True
+    else:
+        show_empty_terms = False
+    
+    if cluster:
+        # Get min/max scores for this cluster.
+        #log('  getting min/max for this cluster.')
+        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = cluster.get_sector_ranges(show_empty_terms=show_empty_terms)
+        (min_score, max_score) = cluster.get_combined_sector_ranges(show_empty_terms=show_empty_terms)
+    elif sector:
+        # Get min/max scores for this sector.
+        #log('  getting min/max for this sector.')
+        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = sector.get_sector_ranges(show_empty_terms=show_empty_terms)
+        (min_score, max_score) = sector.get_combined_sector_ranges(show_empty_terms=show_empty_terms)
+    elif society:
+        # Get min/max scores for this society.
+        #log('  getting min/max for this society.')
+        (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies) = society.get_tag_ranges(show_empty_terms=show_empty_terms)
+        (min_score, max_score) = society.get_combined_ranges(show_empty_terms=show_empty_terms)
+    else:
+        # Get min/max scores for all tags/clusters (root node).
+        #log('  getting min/max for root node.')
+        if sector_id is None and society_id is None:
+            root_node = Node.objects.get(node_type__name=NodeType.ROOT)
+            (min_score, max_score) = root_node.get_combined_sector_ranges(show_empty_terms=show_empty_terms)
+        else:
+            min_score = 0
+            max_score = 10000
+            min_cluster_score = 0
+            max_cluster_score = 10000
+
+
+    min_cluster_score = 0
+    max_cluster_score = 1
+    for node1 in child_nodes:
+        if node1.node_type.name == NodeType.TAG_CLUSTER:
+            if min_cluster_score is None:
+                min_cluster_score = node1.score1
+            else:
+                min_cluster_score = min(min_cluster_score, node1.score1)
+                if max_cluster_score is None:
+                    max_cluster_score = node1.score1
+                else:
+                    max_cluster_score = max(max_cluster_score, node1.score1)
+
+    
+    #log('  min_resources: %s' % min_resources)
+    #log('  max_resources: %s' % max_resources)
+    #log('  min_score: %s' % min_score)
+    #log('  max_score: %s' % max_score)
+    #log('  min_cluster_score: %s' % min_cluster_score)
+    #log('  max_cluster_score: %s' % max_cluster_score)
+    
+    if show_clusters:
+        if cluster is None and not word_queries:
+            # Exclude clustered tags.
+            log('  Excluding clustered tags.')
+            child_nodes = child_nodes.exclude(parents__node_type__name=NodeType.TAG_CLUSTER)
+    
+    
+    if order_by is not None:
+        # Sort by one of the non-extra columns
+        child_nodes = child_nodes.order_by(order_by)
+    
+    # This saves time when we check child_node.node_type later on (prevents DB hit for every single child_node)
+    child_nodes = child_nodes.select_related('node_type')
+    
+    # remove 'False and' below to enable the term count (for staff only) 
+    if False and is_staff:
+        num_terms = child_nodes.filter(is_taxonomy_term=True).count()
+    else:
+        num_terms = None
+    
+    clusters = []
+    child_nodes2 = []
+    
+    
+    if child_nodes.count() > 0:
+        for child_node in child_nodes.values(
+            'id',
+            'name',
+            'node_type__name',
+            'num_related_tags1',
+            'num_resources1',
+            'num_sectors1',
+            'num_societies1',
+            'score1',
+            'is_taxonomy_term',
+        ):
+            filter_child_node = False
+            
+            # TODO: This is too slow, reenable later
+            #num_related_tags = child_node['get_filtered_related_tag_count']()
+            num_related_tags = child_node['num_related_tags1']
+            
+            if child_node['node_type__name'] == NodeType.TAG:
+                
+                # Show all terms, and all tags with content.
+                #if (show_empty_terms and child_node['is_taxonomy_term']) or (child_node['num_selected_filters1'] > 0 and child_node['num_societies1'] > 0 and child_node['num_resources1'] > 0):
+                if (show_empty_terms and child_node['is_taxonomy_term']) or (child_node['num_societies1'] > 0 and child_node['num_resources1'] > 0):
+                    
+                    try:
+                        combinedLevel = _get_popularity_level(min_score, max_score, child_node['score1'], node=child_node)
+                    except Exception:
+                        print 'Exception during _get_popularity_level() for node %r (%r), type %r' % (child_node['name'], child_node['id'], child_node['node_type__name'])
+                        print "child_node['id']: %s" % child_node['id']
+                        print "child_node['node_type__name']: %s" % child_node['node_type__name']
+                        print "child_node['num_societies1']: %s" % child_node['num_societies1']
+                        print "child_node['num_resources1']: %s" % child_node['num_resources1']
+                        print "child_node['score1']: %s" % child_node['score1']
+                        raise
+                            
+                    # Combined scores
+                    child_node['score'] = child_node['score1']
+                    child_node['level'] = combinedLevel
+                    
+                    #print 'combinedLevel: %s' % combinedLevel
+                    
+                    #child_node['min_score'] = min_score
+                    #child_node['max_score'] = max_score
+                    
+                else:
+                    #log('removing node %s' % child_node['name'])
+                    #log('  child_node['num_selected_filters1']: %s' % child_node['num_selected_filters1'])
+                    #log('  child_node['num_societies1']: %s' % child_node['num_societies1'])
+                    #log('  child_node['num_resources1']: %s' % child_node['num_resources1'])
+                    filter_child_node = True
+                    
+                    
+            elif child_node['node_type__name'] == NodeType.TAG_CLUSTER:
+                # Only show clusters that have one of the selected filters
+                #if child_node['filters'].filter(id__in=filterIds).count():
+                #    cluster_child_tags = child_node['get_tags']()
+                #    cluster_child_tags = Node.objects.get_extra_info(cluster_child_tags)
+                #    
+                #    # Find out how many of this cluster's child tags would show with the current filters
+                #    num_child_tags = 0
+                #    for cluster_child_tag in cluster_child_tags:
+                #        if cluster_child_tag.num_resources1 > 0 and cluster_child_tag.num_societies1 > 0 and cluster_child_tag.num_filters1 > 0 and cluster_child_tag.filters.filter(id__in=filterIds).count() > 0:
+                #            num_child_tags += 1
+                #    
+                #    if num_child_tags > 0:
+                #        # do nothing
+                #        pass
+                #    else:
+                #        filter_child_node = True
+                
+                # TODO: Not using levels yet, so all clusters show as the same color.
+                #child_node['level'] = ''
+                
+                #(min_score, max_score) = child_nodes.get(id=child_node['id']).get_combined_sector_ranges(show_empty_terms=show_empty_terms)
+                child_node['level'] = _get_popularity_level(min_cluster_score, max_cluster_score, child_node['score1'], node=child_node)
+                
+                # Make sure clusters show on top of the list.
+                filter_child_node = True
+                clusters.append(child_node)
+                
+                    
+            else:
+                raise Exception('Unknown child node type "%s" for node "%s"' % (child_node['node_type__name'], child_node['name']))
+            
+            if not filter_child_node:
+                child_nodes2.append(child_node)
+    
+    num_clusters = len(clusters)
+    num_tags = len(child_nodes2)
+    
+    child_nodes = clusters + child_nodes2
+    
+    search_length = 0
+
+    if search_for is not None:
+        final_punc =  ('.', ':')[len(child_nodes) > 0]
+        search_length = len(search_for)
+        str = ''
+        if cluster_id is not None:
+            str += ' in the topic area "%s"' % (cluster.name)
+        if sector_id is not None:
+            str += ' in the industry sector "%s"' % (sector.name)
+        elif society_id is not None:
+            str += ' in the organization "%s"' % (society.name)
+        
+        str += final_punc
+        
+        search_page_title = {"num": len(child_nodes), "search_for": search_for, "node_desc": str}
+    
+    #log('  num_clusters: %s' % num_clusters)
+    #log('  num_tags: %s' % num_tags)
+    #log('    # real tags: %s' % len(child_nodes2))
+    
+    if not society:
+        try:
+            society = Society.objects.get(id=society_id)
+        except Society.DoesNotExist:
+            society = None
+
+    if request.META['HTTP_REFERER'].endswith('/textui_new'):
+        NEWUI = True
+    else:
+        NEWUI = False
+
+    from django.template.loader import render_to_string
+    content = render_to_string('ajax_textui_nodes.html', {
+        'child_nodes': child_nodes,
+        'sector_id': sector_id,
+        'society_id': society_id,
+        'search_for': search_for,
+        'search_for_too_short': search_for_too_short,
+        'search_page_title': search_page_title,
+        'num_tags': num_tags,
+        'num_clusters': num_clusters,
+        'cluster_id': cluster_id,
+        'cluster': cluster,
+        'page': page,
+        'society': society,
+        'search_length': search_length
+    })
+
+    node_count_content = render_to_string('ajax_textui_node_count.inc.html', {
+        'child_nodes': child_nodes,
+        'num_clusters': num_clusters,
+        'num_tags': num_tags,
+        'search_for': search_for,
+        'search_for_too_short': search_for_too_short,
+        'search_page_title': search_page_title,
+        'cluster': cluster,
+        'num_terms': num_terms,
+        'sector': sector,
+        'society': society,
+        'NEWUI': NEWUI,
+    })
+    
+    return [content, node_count_content]
+
+_POPULARITY_LEVELS = [
+    'level1',
+    'level2',
+    'level3',
+    'level4',
+    'level5',
+    'level6',
+]
+
+def _get_popularity_level(min, max, count, node=None):
+    '''
+    Gets the popularity level for the given count of items.
+    
+    For example, if we are looking at all tags for a given sector, then we find the min/max number of related tags is 1 and 10 respectively.  Then we can call this function for each tag with params (1, 10, count) where count is the number of related tags for each tag, and we'll get a popularity level for each tag.
+    
+    @param min: The minimum count for all other peer items.
+    @param max: The maximum count for all other peer items.
+    @param count: The count for this specific item.
+    @return: A text label 'level1' through 'level6'.
+    '''
+
+    min = min or 0
+
+    if count < min or count > max:
+        body = []
+        if node:
+            body.append('Node:')
+            body.append('  id: %s' % node['id'])
+            body.append('  name: %s' % node['name'])
+            body.append('  score1: %s' % node['score1'])
+        body = '\n'.join(body)
+        util.send_admin_email('Error in _get_popularity_level(): count %r is outside the range (%r, %r)' % (count, min, max), body)
+        #raise Exception('count %r is outside of the min/max range (%r, %r)' % (count, min, max) + '\n' + body)
+    
+    # NOTE: This is just to prevent errors for the end-user.
+    if count < min:
+        count = min
+    elif count > max:
+        count = max
+    
+    if min == max:
+        return _POPULARITY_LEVELS[len(_POPULARITY_LEVELS)-1]
+    print "%s, %s, %s" % (min, max, count)
+    import math
+    level = int(math.ceil(float(count-min) / float(max-min) * float(len(_POPULARITY_LEVELS)-1))) + 1
+    
+    # TODO: This fixes invisible terms where the count is < min.  Is this a hack?
+    if level == 0:
+        level = 1
+    
+    return 'level' + str(level)

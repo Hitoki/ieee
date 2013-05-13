@@ -1,5 +1,19 @@
+import cgi
+from django.http import HttpResponse
+from django.utils import simplejson as json
+from logging import debug as log
+import urllib
+import urllib2
+import re
+import xml.dom.minidom
 from decorators import optional_login_required as login_required
+
+from django.middleware import csrf
 from django.views.decorators.csrf import csrf_exempt
+
+from ieeetags.models import Node, NodeType
+#from profiler import Profiler
+import settings
 
 XPLORE_SORT_AUTHOR = 'au'
 XPLORE_SORT_TITLE = 'ti'
@@ -191,6 +205,8 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
                 
                 xplore_results.append(result)
 
+    return xplore_results, xplore_error, totalfound
+
 @csrf_exempt
 def ajax_recent_xplore(request):
     tag_name = request.POST.get('tag_name')
@@ -365,6 +381,4 @@ def ajax_xplore_results(request):
         'token': token,
     }
     
-    return HttpResponse(json.dumps(data), 'application/javascript')                
-
-    return xplore_results, xplore_error, totalfound
+    return HttpResponse(json.dumps(data), 'application/javascript')

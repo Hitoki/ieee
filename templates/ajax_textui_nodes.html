@@ -11,7 +11,7 @@
                 {% if search_length > 3 %}
                     <li>Shorten the search phrase</li>
                 {% endif %}
-                <li><a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click();">Clear the search phrase</a></li>
+                <li><a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click();">Clear the filter phrase</a></li>
                 {% if cluster_id and society_id %}
                     <li><a href="javascript:Tags.selectSociety({{ society_id }},null,1);">Search across the entire "{{ society.name }}" organization</li></a>
                 {% endif %}

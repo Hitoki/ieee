@@ -322,12 +322,24 @@ def checkout_site():
     # Be careful of calling other Fabric commands that may end up overwriting
     # env.site_code.
     
-    run_prompted('svn co'
-        ' %(scm_url)s'
-        ' "%(site_code)s" --no-auth-cache'
-        ' --username=%(scm_username)s' % env,
-        prompt="Password for '[^']+': ", password=env.scm_password, pty=True)
-        
+    # run_prompted('svn co'
+    #     ' %(scm_url)s'
+    #     ' "%(site_code)s" --no-auth-cache'
+    #     ' --username=%(scm_username)s' % env,
+    #     prompt="Password for '[^']+': ", password=env.scm_password, pty=True)
+
+    params = dict(env, site_code=env.site_code)
+    
+    run('mkdir -p "%(site_code)s"' % env, pty=True)
+    run_prompted(
+        'curl %(scm_url)s/archive/%(scm_branch)s.zip -o %(site_code)s/../%(scm_branch)s.zip --user %(scm_username)s -L --verbose' % params,
+        prompt="Enter host password for user '%(scm_username)s':" % params,
+        password=env.scm_password, pty=True)
+    run('unzip -q  %(site_code)s/../%(scm_branch)s.zip -d %(site_code)s/../' % params)
+    #run('rm -r %(site_code)s/../project' % params)
+    run('mv -T %(site_code)s/../ieeetags-%(scm_branch)s %(site_code)s/../project' % params)
+    
+
     # Make a 'ieeetags' link to the 'project' directory. References to the ieeetags module are hardcoded in codebase.
     run('ln -s %(site_code)s %(site_code)s/../ieeetags' % env);
     

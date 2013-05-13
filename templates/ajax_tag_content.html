@@ -57,11 +57,7 @@
                     }
                 );                
             } else {
-                {% if NEWUI %}
                 $("#notificationRequestEmail").val(errorText).addClass('error');
-                {% else %}
-                $("#alertError").show();
-                {% endif %}
                 return false;
             }
         });
@@ -150,16 +146,12 @@ function isValidEmailAddress(emailAddress) {
 </div>
 {% endcomment %}
 <span class="dialogTitle">
-    {% if NEWUI %}
-    <span aria-hidden="true" class="icon-tag"></span> &nbsp;<span id="tag-name">{{ tag.name }}</span>
+    <span id="tag-name">{{ tag.name }}</span>
     <div id="resources-lightbox-count">
         <span id="num-related-items-loading"></span><span id="num-related-items" class="{ number: {{ tag.related_tags.count }} }"></span>
         <br/>
         <span class="count-label">Related Resources</span>
     </div>
-    {% else %}
-    <span id="tag-name">"{{ tag.name }}"</span> has <span id="num-related-items-loading"></span><span id="num-related-items" class="{ number: {{ tag.related_tags.count }} }"></span> related resources
-    {% endif %}
 </span>
 
 <div class="resources-pad">
@@ -167,7 +159,6 @@ function isValidEmailAddress(emailAddress) {
         <div id="content" class="alt-box-pad">
 {# if is_ajax #}{% endif %}
 
-            {% if NEWUI %}
             <div id="alertWrapper">
                 <div id="alertContainer">
                     <div id="alertForm">
@@ -181,7 +172,6 @@ function isValidEmailAddress(emailAddress) {
                 </div>
                 <span id="alertError" style="display:none">Please enter a valid email</span>
             </div>
-            {% endif %}
             <div id="resource-tabs" class="nootabs tag-resources-tabs { useCookies:false, defaultTab:1, useHash:false }">
                 
 <!-- *** Content Tabs *** -->
@@ -331,7 +321,6 @@ function isValidEmailAddress(emailAddress) {
                 </div>
                 {% endcomment %}
             </div>
-            {% if NEWUI %}
             <div style="clear:both"></div>
             <div id="resource-footer">
                     <script type="text/javascript">
@@ -361,24 +350,7 @@ function isValidEmailAddress(emailAddress) {
                 <span aria-hidden="true" class="icon-printer"></span>
                 <div class="clear"></div>
             </div>
-            {% endif %}
             <div style="clear:both"></div>
-            {% if not NEWUI %}
-            <div id="alertWrapper">
-                <div id="alertContainer">
-                    <div id="alertForm">
-                        <span>Alert me to updates to this topic</span>
-                        <input type="text" id="notificationRequestEmail" value="Email address" class="defaultValue"></input>
-                        <input type="button" value="Alert Me" id="notificationRequestButton" class="flyover {width:250}" title="Currently alerts cover Conferences, Periodicals and Standards"/>
-                    </div>
-                    <div id="alertSuccess" style="display:none">
-                        You will be alerted to updates to this topic.
-                    </div>
-                </div>
-                <span id="alertError" style="display:none">Please enter a valid email</span>
-                <span id="alertHelpIcon" class="helpicon smHelpIcon flyover {width:280}" title="Sign up to receive alerts about this topic"></span>
-            </div>
-            {% endif %}
             {% if is_ajax %}
             <div id="landingLink">
                 <a onclick="javascript:window.open('/tag/{{ tag.id }}/{{ tag.name|slugify }}', 'landing');" href="javascript:void(0)" rel="nofollow">*</a>

@@ -98,6 +98,7 @@ table.main {
             background-color: $white;
         }
     }
+    .btn.startTour,
     .btn.help {
         background: $green;
         border: 1px solid $green;
@@ -2336,12 +2337,26 @@ header {
     p#tag-and-cluster-counts {
        margin: 0;
        font-size: 12pt;
+       width: auto;
+       display: inline-block;
        .icon-users {
             font-size: 25px;
             height: 25px;
             display: inline-block;
             vertical-align: bottom;
             margin-top: -4px;
+        }
+        .first-value {
+            padding: 5px 10px;
+            border: 1px solid $white;
+            background-color: darken($primaryColor, 15%);
+            display: inline-block;
+        }
+        .second-value {
+            padding: 5px 10px;
+            border: 1px solid $white;
+            background-color: $secondaryColor;
+            display: inline-block;
         }
     }
     .inner {
@@ -2477,4 +2492,8 @@ td.machine-generated-column {
 
 a#zenbox_tab {
     top: 50% !important;
+}
+
+.joyride-next-tip {
+    float: right;
 }
