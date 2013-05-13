@@ -23,6 +23,248 @@ from BeautifulSoup import BeautifulSoup
 
 from .views import render
 
+TOOLTIP_MAX_CHARS = 120
+
+def render(request, template, dictionary=None):
+    "Use this instead of 'render_to_response' to enable custom context processors, which add things like MEDIA_URL to the page automatically."
+    return render_to_response(template, dictionary=dictionary, context_instance=RequestContext(request))
+
+# ------------------------------------------------------------------------------
+
+def error_view(request):
+    '''
+    Custom error view for production servers.  Sends an email to admins for every error with a traceback.
+    
+    Only active when settings.DEBUG == True.
+    '''
+    
+    # Get the latest exception from Python system service 
+    (type, value, traceback1) = sys.exc_info()
+    traceback1 = '.'.join(traceback.format_exception(type, value, traceback1))
+    
+    # Send email to admins
+    subject = 'Error in ieeetags: %s, %s' % (str(type), value)
+    message = traceback1
+    mail_admins(subject, message, True)
+    
+    title = None
+    message = None
+    
+    if type is util.EndUserException:
+        title, message = value
+    
+    return render(request, '500.html', {
+        'title': title,
+        'message': message,
+    })
+
+def site_disabled(request):
+    'Displays "site disabled" message when the entire site is disabled (settings.DISABLE_SITE == True).'
+    return render(request, 'site_disabled.html', {
+    })
+    
+@login_required
+def index(request):
+    if request.META['HTTP_HOST'].startswith('m.'):
+        return render_to_response('index_mobile.html', {}, context_instance=RequestContext(request))
+    'Redirects user to textui page.'
+    return HttpResponseRedirect(reverse('textui'))
+
+@login_required
+def roamer(request):
+    'Shows the Asterisq Constellation Roamer flash UI.'
+    nodeId = request.GET.get('nodeId', Node.objects.getRoot().id)
+    sectors = Node.objects.getSectors()
+    filters = Filter.objects.all()
+    return render(request, 'roamer.html', {
+        'nodeId':nodeId,
+        'sectors':sectors,
+        'filters':filters,
+    })
+
+@login_required
+def textui(request, survey=False):
+    'Shows the textui (aka. Tag Galaxy) UI.'
+    nodeId = request.GET.get('nodeId', None)
+    sectorId = None
+    clusterId = None
+    
+    # If url ends with /survey set a session var so we can display an additional banner.
+    if survey:
+        request.session['survey'] = True
+        request.session.set_expiry(0)
+    
+    # NOTE: Disabled so we can land on the help page
+    #if nodeId is None:
+    #    # Default to the first sector (instead of the help page)
+    #    first_sector = Node.objects.getSectors()[0]
+    #    nodeId = first_sector.id
+    
+    if nodeId is not None:
+        # Node selected
+        node = Node.objects.get(id=nodeId)
+        # Double check to make sure we didn't get a root or tag node
+        if node.node_type.name == 'root':
+            sectorId = Node.objects.getFirstSector().id
+        elif node.node_type.name == 'tag':
+            # TODO: a node has many sectors, for now just use the first one.
+            sectorId = node.get_sectors()[0].id
+        elif node.node_type.name == 'sector':
+            sectorId = nodeId
+        elif node.node_type.name == 'tag_cluster':
+            clusterId = nodeId
+        else:
+            raise Exception('Unknown node_type "%s"' % node.node_type.name)
+        
+    
+    sectors = Node.objects.getSectors()
+    filters = Filter.objects.all()
+    societies = Society.objects.all()
+    
+    # NOTE: Hide TAB society from the nav.
+    societies = societies.exclude(abbreviation__in=['tab', 'ieee-usa'])
+    
+    template = 'textui_new.html'
+    newui_search_button = False
+
+    return render(request, template, {
+        'sectorId':sectorId,
+        'clusterId': clusterId,
+        'sectors':sectors,
+        'filters':filters,
+        'societies':societies,
+        'ENABLE_SHOW_CLUSTERS_CHECKBOX': settings.ENABLE_SHOW_CLUSTERS_CHECKBOX,
+        'ENABLE_SHOW_TERMS_CHECKBOX': settings.ENABLE_SHOW_TERMS_CHECKBOX,
+        'ENABLE_SEARCH_BUTTON': settings.ENABLE_SEARCH_BUTTON,
+        'SEARCH_KEY_DELAY': settings.SEARCH_KEY_DELAY,
+        'ENABLE_SEARCH_BUTTON': newui_search_button
+    })
+
+@login_required
+def textui_home(request):
+    'Shows textui "home" AJAX page.'
+    return render(request, 'textui_home.html')
+
+@login_required
+def textui_help(request):
+    'Shows textui "help" AJAX page.'
+    return render(request, 'textui_help.html')
+
+@login_required
+def feedback(request):
+    'User feedback page.  When submitted, sends an email to all admins.'
+    if request.method == 'GET':
+        if request.user.is_authenticated and not request.user.is_anonymous:
+            form = FeedbackForm(
+                initial={
+                    'name': '%s %s' % (request.user.first_name, request.user.last_name),
+                    'email': request.user.email,
+                }
+            )
+            
+            make_display_only(form.fields['name'])
+            make_display_only(form.fields['email'])
+            
+        else:
+            form = FeedbackForm()
+        return render(request, 'feedback.html', {
+            'form': form,
+        })
+    else:
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            
+            # Send email
+            subject = 'IEEE Comments from %s' % form.cleaned_data['email']
+            message = 'Sent on %s:\n%s\n\n' % (time.strftime('%Y-%m-%d %H:%M:%S'), form.cleaned_data['comments'])
+            send_from = settings.DEFAULT_FROM_EMAIL
+            send_to = settings.ADMIN_EMAILS
+            try:
+                send_mail(subject, message, send_from, send_to)
+            except Exception, e:
+                email_error = True
+            else:
+                email_error = False
+            
+            return render(request, 'feedback_confirmation.html', {
+                'email_error': email_error,
+            })
+        else:
+            return render(request, 'feedback.html', {
+                'form': form,
+            })
+
+def browser_warning(request):
+    'Shows the AJAX browser compatability warning page.  Allows the user to click through if they still want to browse the site.'
+    return render(request, 'browser_warning.html')
+    
+def tester_message(request):
+    'Returns the HTML content for the tester message.'
+    return render(request, 'tester_message.html')
+
+def tester_survey(request):
+    'Returns the HTML content for the tester survey.'
+    return render(request, 'tester_survey.html')
+
+@login_required
+def xplore_full_results(request, tag_id):
+    'Returns full listing of IEEE xplore results for the given tag.'
+    tag = Node.objects.get(id=tag_id)
+
+    results, errors, total_results = _get_xplore_results(tag.name, show_all=True)
+    return render(request, 'xplore_full_results.html', {
+        'tag':tag,
+        'xplore_error': errors,
+        'xplore_results': results,
+        'totalfound': total_results,
+    })
+
+import hotshot
+import os
+import time
+import settings
+
+try:
+    PROFILE_LOG_BASE = settings.PROFILE_LOG_BASE
+except:
+    PROFILE_LOG_BASE = "/tmp"
+
+def profile(log_file):
+    """Profile some callable.
+
+    This decorator uses the hotshot profiler to profile some callable (like
+    a view function or method) and dumps the profile data somewhere sensible
+    for later processing and examination.
+
+    It takes one argument, the profile log name. If it's a relative path, it
+    places it under the PROFILE_LOG_BASE. It also inserts a time stamp into the 
+    file name, such that 'my_view.prof' become 'my_view-20100211T170321.prof', 
+    where the time stamp is in UTC. This makes it easy to run and compare 
+    multiple trials.     
+    """
+
+    if not os.path.isabs(log_file):
+        log_file = os.path.join(PROFILE_LOG_BASE, log_file)
+
+    def _outer(f):
+        def _inner(*args, **kwargs):
+            # Add a timestamp to the profile output when the callable
+            # is actually called.
+            (base, ext) = os.path.splitext(log_file)
+            base = base + "-" + time.strftime("%Y%m%dT%H%M%S", time.gmtime())
+            final_log_file = base + ext
+
+            prof = hotshot.Profile(final_log_file)
+            try:
+                ret = prof.runcall(f, *args, **kwargs)
+            finally:
+                prof.close()
+            return ret
+
+        return _inner
+    return _outer
+>>>>>>> master:views.py
+
 @login_required
 #@profile("ajax_tag.prof")
 def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
@@ -48,12 +290,6 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
 
     counts = 0
     jobsCount = "0"
-
-    if request.META['HTTP_REFERER'].endswith('/textui_new'):
-        NEWUI = True
-    else:
-        NEWUI = False
-    context['NEWUI'] = NEWUI
 
     #sectors1 = tag.get_sectors()
     #counts += sectors1.count()
