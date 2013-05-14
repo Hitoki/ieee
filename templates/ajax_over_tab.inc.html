@@ -55,5 +55,11 @@
                                 {% endif %}                                
                             </li>
                             {% endif %}
+                            {% if tag.related_tags.all %}
+                            <li>
+                                <div class="overview-label">Related Topics</div>
+                                {% include 'ajax_related_tab.inc.html' %}
+                            </li>
+                            {% endif %}
                         </ul>
                     </div>
