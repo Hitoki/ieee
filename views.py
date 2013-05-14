@@ -578,9 +578,14 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
 
             xml_body = file1.read()
             file1.close()
-            xml_body = xml_body.decode(charset).encode('utf-8')
             
-            xml1 = xml.dom.minidom.parseString(xml_body)
+            try:
+                if charset != 'utf-8':
+                    xml_body = xml_body.decode(charset).encode('utf-8')
+
+                xml1 = xml.dom.minidom.parseString(xml_body)
+            except Exception, e:
+                return [], "XML Parse Error: %s" % e, 0
                 
             try:
                 totalfound = int(getElementValueByTagName(xml1.documentElement, 'totalfound'))
