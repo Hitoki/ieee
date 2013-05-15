@@ -113,7 +113,9 @@
     function startTour() {
         $("#joyrideTour").joyride({
             /* Options will go here */
-            'autoStart' : true
+            'autoStart' : true,
+            'cookieMonster': true,           // true/false for whether cookies are used
+            'cookieName': 'ShowTour'         // choose your own cookie name
         });
     }
 
