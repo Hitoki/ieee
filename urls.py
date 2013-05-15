@@ -58,7 +58,6 @@ else:
         url(r'^ajax/tooltip/(?P<tag_id>\d+)$', views.tooltip, name='tooltip'),
         url(r'^ajax/tooltip$', views.tooltip, name='tooltip'),
         url(r'^ajax/video$', views.ajax_video, name='ajax_video'),
-        url(r'^ajax/welcome$', views.ajax_welcome, name='ajax_welcome'),
         url(r'^ajax/profile_log$', views.ajax_profile_log, name='ajax_profile_log'),
         url(r'^ajax/notification/request$', views.ajax_notification_request),
         
