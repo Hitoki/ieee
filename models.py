@@ -1244,7 +1244,7 @@ class Resource(models.Model):
     
     class Meta:
         ordering = ['resource_type__name', 'name']
-        
+
 class ResourceNodes(models.Model):
     resource = models.ForeignKey(Resource, related_name='resource_nodes')
     node = models.ForeignKey(Node, related_name='resource_nodes')

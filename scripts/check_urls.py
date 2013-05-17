@@ -17,7 +17,7 @@ import logging
 
 try:
 	logging.debug('check_urls.py: Begin.')
-	resources = Resource.objects.all()
+	resources = Resource.objects.exclude(url='').filter(url_status='')
 	logging.debug('check_urls.py:   resources.count(): %s' % resources.count())
 	NUM_THREADS = 100
 	logging.debug('check_urls.py:   Checking %s URLs...' % resources.count())

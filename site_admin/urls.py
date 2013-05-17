@@ -74,7 +74,9 @@ urlpatterns += patterns(
     # Clusters
     url(r'^cluster/(?P<cluster_id>\d+)$', views.view_cluster, name='admin_view_cluster'),
     url(r'^cluster/(?P<cluster_id>\d+)/edit$', views.edit_cluster, name='admin_edit_cluster'),
+    url(r'^cluster/(?P<cluster_id>\d+)/edit2$', views.edit_cluster2, name='admin_edit_cluster2'),
     url(r'^cluster/create$', views.edit_cluster, name='admin_create_cluster'),
+    url(r'^cluster/create2$', views.edit_cluster2, name='admin_create_cluster2'),
     url(r'^cluster/(?P<cluster_id>\d+)/delete$', views.delete_cluster, name='admin_delete_cluster'),
     
     # Users
