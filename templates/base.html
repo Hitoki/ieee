@@ -69,7 +69,7 @@
                 {% include "header.inc.html" %}
             </header>
 {% endif %}
-            <div role="main">
+            <div id="main" role="main">
                 {% block content %}{% endblock %}
             </div>
 {% if not is_ajax %}
