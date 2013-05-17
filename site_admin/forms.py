@@ -231,9 +231,15 @@ class EditTagsForm(Form):
 
 class EditClusterForm2(ModelForm):
     topics = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget=MultiSearchWidget(remove_link_flyover_text='Remove Topic from this Topic Area', blur_text='Type a few characters to bring up matching topics'))
+    societies = ModelMultipleChoiceField(queryset=Society.objects.all(), label='Organization', widget=CheckboxSelectMultipleColumns(columns=3), required=False)
+
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
+        
         super(EditClusterForm2, self).__init__(*args, **kwargs)
+        if self.instance.id ==  None:
+            self.fields.pop('societies')
+
 
     class Meta:
         model = Node

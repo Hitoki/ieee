@@ -29,4 +29,13 @@
         </div>
     </form>
 
+<script type="text/javascript">
+$(document).ready(
+    function() {
+        $('input[name="societies"]:checked').attr('disabled', 'disabled').parent('label').css('color', '#9F9F9F');
+        
+    }
+);
+</script>
+
 {% endblock %}
