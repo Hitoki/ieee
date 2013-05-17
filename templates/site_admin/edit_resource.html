@@ -166,7 +166,7 @@
                 <td>
                     {{ form.nodes.errors }}
                     {{ form.nodes }}
-                    {% if resource %}
+                    {% if resource and society %}
                         <div class="multisearch-note">Type * to show all<br/>of this organization's topics</div>
                     {% endif %}
                 </td>
