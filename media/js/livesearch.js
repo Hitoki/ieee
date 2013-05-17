@@ -47,7 +47,7 @@ function LiveSearch(inputElem) {
                 liveSearch.lastValue = null;
                 liveSearch.update();        
             } else if ($.trim(self.inputElem.val()).length < 3 && $.trim(self.inputElem.val()).length != 0) {
-                $('#tag-counts').html('Please enter more characters above.');
+                $('#tag-counts').html('Please enter more characters below.');
             } else if ($.trim(self.inputElem.val()).length == 0) {
                 $('#tags-searching-msg').hide();
             } else {

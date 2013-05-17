@@ -22,20 +22,6 @@ $(document).ready(function(){
         });
     }
     
-    if ($.cookie("noShowPanels") || getUrlParam('autoload')){
-        $(".welcome-panels-lightbox-outer").remove();
-    } else {
-        //Only open panels if on tag galaxy view.
-        if ( $('#tag-galaxy').is(':visible') ) {
-            setTimeout(function(){
-                $('#welcome-link').click();
-            }, 1000);
-        }
-    }
-    
-    // Set cookie onload to only show the box 1 time.
-    $.cookie("noShowPanels", 1);
-    
     //hide the "Standards Board"
     $('#society-list-item-49').hide();
     
