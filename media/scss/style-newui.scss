@@ -257,12 +257,6 @@ footer {
        color: $white;
        font-size: $smallFont;
    }
-   #surveyFooter {
-      color: $dark-gray;
-      text-align: center;
-      font-size: 7pt;
-   }
-  
    #ieee-home, #opt-link {
       color: $white;
       text-decoration: underline;
@@ -1213,31 +1207,6 @@ table#login-table td {
         color: $white;
         text-decoration: none;
     }
-}
-
-#testerSurveyBtn {
-    background-color: #FD7400;
-    border: 1px solid transparent;
-    color: $white;
-    padding: 2px 5px;
-    float: left;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 7pt;
-    clear: left;
-}
-  
-#testerBtn:hover,
-#testerSurveyBtn:hover {
-    background-color: $white;
-    color: #FD7400;
-    border: 1px solid $orange;
-}
-  
-#testerBtn-container {
-    float: left;
-    margin-left: 40px;
-    margin-top: 28px;   
 }
   
 .tags-table-loading {
