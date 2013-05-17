@@ -685,7 +685,7 @@ class Node(models.Model):
                             node_societies.society = society
                             node_societies.save()
                 
-                # Assign all the child_node's sectors to this cluster.
+                # Assign all the child_node's filters to this cluster.
                 filters = []
                 for child_node in self.child_nodes.all():
                     for filter in child_node.filters.all():
