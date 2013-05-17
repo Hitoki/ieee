@@ -3354,10 +3354,14 @@ def edit_cluster2(request, cluster_id=None):
             # Invalidate all resource-related caches, so they are regenerated.
             Cache.objects.delete('ajax_textui_nodes')
 
-            if return_url != '':
-                return HttpResponseRedirect(return_url)
+            
+            if 'submit2' in request.POST:
+                if return_url:
+                    return HttpResponseRedirect(return_url)
+                else:
+                    return HttpResponseRedirect(reverse('admin_home'))
             else:
-                return HttpResponseRedirect(reverse('admin_view_cluster', args=[cluster.id]))
+                return HttpResponseRedirect(reverse('admin_edit_cluster2', args=[cluster.id]))
 
 
     return render(request, 'site_admin/edit_cluster2.html', {
