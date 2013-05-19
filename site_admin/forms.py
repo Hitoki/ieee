@@ -229,6 +229,23 @@ class EditTagsForm(Form):
     hot_topics_filter = ChoiceField(choices=TRISTATE_CHOICES_TAGS, widget=RadioSelect(), label='Hot Topics')
     market_areas_filter = ChoiceField(choices=TRISTATE_CHOICES_TAGS, widget=RadioSelect(), label='Market Areas')
 
+class EditClusterForm2(ModelForm):
+    topics = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget=MultiSearchWidget(remove_link_flyover_text='Remove Topic from this Topic Area', blur_text='Type a few characters to bring up matching topics'))
+    societies = ModelMultipleChoiceField(queryset=Society.objects.all(), label='Organization', widget=CheckboxSelectMultipleColumns(columns=3), required=False)
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        
+        super(EditClusterForm2, self).__init__(*args, **kwargs)
+        if self.instance.id ==  None:
+            self.fields.pop('societies')
+
+
+    class Meta:
+        model = Node
+        fields = ['id','name']
+
+
 class EditClusterForm(ModelForm):
     topics = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget=MultiSearchWidget(remove_link_flyover_text='Remove Topic from this Topic Area', blur_text='Type a few characters to bring up matching topics'))
     societies = ModelMultipleChoiceField(queryset=Society.objects.all(), label='Organization', widget=CheckboxSelectMultipleColumns(columns=3))
@@ -242,6 +259,7 @@ class EditClusterForm(ModelForm):
         if user_role  == Profile.ROLE_SOCIETY_MANAGER:
             # Name is read-only
             self.fields['name'] = CharField(widget=DisplayOnlyWidget(field_type=CharField))
+
             # Organizations are hidden
             self.fields['societies'].widget =  self.fields['societies'].hidden_widget()
 
@@ -254,6 +272,21 @@ class EditClusterForm(ModelForm):
             # Topics already associated with this society are prechecked.
             initialnodes = allnodes.filter(societies__id__contains=society.id);
             self.fields['topics'].initial = initialnodes
+        elif user_role == Profile.ROLE_ADMIN and society != None:
+            # Organizations are hidden
+            self.fields['societies'].widget =  self.fields['societies'].hidden_widget()
+
+            # Show all topics associated with this topic area
+            allnodes = self.instance.child_nodes.all()            
+
+            # Topics are a checkbox list
+            self.fields['topics'] = ModelMultipleChoiceField(queryset=allnodes, widget=CheckboxSelectMultipleColumns(columns=3), required=False)
+
+            # Topics already associated with this society are prechecked.
+            initialnodes = allnodes.filter(societies__id__contains=society.id);
+            self.fields['topics'].initial = initialnodes
+
+                
 
     class Meta:
         model = Node

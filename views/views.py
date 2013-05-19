@@ -135,14 +135,9 @@ def textui(request, survey=False):
     # NOTE: Hide TAB society from the nav.
     societies = societies.exclude(abbreviation__in=['tab', 'ieee-usa'])
     
-    if request.path == '/textui_new':
-        template = 'textui_new.html'
-        NEWUI = True
-        newui_search_button = False
-    else:
-        template = 'textui.html'
-        NEWUI = False
-        newui_search_button = settings.ENABLE_SEARCH_BUTTON
+    template = 'textui_new.html'
+    NEWUI = True
+    newui_search_button = False
 
     return render(request, template, {
         'sectorId':sectorId,

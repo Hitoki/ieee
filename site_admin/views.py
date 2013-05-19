@@ -3274,7 +3274,7 @@ def edit_cluster(request, cluster_id=None):
                     NodeSocieties.objects.update_for_node(cluster, form.cleaned_data['societies'])
 
                 user_role = request.user.get_profile().role
-                if user_role == Profile.ROLE_ADMIN:
+                if user_role == Profile.ROLE_ADMIN and society is None:
                     cluster.child_nodes = form.cleaned_data['topics']
                 if user_role == Profile.ROLE_SOCIETY_MANAGER:
                     NodeSocieties.objects.update_for_society_cluster(form.cleaned_data['topics'], society, cluster)
@@ -3305,6 +3305,72 @@ def edit_cluster(request, cluster_id=None):
         'return_url': return_url,
         'society': society
     })
+
+@login_required
+@admin_required
+@transaction.commit_on_success
+def edit_cluster2(request, cluster_id=None):
+    'Edit Cluster page.'
+    if cluster_id is not None:
+        cluster = Node.objects.get(id=cluster_id)
+    else:
+        cluster = None
+
+    return_url = request.GET.get('return_url', '')        
+    
+    if request.method == 'GET':
+        # Show the form
+        if cluster is None:
+            # New cluster
+            form = EditClusterForm2(user=request.user)
+                
+        else:
+            # Existing cluster
+            tags = cluster.get_tags()
+            form = EditClusterForm2(user=request.user, instance=cluster, initial={
+                'topics': tags,
+                'societies': cluster.societies.all()
+            })
+    else:
+        # Process the form
+        form = EditClusterForm2(request.POST, user=request.user, instance=cluster)
+        if form.is_valid():
+            #tags = form.cleaned_data['tags']
+            
+            if cluster is not None:
+                cluster = form.save(commit=False)
+                # Updating an existing cluster
+
+                cluster.child_nodes = form.cleaned_data['topics']
+                cluster.save()
+            else:
+                # Saving a new cluster
+                cluster = form.save(commit=False)
+                cluster.node_type = NodeType.objects.getFromName(NodeType.TAG_CLUSTER)
+                cluster.save()
+                
+                cluster.child_nodes = form.cleaned_data['topics']
+                cluster.save()
+            
+            # Invalidate all resource-related caches, so they are regenerated.
+            Cache.objects.delete('ajax_textui_nodes')
+
+            
+            if 'submit2' in request.POST:
+                if return_url:
+                    return HttpResponseRedirect(return_url)
+                else:
+                    return HttpResponseRedirect(reverse('admin_home'))
+            else:
+                return HttpResponseRedirect(reverse('admin_edit_cluster2', args=[cluster.id]))
+
+
+    return render(request, 'site_admin/edit_cluster2.html', {
+        'cluster': cluster,
+        'form': form,
+        'return_url': return_url
+    })
+
 
 @login_required
 @admin_required

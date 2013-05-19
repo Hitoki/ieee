@@ -22,20 +22,6 @@ $(document).ready(function(){
         });
     }
     
-    if ($.cookie("noShowPanels") || getUrlParam('autoload')){
-        $(".welcome-panels-lightbox-outer").remove();
-    } else {
-        //Only open panels if on tag galaxy view.
-        if ( $('#tag-galaxy').is(':visible') ) {
-            setTimeout(function(){
-                $('#welcome-link').click();
-            }, 1000);
-        }
-    }
-    
-    // Set cookie onload to only show the box 1 time.
-    $.cookie("noShowPanels", 1);
-    
     //hide the "Standards Board"
     $('#society-list-item-49').hide();
     
@@ -58,25 +44,9 @@ $(document).ready(function(){
         startTour();
     });
 
-    // OLDUI
-    $('#tag-help-box').css('width', tagGalaxyWidth - 19);
-    
-    // Functions to handle opening Help and resizing UI    
-    function showHelpBox() {
-        $("#tag-help-box").show();
+    if ($('#tags').length) {
+        $('.btn.startTour').show();
     }
-    
-    function hideHelpBox() {
-        $('#tag-help-box').hide();
-    }
-    
-    $(".help").click(function() {                
-        showHelpBox();
-    });
-    
-    $('#help-close-button').click(function(){
-        hideHelpBox();
-    });
     
     sortDropDown = $('#sortSelect').imageDropdown({'selectList': $("ul#sortSelect_options"), 'initialIndex': 0});
     if (sortDropDown) {

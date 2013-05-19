@@ -22,7 +22,7 @@
 
 	<meta name="viewport" content="width=device-width,initial-scale=1">
     
-    <link rel="shortcut icon" href="{{ MEDIA_URL }}images/favicon_new.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="{{ MEDIA_URL }}images/favicon.ico" type="image/x-icon" />
     <link rel="apple-touch-icon" href="{{ MEDIA_URL }}images/apple-touch-icon.png">
     
     <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
@@ -42,6 +42,7 @@
     {% jsmin js/lib/jquery_plugins/jquery.scrollTo.js js/lib/jquery_plugins/jquery.metadata.js js/lib/jquery_plugins/jquery.cookie.js js/lib/jquery_plugins/jquery.history.js js/global.js js/roamer.js js/textui.js js/lightbox.js js/nootabs.js js/lib/json2.js js/multisearch.js js/lib/jquery_plugins/jquery.hoverIntent.js js/flyover.js js/blurText.js js/autoTruncate.js js/lib/jqbrowser2.js js/liveUrl.js js/lib/php.js js/lib/jquery_plugins/jquery.color.js js/lib/jquery_plugins/jquery.bgiframe.js js/expandSeries.js js/livesearch.js js/lib/jquery/jquery-ui-1.8.18.custom.min.js js/jquery.imageDropdown.js js/lib/jquery_plugins/slidedeck.jquery.js js/lib/modernizr.js js/lib/spin.js js/jquery.spin.js js/lib/jquery_plugins/jquery.qtip.js js/lib/jquery_plugins/jquery.joyride-2.0.3.js %}
 
     {% cssmin css/h5bp.css css/multisearch.css css/flyover.css css/vert-center.css css/jquery-ui-1.7.2.custom.css css/slidedeck.skin.css css/jquery.qtip.css css/joyride-2.0.3.css %}
+
     <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/style-newui.css" />
     <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/sprites-newui.css" />
     <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/icomoon-style.css" />
@@ -68,7 +69,7 @@
                 {% include "header.inc.html" %}
             </header>
 {% endif %}
-            <div role="main">
+            <div id="main" role="main">
                 {% block content %}{% endblock %}
             </div>
 {% if not is_ajax %}
