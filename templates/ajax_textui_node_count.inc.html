@@ -6,7 +6,18 @@
     {% else %}
         {# If the view returned results summary, use it. If not (happens when "All Sectors" or "All Organizations" are chosen), construct one. #}
         <p id="tag-and-cluster-counts">
-            Showing {% if num_clusters %}<span class="first-value">{{ num_clusters|intcomma }} topic area{{ num_clusters|pluralize }}</span> &nbsp;&amp;&nbsp; {% endif %}<span class="second-value">{{ num_tags|intcomma }} topic{{ num_tags|pluralize }}</span>
+            Showing 
+            {% if num_clusters %}
+                <span class="first-value">{{ num_clusters|intcomma }} topic area{{ num_clusters|pluralize }}</span> &nbsp;&amp;&nbsp; 
+            {% endif %}
+            <span class="second-value">
+                {% if num_tags %}
+                    {{ num_tags|intcomma }} topic{{ num_tags|pluralize }}
+                {% endif %}
+                {% if no_results %}
+                    0 results
+                {% endif %}
+            </span>
             {% if cluster %} in the topic area "{{ cluster.name }}" <a href="javascript:Tags.selectSociety('all',null,1);" class="filter-clear"></a></span>{% endif %}
             {% if sector %} in the industry sector "{{ sector }}"{% endif %}
             {% if society %} in the organization "{{ society }}" <a href="javascript:Tags.selectSociety('all');" class="filter-clear"></a>{% endif %}
@@ -15,8 +26,14 @@
 {% else %}
     {# For non-search-phrases #}
     <p id="tag-and-cluster-counts">
-        Showing {% if num_clusters %}<span class="first-value">{{ num_clusters|intcomma }} topic area{{ num_clusters|pluralize }}</span> &nbsp;&amp;&nbsp; {% endif %}<span class="second-value">{{ num_tags|intcomma }} topic{{ num_tags|pluralize }}</span>
-        {% if num_terms %} ({{ num_terms|intcomma }} terms){% endif %}
+        Showing 
+        {% if num_clusters %}
+            <span class="first-value">{{ num_clusters|intcomma }} topic area{{ num_clusters|pluralize }}</span> &nbsp;&amp;&nbsp; 
+        {% endif %}
+        <span class="second-value">{{ num_tags|intcomma }} topic{{ num_tags|pluralize }}</span>
+        {% if num_terms %}
+             ({{ num_terms|intcomma }} terms)
+        {% endif %}
         {% if cluster %} in the topic area "{{ cluster.name }}" <a href="javascript:Tags.selectSociety('all',null,1);" class="filter-clear"></a></span>{% endif %}
         {% if sector %} in the industry sector "{{ sector }}"{% endif %}
         {% if society %} in the organization "{{ society }}" <a href="javascript:Tags.selectSociety('all');" class="filter-clear"></a>{% endif %}

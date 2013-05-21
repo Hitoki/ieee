@@ -1903,6 +1903,11 @@ def _render_textui_nodes(request, sort, search_for, sector_id, sector, society_i
     else:
         NEWUI = False
 
+    no_results = False
+
+    if not num_clusters and not num_tags:
+        no_results = True
+
     from django.template.loader import render_to_string
     content = render_to_string('ajax_textui_nodes.html', {
         'child_nodes': child_nodes,
@@ -1932,6 +1937,7 @@ def _render_textui_nodes(request, sort, search_for, sector_id, sector, society_i
         'sector': sector,
         'society': society,
         'NEWUI': NEWUI,
+        'no_results': no_results,
     })
     
     return [content, node_count_content]
