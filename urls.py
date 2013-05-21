@@ -11,6 +11,7 @@ from ieeetags.sitemaps import *
 
 django.contrib.admin.autodiscover()
 
+
 if not settings.DEBUG:
     # Set the custom error handler for production servers
     handler500 = 'ieeetags.views.views.error_view'
