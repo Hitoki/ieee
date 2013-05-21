@@ -38,7 +38,7 @@ from ieeetags import permissions
 from ieeetags import url_checker
 from ieeetags.util import *
 from ieeetags.models import Cache, Node, NodeSocieties, NodeType, Permission, Resource, ResourceType, ResourceNodes, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager, FailedLoginLog, UrlCheckerLog, TaxonomyTerm, TaxonomyCluster, ProfileLog, ProcessControl, PROCESS_CONTROL_TYPES
-from ieeetags.views import render
+from ieeetags.views.views import render
 from ieeetags.widgets import DisplayOnlyWidget
 from forms import *
 from widgets import make_display_only
@@ -1943,7 +1943,7 @@ def import_xplore(request):
             resume = 1
         else:
             resume = 0
-        
+
         print '  Launching process %r' % script_path
         proc = subprocess.Popen(
             [sys.executable, '-u', script_path, '--pid=%s' % pidfilename, '--log=%s' % log_filename_abs, '--xplore_hc=%d' % settings.XPLORE_IMPORT_MAX_QUERY_RESULTS, '--path=%s' % paths, '--resume=%s' % resume], #, '--alert_email=%s' % request.user.email, '--alert_url=%s' % request.build_absolute_uri(reverse('admin_import_xplore'))],
