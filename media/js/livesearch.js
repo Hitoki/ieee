@@ -50,6 +50,8 @@ function LiveSearch(inputElem) {
                 $('#tag-counts').html('Please enter more characters below.');
             } else if ($.trim(self.inputElem.val()).length == 0) {
                 $('#tags-searching-msg').hide();
+                clearTimeout(timer);
+                timer = setTimeout(liveSearch.update,self.options.search_key_delay,null,self);
             } else {
                 clearTimeout(timer);
                 timer = setTimeout(liveSearch.update,self.options.search_key_delay,null,self);
