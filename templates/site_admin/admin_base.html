@@ -26,6 +26,11 @@
                     <a href="{% url admin_home %}">{% if user.get_profile.role == "society_manager" %}Your Organizations{% else %}Home{% endif %}</a>
                 </li>
             {% endif %}
+            {% if user.get_profile.role == "society_manager" %}
+                <li class="{% block nav_actions %}{% endblock %}">
+                    <a href="{% url key_actions %}">Key Actions</a>
+                </li>   
+            {% endif %}
             {% if user.get_profile.role == "admin" %} 
                 <li class="{% block nav_users %}{% endblock %}">
                     <a href="{% url admin_users %}">Users</a>

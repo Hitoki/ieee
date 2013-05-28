@@ -5345,6 +5345,11 @@ def broken_links_report(request):
 
 @login_required
 @admin_required
+def key_actions(request):
+    return render(request, 'site_admin/key_actions.html')
+
+@login_required
+@admin_required
 def broken_links_reset(request, reset_type, resource_id=None):
     if reset_type == 'all':
         # Reset all resources
