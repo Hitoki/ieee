@@ -34,11 +34,6 @@ ul.nootabs-menus li {
     text-align: right;
 }
 
-ul.nootabs-menus li a:hover {
-    color: orange;
-    text-decoration: underline;
-}
-
 .nootabs-menu-filler {
     padding: 0px;
     border-bottom: 1px solid var(pallette-lines);
@@ -49,11 +44,6 @@ ul.nootabs-menus li a:hover {
     border: 1px solid #006699 !important;
     border-bottom: 1px solid white !important;
     z-index: 10;
-}
-
-.nootabs-selected-menu a, .nootabs-selected-menu a:hover {
-    color: #006699 !important;
-    text-decoration: none !important;
 }
 
 .nootabs-tab {
@@ -74,7 +64,15 @@ ul.nootabs-menus li a:hover {
 
 .nootabs-menus li.nootabs-menu a:hover {
     background: $orange;
+    color: white;
+    text-decoration: none;
 }
+
+.nootabs-selected-menu a, .nootabs-selected-menu a:hover {
+    color: #006699 !important;
+    text-decoration: none !important;
+}
+
 
 #left-column-container .nootabs-menu {
     margin-left: 0;
@@ -245,7 +243,7 @@ ul.nootabs-menus li.nootabs-selected-menu a {
 }
 
 ul.nootabs-menus li.nootabs-selected-menu a:hover {
-    background: white !important;
+    background: white;
     color: #006699 !important;
 }
 
