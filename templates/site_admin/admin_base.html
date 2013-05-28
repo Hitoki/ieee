@@ -23,7 +23,7 @@
         <ul class="nav">
             {% if user.get_profile.role == "society_manager" or user.get_profile.role == "society_admin" or user.get_profile.role == "admin" %}
                 <li class="{% block nav_home %}{% endblock %}">
-                    <a href="{% url admin_home %}">Home</a>
+                    <a href="{% url admin_home %}">{% if user.get_profile.role == "society_manager" %}Your Organizations{% else %}Home{% endif %}</a>
                 </li>
             {% endif %}
             {% if user.get_profile.role == "admin" %} 
