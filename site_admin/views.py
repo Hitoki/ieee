@@ -5344,7 +5344,7 @@ def broken_links_report(request):
     })
 
 @login_required
-@admin_required
+@society_manager_or_admin_required
 def key_actions(request):
     return render(request, 'site_admin/key_actions.html')
 
