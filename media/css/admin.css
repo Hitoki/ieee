@@ -559,6 +559,10 @@ input#id_username, input#id_password, input#id_email {
     text-align:center;
 }
 
+#login-tabs {
+    margin-bottom: 5px;
+}
+
 tr.buttons td {
     text-align:center;
 }
