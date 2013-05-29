@@ -313,7 +313,9 @@ def cluster_landing(request, cluster_id):
     Simply uses the print_resource view passing in a different template name.
     '''
     return print_resource(request, cluster_id, 'all', template_name='cluster_landing.html', create_links=True, toc=True)
-    
+
+XPLORE_SORT_PUBLICATION_YEAR = 'py'
+
 def print_resource(request, tag_id, resource_type, template_name='print_resource.html', create_links=False, toc=False):
     '''
     The print resource page.
