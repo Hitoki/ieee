@@ -406,6 +406,11 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
 
     #context['num_related_items'] = num_related_items
 
+    if settings.SHOW_TV:
+        context['show_tv'] = True
+    else:
+        context['show_tv'] = False
+
     if load_framework:
         # Show the normal tag content popup.
         return render(request, 'ajax_tag_content.html', context)

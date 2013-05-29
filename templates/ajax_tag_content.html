@@ -182,9 +182,9 @@ function isValidEmailAddress(emailAddress) {
                 <li id="educations-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">Education <span class="right" id="num-education-results"></span></a></li>
                 <li id="articles-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">Xplore Articles <span class="right" id="num-xplore-results"></span></a></li>
                 <li id="jobs-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu" rel="nofollow">Jobs <span class="right">{{jobsCount}}</span></a></li>
-                {% comment %}
-                <li id="tv-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu" rel="nofollow">Tv <span class="right">{{tvCount}}</span></a></li>
-                {% endcomment %}
+                {% if show_tv %}
+                <li id="tv-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu" rel="nofollow">Tv <span class="right">{#{{tvCount}}#}</span></a></li>
+                {% endif %}
                 {% comment %}
                 <li id="patents-tab" class="middle-group-menu" style="display:none"><a href="" class="two-word-menu" rel="nofollow">Patents <span class="right">{{patents|length}}</span></a></li>
                 {% endcomment %}
@@ -229,12 +229,13 @@ function isValidEmailAddress(emailAddress) {
             <div id="job-tab" data-printUrl='{% url print_resource tag.id "jobs" %}'>
                 {% include 'ajax_job_tab.inc.html' %}
             </div>
-{% comment %}
+{% if show_tv %}
 <!-- Tv -->
             <div id="tv-tab" data-printUrl='{% url print_resource tag.id "tv" %}'>
-                {% include 'ajax_tv_tab.inc.html' %}
+                Tv will go here        
+                {#{% include 'ajax_tv_tab.inc.html' %}#}
             </div>
-{% endcomment %}
+{% endif %}
 {% comment %}
 <!-- Patents -->
                 {% include 'ajax_patents_tab.inc.html' %}
