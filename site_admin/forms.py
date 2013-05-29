@@ -270,7 +270,7 @@ class EditClusterForm(ModelForm):
             self.fields['topics'] = ModelMultipleChoiceField(queryset=allnodes, widget=CheckboxSelectMultipleColumns(columns=3), required=False)
 
             # Topics already associated with this society are prechecked.
-            initialnodes = allnodes.filter(societies__id__contains=society.id);
+            initialnodes = allnodes.filter(societies__id=society.id);
             self.fields['topics'].initial = initialnodes
         elif user_role == Profile.ROLE_ADMIN and society != None:
             # Organizations are hidden
@@ -283,7 +283,7 @@ class EditClusterForm(ModelForm):
             self.fields['topics'] = ModelMultipleChoiceField(queryset=allnodes, widget=CheckboxSelectMultipleColumns(columns=3), required=False)
 
             # Topics already associated with this society are prechecked.
-            initialnodes = allnodes.filter(societies__id__contains=society.id);
+            initialnodes = allnodes.filter(societies__id=society.id);
             self.fields['topics'].initial = initialnodes
 
                 
