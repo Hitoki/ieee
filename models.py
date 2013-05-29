@@ -654,6 +654,12 @@ class Node(models.Model):
     
     single_periodical = property(_get_single_periodical)
 
+    def _get_societies_related_to_child(self):
+        #import ipdb; ipdb.set_trace()
+        return NodeSocieties.objects.filter(node__id__in=self.child_nodes.values_list('id')).values_list('society__id')
+
+    societies_related_to_child = property(_get_societies_related_to_child)
+
     def save(self, add_child_info=True, *args, **kwargs):
         cluster_type = NodeType.objects.getFromName(NodeType.TAG_CLUSTER)
         #print 'Node.save()'

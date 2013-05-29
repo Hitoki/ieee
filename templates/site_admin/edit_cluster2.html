@@ -32,9 +32,25 @@
 <script type="text/javascript">
 $(document).ready(
     function() {
-        $('input[name="societies"]:checked').attr('disabled', 'disabled').parent('label').css('color', '#9F9F9F');
-        
+        var societiesRelatedToChild = [{% for val in societies_related_to_child %}{{ val|first }}{% if not forloop.last %},{% endif %}{% endfor %}];
+
+        $('input[name="societies"]:checked').each(
+            function(i, el) {
+                var id = parseInt($(el).val());
+                if ($.inArray(id, societiesRelatedToChild) != -1) {
+                    $(el).attr('disabled', 'disabled').parent('label').css('color', '#9F9F9F');
+                }
+            }
+        );
+
+        // Re-enable all society checkboxes so they get submitted.
+        $('form').submit(
+            function(e) {
+                $(this).find('input[name=societies][:disabled]').removeAttr('disabled');
+            }
+        );
     }
+
 );
 </script>
 

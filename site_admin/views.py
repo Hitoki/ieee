@@ -3342,6 +3342,7 @@ def edit_cluster2(request, cluster_id=None):
                 # Updating an existing cluster
 
                 cluster.child_nodes = form.cleaned_data['topics']
+                cluster.node_societies.update_for_node(cluster, form.cleaned_data['societies'])
                 cluster.save()
             else:
                 # Saving a new cluster
@@ -3368,7 +3369,8 @@ def edit_cluster2(request, cluster_id=None):
     return render(request, 'site_admin/edit_cluster2.html', {
         'cluster': cluster,
         'form': form,
-        'return_url': return_url
+        'return_url': return_url,
+        'societies_related_to_child': (cluster and cluster.societies_related_to_child or [])
     })
 
 
