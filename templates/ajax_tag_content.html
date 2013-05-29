@@ -176,22 +176,20 @@ function isValidEmailAddress(emailAddress) {
                 
 <!-- *** Content Tabs *** -->
             <ul class="nootabs-menus">
-                <li id="over-tab" class="first-menu begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Overview</a></li>
-                <li id="ieee-societies-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">IEEE Orgs <span class="right">{{ societies.count }}</span></a></li>
-                <li id="conferences-tab" class="begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Conferences <span class="right">{{conferences|length}}</span></a></li>
-                <li id="educations-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">Education <span class="right" id="num-education-results"></span></a></li>
-                <li id="articles-tab" class="right-menu"><a href="" class="two-word-menu" rel="nofollow">Xplore Articles <span class="right" id="num-xplore-results"></span></a></li>
-                <li id="jobs-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu" rel="nofollow">Jobs <span class="right">{{jobsCount}}</span></a></li>
+                <li id="over-tab"><a href="" rel="nofollow">Overview</a></li>
+                <li id="ieee-societies-tab"><a href="" rel="nofollow">IEEE Orgs <span class="right">{{ societies.count }}</span></a></li>
+                <li id="conferences-tab"><a href="" rel="nofollow">Conferences <span class="right">{{conferences|length}}</span></a></li>
+                <li id="educations-tab"><a href="" rel="nofollow">Education <span class="right" id="num-education-results"></span></a></li>
+                <li id="articles-tab"><a href="" rel="nofollow">Xplore Articles <span class="right" id="num-xplore-results"></span></a></li>
+                <li id="jobs-tab"><a href="" rel="nofollow">Jobs <span class="right">{{jobsCount}}</span></a></li>
                 {% if show_tv %}
-                <li id="tv-tab" class="end-group-menu last-menu"><a href="" class="two-word-menu" rel="nofollow">Tv <span class="right">{#{{tvCount}}#}</span></a></li>
+                <li id="tv-tab"><a href="" rel="nofollow">Tv <span class="right">{#{{tvCount}}#}0</span></a></li>
                 {% endif %}
+                <li id="periodicals-tab"><a href="" rel="nofollow">Periodicals <span class="right">{{periodicals|length}}</span></a></li>
+                <li id="standards-tab"><a href="" rel="nofollow">Standards <span class="right">{{standards|length}}</span></a></li>
                 {% comment %}
-                <li id="patents-tab" class="middle-group-menu" style="display:none"><a href="" class="two-word-menu" rel="nofollow">Patents <span class="right">{{patents|length}}</span></a></li>
-                {% endcomment %}
-                <li id="periodicals-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Periodicals <span class="right">{{periodicals|length}}</span></a></li>
-                <li id="standards-tab" class="middle-group-menu"><a href="" class="two-word-menu" rel="nofollow">Standards <span class="right">{{standards|length}}</span></a></li>
-                {% comment %}
-                <li id="industry-sectors-tab" class="begin-group-menu"><a href="" class="two-word-menu" rel="nofollow">Industry Topics <span class="right">{{ parent_nodes|length }}</span></a></li>
+                <li id="patents-tab" style="display:none"><a href="" rel="nofollow">Patents <span class="right">{{patents|length}}</span></a></li>
+                <li id="industry-sectors-tab" ><a href="" rel="nofollow">Industry Topics <span class="right">{{ parent_nodes|length }}</span></a></li>
                 <li><a href="" rel="nofollow">Filters ({{ tag.filters.count }})</a></li>
                 <li><a href="" rel="nofollow">Sectors &amp; Clusters ({{ parent_nodes|length }})</a></li>
                 <li><a href="" rel="nofollow">Experts <span>({{experts|length}})</span></a></li>

@@ -200,6 +200,14 @@ ul.nootabs-menus li {
    color: $white;
 }
 
+#resource-tabs ul.nootabs-menus li {
+    height: 45px;
+}
+
+#resource-tabs ul.nootabs-menus li#over-tab {
+    height: 35px;
+}
+
 #resource-tabs ul.nootabs-menus li a:hover {
    text-decoration: none;
    color: #FFA500;
