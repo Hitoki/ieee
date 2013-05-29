@@ -321,8 +321,8 @@ function isValidEmailAddress(emailAddress) {
                 <div class="share-links addthis_toolbox">
                     Share:
                     <a rel="nofollow" href="https://www.facebook.com/dialog/feed?app_id=528098277254889&name={{ tag.name }}&description=Check%20out%20{{ tag.name }}%20at%20IEEE%20TechNav&link={{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}&redirect_uri={{ host_info }}&picture=http://www.ieee.org/ucm/groups/public/@ieee/@web/@org/documents/images/42070894.jpg" target="_blank"><span aria-hidden="true" class="icon-facebook"></a>
-                    <a rel="nofollow" href="https://twitter.com/intent/tweet?source=webclient&text=Check%20out%20{{ tag.name }}%20at%20IEEE%20TechNav%20{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}"><span aria-hidden="true" class="icon-twitter"></span></a>
-                    <a rel="nofollow"><span aria-hidden="true" class="icon-mail"></span></a>
+                    <a rel="nofollow" href="https://twitter.com/intent/tweet?source=webclient&text=Check%20out%20{{ tag.name }}%20at%20IEEE%20TechNav%20{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}" target="_blank"><span aria-hidden="true" class="icon-twitter"></span></a>
+                    <a rel="nofollow" href="mailto:?subject={{ tag.name }}&body=Check out {{ tag.name }} on IEEE TechNav {{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}"><span aria-hidden="true" class="icon-mail" target="_blank"></span></a>
                 </div>
                 <span aria-hidden="true" class="icon-printer"></span>
                 <div class="clear"></div>
