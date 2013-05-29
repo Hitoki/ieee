@@ -11,7 +11,7 @@
             <input type="submit" name="submit1" value="Save" class="submit-button" />
             <input type="submit" name="submit2" value="Save and exit" class="submit-button" />
             <input type='button' value='Cancel' class='submit-button' onclick='window.location="{{ return_url }}"' />
-            {% if user.is_superuser and cluster %}
+            {% if False and user.is_superuser and cluster %}
                 <a href="" onclick="if (confirm('Are you sure you want to delete this topic area?  This cannot be undone.')) window.location='{% url admin_delete_cluster cluster.id %}?return_url={{ return_url|urlencode }}';" class="cancel-link">Delete</a>
             {% endif %}
         </div>
@@ -23,7 +23,7 @@
             <input type="submit" name="submit1" value="Save" class="submit-button" />
             <input type="submit" name="submit2" value="Save and exit" class="submit-button" />
             <input type='button' value='Cancel' class='submit-button' onclick='window.location="{{ return_url }}"' />
-            {% if user.is_superuser and cluster %}
+            {% if False and user.is_superuser and cluster %}
                 <a href="" onclick="if (confirm('Are you sure you want to delete this topic area?  This cannot be undone.')) window.location='{% url admin_delete_cluster cluster.id %}?return_url={{ return_url|urlencode }}';" class="cancel-link">Delete</a>
             {% endif %}
         </div>
