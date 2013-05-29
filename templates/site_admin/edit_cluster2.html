@@ -50,6 +50,14 @@ $(document).ready(
             }
         );
 
+        $('#id_topics').focus(
+            function() {
+                if ($.trim($('#id_name').val()) == "") {
+                    $('#id_name').focus();
+                    alert("Please enter a name before selecting topics.");
+                }
+            }
+        );
         $('#multisearch_topics').bind('popupClosed',
             function() {
                 $('input:submit[name="submit1"]').click();
