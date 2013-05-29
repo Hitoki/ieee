@@ -2,12 +2,4 @@ local_settings.py
 *.pyc
 media/caches/*
 .sass-cache/*
-views/__init__.pyc
-
-views/ajax.pyc
-
-views/views.pyc
-
-views/xplore.pyc
-
-views/xplore.pyc
+views/*.pyc
