@@ -49,6 +49,12 @@ $(document).ready(
                 $(this).find('input[name=societies][:disabled]').removeAttr('disabled');
             }
         );
+
+        $('#multisearch_topics').bind('popupClosed',
+            function() {
+                $('input:submit[name="submit1"]').click();
+            }
+        );
     }
 
 );

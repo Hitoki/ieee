@@ -191,7 +191,7 @@ function MultiSearch(container, options) {
     
     $(document).click(function(e) {
         // This only receives clicks that happened outside the MultiSearch... close the popup
-        multiSearch.closePopup(true);
+        multiSearch.closePopup(true, true);
     });
     $(document).keydown(function(e) {
         // This only receives clicks that happened outside the MultiSearch... close the popup
@@ -272,7 +272,7 @@ function MultiSearch(container, options) {
         multiSearch.keydown(e);
     });
     
-    this.closePopup();
+    this.closePopup(false, true);
     
     // Load any pre-selected options (from the hidden input)
     var initialData = JSON.parse(this.dataElem.attr('value'));
@@ -936,10 +936,15 @@ MultiSearch.prototype.showPopup = function() {
 }
 
 // Hides & clears the popup element, and resets all popup data
-MultiSearch.prototype.closePopup = function(clear_value) {
+MultiSearch.prototype.closePopup = function(clear_value, triggerEvent) {
     var multisearch = this;
     if (clear_value == undefined)
         clear_value = false;
+
+    if (typeof triggerEvent == 'undefined')
+        triggerEvent = false;
+    else
+        triggerEvent = triggerEvent && this.popupVisible;
     
     if (this.popupVisible && clear_value) {
         // NOTE: Simply setting this.input.attr('value', '') here does not work (it's immediately overwritten with the original value).
@@ -961,6 +966,9 @@ MultiSearch.prototype.closePopup = function(clear_value) {
     
     this.highlightedSearchOptionValue = null;
     this.getOptionsValue = null;
+
+    if (triggerEvent)
+        this.container.trigger('popupClosed');
 }
 
 MultiSearch.prototype.clearValue = function() {
