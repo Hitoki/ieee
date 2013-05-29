@@ -283,6 +283,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
 
     counts = 0
     jobsCount = "0"
+    #tvCount = "0"
 
     #sectors1 = tag.get_sectors()
     #counts += sectors1.count()
@@ -384,6 +385,17 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         context['jobsCount'] = jobsCount
         context['jobsUrl'] = jobsUrl        
         context['loaded'] = True
+
+    #if tab == 'tv':
+        #tvUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&format=json" % urllib.urlencode({"kwsMustContain": tag.name})
+        #file1 = urllib2.urlopen(tvUrl).read()
+        #tvJson = json.loads(file1)
+        #tvCount = tvJson.get('Total')
+        #tvUrl = tvUrl.replace('&format=json','')
+        #tab_template = 'ajax_tv_tab.inc.html'
+        #context['tvCount'] = tvCount
+        #context['tvUrl'] = tvUrl        
+        #context['loaded'] = True
 
     if tab == 'overview':        
         #try:
