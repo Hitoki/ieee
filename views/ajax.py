@@ -406,7 +406,12 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
 
     #context['num_related_items'] = num_related_items
 
-    if settings.SHOW_TV:
+    try:
+        show_tv = settings.SHOW_TV_TAB
+    except AttributeError:
+        show_tv = False
+    
+    if show_tv:
         context['show_tv'] = True
     else:
         context['show_tv'] = False
