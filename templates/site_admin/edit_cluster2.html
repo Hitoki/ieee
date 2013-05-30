@@ -60,9 +60,23 @@ $(document).ready(
         );
         $('#multisearch_topics').bind('popupClosed',
             function() {
-                $('input:submit[name="submit1"]').click();
+                var ret = confirm('Save and show updated organizations? Click cancel to manually save later.')
+                if (ret) {
+                    $('input:submit[name="submit1"]').click();
+                }
             }
         );
+
+        $('#multisearch_topics').bind('itemRemoved',
+            function() {
+                var ret = confirm('Save and show updated organizations? Click cancel to manually save later.')
+                if (ret) {
+                    $('input:submit[name="submit1"]').click();
+                }
+            }
+        );
+
+
     }
 
 );

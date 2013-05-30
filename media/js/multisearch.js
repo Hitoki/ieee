@@ -605,6 +605,8 @@ MultiSearch.prototype.onKeyEnter = function(e) {
     if (this.popupVisible && this.highlightedSearchOptionValue != null) {
         // Toggle this searchOption
         this.toggleSearchOption(this.highlightedSearchOptionValue);
+    } else {
+        this.closePopup(true, true);
     }
 }
 
@@ -912,6 +914,7 @@ MultiSearch.prototype.removeSelectedOptionByValue = function(value) {
     this._notify('removed_option', {
         option: option
     });
+    this.container.trigger('itemRemoved');
 }
 
 MultiSearch.prototype.onKeyEscape = function(e) {
