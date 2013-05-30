@@ -230,10 +230,12 @@ function isValidEmailAddress(emailAddress) {
 {% if show_tv %}
 <!-- Tv -->
             <div id="tv-tab" data-printUrl='{% url print_resource tag.id "tv" %}'>
+                {% comment %}
                 <div class="group">
                     Tv will go here  
                 </div>      
-                {#{% include 'ajax_tv_tab.inc.html' %}#}
+                {% endcomment %}
+                {% include 'ajax_tv_tab.inc.html' %}
             </div>
 {% endif %}
 {% comment %}
