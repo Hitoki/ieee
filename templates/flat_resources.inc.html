@@ -217,6 +217,22 @@ Include file used by both print_resource.html and tag_landing.html
     {% endif %}
     
     {% comment %}
+    {% if tvHtml or toc %}
+    <div id="tag-tv" class="tag-section">
+        <h3><a href="" name="tv"></a>{% if toc %}<span class="index"></span>{% endif %} Tv related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <div>
+            {% if tvHtml %}
+                {{ tvHtml|safe }}
+            {% else %}
+            <p class="no-resources">No tv are currently tagged "{{ tag.name }}"</p>
+            {% endif %}
+        </div>
+    </div>
+    <hr/>
+    {% endif %}
+    {% endcoment %}
+
+    {% comment %}
     {% if patents or toc %}
     <div id="tag-patents" class="tag-section">
         <h3><a name="patents"></a>{% if toc %}<span class="index"></span>{% endif %} Patents related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>

@@ -283,6 +283,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
 
     counts = 0
     jobsCount = "0"
+    tvCount = "0"
 
     #sectors1 = tag.get_sectors()
     #counts += sectors1.count()
@@ -385,6 +386,19 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         context['jobsUrl'] = jobsUrl        
         context['loaded'] = True
 
+    if tab == 'tv':
+        #http://ieeetvdev.ieee.org/service/Signature
+        #http://ieeetvdev.ieee.org/service/Signature?url=http://ieeetvdev.ieee.org/service/VideosSearch?q=ieee
+        tvUrl = "http://ieeetvdev.ieee.org/service/Signature?url=http://ieeetvdev.ieee.org/service/VideosSearch?q=%s" % urllib.urlencode({"kwsMustContain": tag.name})
+        file2 = urllib2.urlopen(tvUrl).read()
+        tvJson = json.loads(file1)
+        tvCount = tvJson.get('Total')
+        tvUrl = tvUrl.replace('&format=json','')
+        tab_template = 'ajax_tv_tab.inc.html'
+        context['tvCount'] = tvCount
+        context['tvUrl'] = tvUrl        
+        context['loaded'] = True
+
     if tab == 'overview':        
         #try:
             #xplore_article = ajax_recent_xplore(tag.name)
@@ -405,6 +419,16 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         + tag.related_tags.count() 
 
     #context['num_related_items'] = num_related_items
+
+    try:
+        show_tv = settings.SHOW_TV_TAB
+    except AttributeError:
+        show_tv = False
+    
+    if show_tv:
+        context['show_tv'] = True
+    else:
+        context['show_tv'] = False
 
     if load_framework:
         # Show the normal tag content popup.
@@ -829,6 +853,61 @@ def ajax_jobs_results(request):
     data = {
         'num_results': jobsCount,
         'html': jobsHtml,
+        'search_term': name,
+        'token': token,
+    }
+    
+    return HttpResponse(json.dumps(data), 'application/javascript')
+
+@csrf_exempt
+def ajax_tv_results(request):
+    '''
+    Shows the list of IEEE xplore articles for the given tag.
+    @param tag_id: POST var, specifyies the tag.
+    @param show_all: POST var, ("true" or "false"): if true, return all rows.
+    @param offset: POST var, int: the row to start at.
+    @param token: POST var, the ajax token to pass through.
+    @return: HTML output of results.
+    '''
+    tag_id = request.POST.get('tag_id')
+    
+    if tag_id is not None and tag_id != 'undefined':
+        tag = Node.objects.get(id=tag_id)
+        term = None
+        name = tag.name
+    else:
+        assert False, 'Must specify tag_id.'
+    
+    show_all = (request.POST['show_all'] == 'true')
+    offset = int(request.POST.get('offset', 0))
+    token = request.POST['token']    
+    #jobs_results, jobs_error, num_results = _get_xplore_results(name, show_all=show_all, offset=offset, sort=sort, sort_desc=sort_desc, ctype=ctype)
+    tvUrl = "http://ieeetvdev.ieee.org/service/Signature?url=http://ieeetvdev.ieee.org/service/VideosSearch?q=%s" % tag.name
+    file2 = urllib2.urlopen(tvUrl).read()
+    
+    # get url from xml that is returned
+    from xml.etree.ElementTree import fromstring
+    apixml = fromstring(file2)
+    dev_url = apixml.find('url_dev').text
+
+    tv_xml = fromstring(urllib2.urlopen(dev_url).read())
+    tvCount = tv_xml.find('count').text
+
+    results = tv_xml.findall('search-item')
+
+    tvHtml = ""
+    for result in results:
+        thumb = result.find('images').find('thumbnail').text
+        title = result.find('title').text
+        url = result.find('web-page').text
+        tvHtml = tvHtml + '<a href="%s" target="_blank" class="featured"><b>%s</b></a> <img src="%s" /><br>\n' % (url, title, thumb)
+    
+    # DEBUG:
+    #xplore_error = 'BAD ERROR.'
+
+    data = {
+        'num_results': tvCount,
+        'html': tvHtml,
         'search_term': name,
         'token': token,
     }

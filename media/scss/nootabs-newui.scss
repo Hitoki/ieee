@@ -119,12 +119,9 @@ ul.nootabs-menus li {
     }
 }
 
-#job-tab div.group {
-    height: 330px;
-}
-
+#job-tab div.group,
 #xplore-tab div.group {
-    height: 330px;
+    height: 338px;
 }
 
 
@@ -172,6 +169,7 @@ ul.nootabs-menus li {
     float: left;
     clear: none;
     width: 136px;
+    margin-bottom: -25px;
 }
 
 #resource-tabs ul.nootabs-menus li {
@@ -198,6 +196,14 @@ ul.nootabs-menus li {
    background: transparent !important;
    outline: none;
    color: $white;
+}
+
+#resource-tabs ul.nootabs-menus li {
+    height: 45px;
+}
+
+#resource-tabs ul.nootabs-menus li#over-tab {
+    height: 35px;
 }
 
 #resource-tabs ul.nootabs-menus li a:hover {

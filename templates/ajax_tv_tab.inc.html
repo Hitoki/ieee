@@ -1,0 +1,29 @@
+<script type="text/javascript">
+    $(function(){
+        attachTvResults('#tv-results-container');
+        $('#tv-tab span.right').html('{{ tvCount }}'); 
+        var count = parseInt($("#num-related-items").metadata().number);
+        var newNum = parseInt('{{ tvCount }}'.replace(/\,/g,''));
+        if (!isNaN(newNum)){
+            count += newNum;
+            //$("#num-related-items").text(count);
+            $('#num-related-items').metadata().number = count;
+        }        
+    });
+</script>
+    <div id="tv-results-container" class="{ tagId: {{ tag.id }} }">
+        <div class="print-resource">
+            <a href="{{ tvUrl }}" target="_blank">View TV on the IEEE TV Site <span class="popup newWindIcon"></span></a>
+        </div>
+        <div class="group" style='margin-top: 32px;'>
+            <div class="results" style="display:inline;">
+                {% comment %}
+                {% if tv %}
+                    {{ tv|safe }}
+                {% else %}
+                    <p class="no-resources">No tv is currently tagged "{{ tag.name }}"</p>
+                {% endif %}
+                {% endcomment %}
+            </div>
+        </div>
+    </div>

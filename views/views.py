@@ -313,7 +313,9 @@ def cluster_landing(request, cluster_id):
     Simply uses the print_resource view passing in a different template name.
     '''
     return print_resource(request, cluster_id, 'all', template_name='cluster_landing.html', create_links=True, toc=True)
-    
+
+XPLORE_SORT_PUBLICATION_YEAR = 'py'
+
 def print_resource(request, tag_id, resource_type, template_name='print_resource.html', create_links=False, toc=False):
     '''
     The print resource page.
@@ -332,6 +334,7 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     periodicals = Node.objects.none()
     standards = Node.objects.none()
     jobsHtml = ''
+    tvHtml = ''
     conf_count = 0
     totalfound = 0
     xplore_edu_results = None
@@ -386,6 +389,17 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
 
         file1 = None
 
+    #if resource_type == 'tv' or resource_type == 'all':
+        #tvUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&format=json" % urllib.urlencode({"kwsMustContain": tag.name})
+        #file2 = urllib2.urlopen(tvUrl).read()
+        #tvJson = json.loads(file1)
+        #tvCount = tvJson.get('Total')
+        #tv = tvJson.get('Jobs')
+        #for show in tv:
+            #tvHtml = tvHtml + '<a href="%(Url)s" target="_blank" class="featured"><b>%(JobTitle)s</b></a> %(Company)s<br>\n' % show
+
+        #file2 = None        
+
     try:
         xplore_article = _get_xplore_results(tag.name, show_all=False, offset=0, sort=XPLORE_SORT_PUBLICATION_YEAR, sort_desc=True)[0][0]
     except IndexError:
@@ -416,6 +430,7 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
         'create_links': create_links,
         'related_items_count': related_items_count,
         'jobsHtml': jobsHtml,
+        #'tvHtml': tvHtml,
         'close_conference': tag._get_closest_conference(),
         'definition': tag._get_definition_link(),
         'xplore_article': xplore_article,

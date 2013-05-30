@@ -219,10 +219,6 @@ input.text {
     font-weight: normal;
 }
 
-#lightbox .resources-lightbox-content ul.nootabs-menus li.end-group-menu {
-    margin-right: 12px;
-}
-
 #lightbox .resources-lightbox-content ul.nootabs-menus li.nootabs-selected-menu a span {
     font-weight: bold;
 }
@@ -683,14 +679,16 @@ margin-top: 0;
     }
     .share-links {
         float: left;
-        span {
+        a {
             color: $secondaryColor;
             font-size: 25px;
             margin-right: 5px;
             vertical-align: middle;
             cursor: pointer;
+            display: inline-block;
             &:hover {
                 color: $orange;
+                text-decoration: none;
             }
         }
     }
