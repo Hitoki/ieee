@@ -230,7 +230,7 @@ class EditTagsForm(Form):
     market_areas_filter = ChoiceField(choices=TRISTATE_CHOICES_TAGS, widget=RadioSelect(), label='Market Areas')
 
 class EditClusterForm2(ModelForm):
-    topics = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget=MultiSearchWidget(remove_link_flyover_text='Remove Topic from this Topic Area', blur_text='Type a few characters to bring up matching topics'))
+    topics = MultiSearchField(model=Node, search_url='/admin/ajax/search_tags', widget=MultiSearchWidget(remove_link_flyover_text='Remove Topic from this Topic Area', blur_text='Type a few characters to bring up matching topics'), help_text="As you associate Topics with the Topic Area, based upon your choices, the system will automatically associate the Topic Area with relevant IEEE Organizations. The system does so by searching for any Organizations that are already associated with the Topic. The Topic Area is then automatically associated with any Organization already associated with one or more of the Topic Area's Topics.")
     societies = ModelMultipleChoiceField(queryset=Society.objects.all(), label='Organization', widget=CheckboxSelectMultipleColumns(columns=3), required=False)
 
     def __init__(self, *args, **kwargs):
