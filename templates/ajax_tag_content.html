@@ -183,7 +183,7 @@ function isValidEmailAddress(emailAddress) {
                 <li id="articles-tab"><a href="" rel="nofollow">Xplore Articles <span class="right" id="num-xplore-results"></span></a></li>
                 <li id="jobs-tab"><a href="" rel="nofollow">Jobs <span class="right">{{jobsCount}}</span></a></li>
                 {% if show_tv %}
-                <li id="tv-tab"><a href="" rel="nofollow">Tv <span class="right">{#{{tvCount}}#}0</span></a></li>
+                <li id="tvs-tab"><a href="" rel="nofollow">Tv <span class="right">{#{{tvCount}}#}0</span></a></li>
                 {% endif %}
                 <li id="periodicals-tab"><a href="" rel="nofollow">Periodicals <span class="right">{{periodicals|length}}</span></a></li>
                 <li id="standards-tab"><a href="" rel="nofollow">Standards <span class="right">{{standards|length}}</span></a></li>
@@ -230,7 +230,9 @@ function isValidEmailAddress(emailAddress) {
 {% if show_tv %}
 <!-- Tv -->
             <div id="tv-tab" data-printUrl='{% url print_resource tag.id "tv" %}'>
-                Tv will go here        
+                <div class="group">
+                    Tv will go here  
+                </div>      
                 {#{% include 'ajax_tv_tab.inc.html' %}#}
             </div>
 {% endif %}

@@ -49,6 +49,7 @@ else:
         url(r'^ajax/xplore_results$', xplore.ajax_xplore_results, name='ajax_xplore_results'),
         url(r'^ajax/recent_xplore$', xplore.ajax_recent_xplore, name='ajax_recent_xplore'),
         url(r'^ajax/jobs_results$', ajax.ajax_jobs_results, name='ajax_jobs_results'),
+        url(r'^ajax/tv_results$', ajax.ajax_tv_results, name='ajax_tv_results'),
         url(r'^ajax/node$', ajax.ajax_node, name='ajax_node'),
         url(r'^ajax/nodes_xml$', ajax.ajax_nodes_xml, name='ajax_nodes_xml'),
         url(r'^ajax/nodes_json$', ajax.ajax_nodes_json, name='ajax_nodes_json'),
