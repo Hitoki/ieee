@@ -60,7 +60,7 @@ $(document).ready(
         );
         $('#multisearch_topics').bind('popupClosed',
             function() {
-                var ret = confirm('Save and show updated organizations? Click cancel to manually save later.')
+                var ret = confirm('Save and show updated organizations?')
                 if (ret) {
                     $('input:submit[name="submit1"]').click();
                 }
@@ -69,7 +69,7 @@ $(document).ready(
 
         $('#multisearch_topics').bind('itemRemoved',
             function() {
-                var ret = confirm('Save and show updated organizations? Click cancel to manually save later.')
+                var ret = confirm('Save and show updated organizations?')
                 if (ret) {
                     $('input:submit[name="submit1"]').click();
                 }
