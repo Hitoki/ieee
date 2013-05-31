@@ -3317,7 +3317,9 @@ def edit_cluster2(request, cluster_id=None):
         cluster = None
 
     return_url = request.GET.get('return_url', '')        
-    
+    if return_url == '':
+        return_url = reverse('admin_view_cluster', args=[cluster_id])
+
     if request.method == 'GET':
         # Show the form
         if cluster is None:
