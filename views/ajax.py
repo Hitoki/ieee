@@ -900,7 +900,7 @@ def ajax_tv_results(request):
         thumb = result.find('images').find('thumbnail').text
         title = result.find('title').text
         url = result.find('web-page').text
-        tvHtml = tvHtml + '<img src="%s" /><a href="%s" target="_blank" class="featured">%s</a><br>\n' % (thumb, url, title)
+        tvHtml = tvHtml + '<img src="%s" /><a href="%s" target="_blank" class="featured">%s <span class="popup newWinIcon"></span></a><br>\n' % (thumb, url, title)
     
     # DEBUG:
     #xplore_error = 'BAD ERROR.'

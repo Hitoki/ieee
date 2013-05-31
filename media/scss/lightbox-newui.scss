@@ -562,6 +562,17 @@ margin-top: 0;
     }
 }
 
+#tv-tab {
+    img {
+        margin: 0 15px 5px 0;
+        vertical-align: middle;
+    }
+    a {
+        display: inline-block;
+        width: 500px;
+    }
+}
+
 #xplore-results-container div.loading,
 #education-results-container div.loading {
     height: 115px;

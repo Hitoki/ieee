@@ -707,7 +707,6 @@ function attachJobResults(elem, ctype) {
 function TvLoader(elem, showAll) {
     var tvLoader = this;
     this.elem = $(elem);
-    this.resultElem = this.elem.find('.results');
     this.scrollElem = this.elem.find('.group');
     this.loadingElem = null;
     this.isLoading = false;
