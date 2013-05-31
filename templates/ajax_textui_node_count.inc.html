@@ -10,14 +10,15 @@
             {% if num_clusters %}
                 <span class="first-value">{{ num_clusters|intcomma }} topic area{{ num_clusters|pluralize }}</span> &nbsp;&amp;&nbsp; 
             {% endif %}
-            <span class="second-value">
+            {% if no_results %}
+                0 results
+            {% else %}
+                <span class="second-value">
                 {% if num_tags %}
                     {{ num_tags|intcomma }} topic{{ num_tags|pluralize }}
                 {% endif %}
-                {% if no_results %}
-                    0 results
-                {% endif %}
-            </span>
+                </span>
+            {% endif %}
             {% if cluster %} in the topic area "{{ cluster.name }}" <a href="javascript:Tags.selectSociety('all',null,1);" class="filter-clear"></a></span>{% endif %}
             {% if sector %} in the industry sector "{{ sector }}"{% endif %}
             {% if society %} in the organization "{{ society }}" <a href="javascript:Tags.selectSociety('all');" class="filter-clear"></a>{% endif %}
