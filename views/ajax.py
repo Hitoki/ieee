@@ -387,9 +387,9 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         context['loaded'] = True
 
     if tab == 'tv':
-        #http://ieeetvdev.ieee.org/service/Signature
-        #http://ieeetvdev.ieee.org/service/Signature?url=http://ieeetvdev.ieee.org/service/VideosSearch?q=ieee
-        tvUrl = "http://ieeetvdev.ieee.org/service/Signature?url=http://ieeetvdev.ieee.org/service/VideosSearch?q=%s" % urllib.urlencode({"kwsMustContain": tag.name})
+        #http://ieeetv.ieee.org/service/Signature
+        #http://ieeetv.ieee.org/service/Signature?url=http://ieeetv.ieee.org/service/VideosSearch?q=ieee
+        tvUrl = "http://ieeetv.ieee.org/service/Signature?url=http://ieeetv.ieee.org/service/VideosSearch?q=%s" % urllib.urlencode({"kwsMustContain": tag.name})
         file2 = urllib2.urlopen(tvUrl).read()
         tvJson = json.loads(file1)
         tvCount = tvJson.get('Total')
@@ -882,7 +882,7 @@ def ajax_tv_results(request):
     offset = int(request.POST.get('offset', 0))
     token = request.POST['token']    
     #jobs_results, jobs_error, num_results = _get_xplore_results(name, show_all=show_all, offset=offset, sort=sort, sort_desc=sort_desc, ctype=ctype)
-    tvUrl = "http://ieeetvdev.ieee.org/service/Signature?url=http://ieeetvdev.ieee.org/service/VideosSearch?q=%s" % tag.name
+    tvUrl = "http://ieeetv.ieee.org/service/Signature?url=http://ieeetv.ieee.org/service/VideosSearch?q=%s" % tag.name
     file2 = urllib2.urlopen(tvUrl).read()
     
     # get url from xml that is returned
