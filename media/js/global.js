@@ -590,7 +590,6 @@ function attachXploreResults(elem, ctype) {
 function JobLoader(elem, showAll) {
     var jobLoader = this;
     this.elem = $(elem);
-    this.resultElem = this.elem.find('.results');
     this.scrollElem = this.elem.find('.group');
     this.loadingElem = null;
     this.isLoading = false;

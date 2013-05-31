@@ -549,12 +549,9 @@ margin-top: 0;
     .group a {
         display: block;
         clear: both;
-        margin-bottom: 20px;
+        margin-top: 20px;
         &:first-child {
             margin-top: 0;
-        }
-        &:last-child {
-            margin-bottom: 20px;
         }
     }
     b {
