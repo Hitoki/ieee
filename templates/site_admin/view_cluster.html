@@ -34,7 +34,7 @@
             <td>
                 <ul>
                     {% for society in cluster.societies.all %}
-                        <li><a href="{% url admin_view_society society.id %}">{{ society.name }}</a></li>
+                        <li><a href="{% url admin_manage_society society.id %}">{{ society.name }}</a></li>
                     {% empty %}
                         <li>None</li>
                     {% endfor %}
