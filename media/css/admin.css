@@ -414,6 +414,11 @@ ul.checkbox-select-multiple-columns {
     float:left;
     padding-right:2em;
     list-style:none;
+    width: 218px;
+}
+
+ul.checkbox-select-multiple-columns:last-child {
+    padding-right: 0;
 }
 
 /*
