@@ -157,11 +157,13 @@
             <tr>
                 <th>
                     <label for="id_nodes">{{ form.nodes.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title='Typing a portion of a word or phrase will bring up a list of all matching topics. Choose "Create a new topic" if a matching topic does not exist.'>[?]</span>:</label>
+                    {% comment %}
                     <br/>
                     <a href="#" class="copy-tags-to-clipboard { resourceId: {{ resource.id }} }"><img src="{{ MEDIA_URL }}images/copy_to_clipboard2.png" /> <span>Copy topics to clipboard</span></a>
                     {% if user.get_profile.copied_resource %}
                         <a href="#" class="paste-tags { resourceId: {{ resource.id }} }"><img src="{{ MEDIA_URL }}images/copy_to_clipboard2.png" /> <span>Paste topics from clipboard</span></a>
                     {% endif %}
+                    {% endcomment %}
                 </th>
                 <td>
                     {{ form.nodes.errors }}
