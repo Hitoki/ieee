@@ -709,7 +709,7 @@ ul#sectors, ul#societies {
 #alternate-page #tag-galaxy .alt-box-pad {
     min-height: 388px !important;
     overflow: auto;
-    padding: 5px 10px;
+    padding: 5px 0;
 }
   
 #alternate-page #tag-galaxy #tags a.back-link {
@@ -1837,12 +1837,10 @@ div.group ul li:first-child {
 
 #textui-society-list {
     float: left;
-    margin-left: 20px;
 }
 
 #textui-tags-sort {
     float: right;
-    margin-right: 20px;
 }
   
 .search-container {
@@ -2250,9 +2248,10 @@ height: 100%;
 #utility-links {
     background-color: $backgroundColor;
     padding: 5px 0;
+    margin: 0 -25px;
     text-align: right;
     color: $white;
-    padding-right: 40px;
+    padding-right: 25px;
     a {
        font-size: 9pt;  
        color: $white;
@@ -2261,7 +2260,8 @@ height: 100%;
   
 header {
    background-color: $white;
-   width: 85%;
+   width: 80%;
+   padding: 0 25px;
    margin: 0 auto;
    position: relative;
 }
@@ -2290,7 +2290,6 @@ header {
 
 #header-logo {
   float: left;
-  margin-left: 15px;
   a {
     float: left;
   }
@@ -2299,7 +2298,7 @@ header {
 #header-links {
    position: absolute;
    white-space: nowrap;
-   right: 41px;
+   right: 0px;
    top: 10px;
 }
 
@@ -2320,10 +2319,10 @@ header {
 }
 
 #inner-container .center-pad {
-    width: 83%;
+    width: 80%;
     background-color: #FFFFFF;
     margin: 0 auto;
-    padding: 0 1%;
+    padding: 0 25px;
 }
   
 #tag-tools {
@@ -2355,9 +2354,9 @@ header {
         }
     }
     .inner {
-        width: 85%;
+        width: 80%;
         margin: 0 auto;
-        padding: 25px 10px 22px 10px;
+        padding: 25px 25px 22px;
     }
     #narrow-tags {
         display: inline-block;
@@ -2380,8 +2379,10 @@ header {
   
 #tag-container {
     .inner {
-        width: 85%;
+        width: 80%;
         margin: 0 auto;
+        padding: 0 25px;
+        background-color: $white;
     }
 }
   

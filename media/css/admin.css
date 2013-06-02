@@ -86,8 +86,8 @@ ul.nav {
     /* NOTE: This allows the UL to contain the floating LI's, IE7 & Fx3 */
     overflow:auto;
     margin: 0 auto;
-    width: 83%;
-    padding: 0 1%;
+    width: 80%;
+    padding: 0 25px;
 }
 
 #inner-container .center-pad {
@@ -703,14 +703,14 @@ ul.nootabs-menus li a {
 }
 
 .admin-user-links {
-    width: 85%;
+    width: 80%;
+    padding: 0 25px;
     margin: 0 auto;
     text-align: right;
     background-color: #FFFFFF;
 }
 
 #admin_header #left {
-    margin-right: 15px;
     padding-bottom: 5px;
     display: inline-block;
     text-align: center;
