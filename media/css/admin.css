@@ -50,6 +50,10 @@ strong {
     font-weight:bold;
 }
 
+input {
+    padding: 3px;
+}
+
 /* */
 
 #header a.logout, #header a.changePassword {
@@ -79,6 +83,10 @@ strong {
 }
 
 /* Navigation */
+
+.header-btns .btn.admin {
+    margin-right: 0;
+}
 
 ul.nav {
     background:#555;
@@ -221,7 +229,6 @@ table.edit-create td {
 .full-grid th
 {
     border:1px solid #ddd;
-    padding:10px;
 }
 
 .grid th,
@@ -320,15 +327,8 @@ table.tags tr.tag_cluster {
 
 /* */
 
-#society-resource-tabs {
-    /* NOTE: This causes strange spacing in IE7 */
-    margin:.4em;
-}
-
 #society-resource-tabs .nootabs-selected-tab {
     overflow: visible;
-    -moz-border-radius-topright:5px;
-    -webkit-border-top-right-radius: 5px;
 }
 
 #help-tab p {
