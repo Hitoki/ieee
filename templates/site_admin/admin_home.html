@@ -16,11 +16,10 @@
         <li>
             Key Pages:
             <ul>
+                <li><a href="{% url admin_clusters_report %}">View existing Topic Areas</a> (you can edit them from here)</li>
                 <li><a href="{% url admin_create_cluster2 %}?return_url={{ current_url|urlencode }}">Create a new Topic Area</a></li>
-                <li>Edit Topic Area</li>
-                <li><a href="{% url admin_clusters_report %}">View Topic Areas</a></li>
+                <li><a href="{% url admin_list_tags %}">View existing Topics</a> (you can edit them from here)v</li>
                 <li><a href="{% url admin_create_tag %}?return_url={{ current_url|urlencode }}">Create a new Topic</a></li>
-                <li>Edit Topic</li>
             </ul>
         </li>
         <li>
@@ -89,7 +88,7 @@
             <strong>Topics:</strong>
             <ul>
                 <li><a href="{% url admin_list_tags %}">List Topics</a></li>
-                <li><a href="{% url admin_clusters_report %}">View Topic Areas</a></li>
+                <li><a href="{% url admin_clusters_report %}">List Topic Areas</a></li>
                 <li><a href="{% url admin_create_tag %}?return_url={{ current_url|urlencode }}">Create a new Topic</a></li>
                 <li><a href="{% url admin_create_cluster2 %}?return_url={{ current_url|urlencode }}">Create a new Topic Area</a></li>
                 <li><a href="{% url admin_search_tags %}">Search Topics</a></li>
