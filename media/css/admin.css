@@ -676,7 +676,6 @@ ul.nootabs-menus li a {
 
 #add-topic-topic-area {
     float: left;
-    width: 400px;
 }
 
 #add-topic-topic-area input {
@@ -685,9 +684,9 @@ ul.nootabs-menus li a {
 
 #add-tags-container,
 #add-topic-areas-container {
-    display: inline;
-    position: absolute;
+    display: inline-block;
     margin-left: 5px;
+    vertical-align: middle;
 }
 
 #add-tags-select,
