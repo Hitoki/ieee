@@ -299,7 +299,8 @@ function attachCopyTags(elem) {
         $.ajax({
             url: INDEX_URL + 'admin/ajax/copy_resource_tags',
             data: {
-                resource_id: resourceId
+                resource_id: resourceId,
+                csrfmiddlewaretoken: $('input:hidden[name="csrfmiddlewaretoken"]').val()
             },
             type: 'POST',
             success: function(data) {
