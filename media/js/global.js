@@ -806,6 +806,7 @@ TvLoader.prototype.onLoadData = function(data) {
     }
 }
 
+/*
 TvLoader.prototype.onScroll = function() {
     var minScrollBottom = 25;
     var scrollBottom = getScrollBottom(this.scrollElem);
@@ -813,6 +814,7 @@ TvLoader.prototype.onScroll = function() {
         this.loadContent();
     }
 }
+*/
 
 function attachTvResults(elem, ctype) {
     new TvLoader(elem, null, null, ctype);
