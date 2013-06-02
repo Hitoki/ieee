@@ -229,6 +229,7 @@ table.edit-create td {
 .full-grid th
 {
     border:1px solid #ddd;
+    padding: 5px;
 }
 
 .grid th,
