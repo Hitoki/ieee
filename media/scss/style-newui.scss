@@ -974,6 +974,7 @@ table.vert-center td {
 
 #tags #loading .spinner {
     left: 50% !important;
+    z-index: 9998 !important;
 }
   
 .empty-loading {
