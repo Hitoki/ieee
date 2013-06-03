@@ -505,7 +505,8 @@ margin-top: 0;
 }
 
 #xplore-loading,
-#job-loading {
+#job-loading,
+#tv-loading {
     display: inline-block;
     width: 100%;
     position: relative;
@@ -566,6 +567,8 @@ margin-top: 0;
     img {
         margin: 0 15px 5px 0;
         vertical-align: middle;
+        width: 105px;
+        height: 60px;
     }
     a {
         display: inline-block;

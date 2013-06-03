@@ -9,7 +9,8 @@ line-height: 1.5;
 /* Tag Page Styling */
 #tag_frozen_header {
   position: relative;
-  margin: 0 -15px;
+  margin: 0 -25px;
+  padding: 0 25px;
 }
 
 #header {
@@ -23,7 +24,11 @@ font-size: 11pt;
 .tag_header_inner {
 display: block;
 clear: both;
-padding: 35px 15px 0;
+padding: 35px 0 0;
+}
+
+.header-btns .btn.admin {
+    margin-right: 0;
 }
 
 .tag_header_inner  h1 {
@@ -104,7 +109,6 @@ color: #006699;
 height: 29px;
 width: 205px;
 padding: 3px 8px;
-margin-right: 25px;
 vertical-align: top;
 display: inline-block;
 float: right;

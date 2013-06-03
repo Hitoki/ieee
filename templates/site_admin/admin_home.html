@@ -14,12 +14,15 @@
     
     <ul class="section-list">
         <li>
-            Key Pages:
+            Key Actions:
             <ul>
                 <li><a href="{% url admin_clusters_report %}">View existing Topic Areas</a> (you can edit them from there)</li>
                 <li><a href="{% url admin_create_cluster2 %}?return_url={{ current_url|urlencode }}">Create a new Topic Area</a></li>
                 <li><a href="{% url admin_list_tags %}">View existing Topics</a> (you can edit them from there)</li>
                 <li><a href="{% url admin_create_tag %}?return_url={{ current_url|urlencode }}">Create a new Topic</a></li>
+                <li><a href="{% url admin_societies %}">View existing Organizations/Initiatives</a> (you can edit them from there)
+                <li>Note: Contact Development Team to create new Organization/Initiative</li>
+
             </ul>
         </li>
         <li>

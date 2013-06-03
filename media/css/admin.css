@@ -50,6 +50,10 @@ strong {
     font-weight:bold;
 }
 
+input {
+    padding: 3px;
+}
+
 /* */
 
 #header a.logout, #header a.changePassword {
@@ -80,14 +84,18 @@ strong {
 
 /* Navigation */
 
+.header-btns .btn.admin {
+    margin-right: 0;
+}
+
 ul.nav {
     background:#555;
     list-style:none;
     /* NOTE: This allows the UL to contain the floating LI's, IE7 & Fx3 */
     overflow:auto;
     margin: 0 auto;
-    width: 83%;
-    padding: 0 1%;
+    width: 80%;
+    padding: 0 25px;
 }
 
 #inner-container .center-pad {
@@ -221,7 +229,7 @@ table.edit-create td {
 .full-grid th
 {
     border:1px solid #ddd;
-    padding:10px;
+    padding: 5px;
 }
 
 .grid th,
@@ -320,15 +328,8 @@ table.tags tr.tag_cluster {
 
 /* */
 
-#society-resource-tabs {
-    /* NOTE: This causes strange spacing in IE7 */
-    margin:.4em;
-}
-
 #society-resource-tabs .nootabs-selected-tab {
     overflow: visible;
-    -moz-border-radius-topright:5px;
-    -webkit-border-top-right-radius: 5px;
 }
 
 #help-tab p {
@@ -676,7 +677,6 @@ ul.nootabs-menus li a {
 
 #add-topic-topic-area {
     float: left;
-    width: 400px;
 }
 
 #add-topic-topic-area input {
@@ -685,9 +685,9 @@ ul.nootabs-menus li a {
 
 #add-tags-container,
 #add-topic-areas-container {
-    display: inline;
-    position: absolute;
+    display: inline-block;
     margin-left: 5px;
+    vertical-align: middle;
 }
 
 #add-tags-select,
@@ -703,14 +703,14 @@ ul.nootabs-menus li a {
 }
 
 .admin-user-links {
-    width: 85%;
+    width: 80%;
+    padding: 0 25px;
     margin: 0 auto;
     text-align: right;
     background-color: #FFFFFF;
 }
 
 #admin_header #left {
-    margin-right: 15px;
     padding-bottom: 5px;
     display: inline-block;
     text-align: center;
