@@ -763,3 +763,23 @@ ul.nootabs-menus li a {
     margin-top: 3px;
 }
 
+.homeSection {
+    margin-bottom: 20px;
+}
+
+.homeSection ul {
+    margin-left: 5px;
+}
+
+.homeSection.last {
+    margin-bottom: 0;
+}
+
+.sectionHeader {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.headerNote {
+    font-weight: normal;
+}
