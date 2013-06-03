@@ -58,23 +58,6 @@ form.items-per-page {
     padding-top: 35px;
 }
 
-#left-column ul#sectors li,
-#left-column ul#societies li {
-    width: auto !important;
-}
-
-#right-column {
-	margin-left:190px;
-}
-
-#alternate-page #right-column {
-    padding-left:0;
-}
-
-#alternate-page #tag-galaxy {
-    padding: 7px 5px 0 0 !important;
-}                   
-
 #education-tab div.print-resource,
 #xplore-tab div.print-resource {
     margin-top: 0 !important;
@@ -112,10 +95,6 @@ p#xplore-totals {
    margin-left: -87px;
 }
 
-#sortContainer_outter {
-   margin-top: -21px;
-}
-
 #textui-tags-search {
    margin-left: 0;
 }
@@ -126,10 +105,6 @@ p#xplore-totals {
 
 #hide-help-box div {
    float: left;
-}
-
-#tag-galaxy #tags {
-   margin-top: -5px;
 }
 
 #alternate-page #tag-galaxy div.tag {
@@ -156,10 +131,6 @@ p#xplore-totals {
 
 #tag-and-cluster-counts {
    margin-top: 10px;
-}
-
-#textui-tags-sort .feature_label {
-    display: none !important;
 }
 
 .help-col-left {
@@ -208,6 +179,12 @@ p#xplore-totals {
   display: none !important;
 }
 
-#alertWrapper #alertContainer {
-  float: left;
+.search-container span.feature_label,
+#textui-tags-sort span.feature_label,
+#textui-society-list span.feature_label {
+    float: left;
+}
+
+div.search-container {
+  width: 300px;
 }
