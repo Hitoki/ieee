@@ -1067,7 +1067,6 @@ var Tags = {
                     log('  calling Tags.onSelectTag()');
                     Tags.onSelectTag(tabName);
                 }
-                $('#tag-name').effect("highlight", {}, 2000);
                 if (tour != undefined) {
                     $('.resources-lightbox-content').append('<ol id="modal-tour" style="display:none;"><li>hi</li></ol>');
                 }                

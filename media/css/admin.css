@@ -418,6 +418,13 @@ ul.checkbox-select-multiple-columns {
     width: 218px;
 }
 
+ul.checkbox-select-multiple-columns label {
+    text-indent: -18px;
+    clear: both;
+    display: inline-block;
+    margin-left: 18px;
+}
+
 ul.checkbox-select-multiple-columns:last-child {
     padding-right: 0;
 }
