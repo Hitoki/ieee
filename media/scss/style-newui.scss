@@ -105,6 +105,7 @@ table.main {
     .btn.help {
         background: $green;
         border: 1px solid $green;
+        margin-left: 5px;
         &:hover {
             color: $green;
             background: none repeat scroll 0 0 $white;
@@ -120,7 +121,6 @@ table.main {
     .btn.admin {
         background: $red;
         border: 1px solid $red;
-        margin: 0 5px 0 0;
         &:hover {
             color: #ff3f3f;
             background: none repeat scroll 0 0 $white;
@@ -2448,7 +2448,6 @@ td.machine-generated-column {
 #countLink {
     float: right;
     font-weight: bold;
-    margin-right: 30px;
     text-decoration: underline;   
 }
   
