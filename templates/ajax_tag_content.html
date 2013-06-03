@@ -117,33 +117,34 @@ function isValidEmailAddress(emailAddress) {
     </span>
 </div>
 {% endcomment %}
-<span class="dialogTitle">
+<div class="dialogTitle">
     <span id="tag-name">{{ tag.name }}</span>
-    <div id="resources-lightbox-count">
-        <span id="num-related-items-loading"></span><span id="num-related-items" class="{ number: {{ tag.related_tags.count }} }"></span>
-        <br/>
-        <span class="count-label">Related Resources</span>
+</div>
+
+<div id="resources-lightbox-count">
+    <span id="num-related-items-loading"></span><span id="num-related-items" class="{ number: {{ tag.related_tags.count }} }"></span>
+    <br/>
+    <span class="count-label">Related Resources</span>
+</div>
+
+<div id="alertWrapper">
+    <div id="alertContainer">
+        <div id="alertForm">
+            <span class="notificationLabel">Alert me to updates to this topic:</span>
+            <input type="text" id="notificationRequestEmail" value="Email address" class="defaultValue"></input>
+            <input type="button" value="Alert Me" id="notificationRequestButton"/>
+        </div>
+        <div id="alertSuccess" style="display:none">
+            You will be alerted to updates to this topic.
+        </div>
     </div>
-</span>
+    <span id="alertError" style="display:none">Please enter a valid email</span>
+</div>
 
 <div class="resources-pad">
     <div class="alt-box">
         <div id="content" class="alt-box-pad">
 {# if is_ajax #}{% endif %}
-
-            <div id="alertWrapper">
-                <div id="alertContainer">
-                    <div id="alertForm">
-                        <span class="notificationLabel">Alert me to updates to this topic:</span>
-                        <input type="text" id="notificationRequestEmail" value="Email address" class="defaultValue"></input>
-                        <input type="button" value="Alert Me" id="notificationRequestButton"/>
-                    </div>
-                    <div id="alertSuccess" style="display:none">
-                        You will be alerted to updates to this topic.
-                    </div>
-                </div>
-                <span id="alertError" style="display:none">Please enter a valid email</span>
-            </div>
             <div id="resource-tabs" class="nootabs tag-resources-tabs { useCookies:false, defaultTab:1, useHash:false }">
                 
 <!-- *** Content Tabs *** -->

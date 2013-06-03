@@ -136,16 +136,18 @@ input.text {
     font-size: $xlargeFont;
     margin: 15px 0 0 25px;
     color: $white;
+    clear: both;
+    width: 100%;
 }
 
 #resources-lightbox-count {
-    display: block;
-    width: 110px;
+    width: 128px;
     text-align: center;
     margin-top: 15px;
     font-size: 14pt;
     color: #FFFFFF;
-    margin-left: 5px;
+    margin-left: 23px;
+    float: left;
     #num-related-items-loading {
         display: inline-block;
         height: 15px;
@@ -616,8 +618,9 @@ margin-top: 0;
 
 #alertWrapper {
    display: block;
-   clear: both;
-   margin: -45px 0 0 137px;
+   float: right;
+   margin-right: 26px;
+   margin-top: 15px;
    #alertContainer {
        background-color: #CFCFCF;
        width: 687px;
