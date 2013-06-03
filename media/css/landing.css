@@ -285,3 +285,7 @@ span.more-link {
   margin: 25px 0 0 25px;
   display: inline-block;
 }
+
+#inner-container .center-pad {
+  padding-bottom: 42px;
+}
