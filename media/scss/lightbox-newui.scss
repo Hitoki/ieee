@@ -624,6 +624,8 @@ margin-top: 0;
    #alertContainer {
        background-color: #CFCFCF;
        width: 687px;
+       height: 46px;
+       text-align: right;
        &.success {
            background-color: $green;
            padding: 15px 0;
@@ -653,10 +655,11 @@ margin-top: 0;
        #notificationRequestButton {
            border: 0 none;
            padding: 15px;
-           width: 152px;
+           width: 148px;
            margin-left: -5px;
            vertical-align: top;
            background-color: $green;
+           float: right;
            @include custom-border-radius (0, 0, 0, 0);
             &:hover {
                 background-color: $orange;
