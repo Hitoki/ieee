@@ -117,34 +117,6 @@ function isValidEmailAddress(emailAddress) {
     </span>
 </div>
 {% endcomment %}
-{% comment %}
-<div class="dialogAddThis">
-    <script type="text/javascript">
-        var addthis_config = {
-            pubid: "ra-4e02511c660b81ce",
-            data_ga_property: "UA-9482893-{{ GA_SITE_NUM }}",
-            data_track_clickback: true
-        };
-        var addthis_share = {
-            url: "{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}",
-            title: "{{ tag.name }}",
-            description: "Read more about {{ tag.name }} on IEEE TechNav."
-        };
-    </script>
-    <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script> 
-    <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
-        <a class="addthis_button_email" rel="nofollow"></a>
-        <a class="addthis_button_twitter" rel="nofollow"></a>
-        <a class="addthis_button_facebook" rel="nofollow"></a>
-        <a class="addthis_button_linkedin" rel="nofollow"></a>
-    </div>
-    <script type="text/javascript">
-        $(function(){
-            //addthis.toolbox('.addthis_toolbox', addthis_config, addthis_share);
-        });
-    </script>
-</div>
-{% endcomment %}
 <span class="dialogTitle">
     <span id="tag-name">{{ tag.name }}</span>
     <div id="resources-lightbox-count">
@@ -320,7 +292,7 @@ function isValidEmailAddress(emailAddress) {
             </div>
             <div style="clear:both"></div>
             <div id="resource-footer">
-                <div class="share-links addthis_toolbox">
+                <div class="share-links">
                     Share:
                     <a rel="nofollow" href="https://www.facebook.com/dialog/feed?app_id=528098277254889&name={{ tag.name }}&description=Check%20out%20{{ tag.name }}%20at%20IEEE%20TechNav&link={{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}&redirect_uri={{ host_info }}&picture=http://www.ieee.org/ucm/groups/public/@ieee/@web/@org/documents/images/42070894.jpg" target="_blank" aria-hidden="true" class="icon-facebook" onClick="_gaq.push(['_trackEvent', 'Social', 'Facebook', '{{ tag.name }}']);"></a>
                     <a rel="nofollow" href="https://twitter.com/intent/tweet?source=webclient&text=Check%20out%20{{ tag.name }}%20at%20IEEE%20TechNav%20{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}" target="_blank" aria-hidden="true" class="icon-twitter" onClick="_gaq.push(['_trackEvent', 'Social', 'Twitter', '{{ tag.name }}']);"></a>
