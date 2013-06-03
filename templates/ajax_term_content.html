@@ -38,7 +38,9 @@
                         
                         <!-- Related Topics -->
                         <div id="related-tab" data-printUrl='{% url print_resource tag.id "related_tags" %}'>
-                            {% include 'ajax_related_tab.inc.html' %}
+                            <div class="group">
+                                {% include 'ajax_related_tab.inc.html' %}
+                            </div>
                         </div>
                         
                         <!-- Xplore Results -->
