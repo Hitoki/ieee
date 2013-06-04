@@ -151,3 +151,11 @@ div.search-container {
 #resources-lightbox-count {
   width: 140px;
 }
+
+.print-resource {
+  margin-top: 0;
+}
+
+#resource-footer {
+  margin-top: 40px;
+}
