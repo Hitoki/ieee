@@ -34,27 +34,24 @@ Include file used by both print_resource.html and tag_landing.html
     {% if conferences %}
     <div id="tag-conferences">
         <h3><a name="conferences"></a><span class="index"></span> Conferences related to {{ tag.name }}</h3><a href="#tag_contents" class="topLink" rel="nofollow">Back to Top</a>
-        <ul>
     {% if conferences|length %}
         {% for conference in conferences|slice:":1" %}
             {# ungrouped conference displayed on the print resource page #}
-            <li>
-                <p class="title">
-                {% if create_links %}
-                    <a href="{{ conference.url }}" target="_blank" rel="nofollow">{{ conference.name }}</a>
-                {% else %}
-                    {{ conference.name }}
-                {% endif %}
-                </p>
-                <p class="description">
-                    {{ conference.description|truncatewords:60 }}
-                </p>
-            </li>
+            <p class="title">
+            {% if create_links %}
+                <a href="{{ conference.url }}" target="_blank" rel="nofollow">{{ conference.name }}</a>
+            {% else %}
+                {{ conference.name }}
+            {% endif %}
+            </p>
+            <p class="description">
+                {{ conference.description|truncatewords:60 }}
+            </p>
+            <br/>
         {% endfor %}
     {% else %}
         <p class="no-resources">No conferences are currently tagged "{{ tag.name }}"</p>
     {% endif %}
-        </ul>
     </div>
     <hr/>
     {% endif %}
@@ -62,25 +59,22 @@ Include file used by both print_resource.html and tag_landing.html
     {% if xplore_results %}
     <div id="tag-xplore">
         <h3><a name="xplore"></a><span class="index"></span> Xplore Articles mentioning {{ tag.name }}</h3><a href="#tag_contents" class="topLink" rel="nofollow">Back to Top</a>
-        <ul class="tag_list">
-            {% for xplore_result in xplore_results|slice:":5" %}
-                <li>
-                    <p class="title">
-                    {% if create_links %}
-                        <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow">{{ xplore_result.name }}</a>
-                    {% else %}
-                        {{ xplore_result.name }}
-                    {% endif %}
-                    </p>
-                    <p class="pub-info">
-                        {{ xplore_result.authors }} {{ xplore_result.pub_title }},  {{ xplore_result.pub_year }}
-                    </p>
-                    <p class="description">
-                        {{ xplore_result.description|truncatewords:60 }}
-                    </p>
-                </li>
-            {% endfor %}
-        </ul>
+        {% for xplore_result in xplore_results|slice:":5" %}
+            <p class="title">
+            {% if create_links %}
+                <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow">{{ xplore_result.name }}</a>
+            {% else %}
+                {{ xplore_result.name }}
+            {% endif %}
+            </p>
+            <p class="pub-info">
+                {{ xplore_result.authors }} {{ xplore_result.pub_title }},  {{ xplore_result.pub_year }}
+            </p>
+            <p class="description">
+                {{ xplore_result.description|truncatewords:60 }}
+            </p>
+            <br/>
+        {% endfor %}
     </div>
     <hr/>
     {% endif %}
@@ -109,25 +103,22 @@ Include file used by both print_resource.html and tag_landing.html
     {% if xplore_edu_results %}
     <div id="tag-xplore_edu">
         <h3><a name="xplore_edu"></a><span class="index"></span> Educational Resources on {{ tag.name }}</h3><a href="#tag_contents" class="topLink" rel="nofollow">Back to Top</a>
-        <ul class="tag_list">
-            {% for xplore_result in xplore_edu_results|slice:":5" %}
-                <li>
-                    <p class="title">
-                    {% if create_links %}
-                        <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow">{{ xplore_result.name }}</a>
-                    {% else %}
-                        {{ xplore_result.name }}
-                    {% endif %}
-                    </p>
-                    <p class="pub-info">
-                        {{ xplore_result.authors }} {{ xplore_result.pub_title }},  {{ xplore_result.pub_year }}
-                    </p>
-                    <p class="description">
-                        {{ xplore_result.description|truncatewords:60 }}
-                    </p>
-                </li>
-            {% endfor %}
-        </ul>
+        {% for xplore_result in xplore_edu_results|slice:":5" %}
+            <p class="title">
+            {% if create_links %}
+                <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow">{{ xplore_result.name }}</a>
+            {% else %}
+                {{ xplore_result.name }}
+            {% endif %}
+            </p>
+            <p class="pub-info">
+                {{ xplore_result.authors }} {{ xplore_result.pub_title }},  {{ xplore_result.pub_year }}
+            </p>
+            <p class="description">
+                {{ xplore_result.description|truncatewords:60 }}
+            </p>
+            <br/>
+        {% endfor %}
     </div>
     <hr/>
     {% endif %}
@@ -135,22 +126,19 @@ Include file used by both print_resource.html and tag_landing.html
     {% if standards %}
     <div id="tag-standards">
         <h3><a name="standards"></a><span class="index"></span> Standards related to {{ tag.name }}</h3><a href="#tag_contents" class="topLink" rel="nofollow">Back to Top</a>
-        <ul class="tag_list">
-            {% for standard in standards.all|slice:":5" %}
-                <li>
-                    <p class="title">
-                    {% if create_links %}
-                        <a href="{{ standard.url }}" target="_blank" rel="nofollow">{{ standard.name }}</a>
-                    {% else %}
-                        {{ standard.name }}
-                    {% endif %}
-                    </p>
-                    <p class="description">
-                        {{ standard.description|truncatewords:60 }}
-                    </p>
-                </li>
-            {% endfor %}
-        </ul>
+        {% for standard in standards.all|slice:":5" %}
+            <p class="title">
+            {% if create_links %}
+                <a href="{{ standard.url }}" target="_blank" rel="nofollow">{{ standard.name }}</a>
+            {% else %}
+                {{ standard.name }}
+            {% endif %}
+            </p>
+            <p class="description">
+                {{ standard.description|truncatewords:60 }}
+            </p>
+            <br/>
+        {% endfor %}
     </div>
     <hr/>
     {% endif %}
@@ -158,22 +146,19 @@ Include file used by both print_resource.html and tag_landing.html
     {% if periodicals %}
     <div id="tag-periodicals">
         <h3><a name="periodicals"></a><span class="index"></span> Periodical articles related to {{ tag.name }}</h3><a href="#tag_contents" class="topLink" rel="nofollow">Back to Top</a>
-        <ul class="tag_list">
-            {% for periodical in periodicals.all|slice:":5" %}
-                <li>
-                    <p class="title">
-                    {% if create_links %}
-                        <a href="{{ periodical.url }}" target="_blank" rel="nofollow">{{ periodical.name }}</a>
-                    {% else %}
-                        {{ periodical.name }}
-                    {% endif %}
-                    </p>
-                    <p class="description">
-                        {{ periodical.description|truncatewords:60 }}
-                    </p>
-                </li>
-            {% endfor %}
-        </ul>
+        {% for periodical in periodicals.all|slice:":5" %}
+            <p class="title">
+            {% if create_links %}
+                <a href="{{ periodical.url }}" target="_blank" rel="nofollow">{{ periodical.name }}</a>
+            {% else %}
+                {{ periodical.name }}
+            {% endif %}
+            </p>
+            <p class="description">
+                {{ periodical.description|truncatewords:60 }}
+            </p>
+            <br/>
+        {% endfor %}
     </div>
     <hr/>
     {% endif %}
@@ -181,17 +166,14 @@ Include file used by both print_resource.html and tag_landing.html
     {% if societies %}
     <div id="tag-societies">
         <h3><a name="societies"></a><span class="index"></span> IEEE Organizations related to {{ tag.name }}</h3><a href="#tag_contents" class="topLink" rel="nofollow">Back to Top</a>
-        <ul>
-            {% for society in societies|slice:":5" %}
-                <li>
-                    {% if create_links %}
-                        <a href="{{ society.url }}" rel="nofollow">{{ society.name }}</a>
-                    {% else %}
-                        {{ society.name }}
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
+        {% for society in societies|slice:":5" %}
+            {% if create_links %}
+                <a href="{{ society.url }}" rel="nofollow">{{ society.name }}</a>
+            {% else %}
+                {{ society.name }}
+            {% endif %}
+            <br/>
+        {% endfor %}
     </div>
     <hr/>
     {% endif %}
@@ -199,17 +181,14 @@ Include file used by both print_resource.html and tag_landing.html
     {% if related_tags %}
     <div id="tag-related-tags">
         <h3><a name="concepts"></a><span class="index"></span> Topics related to {{ tag.name }}</h3><a href="#tag_contents" class="topLink" rel="nofollow">Back to Top</a>
-        <ul>
-            {% for related_tag in related_tags|slice:":5" %}
-                <li>
-                    {% if create_links %}
-                        <a href="/tag/{{ related_tag.id }}/{{ related_tag.name|slugify }}">{{ related_tag.name }}</a>
-                    {% else %}
-                        {{ related_tag.name }}
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
+        {% for related_tag in related_tags|slice:":5" %}
+            {% if create_links %}
+                <a href="/tag/{{ related_tag.id }}/{{ related_tag.name|slugify }}">{{ related_tag.name }}</a>
+            {% else %}
+                {{ related_tag.name }}
+            {% endif %}
+            <br/>
+        {% endfor %}
     </div>
     <hr/>
     {% endif %}
@@ -217,17 +196,14 @@ Include file used by both print_resource.html and tag_landing.html
     {% if sectors %}
     <div id="tag-sectors">
         <h3><a href="" name="sectors"></a><span class="index"></span> Industry topics related to {{ tag.name }}</h3><a href="#tag_contents" class="topLink" rel="nofollow">Back to Top</a>
-        <ul>
-            {% for parent in sectors|slice:":5" %}
-                <li>
-                    {% if create_links %}
-                        <a href="/tag/{{ parent.id }}/{{ parent.name|slugify }}">{{ parent.name }}</a>
-                    {% else %}
-                        {{ parent.name }}
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
+        {% for parent in sectors|slice:":5" %}
+            {% if create_links %}
+                <a href="/tag/{{ parent.id }}/{{ parent.name|slugify }}">{{ parent.name }}</a>
+            {% else %}
+                {{ parent.name }}
+            {% endif %}
+            <br/>
+        {% endfor %}
     </div>
     <hr/>
     {% endif %}
