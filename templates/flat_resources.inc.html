@@ -116,8 +116,8 @@ Include file used by both print_resource.html and tag_landing.html
             {% if conferences|length %}
                 <div id="notaccordion">
                     {% for resource in conferences|slice:":5" %}{# grouped conference displayed on the tag landing page #}
-                        <p class="title">{{resource.name}}</p>
-                        {% if resource.url and resource.url_status != "bad" %}<a href="{{ resource.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ resource.url }}'); return false;">Visit website</a>{% endif %}
+                        <p class="title">{% if resource.url and resource.url_status != "bad" %}<a href="{{ resource.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ resource.url }}'); return false;">{{resource.name}}</a>{% else %}{{resource.name}}{% endif %}</p>
+                        
                         <p class='description'>{{resource.description}}</p>
                         <div style="display:none">
                             {% if resource.is_current_conference and resource.other_conferences|length %}
