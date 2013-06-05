@@ -41,7 +41,7 @@ Include file used by both print_resource.html and tag_landing.html
             <li>
                 <p class="title">
                 {% if create_links %}
-                    <a href="{{ conference.url }}" target="_blank" rel="nofollow">{{ conference.name }}</a>
+                    <a href="{{ resource.url }}" target="_blank" rel="nofollow">{{ conference.name }}</a>
                 {% else %}
                     {{ conference.name }}
                 {% endif %}
