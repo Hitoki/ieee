@@ -1,4 +1,3 @@
-                    <div class="group">
                         {% for related_tag in tag.related_tags.all %}
                         <p class="{% cycle 'item_odd' 'item_even' %}">
                             {% ifequal ui "textui" %}
@@ -10,4 +9,3 @@
                             {% endifequal %}
                         </p>
                         {% endfor %}
-                    </div>

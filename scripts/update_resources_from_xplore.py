@@ -15,6 +15,7 @@ import datetime
 import re
 import getopt
 import daemonize
+import xml.dom.minidom
 from sets import Set
 
 def log(msg):
@@ -237,8 +238,11 @@ def main(*args):
                         temp, encoding = file.headers['content-type'].split('charset=')
                     except ValueError:
                         encoding = 'utf-8'
-                    ucontents = unicode(file.read(), encoding)
-                    dom1 = parseString(ucontents.encode('utf-8'))
+                    ucontents = file.read()
+                    file.close()
+                    ucontents = ucontents.decode(encoding, 'replace').encode('utf-8')
+
+                    dom1 = xml.dom.minidom.parseString(ucontents)
                     
                     xhits = dom1.documentElement.getElementsByTagName('document')
                     distinct_issns = {}

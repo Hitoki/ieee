@@ -845,7 +845,7 @@ def ajax_jobs_results(request):
     jobs = jobsJson.get('Jobs')
     jobsHtml = ""
     for job in jobs:
-        jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured"><b>%(JobTitle)s</b></a> %(Company)s<br>\n' % job
+        jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured"><b>%(JobTitle)s</b> <span class="popup newWinIcon"></span></a> %(Company)s<br>\n' % job
     
     # DEBUG:
     #xplore_error = 'BAD ERROR.'
@@ -900,7 +900,7 @@ def ajax_tv_results(request):
         thumb = result.find('images').find('thumbnail').text
         title = result.find('title').text
         url = result.find('web-page').text
-        tvHtml = tvHtml + '<img src="%s" /><a href="%s" target="_blank" class="featured">%s <span class="popup newWinIcon"></span></a><br>\n' % (thumb, url, title)
+        tvHtml = tvHtml + '<img src="%s" height="60" width="105"/><a href="%s" target="_blank">%s <span class="popup newWinIcon"></span></a><br>\n' % (thumb, url, title)
     
     # DEBUG:
     #xplore_error = 'BAD ERROR.'

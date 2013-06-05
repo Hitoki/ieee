@@ -107,6 +107,17 @@ ul.search_results {
 		.top_bar .left a {
 			margin-right: 5px;
 		}
+		.top_bar .icon-facebook,
+		.top_bar .icon-twitter,
+		.top_bar .icon-mail {
+			font-size: 22px;
+			color: #006699;
+		}
+		.top_bar .icon-facebook:hover,
+		.top_bar .icon-twitter:hover,
+		.top_bar .icon-mail:hover {
+			color: #EE6919;
+		}
 	.top_bar .right {
 		width: 48%;
 		float: right;

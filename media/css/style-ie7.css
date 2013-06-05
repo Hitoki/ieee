@@ -2,12 +2,6 @@
     vertical-align: middle;
 }
 
-#lightbox .resources-lightbox-content .resources-pad {
-    padding:.5em;
-    height: 100%;
-    width: 98.5%;
-}
-
 #lightbox .resources-lightbox-content h1 {
     margin-left: 31px !important;
 }
@@ -15,11 +9,11 @@
 #lightbox .resources-lightbox-content .resources-pad .alt-box,
 #lightbox .resources-lightbox-content .resources-pad .alt-box #content,
 #lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs {
-    height: 90%;
+    height: 85%;
 }
 
 #lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs .nootabs-selected-tab {
-    height: 356px !important;
+    height: 365px !important;
 }
 
 .nootabs-selected-tab div.group {
@@ -58,50 +52,6 @@ form.items-per-page {
     padding-top: 35px;
 }
 
-#left-column ul#sectors li,
-#left-column ul#societies li {
-    width: auto !important;
-}
-
-#right-column {
-	margin-left:190px;
-}
-
-#alternate-page #right-column {
-    padding-left:0;
-}
-
-#alternate-page #tag-galaxy {
-    padding: 7px 5px 0 0 !important;
-}                   
-
-#education-tab div.print-resource,
-#xplore-tab div.print-resource {
-    margin-top: 0 !important;
-    width: 777px !important;
-}
-
-#xplore-tab div.group {
-    margin-top: 0;
-}
-
-#alternate-page #tag-galaxy div.tag {
-    padding: .7em;
-}
-
-#alternate-page #tag-galaxy div.node a {
-   padding: .2em .4em;
-}
-
-#alternate-page #tag-galaxy div.tag {
-    float:left;
-    margin:1em .1em;
-}
-
-p#xplore-totals {
-    margin-top: 0px;
-}
-
 #header #tagline {
    margin-top: 50px;
    margin-right: -25px;
@@ -110,10 +60,6 @@ p#xplore-totals {
 #left-column-container {
    margin-top: 20px;
    margin-left: -87px;
-}
-
-#sortContainer_outter {
-   margin-top: -21px;
 }
 
 #textui-tags-search {
@@ -126,14 +72,6 @@ p#xplore-totals {
 
 #hide-help-box div {
    float: left;
-}
-
-#tag-galaxy #tags {
-   margin-top: -5px;
-}
-
-#alternate-page #tag-galaxy div.tag {
-    margin: 0.5em 0.25em;
 }
 
 .nootabs-selected-tab div.group {
@@ -156,10 +94,6 @@ p#xplore-totals {
 
 #tag-and-cluster-counts {
    margin-top: 10px;
-}
-
-#textui-tags-sort .feature_label {
-    display: none !important;
 }
 
 .help-col-left {
@@ -187,19 +121,6 @@ p#xplore-totals {
    margin-top: 0 !important;
 }
 
-#resource-tabs ul.nootabs-menus li a,
-#resource-tabs ul.nootabs-menus li {
-    width: 120px;
-}
-
-.tag-resources-tabs ul.nootabs-menus {
-   width: 121px;
-}
-
-#resource-tabs ul.nootabs-menus li a span.right {
-    margin: -13px 5px 0 0;
-}
-
 #tag_page h1.title {
    display: inline-block;
 }
@@ -208,6 +129,33 @@ p#xplore-totals {
   display: none !important;
 }
 
-#alertWrapper #alertContainer {
-  float: left;
+.search-container span.feature_label,
+#textui-tags-sort span.feature_label,
+#textui-society-list span.feature_label {
+    float: left;
+}
+
+div.search-container {
+  width: 300px;
+}
+
+#alertWrapper {
+  overflow: hidden;
+  float: none;
+}
+
+#alertWrapper #alertContainer #notificationRequestButton {
+  float: none;
+}
+
+#resources-lightbox-count {
+  width: 140px;
+}
+
+.print-resource {
+  margin-top: 0;
+}
+
+#resource-footer {
+  margin-top: 40px;
 }

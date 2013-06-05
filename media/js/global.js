@@ -299,7 +299,8 @@ function attachCopyTags(elem) {
         $.ajax({
             url: INDEX_URL + 'admin/ajax/copy_resource_tags',
             data: {
-                resource_id: resourceId
+                resource_id: resourceId,
+                csrfmiddlewaretoken: $('input:hidden[name="csrfmiddlewaretoken"]').val()
             },
             type: 'POST',
             success: function(data) {
@@ -741,7 +742,7 @@ TvLoader.prototype.loadContent = function(force) {
         var tvLoader = this;
         this.ajaxToken = (new Date()).getTime() + '-' + Math.random();
         
-        this.loadingElem = $('<div id="job-loading" class="loading">Loading Tv...<div></div></div>').appendTo(this.scrollElem);
+        this.loadingElem = $('<div id="tv-loading" class="loading">Loading Tv...<div></div></div>').appendTo(this.scrollElem);
 
         $("#tv-loading div").spin({
             lines: 9, // The number of lines to draw

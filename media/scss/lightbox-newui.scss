@@ -136,21 +136,18 @@ input.text {
     font-size: $xlargeFont;
     margin: 15px 0 0 25px;
     color: $white;
-}
-  
-.dialogAddThis {
-   float: right;
-   margin: 15px 15px 0 0;
+    clear: both;
+    width: 100%;
 }
 
 #resources-lightbox-count {
-    display: block;
-    width: 110px;
+    width: 128px;
     text-align: center;
     margin-top: 15px;
     font-size: 14pt;
     color: #FFFFFF;
-    margin-left: 5px;
+    margin-left: 23px;
+    float: left;
     #num-related-items-loading {
         display: inline-block;
         height: 15px;
@@ -162,6 +159,7 @@ input.text {
     .count-label {
         font-size: 9pt;
         color: #9F9F9F;
+        white-space: nowrap;
     }
 }
 
@@ -505,7 +503,8 @@ margin-top: 0;
 }
 
 #xplore-loading,
-#job-loading {
+#job-loading,
+#tv-loading {
     display: inline-block;
     width: 100%;
     position: relative;
@@ -566,6 +565,8 @@ margin-top: 0;
     img {
         margin: 0 15px 5px 0;
         vertical-align: middle;
+        width: 105px;
+        height: 60px;
     }
     a {
         display: inline-block;
@@ -617,14 +618,17 @@ margin-top: 0;
 
 #alertWrapper {
    display: block;
-   clear: both;
-   margin: -45px 0 0 137px;
+   float: right;
+   margin-right: 26px;
+   margin-top: 15px;
    #alertContainer {
        background-color: #CFCFCF;
        width: 687px;
+       height: 46px;
+       text-align: right;
        &.success {
            background-color: $green;
-           padding: 15px 0;
+           text-align: center;
        }
        .notificationLabel {
             float: left;
@@ -651,10 +655,11 @@ margin-top: 0;
        #notificationRequestButton {
            border: 0 none;
            padding: 15px;
-           width: 152px;
+           width: 148px;
            margin-left: -5px;
            vertical-align: top;
            background-color: $green;
+           float: right;
            @include custom-border-radius (0, 0, 0, 0);
             &:hover {
                 background-color: $orange;
@@ -663,6 +668,7 @@ margin-top: 0;
        #alertSuccess {
            color: white;
            margin-left: 15px;
+           padding-top: 15px;
        }
    }
    #alertError {
