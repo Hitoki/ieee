@@ -845,7 +845,7 @@ def ajax_jobs_results(request):
     jobs = jobsJson.get('Jobs')
     jobsHtml = ""
     for job in jobs:
-        jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured"><b>%(JobTitle)s</b></a> %(Company)s<br>\n' % job
+        jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured"><b>%(JobTitle)s</b> <span class="popup newWinIcon"></span></a> %(Company)s<br>\n' % job
     
     # DEBUG:
     #xplore_error = 'BAD ERROR.'
