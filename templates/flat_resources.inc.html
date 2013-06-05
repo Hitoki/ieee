@@ -115,33 +115,31 @@ Include file used by both print_resource.html and tag_landing.html
         <h3><a name="conferences"></a>{% if toc %}<span class="index"></span>{% endif %} Conferences related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if conferences %}
             {% if conferences|length %}
-                <div id="notaccordion">
-                    {% for resource in conferences|slice:":5" %}{# grouped conference displayed on the tag landing page #}
-                        <p class="title">{% if resource.url and resource.url_status != "bad" %}<a href="{{ resource.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ resource.url }}'); return false;">{{resource.name}} <span class="popup newWinIcon"></span></a>{% else %}{{resource.name}}{% endif %}</p>
-                        
-                        <p class='description'>{{resource.description}}</p>
-                        <div style="display:none">
-                            {% if resource.is_current_conference and resource.other_conferences|length %}
-                            <ul class="conference-series">
-                                {% for other_conference in resource.other_conferences %}
-                                <li>
-                                    {% if other_conference.url and other_conference.url_status != "bad" %}<a href="{{ other_conference.url }}" target="_blank" rel="nofollow">{% endif %}
-                                        <span>{{other_conference.name}}</span> <span class="popup newWinIcon"></span>
-                                    {% if other_conference.url and other_conference.url_status != "bad" %}</a>{% endif %}
-                                    <p class="{% cycle 'desc_odd' 'desc_even' %} ">{{other_conference.description}}</p>
-                                </li>
-                                {% endfor %}
-                            </ul>
-                            {% endif %}
-                        </div>
-                        <br/>
-                    {% endfor %}
-                    {% if conferences|length > 5 %}
-                        <span class="more-link">
-                        <a href="/textui/?autoload={{tag.id}}&tab=conference-tab" rel="nofollow">More Conferences</a>
-                        </span>
-                    {% endif %}
-                </div>
+                {% for resource in conferences|slice:":5" %}{# grouped conference displayed on the tag landing page #}
+                    <p class="title">{% if resource.url and resource.url_status != "bad" %}<a href="{{ resource.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ resource.url }}'); return false;">{{resource.name}} <span class="popup newWinIcon"></span></a>{% else %}{{resource.name}}{% endif %}</p>
+                    
+                    <p class='description'>{{resource.description}}</p>
+                    <div style="display:none">
+                        {% if resource.is_current_conference and resource.other_conferences|length %}
+                        <ul class="conference-series">
+                            {% for other_conference in resource.other_conferences %}
+                            <li>
+                                {% if other_conference.url and other_conference.url_status != "bad" %}<a href="{{ other_conference.url }}" target="_blank" rel="nofollow">{% endif %}
+                                    <span>{{other_conference.name}}</span> <span class="popup newWinIcon"></span>
+                                {% if other_conference.url and other_conference.url_status != "bad" %}</a>{% endif %}
+                                <p class="{% cycle 'desc_odd' 'desc_even' %} ">{{other_conference.description}}</p>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                    <br/>
+                {% endfor %}
+                {% if conferences|length > 5 %}
+                    <span class="more-link">
+                    <a href="/textui/?autoload={{tag.id}}&tab=conference-tab" rel="nofollow">More Conferences</a>
+                    </span>
+                {% endif %}
             {% endif %}
             
             {% comment %}
@@ -172,30 +170,27 @@ Include file used by both print_resource.html and tag_landing.html
     <div id="tag-xplore" class="tag-section">
         <h3><a name="xplore"></a>{% if toc %}<span class="index"></span>{% endif %} Xplore Articles related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if xplore_results %}
-        <ul class="tag_list">
             {% for xplore_result in xplore_results|slice:":5" %}
-                <li>
-                    <p class="title">
-                    {% if create_links %}
-                        <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ xplore_result.url }}'); return false;">{{ xplore_result.name }} <span class="popup newWinIcon"></span></a>
-                    {% else %}
-                        {{ xplore_result.name }}
-                    {% endif %}
-                    </p>
-                    <p class="pub-info">
-                        {{ xplore_result.authors }} {{ xplore_result.pub_title }},  {{ xplore_result.pub_year }}
-                    </p>
-                    <p class="description">
-                        {{ xplore_result.description|truncatewords:60 }}
-                    </p>
-                </li>
+                <p class="title">
+                {% if create_links %}
+                    <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ xplore_result.url }}'); return false;">{{ xplore_result.name }} <span class="popup newWinIcon"></span></a>
+                {% else %}
+                    {{ xplore_result.name }}
+                {% endif %}
+                </p>
+                <p class="pub-info">
+                    {{ xplore_result.authors }} {{ xplore_result.pub_title }},  {{ xplore_result.pub_year }}
+                </p>
+                <p class="description">
+                    {{ xplore_result.description|truncatewords:60 }}
+                </p>
+                <br/>
             {% endfor %}
-        </ul>
-                    {% if xplore_results|length > 5 %}
-                        <span class="more-link">
-                        <a href="/textui/?autoload={{tag.id}}&tab=xplore-tab" rel="nofollow">More Xplore Articles</a>
-                        </span>
-                    {% endif %}
+            {% if xplore_results|length > 5 %}
+                <span class="more-link">
+                <a href="/textui/?autoload={{tag.id}}&tab=xplore-tab" rel="nofollow">More Xplore Articles</a>
+                </span>
+            {% endif %}
         {% else %}
         <p class="no-resources">No Xplore Articles are currently tagged "{{ tag.name }}"</p>
         {% endif %}
@@ -248,30 +243,27 @@ Include file used by both print_resource.html and tag_landing.html
     <div id="tag-xplore_edu" class="tag-section">
         <h3><a name="xplore_edu"></a>{% if toc %}<span class="index"></span>{% endif %} Educational Resources on {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if xplore_edu_results %}
-        <ul class="tag_list">
             {% for xplore_result in xplore_edu_results|slice:":5" %}
-                <li>
-                    <p class="title">
-                    {% if create_links %}
-                        <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ xplore_result.url }}'); return false;">{{ xplore_result.name }} <span class="popup newWinIcon"></span></a>
-                    {% else %}
-                        {{ xplore_result.name }}
-                    {% endif %}
-                    </p>
-                    <p class="pub-info">
-                        {{ xplore_result.authors }} {{ xplore_result.pub_title }},  {{ xplore_result.pub_year }}
-                    </p>
-                    <p class="description">
-                        {{ xplore_result.description|truncatewords:60 }}
-                    </p>
-                </li>
+                <p class="title">
+                {% if create_links %}
+                    <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ xplore_result.url }}'); return false;">{{ xplore_result.name }} <span class="popup newWinIcon"></span></a>
+                {% else %}
+                    {{ xplore_result.name }}
+                {% endif %}
+                </p>
+                <p class="pub-info">
+                    {{ xplore_result.authors }} {{ xplore_result.pub_title }},  {{ xplore_result.pub_year }}
+                </p>
+                <p class="description">
+                    {{ xplore_result.description|truncatewords:60 }}
+                </p>
+                <br/>
             {% endfor %}
-        </ul>
-                    {% if xplore_edu_results|length > 5 %}
-                        <span class="more-link">
-                        <a href="/textui/?autoload={{tag.id}}&tab=education-tab" rel="nofollow">More Educational Resources</a>
-                        </span>
-                    {% endif %}
+            {% if xplore_edu_results|length > 5 %}
+                <span class="more-link">
+                <a href="/textui/?autoload={{tag.id}}&tab=education-tab" rel="nofollow">More Educational Resources</a>
+                </span>
+            {% endif %}
         {% else %}
         <p class="no-resources">No education resources are currently tagged "{{ tag.name }}"</p>
         {% endif %}
@@ -283,27 +275,24 @@ Include file used by both print_resource.html and tag_landing.html
     <div id="tag-standards" class="tag-section">
         <h3><a name="standards"></a>{% if toc %}<span class="index"></span>{% endif %} Standards related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if standards %}
-        <ul class="tag_list">
             {% for standard in standards.all|slice:":5" %}
-                <li>
-                    <p class="title">
-                    {% if create_links %}
-                        <a href="{{ standard.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ standard.url }}'); return false;">{{ standard.name }} <span class="popup newWinIcon"></span></a>
-                    {% else %}
-                        {{ standard.name }}
-                    {% endif %}
-                    </p>
-                    <p class="description">
-                        {{ standard.description|truncatewords:60 }}
-                    </p>
-                </li>
+                <p class="title">
+                {% if create_links %}
+                    <a href="{{ standard.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ standard.url }}'); return false;">{{ standard.name }} <span class="popup newWinIcon"></span></a>
+                {% else %}
+                    {{ standard.name }}
+                {% endif %}
+                </p>
+                <p class="description">
+                    {{ standard.description|truncatewords:60 }}
+                </p>
+                <br/>
             {% endfor %}
-        </ul>
-                    {% if standards.all|length > 5 %}
-                        <span class="more-link">
-                        <a href="/textui/?autoload={{tag.id}}&tab=standard-tab" rel="nofollow">More Standards</a>
-                        </span>
-                    {% endif %}
+            {% if standards.all|length > 5 %}
+                <span class="more-link">
+                <a href="/textui/?autoload={{tag.id}}&tab=standard-tab" rel="nofollow">More Standards</a>
+                </span>
+            {% endif %}
         {% else %}
         <p class="no-resources">No standards are currently tagged "{{ tag.name }}"</p>
         {% endif %}
@@ -315,27 +304,24 @@ Include file used by both print_resource.html and tag_landing.html
     <div id="tag-periodicals" class="tag-section">
         <h3><a name="periodicals"></a>{% if toc %}<span class="index"></span>{% endif %} Periodicals related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if periodicals %}
-        <ul class="tag_list">
             {% for periodical in periodicals.all|slice:":5" %}
-                <li>
-                    <p class="title">
-                    {% if create_links %}
-                        <a href="{{ periodical.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ periodical.url }}'); return false;">{{ periodical.name }} <span class="popup newWinIcon"></span></a>
-                    {% else %}
-                        {{ periodical.name }}
-                    {% endif %}
-                    </p>
-                    <p class="description">
-                        {{ periodical.description|truncatewords:60 }}
-                    </p>
-                </li>
+                <p class="title">
+                {% if create_links %}
+                    <a href="{{ periodical.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ periodical.url }}'); return false;">{{ periodical.name }} <span class="popup newWinIcon"></span></a>
+                {% else %}
+                    {{ periodical.name }}
+                {% endif %}
+                </p>
+                <p class="description">
+                    {{ periodical.description|truncatewords:60 }}
+                </p>
+                <br/>
             {% endfor %}
-        </ul>
-                    {% if periodicals.all|length > 5 %}
-                        <span class="more-link">
-                        <a href="/textui/?autoload={{tag.id}}&tab=periodical-tab" rel="nofollow">More Periodicals</a>
-                        </span>
-                    {% endif %}
+            {% if periodicals.all|length > 5 %}
+                <span class="more-link">
+                <a href="/textui/?autoload={{tag.id}}&tab=periodical-tab" rel="nofollow">More Periodicals</a>
+                </span>
+            {% endif %}
         {% else %}
         <p class="no-resources">No periodicals are currently tagged "{{ tag.name }}"</p>
         {% endif %}
@@ -347,23 +333,19 @@ Include file used by both print_resource.html and tag_landing.html
     <div id="tag-societies" class="tag-section">
         <h3><a name="societies"></a>{% if toc %}<span class="index"></span>{% endif %} IEEE Organizations related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if societies %}
-        <ul>
             {% for society in societies|slice:":5" %}
-                <li>
-                    {% if create_links %}
-                        <a href="{{ society.url }}" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ society.url }}'); return false;">{{ society.name }}</a>
-                    {% else %}
-                        {{ society.name }}
-                    {% endif %}
-                </li>
+                {% if create_links %}
+                    <a href="{{ society.url }}" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ society.url }}'); return false;">{{ society.name }}</a>
+                {% else %}
+                    {{ society.name }}
+                {% endif %}
+                <br/>
             {% endfor %}
-
-        </ul>
-                   {% if societies|length > 5 %}
-                        <span class="more-link">
-                        <a href="/textui/?autoload={{tag.id}}&tab=society-tab" rel="nofollow">More Organizations</a>
-                        </span>
-                    {% endif %}
+           {% if societies|length > 5 %}
+                <span class="more-link">
+                <a href="/textui/?autoload={{tag.id}}&tab=society-tab" rel="nofollow">More Organizations</a>
+                </span>
+            {% endif %}
         {% else %}
         <p class="no-resources">No organizations are currently tagged "{{ tag.name }}"</p>
         {% endif %}
@@ -375,22 +357,19 @@ Include file used by both print_resource.html and tag_landing.html
     <div id="tag-related-tags" class="tag-section">
         <h3><a name="concepts"></a>{% if toc %}<span class="index"></span>{% endif %} Topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if related_tags %}
-        <ul>
             {% for related_tag in related_tags|slice:":5" %}
-                <li>
-                    {% if create_links %}
-                        <a href="/tag/{{ related_tag.id }}/{{ related_tag.name|slugify }}">{{ related_tag.name }}</a>
-                    {% else %}
-                        {{ related_tag.name }}
-                    {% endif %}
-                </li>
+                {% if create_links %}
+                    <a href="/tag/{{ related_tag.id }}/{{ related_tag.name|slugify }}">{{ related_tag.name }}</a>
+                {% else %}
+                    {{ related_tag.name }}
+                {% endif %}
+                <br/>
             {% endfor %}
-        </ul>
-                    {% if related_tags|length > 5 %}
-                        <span class="more-link">
-                        <a href="/textui/?autoload={{tag.id}}&tab=related-tab" rel="nofollow">More Related Topics</a>
-                        </span>
-                    {% endif %}
+            {% if related_tags|length > 5 %}
+                <span class="more-link">
+                <a href="/textui/?autoload={{tag.id}}&tab=related-tab" rel="nofollow">More Related Topics</a>
+                </span>
+            {% endif %}
         {% else %}
         <p class="no-resources">No topics related to "{{ tag.name }}"</p>
         {% endif %}
@@ -402,22 +381,19 @@ Include file used by both print_resource.html and tag_landing.html
     <div id="tag-sectors" class="tag-section">
         <h3><a href="" name="sectors"></a>{% if toc %}<span class="index"></span>{% endif %} Industry topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         {% if sectors %}
-        <ul>
             {% for parent in sectors|slice:":5" %}
-                <li>
-                    {% if create_links %}
-                        <a href="/tag/{{ parent.id }}/{{ parent.name|slugify }}">{{ parent.name }}</a>
-                    {% else %}
-                        {{ parent.name }}
-                    {% endif %}
-                </li>
+                {% if create_links %}
+                    <a href="/tag/{{ parent.id }}/{{ parent.name|slugify }}">{{ parent.name }}</a>
+                {% else %}
+                    {{ parent.name }}
+                {% endif %}
+                <br/>
             {% endfor %}
-        </ul>
-                    {% if sectors|length > 5 %}
-                        <span class="more-link">
-                        <a href="/textui/?autoload={{tag.id}}&tab=sector-tab" rel="nofollow">More Sectors</a>
-                        </span>
-                    {% endif %}
+            {% if sectors|length > 5 %}
+                <span class="more-link">
+                <a href="/textui/?autoload={{tag.id}}&tab=sector-tab" rel="nofollow">More Sectors</a>
+                </span>
+            {% endif %}
         {% else %}
         <p class="no-resources">No industry topics are currently tagged "{{ tag.name }}"</p>
         {% endif %}

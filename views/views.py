@@ -385,7 +385,7 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
         jobsCount = jobsJson.get('Total')
         jobs = jobsJson.get('Jobs')
         for job in jobs:
-            jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured"><b>%(JobTitle)s</b> <span class="popup newWinIcon"></span></a> %(Company)s<br>\n' % job
+            jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured">%(JobTitle)s <span class="popup newWinIcon"></span></a> %(Company)s<br>\n' % job
 
         file1 = None
 
