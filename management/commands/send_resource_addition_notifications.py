@@ -11,7 +11,7 @@ class Command(NoArgsCommand):
 
     def handle_noargs(self, *args, **options):
 
-        emails = ResourceAdditionNotificationRequest.objects.all().distinct('email')
+        emails = ResourceAdditionNotificationRequest.objects.only('email').distinct()
         for email in emails:
             reqs = ResourceAdditionNotificationRequest.objects.filter(email=email.email)
             reqs_with_new_items = []
