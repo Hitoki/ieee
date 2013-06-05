@@ -20,6 +20,7 @@
 {% comment %}
 Include file used by both print_resource.html and tag_landing.html
 {% endcomment %}
+<link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/icomoon-style.css" />
 <link rel="stylesheet" type="text/css" href="{{MEDIA_URL}}css/landing.css" title="Style for tag landing pages" />
 <div id="tag_frozen_header">
         {% include "utility_links.inc.html" %}
@@ -116,7 +117,7 @@ Include file used by both print_resource.html and tag_landing.html
             {% if conferences|length %}
                 <div id="notaccordion">
                     {% for resource in conferences|slice:":5" %}{# grouped conference displayed on the tag landing page #}
-                        <p class="title">{% if resource.url and resource.url_status != "bad" %}<a href="{{ resource.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ resource.url }}'); return false;">{{resource.name}}</a>{% else %}{{resource.name}}{% endif %}</p>
+                        <p class="title">{% if resource.url and resource.url_status != "bad" %}<a href="{{ resource.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ resource.url }}'); return false;">{{resource.name}} <span class="popup newWinIcon"></span></a>{% else %}{{resource.name}}{% endif %}</p>
                         
                         <p class='description'>{{resource.description}}</p>
                         <div style="display:none">
@@ -125,7 +126,7 @@ Include file used by both print_resource.html and tag_landing.html
                                 {% for other_conference in resource.other_conferences %}
                                 <li>
                                     {% if other_conference.url and other_conference.url_status != "bad" %}<a href="{{ other_conference.url }}" target="_blank" rel="nofollow">{% endif %}
-                                        <span>{{other_conference.name}}</span>
+                                        <span>{{other_conference.name}}</span> <span class="popup newWinIcon"></span>
                                     {% if other_conference.url and other_conference.url_status != "bad" %}</a>{% endif %}
                                     <p class="{% cycle 'desc_odd' 'desc_even' %} ">{{other_conference.description}}</p>
                                 </li>
@@ -148,7 +149,7 @@ Include file used by both print_resource.html and tag_landing.html
                 <li>
                     <p class="title">
                     {% if create_links %}
-                        <a href="{{ conference.url }}" target="_blank" rel="nofollow">{{ conference.name }}</a>
+                        <a href="{{ conference.url }}" target="_blank" rel="nofollow">{{ conference.name }} <span class="popup newWinIcon"></span></a>
                     {% else %}
                         {{ conference.name }}
                     {% endif %}
@@ -176,7 +177,7 @@ Include file used by both print_resource.html and tag_landing.html
                 <li>
                     <p class="title">
                     {% if create_links %}
-                        <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ xplore_result.url }}'); return false;">{{ xplore_result.name }}</a>
+                        <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ xplore_result.url }}'); return false;">{{ xplore_result.name }} <span class="popup newWinIcon"></span></a>
                     {% else %}
                         {{ xplore_result.name }}
                     {% endif %}
@@ -252,7 +253,7 @@ Include file used by both print_resource.html and tag_landing.html
                 <li>
                     <p class="title">
                     {% if create_links %}
-                        <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ xplore_result.url }}'); return false;">{{ xplore_result.name }}</a>
+                        <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ xplore_result.url }}'); return false;">{{ xplore_result.name }} <span class="popup newWinIcon"></span></a>
                     {% else %}
                         {{ xplore_result.name }}
                     {% endif %}
@@ -287,7 +288,7 @@ Include file used by both print_resource.html and tag_landing.html
                 <li>
                     <p class="title">
                     {% if create_links %}
-                        <a href="{{ standard.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ standard.url }}'); return false;">{{ standard.name }}</a>
+                        <a href="{{ standard.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ standard.url }}'); return false;">{{ standard.name }} <span class="popup newWinIcon"></span></a>
                     {% else %}
                         {{ standard.name }}
                     {% endif %}
@@ -319,7 +320,7 @@ Include file used by both print_resource.html and tag_landing.html
                 <li>
                     <p class="title">
                     {% if create_links %}
-                        <a href="{{ periodical.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ periodical.url }}'); return false;">{{ periodical.name }}</a>
+                        <a href="{{ periodical.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ periodical.url }}'); return false;">{{ periodical.name }} <span class="popup newWinIcon"></span></a>
                     {% else %}
                         {{ periodical.name }}
                     {% endif %}
