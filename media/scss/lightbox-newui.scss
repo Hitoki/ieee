@@ -645,9 +645,6 @@ margin-top: 0;
             border-left: 1px solid $primaryColor;
             border-right: 1px solid $primaryColor;
             vertical-align: top;
-            &.defaultValue {
-                color: #9F9F9F;
-            }
             &.error {
                 color: red;
             }

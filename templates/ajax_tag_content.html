@@ -24,19 +24,7 @@
 
     var errorText = "Please enter a valid email";
 
-    $(function() {
-        $('#notificationRequestEmail').focus(function() {
-            if (this.value == this.defaultValue || errorText){
-                this.value = "";
-                $(this).removeClass('defaultValue').removeClass('error');
-            }
-        }).blur(function() {
-            if (this.value === ""){
-                this.value = this.defaultValue;
-                $(this).addClass('defaultValue');
-            }
-        });
-        
+    $(function() {        
         $('#notificationRequestButton').click(function(){
             var input = $('#notificationRequestEmail');
 
@@ -131,7 +119,7 @@ function isValidEmailAddress(emailAddress) {
     <div id="alertContainer">
         <div id="alertForm">
             <span class="notificationLabel">Alert me to updates to this topic:</span>
-            <input type="text" id="notificationRequestEmail" value="Email address" class="defaultValue"></input>
+            <input type="text" id="notificationRequestEmail" placeholder="Email address"></input>
             <input type="button" value="Alert Me" id="notificationRequestButton"/>
         </div>
         <div id="alertSuccess" style="display:none">
