@@ -140,16 +140,10 @@ line-height: 1.2;
 }
 
 .topLink {
-background: transparent url(/media/images/topLink.png) no-repeat 83px 3px;
 float: right;
 font-size: 10pt;
 margin-top: -35px;
-padding-right: 18px;
 line-height: 1.2;
-}
-
-.topLink:hover {
-background: transparent url(/media/images/topLink.png) no-repeat 83px -11px;
 }
 
 #tag_contents {
