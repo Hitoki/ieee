@@ -2,7 +2,7 @@
 <div id="header">
     <span id="header-links">
         <a href="http://ieee.org" rel="nofollow" style="float:right"><span class="sm-logo"></span></a>
-        <span id="tagline">Connecting You to the IEEE Universe of Information</span>
+        {% comment %}<span id="tagline">Connecting You to the IEEE Universe of Information</span>{% endcomment %}
         <span class="header-btns">
             {% if user.is_superuser %}<a href="{% url admin_home %}" class="btn admin" rel="nofollow">Admin</a>{% endif %} 
             {% comment %}<a href="http://www.ieee.org/membership_services/membership/join/index.html?WT.mc_id=u_join" class="btn join" target="_self" rel="nofollow">Join IEEE!</a>{% endcomment %}
