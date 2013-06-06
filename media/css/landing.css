@@ -64,7 +64,7 @@ padding: 0;
 }
 
 #tag_page p {
-margin: 0;
+margin: 0 0 0 25px;
 padding: 0;   
 }
 
@@ -276,8 +276,18 @@ padding-left: 25px;
 }
 
 span.more-link {
-  margin: 5px 0 0 0;
+  margin: 5px 0 0 25px;
   display: inline-block;
+}
+
+a.featured,
+#tag-societies div a,
+#tag-related-tags div a {
+  margin-left: 25px;
+}
+
+#tag-related-tags .more-link {
+  margin: 20px 0 0 0;
 }
 
 #inner-container .center-pad {

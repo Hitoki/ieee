@@ -332,23 +332,25 @@ Include file used by both print_resource.html and tag_landing.html
     {% if societies or toc %}
     <div id="tag-societies" class="tag-section">
         <h3><a name="societies"></a>{% if toc %}<span class="index"></span>{% endif %} IEEE Organizations related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
-        {% if societies %}
-            {% for society in societies|slice:":5" %}
-                {% if create_links %}
-                    <a href="{{ society.url }}" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ society.url }}'); return false;">{{ society.name }}</a>
-                {% else %}
-                    {{ society.name }}
+        <div>
+            {% if societies %}
+                {% for society in societies|slice:":5" %}
+                    {% if create_links %}
+                        <a href="{{ society.url }}" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ society.url }}'); return false;">{{ society.name }}</a>
+                    {% else %}
+                        {{ society.name }}
+                    {% endif %}
+                    <br/>
+                {% endfor %}
+               {% if societies|length > 5 %}
+                    <span class="more-link">
+                    <a href="/textui/?autoload={{tag.id}}&tab=society-tab" rel="nofollow">More Organizations</a>
+                    </span>
                 {% endif %}
-                <br/>
-            {% endfor %}
-           {% if societies|length > 5 %}
-                <span class="more-link">
-                <a href="/textui/?autoload={{tag.id}}&tab=society-tab" rel="nofollow">More Organizations</a>
-                </span>
+            {% else %}
+            <p class="no-resources">No organizations are currently tagged "{{ tag.name }}"</p>
             {% endif %}
-        {% else %}
-        <p class="no-resources">No organizations are currently tagged "{{ tag.name }}"</p>
-        {% endif %}
+        </div>
     </div>
     <hr/>
     {% endif %}
@@ -356,23 +358,25 @@ Include file used by both print_resource.html and tag_landing.html
     {% if related_tags or toc %}
     <div id="tag-related-tags" class="tag-section">
         <h3><a name="concepts"></a>{% if toc %}<span class="index"></span>{% endif %} Topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
-        {% if related_tags %}
-            {% for related_tag in related_tags|slice:":5" %}
-                {% if create_links %}
-                    <a href="/tag/{{ related_tag.id }}/{{ related_tag.name|slugify }}">{{ related_tag.name }}</a>
-                {% else %}
-                    {{ related_tag.name }}
+        <div>
+            {% if related_tags %}
+                {% for related_tag in related_tags|slice:":5" %}
+                    {% if create_links %}
+                        <a href="/tag/{{ related_tag.id }}/{{ related_tag.name|slugify }}">{{ related_tag.name }}</a>
+                    {% else %}
+                        {{ related_tag.name }}
+                    {% endif %}
+                    <br/>
+                {% endfor %}
+                {% if related_tags|length > 5 %}
+                    <span class="more-link">
+                    <a href="/textui/?autoload={{tag.id}}&tab=related-tab" rel="nofollow">More Related Topics</a>
+                    </span>
                 {% endif %}
-                <br/>
-            {% endfor %}
-            {% if related_tags|length > 5 %}
-                <span class="more-link">
-                <a href="/textui/?autoload={{tag.id}}&tab=related-tab" rel="nofollow">More Related Topics</a>
-                </span>
+            {% else %}
+            <p class="no-resources">No topics related to "{{ tag.name }}"</p>
             {% endif %}
-        {% else %}
-        <p class="no-resources">No topics related to "{{ tag.name }}"</p>
-        {% endif %}
+        </div>
     </div>
     <hr/>
     {% endif %}
