@@ -1269,6 +1269,9 @@ class ResourceAdditionNotificationRequest(models.Model):
     date_created = models.DateTimeField(blank=False, null=False)
     email = models.CharField(blank=False, max_length=255)
 
+    class Meta:
+        unique_together = ('node', 'email')
+
 class ResourceAdditionNotification(models.Model):
     'Tracke the sending a notification email.'
     request = models.ForeignKey(ResourceAdditionNotificationRequest)
