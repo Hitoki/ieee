@@ -381,8 +381,12 @@ def main(*args):
                     # NOTE: Yes, there is a lot of code duplication between this and the previous two blocks.
                     for punumber, xhit_title in distinct_standard_punumbers.iteritems():
                         try:
-                            standard = models.Resource.objects.get(pub_id=punumber, resource_type__name=ResourceType.STANDARD)
-                            log('%s: Found TechNav Resource titled "%s".' % (punumber, standard.name))
+                            try:
+                                standard = models.Resource.objects.get(pub_id=punumber, resource_type__name=ResourceType.STANDARD)
+                                log('%s: Found TechNav Resource titled "%s".' % (punumber, standard.name))
+                            except models.Resource.MultipleObjectsReturned:
+                                standard = models.Resource.objects.filter(pub_id=punumber, resource_type__name=ResourceType.STANDARD)[0]
+                                log('%s: Found Multiple TechNav Resource titled "%s". Using first.' % (punumber, standard.name))
                             
                             if standard in tag.resources.all():
                                 log('Relationship already exists.')
