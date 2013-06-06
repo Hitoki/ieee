@@ -82,27 +82,6 @@
 
 </div>
 
-<script type="text/javascript">
-$(document).ready(function() {
-	var src;
-
-	$('p.title a').each(function(index) {
-		href = $(this).attr('href');
-		external_link = '<a href="' + href + '" class="external_link">Read more &raquo;</a>';
-		$(this).attr('href', 'javascript:;');
-	    $(this).html(src);
-	    
-	    if ($(this).parent().next('p.description').length == 0) {
-		    $(this).parent().next('p.description').append(external_link);
-		}
-	}).bind('click', function() {
-		$(this).parent().next('p.description').show();
-		$(this).parent().next('p.pub-info').show();
-	});
-});
-</script>
-
-
 <div id="footer">
 	<p><a href="/about/">About</a> | <a href="http://technav.ieee.org/?nomobile=1">Full Site</a> | <a href="http://www.ieee.org/">IEEE.org</a> | <a href="http://aptuscollaborative.wufoo.com/forms/ieee-technology-navigator-feedback/">Feedback</a></p>
 	© {% now "Y" %} IEEE - All Rights Reserved.

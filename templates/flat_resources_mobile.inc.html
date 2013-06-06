@@ -45,7 +45,8 @@ Include file used by both print_resource.html and tag_landing.html
             {% endif %}
             </p>
             <p class="description">
-                {{ conference.description|truncatewords:60 }}
+                {{ conference.description|truncatewords:60 }}<br/>
+                <a href="{{ conference.url }}" target="_blank" rel="nofollow">Read more</a>
             </p>
             <br/>
         {% endfor %}
@@ -71,7 +72,8 @@ Include file used by both print_resource.html and tag_landing.html
                 {{ xplore_result.authors }} {{ xplore_result.pub_title }},  {{ xplore_result.pub_year }}
             </p>
             <p class="description">
-                {{ xplore_result.description|truncatewords:60 }}
+                {{ xplore_result.description|truncatewords:60 }}<br/>
+                <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow">Read more</a>
             </p>
             <br/>
         {% endfor %}
@@ -115,7 +117,8 @@ Include file used by both print_resource.html and tag_landing.html
                 {{ xplore_result.authors }} {{ xplore_result.pub_title }},  {{ xplore_result.pub_year }}
             </p>
             <p class="description">
-                {{ xplore_result.description|truncatewords:60 }}
+                {{ xplore_result.description|truncatewords:60 }}<br/>
+                <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow">Read more</a>
             </p>
             <br/>
         {% endfor %}
@@ -135,7 +138,8 @@ Include file used by both print_resource.html and tag_landing.html
             {% endif %}
             </p>
             <p class="description">
-                {{ standard.description|truncatewords:60 }}
+                {{ standard.description|truncatewords:60 }}<br/>
+                <a href="{{ standard.url }}" target="_blank" rel="nofollow">Read more</a>
             </p>
             <br/>
         {% endfor %}
@@ -155,7 +159,8 @@ Include file used by both print_resource.html and tag_landing.html
             {% endif %}
             </p>
             <p class="description">
-                {{ periodical.description|truncatewords:60 }}
+                {{ periodical.description|truncatewords:60 }}<br/>
+                <a href="{{ periodical.url }}" target="_blank" rel="nofollow">Read more</a>
             </p>
             <br/>
         {% endfor %}
