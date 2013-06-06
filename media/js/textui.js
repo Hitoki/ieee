@@ -700,28 +700,6 @@ var Tags = {
             this.remainingContent = content;
             this.textui_flyovers_url = data.textui_flyovers_url;
             $('#tag-counts').html(data.node_count_content);
-            var height = $('#tag-counts').outerHeight();
-
-            if ($('#tag-galaxy').data('original_min_height') == undefined) {
-                $('#tag-galaxy').data('original_min_height', parseInt($('#tag-galaxy').css('min-height')));
-            }
-            var minHeight = $('#tag-galaxy').data('original_min_height') - height;
-            try {
-                $('#tag-galaxy').css('min-height', minHeight + 'px');
-            } catch (err){
-
-            }
-            
-            if ($('#tag-galaxy .alt-box-pad').data('original_min_height') == undefined) {
-                $('#tag-galaxy .alt-box-pad').data('original_min_height', parseInt($('#tag-galaxy .alt-box-pad').css('min-height')));
-            }
-            var minHeight = $('#tag-galaxy .alt-box-pad').data('original_min_height') - height;
-            try{
-                $('#tag-galaxy .alt-box-pad').css('min-height', minHeight + 'px');
-            } catch (err) {
-
-            }
-            $(window).resize();
             
             $('#tags').empty();
             this.loadContentChunk();

@@ -2195,6 +2195,8 @@ header {
        font-size: 12pt;
        width: auto;
        display: inline-block;
+       border: 1px solid $white;
+       padding: 10px;
        .icon-users {
             font-size: 25px;
             height: 25px;
@@ -2218,7 +2220,7 @@ header {
     .inner {
         width: 80%;
         margin: 0 auto;
-        padding: 25px 25px 22px;
+        padding: 20px 25px;
     }
     #narrow-tags {
         display: inline-block;
@@ -2265,7 +2267,8 @@ header {
   
 #misc-bar {
     overflow: hidden;
-    height: 55px;
+    height: 54px;
+    margin-bottom: 20px;
 }
   
 #tag-counts h2 {
