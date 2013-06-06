@@ -6,3 +6,4 @@ South==0.7.6
 enum==0.4.4
 django-debug-toolbar==0.9.4
 html2text==3.200.3
+simplejson==3.3.0
