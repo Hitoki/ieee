@@ -88,13 +88,11 @@ $(document).ready(function() {
 
 	$('p.title a').each(function(index) {
 		href = $(this).attr('href');
-		external_link = '</p><p class="external_link_wrap"><a href="' + href + '" class="external_link">Read more &raquo;</a>';
+		external_link = '<a href="' + href + '" class="external_link">Read more &raquo;</a>';
 		$(this).attr('href', 'javascript:;');
 	    $(this).html(src);
 	    
 	    if ($(this).parent().next('p.description').length == 0) {
-	    	$(this).parent().next('p.pub-info').append(external_link);
-	    } else {
 		    $(this).parent().next('p.description').append(external_link);
 		}
 	}).bind('click', function() {
