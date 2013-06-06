@@ -62,14 +62,14 @@
                         <div>
                             &nbsp;&nbsp;&nbsp;&nbsp;<em>{% ifchanged %}In <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}&tab={{ resource.resource.resource_type.name }}-tab">{{ resource.resource.resource_type.name|slice:"0:1"|upper }}{{ resource.resource.resource_type.name|slice:"1:" }}s</a>:{% endifchanged %}</em>
                             <br/>
-                            &nbsp;&nbsp;&nbsp;&nbsp;{{ resource.resource.name }} {% if resource.resource.url %}(<a href="{{ resource.resource.url }}">link</a>){% endif %}<br/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;{% if resource.resource.url %}<a href="{{ resource.resource.url }}">{{ resource.resource.name }}</a>{% else %}{{ resource.resource.name }}{% endif %}<br/>
                         </div>
                         {% endfor %}
                         {% for society in topic.new_societies %}
                         <div>
                             &nbsp;&nbsp;&nbsp;&nbsp;<em>{% ifchanged %}In <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}&tab=society-tab">Organizations</a>:{% endifchanged %}</em>
                             <br/>
-                            &nbsp;&nbsp;&nbsp;&nbsp;{{ society.society.name }} {% if society.society.url %}(<a href="{{ society.society.url }}">link</a>){% endif %}<br/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;{% if society.society.url %}<a href="{{ society.society.url }}">{{ society.society.name }}</a>{% else %}{{ society.society.name }}{% endif %}<br/>
                         </div>
                         {% endfor %}
                     </p>
