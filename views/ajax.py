@@ -1315,8 +1315,10 @@ def ajax_notification_request(request):
     rnnr.email = request.POST['email']
     rnnr.date_created = datetime.datetime.now()
     rnnr.node = Node.objects.get(id=request.POST['nodeid'])
-    rnnr.save()
-
+    try:
+        rnnr.save()
+    except:
+        pass    
     return HttpResponse('success')
 
 @login_required
