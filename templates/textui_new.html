@@ -45,6 +45,14 @@
                 Tags.clearSearchResults();
                 $("#tags-live-search").focus();
             });
+
+            $('#tags-live-search').focus(function() {
+                $(this).parent().addClass('focus');
+            });
+
+            $('#tags-live-search').blur(function() {
+                $(this).parent().removeClass('focus');
+            });
              
             $(".live-search-clear").hover(function(){
                 $(".live-search").addClass("clear-hover");

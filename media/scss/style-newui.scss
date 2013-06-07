@@ -1735,6 +1735,11 @@ div.group ul li:first-child {
     text-align: center;
     vertical-align: middle;
     background-color: $white;
+    &:hover, &.focus {
+        .icon-filter {
+            color: $orange;
+        }
+    }
     .icon-filter {
         color: $secondaryColor;
         float: left;
