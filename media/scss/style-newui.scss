@@ -1943,7 +1943,6 @@ padding: 5px;
 z-index: 99;
 outline: none;
 .icon-tab {
-    color: $secondaryColor;
     font-size: 17px;
     float: left;
 }
@@ -1956,7 +1955,6 @@ padding: 5px;
 z-index: 99;
 outline: none;
 .icon-users {
-    color: $secondaryColor;
     font-size: 25px;
     float: left;
     margin-top: -5px;
@@ -2019,62 +2017,66 @@ width: 165px;
 }
   
 .customSelectContainer {
-cursor: pointer;
-display: inline-block;
-height: 19px;
-vertical-align: bottom;
-color: #222;
-background-color: $white;
-}
-  
-.customSelectContainer .selected {
-display: inline-block;
-margin: 0;
-float: left;
-font-weight: normal;
-height: 19px;
-padding-top: 1px;
-}
-  
-.customSelectContainer .selected span {
-display: inline-block;
-margin-left: 4px;
+    cursor: pointer;
+    display: inline-block;
+    height: 19px;
+    vertical-align: bottom;
+    color: #222;
+    background-color: $white;
+    .icomoon-icon {
+        color: $secondaryColor;
+    }
+    .selected {
+        display: inline-block;
+        margin: 0;
+        float: left;
+        font-weight: normal;
+        height: 19px;
+        padding-top: 1px;
+        span {
+            display: inline-block;
+            margin-left: 4px;
+        }
+    }
 }
   
 .customSelectList {
-display: none;
-background-color: $white;
-position: relative;
-margin: 11px 0 0 -1px;
-padding: 0;
-border: 1px solid $primaryColor;
-cursor: pointer;
-list-style-position: outside;
-z-index: 999999; 
+    display: none;
+    background-color: $white;
+    position: relative;
+    margin: 11px 0 0 -1px;
+    padding: 0;
+    border: 1px solid $primaryColor;
+    cursor: pointer;
+    list-style-position: outside;
+    z-index: 999999; 
+    span {
+        margin-left: 4px;   
+    }
+    li {
+        list-style-type: none;
+        margin-left: 0px;
+        vertical-align: middle;
+        cursor: pointer;
+        text-align: left;
+        padding: 3px 0;
+        font-size: 9pt;
+        color: #222;
+    }
+    &:hover {
+        color: $orange !important;
+    }
 }
   
-.customSelectList span {
-margin-left: 4px;   
-}
-  
-.customSelectList li {
-list-style-type: none;
-margin-left: 0px;
-vertical-align: middle;
-cursor: pointer;
-text-align: left;
-padding: 3px 0;
-font-size: 9pt;
-color: #222;
-}
-  
-.customSelectList li:hover {
-color: $orange !important;
-}
-  
-.customSelectContainer:focus, .customSelectContainer:hover, .customSelectList:focus, .customSelectList:hover {
-cursor: pointer;
-color: $orange;
+.customSelectContainer:focus, 
+.customSelectContainer:hover, 
+.customSelectList:focus, 
+.customSelectList:hover {
+    cursor: pointer;
+    color: $orange;
+    .icomoon-icon {
+        color: $orange;
+    }
 }
   
 .selected-hover, .selected-hover span {
@@ -2099,7 +2101,6 @@ float: left;
   
 .icon-drop-arrow {
 float: right;
-color: $secondaryColor;
 }
   
 #page-container {
