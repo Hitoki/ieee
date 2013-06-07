@@ -21,6 +21,7 @@ h2 {
 
 h3 {
     font-size:120%;
+    margin-bottom: 5px;
 }
 
 li, ul, ol {
@@ -28,13 +29,17 @@ margin: 0;
 padding: 0;   
 }
 
-.print-resource {
-    
+.topLink,
+#tag_middle,
+#header,
+#corner-notch,
+.newWinIcon,
+.more-link {
+    display: none;
 }
 
 .print-resource h1 {
-    font-size:.8em;
-    color:gray;
+    font-size:2em;
 }
 
 .print-resource .page-date {
@@ -43,9 +48,6 @@ padding: 0;
     font-weight:bold;
     font-size:.8em;
     color:gray;
-}
-
-.title {
 }
 
 .description {
@@ -58,16 +60,11 @@ padding: 0;
     font-style: italic;
 }
 
-.topLink {
-    display: none;   
-}
-
-#tag_middle {
-   display: none;
-}
-
-.addthis_toolbox  {
-   display: none;
+#tag_page p,
+a.featured, 
+#tag-societies div a, 
+#tag-related-tags div a {
+    margin: 0;
 }
 
 #tag_page #tag_frozen_header {
@@ -81,12 +78,11 @@ padding: 0;
     width: 100%;
 }
 
-#tag_page #tag_frozen_header .tag_header_inner {
+#tag_frozen_header .tag_header_inner {
     background-color: #FFFFFF;
-    box-shadow: 0 0 0 #3F3F3F;
     margin-top: 0px;
     min-height: 0px;
-    padding-bottom: 0px;
+    padding: 0;
 }
 
 #tag_page #tag_frozen_header .tag_header_inner .left {
