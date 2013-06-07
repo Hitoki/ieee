@@ -1754,15 +1754,13 @@ div.group ul li:first-child {
 }
   
 .live-search-clear {
-    background-image: url(/media/images/clear-search.png);
-    background-position: 0 0;
-    background-repeat: no-repeat;
-    cursor: pointer;
-    display: inline-block;
-    height: 20px;
-    width: 20px;
+    color: $primaryColor;
     display: none;
-    position: relative;
+    cursor: pointer;
+    margin-top: 1px;
+    &:hover {
+        color: $orange;
+    }
 }
   
 #textui-tags-search-submit {
