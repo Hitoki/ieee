@@ -9,9 +9,7 @@
             <div class="center-pad">
         {% endif %}
         {% block main_table_content %}
-            <div class="">
-                {% include 'flat_resources.inc.html' %}
-            </div>
+        {% include 'flat_resources.inc.html' %}
         {% endblock %}
         {% if not is_ajax %}    
             </div>
