@@ -679,11 +679,26 @@ margin-top: 0;
     width: 657px;
     padding: 10px 15px;
     margin-left: 137px;
-    .icon-printer {
+    .printContainer {
         float: right;
+        position: relative;
+        width: 127px;
+    }
+    .printMenu {
+        position: absolute;
+        background-color: white;
+        border: 1px solid $primaryColor;
+        padding: 5px;
+        width: 115px;
+        right: 0;
+        top: -45px;
+        display: none;
+    }
+    .icon-printer {
         font-size: 25px;
         color: $secondaryColor;
         cursor: pointer;
+        float: right;
         &:hover {
             color: $orange;
         }

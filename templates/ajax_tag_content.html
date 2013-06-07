@@ -5,22 +5,24 @@
 
 {% block main_table_content %}
 <script type="text/javascript">
-    {% comment %}
     $(function() {
-        var printDropDown = $('#printSelect').imageDropdown({'selectList': $("ul#printSelect_options")});
-        printDropDown.bind('change', function(){
-            var type = printDropDown.val();
-            if (type === "all"){
-                printWin = window.open("{% url print_resource tag.id 'all' %}", "printWindow");
-            } else if (type === "cur"){
-                var printUrl = $('.nootabs-selected-tab[data-printUrl]').eq(0).attr('data-printUrl');
-                printWin = window.open(printUrl, "printWindow");
-            }
-            printDropDown.close();
-            printDropDown.reset();
-        })
+
+        $('.printContainer').hover(function() {
+            $('.printMenu').show();
+        }, function() {
+            $('.printMenu').hide();
+        });
+
+        $('.printAll').click(function() {
+            window.open("{% url print_resource tag.id 'all' %}", "printWindow");
+        });
+
+        $('.printCur').click(function() {
+            var printUrl = $('.nootabs-selected-tab[data-printUrl]').eq(0).attr('data-printUrl');
+            window.open(printUrl, "printWindow");
+        });
+
     });
-    {% endcomment %}
 
     var errorText = "Please enter a valid email";
 
@@ -89,22 +91,6 @@ function isValidEmailAddress(emailAddress) {
 </script>
 
 {% if is_ajax %}
-{% comment %}
-<div id="printContainer_outter">
-    <div id="printContainer_inner">
-        <span>&nbsp;</span>
-        <ul id="printSelect_options" class="customSelectList">
-            <li data-value="def"><span>Choose one&nbsp;...&nbsp;</span></li>
-            <li data-value="cur" ><span>Print Current Tab</span></li>
-            <li data-value="all"><span>Print All Tabs</span></li>
-        </ul>
-    </div>
-    <span id="printSelect" class="customSelectContainer" tabindex="0">
-        <span id="resource-print-icon"></span><span class="selected"></span>
-        <span class="drop_down dropIcon"></span>
-    </span>
-</div>
-{% endcomment %}
 <div class="dialogTitle">
     <span id="tag-name">{{ tag.name }}</span>
 </div>
@@ -308,7 +294,13 @@ function isValidEmailAddress(emailAddress) {
                     </a>
                     {% endspaceless %}
                 </div>
-                <span aria-hidden="true" class="icon-printer"></span>
+                <div class="printContainer">
+                    <div class="printMenu">
+                        <a href="javascript:void(0)" class="printCur">Print current tab</a><br/>
+                        <a href="javascript:void(0)" class="printAll">Print all tabs</a>
+                    </div>
+                    <span aria-hidden="true" class="icon-printer"></span>
+                </div>
                 <div class="clear"></div>
             </div>
             <div style="clear:both"></div>
