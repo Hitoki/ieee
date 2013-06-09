@@ -210,7 +210,6 @@ font-weight: normal;
 }
 
 #tag_page p.no-resources {
-padding-left: 26px;
 color: #9F9F9F;
 }
 
@@ -286,6 +285,7 @@ a.featured,
   margin-left: 25px;
 }
 
+#tag-societies .more-link,
 #tag-related-tags .more-link {
   margin: 20px 0 0 0;
 }
