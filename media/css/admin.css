@@ -148,7 +148,7 @@ ul.section-list li li {
 
 /* Tables */
 
-#id_name, #id_url, #id_description {
+#id_name, #id_url {
     /*width: 400px;*/
     width: 95%;
 }
@@ -684,9 +684,14 @@ ul.nootabs-menus li a {
 
 #add-topic-topic-area {
     float: left;
+    vertical-align: top;
 }
 
 #add-topic-topic-area input {
+    vertical-align: top;
+}
+
+#add-topics-topic-areas {
     vertical-align: top;
 }
 
