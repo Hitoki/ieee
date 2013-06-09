@@ -7,6 +7,8 @@ import os
 
 from util import relpath
 
+RELEASE_VERSION = "1.31"
+
 DEBUG = False
 
 ADMINS = (
