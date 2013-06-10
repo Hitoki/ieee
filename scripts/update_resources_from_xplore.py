@@ -252,7 +252,6 @@ def main(*args):
                     distinct_conference_punumbers = {}
                     distinct_standard_punumbers = {}
                     
-                    import ipdb; ipdb.set_trace()
                     for i, xhit in enumerate(xhits):
                         #xhit_title = xhit.getElementsByTagName('title')[0].firstChild.nodeValue
                         xhit_title = xhit.findtext('title')
