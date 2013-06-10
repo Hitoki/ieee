@@ -242,19 +242,27 @@ def main(*args):
                     file.close()
                     ucontents = ucontents.decode(encoding, 'replace').encode('utf-8')
 
-                    dom1 = xml.dom.minidom.parseString(ucontents)
-                    
-                    xhits = dom1.documentElement.getElementsByTagName('document')
+                    from lxml import etree
+                    # dom1 = xml.dom.minidom.parseString(ucontents)
+                    dom1 = etree.fromstring(ucontents)
+
+                    #xhits = dom1.documentElement.getElementsByTagName('document')
+                    xhits = dom1.findall('document')
                     distinct_issns = {}
                     distinct_conference_punumbers = {}
                     distinct_standard_punumbers = {}
+                    
+                    import ipdb; ipdb.set_trace()
                     for i, xhit in enumerate(xhits):
-                        xhit_title = xhit.getElementsByTagName('title')[0].firstChild.nodeValue
-                        xhit_pubtype = xhit.getElementsByTagName('pubtype')[0].firstChild.nodeValue
+                        #xhit_title = xhit.getElementsByTagName('title')[0].firstChild.nodeValue
+                        xhit_title = xhit.findtext('title')
+                        #xhit_pubtype = xhit.getElementsByTagName('pubtype')[0].firstChild.nodeValue
+                        xhit_pubtype = xhit.findtext('pubtype')
                         
                         if xhit_pubtype == "Journals":
-                            issn = xhit.getElementsByTagName('issn')
-                            
+                            #issn = xhit.getElementsByTagName('issn')
+                            issn = xhit.findall('issn')
+
                             if not len(issn):
                                 try:
                                     log('No ISSN node found in Xplore result with title "%s"' % xhit_title)
@@ -263,11 +271,15 @@ def main(*args):
                                     log('No ISSN node found in Xplore result with UNPRINTABLE TITLE. See error.')
                                     log(e)
                                     continue
-                            elif not issn[0].firstChild.nodeValue in distinct_issns:
-                                distinct_issns[issn[0].firstChild.nodeValue] = xhit_title
+                            # elif not issn[0].firstChild.nodeValue in distinct_issns:
+                            #     distinct_issns[issn[0].firstChild.nodeValue] = xhit_title
+                            elif not issn[0].text in distinct_issns:
+                                distinct_issns[issn[0].text] = xhit_title
+
                         elif xhit_pubtype == "Conferences":
                             punumber = xhit.getElementsByTagName('punumber')
-                            
+                            punumber = xhit.findall('punumber')
+
                             if not len(punumber):
                                 try:
                                     log('No punumber node found in Xplore result with title "%s"' % xhit_title)
@@ -276,10 +288,14 @@ def main(*args):
                                     log('No punumber node found in Xplore result with UNPRINTABLE TITLE. See error.')
                                     log(e)
                                     continue
-                            elif not punumber[0].firstChild.nodeValue in distinct_conference_punumbers:
-                                distinct_conference_punumbers[punumber[0].firstChild.nodeValue] = xhit_title
+                            # elif not punumber[0].firstChild.nodeValue in distinct_conference_punumbers:
+                            #     distinct_conference_punumbers[punumber[0].firstChild.nodeValue] = xhit_title
+                            elif not punumber[0].text in distinct_conference_punumbers:
+                                distinct_conference_punumbers[punumber[0].text] = xhit_title
+
                         elif xhit_pubtype == "Standards":
-                            punumber = xhit.getElementsByTagName('punumber')
+                            #punumber = xhit.getElementsByTagName('punumber')
+                            punumber = xhit.findall('punumber')
                             
                             if not len(punumber):
                                 try:
@@ -289,8 +305,10 @@ def main(*args):
                                     log('No punumber node found in Xplore result with UNPRINTABLE TITLE. See error.')
                                     log(e)
                                     continue
-                            elif not punumber[0].firstChild.nodeValue in distinct_standard_punumbers:
-                                distinct_standard_punumbers[punumber[0].firstChild.nodeValue] = xhit_title 
+                            # elif not punumber[0].firstChild.nodeValue in distinct_standard_punumbers:
+                            #     distinct_standard_punumbers[punumber[0].firstChild.nodeValue] = xhit_title 
+                            elif not punumber[0].text in distinct_standard_punumbers:
+                                distinct_standard_punumbers[punumber[0].text] = xhit_title 
                     
                     log("Found %d unique ISSNs:" % len(distinct_issns))
                     for issn, xhit_title in distinct_issns.iteritems():
