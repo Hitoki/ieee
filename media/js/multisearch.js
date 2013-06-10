@@ -275,11 +275,17 @@ function MultiSearch(container, options) {
     this.closePopup(false, true);
     
     // Load any pre-selected options (from the hidden input)
-    var initialData = JSON.parse(this.dataElem.attr('value'));
+    this.initialData = JSON.parse(this.dataElem.attr('value'));
+    this.initialDataIds = this.initialData.map(
+        function(i){
+            return i.value;
+        }
+    );
     
+
     // Now add the preselected options
-    for (var i=0; i<initialData.length; i++) {
-        this.addSelectedOption(initialData[i], true);
+    for (var i=0; i<this.initialData.length; i++) {
+        this.addSelectedOption(this.initialData[i], true);
     }
 }
 
@@ -885,8 +891,12 @@ MultiSearch.prototype.addSelectedOption = function(option, preload) {
     }
 }
 
-MultiSearch.prototype.removeSelectedOptionByValue = function(value) {
+MultiSearch.prototype.removeSelectedOptionByValue = function(value, trigger) {
     // Remove the selected option if it exists
+    if (typeof trigger == 'undefined') {
+        trigger = true;
+    }
+
     var index = this.findSelectedOptionByValue(value);
     if (index != null) {
         this.selectedOptions[index].elem.remove();
@@ -914,7 +924,10 @@ MultiSearch.prototype.removeSelectedOptionByValue = function(value) {
     this._notify('removed_option', {
         option: option
     });
-    this.container.trigger('itemRemoved');
+
+    if (trigger && $.inArray(option.value, this.initialDataIds) != -1) {
+        this.container.trigger('itemRemoved');
+    }
 }
 
 MultiSearch.prototype.onKeyEscape = function(e) {
@@ -970,8 +983,13 @@ MultiSearch.prototype.closePopup = function(clear_value, triggerEvent) {
     this.highlightedSearchOptionValue = null;
     this.getOptionsValue = null;
 
-    if (triggerEvent)
-        this.container.trigger('popupClosed');
+    // Make array of currently selected values and compare to the initial values.
+    var chkdOpts  = this.selectedOptions.map(
+        function(i){return i.value;}
+    );
+    var arraysEqual = $(this.initialDataIds).not(chkdOpts).length == 0 && $(chkdOpts).not(this.initialDataIds).length == 0;
+    if (triggerEvent && !arraysEqual)
+        this.container.trigger('popupClosedDirty');
 }
 
 MultiSearch.prototype.clearValue = function() {
