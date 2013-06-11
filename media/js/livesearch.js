@@ -51,10 +51,20 @@ function LiveSearch(inputElem) {
             } else if ($.trim(self.inputElem.val()).length == 0) {
                 $('#tags-searching-msg').hide();
                 clearTimeout(timer);
-                timer = setTimeout(liveSearch.update,self.options.search_key_delay,null,self);
+                timer = setTimeout(
+                    function() {
+                        liveSearch.update(null,self);
+                    },
+                    self.options.search_key_delay
+                );
             } else {
                 clearTimeout(timer);
-                timer = setTimeout(liveSearch.update,self.options.search_key_delay,null,self);
+                timer = setTimeout(
+                    function() {
+                        liveSearch.update(null,self);
+                    },
+                    self.options.search_key_delay
+                );
             }
         }
     });
