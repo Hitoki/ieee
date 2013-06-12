@@ -1719,7 +1719,7 @@ div.group ul li:first-child {
 .search-container span.feature_label,
 #textui-tags-sort span.feature_label,
 #textui-society-list span.feature_label {
-    margin: 0 5px 0 0;
+    margin: 3px 5px 0 0;
     display: inline-block;
     font-size: 11pt;
 }
@@ -1733,7 +1733,7 @@ div.group ul li:first-child {
     font-size: 11pt;
     height: 19px;
     text-align: center;
-    vertical-align: middle;
+    vertical-align: top;
     background-color: $white;
     &:hover, &.focus {
         .icon-filter {
@@ -1911,7 +1911,7 @@ div.group ul li:first-child {
 #societyContainer_outter,
 #sortContainer_outter {
     display: inline-block;
-    vertical-align: middle;
+    vertical-align: top;
     position: relative;
     font-size: 11pt;
 }
@@ -1921,11 +1921,14 @@ div.group ul li:first-child {
 }
 
 #societySelect_options {
-    width: 681px;
+    width: 851px;
+    border-top: 0 none;
+    margin-top: 20px;
+    padding: 10px 10px 10px 32px;
 }
 
 #societySelect_options li {
-    width: 218px;
+    width: 203px;
     display: inline-block;
     padding-left: 5px;
     text-indent: -4px;
@@ -1963,23 +1966,27 @@ outline: none;
 }
 
 #societySelect {
-width: 240px;
-font-weight: bold;
-padding: 5px;
-z-index: 99;
-outline: none;
-.icon-users {
-    font-size: 25px;
-    float: left;
-    margin-top: -5px;
-}
-.selected {
-font-size: 12px;
-width: 190px;
-overflow: hidden;
-height: 15px;
-margin-top: 2px;
-}
+    width: 240px;
+    font-weight: bold;
+    padding: 5px;
+    z-index: 99;
+    outline: none;
+    &.squareDown {
+        height: 28px;
+        margin-bottom: -10px;
+    }
+    .icon-users {
+        font-size: 25px;
+        float: left;
+        margin-top: -5px;
+    }
+    .selected {
+        font-size: 12px;
+        width: 190px;
+        overflow: hidden;
+        height: 15px;
+        margin-top: 2px;
+    }
 }
  
 #societySelect .selected, 
