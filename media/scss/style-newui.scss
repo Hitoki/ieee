@@ -2246,6 +2246,19 @@ header {
     }
 }
 
+#no-results-container {
+    width: 100%;
+    text-align: center;
+    display: block;
+    position: absolute;
+    top: 30%;
+    font-size: 12pt;
+}
+
+#no-results {
+    font-weight: bold;
+}
+
 #no-results-choices {
     display: block;
     width: 235px;
