@@ -102,6 +102,7 @@ LiveSearch.prototype.update = function(useDelayValue,self) {
 	// Check if the value has changed, or the delay has expired for this value.
     if (value == ""){
         Tags.clearSearchResults();
+        lastVal = self.lastValue = null;
         return;
     }
     if (value != lastVal || value == useDelayValue) {
@@ -218,11 +219,17 @@ LiveSearch.prototype.onResults = function(data) {
     //this.popupElem.html(str);
 }
 
+var tagsLiveSearch;
 function attachLiveSearches(elem) {
     $(elem).find('.live-search').each(function() {
-        new LiveSearch(this);
+        if (this.id == 'tags-live-search') {
+            tagsLiveSearch = new LiveSearch(this);
+        } else {
+            new LiveSearch(this);
+        }
     });
 }
+
 
 $(function() {
     attachLiveSearches(document);

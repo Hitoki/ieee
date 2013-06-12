@@ -661,6 +661,7 @@ var Tags = {
         $('#tags-live-search').val('');
         //log('clearSearchResults(): calling updateResults().');
         this.updateResults();
+        tagsLiveSearch.lastValue = null;
     },
     
     onLoadResults: function(data) {
