@@ -392,6 +392,7 @@ function XploreLoader(elem, showAll, sort, ctype) {
     this.isLoading = false;
     this.noResultsElem = null;
     this.ajaxToken = null;
+    this.numResults = 0;
 	
     this.scrollElem.scroll(function() {
         xploreLoader.onScroll();
@@ -504,6 +505,7 @@ XploreLoader.prototype.onLoadData = function(data) {
     if (data.token == this.ajaxToken) {
         this.loadingElem.remove();
         this.loadingElem = null;
+        this.numResults += data.num_results;
         
         if (this.noResultsElem) {
             this.noResultsElem.remove();
@@ -526,12 +528,17 @@ XploreLoader.prototype.onLoadData = function(data) {
             autoTruncate(this.listElem.find('.auto-truncate-words'), { word_boundary:true } );
                         
             var totalElem;
+
             if(this.ctype == "Educational Courses"){
-                $('#num-education-results').text(addCommas(data.num_results));
+                if(this.numResults != 0 && data.num_results != 0){
+                    $('#num-education-results').text(addCommas(data.num_results));
+                }
                 totalElem = $('#education-totals');
 		   
             } else {
-                $('#num-xplore-results').text(addCommas(data.num_results));
+                if(this.numResults != 0 && data.num_results != 0){
+                    $('#num-xplore-results').text(addCommas(data.num_results));
+                }
                 totalElem = $('#xplore-totals')
             }
             
@@ -541,16 +548,16 @@ XploreLoader.prototype.onLoadData = function(data) {
             $('#num-related-items').text(addCommas(newTotal));
             $('#num-related-items').metadata().number = newTotal;
             
-            if (data.num_results == 0) {
-		if(this.ctype == "Educational Courses"){
-		    $('#num-education-results').text('0');
-		    $('#education-results-container .print-resource').remove(); 
-		    this.listElem.html('<p class="no-resources">No educational resources are currently tagged ' + $('#tag-name').text() + '</p>');
-		} else {
-		    $('#num-xplore-results').text('0');
-		    $('#xplore-results-container .print-resource').remove(); 
-                this.noResultsElem = $('<p class="no-resources">No Xplore Articles are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
-		}
+            if (data.num_results == 0 && this.numResults == 0) {
+        		if(this.ctype == "Educational Courses"){
+        		    $('#num-education-results').text('0');
+        		    $('#education-results-container .print-resource').remove(); 
+        		    this.listElem.html('<p class="no-resources">No educational resources are currently tagged ' + $('#tag-name').text() + '</p>');
+        		} else {
+        		    $('#num-xplore-results').text('0');
+        		    $('#xplore-results-container .print-resource').remove(); 
+                    this.noResultsElem = $('<p class="no-resources">No Xplore Articles are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
+        		}
 
             } else {
                 var html = '<div class="articles-search">Show articles containing: <input class="live-search" id="article-live-search"><span id="article-search-clear" class="live-search-clear">&nbsp;</span></div>';
