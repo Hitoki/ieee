@@ -393,6 +393,7 @@ function XploreLoader(elem, showAll, sort, ctype) {
     this.noResultsElem = null;
     this.ajaxToken = null;
     this.numResults = 0;
+    this.totalsCalced = false;
 	
     this.scrollElem.scroll(function() {
         xploreLoader.onScroll();
@@ -543,10 +544,13 @@ XploreLoader.prototype.onLoadData = function(data) {
             }
             
             $("#num-related-items-loading").remove();
-            var numRelatedItems = parseInt($('#num-related-items').metadata().number);
-            var newTotal = numRelatedItems + data.num_results;
-            $('#num-related-items').text(addCommas(newTotal));
-            $('#num-related-items').metadata().number = newTotal;
+            if(!this.totalsCalced){
+                var numRelatedItems = parseInt($('#num-related-items').metadata().number);
+                var newTotal = numRelatedItems + data.num_results;
+                $('#num-related-items').text(addCommas(newTotal));
+                $('#num-related-items').metadata().number = newTotal;
+                this.totalsCalced = true;
+            }
             
             if (data.num_results == 0 && this.numResults == 0) {
         		if(this.ctype == "Educational Courses"){
