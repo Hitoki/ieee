@@ -1364,7 +1364,7 @@ var Tags = {
             
             // NOTE: This next line causes Firefox to give "script stack space quota is exhausted" error.  Using innerHTML fixes this.
             //var chunkElem = $('<span>' + chunk + '</span>');
-            var chunkElem = $('<span></span>');
+            var chunkElem = $('<div></div>');
             chunkElem[0].innerHTML = chunk;
             
             //log('chunkElem: ');
