@@ -40,7 +40,8 @@ $(document).ready(function(){
     $('#bottom_fade').css('width', tagGalaxyWidth);
 
     // NEWUI
-    $(".startTour").click(function() {                
+    $(".startTour").click(function() {
+        $.cookie('ShowTour', null);
         startTour();
     });
 
