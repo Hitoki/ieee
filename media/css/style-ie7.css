@@ -159,3 +159,11 @@ div.search-container {
 #resource-footer {
   margin-top: 40px;
 }
+
+#societySelect_options li {
+  float: left;
+}
+
+#societyContainer_outter {
+  z-index: 99999;
+}
