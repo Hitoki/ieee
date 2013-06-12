@@ -589,7 +589,6 @@ def ajax_textui_nodes(request):
     @return: The HTML content for all results.
     '''
     log('ajax_textui_nodes()')
-    
     token = request.GET['token']
     
     sector_id = request.GET.get('sector_id', None)
@@ -700,7 +699,7 @@ def ajax_textui_nodes(request):
         'show_clusters': show_clusters,
         'show_terms': show_terms,
     }
-    
+
     if settings.DEBUG_IGNORE_CACHE:
         cache = None
     else:
@@ -727,7 +726,7 @@ def ajax_textui_nodes(request):
     if not cache:
         # Create the cache if it doesn't already exist.
         print 'CACHE MISS: Creating new cache page.'
-        content, node_count_content = _render_textui_nodes(request, sort, search_for, sector_id, sector, society_id, society, cluster_id, cluster, show_clusters, show_terms, request.user.is_staff, page)
+        content, node_count_content = _render_textui_nodes(sort, search_for, sector_id, sector, society_id, society, cluster_id, cluster, show_clusters, show_terms, request.user.is_staff, page)
         cache_content = json.dumps({
             'content': content,
             'node_count_content': node_count_content,
@@ -1265,7 +1264,7 @@ def ajax_javascript_error_log(request):
 
     return HttpResponse('success')
 
-def _render_textui_nodes(request, sort, search_for, sector_id, sector, society_id, society, cluster_id, cluster, show_clusters, show_terms, is_staff, page):
+def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, society, cluster_id, cluster, show_clusters, show_terms, is_staff, page):
 
     order_by = None
     extra_order_by = None
@@ -1607,11 +1606,6 @@ def _render_textui_nodes(request, sort, search_for, sector_id, sector, society_i
         except Society.DoesNotExist:
             society = None
 
-    if request.META['HTTP_REFERER'].endswith('/textui_new'):
-        NEWUI = True
-    else:
-        NEWUI = False
-
     no_results = False
 
     if not num_clusters and not num_tags:
@@ -1645,7 +1639,6 @@ def _render_textui_nodes(request, sort, search_for, sector_id, sector, society_i
         'num_terms': num_terms,
         'sector': sector,
         'society': society,
-        'NEWUI': NEWUI,
         'no_results': no_results,
     })
     
