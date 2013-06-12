@@ -689,7 +689,7 @@ var Tags = {
                     html = '<a href="javascript:Tags.selectTag('+ id +');" onClick="'+ args +'" class='+ level +' rel="nofollow"><span class="tag_icon tag-icon"></span> '+ name +'</a>';
                 } else if (type == 'tag_cluster') {
                     args = "_gaq.push(['_trackEvent', 'Cluster', 'Click', '"+ args +"']);";
-                    html = '<a href="javascript:Tags.selectCluster('+ $(this).data('cluster-args') +');" onClick="'+ args +'" class='+ level +' rel="nofollow"><span class="icon_cluster_sm cluster-icon"></span> '+ name +'</a>';
+                    html = '<a href="javascript:$(\'#tags-live-search\').val(\'\'); Tags.selectCluster('+ $(this).data('cluster-args') +');" onClick="'+ args +'" class='+ level +' rel="nofollow"><span class="icon_cluster_sm cluster-icon"></span> '+ name +'</a>';
                 }
                 if (html !== undefined) {
                     $(this).prepend(html);
