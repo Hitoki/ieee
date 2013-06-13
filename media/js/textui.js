@@ -480,23 +480,23 @@ var Tags = {
             this.page = this.PAGE_SOCIETY
             
             this.societyId = societyId;
-
-            if (reset) {
-                this.sectorId = null;
-                this.clusterId = null;
-                this.nodeType = null;
-            }
-            
-            if (setHash == undefined) {
-                setHash = true;
-            }
-            
-            if (setHash) {
-                //log('setting hash to "' + '/oganization/' + this.societyId + '"');
-                $.history.load('/organization/' + this.societyId);
-            }
-            //log('selectSociety(): calling updateResults().');
         }
+
+        if (reset) {
+            this.sectorId = null;
+            this.clusterId = null;
+            this.nodeType = null;
+        }
+        
+        if (setHash == undefined) {
+            setHash = true;
+        }
+        
+        if (setHash) {
+            //log('setting hash to "' + '/oganization/' + this.societyId + '"');
+            $.history.load('/organization/' + this.societyId);
+        }
+        //log('selectSociety(): calling updateResults().');        
         
         this.updateResults();
         
