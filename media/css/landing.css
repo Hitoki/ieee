@@ -210,7 +210,6 @@ font-weight: normal;
 }
 
 #tag_page p.no-resources {
-padding-left: 26px;
 color: #9F9F9F;
 }
 
@@ -278,6 +277,10 @@ padding-left: 25px;
 span.more-link {
   margin: 5px 0 0 25px;
   display: inline-block;
+}
+
+span.more-link a {
+  margin: 0;
 }
 
 a.featured,
