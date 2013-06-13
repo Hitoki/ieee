@@ -476,12 +476,11 @@ var Tags = {
         //log('selectSociety()');
         //log('  societyId: ' + societyId);
         //log('  setHash: ' + setHash);
-
         if (this.page != this.PAGE_SOCIETY || this.societyId != societyId) {
             this.page = this.PAGE_SOCIETY
             
             this.societyId = societyId;
-            
+
             if (reset) {
                 this.sectorId = null;
                 this.clusterId = null;
