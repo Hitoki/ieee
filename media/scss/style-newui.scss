@@ -2246,24 +2246,23 @@ header {
 }
 
 #no-results-container {
-    width: 100%;
-    text-align: center;
+    width: 500px;
+    text-align: left;
     display: block;
-    position: absolute;
-    top: 30%;
     font-size: 12pt;
-}
-
-#no-results {
-    font-weight: bold;
+    margin: 40px auto 0;
+    white-space: nowrap;
+    strong {
+        text-align: center;
+        display: block;
+    }
 }
 
 #no-results-choices {
     display: block;
-    width: 235px;
-    margin: 0 auto;
     text-align: left;
     list-style-type: disc;
+    margin-left: 20px;
 }
   
 #tag-container {
