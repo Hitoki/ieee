@@ -51,10 +51,20 @@ function LiveSearch(inputElem) {
             } else if ($.trim(self.inputElem.val()).length == 0) {
                 $('#tags-searching-msg').hide();
                 clearTimeout(timer);
-                timer = setTimeout(liveSearch.update,self.options.search_key_delay,null,self);
+                timer = setTimeout(
+                    function() {
+                        liveSearch.update(null,self);
+                    },
+                    self.options.search_key_delay
+                );
             } else {
                 clearTimeout(timer);
-                timer = setTimeout(liveSearch.update,self.options.search_key_delay,null,self);
+                timer = setTimeout(
+                    function() {
+                        liveSearch.update(null,self);
+                    },
+                    self.options.search_key_delay
+                );
             }
         }
     });
@@ -92,6 +102,7 @@ LiveSearch.prototype.update = function(useDelayValue,self) {
 	// Check if the value has changed, or the delay has expired for this value.
     if (value == ""){
         Tags.clearSearchResults();
+        lastVal = self.lastValue = null;
         return;
     }
     if (value != lastVal || value == useDelayValue) {
@@ -208,11 +219,17 @@ LiveSearch.prototype.onResults = function(data) {
     //this.popupElem.html(str);
 }
 
+var tagsLiveSearch;
 function attachLiveSearches(elem) {
     $(elem).find('.live-search').each(function() {
-        new LiveSearch(this);
+        if (this.id == 'tags-live-search') {
+            tagsLiveSearch = new LiveSearch(this);
+        } else {
+            new LiveSearch(this);
+        }
     });
 }
+
 
 $(function() {
     attachLiveSearches(document);

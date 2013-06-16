@@ -279,6 +279,10 @@ span.more-link {
   display: inline-block;
 }
 
+span.more-link a {
+  margin: 0 !important;
+}
+
 a.featured,
 #tag-societies div a,
 #tag-related-tags div a {

@@ -58,7 +58,7 @@ $(document).ready(
                 }
             }
         );
-        $('#multisearch_topics').bind('popupClosed',
+        $('#multisearch_topics').bind('popupClosedDirty',
             function() {
                 var ret = confirm('Save and show updated organizations?')
                 if (ret) {
@@ -68,7 +68,7 @@ $(document).ready(
         );
 
         $('#multisearch_topics').bind('itemRemoved',
-            function() {
+            function(e, i) {
                 var ret = confirm('Save and show updated organizations?')
                 if (ret) {
                     $('input:submit[name="submit1"]').click();

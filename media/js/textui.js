@@ -40,7 +40,8 @@ $(document).ready(function(){
     $('#bottom_fade').css('width', tagGalaxyWidth);
 
     // NEWUI
-    $(".startTour").click(function() {                
+    $(".startTour").click(function() {
+        $.cookie('ShowTour', null);
         startTour();
     });
 
@@ -475,28 +476,27 @@ var Tags = {
         //log('selectSociety()');
         //log('  societyId: ' + societyId);
         //log('  setHash: ' + setHash);
-
         if (this.page != this.PAGE_SOCIETY || this.societyId != societyId) {
             this.page = this.PAGE_SOCIETY
             
             this.societyId = societyId;
-            
-            if (reset) {
-                this.sectorId = null;
-                this.clusterId = null;
-                this.nodeType = null;
-            }
-            
-            if (setHash == undefined) {
-                setHash = true;
-            }
-            
-            if (setHash) {
-                //log('setting hash to "' + '/oganization/' + this.societyId + '"');
-                $.history.load('/organization/' + this.societyId);
-            }
-            //log('selectSociety(): calling updateResults().');
         }
+
+        if (reset) {
+            this.sectorId = null;
+            this.clusterId = null;
+            this.nodeType = null;
+        }
+        
+        if (setHash == undefined) {
+            setHash = true;
+        }
+        
+        if (setHash) {
+            //log('setting hash to "' + '/oganization/' + this.societyId + '"');
+            $.history.load('/organization/' + this.societyId);
+        }
+        //log('selectSociety(): calling updateResults().');        
         
         this.updateResults();
         
@@ -661,6 +661,7 @@ var Tags = {
         $('#tags-live-search').val('');
         //log('clearSearchResults(): calling updateResults().');
         this.updateResults();
+        tagsLiveSearch.lastValue = null;
     },
     
     onLoadResults: function(data) {
@@ -688,7 +689,7 @@ var Tags = {
                     html = '<a href="javascript:Tags.selectTag('+ id +');" onClick="'+ args +'" class='+ level +' rel="nofollow"><span class="tag_icon tag-icon"></span> '+ name +'</a>';
                 } else if (type == 'tag_cluster') {
                     args = "_gaq.push(['_trackEvent', 'Cluster', 'Click', '"+ args +"']);";
-                    html = '<a href="javascript:Tags.selectCluster('+ $(this).data('cluster-args') +');" onClick="'+ args +'" class='+ level +' rel="nofollow"><span class="icon_cluster_sm cluster-icon"></span> '+ name +'</a>';
+                    html = '<a href="javascript:$(\'#tags-live-search\').val(\'\'); Tags.selectCluster('+ $(this).data('cluster-args') +');" onClick="'+ args +'" class='+ level +' rel="nofollow"><span class="icon_cluster_sm cluster-icon"></span> '+ name +'</a>';
                 }
                 if (html !== undefined) {
                     $(this).prepend(html);
@@ -1362,7 +1363,7 @@ var Tags = {
             
             // NOTE: This next line causes Firefox to give "script stack space quota is exhausted" error.  Using innerHTML fixes this.
             //var chunkElem = $('<span>' + chunk + '</span>');
-            var chunkElem = $('<span></span>');
+            var chunkElem = $('<div></div>');
             chunkElem[0].innerHTML = chunk;
             
             //log('chunkElem: ');

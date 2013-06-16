@@ -240,9 +240,10 @@ input.text {
     padding: 10px;
     margin: 3px 35px 0;
     display: none;
-    border-radius: 10px;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px; 
+}
+
+#lightbox .drive {
+    margin-left: 5px;
 }
 
 #content .other-conferences p.desc_odd,
@@ -500,6 +501,8 @@ margin-top: 0;
 
 .overview-label {
    color: #9F9F9F;
+   font-size: 11px;
+   text-transform: uppercase;
 }
 
 #xplore-loading,
