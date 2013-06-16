@@ -487,6 +487,7 @@ class Node(models.Model):
     
     Each tag is a child of any number of sectors and clusters.  It contains no children.
     '''
+    is_active = models.BooleanField(blank=False,default=True)
     name = models.CharField(max_length=500)
     parents = models.ManyToManyField('self', symmetrical=False, related_name='child_nodes', null=True, blank=True)
     'The parent nodes.  The type for this field can be vary depending on the type of this node.'
