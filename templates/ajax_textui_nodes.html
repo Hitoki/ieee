@@ -17,13 +17,6 @@
                 {% if society_id %}
                     <li><a href="javascript:Tags.selectSociety('all');">Search across all organizations</a></li>
                 {% endif %}
-                {% if cluster_id %}
-                    {% if society_id %}
-                        <li><a href="javascript:Tags.selectSociety({{ society_id }},null,1);">Expand search beyond the topic area "{{ cluster }}"</a></li>
-                    {% else %}
-                        <li><a href="javascript:Tags.selectSociety('all',null,1);">Expand search beyond the topic area "{{ cluster }}"</a></li>
-                    {% endif %}
-                {% endif %}
             </ul>
         {% comment %}
         Try {% if search_length > 3 %} entering more or fewer characters or {% endif %}<a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">clearing the filter phrase now</a><br />
