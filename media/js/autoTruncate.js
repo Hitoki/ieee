@@ -122,7 +122,7 @@ function autoTruncate(elems, options) {
             abbr.text(shortText);
             if (!options.no_tooltip) {
                 abbr.attr('title', original_text);
-                abbr.addClass("flyover {position:'left-top', width:640}");
+                abbr.addClass("flyover {position:'left-top', width:640, style:{tip:{corner:false}}}");
             }
             
             if (options.flyover) {
