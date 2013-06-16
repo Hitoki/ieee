@@ -394,6 +394,7 @@ function XploreLoader(elem, showAll, sort, ctype) {
     this.ajaxToken = null;
     this.numResults = 0;
     this.totalsCalced = false;
+    this.resultsGathered = false;
 	
     this.scrollElem.scroll(function() {
         xploreLoader.onScroll();
@@ -508,6 +509,10 @@ XploreLoader.prototype.onLoadData = function(data) {
         this.loadingElem = null;
         this.numResults += data.num_results;
         
+        if (data.num_results == 0 && this.numResults != 0){
+            this.resultsGathered = true;
+        }
+
         if (this.noResultsElem) {
             this.noResultsElem.remove();
             this.noResultsElem = null;
@@ -587,7 +592,7 @@ XploreLoader.prototype.onLoadData = function(data) {
 XploreLoader.prototype.onScroll = function() {
 	var minScrollBottom = 10;
 	var scrollBottom = getScrollBottom(this.scrollElem);
-	if (scrollBottom <= minScrollBottom) {
+	if (scrollBottom <= minScrollBottom && !this.resultsGathered) {
 		this.loadContent();
 	}
 }
