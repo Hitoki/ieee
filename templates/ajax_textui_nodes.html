@@ -5,13 +5,12 @@
     {# Extra message for when there are zero results #}
     {% ifequal child_nodes|length 0 %}
         <span id='no-results-container'>
-            <span id='no-results'>No results</span><br /><br />
-            Try one or more of the following:<br /><br />
+            <strong>No results</strong><br/>
+            Try one or more of the following:<br/><br />
             <ul id='no-results-choices'>
                 {% if search_length > 3 %}
-                    <li>Shorten the search phrase</li>
+                    <li>Shorten or <a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click();">clear the filter phrase</a></li>
                 {% endif %}
-                <li><a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click();">Clear the filter phrase</a></li>
                 {% if cluster_id and society_id %}
                     <li><a href="javascript:Tags.selectSociety({{ society_id }},null,1);">Search across the entire "{{ society.name }}" organization</li></a>
                 {% endif %}
