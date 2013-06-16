@@ -63,6 +63,12 @@ $(document).ready(function(){
             Tags.selectSociety(societyDropDown.val());
         });
     }
+    $('.org-clear').live(
+        'click',
+        function(){
+            societyDropDown.setSelectedIndex(0);
+        }
+    );
 
 
     //Removes hover state from selected text when other option is chosen in dropdowns

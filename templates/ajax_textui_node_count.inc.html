@@ -21,7 +21,7 @@
             {% endif %}
             {% if cluster %} in the topic area "{{ cluster.name }}" <a href="javascript:Tags.selectSociety({% if society %}'{{ society.id }}'{% else %}'all'{% endif %},null,1);" class="filter-clear"></a></span>{% endif %}
             {% if sector %} in the industry sector "{{ sector }}"{% endif %}
-            {% if society %} in the organization "{{ society }}" <a href="javascript:societyDropDown.setSelectedIndex(0);" class="filter-clear"></a>{% endif %}
+            {% if society %} in the organization "{{ society }}" <span class="filter-clear org-clear"></span>{% endif %}
         </p>    
     {% endif %}
 {% else %}
@@ -37,6 +37,6 @@
         {% endif %}
         {% if cluster %} in the topic area "{{ cluster.name }}" <a href="javascript:Tags.selectSociety({% if society %}'{{ society.id }}'{% else %}'all'{% endif %},null,1);" class="filter-clear"></a></span>{% endif %}
         {% if sector %} in the industry sector "{{ sector }}"{% endif %}
-        {% if society %} in the organization "{{ society }}" <a href="javascript:societyDropDown.setSelectedIndex(0);" class="filter-clear"></a>{% endif %}
+        {% if society %} in the organization "{{ society }}" <span class="filter-clear org-clear"></span>{% endif %}
     </p>
 {% endif %}
