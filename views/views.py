@@ -379,7 +379,7 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     related_items_count = sectors.count() + related_tags.count() + societies.count() + conf_count + periodicals.count() + standards.count() + totaledufound+ totalfound
     
     if resource_type == 'jobs' or resource_type == 'all':
-        jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&format=json" % urllib.urlencode({"kwsMustContain": tag.name})
+        jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&format=json" % urllib.urlencode({"kwsMustContainPhrase": tag.name})
         file1 = urllib2.urlopen(jobsUrl).read()
         jobsJson = json.loads(file1)
         jobsCount = jobsJson.get('Total')

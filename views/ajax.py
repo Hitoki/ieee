@@ -356,7 +356,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         context['loaded'] = True
 
     if tab == 'job':
-        jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&format=json" % urllib.urlencode({"kwsMustContain": tag.name})
+        jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&format=json" % urllib.urlencode({"kwsMustContainPhrase": tag.name})
         file1 = urllib2.urlopen(jobsUrl).read()
         jobsJson = json.loads(file1)
         jobsCount = jobsJson.get('Total')
@@ -466,7 +466,7 @@ def ajax_jobs_results(request):
     
     #jobs_results, jobs_error, num_results = _get_xplore_results(name, show_all=show_all, offset=offset, sort=sort, sort_desc=sort_desc, ctype=ctype)
         
-    jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&page=%s&format=json" % (urllib.urlencode({"kwsMustContain": tag.name}), offset)
+    jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&page=%s&format=json" % (urllib.urlencode({"kwsMustContainPhrase": tag.name}), offset)
     file1 = urllib2.urlopen(jobsUrl).read()
     jobsJson = json.loads(file1)
     jobsCount = jobsJson.get('Total')
