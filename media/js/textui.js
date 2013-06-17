@@ -535,7 +535,7 @@ var Tags = {
         
         var search_for;
 
-        if ($('#tags-live-search').val() == $('#tags-live-search').data('default')) {
+        if ($('#tags-live-search').val() == $('#tags-live-search').attr('placeholder')) {
             search_for = null;
         } else {
             search_for = $('#tags-live-search').val();
@@ -888,7 +888,7 @@ var Tags = {
         
         var search_for;
 
-        if ($('#tags-live-search').val() == $('#tags-live-search').data('default')) {
+        if ($('#tags-live-search').val() == $('#tags-live-search').attr('placeholder')) {
             search_for = null;
         } else {
             search_for = $('#tags-live-search').val();
