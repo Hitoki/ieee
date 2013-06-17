@@ -677,7 +677,7 @@ var Tags = {
             var content = $('<div>').append(data.content);
             content.find('div').each(function(){
                 var html;
-                var args;
+                var args ="";
                 var level = $(this).data('tag-level');
                 var id = $(this).data('tag-id');
                 var name = $(this).data('tag-name');
@@ -688,13 +688,13 @@ var Tags = {
                     if ($(this).data('tag-score') == 1) {
                         $(this).addClass('node-taxonomy-term');
                     }
-                    args = ''; // "_gaq.push(['_trackEvent', 'Terms', 'Click', '"+ name +"']);";
+                    args = "_gaq.push(['_trackEvent', 'Terms', 'Click', '"+ name +"']);";
                     html = '<a href="javascript:Tags.selectTag('+ id +');" onClick="'+ args +'" class='+ level +' rel="nofollow"><span class="tag_icon tag-icon"></span> '+ name +'</a>';
                 } else if (type == 'tag') {
-                    args = ''; // "_gaq.push(['_trackEvent', 'Tags', 'Click', '"+ name +"']);";
+                    args = "_gaq.push(['_trackEvent', 'Tags', 'Click', '"+ name +"']);";
                     html = '<a href="javascript:Tags.selectTag('+ id +');" onClick="'+ args +'" class='+ level +' rel="nofollow"><span class="tag_icon tag-icon"></span> '+ name +'</a>';
                 } else if (type == 'tag_cluster') {
-                    args = ''; // "_gaq.push(['_trackEvent', 'Cluster', 'Click', '"+ args +"']);";
+                    args = "_gaq.push(['_trackEvent', 'Cluster', 'Click', '"+ args +"']);";
                     html = '<a href="javascript:$(\'#tags-live-search\').val(\'\'); Tags.selectCluster('+ $(this).data('cluster-args') +');" onClick="'+ args +'" class='+ level +' rel="nofollow"><span class="icon_cluster_sm cluster-icon"></span> '+ name +'</a>';
                 }
                 if (html !== undefined) {
