@@ -167,3 +167,7 @@ div.search-container {
 #societyContainer_outter {
   z-index: 99999;
 }
+
+.customSelectContainer .icomoon-icon {
+  display: none;
+}
