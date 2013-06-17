@@ -60,7 +60,7 @@ $(document).ready(function(){
     societyDropDown = $('#societySelect').imageDropdown({'selectList': $("ul#societySelect_options"), 'initialIndex': 0});
     if (societyDropDown) {
         societyDropDown.bind('change', function(){
-            Tags.selectSociety(societyDropDown.val());
+            Tags.selectSociety(societyDropDown.val(), false);
         });
     }
     $('.org-clear').live(
