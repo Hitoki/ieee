@@ -590,15 +590,20 @@ XploreLoader.prototype.onLoadData = function(data) {
 }
 
 XploreLoader.prototype.onScroll = function() {
-	var minScrollBottom = 10;
-	var scrollBottom = getScrollBottom(this.scrollElem);
-	if (scrollBottom <= minScrollBottom && !this.resultsGathered) {
-		this.loadContent();
-	}
+	if (!this.showAll) {
+        var minScrollBottom = 10;
+    	var scrollBottom = getScrollBottom(this.scrollElem);
+    	if (scrollBottom <= minScrollBottom && !this.resultsGathered) {
+    		this.loadContent();
+    	}
+    }
 }
 
-function attachXploreResults(elem, ctype) {
-    new XploreLoader(elem, null, null, ctype);
+function attachXploreResults(elem, ctype, showAll) {
+    if (showAll == undefined) {
+        showAll = null;
+    }
+    new XploreLoader(elem, showAll, null, ctype);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

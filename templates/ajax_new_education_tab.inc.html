@@ -8,7 +8,7 @@
     }
 
     $(function(){
-        attachXploreResults('#new-education-results-container', 'Educational Courses');
+        attachXploreResults('#new-education-results-container', 'Educational Courses', true);
         attachTvResults('#new-tv-results-container');
 
         $('#education-jumps').change(function(){
@@ -17,9 +17,10 @@
               // Call the scroll function
             goToByScroll($(this).val());           
         });
+        $('#education-ebooks').load("/ajax/tag_content/{{ tag.id }}/textui/education");
     });
 </script>
-<div class="group">
+<div class="group" style="height:370px;">
     <div class="print-resource">
         <select id='education-jumps'>
             <option>Jump to</option>
@@ -29,24 +30,21 @@
         </select>
     </div>
     <div id="new-education-results-container" class="{ tagId: {{ tag.id }} }">
-        <div id="education-articles" class="group">
+        <div id="education-articles" class="group" style="height:100%;">
             <h3>Articles</h3>
             <ul>
                 {# NOTE: This will be replaced by AJAX. #}
             </ul>
         </div>
     <div id="new-tv-results-container" class="{ tagId: {{ tag.id }} }">
-        <div id="education-videos" class="group">
+        <div id="education-videos" class="group" style="height:100%;">
             <h3>Videos</h3>
             <ul>
                 {# NOTE: This will be replaced by AJAX. #}
             </ul>
         </div>
     </div>
-        <div id="education-ebooks" class="group">
-            <ul>
-                {# NOTE: This will be replaced by AJAX. #}
-            </ul>
+        <div id="education-ebooks" class="group" style="height:100%;">            
         </div>    
     </div>
 </div>

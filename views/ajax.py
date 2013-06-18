@@ -355,6 +355,19 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         tab_template = 'ajax_organizations_tab.inc.html'
         context['loaded'] = True
 
+    if tab == 'education':
+        standards_resource_nodes = tag.resource_nodes.filter(resource__resource_type__name=ResourceType.STANDARD)
+        standards = []
+        for standards_resource_node in standards_resource_nodes:
+            standard = standards_resource_node.resource
+            standard.is_machine_generated = standards_resource_node.is_machine_generated
+            standards.append(standard)
+
+        counts += len(standards)
+        context['ebooks'] = standards
+        tab_template = 'ajax_ebook_results.inc.html'
+        context['loaded'] = True
+
     if tab == 'job':
         jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&format=json" % urllib.urlencode({"kwsMustContainPhrase": tag.name})
         file1 = urllib2.urlopen(jobsUrl).read()
