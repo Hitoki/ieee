@@ -90,7 +90,7 @@ function isCompatibleBrowser() {
     
     var v = $.browser.version.number();
     return (
-    	( $.browser.msie    && v >= 7 ) ||
+    	( $.browser.msie    && v >= 8 ) ||
     	( $.browser.firefox && v >= 3 ) ||
 		( $.browser.safari  && v >= 4 ) ||
 		( $.browser.chrome  && v >= 4 )
