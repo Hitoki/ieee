@@ -1,0 +1,52 @@
+<script type="text/javascript">
+    function goToByScroll(id){
+          // Reove "link" from the ID
+          // Scroll
+        $('html,body').animate({
+            scrollTop: $(id).offset().top},
+            'slow');
+    }
+
+    $(function(){
+        attachXploreResults('#new-education-results-container', 'Educational Courses');
+        attachTvResults('#new-tv-results-container');
+
+        $('#education-jumps').change(function(){
+              // Prevent a page reload when a link is pressed
+            $(this).preventDefault(); 
+              // Call the scroll function
+            goToByScroll($(this).val());           
+        });
+    });
+</script>
+<div class="group">
+    <div class="print-resource">
+        <select id='education-jumps'>
+            <option>Jump to</option>
+            <option value='#education-articles'>Articles</option>
+            <option value='#education-videos'>Videos</option>
+            <option value='#education-ebooks'>E-Books</option>
+        </select>
+    </div>
+    <div id="new-education-results-container" class="{ tagId: {{ tag.id }} }">
+        <div id="education-articles" class="group">
+            <h3>Articles</h3>
+            <ul>
+                {# NOTE: This will be replaced by AJAX. #}
+            </ul>
+        </div>
+    <div id="new-tv-results-container" class="{ tagId: {{ tag.id }} }">
+        <div id="education-videos" class="group">
+            <h3>Videos</h3>
+            <ul>
+                {# NOTE: This will be replaced by AJAX. #}
+            </ul>
+        </div>
+    </div>
+        <div id="education-ebooks" class="group">
+            <ul>
+                {# NOTE: This will be replaced by AJAX. #}
+            </ul>
+        </div>    
+    </div>
+</div>
