@@ -1,37 +1,27 @@
 <script type="text/javascript">
-    function goToByScroll(id){
-          // Reove "link" from the ID
-          // Scroll
-        $('html,body').animate({
-            scrollTop: $(id).offset().top},
-            'slow');
-    }
 
     $(function(){
         attachXploreResults('#new-education-results-container', 'Educational Courses', true);
         attachTvResults('#new-tv-results-container');
 
         $('#education-jumps').change(function(){
-              // Prevent a page reload when a link is pressed
-            $(this).preventDefault(); 
-              // Call the scroll function
-            goToByScroll($(this).val());           
+            $($(this).val()).get(0).scrollIntoView();
         });
         $('#education-ebooks').load("/ajax/tag_content/{{ tag.id }}/textui/education");
     });
 </script>
-<div class="group" style="height:370px;">
-    <div class="print-resource">
-        <select id='education-jumps'>
-            <option>Jump to</option>
-            <option value='#education-articles'>Articles</option>
-            <option value='#education-videos'>Videos</option>
-            <option value='#education-ebooks'>E-Books</option>
-        </select>
-    </div>
+<div class="print-resource" style="margin-top: 0;">
+    <select id='education-jumps'>
+        <option>Jump to</option>
+        <option value='#education-articles'>Articles</option>
+        <option value='#education-videos'>Videos</option>
+        <option value='#education-ebooks'>E-Books</option>
+    </select>
+</div>
+<div class="group" style="height:338px;margin-top: 32px;">
     <div id="new-education-results-container" class="{ tagId: {{ tag.id }} }">
         <div id="education-articles" class="group" style="height:100%;">
-            <h3>Articles</h3>
+            <h3>Articles</h3><span id="num-education-results"></span>
             <ul>
                 {# NOTE: This will be replaced by AJAX. #}
             </ul>
