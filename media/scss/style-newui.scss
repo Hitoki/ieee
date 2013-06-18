@@ -65,6 +65,15 @@ li {
 .icon-new-tab {
     margin-left: 5px;
 }
+
+#misc-bar .icon-cancel {
+    color: $white;
+    cursor: pointer;
+    text-decoration: none;
+    &:hover {
+        color: $orange;
+    }
+}
   
 // Main Structure //
 table.main {

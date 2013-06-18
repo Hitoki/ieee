@@ -155,17 +155,3 @@
 .lightbox-close:hover{
 	background-position: -203px -163px ;
 }
-
-.filter-clear {
-    background-position: -373px -104px;
-	width: 17px;
-	height: 17px;
-}
-
-.filter-clear:hover {
-    background-position: -373px -124px;
-	width: 17px;
-	height: 17px;
-	cursor: pointer;
-}
-

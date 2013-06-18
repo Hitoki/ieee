@@ -19,9 +19,9 @@
                 {% endif %}
                 </span>
             {% endif %}
-            {% if cluster %} in the topic area "{{ cluster.name }}" <a href="javascript:Tags.selectSociety({% if society %}'{{ society.id }}'{% else %}'all'{% endif %},null,1);" class="filter-clear"></a></span>{% endif %}
+            {% if cluster %} in the topic area "{{ cluster.name }}" <a href="javascript:Tags.selectSociety({% if society %}'{{ society.id }}'{% else %}'all'{% endif %},null,1);" class="filter-clear icon-cancel"></a></span>{% endif %}
             {% if sector %} in the industry sector "{{ sector }}"{% endif %}
-            {% if society %} in the organization "{{ society }}" <span class="filter-clear org-clear"></span>{% endif %}
+            {% if society %} in the organization "{{ society }}" <span class="filter-clear org-clear icon-cancel"></span>{% endif %}
         </p>    
     {% endif %}
 {% else %}
@@ -35,8 +35,8 @@
         {% if num_terms %}
              ({{ num_terms|intcomma }} terms)
         {% endif %}
-        {% if cluster %} in the topic area "{{ cluster.name }}" <a href="javascript:Tags.selectSociety({% if society %}'{{ society.id }}'{% else %}'all'{% endif %},null,1);" class="filter-clear"></a></span>{% endif %}
+        {% if cluster %} in the topic area "{{ cluster.name }}" <a href="javascript:Tags.selectSociety({% if society %}'{{ society.id }}'{% else %}'all'{% endif %},null,1);" class="filter-clear icon-cancel"></a></span>{% endif %}
         {% if sector %} in the industry sector "{{ sector }}"{% endif %}
-        {% if society %} in the organization "{{ society }}" <span class="filter-clear org-clear"></span>{% endif %}
+        {% if society %} in the organization "{{ society }}" <span class="filter-clear org-clear icon-cancel"></span>{% endif %}
     </p>
 {% endif %}
