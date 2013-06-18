@@ -8,7 +8,7 @@
             <strong>No results</strong><br/>
             Try one or more of the following:<br/><br />
             <ul id='no-results-choices'>
-                {% if search_length > 3 %}
+                {% if search_length > 2 %}
                     <li>Shorten or <a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click();">clear the filter phrase</a></li>
                 {% endif %}
                 {% if cluster_id and society_id %}
@@ -19,7 +19,7 @@
                 {% endif %}
             </ul>
         {% comment %}
-        Try {% if search_length > 3 %} entering more or fewer characters or {% endif %}<a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">clearing the filter phrase now</a><br />
+        Try {% if search_length > 2 %} entering more or fewer characters or {% endif %}<a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">clearing the filter phrase now</a><br />
         {% if society_id %}
             <a href="javascript:Tags.selectSociety('all');">Search all organizations</a>
         {% endif %}
