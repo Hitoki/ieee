@@ -134,7 +134,7 @@ function isValidEmailAddress(emailAddress) {
                 {% endif %}
                 <li id="periodicals-tab"><a href="" rel="nofollow">Periodicals <span class="right">{{periodicals|length}}</span></a></li>
                 <li id="standards-tab"><a href="" rel="nofollow">Standards <span class="right">{{standards|length}}</span></a></li>
-                <li id="educations-tab"><a href="" rel="nofollow">Education <span class="right" id="num-new-education-results"></span></a></li>
+                <li id="educations-tab"><a href="" rel="nofollow">Education <span class="right { number: 0 }" id="num-education-total-results"></span></a></li>
                 {% comment %}
                 <li id="patents-tab" style="display:none"><a href="" rel="nofollow">Patents <span class="right">{{patents|length}}</span></a></li>
                 <li id="industry-sectors-tab" ><a href="" rel="nofollow">Industry Topics <span class="right">{{ parent_nodes|length }}</span></a></li>
