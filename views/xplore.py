@@ -2,6 +2,7 @@ import cgi
 from django.http import HttpResponse
 from django.utils import simplejson as json
 from logging import debug as log
+from html2text import html2text
 import urllib
 import urllib2
 import re
@@ -183,6 +184,8 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
                 rank = getElementValueByTagName(document1, 'rank')
                 title = getElementValueByTagName(document1, 'title')
                 abstract = getElementValueByTagName(document1, 'abstract')
+                if abstract != None:
+                    abstract = html2text(abstract)
                 pdf = getElementValueByTagName(document1, 'pdf')
                 authors = getElementValueByTagName(document1, 'authors')
                 pub_title = getElementValueByTagName(document1, 'pubtitle')

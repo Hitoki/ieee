@@ -1,7 +1,3 @@
-<style>
-    .no-education-results {color: grey};
-</style>
-
 <script type="text/javascript">
 
     $(function(){
@@ -14,28 +10,30 @@
         $('#education-ebooks').load("/ajax/tag_content/{{ tag.id }}/textui/education");
     });
 </script>
-<div class="print-resource" style="margin-top: 0;">
-    <select id='education-jumps'>
-        <option>Jump to</option>
-        <option id='jump-to-articles' value='#education-articles'>Articles</option>
-        <option id='jump-to-videos' value='#education-videos'>Videos</option>
-        <option id='jump-to-ebooks' value='#education-ebooks'>E-Books</option>
-    </select>
-</div>
-<div class="group" style="height:338px;margin-top: 32px;">
-    <div id="new-education-results-container" class="{ tagId: {{ tag.id }} }">
-        <div id="education-articles" class="group" style="height:100%;">
-            <h3 style='border-bottom:none;'>Articles (<span id="num-education-results"></span>)</h3>
-            <ul>
-                {# NOTE: This will be replaced by AJAX. #}
-            </ul>
-        </div>
-    <div id="new-tv-results-container" class="{ tagId: {{ tag.id }} }">
-        <div id="education-videos" class="group" style="height:100%;">
-            <h3 style='border-bottom:none;'>Videos (<span id="num-tv-results"></span>)</h3>
-        </div>
+<div id="education-results-container">
+    <div class="print-resource">
+        <select id='education-jumps'>
+            <option>Jump to</option>
+            <option id='jump-to-articles' value='#education-articles'>Articles</option>
+            <option id='jump-to-videos' value='#education-videos'>Videos</option>
+            <option id='jump-to-ebooks' value='#education-ebooks'>E-Books</option>
+        </select>
     </div>
-        <div id="education-ebooks" class="group" style="height:100%;">            
-        </div>    
+    <div class="group">
+        <div id="new-education-results-container" class="{ tagId: {{ tag.id }} }">
+            <div id="education-articles" class="group">
+                <h3 style='border-bottom:none;'>Articles (<span id="num-education-results"></span>)</h3>
+                <ul>
+                    {# NOTE: This will be replaced by AJAX. #}
+                </ul>
+            </div>
+        <div id="new-tv-results-container" class="{ tagId: {{ tag.id }} }">
+            <div id="education-videos" class="group">
+                <h3 style='border-bottom:none;'>Videos (<span id="num-tv-results"></span>)</h3>
+            </div>
+        </div>
+            <div id="education-ebooks" class="group">            
+            </div>    
+        </div>
     </div>
 </div>
