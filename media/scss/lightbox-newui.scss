@@ -643,6 +643,7 @@ margin-top: 0;
        width: 687px;
        height: 46px;
        text-align: right;
+       overflow: hidden;
        &.success {
            background-color: $green;
            text-align: center;
