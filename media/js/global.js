@@ -536,9 +536,9 @@ XploreLoader.prototype.onLoadData = function(data) {
             var totalElem;
 
             if(this.ctype == "Educational Courses"){
+                $('option#jump-to-articles').append('&nbsp;(' + addCommas(data.num_results) + ')');
                 if(this.numResults != 0 && data.num_results != 0){
                     $('#num-education-results').text(addCommas(data.num_results));
-                    $('option#jump-to-articles').append('&nbsp;(' + addCommas(data.num_results) + ')');
                 }
                 totalElem = $('#education-totals');
 		   
