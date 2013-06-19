@@ -559,9 +559,9 @@ XploreLoader.prototype.onLoadData = function(data) {
             
             if (data.num_results == 0 && this.numResults == 0) {
         		if(this.ctype == "Educational Courses"){
-        		    $('#num-education-results').text('0');
+        		    $('#num-education-results').text('0').parent('h3').addClass('no-education-results');
         		    $('#education-results-container .print-resource').remove(); 
-        		    this.listElem.html('<p class="no-resources">No educational resources are currently tagged ' + $('#tag-name').text() + '</p>');
+        		    //this.listElem.html('<p class="no-resources">No educational resources are currently tagged ' + $('#tag-name').text() + '</p>');
         		} else {
         		    $('#num-xplore-results').text('0');
         		    $('#xplore-results-container .print-resource').remove(); 
@@ -819,9 +819,12 @@ TvLoader.prototype.onLoadData = function(data) {
 
             $('#num-tv-results').text(addCommas(data.num_results));
 
+            
             if (data.num_results == 0) {
-                this.noResultsElem = $('<p class="no-resources">No videos are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
+                $('#num-tv-results').parent('h3').addClass('no-education-results');
+                //this.noResultsElem = $('<p class="no-resources">No videos are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
             }
+            
             
             // Showing {{ xplore_results|length }} of {{ totalfound|intcomma }} results 
         }

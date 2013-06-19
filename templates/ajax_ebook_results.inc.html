@@ -6,11 +6,11 @@
         if (!isNaN(newNum)){        
             count += newNum;
             //$("#num-related-items").text(count);       
-            $('#num-related-items').metadata().number = count; 
+            $('#num-related-items').metadata().number = count;
         }
     });
 </script>                    
-<h3>E-books <span>({{ ebooks|length }})</span></h3>
+<h3 {% if not ebooks %}class='no-education-results'{% endif %}>E-books <span>({{ ebooks|length }})</span></h3>
     <ul>
         {% if loaded %}   
             {% if ebooks|length %}
