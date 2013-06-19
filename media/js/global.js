@@ -539,6 +539,10 @@ XploreLoader.prototype.onLoadData = function(data) {
                 $('option#jump-to-articles').append('&nbsp;(' + addCommas(data.num_results) + ')');
                 if(this.numResults != 0 && data.num_results != 0){
                     $('#num-education-results').text(addCommas(data.num_results));
+                    var currentEdCount = parseInt($('#num-education-total-results').metadata().number);
+                    var newEdCount = currentEdCount + data.num_results;
+                    $('#num-education-total-results').metadata().number = newEdCount;
+                    $('#num-education-total-results').text(addCommas(newEdCount));
                 }
                 totalElem = $('#education-totals');
 		   
@@ -820,6 +824,10 @@ TvLoader.prototype.onLoadData = function(data) {
 
             $('#num-tv-results').text(addCommas(data.num_results));
             $('option#jump-to-videos').append('&nbsp;(' + addCommas(data.num_results) + ')');
+            var currentEdCount = parseInt($('#num-education-total-results').metadata().number);
+            var newEdCount = currentEdCount + data.num_results;
+            $('#num-education-total-results').metadata().number = newEdCount;
+            $('#num-education-total-results').text(addCommas(newEdCount));            
 
             
             if (data.num_results == 0) {
