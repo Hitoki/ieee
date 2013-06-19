@@ -1073,6 +1073,7 @@ class ResourceType(NamedType):
     EXPERT = 'expert'
     PERIODICAL = 'periodical'
     STANDARD = 'standard'
+    EBOOK = 'ebook'
 
 class ResourceManager(models.Manager):
     def get_conferences(self):
