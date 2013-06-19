@@ -2400,6 +2400,7 @@ a#zenbox_tab {
     line-height: 1.5;
     z-index: 9999999;
     margin-top: 5px;
+    background: rgba(0,0,0,0.85);
     @include custom-border-radius (0, 0, 0, 0);
     ul {
         margin: 15px;
