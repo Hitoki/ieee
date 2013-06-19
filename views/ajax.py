@@ -532,9 +532,9 @@ def ajax_tv_results(request):
     dev_url = apixml.find('url_dev').text
 
     tv_xml = fromstring(urllib2.urlopen(dev_url).read())
-    tvCount = tv_xml.find('count').text
 
     results = tv_xml.findall('search-item')
+    tvCount = len(results)
 
     tvHtml = ""
     for result in results:

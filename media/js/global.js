@@ -817,6 +817,8 @@ TvLoader.prototype.onLoadData = function(data) {
             
             resizeLightboxTab();
 
+            $('#num-tv-results').text(addCommas(data.num_results));
+
             if (data.num_results == 0) {
                 this.noResultsElem = $('<p class="no-resources">No videos are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
             }
