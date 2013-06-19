@@ -565,11 +565,11 @@ XploreLoader.prototype.onLoadData = function(data) {
             if (data.num_results == 0 && this.numResults == 0) {
         		if(this.ctype == "Educational Courses"){
         		    $('#num-education-results').text('0').parent('h3').addClass('no-education-results');
-        		    $('#education-results-container .print-resource').remove(); 
+        		    //$('#education-results-container .print-resource').remove(); 
         		    //this.listElem.html('<p class="no-resources">No educational resources are currently tagged ' + $('#tag-name').text() + '</p>');
         		} else {
         		    $('#num-xplore-results').text('0');
-        		    $('#xplore-results-container .print-resource').remove(); 
+        		    //$('#xplore-results-container .print-resource').remove(); 
                     this.noResultsElem = $('<p class="no-resources">No Xplore Articles are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
         		}
 
