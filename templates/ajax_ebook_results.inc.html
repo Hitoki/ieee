@@ -8,9 +8,10 @@
             //$("#num-related-items").text(count);       
             $('#num-related-items').metadata().number = count;
         }
+        $('option#jump-to-ebooks').append('&nbsp;({{ebooks|length}})');
     });
 </script>                    
-<h3 {% if not ebooks %}class='no-education-results'{% endif %}>E-books <span>({{ ebooks|length }})</span></h3>
+<h3 {% if not ebooks %}class='no-education-results'{% endif %} style='border-bottom:none;'>E-books <span>({{ ebooks|length }})</span></h3>
     <ul>
         {% if loaded %}   
             {% if ebooks|length %}

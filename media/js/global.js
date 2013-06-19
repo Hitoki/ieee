@@ -538,6 +538,7 @@ XploreLoader.prototype.onLoadData = function(data) {
             if(this.ctype == "Educational Courses"){
                 if(this.numResults != 0 && data.num_results != 0){
                     $('#num-education-results').text(addCommas(data.num_results));
+                    $('option#jump-to-articles').append('&nbsp;(' + addCommas(data.num_results) + ')');
                 }
                 totalElem = $('#education-totals');
 		   
@@ -818,6 +819,7 @@ TvLoader.prototype.onLoadData = function(data) {
             resizeLightboxTab();
 
             $('#num-tv-results').text(addCommas(data.num_results));
+            $('option#jump-to-videos').append('&nbsp;(' + addCommas(data.num_results) + ')');
 
             
             if (data.num_results == 0) {
