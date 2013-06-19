@@ -4254,6 +4254,8 @@ def list_resources(request, type1):
         type1 = 'standard'
     elif type1 == 'periodicals':
         type1 = 'periodical'
+    elif type1 == 'ebooks':
+        type1 = 'ebook'
     else:
         raise Exception('Unknown type "%s"' % type1)
         
