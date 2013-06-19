@@ -356,15 +356,15 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         context['loaded'] = True
 
     if tab == 'education':
-        standards_resource_nodes = tag.resource_nodes.filter(resource__resource_type__name=ResourceType.STANDARD)
-        standards = []
-        for standards_resource_node in standards_resource_nodes:
-            standard = standards_resource_node.resource
-            standard.is_machine_generated = standards_resource_node.is_machine_generated
-            standards.append(standard)
+        ebooks_resource_nodes = tag.resource_nodes.filter(resource__resource_type__name=ResourceType.EBOOK)
+        ebooks = []
+        for ebooks_resource_node in ebooks_resource_nodes:
+            ebook = ebooks_resource_node.resource
+            ebook.is_machine_generated = ebooks_resource_node.is_machine_generated
+            ebooks.append(ebook)
 
-        counts += len(standards)
-        context['ebooks'] = standards
+        counts += len(ebooks)
+        context['ebooks'] = ebooks
         tab_template = 'ajax_ebook_results.inc.html'
         context['loaded'] = True
 
