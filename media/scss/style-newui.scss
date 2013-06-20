@@ -318,6 +318,7 @@ ul#view-header li {
     float: left;
     margin: 5px 5px 10px 0;
     overflow: auto;
+    display: none;
 }
   
 #left-column-border {
@@ -1751,6 +1752,8 @@ div.group ul li:first-child {
         margin-left: 5px;
         outline: none;
         width: 168px;
+        height: 18px;
+        vertical-align: top;
     }
 }
   
@@ -2071,7 +2074,7 @@ width: 165px;
     border: 1px solid $primaryColor;
     cursor: pointer;
     list-style-position: outside;
-    z-index: 999999; 
+    z-index: 9997; 
     span {
         margin-left: 4px;   
     }
@@ -2196,7 +2199,7 @@ header {
 }
   
 #inner-container {
-    min-width: 1100px;
+    min-width: 1130px;
     min-height: 100%;
     margin: 0 auto;
     position: relative;
@@ -2213,6 +2216,8 @@ header {
 #tag-tools {
     background-color: $primaryColor;
     color: $white;
+    position: relative;
+    z-index: 9998;
     p#tag-and-cluster-counts {
        margin: 0;
        font-size: 12pt;
@@ -2400,6 +2405,7 @@ a#zenbox_tab {
     line-height: 1.5;
     z-index: 9999999;
     margin-top: 5px;
+    background: rgba(0,0,0,0.85);
     @include custom-border-radius (0, 0, 0, 0);
     ul {
         margin: 15px;

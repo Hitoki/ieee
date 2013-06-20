@@ -48,38 +48,10 @@
 
             $('#tags-live-search').focus(function() {
                 $(this).parent().addClass('focus');
-            });
-
-            $('#tags-live-search').blur(function() {
+            }).blur(function() {
                 $(this).parent().removeClass('focus');
             });
              
-            $(".live-search-clear").hover(function(){
-                $(".live-search").addClass("clear-hover");
-            }, function(){ 
-                $(".live-search").removeClass("clear-hover");
-            });
-             
-            // Attach the zoom slider.
-            $("#textui-zoom-slider").slider({
-                min: 50,
-                max: 150,
-                value: 100,
-                orientation: 'vertical',
-                slide: function(e, ui) {
-                    $('#textui-zoom-value').text(ui.value + '%');
-                },
-                change: function(e, ui) {
-                    $('#textui-zoom-value').text(ui.value + '%');
-                    Tags.updateZoom();
-                }    
-            });
-             
-            // Attach event to default-zoom image.
-            $('#textui-zoom-default-zoom').click(function() {
-                $('#textui-zoom-slider').slider('value', 100);
-            });
-  
             var show_clusters = $.cookie('show_clusters');
             if (show_clusters == null) {
                 // Set the default.
@@ -100,10 +72,7 @@
             }
             $('#show-terms').attr('checked', show_terms);
              
-            Tags.init();
-             
-            $('#left-column').hide();
-             
+            Tags.init();             
         });
 
     // Starts tour when help button is clicked.
@@ -141,7 +110,7 @@
     <li data-id="tag-and-cluster-counts">Technology Navigator organizes Engineering, Science &amp; Technology by topics. Multiple related topics are grouped together into topic areas.</li>
     <li data-id="societySelect">You can search across all of IEEE's organizations, or focus in on any one of them.</li>
     <li data-id="textui-tags-search">Narrow the results by searching for topics that contain your keyword.</li>
-    <li data-id="sortContainer_outter" class="sortStop" data-options="">Order topics by alpha, overall linkages, or more detailed statistics.</li>
+    <li data-id="sortContainer_outter" class="sortStop" data-options="">Order topics alphabetically, by resource, related topic, or by IEEE organization.</li>
     <li data-id="textui-tags-search" class="lastStop" data-options="tipLocation:top" data-button="OK, let's do this!">
         Your matching topic areas and topics will appear here. Click on a topic area to see the topics it contains. Click on a topic to see all of its related related IEEE resources:
         <ul>
@@ -275,11 +244,6 @@
                     </div>
                     <div id="tags" class="alt-box-pad"></div>
                     {% comment %}<div id="bottom_fade"></div>{% endcomment %}
-                </div>
-                <div id="textui-zoom-container" style="display:none">
-                    <div id="textui-zoom-slider"></div>
-                    <div id="textui-zoom-value">100%</div>
-                    <span id="textui-zoom-default-zoom" style="display:none">Reset</span>
                 </div>
             </div>
         </div>
