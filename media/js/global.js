@@ -979,6 +979,7 @@ $(function() {
             divElem.css('border', '1px solid black');
             divElem.css('top', '0');
             divElem.css('left', '0');
+            divElem.css('z-index', '99999');
             divElem.html(XMLHttpRequest["responseText"]);
             
             // Log the error

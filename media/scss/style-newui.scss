@@ -2074,7 +2074,7 @@ width: 165px;
     border: 1px solid $primaryColor;
     cursor: pointer;
     list-style-position: outside;
-    z-index: 999999; 
+    z-index: 9997; 
     span {
         margin-left: 4px;   
     }
@@ -2217,7 +2217,7 @@ header {
     background-color: $primaryColor;
     color: $white;
     position: relative;
-    z-index: 99999;
+    z-index: 9998;
     p#tag-and-cluster-counts {
        margin: 0;
        font-size: 12pt;
