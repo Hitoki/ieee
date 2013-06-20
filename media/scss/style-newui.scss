@@ -318,6 +318,7 @@ ul#view-header li {
     float: left;
     margin: 5px 5px 10px 0;
     overflow: auto;
+    display: none;
 }
   
 #left-column-border {
@@ -1751,6 +1752,8 @@ div.group ul li:first-child {
         margin-left: 5px;
         outline: none;
         width: 168px;
+        height: 18px;
+        vertical-align: top;
     }
 }
   
@@ -2213,6 +2216,8 @@ header {
 #tag-tools {
     background-color: $primaryColor;
     color: $white;
+    position: relative;
+    z-index: 99999;
     p#tag-and-cluster-counts {
        margin: 0;
        font-size: 12pt;
