@@ -333,6 +333,7 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     patents = resource_type == 'patents' or resource_type == 'all'
     periodicals = Node.objects.none()
     standards = Node.objects.none()
+    ebooks = Node.objects.none()
     jobsHtml = ''
     tvHtml = ''
     conf_count = 0
@@ -370,7 +371,30 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     if resource_type == 'standards' or resource_type == 'all':
         standards = Resource.objects.getForNode(tag, resourceType=ResourceType.STANDARD)
     if resource_type == 'xplore_edu' or resource_type == 'all':
-        xplore_edu_results, xplore_edu_error, totaledufound = _get_xplore_results(tag.name, False, ctype='Educational Courses')
+        xplore_edu_results, xplore_edu_error, totalfound = _get_xplore_results(tag.name, False, ctype='Educational Courses')
+    
+        #jobs_results, jobs_error, num_results = _get_xplore_results(name, show_all=show_all, offset=offset, sort=sort, sort_desc=sort_desc, ctype=ctype)
+        tvUrl = "http://ieeetv.ieee.org/service/Signature?url=http://ieeetv.ieee.org/service/VideosSearch?q=%s" % tag.name
+        file2 = urllib2.urlopen(tvUrl).read()
+        
+        # get url from xml that is returned
+        from xml.etree.ElementTree import fromstring
+        apixml = fromstring(file2)
+        dev_url = apixml.find('url_dev').text
+
+        tv_xml = fromstring(urllib2.urlopen(dev_url).read())
+
+        results = tv_xml.findall('search-item')
+        tvCount = len(results)
+
+        tvHtml = ""
+        for result in results:
+            thumb = result.find('images').find('thumbnail').text
+            title = result.find('title').text
+            url = result.find('web-page').text
+            tvHtml = tvHtml + '<img src="%s" height="60" width="105"/><a href="%s" target="_blank">%s <span class="popup newWinIcon"></span></a><br>\n' % (thumb, url, title)
+        
+        ebooks = Resource.objects.getForNode(tag, resourceType=ResourceType.EBOOK)            
     if resource_type == 'xplore' or resource_type == 'all':
         xplore_results, xplore_error, totalfound = _get_xplore_results(tag.name, False)
     
@@ -434,6 +458,8 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
         'close_conference': tag._get_closest_conference(),
         'definition': tag._get_definition_link(),
         'xplore_article': xplore_article,
+        'tvHtml': tvHtml,
+        'ebooks': ebooks,
         'overview': overview  
     })
 

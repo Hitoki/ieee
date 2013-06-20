@@ -266,6 +266,40 @@ Include file used by both print_resource.html and tag_landing.html
         {% else %}
         <p class="no-resources">No education resources are currently tagged "{{ tag.name }}"</p>
         {% endif %}
+
+        {% if tvHtml or toc %}
+        <div id="tag-tv" class="tag-section">
+            <h3><a href="" name="tv"></a>{% if toc %}<span class="index"></span>{% endif %} Tv related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+            <div>
+                {% if tvHtml %}
+                    {{ tvHtml|safe }}
+                {% endif %}
+            </div>
+        </div>
+        <hr/>
+        {% endif %}
+
+        {% if ebooks or toc %}
+        <h3><a name="ebooks"></a>{% if toc %}<span class="index"></span>{% endif %} Ebooks on {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>        
+        <ul>
+            {% if ebooks|length %}
+                {% for resource in ebooks %}
+                    <li>
+                        <p class="{% cycle 'item_odd' 'item_even' %}">
+                            {% if resource.url and resource.url_status != "bad" %}
+                                <a href="{{ resource.url }}" target="_blank" rel="nofollow">
+                            {% endif %}
+                            <span>{{resource.name}}</span>{% if resource.url and resource.url_status != "bad" %}<span class="popup newWinIcon"></span>{% if resource.is_machine_generated %}<span class="drive flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;"></span>{% endif %}{% endif %}
+                            {% if resource.url and resource.url_status != "bad" %}
+                                </a>
+                            {% endif %}
+                        </p> 
+                        <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
+                    </li>
+                {% endfor %}
+            {% endif %}
+        {% endif %}
+    </ul>        
     </div>
     <hr/>
     {% endif %}
