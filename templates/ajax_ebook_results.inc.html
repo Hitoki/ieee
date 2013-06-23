@@ -1,12 +1,22 @@
 <script type="text/javascript">
     $(function(){
         $('#ebooks-tab span.right').html('{{ ebooks|length }}');
-        var count = parseInt($("#num-education-total-results").metadata().number);
-        var newNum = parseInt('{{ ebooks|length }}');
-        if (!isNaN(newNum)){        
-            count += newNum;
-            $('#num-education-total-results').metadata().number = count;
-            $('#num-education-total-results').text(addCommas(count));
+        
+        var ebookNum = parseInt('{{ ebooks|length }}');
+        var count = parseInt($("#num-related-items").metadata().number);
+
+        var eduCount = parseInt($("#num-education-total-results").metadata().number);
+        if (!isNaN(ebookNum)){        
+            
+            eduCount += ebookNum;
+            $('#num-education-total-results').metadata().number = eduCount;
+            $('#num-education-total-results').text(addCommas(eduCount));
+
+
+            count += ebookNum;            
+            $('#num-related-items').metadata().number = count;
+            $("#num-related-items").text(addCommas(count));
+
         }
         $('option#jump-to-ebooks').append('&nbsp;({{ebooks|length}})');
     });

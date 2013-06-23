@@ -622,6 +622,7 @@ function JobLoader(elem, showAll) {
     this.isLoading = false;
     this.noResultsElem = null;
     this.ajaxToken = null;
+    this.totalsCalced = false;
     
     this.scrollElem.scroll(function() {
         jobLoader.onScroll();
@@ -708,6 +709,14 @@ JobLoader.prototype.onLoadData = function(data) {
             if (data.num_results == 0) {
                 this.noResultsElem = $('<p class="no-resources">No Jobs are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
             }
+
+            if(!this.totalsCalced){
+                var numRelatedItems = parseInt($('#num-related-items').metadata().number);
+                var newTotal = numRelatedItems + parseInt(data.num_results);
+                $('#num-related-items').text(addCommas(newTotal));
+                $('#num-related-items').metadata().number = newTotal;
+                this.totalsCalced = true;
+            }
             
             // Showing {{ xplore_results|length }} of {{ totalfound|intcomma }} results 
         }
@@ -739,6 +748,7 @@ function TvLoader(elem, showAll) {
     this.isLoading = false;
     this.noResultsElem = null;
     this.ajaxToken = null;
+    this.totalsCalced = false;
     
     this.scrollElem.scroll(function() {
         tvLoader.onScroll();
@@ -829,7 +839,16 @@ TvLoader.prototype.onLoadData = function(data) {
             $('#num-education-total-results').metadata().number = newEdCount;
             $('#num-education-total-results').text(addCommas(newEdCount));            
 
-            
+
+            if(!this.totalsCalced){
+                var numRelatedItems = parseInt($('#num-related-items').metadata().number);
+                var newTotal = numRelatedItems + parseInt(data.num_results);
+                $('#num-related-items').text(addCommas(newTotal));
+                $('#num-related-items').metadata().number = newTotal;
+                this.totalsCalced = true;
+            }            
+
+
             if (data.num_results == 0) {
                 $('#num-tv-results').parent('h3').addClass('no-education-results');
                 //this.noResultsElem = $('<p class="no-resources">No videos are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
