@@ -5,8 +5,8 @@
         var newNum = parseInt('{{ ebooks|length }}');
         if (!isNaN(newNum)){        
             count += newNum;
-            //$("#num-related-items").text(count);       
             $('#num-education-total-results').metadata().number = count;
+            $('#num-education-total-results').text(addCommas(count));
         }
         $('option#jump-to-ebooks').append('&nbsp;({{ebooks|length}})');
     });
