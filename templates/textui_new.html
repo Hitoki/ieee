@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load filters %}
   
 {% block extra_head %}
 
@@ -172,8 +173,12 @@
                             <span>&nbsp;</span>
                             <ul id="societySelect_options" class="customSelectList">
                                 <li data-value="all"><span>All IEEE Organizations</span></li>                         
-                                {% for society in societies %}
-                                    <li data-value="{{ society.id }}"><span>{{ society.name }}</span></li>
+                                {% for sub_list in societies|columns:"4" %}
+                                    <ul>
+                                        {% for society in sub_list %}
+                                            <li data-value="{{ society.id }}"><span>{{ society.name }}</span></li>                                   
+                                        {% endfor %}
+                                    </ul>
                                 {% endfor %}
                             </ul>
                         </div>
