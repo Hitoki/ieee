@@ -416,8 +416,8 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
     # removied sectors from count
     num_related_items =  \
         counts \
-        + clusters1.count() \
-        + tag.related_tags.count() 
+        + clusters1.count()
+        # tag.related_tags.count() 
 
     #context['num_related_items'] = num_related_items
 
