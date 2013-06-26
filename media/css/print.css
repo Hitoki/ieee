@@ -113,3 +113,15 @@ a.featured,
 a.home {
    text-decoration: none;
 }
+
+.tag-sub-section h4 {
+    font-weight: bold;
+}
+
+.tag-sub-section img {
+    display: none;
+}
+
+.tag-sub-section {
+    margin-top: 10px;
+}
