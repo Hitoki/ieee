@@ -1,0 +1,16 @@
+body {
+	height: 100%;
+	margin: 0px;
+	font-family: Verdana,Tahoma,Sans-serif;
+	font-size: 10pt;
+	background-color: #fff;
+}
+
+#page {
+	width: 595px;
+	margin: 25px auto;
+}
+
+h1 {
+	font-size: 12pt;
+}
