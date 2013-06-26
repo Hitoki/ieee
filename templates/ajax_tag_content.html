@@ -39,7 +39,7 @@
                     function(){
                         input.val('');
                         $("#alertForm").hide();
-                        $("#alertError").hide();
+                        $("#alertForm_error").hide();
                         $("#alertSuccess").show();
                         $("#alertHelpIcon").hide();
                         $("#alertContainer").addClass("success");
@@ -47,7 +47,7 @@
                     }
                 );                
             } else {
-                $("#notificationRequestEmail").val(errorText).addClass('error');
+                $("#alertForm_error").val(errorText).show();
                 return false;
             }
         });
@@ -105,6 +105,7 @@ function isValidEmailAddress(emailAddress) {
     <div id="alertContainer">
         <div id="alertForm">
             <span class="notificationLabel">Alert me to updates to this topic:</span>
+            <div id="alertForm_error">Please enter a valid email.</div>
             <input type="text" id="notificationRequestEmail" placeholder="Email address"></input>
             <input type="button" value="Alert Me" id="notificationRequestButton"/>
         </div>
@@ -112,7 +113,6 @@ function isValidEmailAddress(emailAddress) {
             You will be alerted to updates to this topic.
         </div>
     </div>
-    <span id="alertError" style="display:none">Please enter a valid email</span>
 </div>
 
 <div class="resources-pad">

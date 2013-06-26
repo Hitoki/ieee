@@ -643,7 +643,6 @@ margin-top: 0;
        width: 687px;
        height: 46px;
        text-align: right;
-       overflow: hidden;
        &.success {
            background-color: $green;
            text-align: center;
@@ -663,9 +662,21 @@ margin-top: 0;
             border-left: 1px solid $primaryColor;
             border-right: 1px solid $primaryColor;
             vertical-align: top;
-            &.error {
-                color: red;
-            }
+       }
+       #alertForm_error {
+            float: right;
+            display: inline-block;
+            width: 250px;
+            text-align: left;
+            margin-right: 144px;
+            background: red;
+            color: white;
+            padding: 3px 15px;
+            margin-bottom: -20px;
+            margin-top: -10px;
+            position: relative;
+            z-index: 99999;
+            display: none;
        }
        #notificationRequestButton {
            border: 0 none;
@@ -686,10 +697,6 @@ margin-top: 0;
            padding-top: 15px;
        }
    }
-   #alertError {
-      color: maroon;
-      margin-left: 10px;
-  }
 }
 
 #resource-footer {
