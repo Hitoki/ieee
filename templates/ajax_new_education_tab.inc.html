@@ -14,22 +14,22 @@
     <div class="print-resource">
         <select id='education-jumps'>
             <option>Jump to</option>
-            <option id='jump-to-articles' value='#education-articles'>Articles</option>
-            <option id='jump-to-videos' value='#education-videos'>Videos</option>
-            <option id='jump-to-ebooks' value='#education-ebooks'>E-Books</option>
+            <option id='jump-to-articles' value='#education-articles'>eLearning</option>
+            <option id='jump-to-videos' value='#education-videos'>IEEE.tv Videos</option>
+            <option id='jump-to-ebooks' value='#education-ebooks'>IEEE-USA E-Books</option>
         </select>
     </div>
     <div class="group">
         <div id="new-education-results-container" class="{ tagId: {{ tag.id }} }">
             <div id="education-articles" class="group">
-                <h3 style='border-bottom:none;'>Articles (<span id="num-education-results"></span>)</h3>
+                <h3 style='border-bottom:none;'>eLearning (<span id="num-education-results"></span>)</h3>
                 <ul>
                     {# NOTE: This will be replaced by AJAX. #}
                 </ul>
             </div>
         <div id="new-tv-results-container" class="{ tagId: {{ tag.id }} }">
             <div id="education-videos" class="group">
-                <h3 style='border-bottom:none;'>Videos (<span id="num-tv-results"></span>)</h3>
+                <h3 style='border-bottom:none;'>IEEE.tv Videos (<span id="num-tv-results"></span>)</h3>
             </div>
         </div>
             <div id="education-ebooks" class="group">            
