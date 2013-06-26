@@ -438,6 +438,15 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     else:
         overview = False
 
+    if xplore_edu_results:
+        show_edu = True
+    elif tvHtml:
+        show_edu = True
+    elif ebooks:
+        show_edu = True
+    else:
+        show_edu = False
+
     return render(request, template_name, {
         'page_date': page_date,
         'tag': tag,
@@ -460,7 +469,8 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
         'xplore_article': xplore_article,
         'tvHtml': tvHtml,
         'ebooks': ebooks,
-        'overview': overview  
+        'overview': overview,
+        'show_edu': show_edu
     })
 
 def debug_error(request):

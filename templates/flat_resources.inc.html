@@ -52,7 +52,7 @@ Include file used by both print_resource.html and tag_landing.html
             <li {% if not xplore_results %}class="disabled"{% endif %}><a href="#xplore">Xplore Articles related to  {{ tag.name }}</a></li>
             <li {% if not jobsHtml %}class="disabled"{% endif %}><a href="#jobs">Jobs related to {{ tag.name }}</a></li>
             {% comment %}<li><a href="#patents">Patents related to {{ tag.name }}</a></li>{% endcomment %}
-            <li {% if not xplore_edu_results %}class="disabled"{% endif %}><a href="#xplore_edu">Educational Resources on {{ tag.name }}</a></li>    
+            <li {% if not show_edu %}class="disabled"{% endif %}><a href="#xplore_edu">Educational Resources on {{ tag.name }}</a></li>    
         </ol>
         <ol start="5">
             <li {% if not standards %}class="disabled"{% endif %}><a href="#standards">Standards related to {{ tag.name }}</a></li>
@@ -238,70 +238,78 @@ Include file used by both print_resource.html and tag_landing.html
     {% endif %}
     {% endcomment %}
     
-    {% if xplore_edu_results or toc %}
+    {% if show_edu or tvHtml or ebooks or toc %}
     <div id="tag-xplore_edu" class="tag-section">
-        <h3><a name="xplore_edu"></a>{% if toc %}<span class="index"></span>{% endif %} Educational Resources on {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
-        {% if xplore_edu_results %}
-            {% for xplore_result in xplore_edu_results|slice:":5" %}
-                <p class="title">
-                {% if create_links %}
-                    <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ xplore_result.url }}'); return false;">{{ xplore_result.name }} <span class="popup newWinIcon"></span></a>
-                {% else %}
-                    {{ xplore_result.name }}
-                {% endif %}
-                </p>
-                <p class="pub-info">
-                    {{ xplore_result.authors }} {{ xplore_result.pub_title }},  {{ xplore_result.pub_year }}
-                </p>
-                <p class="description">
-                    {{ xplore_result.description|truncatewords:60 }}
-                </p>
-                <br/>
-            {% endfor %}
-            {% if xplore_edu_results|length > 5 %}
-                <span class="more-link">
-                <a href="/textui/?autoload={{tag.id}}&tab=education-tab" rel="nofollow">More Educational Resources</a>
-                </span>
+        <h3><a name="xplore_edu"></a>{% if toc %}<span class="index"></span>{% endif %} Education</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <div class='tag-sub-section'>
+            <h4><a name="xplore_edu"></a>{% if toc %}<span class="index"></span>{% endif %} eLearning</h4>
+            {% if xplore_edu_results %}
+                    {% for xplore_result in xplore_edu_results|slice:":5" %}
+                        <p class="title">
+                        {% if create_links %}
+                            <a href="{{ xplore_result.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ xplore_result.url }}'); return false;">{{ xplore_result.name }} <span class="popup newWinIcon"></span></a>
+                        {% else %}
+                            {{ xplore_result.name }}
+                        {% endif %}
+                        </p>
+                        <p class="pub-info">
+                            {{ xplore_result.authors }} {{ xplore_result.pub_title }},  {{ xplore_result.pub_year }}
+                        </p>
+                        <p class="description">
+                            {{ xplore_result.description|truncatewords:60 }}
+                        </p>
+                        <br/>
+                    {% endfor %}
+                    {% if xplore_edu_results|length > 5 %}
+                        <span class="more-link">
+                        <a href="/textui/?autoload={{tag.id}}&tab=education-tab" rel="nofollow">More Educational Resources</a>
+                        </span>
+                    {% endif %}
+            {% else %}
+                <p class="no-resources">No eLearning Articles are currently tagged "{{ tag.name }}"</p>    
             {% endif %}
-        {% else %}
-        <p class="no-resources">No education resources are currently tagged "{{ tag.name }}"</p>
-        {% endif %}
+        </div>
 
-        {% if tvHtml or toc %}
-        <div id="tag-tv" class="tag-section">
-            <h3><a href="" name="tv"></a>{% if toc %}<span class="index"></span>{% endif %} Tv related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
-            <div>
-                {% if tvHtml %}
-                    {{ tvHtml|safe }}
-                {% endif %}
-            </div>
+        <div class='tag-sub-section'>
+            <h4><a href="" name="tv"></a>{% if toc %}<span class="index"></span>{% endif %} IEEE.tv Videos</h4>
+            {% if tvHtml %}
+                    <div>
+                        {% if tvHtml %}
+                            {{ tvHtml|safe }}
+                        {% endif %}
+                    </div>
+            {% else %}
+                <p class="no-resources">No IEEE.tv Videos are currently tagged "{{ tag.name }}"</p>                
+            {% endif %}
+        </div>
+
+        <div class='tag-sub-section'>
+            <h4><a name="ebooks"></a>{% if toc %}<span class="index"></span>{% endif %} IEEE-USA E-Books</h4>
+            {% if ebooks|length %}
+                    <ul>
+                    {% if ebooks|length %}
+                        {% for resource in ebooks %}
+                            <li>
+                                <p class="{% cycle 'item_odd' 'item_even' %}">
+                                    {% if resource.url and resource.url_status != "bad" %}
+                                        <a href="{{ resource.url }}" target="_blank" rel="nofollow">
+                                    {% endif %}
+                                    <span>{{resource.name}}</span>{% if resource.url and resource.url_status != "bad" %}<span class="popup newWinIcon"></span>{% if resource.is_machine_generated %}<span class="drive flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;"></span>{% endif %}{% endif %}
+                                    {% if resource.url and resource.url_status != "bad" %}
+                                        </a>
+                                    {% endif %}
+                                </p> 
+                                <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                    </ul>       
+            {% else %}
+                <p class="no-resources">No IEEE-USA E-Books are currently tagged "{{ tag.name }}"</p>    
+            {% endif %}
         </div>
         <hr/>
-        {% endif %}
-
-        {% if ebooks or toc %}
-        <h3><a name="ebooks"></a>{% if toc %}<span class="index"></span>{% endif %} Ebooks on {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>        
-        <ul>
-            {% if ebooks|length %}
-                {% for resource in ebooks %}
-                    <li>
-                        <p class="{% cycle 'item_odd' 'item_even' %}">
-                            {% if resource.url and resource.url_status != "bad" %}
-                                <a href="{{ resource.url }}" target="_blank" rel="nofollow">
-                            {% endif %}
-                            <span>{{resource.name}}</span>{% if resource.url and resource.url_status != "bad" %}<span class="popup newWinIcon"></span>{% if resource.is_machine_generated %}<span class="drive flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;"></span>{% endif %}{% endif %}
-                            {% if resource.url and resource.url_status != "bad" %}
-                                </a>
-                            {% endif %}
-                        </p> 
-                        <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
-                    </li>
-                {% endfor %}
-            {% endif %}
-        {% endif %}
-    </ul>        
     </div>
-    <hr/>
     {% endif %}
 
     {% if standards or toc %}
