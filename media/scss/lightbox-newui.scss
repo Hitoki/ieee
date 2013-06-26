@@ -662,6 +662,10 @@ margin-top: 0;
             border-left: 1px solid $primaryColor;
             border-right: 1px solid $primaryColor;
             vertical-align: top;
+            height: 16px;
+       }
+       #alertForm {
+            overflow: hidden;
        }
        #alertForm_error {
             float: right;
