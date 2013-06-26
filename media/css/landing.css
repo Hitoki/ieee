@@ -297,3 +297,22 @@ a.featured,
 #inner-container .center-pad {
   padding-bottom: 42px;
 }
+
+.tvtab div {
+  padding-left: 25px;
+}
+
+.tvtab div img {
+    margin: 0 15px 5px 0;
+    vertical-align: middle;
+    width: 105px;
+    height: 60px;
+}
+.tvtab div a {
+    display: inline-block;
+    width: 500px;
+}
+
+#tag-xplore_edu .tag-sub-section {
+  padding-left: 25px;
+}
