@@ -622,7 +622,7 @@ function JobLoader(elem, showAll) {
     this.isLoading = false;
     this.noResultsElem = null;
     this.ajaxToken = null;
-    this.totalsCalced = true;
+    this.totalsCalced = false;
     
     this.scrollElem.scroll(function() {
         jobLoader.onScroll();
@@ -705,6 +705,10 @@ JobLoader.prototype.onLoadData = function(data) {
             this.scrollElem.append(data.html);
             
             resizeLightboxTab();
+
+            $('#num-job-results').text(addCommas(data.num_results));
+
+            $('#job-url-container').html('<a href="' + data.job_url + '" target="_blank">View jobs on the IEEE Job Site <span class="popup newWindIcon"></span></a>');
 
             if (data.num_results == 0) {
                 this.noResultsElem = $('<p class="no-resources">No Jobs are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);

@@ -1,20 +1,12 @@
 <script type="text/javascript">
     $(function(){
         attachJobResults('#job-results-container');
-        $('#jobs-tab span.right').html('{{ jobsCount }}'); 
-        var count = parseInt($("#num-related-items").metadata().number);
-        var newNum = parseInt('{{ jobsCount }}'.replace(/\,/g,''));
-        if (!isNaN(newNum)){
-            count += newNum;
-            //$("#num-related-items").text(count);
-            $('#num-related-items').metadata().number = count;
-        }        
     });
 </script>
 <div id="job-results-container" class="{ tagId: {{ tag.id }} }">
-    <div class="print-resource">
-        <a href="{{ jobsUrl }}" target="_blank">View jobs on the IEEE Job Site <span class="popup newWindIcon"></span></a>
+    <div class="print-resource" id='job-url-container'>
     </div>
     <div class="group" style='margin-top:32px;'>
+        {# NOTE: This will be replaced by AJAX. #}
     </div>
 </div>
