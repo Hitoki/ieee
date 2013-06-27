@@ -11,7 +11,7 @@
         var tags_callback = null;
 
         $(function() {
-             
+
             // NOTE: .change() doesn't fire in IE till the checkbox loses focus, must use 'propertychange' for IE.
             $('#show-clusters').bind($.browser.msie ? 'propertychange': 'change', function() {
                 Tags.updateResults();
@@ -173,7 +173,7 @@
                             <ul id="societySelect_options" class="customSelectList">
                                 <li data-value="all"><span>All IEEE Organizations</span></li>                         
                                 {% for society in societies %}
-                                    <li data-value="{{ society.id }}"><span>{{ society.name }}</span></li>
+                                    <li data-value="{{ society.id }}"><span class="auto-truncate-words {length:30, flyover:true}">{{ society.name }}</span></li>
                                 {% endfor %}
                             </ul>
                         </div>

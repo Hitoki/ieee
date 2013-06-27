@@ -270,7 +270,6 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
     context['tag'] = tag
 
     counts = 0
-    jobsCount = "0"
     tvCount = "0"
 
     #sectors1 = tag.get_sectors()
@@ -366,25 +365,6 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         counts += len(ebooks)
         context['ebooks'] = ebooks
         tab_template = 'ajax_ebook_results.inc.html'
-        context['loaded'] = True
-
-    if tab == 'job':
-        jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&format=json" % urllib.urlencode({"kwsMustContainPhrase": tag.name})
-        file1 = urllib2.urlopen(jobsUrl).read()
-        jobsJson = json.loads(file1)
-        jobsCount = jobsJson.get('Total')
-        #jobs = jobsJson.get('Jobs')
-        #jobsHtml = ""
-        #for job in jobs:
-        #    jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured"><b>%(JobTitle)s</b></a> %(Company)s<br>\n' % job
-
-        #if len(jobsHtml):
-        #    jobsHtml = jobsHtml + '<a href="%s" target="_blank">More jobs</a>' % jobsUrl.replace('&format=json','')
-
-        jobsUrl = jobsUrl.replace('&format=json','')
-        tab_template = 'ajax_job_tab.inc.html'
-        context['jobsCount'] = jobsCount
-        context['jobsUrl'] = jobsUrl        
         context['loaded'] = True
 
     if tab == 'tv':
@@ -496,6 +476,7 @@ def ajax_jobs_results(request):
         'html': jobsHtml,
         'search_term': name,
         'token': token,
+        'job_url': jobsUrl.replace('&format=json',''),
     }
     
     return HttpResponse(json.dumps(data), 'application/javascript')
