@@ -1941,6 +1941,10 @@ div.group ul li:first-child {
         color: $orange;
     }
 }
+
+#societySelect_options li span.auto-truncate-words div.truncatedText {
+    border-bottom: none;
+}
   
 #sortSelect_options li {
     padding-left: 5px;
