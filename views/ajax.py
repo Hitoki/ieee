@@ -270,7 +270,6 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
     context['tag'] = tag
 
     counts = 0
-    jobsCount = "0"
     tvCount = "0"
 
     #sectors1 = tag.get_sectors()
