@@ -173,7 +173,7 @@
                             <ul id="societySelect_options" class="customSelectList">
                                 <li data-value="all"><span>All IEEE Organizations</span></li>                         
                                 {% for society in societies %}
-                                    <li data-value="{{ society.id }}"><span class="auto-truncate-words {length:30, flyover:true}">{{ society.name }}</span></li>
+                                    <li data-value="{{ society.id }}"><span class="auto-truncate-words {length:30, flyover:false}">{{ society.name }}</span></li>
                                 {% endfor %}
                             </ul>
                         </div>
