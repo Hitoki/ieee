@@ -622,7 +622,7 @@ function JobLoader(elem, showAll) {
     this.isLoading = false;
     this.noResultsElem = null;
     this.ajaxToken = null;
-    this.totalsCalced = false;
+    this.totalsCalced = true;
     
     this.scrollElem.scroll(function() {
         jobLoader.onScroll();
