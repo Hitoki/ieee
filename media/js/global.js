@@ -710,6 +710,10 @@ JobLoader.prototype.onLoadData = function(data) {
                 this.noResultsElem = $('<p class="no-resources">No Jobs are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
             }
 
+            if(this.numResults != 0 && data.num_results != 0){
+                $('#num-jobs-results').text(addCommas(data.num_results));
+            }
+
             if(!this.totalsCalced){
                 var numRelatedItems = parseInt($('#num-related-items').metadata().number);
                 var newTotal = numRelatedItems + parseInt(data.num_results);

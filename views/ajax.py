@@ -370,17 +370,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
 
     if tab == 'job':
         jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&format=json" % urllib.urlencode({"kwsMustContainPhrase": tag.name})
-        file1 = urllib2.urlopen(jobsUrl).read()
-        jobsJson = json.loads(file1)
-        jobsCount = jobsJson.get('Total')
-        #jobs = jobsJson.get('Jobs')
-        #jobsHtml = ""
-        #for job in jobs:
-        #    jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured"><b>%(JobTitle)s</b></a> %(Company)s<br>\n' % job
-
-        #if len(jobsHtml):
-        #    jobsHtml = jobsHtml + '<a href="%s" target="_blank">More jobs</a>' % jobsUrl.replace('&format=json','')
-
+        jobsCount = 0
         jobsUrl = jobsUrl.replace('&format=json','')
         tab_template = 'ajax_job_tab.inc.html'
         context['jobsCount'] = jobsCount
