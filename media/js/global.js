@@ -363,6 +363,14 @@ var XPLORE_SORT_PUBLICATION_TITLE = 'jn';
 //var XPLORE_SORT_ARTICLE_NUMBER = 'an';
 var XPLORE_SORT_PUBLICATION_YEAR = 'py';
 
+var loadingTabs = []
+function removeNumRelatedLoader() {
+    loadingTabs.pop();
+    if (loadingTabs.length == 0) {
+        $("#num-related-items-loading").remove();
+    }
+}
+
 function getXploreSortName(sort) {
     if (sort == XPLORE_SORT_AUTHOR) {
         return 'Author';
@@ -462,6 +470,7 @@ XploreLoader.prototype.setSort = function(sort, desc) {
 }
 
 XploreLoader.prototype.loadContent = function(force) {
+    loadingTabs.push('xplore');
     if (!this.isLoading || force) {
         this.isLoading = true;
         
@@ -504,6 +513,7 @@ XploreLoader.prototype.loadContent = function(force) {
 }
 
 XploreLoader.prototype.onLoadData = function(data) {
+    removeNumRelatedLoader();
     if (data.token == this.ajaxToken) {
         this.loadingElem.remove();
         this.loadingElem = null;
@@ -552,8 +562,6 @@ XploreLoader.prototype.onLoadData = function(data) {
                 }
                 totalElem = $('#xplore-totals')
             }
-            
-            $("#num-related-items-loading").remove();
             if(!this.totalsCalced){
                 var numRelatedItems = parseInt($('#num-related-items').metadata().number);
                 var newTotal = numRelatedItems + data.num_results;
@@ -646,6 +654,7 @@ function JobLoader(elem, showAll) {
 }
 
 JobLoader.prototype.loadContent = function(force) {
+    loadingTabs.push('jobs');
     if (!this.isLoading || force) {
         this.isLoading = true;
         
@@ -685,6 +694,8 @@ JobLoader.prototype.loadContent = function(force) {
 }
 
 JobLoader.prototype.onLoadData = function(data) {
+    removeNumRelatedLoader();
+
     if (data.token == this.ajaxToken) {
         this.loadingElem.remove();
         this.loadingElem = null;
@@ -776,6 +787,7 @@ function TvLoader(elem, showAll) {
 }
 
 TvLoader.prototype.loadContent = function(force) {
+    loadingTabs.push('tv');
     if (!this.isLoading || force) {
         this.isLoading = true;
         
@@ -815,6 +827,8 @@ TvLoader.prototype.loadContent = function(force) {
 }
 
 TvLoader.prototype.onLoadData = function(data) {
+    removeNumRelatedLoader();
+
     if (data.token == this.ajaxToken) {
         this.loadingElem.remove();
         this.loadingElem = null;
