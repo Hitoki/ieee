@@ -403,26 +403,7 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     related_items_count = sectors.count() + related_tags.count() + societies.count() + conf_count + periodicals.count() + standards.count() + totaledufound+ totalfound
     
     if resource_type == 'jobs' or resource_type == 'all':
-        jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&format=json" % urllib.urlencode({"kwsMustContainPhrase": tag.name})
-        file1 = urllib2.urlopen(jobsUrl).read()
-        jobsJson = json.loads(file1)
-        jobsCount = jobsJson.get('Total')
-        jobs = jobsJson.get('Jobs')
-        for job in jobs:
-            jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured">%(JobTitle)s <span class="popup newWinIcon"></span></a> %(Company)s<br>\n' % job
-
-        file1 = None
-
-    #if resource_type == 'tv' or resource_type == 'all':
-        #tvUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&format=json" % urllib.urlencode({"kwsMustContain": tag.name})
-        #file2 = urllib2.urlopen(tvUrl).read()
-        #tvJson = json.loads(file1)
-        #tvCount = tvJson.get('Total')
-        #tv = tvJson.get('Jobs')
-        #for show in tv:
-            #tvHtml = tvHtml + '<a href="%(Url)s" target="_blank" class="featured"><b>%(JobTitle)s</b></a> %(Company)s<br>\n' % show
-
-        #file2 = None        
+        jobsHtml, jobsCount, jobsUrl = get_jobs_info(tag)
 
     try:
         xplore_article = _get_xplore_results(tag.name, show_all=False, offset=0, sort=XPLORE_SORT_PUBLICATION_YEAR, sort_desc=True)[0][0]
@@ -506,3 +487,19 @@ def test_browsers(request):
     'DEBUG: Tests a browsers error.'
     assert settings.DEBUG
     return render(request, 'test_browsers.html')
+
+def get_jobs_info(tag, offset=None):
+    jobsHtml = ''
+    if offset:
+        jobsUrl = "%s?%s&rows=25&page=%s&format=json" % (settings.JOBS_URL, urllib.urlencode({"kwsMustContainPhrase": tag.name}), offset)
+    else:
+        jobsUrl = "%s?%s&rows=25&format=json" % (settings.JOBS_URL, urllib.urlencode({"kwsMustContainPhrase": tag.name}))
+    file1 = urllib2.urlopen(jobsUrl).read()
+    jobsJson = json.loads(file1)
+    jobsCount = jobsJson.get('Total')
+    jobs = jobsJson.get('Jobs')
+    for job in jobs:
+        jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured">%(JobTitle)s <span class="popup newWinIcon"></span></a> %(Company)s<br>\n' % job
+
+    file1 = None
+    return jobsHtml, jobsCount, jobsUrl

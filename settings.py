@@ -102,6 +102,9 @@ GA_SITE_NUM = 1
 ENABLE_SEARCH_BUTTON = True
 SEARCH_KEY_DELAY = 500
 
+# Jobs settings
+JOBS_URL = "http://jobs.ieee.org/jobs/search/results"
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -336,4 +339,3 @@ if not hasattr(logging, "is_setup"):
 if ENABLE_DEBUG_TOOLBAR:
     MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
     INSTALLED_APPS.append('debug_toolbar')
-

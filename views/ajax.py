@@ -23,7 +23,7 @@ import settings
 import util
 from BeautifulSoup import BeautifulSoup
 
-from .views import render
+from .views import render, get_jobs_info
 from .xplore import _get_xplore_results
 
 TOOLTIP_MAX_CHARS = 120
@@ -459,14 +459,7 @@ def ajax_jobs_results(request):
     
     #jobs_results, jobs_error, num_results = _get_xplore_results(name, show_all=show_all, offset=offset, sort=sort, sort_desc=sort_desc, ctype=ctype)
         
-    jobsUrl = "http://jobs.ieee.org/jobs/search/results?%s&rows=25&page=%s&format=json" % (urllib.urlencode({"kwsMustContainPhrase": tag.name}), offset)
-    file1 = urllib2.urlopen(jobsUrl).read()
-    jobsJson = json.loads(file1)
-    jobsCount = jobsJson.get('Total')
-    jobs = jobsJson.get('Jobs')
-    jobsHtml = ""
-    for job in jobs:
-        jobsHtml = jobsHtml + '<a href="%(Url)s" target="_blank" class="featured"><b>%(JobTitle)s</b> <span class="popup newWinIcon"></span></a> %(Company)s<br>\n' % job
+    jobsHtml, jobsCount, jobsUrl = get_jobs_info(tag, offset)
     
     # DEBUG:
     #xplore_error = 'BAD ERROR.'
