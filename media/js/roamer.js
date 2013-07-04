@@ -24,9 +24,7 @@ var Roamer = {
             this.filter(filters[i].id, filters[i].checked);
         }
         
-        $.history.init(function(hash) {
-            roamer.onChangeHash(hash);
-        });
+        roamer.onChangeHash(encodeURIComponent(window.location.hash));
         
         // Need to manually call this when page is loaded if hash is empty.
         if (window.location.hash == '' || window.location.hash == '#') {
@@ -160,13 +158,13 @@ var Roamer = {
             // Update the hash...
             if (this.nodeInfo.type == 'sector') {
                 //log('setting sector hash');
-                $.history.load('/sector/' + this.nodeInfo.id);
+                window.location.hash = encodeURIComponent('/sector/' + this.nodeinfo.id);
             } else if (this.nodeInfo.type == 'tag') {
                 //log('setting tag hash');
-                $.history.load('/tag/' + this.nodeInfo.id);
+                window.location.hash = encodeURIComponent('/tag/' + this.nodeinfo.id);
             } else if (this.nodeInfo.type == 'root') {
                 //log('setting root hash');
-                $.history.load('');
+                window.location.hash = '';
             } else {
                 ajax_report_error('ERROR in getNodeInfo(): unknown nodeInfo.type: ' + this.nodeInfo.type);
                 return;

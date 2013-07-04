@@ -60,7 +60,7 @@ $(document).ready(function(){
     societyDropDown = $('#societySelect').imageDropdown({'selectList': $("ul#societySelect_options"), 'initialIndex': 0});
     if (societyDropDown) {
         societyDropDown.bind('change', function(){
-            Tags.selectSociety(societyDropDown.val(), false);
+            Tags.selectSociety(societyDropDown.val());
         });
     }
     $('.org-clear').live(
@@ -215,10 +215,7 @@ var Tags = {
         var tags = this;
         
         this.setDefaultZoomValues();
-        
-        $.history.init(function(hash) {
-            tags.onChangeHash(hash);
-        });
+        tags.onChangeHash(encodeURIComponent(window.location.hash));
         
         // Need to manually call this when page is loaded if hash is empty.
         if (window.location.hash == '' || window.location.hash == '#') {
@@ -471,7 +468,7 @@ var Tags = {
         
         if (setHash) {
             //log('setting hash to "' + '/sector/' + this.sectorId + '"');
-            $.history.load('/sector/' + this.sectorId);
+            window.location.hash = encodeURIComponent('/sector/' + this.sectorId);
         }
         
         //log('selectSector(): calling updateResults().');
@@ -499,8 +496,8 @@ var Tags = {
         }
         
         if (setHash) {
+            window.location.hash = encodeURIComponent('/organization/' + this.societyId);
             //log('setting hash to "' + '/oganization/' + this.societyId + '"');
-            $.history.load('/organization/' + this.societyId);
         }
         //log('selectSociety(): calling updateResults().');        
         
@@ -1002,11 +999,11 @@ var Tags = {
             if (this.sectorId) {
                 var hash = '/sector/' + this.sectorId + '/cluster/' + this.clusterId;
                 log('setting hash to "' + hash + '"');
-                $.history.load(hash);
+                window.location.hash = encodeURIComponent(hash);
             } else if (this.societyId) {
                 var hash = '/organization/' + this.societyId + '/cluster/' + this.clusterId;
                 log('setting hash to "' + hash + '"');
-                $.history.load(hash);
+                window.location.hash = encodeURIComponent(hash);
             } else {
                 // fail.
                 log('Tags.selectCluster(): ERROR: Neither sectorId or societyId are set.');
