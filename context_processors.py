@@ -13,7 +13,7 @@ def logo_href(request):
     if '/admin/' in request.path:
         return {'LOGO_HREF': '/admin/'}
     elif '/textui/' in request.path:
-        return {'LOGO_HREF': 'javascript:Tags.clearSectorSociety();'}
+        return {'LOGO_HREF': 'javascript:Tags.selectSociety("all",null,1);'}
     else:
         return {'LOGO_HREF': '/'}
     
