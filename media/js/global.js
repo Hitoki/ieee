@@ -390,9 +390,9 @@ function getXploreSortName(sort) {
     }
 }
 
-// This loads the xplore results for a tag into the given element via AJAX.
-function XploreLoader(elem, showAll, sort, ctype) {
-    var xploreLoader = this;
+// This loads the resource results for a tag into the given element via AJAX.
+function ResourceLoader(elem, ctype, showAll, sort) {
+    var resourceloader = this;
     this.elem = $(elem);
     this.listElem = this.elem.find('ul');
     this.scrollElem = this.elem.find('.group');
@@ -403,9 +403,10 @@ function XploreLoader(elem, showAll, sort, ctype) {
     this.numResults = 0;
     this.totalsCalced = false;
     this.resultsGathered = false;
+    this.data = null;
 	
     this.scrollElem.scroll(function() {
-        xploreLoader.onScroll();
+        resourceloader.onScroll();
     });
 	
     if (showAll == undefined) {
@@ -433,16 +434,16 @@ function XploreLoader(elem, showAll, sort, ctype) {
     this.ctype = ctype;
 	
     $('#xplore-sort').click(function() {
-        xploreLoader.onChangeSelect();
+        resourceloader.onChangeSelect();
     });
     $('#xplore-sort').change(function() {
-        xploreLoader.onChangeSelect();
+        resourceloader.onChangeSelect();
     });
     
     this.loadContent();
 }
 
-XploreLoader.prototype.onChangeSelect = function() {
+ResourceLoader.prototype.onChangeSelect = function() {
     var sort = $('#xplore-sort').val();
     if (sort == '') {
         sort = null;
@@ -456,7 +457,7 @@ XploreLoader.prototype.onChangeSelect = function() {
     this.setSort(sort, desc);
 }
 
-XploreLoader.prototype.setSort = function(sort, desc) {
+ResourceLoader.prototype.setSort = function(sort, desc) {
     if (sort !=  this.sort || this.sortDesc != desc) {
         this.sort = sort;
         this.sortDesc = desc;
@@ -469,13 +470,57 @@ XploreLoader.prototype.setSort = function(sort, desc) {
     }
 }
 
-XploreLoader.prototype.loadContent = function(force) {
-    loadingTabs.push('xplore');
+ResourceLoader.prototype.loadContent = function(force) {
+    loadingTabs.push(this.ctype);
     if (!this.isLoading || force) {
         this.isLoading = true;
         
-        var xploreLoader = this;
+        var resourceloader = this;
         this.ajaxToken = (new Date()).getTime() + '-' + Math.random();
+
+        if (this.ctype == 'xplore') {
+            this.url = '/ajax/xplore_results';
+            this.data = {
+                tag_id: this.tagId
+                , term_id: this.termId
+                , show_all: this.showAll
+                , offset: this.offset
+                , sort: this.sort
+                , sort_desc: this.sortDesc
+                , token: this.ajaxToken
+                , ctype: null
+            };
+        } else if (this.ctype == 'education') {
+            this.url = '/ajax/xplore_results';
+            this.data = {
+                tag_id: this.tagId
+                , term_id: this.termId
+                , show_all: this.showAll
+                , offset: this.offset
+                , sort: this.sort
+                , sort_desc: this.sortDesc
+                , token: this.ajaxToken
+                , ctype: 'Educational Courses'
+            };
+        } else if (this.ctype == 'jobs') {
+            this.url = '/ajax/jobs_results';
+            this.data = {
+                tag_id: this.tagId
+                , term_id: this.termId
+                , show_all: this.showAll
+                , offset: this.offset
+                , token: this.ajaxToken
+            };
+        } else if (this.ctype == 'tv') {
+            this.url = '/ajax/tv_results';
+            this.data = {
+                tag_id: this.tagId
+                , term_id: this.termId
+                , show_all: this.showAll
+                , offset: this.offset
+                , token: this.ajaxToken
+            };        
+        }
         
         this.loadingElem = $('<div id="xplore-loading" class="loading">Loading Xplore articles...<div></div></div>').appendTo(this.scrollElem);
         
@@ -488,23 +533,14 @@ XploreLoader.prototype.loadContent = function(force) {
             speed: 2.2, // Rounds per second
             trail: 25 // Afterglow percentage
         });
-        
+
         $.ajax({
-            url: '/ajax/xplore_results'
-            , data: {
-                tag_id: this.tagId
-                , term_id: this.termId
-                , show_all: this.showAll
-                , offset: this.offset
-                , sort: this.sort
-                , sort_desc: this.sortDesc
-                , token: this.ajaxToken
-                , ctype: this.ctype
-            }
+            url: this.url
+            , data: this.data
             , type: 'post'
             , dataType: 'json'
             , success: function(data) {
-                xploreLoader.onLoadData(data);
+                resourceloader.onLoadData(data);
             }
         });
         
@@ -512,7 +548,7 @@ XploreLoader.prototype.loadContent = function(force) {
     }
 }
 
-XploreLoader.prototype.onLoadData = function(data) {
+ResourceLoader.prototype.onLoadData = function(data) {
     removeNumRelatedLoader();
     if (data.token == this.ajaxToken) {
         this.loadingElem.remove();
@@ -532,11 +568,15 @@ XploreLoader.prototype.onLoadData = function(data) {
             // Xplore error, show the error message.
             this.errorElem = $('<p class="error" style="margin: 50px 0 0 10px;"></p>').appendTo(this.scrollElem);
             this.errorElem.text(data.xplore_error);
-        
+
         } else {
             // Normal results, load into the page.
                         
-            this.listElem[0].innerHTML += data.html;
+            if (this.ctype == 'tv' || this.ctype == 'jobs') {
+                this.scrollElem.append(data.html);
+            } else { 
+                this.listElem[0].innerHTML += data.html;
+            }
             
             resizeLightboxTab();
             
@@ -545,7 +585,7 @@ XploreLoader.prototype.onLoadData = function(data) {
                         
             var totalElem;
 
-            if(this.ctype == "Educational Courses"){
+            if(this.ctype == "education"){
                 $('option#jump-to-articles').append('&nbsp;(' + addCommas(data.num_results) + ')');
                 if(this.numResults != 0 && data.num_results != 0){
                     $('#num-education-results').text(addCommas(data.num_results));
@@ -556,29 +596,47 @@ XploreLoader.prototype.onLoadData = function(data) {
                 }
                 totalElem = $('#education-totals');
 		   
+            } else if (this.ctype == 'tv') {
+                $('#num-tv-results').text(addCommas(data.num_results));
+                $('option#jump-to-videos').append('&nbsp;(' + addCommas(data.num_results) + ')');
+                var currentEdCount = parseInt($('#num-education-total-results').metadata().number);
+                var newEdCount = currentEdCount + data.num_results;
+                $('#num-education-total-results').metadata().number = newEdCount;
+                $('#num-education-total-results').text(addCommas(newEdCount));            
+            } else if (this.ctype == 'jobs') {
+                $('#num-job-results').text(addCommas(data.num_results));
+
+                $('#job-url-container').html('<a href="' + data.job_url + '" target="_blank">View jobs on the IEEE Job Site <span class="popup newWindIcon"></span></a>');
+
+                if (data.num_results == 0) {
+                    this.noResultsElem = $('<p class="no-resources">No Jobs are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
+                }
             } else {
                 if(this.numResults != 0 && data.num_results != 0){
-                    $('#num-xplore-results').text(addCommas(data.num_results));
+                    $('#num-' + this.ctype + '-results').text(addCommas(data.num_results));
                 }
-                totalElem = $('#xplore-totals')
+                totalElem = $('#' + this.ctype +'-totals');
             }
+
             if(!this.totalsCalced){
                 var numRelatedItems = parseInt($('#num-related-items').metadata().number);
-                var newTotal = numRelatedItems + data.num_results;
+                var newTotal = numRelatedItems + parseInt(data.num_results);
                 $('#num-related-items').text(addCommas(newTotal));
                 $('#num-related-items').metadata().number = newTotal;
                 this.totalsCalced = true;
             }
             
             if (data.num_results == 0 && this.numResults == 0) {
-        		if(this.ctype == "Educational Courses"){
+        		if(this.ctype == "education"){
         		    $('#num-education-results').text('0').parent('h3').addClass('no-education-results');
         		    //$('#education-results-container .print-resource').remove(); 
         		    //this.listElem.html('<p class="no-resources">No educational resources are currently tagged ' + $('#tag-name').text() + '</p>');
-        		} else {
-        		    $('#num-xplore-results').text('0');
+        		} else if (this.ctype == 'tv') {
+                    $('#num-tv-results').parent('h3').addClass('no-education-results');
+                } else {
+        		    $('#num-' + this.ctype + '-results').text('0');
         		    //$('#xplore-results-container .print-resource').remove(); 
-                    this.noResultsElem = $('<p class="no-resources">No Xplore Articles are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
+                    this.noResultsElem = $('<p class="no-resources">No ' + this.ctype + ' Articles are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
         		}
 
             } else {
@@ -602,7 +660,7 @@ XploreLoader.prototype.onLoadData = function(data) {
     }
 }
 
-XploreLoader.prototype.onScroll = function() {
+ResourceLoader.prototype.onScroll = function() {
 	if (!this.showAll) {
         var minScrollBottom = 10;
     	var scrollBottom = getScrollBottom(this.scrollElem);
@@ -612,286 +670,11 @@ XploreLoader.prototype.onScroll = function() {
     }
 }
 
-function attachXploreResults(elem, ctype, showAll) {
+function attachResourceResults(elem, ctype, showAll) {
     if (showAll == undefined) {
         showAll = null;
     }
-    new XploreLoader(elem, showAll, null, ctype);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-// This loads the job results via AJAX.
-function JobLoader(elem, showAll) {
-    var jobLoader = this;
-    this.elem = $(elem);
-    this.scrollElem = this.elem.find('.group');
-    this.loadingElem = null;
-    this.isLoading = false;
-    this.noResultsElem = null;
-    this.ajaxToken = null;
-    this.totalsCalced = false;
-    
-    this.scrollElem.scroll(function() {
-        jobLoader.onScroll();
-    });
-    
-    if (showAll == undefined) {
-        showAll = false;
-    }
-    
-    this.offset = 1;
-    
-    //this.numJobResultsPerPage = 25;
-    
-    this.tagId = this.elem.metadata().tagId;
-    this.termId = this.elem.metadata().termId;
-    
-    this.showAll = showAll;
-    this.sortDesc = false;
-    
-    this.loadContent();
-}
-
-JobLoader.prototype.loadContent = function(force) {
-    loadingTabs.push('jobs');
-    if (!this.isLoading || force) {
-        this.isLoading = true;
-        
-        var jobLoader = this;
-        this.ajaxToken = (new Date()).getTime() + '-' + Math.random();
-        
-        this.loadingElem = $('<div id="job-loading" class="loading">Loading Jobs...<div></div></div>').appendTo(this.scrollElem);
-
-        $("#job-loading div").spin({
-            lines: 9, // The number of lines to draw
-            length: 10, // The length of each line
-            width: 8, // The line thickness
-            radius: 15, // The radius of the inner circle
-            corners: 1.0, // Corner roundness (0..1)
-            speed: 2.2, // Rounds per second
-            trail: 25 // Afterglow percentage
-        });
-
-        $.ajax({
-            url: '/ajax/jobs_results'
-            , data: {
-                tag_id: this.tagId
-                , term_id: this.termId
-                , show_all: this.showAll
-                , offset: this.offset
-                , token: this.ajaxToken
-            }
-            , type: 'post'
-            , dataType: 'json'
-            , success: function(data) {
-                jobLoader.onLoadData(data);
-            }
-        });
-        
-        this.offset += 1;
-    }
-}
-
-JobLoader.prototype.onLoadData = function(data) {
-    removeNumRelatedLoader();
-
-    if (data.token == this.ajaxToken) {
-        this.loadingElem.remove();
-        this.loadingElem = null;
-        
-        if (this.noResultsElem) {
-            this.noResultsElem.remove();
-            this.noResultsElem = null;
-        }
-    
-        if (data.job_error != null && data.num_results != 0) {
-            // Job error, show the error message.
-            this.errorElem = $('<p class="error" style="margin: 50px 0 0 10px;"></p>').appendTo(this.scrollElem);
-            this.errorElem.text(data.job_error);
-        
-        } else {
-            // Normal results, load into the page.
-            
-            this.scrollElem.append(data.html);
-            
-            resizeLightboxTab();
-
-            $('#num-job-results').text(addCommas(data.num_results));
-
-            $('#job-url-container').html('<a href="' + data.job_url + '" target="_blank">View jobs on the IEEE Job Site <span class="popup newWindIcon"></span></a>');
-
-            if (data.num_results == 0) {
-                this.noResultsElem = $('<p class="no-resources">No Jobs are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
-            }
-
-            if(!this.totalsCalced){
-                var numRelatedItems = parseInt($('#num-related-items').metadata().number);
-                var newTotal = numRelatedItems + parseInt(data.num_results);
-                $('#num-related-items').text(addCommas(newTotal));
-                $('#num-related-items').metadata().number = newTotal;
-                this.totalsCalced = true;
-            }
-            
-            // Showing {{ xplore_results|length }} of {{ totalfound|intcomma }} results 
-        }
-        
-        this.isLoading = false;
-    }
-}
-
-JobLoader.prototype.onScroll = function() {
-    var minScrollBottom = 25;
-    var scrollBottom = getScrollBottom(this.scrollElem);
-    if (scrollBottom <= minScrollBottom) {
-        this.loadContent();
-    }
-}
-
-function attachJobResults(elem, ctype) {
-    new JobLoader(elem, null, null, ctype);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-// This loads the tv results via AJAX.
-function TvLoader(elem, showAll) {
-    var tvLoader = this;
-    this.elem = $(elem);
-    this.scrollElem = this.elem.find('.group');
-    this.loadingElem = null;
-    this.isLoading = false;
-    this.noResultsElem = null;
-    this.ajaxToken = null;
-    this.totalsCalced = false;
-    
-    this.scrollElem.scroll(function() {
-        tvLoader.onScroll();
-    });
-    
-    if (showAll == undefined) {
-        showAll = false;
-    }
-    
-    this.offset = 1;
-    
-    //this.numJobResultsPerPage = 25;
-    
-    this.tagId = this.elem.metadata().tagId;
-    this.termId = this.elem.metadata().termId;
-    
-    this.showAll = showAll;
-    this.sortDesc = false;
-    
-    this.loadContent();
-}
-
-TvLoader.prototype.loadContent = function(force) {
-    loadingTabs.push('tv');
-    if (!this.isLoading || force) {
-        this.isLoading = true;
-        
-        var tvLoader = this;
-        this.ajaxToken = (new Date()).getTime() + '-' + Math.random();
-        
-        this.loadingElem = $('<div id="tv-loading" class="loading">Loading Tv...<div></div></div>').appendTo(this.scrollElem);
-
-        $("#tv-loading div").spin({
-            lines: 9, // The number of lines to draw
-            length: 10, // The length of each line
-            width: 8, // The line thickness
-            radius: 15, // The radius of the inner circle
-            corners: 1.0, // Corner roundness (0..1)
-            speed: 2.2, // Rounds per second
-            trail: 25 // Afterglow percentage
-        });
-
-        $.ajax({
-            url: '/ajax/tv_results'
-            , data: {
-                tag_id: this.tagId
-                , term_id: this.termId
-                , show_all: this.showAll
-                , offset: this.offset
-                , token: this.ajaxToken
-            }
-            , type: 'post'
-            , dataType: 'json'
-            , success: function(data) {
-                tvLoader.onLoadData(data);
-            }
-        });
-        
-        this.offset += 1;
-    }
-}
-
-TvLoader.prototype.onLoadData = function(data) {
-    removeNumRelatedLoader();
-
-    if (data.token == this.ajaxToken) {
-        this.loadingElem.remove();
-        this.loadingElem = null;
-        
-        if (this.noResultsElem) {
-            this.noResultsElem.remove();
-            this.noResultsElem = null;
-        }
-    
-        if (data.tv_error != null && data.num_results != 0) {
-            // Job error, show the error message.
-            this.errorElem = $('<p class="error" style="margin: 50px 0 0 10px;"></p>').appendTo(this.scrollElem);
-            this.errorElem.text(data.job_error);
-        
-        } else {
-            // Normal results, load into the page.
-            
-            this.scrollElem.append(data.html);
-            
-            resizeLightboxTab();
-
-            $('#num-tv-results').text(addCommas(data.num_results));
-            $('option#jump-to-videos').append('&nbsp;(' + addCommas(data.num_results) + ')');
-            var currentEdCount = parseInt($('#num-education-total-results').metadata().number);
-            var newEdCount = currentEdCount + data.num_results;
-            $('#num-education-total-results').metadata().number = newEdCount;
-            $('#num-education-total-results').text(addCommas(newEdCount));            
-
-
-            if(!this.totalsCalced){
-                var numRelatedItems = parseInt($('#num-related-items').metadata().number);
-                var newTotal = numRelatedItems + parseInt(data.num_results);
-                $('#num-related-items').text(addCommas(newTotal));
-                $('#num-related-items').metadata().number = newTotal;
-                this.totalsCalced = true;
-            }            
-
-
-            if (data.num_results == 0) {
-                $('#num-tv-results').parent('h3').addClass('no-education-results');
-                //this.noResultsElem = $('<p class="no-resources">No videos are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
-            }
-            
-            
-            // Showing {{ xplore_results|length }} of {{ totalfound|intcomma }} results 
-        }
-        
-        this.isLoading = false;
-    }
-}
-
-/*
-TvLoader.prototype.onScroll = function() {
-    var minScrollBottom = 25;
-    var scrollBottom = getScrollBottom(this.scrollElem);
-    if (scrollBottom <= minScrollBottom) {
-        this.loadContent();
-    }
-}
-*/
-
-function attachTvResults(elem, ctype) {
-    new TvLoader(elem, null, null, ctype);
+    new ResourceLoader(elem, ctype, showAll, null);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
