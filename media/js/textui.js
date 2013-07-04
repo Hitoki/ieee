@@ -1172,7 +1172,7 @@ var Tags = {
         this.page = null;
         this.sectorId = "all";
         this.clusterId = null;
-        this.societyId = null;
+        this.societyId = "all";
         $('#tags-live-search').val('');
         //log('clearSectorSociety(): calling updateResults().');
         this.updateResults();
