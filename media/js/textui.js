@@ -1170,7 +1170,7 @@ var Tags = {
     
     clearSectorSociety: function(setHash) {
         this.page = null;
-        this.sectorId = "all";
+        this.sectorId = null;
         this.clusterId = null;
         this.societyId = "all";
         $('#tags-live-search').val('');
