@@ -3581,7 +3581,17 @@ def _send_user_login_info_email(request, user, plaintext_password, reason):
         text1 = 'Your account\'s password has been changed'
     else:
         raise Exception('Unknown reason "%s"' % reason)
-    
+        
+    if user.get_profile().reset_key is None:
+        profile = user.get_profile()
+        
+        hash = hashlib.md5()
+        hash.update(str(random.random()))
+        hash = hash.hexdigest()
+        
+        profile.reset_key = hash
+        profile.save()
+
     abs_index_url = request.build_absolute_uri(reverse('index'))
     abs_login_url = request.build_absolute_uri(reverse('admin_login'))
     abs_reset_url = request.build_absolute_uri(reverse('password_reset', args=[user.id, user.get_profile().reset_key]))
