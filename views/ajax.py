@@ -666,7 +666,7 @@ def ajax_textui_nodes(request):
     else:
         params['search_for'] = search_for
     params['page'] = page
-    
+
     textui_flyovers_url = reverse('tooltip') + '/tagid?' + urllib.urlencode(params)
     # The tooltip url needs to know if 'all' societies or sectors is chosen.
     # Otherwise the color blocks in the tooltip will all be red.
@@ -1496,7 +1496,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id, societ
                 
                 # Show all terms, and all tags with content.
                 #if (show_empty_terms and child_node['is_taxonomy_term']) or (child_node['num_selected_filters1'] > 0 and child_node['num_societies1'] > 0 and child_node['num_resources1'] > 0):
-                if (show_empty_terms and child_node['is_taxonomy_term']) or (child_node['num_societies1'] > 0 and child_node['num_resources1'] > 0):
+                if (show_empty_terms and child_node['is_taxonomy_term']) or (child_node['num_societies1'] > 0 ):
                     
                     try:
                         combinedLevel = _get_popularity_level(min_score, max_score, child_node['score1'], node=child_node)
