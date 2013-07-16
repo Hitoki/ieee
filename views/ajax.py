@@ -1662,7 +1662,7 @@ def _get_popularity_level(min, max, count, node=None):
             body.append('  name: %s' % node['name'])
             body.append('  score1: %s' % node['score1'])
         body = '\n'.join(body)
-        util.send_admin_email('Error in _get_popularity_level(): count %r is outside the range (%r, %r)' % (count, min, max), body)
+        #util.send_admin_email('Error in _get_popularity_level(): count %r is outside the range (%r, %r)' % (count, min, max), body)
         #raise Exception('count %r is outside of the min/max range (%r, %r)' % (count, min, max) + '\n' + body)
     
     # NOTE: This is just to prevent errors for the end-user.
