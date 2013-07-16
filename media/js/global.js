@@ -582,8 +582,6 @@ ResourceLoader.prototype.onLoadData = function(data) {
             
             // Hook up auto-truncate for the descriptions.
             autoTruncate(this.listElem.find('.auto-truncate-words'), { word_boundary:true } );
-                        
-            var totalElem;
 
             if(this.ctype == "education"){
                 $('option#jump-to-articles').append('&nbsp;(' + addCommas(data.num_results) + ')');
@@ -594,7 +592,6 @@ ResourceLoader.prototype.onLoadData = function(data) {
                     $('#num-education-total-results').metadata().number = newEdCount;
                     $('#num-education-total-results').text(addCommas(newEdCount));
                 }
-                totalElem = $('#education-totals');
 		   
             } else if (this.ctype == 'tv') {
                 $('#num-tv-results').text(addCommas(data.num_results));
@@ -615,7 +612,6 @@ ResourceLoader.prototype.onLoadData = function(data) {
                 if(this.numResults != 0 && data.num_results != 0){
                     $('#num-' + this.ctype + '-results').text(addCommas(data.num_results));
                 }
-                totalElem = $('#' + this.ctype +'-totals');
             }
 
             if(!this.totalsCalced){
@@ -643,13 +639,9 @@ ResourceLoader.prototype.onLoadData = function(data) {
                 var html = '<div class="articles-search">Show articles containing: <input class="live-search" id="article-live-search"><span id="article-search-clear" class="live-search-clear">&nbsp;</span></div>';
                 html = ''; // removing search-in-xplore UI
                 html += '<div class="articles-show-count">' + addCommas(data.num_results) + ' articles';
-                if (this.sort) {
-                    html += ', sorted by ' + getXploreSortName(this.sort);
-                }
                 if (!this.ctype){
-                    html += ' (<a href="http://xploreuat.ieee.org/search/freesearchresult.jsp?newsearch=true&queryText=' + escape(data.search_term) + '&x=0&y=0' + (this.ctype ? '&ctype=' + this.ctype : '') + '" target="_blank" rel="nofollow"><span>show search in Xplore instead</span><span class="popup newWinIcon"></span></a>)</div>'
+                    html += ' (<a href="http://xploreuat.ieee.org/search/freesearchresult.jsp?newsearch=true&queryText=' + escape(data.search_term) + '&x=0&y=0' + (this.ctype ? '&ctype=' + this.ctype : '') + '" target="_blank" rel="nofollow"><span>show search in Xplore</span><span class="popup newWinIcon"></span></a>)</div>'
                 }
-                totalElem.html(html);
             }
             
             // Showing {{ xplore_results|length }} of {{ totalfound|intcomma }} results 

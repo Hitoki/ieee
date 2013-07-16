@@ -3581,24 +3581,33 @@ def _send_user_login_info_email(request, user, plaintext_password, reason):
         text1 = 'Your account\'s password has been changed'
     else:
         raise Exception('Unknown reason "%s"' % reason)
-    
+        
+    if user.get_profile().reset_key is None:
+        profile = user.get_profile()
+        
+        hash = hashlib.md5()
+        hash.update(str(random.random()))
+        hash = hash.hexdigest()
+        
+        profile.reset_key = hash
+        profile.save()
+
     abs_index_url = request.build_absolute_uri(reverse('index'))
     abs_login_url = request.build_absolute_uri(reverse('admin_login'))
+    abs_reset_url = request.build_absolute_uri(reverse('password_reset', args=[user.id, user.get_profile().reset_key]))
     
     subject = 'Your login information for %s' % abs_index_url
     message = """%s on %s.  Here is your login information:
 
 Username: %s
-Password: %s
 
-To login to your account, click click on this link and enter your login information from above:
+To login to your account, click on this link and change your password:
 %s
 """ % (
         text1,
         abs_index_url,
         user.username,
-        plaintext_password,
-        abs_login_url,
+        abs_reset_url,
     )
     
     logging.debug('Sending login info email to %s:\nsubject: %s\nmessage: %s\n' % (
