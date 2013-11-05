@@ -126,6 +126,7 @@ function isValidEmailAddress(emailAddress) {
             <ul class="nootabs-menus">
                 <li id="over-tab"><a href="" rel="nofollow">Overview</a></li>
                 <li id="ieee-societies-tab"><a href="" rel="nofollow">IEEE Orgs <span class="right">{{ societies.count }}</span></a></li>
+                <li id="ieee-authors-tab"><a href="" rel="nofollow">Authors <span class="right"></span></a></li>
                 <li id="conferences-tab"><a href="" rel="nofollow">Conferences <span class="right">{{conferences|length}}</span></a></li>
                 {#<li id="educations-tab"><a href="" rel="nofollow">Education <span class="right" id="num-education-results"></span></a></li>#}
                 <li id="articles-tab"><a href="" rel="nofollow">Xplore Articles <span class="right" id="num-xplore-results"></span></a></li>
@@ -155,6 +156,11 @@ function isValidEmailAddress(emailAddress) {
 <!-- Organizations -->
             <div id="society-tab" data-printUrl='{% url print_resource tag.id "societies" %}'>
                 {% include 'ajax_organizations_tab.inc.html' %}
+            </div>
+
+<!-- Authors -->
+            <div id="authors-tab" data-printUrl='{% url print_resource tag.id "authors" %}'>
+                {% include 'ajax_authors_tab.inc.html' %}
             </div>
 
 <!-- Conferences -->

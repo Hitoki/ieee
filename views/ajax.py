@@ -24,7 +24,7 @@ import util
 from BeautifulSoup import BeautifulSoup
 
 from .views import render, get_jobs_info
-from .xplore import _get_xplore_results
+from .xplore import _get_xplore_results, ajax_xplore_authors
 
 TOOLTIP_MAX_CHARS = 120
 
@@ -528,6 +528,42 @@ def ajax_tv_results(request):
     }
     
     return HttpResponse(json.dumps(data), 'application/javascript')
+
+@csrf_exempt
+def ajax_authors_results(request):
+    '''
+    Shows the list of IEEE xplore authors for the given tag.
+    @param tag_id: POST var, specifyies the tag.
+    @param token: POST var, the ajax token to pass through.
+    @return: HTML output of results.
+    '''
+    tag_id = request.POST.get('tag_id')
+    
+    if tag_id is not None and tag_id != 'undefined':
+        tag = Node.objects.get(id=tag_id)
+        term = None
+        name = tag.name
+    else:
+        assert False, 'Must specify tag_id.'
+    
+    token = request.POST['token']
+    
+    #jobs_results, jobs_error, num_results = _get_xplore_results(name, show_all=show_all, offset=offset, sort=sort, sort_desc=sort_desc, ctype=ctype)
+
+    authorsHtml, authorsCount = ajax_xplore_authors(request)
+    
+    # DEBUG:
+    #xplore_error = 'BAD ERROR.'
+
+    data = {
+        'num_results': authorsCount,
+        'html': authorsHtml,
+        'search_term': name,
+        'token': token
+    }
+    
+    return HttpResponse(json.dumps(data), 'application/javascript')
+
 
 @login_required
 def ajax_node(request):

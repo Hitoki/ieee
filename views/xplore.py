@@ -85,30 +85,6 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
         params['sortorder'] = 'desc'
     if ctype:
         params['ctype'] = ctype
-        
-    def getElementByTagName(node, tag_name):
-        nodes = node.getElementsByTagName(tag_name)
-        if len(nodes) == 0:
-            return None
-        elif len(nodes) == 1:
-            return nodes[0]
-        else:
-            raise Exception('More than one element found for topic name "%s"' % tag_name)
-        
-    def getElementValueByTagName(node, tag_name):
-        node1 = getElementByTagName(node, tag_name)
-        if node1 is None:
-            return None
-        else:
-            value = ''
-            # print '  len(node1.childNodes): %r' % len(node1.childNodes)
-            for child_node in node1.childNodes:
-                # print '  child_node: %r' % child_node
-                if child_node.nodeType == child_node.TEXT_NODE or child_node.nodeType == child_node.CDATA_SECTION_NODE:
-                    value += child_node.nodeValue
-                    
-            return value
-
 
     tax_term_count = Node.objects.filter(name=tag_name, is_taxonomy_term=True).count()
 
@@ -210,6 +186,30 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
 
     return xplore_results, xplore_error, totalfound
 
+def getElementByTagName(node, tag_name):
+    nodes = node.getElementsByTagName(tag_name)
+    if len(nodes) == 0:
+        return None
+    elif len(nodes) == 1:
+        return nodes[0]
+    else:
+        raise Exception('More than one element found for topic name "%s"' % tag_name)    
+
+def getElementValueByTagName(node, tag_name):
+    node1 = getElementByTagName(node, tag_name)
+    if node1 is None:
+        return None
+    else:
+        value = ''
+        # print '  len(node1.childNodes): %r' % len(node1.childNodes)
+        for child_node in node1.childNodes:
+            # print '  child_node: %r' % child_node
+            if child_node.nodeType == child_node.TEXT_NODE or child_node.nodeType == child_node.CDATA_SECTION_NODE:
+                value += child_node.nodeValue
+                
+        return value
+
+
 @csrf_exempt
 def ajax_recent_xplore(request):
     tag_name = request.POST.get('tag_name')
@@ -223,29 +223,6 @@ def ajax_recent_xplore(request):
 
     params['sortorder'] = 'desc'
     params['sortfield'] = XPLORE_SORT_PUBLICATION_YEAR
-
-    def getElementByTagName(node, tag_name):
-        nodes = node.getElementsByTagName(tag_name)
-        if len(nodes) == 0:
-            return None
-        elif len(nodes) == 1:
-            return nodes[0]
-        else:
-            raise Exception('More than one element found for topic name "%s"' % tag_name)    
-
-    def getElementValueByTagName(node, tag_name):
-        node1 = getElementByTagName(node, tag_name)
-        if node1 is None:
-            return None
-        else:
-            value = ''
-            # print '  len(node1.childNodes): %r' % len(node1.childNodes)
-            for child_node in node1.childNodes:
-                # print '  child_node: %r' % child_node
-                if child_node.nodeType == child_node.TEXT_NODE or child_node.nodeType == child_node.CDATA_SECTION_NODE:
-                    value += child_node.nodeValue
-                    
-            return value
 
     tax_term_count = Node.objects.filter(name=tag_name, is_taxonomy_term=True).count()
 
@@ -385,3 +362,86 @@ def ajax_xplore_results(request):
     }
     
     return HttpResponse(json.dumps(data), 'application/javascript')
+
+@csrf_exempt
+def ajax_xplore_authors(request):
+    tag_id = request.POST.get('tag_id')
+    
+    if tag_id is not None and tag_id != 'undefined':
+        tag = Node.objects.get(id=tag_id)
+        term = None
+        name = tag.name
+    else:
+        assert False, 'Must specify tag_id.'
+
+    params = {
+        # No actual results, just the authors
+        'hc': 0,
+        'facet': 'd-au',
+        'md': name
+    }
+
+    url = settings.EXTERNAL_XPLORE_URL + urllib.urlencode(params)
+
+    if settings.DEBUG:
+        log('xplore query: %s' % url)
+        
+    try:
+        file1 = urllib2.urlopen(url)
+    
+        # Get the charset of the request and decode/re-encode the response text into UTF-8 so we can parse it
+        info = file1.info()
+        try:
+            temp, charset = info['content-type'].split('charset=')
+        except ValueError:
+            charset = 'utf-8'
+
+
+    except urllib2.URLError:
+        xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
+        xplore_results = []
+        totalfound = 0
+    except KeyError:
+        xplore_error = 'Error: Could not determine content type of the IEEE Xplore response.'
+        xplore_results = []
+        totalfound = 0
+
+    else:
+        xplore_error = None
+
+        xml_body = file1.read()
+        file1.close()
+        xml_body = xml_body.decode(charset, 'replace').encode('utf-8')
+        
+        xml1 = xml.dom.minidom.parseString(xml_body)
+            
+        # try:
+        #     totalfound = int(getElementValueByTagName(xml1.documentElement, 'totalfound'))
+            
+        # # If no records found Xplore will return xml like this and the int parse with raise an exeption
+        # # <Error><![CDATA[Cannot go to record 1 since query  only returned 0 records]]></Error>
+        # except TypeError:
+        #     # Otherwise, give up.
+        #     return [], 'No records found', 0
+
+
+        xplore_results = []
+        for author in xml1.documentElement.childNodes[5].childNodes[1].getElementsByTagName('refinement'):
+            name = getElementValueByTagName(author, 'name')
+            count = getElementValueByTagName(author, 'count')
+            url = getElementValueByTagName(author, 'url')
+            
+            result = {
+                'name': name,
+                'count': count,
+                'url': url
+                }
+            
+            xplore_results.append(result)
+
+    from django.template.loader import render_to_string
+    html = render_to_string('include_xplore_authors.html', {
+        'xplore_results': xplore_results
+    })
+    # import ipdb; ipdb.set_trace()
+    return html, xplore_error

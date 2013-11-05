@@ -520,6 +520,13 @@ ResourceLoader.prototype.loadContent = function(force) {
                 , offset: this.offset
                 , token: this.ajaxToken
             };        
+        } else if (this.ctype == 'authors') {
+            this.url = '/ajax/authors_results';
+            this.data = {
+                tag_id: this.tagId
+                , term_id: this.termId
+                , token: this.ajaxToken
+            };
         }
         
         this.loadingElem = $('<div id="xplore-loading" class="loading">Loading Xplore articles...<div></div></div>').appendTo(this.scrollElem);

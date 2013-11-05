@@ -503,3 +503,4 @@ def get_jobs_info(tag, offset=None):
 
     file1 = None
     return jobsHtml, jobsCount, jobsUrl
+
