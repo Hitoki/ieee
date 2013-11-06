@@ -426,9 +426,11 @@ def ajax_xplore_authors(request):
 
 
         xplore_results = []
+        total_count = 0
         for author in xml1.documentElement.childNodes[5].childNodes[1].getElementsByTagName('refinement'):
             name = getElementValueByTagName(author, 'name')
             count = getElementValueByTagName(author, 'count')
+            total_count = total_count + int(count)
             url = getElementValueByTagName(author, 'url')
             
             result = {
@@ -443,5 +445,4 @@ def ajax_xplore_authors(request):
     html = render_to_string('include_xplore_authors.html', {
         'xplore_results': xplore_results
     })
-    # import ipdb; ipdb.set_trace()
-    return html, xplore_error
+    return html, total_count
