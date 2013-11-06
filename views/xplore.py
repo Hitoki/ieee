@@ -433,6 +433,11 @@ def ajax_xplore_authors(request):
             total_count = total_count + int(count)
             url = getElementValueByTagName(author, 'url')
             
+            # massage the url
+            url = url.replace('gateway/ipsSearch', 'search/searchresult')
+            url = url.replace('&hc=0', '')
+            url = url.replace('md=', 'queryText=')
+
             result = {
                 'name': name,
                 'count': count,
