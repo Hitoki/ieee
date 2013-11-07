@@ -505,23 +505,8 @@ div.image-container {
     color: $gray;
 }
   
-.society-images a, {
-   color: $linkColor;
-   cursor: default;
-   text-decoration: none;
-}
-  
 .group a img, .xplore-totals img, .xplore-full-results-page img {
    cursor: pointer;
-}
-  
-//.group .item_odd span:hover, .group .item_even span:hover, 
-//#xplore-totals span:hover, .society-images span:hover,
-//.xplore-full-results-page .item_odd span:hover, .xplore-full-results-page .item_even span:hover,
-.group a:hover, .xplore-full-results-page a:hover {
-    color: $orange;
-    text-decoration: underline;
-    cursor: pointer;
 }
   
 .waitCursor {
