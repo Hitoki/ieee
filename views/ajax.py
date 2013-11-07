@@ -505,17 +505,21 @@ def ajax_tv_results(request):
     apixml = fromstring(file2)
     dev_url = apixml.find('url_dev').text
 
-    tv_xml = fromstring(urllib2.urlopen(dev_url).read())
+    try:
+        tv_xml = fromstring(urllib2.urlopen(dev_url).read())
 
-    results = tv_xml.findall('search-item')
-    tvCount = len(results)
+        results = tv_xml.findall('search-item')
+        tvCount = len(results)
 
-    tvHtml = ""
-    for result in results:
-        thumb = result.find('images').find('thumbnail').text
-        title = result.find('title').text
-        url = result.find('web-page').text
-        tvHtml = tvHtml + '<img src="%s" height="60" width="105"/><a href="%s" target="_blank">%s <span class="popup newWinIcon"></span></a><br>\n' % (thumb, url, title)
+        tvHtml = ""
+        for result in results:
+            thumb = result.find('images').find('thumbnail').text
+            title = result.find('title').text
+            url = result.find('web-page').text
+            tvHtml = tvHtml + '<img src="%s" height="60" width="105"/><a href="%s" target="_blank">%s <span class="popup newWinIcon"></span></a><br>\n' % (thumb, url, title)
+    except:
+        tvCount = 0
+        tvHtml = ''
     
     # DEBUG:
     #xplore_error = 'BAD ERROR.'
