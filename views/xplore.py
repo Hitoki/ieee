@@ -381,7 +381,7 @@ def ajax_xplore_authors(request):
         'md': name
     }
 
-    url = settings.EXTERNAL_XPLORE_URL + urllib.urlencode(params)
+    url = settings.EXTERNAL_XPLORE_AUTHORS_URL + urllib.urlencode(params)
 
     if settings.DEBUG:
         log('xplore query: %s' % url)

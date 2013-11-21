@@ -65,7 +65,8 @@ LOGIN_URL = '/admin/login'
 EXTERNAL_HELP_URL = 'http://help.technav.systemicist.com/forums'
 
 #EXTERNAL_XPLORE_URL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?'
-EXTERNAL_XPLORE_URL = 'http://xploreqa.ieee.org/gateway/ipsSearch.jsp?'
+EXTERNAL_XPLORE_URL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?'
+EXTERNAL_XPLORE_AUTHORS_URL = 'http://xploreqa.ieee.org/gateway/ipsSearch.jsp?'
 
 MOBILE_URL_PREFIX = 'm.'
 
