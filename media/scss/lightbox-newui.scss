@@ -606,9 +606,14 @@ margin-top: 0;
     border-bottom: 1px solid $light-gray;
 }
 
+#authors-results-container div.group,
 #education-results-container div.group,
 #xplore-results-container div.group {
     margin-top: 32px;
+}
+
+#authors-results-container .print-resource {
+    text-align: left;
 }
 
 #xplore-results-container div.group ul {
