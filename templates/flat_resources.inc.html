@@ -52,13 +52,14 @@ Include file used by both print_resource.html and tag_landing.html
             <li {% if not xplore_results %}class="disabled"{% endif %}><a href="#xplore">Xplore Articles related to  {{ tag.name }}</a></li>
             <li {% if not jobsHtml %}class="disabled"{% endif %}><a href="#jobs">Jobs related to {{ tag.name }}</a></li>
             {% comment %}<li><a href="#patents">Patents related to {{ tag.name }}</a></li>{% endcomment %}
-            <li {% if not show_edu %}class="disabled"{% endif %}><a href="#xplore_edu">Educational Resources on {{ tag.name }}</a></li>    
+            <li {% if not show_edu %}class="disabled"{% endif %}><a href="#xplore_edu">Educational Resources on {{ tag.name }}</a></li>
+            <li {% if not standards %}class="disabled"{% endif %}><a href="#standards">Standards related to {{ tag.name }}</a></li>  
         </ol>
-        <ol start="5">
-            <li {% if not standards %}class="disabled"{% endif %}><a href="#standards">Standards related to {{ tag.name }}</a></li>
+        <ol start="6">
             <li {% if not periodicals %}class="disabled"{% endif %}><a href="#periodicals">Periodicals related to {{ tag.name }}</a></li>
             <li {% if not societies %}class="disabled"{% endif %}><a href="#societies">IEEE Organizations related to {{ tag.name }}</a></li>
             <li {% if not related_tags %}class="disabled"{% endif %}><a href="#concepts">Topics related to {{ tag.name }}</a></li>
+            <li {% if not authors %}class="disabled"{% endif %}><a href="#authors">Most published Xplore authors for {{ tag.name }}</a></li>
             {% comment %}<li {% if not sectors %}class="disabled"{% endif %}><a href="#sectors">Industry topics related to {{ tag.name }}</a></li>{% endcomment %}
         </ol>
     </div>
@@ -416,6 +417,32 @@ Include file used by both print_resource.html and tag_landing.html
                 {% endif %}
             {% else %}
             <p class="no-resources">No topics related to "{{ tag.name }}"</p>
+            {% endif %}
+        </div>
+    </div>
+    <hr/>
+    {% endif %}
+
+    {% if authors or toc %}
+    <div id="tag-authors" class="tag-section">
+        <h3><a name="authors"></a>{% if toc %}<span class="index"></span>{% endif %} Most published Xplore authors for {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <div>
+            {% if authors %}
+                {% for author in authors|slice:":5" %}
+                    {% if create_links %}
+                        <a href="{{ author.url }}" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ author.url }}'); return false;">{{ author.name }}</a>
+                    {% else %}
+                        {{ author.name }}
+                    {% endif %}
+                    <br/>
+                {% endfor %}
+               {% if authors|length > 5 %}
+                    <span class="more-link">
+                    <a href="/textui/?autoload={{tag.id}}&tab=authors-tab" rel="nofollow">More Authors</a>
+                    </span>
+                {% endif %}
+            {% else %}
+            <p class="no-resources">No authors for "{{ tag.name }}"</p>
             {% endif %}
         </div>
     </div>
