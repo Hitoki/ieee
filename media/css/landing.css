@@ -291,8 +291,9 @@ a.featured,
 }
 
 #tag-societies .more-link,
-#tag-related-tags .more-link {
-  margin: 20px 0 0 0;
+#tag-related-tags .more-link,
+#tag-authors .more-link {
+  margin: 25px 0 0 25px;
 }
 
 #inner-container .center-pad {
