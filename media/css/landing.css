@@ -285,7 +285,8 @@ span.more-link a {
 
 a.featured,
 #tag-societies div a,
-#tag-related-tags div a {
+#tag-related-tags div a,
+#tag-authors div a {
   margin-left: 25px;
 }
 
