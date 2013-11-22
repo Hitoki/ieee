@@ -554,8 +554,13 @@ def ajax_authors_results(request):
     
     #jobs_results, jobs_error, num_results = _get_xplore_results(name, show_all=show_all, offset=offset, sort=sort, sort_desc=sort_desc, ctype=ctype)
 
-    authorsHtml, authorsCount = ajax_xplore_authors(request)
-    
+    authors, xplore_error, authorsCount = ajax_xplore_authors(request.POST.get('tag_id'))
+
+    from django.template.loader import render_to_string
+    authorsHtml = render_to_string('include_xplore_authors.html', {
+        'xplore_results': authors
+    })
+
     # DEBUG:
     #xplore_error = 'BAD ERROR.'
 

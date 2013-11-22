@@ -363,9 +363,7 @@ def ajax_xplore_results(request):
     
     return HttpResponse(json.dumps(data), 'application/javascript')
 
-@csrf_exempt
-def ajax_xplore_authors(request):
-    tag_id = request.POST.get('tag_id')
+def ajax_xplore_authors(tag_id):
     
     if tag_id is not None and tag_id != 'undefined':
         tag = Node.objects.get(id=tag_id)
@@ -445,8 +443,4 @@ def ajax_xplore_authors(request):
             
             xplore_results.append(result)
 
-    from django.template.loader import render_to_string
-    html = render_to_string('include_xplore_authors.html', {
-        'xplore_results': xplore_results
-    })
-    return html, len(xplore_results)
+    return xplore_results, xplore_error, len(xplore_results)

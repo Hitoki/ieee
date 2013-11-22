@@ -33,6 +33,7 @@ from widgets import make_display_only
 from BeautifulSoup import BeautifulSoup
 
 from .xplore import _get_xplore_results
+from .xplore import ajax_xplore_authors
 
 TOOLTIP_MAX_CHARS = 120
 
@@ -341,8 +342,9 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
     xplore_edu_results = None
     totaledufound = 0
     xplore_results = None
+    xplore_authors = None
     
-    if resource_type not in ['all', 'sectors', 'related_tags', 'societies', 'conferences', 'periodicals', 'standards', 'xplore_edu', 'xplore', 'jobs', 'patents','overview']:
+    if resource_type not in ['all', 'sectors', 'related_tags', 'societies', 'conferences', 'periodicals', 'standards', 'xplore_edu', 'xplore', 'jobs', 'patents','overview','authors']:
         raise Exception('Unknown resource_type "%s"' % resource_type)
 
     if resource_type == 'sectors' or resource_type == 'all':
@@ -397,6 +399,9 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
         ebooks = Resource.objects.getForNode(tag, resourceType=ResourceType.EBOOK)            
     if resource_type == 'xplore' or resource_type == 'all':
         xplore_results, xplore_error, totalfound = _get_xplore_results(tag.name, False)
+
+    if resource_type == 'authors' or resource_type == 'all':
+        xplore_authors, xplore_error, totalfound = ajax_xplore_authors(tag_id)
     
     page_date = datetime.datetime.now()
     
@@ -440,6 +445,7 @@ def print_resource(request, tag_id, resource_type, template_name='print_resource
         'standards': standards,
         'xplore_edu_results': xplore_edu_results,
         'xplore_results': xplore_results,
+        'authors': xplore_authors,
         'toc': toc,
         'create_links': create_links,
         'related_items_count': related_items_count,
