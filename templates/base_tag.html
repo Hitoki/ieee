@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load noo_jscssmin %}
+
+{% block title %}
+    {{ tag.name }} - IEEE Conferences, Publications, and Resources
+{% endblock %}
+
+{% block meta %}
+    <meta name="description" content="{{ tag.name }} Information on IEEE's Technology Navigator. Start your Research Here! {{ tag.name }}-related Conferences, Publications, and Organizations.">
+
+    <meta property="og:title" content="{{ tag.name }}"/>
+    <meta property="og:type" content="tag"/>
+    <meta property="og:url" content="{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}"/>
+    <meta property="og:image" content="{{ host_info }}/media/images/sprite-images/technav_banner.png"/>
+    <meta property="og:site_name" content="IEEE Technology Navigator"/>
+    <meta property="og:description" content="Read more about {{ tag.name }} on IEEE TechNav."/>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+{% endblock %}
+
+{% block css %}
+    {% cssmin css/h5bp.css css/multisearch.css css/flyover.css css/vert-center.css css/jquery-ui-1.7.2.custom.css css/icomoon-style.css css/style-newui.css css/sprites-newui.css css/lightbox-newui.css css/nootabs-newui.css css/landing.css %}
+{% endblock %}
+
+{% block body_class %}class="tag_base"{% endblock %}
+
+{% block header %}{% endblock %}  {# just to hide header base block #}
