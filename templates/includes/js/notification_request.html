@@ -1,0 +1,39 @@
+<script type="text/javascript">
+    function isValidEmailAddress(emailAddress) {
+        var pattern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i);
+        return pattern.test(emailAddress);
+    }
+
+    $(function() {
+        $('#notificationRequestButton').click(function(){
+            var input = $('#notificationRequestEmail');
+
+            if(isValidEmailAddress(input.val())) {
+                $.post('/ajax/notification/request',
+                    {
+                        email: input.val(),
+                        nodeid: {{ tag.id }}
+                    },
+                    function(){
+                        input.val('');
+                        $("#alertForm").hide();
+                        $("#alertForm_error").hide();
+                        $("#alertSuccess").show();
+                        $("#alertHelpIcon").hide();
+                        $("#alertContainer").addClass("success");
+                        return false;
+                    }
+                );
+            } else {
+                $("#alertForm_error").val(errorText).show();
+                return false;
+            }
+        });
+
+        $("#notificationRequestEmail").keypress(function(e) {
+            if(e.keyCode == 13) {
+                $('#notificationRequestButton').click();
+            }
+        });
+    });
+</script>
