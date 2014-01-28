@@ -1,6 +1,9 @@
-import cgi
-import datetime
-from django.db.models import Count, Q
+from logging import debug as log
+import sys
+import traceback
+import urllib
+import urllib2
+
 from django.core.mail import mail_admins
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
@@ -8,34 +11,18 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.utils import simplejson as json
-from logging import debug as log
-import os.path
-import re
-import string
-import sys
-import time
-import traceback
-from urllib import quote
-import urllib
-import urllib2
-import xml.dom.minidom
+
 from decorators import optional_login_required as login_required
-
-from django.middleware import csrf
-from django.views.decorators.csrf import csrf_exempt
-
-from ieeetags.models import single_row, Cache, Filter, Node, NodeType, \
-    Profile, Resource, ResourceType, Society, ProfileLog, \
-    ResourceAdditionNotificationRequest
+from ieeetags.models import Filter, Node, Resource, ResourceType, Society
 from ieeetags.forms import *
+
 #from profiler import Profiler
-import settings
 import util
 from widgets import make_display_only
-from BeautifulSoup import BeautifulSoup
 
 from .xplore import _get_xplore_results
 from .xplore import ajax_xplore_authors
+
 
 TOOLTIP_MAX_CHARS = 120
 
@@ -102,9 +89,9 @@ def roamer(request):
     sectors = Node.objects.getSectors()
     filters = Filter.objects.all()
     return render(request, 'roamer.html', {
-        'nodeId':nodeId,
-        'sectors':sectors,
-        'filters':filters,
+        'nodeId': nodeId,
+        'sectors': sectors,
+        'filters': filters,
     })
 
 
@@ -143,7 +130,6 @@ def textui(request, survey=False):
         else:
             raise Exception('Unknown node_type "%s"' % node.node_type.name)
 
-
     sectors = Node.objects.getSectors()
     filters = Filter.objects.all()
     societies = Society.objects.all()
@@ -156,17 +142,17 @@ def textui(request, survey=False):
     newui_search_button = False
 
     return render(request, template, {
-        'sectorId':sectorId,
+        'sectorId': sectorId,
         'clusterId': clusterId,
-        'sectors':sectors,
-        'filters':filters,
-        'societies':societies,
+        'sectors': sectors,
+        'filters': filters,
+        'societies': societies,
         'ENABLE_SHOW_CLUSTERS_CHECKBOX':
             settings.ENABLE_SHOW_CLUSTERS_CHECKBOX,
         'ENABLE_SHOW_TERMS_CHECKBOX': settings.ENABLE_SHOW_TERMS_CHECKBOX,
         'ENABLE_SEARCH_BUTTON': settings.ENABLE_SEARCH_BUTTON,
         'SEARCH_KEY_DELAY': settings.SEARCH_KEY_DELAY,
-        'NEWUI':NEWUI,
+        'NEWUI': NEWUI,
         'ENABLE_SEARCH_BUTTON': newui_search_button
     })
 
@@ -252,6 +238,7 @@ import os
 import time
 import settings
 
+
 try:
     PROFILE_LOG_BASE = settings.PROFILE_LOG_BASE
 except:
@@ -291,6 +278,7 @@ def profile(log_file):
             return ret
 
         return _inner
+
     return _outer
 
 
@@ -305,7 +293,7 @@ def tags_list(request):
                               {"tags": Node.objects.get_tags(),
                                "show_id": is_staff,
                                "show_resource_count": is_staff,
-                               "show_checkbox": is_staff },
+                               "show_checkbox": is_staff},
                               context_instance=RequestContext(request))
 
 
@@ -317,14 +305,14 @@ def tags_all(request):
 
     nodes = Node.objects.filter(high_potency=True)
 
-    return render_to_response('tags_all.html', {"tags": nodes },
+    return render_to_response('tags_all.html', {"tags": nodes},
                               context_instance=RequestContext(request))
 
 
 def tags_starts(request, starts_with):
     nodes = Node.objects.filter(high_potency=False,
-                                name__iregex='^'+starts_with)
-    return render_to_response('tags_list.html', {"tags": nodes },
+                                name__iregex='^' + starts_with)
+    return render_to_response('tags_list.html', {"tags": nodes},
                               context_instance=RequestContext(request))
 
 
@@ -336,7 +324,7 @@ def tag_landing(request, tag_id):
     # TODO move logic to decorator
     is_mobile = (
         re.match(settings.MOBILE_URL_PREFIX, request.META['HTTP_HOST']) and
-        not ('nomobile' in request.GET and request.GET['nomobile']=="1")
+        not ('nomobile' in request.GET and request.GET['nomobile'] == "1")
     )
     if is_mobile:
         template_name = 'tag_landing_mobile.html'
@@ -400,7 +388,7 @@ def print_resource(request, tag_id, resource_type,
 
     resource_types = ['all', 'sectors', 'related_tags', 'societies',
                       'conferences', 'periodicals', 'standards', 'xplore_edu',
-                      'xplore', 'jobs', 'patents','overview','authors']
+                      'xplore', 'jobs', 'patents', 'overview', 'authors']
     if resource_type not in resource_types:
         raise Exception('Unknown resource_type "%s"' % resource_type)
 
@@ -418,7 +406,9 @@ def print_resource(request, tag_id, resource_type,
         if template_name in ('tag_landing.html', 'tag_landing_mobile.html'):
 
             for conference in conferences:
-                if len(conference.url.strip()) and not re.compile('^https?://').match(conference.url):
+                check_url = len(conference.url.strip()) and \
+                            not re.compile('^https?://').match(conference.url)
+                if check_url:
                     conference.url = 'http://' + conference.url
 
             # Sort the conferences by year latest to earliest.
@@ -450,6 +440,7 @@ def print_resource(request, tag_id, resource_type,
 
         # get url from xml that is returned
         from xml.etree.ElementTree import fromstring
+
         apixml = fromstring(file2)
         dev_url = apixml.find('url_dev').text
 
@@ -482,7 +473,7 @@ def print_resource(request, tag_id, resource_type,
     related_items_count = sectors.count() + related_tags.count() + \
                           societies.count() + conf_count + \
                           periodicals.count() + standards.count() + \
-                          totaledufound+ totalfound
+                          totaledufound + totalfound
 
     if resource_type == 'jobs' or resource_type == 'all':
         jobsHtml, jobsCount, jobsUrl = get_jobs_info(tag)
@@ -543,7 +534,7 @@ def print_resource(request, tag_id, resource_type,
 
 def debug_error(request):
     '''DEBUG: Causes an error, to test the error handling.'''
-    test = 0/0
+    test = 0 / 0
 
 
 @login_required
@@ -565,7 +556,7 @@ def test_error(request):
     '''DEBUG: Tests causing an error.'''
     assert settings.DEBUG
     # Divide by zero error
-    1/0
+    1 / 0
     return render(request, 'test_error.html')
 
 
