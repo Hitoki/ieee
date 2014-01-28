@@ -4,6 +4,7 @@
 {% block feedback %}{% endblock %}{# hide feedback link using blank block #}
 
 {% block content %}
+    {% include 'includes/js/notification_request.html' %}
     {% block main_content_nopad %}    
         {% if not is_ajax %}    
             <div class="center-pad">
