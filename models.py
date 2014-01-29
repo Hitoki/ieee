@@ -17,22 +17,28 @@ import re
 from enum import Enum
 import util
 
+
 def single_row(results, message=None):
     '''
-    Returns a single row from the results.  Raises an error if there is 0 or >1 rows.
+    Returns a single row from the results.
+    Raises an error if there is 0 or >1 rows.
     @param results: queryset.
-    @param message: (Optional) Message to include in the exception if there are 0 or >1 results.
+    @param message: (Optional) Message to include in the exception
+                    if there are 0 or >1 results.
     '''
     if len(results) != 1:
         if message is None:
             raise Exception('Require 1 row, found %i.' % len(results))
         else:
-            raise Exception('%s\nRequire 1 row, found %i' % (message, len(results)))
+            raise Exception('%s\nRequire 1 row, found %i' %
+                            (message, len(results)))
     return results[0]
+
 
 def single_row_or_none(results):
     '''
-    Returns a single row from the results, or None if there are 0 results.  Raises an exception if there are >1 results.
+    Returns a single row from the results, or None if there are 0 results.
+    Raises an exception if there are >1 results.
     '''
     if len(results) > 1:
         raise Exception('Require 1 row, found %d' % len(results))
@@ -40,22 +46,30 @@ def single_row_or_none(results):
         return None
     return results[0]
 
+
 def list_to_choices(list):
-    "Takes a list and returns a list of 2-tuples, useful for the 'choices' form field attribute."
+    """
+    Takes a list and returns a list of 2-tuples, useful for the 'choices'
+    form field attribute.
+    """
     result = []
     for item in list:
         result.append((item, item))
     return result
 
-# ------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+
 
 class NamedTypeManager(models.Manager):
     def getFromName(self, name):
-        'Looks up a NamedType that matches the given name.  Fails if none found.'
+        '''Looks up a NamedType that matches the given name.
+        Fails if none found.'''
         types = self.filter(name=name)
         if len(types) != 1:
-            raise Exception('Found %d %s for name "%s", looking for 1 result' % (len(types), self.__class__, name))
+            raise Exception('Found %d %s for name "%s", looking for 1 result' %
+                            (len(types), self.__class__, name))
         return types[0]
+
 
 class NamedType(models.Model):
     'A named type.  Used for named constants in the DB.'
@@ -66,16 +80,20 @@ class NamedType(models.Model):
     class Meta:
         abstract = True
 
-# ------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+
 
 class NamedValueTypeManager(NamedTypeManager):
     def getFromValue(self, value):
-        'Looks up a NamedType that matches the given value.  Fails if none found.'
+        '''Looks up a NamedType that matches the given value.
+        Fails if none found.'''
         types = self.filter(value=value)
         return single_row(types)
 
+
 class NamedValueType(NamedType):
-    'A named & valued type.  Each object has a name and value.  Used for named/valued constants in the DB.'
+    '''A named & valued type.  Each object has a name and value.
+    Used for named/valued constants in the DB.'''
     value = models.CharField(max_length=500)
     
     def __unicode__(self):
@@ -83,10 +101,12 @@ class NamedValueType(NamedType):
     class Meta:
         abstract = True
 
-# ------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+
 
 class NodeTypeManager(NamedTypeManager):
     pass
+
 
 class NodeType(NamedType):
     'The constant node types.  Can be a cluster, tag, sector, or root.'
@@ -96,26 +116,34 @@ class NodeType(NamedType):
     ROOT = 'root'
     
     objects = NodeTypeManager()
-    
+
+
 class NodeManager(models.Manager):
     
     def create(self, **kwargs):
-        'Creates a node.  Automatically reformats the name using string.capwords(), so "some node NAME" becomes "Some Node Name".'
+        '''Creates a node.
+        Automatically reformats the name using string.capwords(),
+        so "some node NAME" becomes "Some Node Name".'''
         if 'name' in kwargs:
             #print 'got name'
             kwargs['name'] = string.capwords(kwargs['name'])
         return models.Manager.create(self, **kwargs)
     
     def create_tag(self, **kwargs):
-        'Creates a tag.  Automatically reformats the name using string.capwords(), so "some node NAME" becomes "Some Node Name".'
+        '''Creates a tag.
+        Automatically reformats the name using string.capwords(),
+        so "some node NAME" becomes "Some Node Name".'''
         if 'name' in kwargs:
             kwargs['name'] = string.capwords(kwargs['name'])
         kwargs['node_type'] = NodeType.objects.getFromName(NodeType.TAG)
         return models.Manager.create(self, **kwargs)
         
     def create_cluster(self, name, sector):
-        'Creates a cluster for the given sector.'
-        cluster = super(NodeManager, self).create(name=name, node_type = NodeType.objects.getFromName(NodeType.TAG_CLUSTER))
+        '''Creates a cluster for the given sector.'''
+        cluster = super(NodeManager, self).create(
+            name=name,
+            node_type=NodeType.objects.getFromName(NodeType.TAG_CLUSTER)
+        )
         cluster.parents = [sector]
         cluster.save()
         return cluster
@@ -141,14 +169,16 @@ class NodeManager(models.Manager):
     def get_sector_by_name(self, name):
         'Looks up a sector from its name.'
         sector_type = NodeType.objects.getFromName(NodeType.SECTOR)
-        return single_row(self.filter(name=name, node_type=sector_type), 'Looking up sector "%s"' % name)
+        return single_row(self.filter(name=name, node_type=sector_type),
+                          'Looking up sector "%s"' % name)
     
     #def get_sectors_from_list(self, names):
     #    'Returns a list of sectors whose names match the given list of names.'
     #    sectorType = NodeType.objects.getFromName('sector')
     #    results = self.filter(name__in=names, node_type=sectorType)
     #    if len(results) != len(names):
-    #        raise Exception('Did not find matches for all sectors:\nnames: %s\nresults: %s' % (names, results))
+    #        raise Exception('Did not find matches for all sectors:\nnames: '
+    #                        '%s\nresults: %s' % (names, results))
     #    return results
     
     def getFirstSector(self):
@@ -170,16 +200,19 @@ class NodeManager(models.Manager):
         return self.filter(name=name, node_type=tag_type)
     
     #def get_tag_by_name(self, tag_name):
-    #    'Returns a single tag matching the given name, or None if not found.  Fails if more than one exist.'
+    #    '''Returns a single tag matching the given name, or None if not found.
+    #    Fails if more than one exist.'''
     #    #print 'get_tag_by_name()'
     #    #print '  tag_name:', tag_name
     #    tag_type = NodeType.objects.getFromName('tag')
-    #    return single_row_or_none(self.filter(name=tag_name, node_type=tag_type))
+    #    return single_row_or_none(self.filter(name=tag_name,
+    #                                          node_type=tag_type))
         
     #def get_resource_range(self, sector):
-    #    "Returns the min/max amount of resources-per-tag for the given sector."
+    #    "Returns the min/max amount of resources-per-tag for the given sector"
     #    
-    #    resource_counts = [tag.resources.count() for tag in sector.child_nodes.all()]
+    #    resource_counts = [tag.resources.count()
+    #                       for tag in sector.child_nodes.all()]
     #    if len(resource_counts) == 0:
     #        min_resources = None
     #        max_resources = None
@@ -205,9 +238,12 @@ class NodeManager(models.Manager):
     #    return (min_sectors, max_sectors)
     
     #def get_related_tag_range(self, sector):
-    #    "Returns the min/max amount of related_tags-per-tag for the given sector."
+    #    """
+    #    Returns the min/max amount of related_tags-per-tag for the given sector
+    #    """
     #    
-    #    related_tag_counts = [tag.related_tags.count() for tag in sector.child_nodes.all()]
+    #    related_tag_counts = [tag.related_tags.count()
+    #                          for tag in sector.child_nodes.all()]
     #    if len(related_tag_counts) == 0:
     #        min_related_tags = None
     #        max_related_tags = None
@@ -217,11 +253,16 @@ class NodeManager(models.Manager):
     #    
     #    return (min_related_tags, max_related_tags)
     
-    def searchTagsByNameSubstring(self, substring, sector_ids=None, exclude_tag_id=None, society_id=None, exclude_society_id=None, tag_type=None):
+    def searchTagsByNameSubstring(self, substring, sector_ids=None,
+                                  exclude_tag_id=None, society_id=None,
+                                  exclude_society_id=None, tag_type=None):
         """
-        Search for tags matching the given substring.  Optionally limit to only the list of sectors given.
-        @param substring name substring to search for.  Can also be * to show all tags.
-        @param sector_ids optional, a list of sector ids to limit the search within.
+        Search for tags matching the given substring.
+        Optionally limit to only the list of sectors given.
+        @param substring name substring to search for.
+                         Can also be * to show all tags.
+        @param sector_ids optional, a list of sector ids to limit the search
+                          within.
         """
         if substring.strip() == '':
             return None
@@ -231,11 +272,13 @@ class NodeManager(models.Manager):
         
         if substring == '*':
             if society_id is None:
-                raise Exception('If substring is "*", then society_id must be specified')
+                raise Exception('If substring is "*", '
+                                'then society_id must be specified')
             # Find all tags for this society
             results = self.filter(societies=society_id, node_type=tag_type)
         else:
-            results = self.filter(name__icontains=substring, node_type=tag_type)
+            results = self.filter(name__icontains=substring,
+                                  node_type=tag_type)
         
         if sector_ids is not None:
             # Filter to only the given sectors
@@ -311,7 +354,8 @@ class NodeManager(models.Manager):
         )
     
 
-    def get_extra_info(self, queryset, order_by=None, selected_filter_ids=None):
+    def get_extra_info(self, queryset, order_by=None,
+                       selected_filter_ids=None):
         """
         Returns the queryset with extra columns:
             num_resources1
@@ -323,9 +367,6 @@ class NodeManager(models.Manager):
             num_parents1
             score1
         """
-        
-
-
         tag_node_type_id = NodeType.objects.getFromName(NodeType.TAG).id
         sector_node_type_id = NodeType.objects.getFromName(NodeType.SECTOR).id
         cluster_node_type_id = NodeType.objects.getFromName(NodeType.TAG_CLUSTER).id
@@ -465,7 +506,8 @@ class NodeManager(models.Manager):
         )
         
         # Exclude clustered tags.
-        child_nodes = child_nodes.exclude(parents__node_type__name=NodeType.TAG_CLUSTER)
+        child_nodes = child_nodes.\
+            exclude(parents__node_type__name=NodeType.TAG_CLUSTER)
         
         return child_nodes
     
@@ -474,10 +516,12 @@ class NodeManager(models.Manager):
         tags = self.filter(node_type__name=NodeType.TAG)
         tags = tags.exclude(parents__node_type__name=NodeType.TAG_CLUSTER)
         return tags
-    
+
+
 class Node(models.Model):
     '''
-    This model can represent different types of nodes (root, sector, cluter, tag).
+    This model can represent different types of nodes
+    (root, sector, cluter, tag).
     
     There is only one root tag.
     
@@ -485,15 +529,20 @@ class Node(models.Model):
     
     Each cluster is the child of 1 or more sectors, and contain 0 or more tags.
     
-    Each tag is a child of any number of sectors and clusters.  It contains no children.
+    Each tag is a child of any number of sectors and clusters.
+    It contains no children.
     '''
     is_active = models.BooleanField(blank=False,default=True)
     name = models.CharField(max_length=500)
-    parents = models.ManyToManyField('self', symmetrical=False, related_name='child_nodes', null=True, blank=True)
-    'The parent nodes.  The type for this field can be vary depending on the type of this node.'
+    parents = models.ManyToManyField('self', symmetrical=False,
+                                     related_name='child_nodes',
+                                     null=True, blank=True)
+    'The parent nodes.  ' \
+    'The type for this field can be vary depending on the type of this node.'
     node_type = models.ForeignKey(NodeType)
     'The type of node this is: root, sector, cluster, tag.'
-    societies = models.ManyToManyField('Society', related_name='tags', blank=True, through='NodeSocieties')
+    societies = models.ManyToManyField('Society', related_name='tags',
+                                       blank=True, through='NodeSocieties')
     filters = models.ManyToManyField('Filter', related_name='nodes')
     related_tags = models.ManyToManyField('self', null=True, blank=True)
     
@@ -505,8 +554,6 @@ class Node(models.Model):
     definition = models.CharField(blank=True, null=True, max_length=2000)
     definition_source = models.CharField(blank=True, null=True, max_length=50)
     definition_updated_when =models.DateTimeField(blank=True, null=True)
-
-    
 
     objects = NodeManager()
     
@@ -543,12 +590,17 @@ class Node(models.Model):
     
     def get_tags_and_clusters(self):
         "Returns any child clusters and non-clustered child tags."
-        assert self.node_type.name == NodeType.SECTOR, 'get_tags_and_clusters() only works for sectors.'
-        return self.child_nodes.exclude(parents__node_type__name=NodeType.TAG_CLUSTER)
+        assert self.node_type.name == NodeType.SECTOR, \
+            'get_tags_and_clusters() only works for sectors.'
+        return self.child_nodes.\
+            exclude(parents__node_type__name=NodeType.TAG_CLUSTER)
     
     def cluster_update_filters(self):
-        'For clusters only.  Updates this cluster\'s filters to reflect all the current filters of its child tags.'
-        assert self.node_type.name == NodeType.TAG_CLUSTER, 'Node "%s" is not a cluster' % self.name
+        '''For clusters only.
+        Updates this cluster\'s filters to reflect all the current filters
+        of its child tags.'''
+        assert self.node_type.name == NodeType.TAG_CLUSTER, \
+            'Node "%s" is not a cluster' % self.name
         
         # Remove any filters that no longer apply
         for filter in self.filters.all():
@@ -566,7 +618,8 @@ class Node(models.Model):
                     self.filters.add(filter)
     
     def get_filtered_related_tag_count(self):
-        "Returns the number of related tags that have filters/resources (ie. are not hidden)"
+        """Returns the number of related tags that have filters/resources
+        (ie. are not hidden)"""
         
         # TODO: Not done yet
         #return self.filtered_num_related_tags1
@@ -635,9 +688,13 @@ class Node(models.Model):
     def _get_closest_conference(self):
         """Returns the single closest upcoming conference related to the tag"""
         if self.node_type.name == NodeType.TAG:
-            #return self.filter(nodes=node, resource_type=ResourceType.CONFERENCE)
+            # return self.filter(nodes=node,
+            #                    resource_type=ResourceType.CONFERENCE)
             try:
-                return Resource.objects.getForNode(self, resourceType=ResourceType.CONFERENCE).filter(year__gte=datetime.today().year).order_by('date', 'year', 'id')[0]
+                return Resource.objects.\
+                    getForNode(self, resourceType=ResourceType.CONFERENCE).\
+                    filter(year__gte=datetime.today().year).\
+                    order_by('date', 'year', 'id')[0]
             except IndexError:
                 return None
             #datetime.date.today()
@@ -649,7 +706,8 @@ class Node(models.Model):
     def _get_single_periodical(self):
         """Returns single periodical related to the tag"""
         if self.node_type.name == NodeType.TAG:
-            return Resource.objects.getForNode(self, resourceType=ResourceType.PERIODICAL)[0]
+            return Resource.objects.\
+                getForNode(self, resourceType=ResourceType.PERIODICAL)[0]
         else:
             raise Exception('Node is not a tag')
     
@@ -657,7 +715,9 @@ class Node(models.Model):
 
     def _get_societies_related_to_child(self):
         #import ipdb; ipdb.set_trace()
-        return NodeSocieties.objects.filter(node__id__in=self.child_nodes.values_list('id')).values_list('society__id')
+        return NodeSocieties.objects.filter(
+            node__id__in=self.child_nodes.values_list('id')
+        ).values_list('society__id')
 
     societies_related_to_child = property(_get_societies_related_to_child)
 
@@ -706,10 +766,12 @@ class Node(models.Model):
             
     def get_sector_ranges(self, tags=None, show_empty_terms=False):
         """
-        Returns the min/max amount of resources/sectors/related-tags per child-tag for this node.
+        Returns the min/max amount of resources/sectors/related-tags
+        per child-tag for this node.
         NOTE: self must be root, sector, or cluster.
         Ignores tags with no resources, no filters, or no societies.
-        @param tags (optional) - a list of child tags to parse (for speeding up repeat queries).
+        @param tags (optional) - a list of child tags to parse
+                    (for speeding up repeat queries).
         @return a tuple:
             (min_resources,
             max_resources,
@@ -721,7 +783,10 @@ class Node(models.Model):
             max_societies)
         """
         
-        assert self.node_type.name == NodeType.ROOT or NodeType.SECTOR or self.node_type.name == NodeType.TAG_CLUSTER, 'self (%s, %s, %s) must be a sector or cluster' % (self.name, self.id, self.node_type.name)
+        assert self.node_type.name == NodeType.ROOT or NodeType.SECTOR or \
+               self.node_type.name == NodeType.TAG_CLUSTER, \
+            'self (%s, %s, %s) must be a sector or cluster' % \
+            (self.name, self.id, self.node_type.name)
         
         if tags is None:
             if self.node_type.name == NodeType.ROOT:
@@ -772,15 +837,19 @@ class Node(models.Model):
                 if max_societies is None or tag['num_societies1'] > max_societies:
                     max_societies = tag['num_societies1']
 
-        return (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies)
+        return (min_resources, max_resources, min_sectors, max_sectors,
+                min_related_tags, max_related_tags, min_societies,
+                max_societies)
 
     def get_combined_sector_ranges(self, tags=None, show_empty_terms=False):
         """
-        Returns the min/max combined score per tag for the given sector or cluster.
+        Returns the min/max combined score per tag for the given sector
+        or cluster.
         NOTE: self must be a sector or cluster.
         Ignores tags with no resources, no filters, or no societies.
         @param self a sector or cluster self.
-        @param tags (optional) - a list of child tags to parse (for speeding up repeat queries).
+        @param tags (optional) - a list of child tags to parse
+                    (for speeding up repeat queries).
         @return a tuple (min, max).
         """
         assert self.node_type.name == NodeType.ROOT or NodeType.SECTOR or self.node_type.name == NodeType.TAG_CLUSTER, 'self (%s, %s, %s) must be a sector or cluster' % (self.name, self.id, self.node_type.name)
@@ -861,7 +930,8 @@ class NodeSocieties(models.Model):
         db_table = 'ieeetags_node_societies'
         ordering = ['node__name', 'society__name']
 
-# ------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+
 
 class TaxonomyTermManager(models.Manager):
     def create_for_clusters(self, name, cluster_names, tag_ids):
@@ -882,11 +952,16 @@ class TaxonomyTermManager(models.Manager):
                 logging.debug("Node (tag) not found with id %s" % tag_id)
         tax_term.save()
 
+
 class TaxonomyTerm(models.Model):
     name = models.CharField(max_length=500)
-    related_terms = models.ManyToManyField('self', related_name='terms', null=True, blank=True)
-    related_nodes = models.ManyToManyField('Node', related_name='nodes', blank=True)
-    taxonomy_clusters = models.ManyToManyField('TaxonomyCluster', related_name='terms', blank=True)
+    related_terms = models.ManyToManyField('self', related_name='terms',
+                                           null=True, blank=True)
+    related_nodes = models.ManyToManyField('Node', related_name='nodes',
+                                           blank=True)
+    taxonomy_clusters = models.ManyToManyField('TaxonomyCluster',
+                                               related_name='terms',
+                                               blank=True)
     
     objects = TaxonomyTermManager()
     
@@ -895,9 +970,11 @@ class TaxonomyTerm(models.Model):
     
     def __repr__(self):
         return str(self)
-    
+
+
 class TaxonomyClusterManager(models.Manager):
     pass
+
 
 class TaxonomyCluster(models.Model):
     name = models.CharField(max_length=500)
@@ -935,17 +1012,20 @@ class SocietyManager(models.Manager):
             raise Exception('Unknown role "%s"' % user.get_profile().role)
 
     def searchByNameSubstringForUser(self, substring, user):
-        'Returns all societies that the given user has access to and that match the search phrase.'
+        '''Returns all societies that the given user has access to and that
+        match the search phrase.'''
         if substring.strip() == '':
             return None
         return self.getForUser(user).filter(name__icontains=substring)
-    
+
+
 class Society(models.Model):
     name = models.CharField(max_length=500)
     description = models.CharField(blank=True, max_length=5000) 
     abbreviation = models.CharField(max_length=20)
     url = models.CharField(blank=True,max_length=1000)
-    logo_thumbnail = models.FileField(upload_to='images/sc_logos/thumbnail',blank=True)
+    logo_thumbnail = models.FileField(upload_to='images/sc_logos/thumbnail',
+                                      blank=True)
     logo_full = models.FileField(upload_to='images/sc_logos/full',blank=True)
     
     users = models.ManyToManyField(User, related_name='societies', blank=True)
@@ -957,7 +1037,8 @@ class Society(models.Model):
     
     def get_tag_ranges(self, show_empty_terms=False):
         """
-        Returns the min/max amount of resources/sectors/related-tags per tag for the given society.
+        Returns the min/max amount of resources/sectors/related-tags per tag
+        for the given society.
         Ignores tags with no resources, no filters, or no societies.
         Returns a tuple:
             (min_resources,
@@ -1018,7 +1099,9 @@ class Society(models.Model):
         
         #assert False
         
-        return (min_resources, max_resources, min_sectors, max_sectors, min_related_tags, max_related_tags, min_societies, max_societies)
+        return (min_resources, max_resources, min_sectors, max_sectors,
+                min_related_tags, max_related_tags, min_societies,
+                max_societies)
     
     def get_combined_ranges(self, show_empty_terms=False):
         """
@@ -1060,13 +1143,16 @@ class Society(models.Model):
     class Meta:
         ordering = ['name']
 
-# ------------------------------------------------------------------------------
-    
+# ----------------------------------------------------------------------------
+
+
 class ResourceTypeManager(NamedTypeManager):
     pass
 
+
 class ResourceType(NamedType):
-    'NamedType model for each of the available resource types: conference, expert, periodical, standard.'
+    '''NamedType model for each of the available resource types:
+    conference, expert, periodical, standard.'''
     objects = ResourceTypeManager()
     
     CONFERENCE = 'conference'
@@ -1075,25 +1161,30 @@ class ResourceType(NamedType):
     STANDARD = 'standard'
     EBOOK = 'ebook'
 
+
 class ResourceManager(models.Manager):
     def get_conferences(self):
         'Returns all conferences.'
-        resource_type = ResourceType.objects.getFromName(ResourceType.CONFERENCE)
+        resource_type = \
+            ResourceType.objects.getFromName(ResourceType.CONFERENCE)
         return self.filter(resource_type=resource_type)
         
     def get_standards(self):
         'Returns all standards.'
-        resource_type = ResourceType.objects.getFromName(ResourceType.STANDARD)
+        resource_type = \
+            ResourceType.objects.getFromName(ResourceType.STANDARD)
         return self.filter(resource_type=resource_type)
         
     def get_periodicals(self):
         'Returns all periodicals.'
-        resource_type = ResourceType.objects.getFromName(ResourceType.PERIODICAL)
+        resource_type = \
+            ResourceType.objects.getFromName(ResourceType.PERIODICAL)
         return self.filter(resource_type=resource_type)
         
     def getForNode(self, node, resourceType=None):
         '''
-        Gets all resources for the given node.  Optionally filter by resource type.
+        Gets all resources for the given node.
+        Optionally filter by resource type.
         @param node: The node to search for.
         @param resourceType: (Optional) The type of resource to filter by.
         '''
@@ -1141,14 +1232,16 @@ class ResourceManager(models.Manager):
     
     def get_conference_series(self):
         """
-        Returns a list of all distinct conference series codes and the number of conferences in each series (ignores blank fields).
+        Returns a list of all distinct conference series codes and the number
+        of conferences in each series (ignores blank fields).
         Returns:
             [
                 (conference_series, num_in_series),
                 ...
             ]
         """
-        conference_type = ResourceType.objects.getFromName(ResourceType.CONFERENCE)
+        conference_type = \
+            ResourceType.objects.getFromName(ResourceType.CONFERENCE)
         cursor = connection.cursor()
         cursor.execute("""
             SELECT conference_series, COUNT(id) AS num_in_series
@@ -1169,7 +1262,10 @@ class ResourceManager(models.Manager):
         #print '  series: %s' % series
         current_year = datetime.today().year
         #print '  current_year: %s' % current_year
-        resources = Resource.objects.filter(resource_type__name=ResourceType.CONFERENCE, conference_series=series, year__gte=current_year).order_by('date', 'year', 'id')
+        resources = Resource.objects.filter(
+            resource_type__name=ResourceType.CONFERENCE,
+            conference_series=series, year__gte=current_year
+        ).order_by('date', 'year', 'id')
         #print '  resources.count(): %s' % resources.count()
         if resources.count():
             # Use the next future resource
@@ -1178,7 +1274,10 @@ class ResourceManager(models.Manager):
         else:
             # Use the most-recent past resource
             #print '  using most recent'
-            resources = Resource.objects.filter(resource_type__name=ResourceType.CONFERENCE, conference_series=series, year__lt=current_year).order_by('-date', '-year', '-id')
+            resources = Resource.objects.filter(
+                resource_type__name=ResourceType.CONFERENCE,
+                conference_series=series, year__lt=current_year
+            ).order_by('-date', '-year', '-id')
             #print '  resources.count(): %s' % resources.count()
             if resources.count():
                 return resources[0]
@@ -1191,7 +1290,8 @@ class ResourceManager(models.Manager):
                     # There are no conferences in this series
                     return None
     
-    def get_non_current_conferences_for_series(self, series, current_conference=None):
+    def get_non_current_conferences_for_series(self, series,
+                                               current_conference=None):
         'Get all non-current conferences in the given series.'
         #print 'get_non_current_conferences_for_series()'
         #print '  series: %s' % series
@@ -1200,7 +1300,9 @@ class ResourceManager(models.Manager):
             current_conference = self.get_current_conference_for_series(series)
         #print '  current_conference: %s' % current_conference
         # Get the other conferences in the series
-        return Resource.objects.filter(conference_series=series).exclude(id=current_conference.id).all()
+        return Resource.objects.filter(conference_series=series).\
+            exclude(id=current_conference.id).all()
+
 
 class Resource(models.Model):
     STANDARD_STATUS_PROJECT = 'project'
@@ -1230,20 +1332,27 @@ class Resource(models.Model):
     priority_to_tag = models.BooleanField()
     completed = models.BooleanField()
     keywords = models.CharField(max_length=5000, blank=True)
-    'This field is a text field, displayed to society managers on Edit Resource page to help them tag.  Not used in any other way.'
+    'This field is a text field, displayed to society managers ' \
+    'on Edit Resource page to help them tag.  Not used in any other way.'
     conference_series = models.CharField(max_length=100, blank=True)
-    'Optional.  All conferences with the same "conference_series" are grouped together as a series.'
+    'Optional.  ' \
+    'All conferences with the same "conference_series" are grouped together ' \
+    'as a series.'
     date = models.DateField(null=True, blank=True)
     pub_id = models.CharField(max_length=1000, blank=True)
-    'Used for Conferences and Standards (optional).  Matches IEEE Xpore PubID field for matching resources during xplore import.'
+    'Used for Conferences and Standards (optional).  ' \
+    'Matches IEEE Xpore PubID field for matching resources during xplore import.'
     
-    url_status = models.CharField(blank=True, max_length=100, choices=URL_STATUS_CHOICES)
-    'Reflects the status of this URL.  Can be "good", "bad", or None (not yet checked).'
+    url_status = models.CharField(blank=True, max_length=100,
+                                  choices=URL_STATUS_CHOICES)
+    'Reflects the status of this URL.  ' \
+    'Can be "good", "bad", or None (not yet checked).'
     url_date_checked = models.DateTimeField(null=True, blank=True)
     url_error = models.CharField(null=True, blank=True, max_length=1000)
     'The error (if any) that occured when checking this URL.'
     
-    nodes = models.ManyToManyField(Node, related_name='resources', through='ResourceNodes')
+    nodes = models.ManyToManyField(Node, related_name='resources',
+                                   through='ResourceNodes')
     societies = models.ManyToManyField(Society, related_name='resources')
     
     objects = ResourceManager()
@@ -1252,6 +1361,7 @@ class Resource(models.Model):
     
     class Meta:
         ordering = ['resource_type__name', 'name']
+
 
 class ResourceNodes(models.Model):
     resource = models.ForeignKey(Resource, related_name='resource_nodes')
@@ -1263,16 +1373,19 @@ class ResourceNodes(models.Model):
         db_table = 'ieeetags_resource_nodes'
         ordering = ['node__name', 'resource__name']
 
-# ------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+
 
 class ResourceAdditionNotificationRequest(models.Model):
-    'Tracks the request of a user to be notified when resources are newly related to a node.'
+    '''Tracks the request of a user to be notified when resources are newly
+    related to a node.'''
     node = models.ForeignKey(Node, related_name='notification_node')
     date_created = models.DateTimeField(blank=False, null=False)
     email = models.CharField(blank=False, max_length=255)
 
     class Meta:
         unique_together = ('node', 'email')
+
 
 class ResourceAdditionNotification(models.Model):
     'Tracke the sending a notification email.'
@@ -1281,15 +1394,18 @@ class ResourceAdditionNotification(models.Model):
     resourceSocieties = models.ForeignKey(NodeSocieties, null=True)
     date_notified = models.DateTimeField(blank=False, null=False)
 
-# ------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+
 
 class FilterManager(NamedValueTypeManager):
     def get_from_name_list(self, names):
         'Returns a list of filters whose names match the given list of names.'
         results = self.filter(name__in=names)
         if len(results) != len(names):
-            raise Exception('Did not find matches for all filters:\nnames: %s\nresults: %s' % (names, results))
+            raise Exception('Did not find matches for all filters:\n'
+                            'names: %s\nresults: %s' % (names, results))
         return results
+
 
 class Filter(NamedValueType):
     EMERGING_TECHNOLOGIES = 'emerging_technologies'
@@ -1309,10 +1425,12 @@ class Filter(NamedValueType):
     def __unicode__(self):
         return self.name
 
-# ------------------------------------------------------------------------------
-  
+# ----------------------------------------------------------------------------
+
+
 class PermissionManager(models.Manager):
-    'This object stores all permission-related functions.  All new permission checks should go here.'
+    '''This object stores all permission-related functions.
+    All new permission checks should go here.'''
     
     def user_can_edit_society(self, user, society): 
         'Checks if a user can edit a society.'
@@ -1322,8 +1440,10 @@ class PermissionManager(models.Manager):
             # If user is associated with the society, allow editing
             return True
         else:
-            return self._user_has_permission(user, Permission.USER_CAN_EDIT_SOCIETY, society)
-    
+            return self._user_has_permission(user,
+                                             Permission.USER_CAN_EDIT_SOCIETY,
+                                             society)
+
     def user_can_edit_society_name(self, user, society):
         'Only superusers (admins) can edit a society name.'
         if user.is_superuser:
@@ -1332,10 +1452,14 @@ class PermissionManager(models.Manager):
             return False
     
     def _user_has_permission(self, user, permission_type, object):
-        'Generic helper function to check if the user has the a certain permission for an object.'
+        '''Generic helper function to check if the user has the a certain
+        permission for an object.'''
         object_type = ContentType.objects.get_for_model(object)
-        results = self.filter(user=user, object_id=object.id, object_type=object_type, permission_type=permission_type)
+        results = self.filter(user=user, object_id=object.id,
+                              object_type=object_type,
+                              permission_type=permission_type)
         return len(results) > 0
+
 
 class Permission(models.Model):
     USER_CAN_EDIT_SOCIETY = 'user_can_edit_society'
@@ -1348,10 +1472,12 @@ class Permission(models.Model):
     
     objects = PermissionManager()
 
-# ------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+
 
 class Profile(models.Model):
-    'A user\'s profile.  By default, a profile is created whenever a user is created.'
+    '''A user\'s profile.
+    By default, a profile is created whenever a user is created.'''
     ROLE_ADMIN = 'admin'
     ROLE_SOCIETY_ADMIN = 'society_admin'
     ROLE_SOCIETY_MANAGER = 'society_manager'
@@ -1369,10 +1495,12 @@ class Profile(models.Model):
     reset_key = models.CharField(max_length=1000, null=True)
     last_login_time = models.DateTimeField(blank=True, null=True)
     last_logout_time = models.DateTimeField(blank=True, null=True)
-    copied_resource = models.ForeignKey(Resource, related_name='copied_users', null=True, blank=True)
+    copied_resource = models.ForeignKey(Resource, related_name='copied_users',
+                                        null=True, blank=True)
     'This stores the source resource for copy & pasting tags.'
 
-# ------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+
 
 class UserManager:
     @staticmethod
@@ -1390,25 +1518,33 @@ class UserManager:
     @staticmethod
     def get_users_by_login_date():
         "Return users ordered by their last login time."
-        return User.objects.filter(profile__last_login_time__isnull=False).order_by('-profile__last_login_time')
+        return User.objects.filter(profile__last_login_time__isnull=False).\
+            order_by('-profile__last_login_time')
 
-# ------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 
-def _create_profile_for_user(sender, instance, signal, created, *args, **kwargs):
-    "Automatically creates a profile for each newly created user.  Uses signals to detect user creation."
+
+def _create_profile_for_user(sender, instance, signal, created,
+                             *args, **kwargs):
+    """Automatically creates a profile for each newly created user.
+    Uses signals to detect user creation."""
     if created:
         profile = Profile(user=instance)
         profile.save()
 
+
 post_save.connect(_create_profile_for_user, sender=User)
+
 
 def get_user_from_username(username):
     return single_row_or_none(User.objects.filter(username=username))
 
+
 def get_user_from_email(email):
     return single_row_or_none(User.objects.filter(email=email))
 
-# ------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+
 
 class FailedLoginLogManager(models.Manager):
     
@@ -1417,8 +1553,10 @@ class FailedLoginLogManager(models.Manager):
         #log('check_if_disabled()')
         #log('  username: %s' % username)
         #log('  ip: %s' % ip)
-        ##log('  FailedLoginLog.DISABLE_ACCOUNT_TIME: %s' % FailedLoginLog.DISABLE_ACCOUNT_TIME)
-        before = datetime.fromtimestamp(time.time() - FailedLoginLog.DISABLE_ACCOUNT_TIME)
+        ## log('  FailedLoginLog.DISABLE_ACCOUNT_TIME: %s' %
+        ##     FailedLoginLog.DISABLE_ACCOUNT_TIME)
+        before = datetime.fromtimestamp(time.time() -
+                                        FailedLoginLog.DISABLE_ACCOUNT_TIME)
         #log('  before: %s' % before)
         ##log('  datetime.now(): %s' % datetime.now())
         if username is not None:
@@ -1439,7 +1577,9 @@ class FailedLoginLogManager(models.Manager):
             return num > 0
     
     def add_and_check_if_disabled(self, username, ip):
-        "Records a bad login and checks if the max has been reached.  Returns True if user is under the limit, and False if user is over the limit."
+        """Records a bad login and checks if the max has been reached.
+        Returns True if user is under the limit, and False if user is over
+        the limit."""
         self._add_failed_login(username, ip)
         return self.check_if_disabled(username, ip)
     
@@ -1451,7 +1591,8 @@ class FailedLoginLogManager(models.Manager):
         #log('  ip: %s' % ip)
         
         # Check if there have been too many bad logins (including this one)
-        before = datetime.fromtimestamp(time.time() - FailedLoginLog.FAILED_LOGINS_TIME)
+        before = datetime.fromtimestamp(time.time() -
+                                        FailedLoginLog.FAILED_LOGINS_TIME)
         num_failed_logins = self.filter(
             Q(username=username) | Q(ip=ip),
             date_created__gt = before,
@@ -1474,10 +1615,13 @@ class FailedLoginLogManager(models.Manager):
         log.save()
         
         return disabled
+
         
 class FailedLoginLog(models.Model):
-    'Keeps track of past failed logins.  Suspends future logins for a certain time if there are too many failed logins.'
-    
+    '''Keeps track of past failed logins.
+    Suspends future logins for a certain time if there are too many
+    failed logins.'''
+
     # This is the number of seconds in the past to check for bad logins
     FAILED_LOGINS_TIME = 10 * 60
     # The number of minutes to disable an account for
@@ -1492,6 +1636,7 @@ class FailedLoginLog(models.Model):
     
     objects = FailedLoginLogManager()
 
+
 class UrlCheckerLog(models.Model):
     'Keeps track of the current URL-checking thread\'s status.'
     date_started = models.DateTimeField(auto_now_add=True)
@@ -1499,7 +1644,8 @@ class UrlCheckerLog(models.Model):
     date_updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=1000)
 
-# ------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
+
 
 class ProfileLog(models.Model):
     'Debugging class, used to keep track of profiling pages.'
@@ -1530,17 +1676,23 @@ class ProfileLog(models.Model):
         return short_user_agent1
         
     def __str__(self):
-        return '<%s: %s, %s, %s>' % (self.__class__.__name__, self.url, self.elapsed_time, self.short_user_agent())
+        return '<%s: %s, %s, %s>' % (self.__class__.__name__, self.url,
+                                     self.elapsed_time,
+                                     self.short_user_agent())
+
 
 PROCESS_CONTROL_TYPES = Enum(
     'XPLORE_IMPORT',
 )
 
+
 class ProcessControl(models.Model):
     'Controls and stores information for a long-running process.'
     
-    'The type (ie. name) of process.  Should only be one per name at any given time.'
-    type = models.CharField(max_length=100, choices=util.make_choices(PROCESS_CONTROL_TYPES))
+    # The type (ie. name) of process.
+    # Should only be one per name at any given time.
+    type = models.CharField(max_length=100,
+                            choices=util.make_choices(PROCESS_CONTROL_TYPES))
     'Log messages output by the process (stored in this DB field only).'
     log = models.CharField(max_length=1000, blank=True)
     'Filename for the logfile written by the process.'
@@ -1551,10 +1703,13 @@ class ProcessControl(models.Model):
     date_updated = models.DateTimeField(null=True, blank=True)
     
     # Process-type specific fields.
-    'This is updated the most-recently processed tag by the Xplore Import script, allows resuming.'
-    last_processed_tag = models.ForeignKey(Node, null=True, blank=True, default=None)
+    'This is updated the most-recently processed tag by the Xplore Import ' \
+    'script, allows resuming.'
+    last_processed_tag = models.ForeignKey(Node, null=True, blank=True,
+                                           default=None)
 
     date_created = models.DateTimeField(auto_now_add=True)
+
 
 def urlencode_sorted(d):
     import urllib
@@ -1562,6 +1717,7 @@ def urlencode_sorted(d):
     for name in sorted(d.keys()):
         result.append((name, d[name]))
     return urllib.urlencode(result)
+
 
 class CacheManager(models.Manager):
     def get(self, name, params):
@@ -1572,8 +1728,10 @@ class CacheManager(models.Manager):
         except Cache.DoesNotExist:
             return None
         except MultipleObjectsReturned:
-            idtosave = super(CacheManager, self).filter(name=name, params=params).order_by('-id')[0:1][0].id
-            super(CacheManager, self).filter(name=name, params=params).exclude(id=idtosave).delete()
+            idtosave = super(CacheManager, self).\
+                filter(name=name, params=params).order_by('-id')[0:1][0].id
+            super(CacheManager, self).filter(name=name, params=params).\
+                exclude(id=idtosave).delete()
             return super(CacheManager, self).get(id=idtosave)
              
     def set(self, name, params, content):
@@ -1598,7 +1756,8 @@ class CacheManager(models.Manager):
             cache = self.get(name, params)
             if cache:
                 cache.delete()
-    
+
+
 class Cache(models.Model):
     name = models.CharField(max_length=100)
     params = models.CharField(max_length=1000, blank=True)
@@ -1608,4 +1767,5 @@ class Cache(models.Model):
     objects = CacheManager()
     
     def __str__(self):
-        return '<Cache: %s, %s, %s>' % (self.name, self.params, len(self.content))
+        return '<Cache: %s, %s, %s>' % (self.name, self.params,
+                                        len(self.content))
