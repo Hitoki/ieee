@@ -9,7 +9,6 @@ import xml.dom.minidom
 import hotshot
 import os
 import time
-import settings
 from xml.etree.ElementTree import fromstring
 
 from django.core import serializers

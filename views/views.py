@@ -1,8 +1,15 @@
 from logging import debug as log
+import re
+import datetime
 import sys
 import traceback
 import urllib
 import urllib2
+import hotshot
+import os
+import time
+import settings
+
 
 from django.core.mail import mail_admins
 from django.core.mail import send_mail
@@ -231,12 +238,6 @@ def tester_message(request):
 def tester_survey(request):
     '''Returns the HTML content for the tester survey.'''
     return render(request, 'tester_survey.html')
-
-
-import hotshot
-import os
-import time
-import settings
 
 
 try:
