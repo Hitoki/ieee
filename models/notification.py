@@ -1,7 +1,7 @@
 from django.db import models
-from new_models.node import Node
-from new_models.resource import ResourceNodes
-from new_models.society import NodeSocieties
+from models.node import Node
+from models.resource import ResourceNodes
+from models.society import NodeSocieties
 
 
 class ResourceAdditionNotificationRequest(models.Model):

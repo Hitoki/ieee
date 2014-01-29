@@ -1,8 +1,8 @@
 from datetime import datetime
 from django.db import models, connection
-from new_models.node import Node
-from new_models.society import Society
-from new_models.types import ResourceType
+from models.node import Node
+from models.society import Society
+from models.types import ResourceType
 
 
 class ResourceManager(models.Manager):

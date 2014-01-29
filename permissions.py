@@ -1,7 +1,7 @@
 'DEPRECATED: Should use the Permissions model instead of this module.'
 
 import logging
-from new_models.profile import Profile
+from models.profile import Profile
 
 
 #def require_staff(request):

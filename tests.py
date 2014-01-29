@@ -32,7 +32,7 @@ class LoadPagesTestCase(unittest.TestCase):
         
     def testDataExists(self):
         'Tests that the test_data fixture is being installed.'
-        from new_models.types import NodeType
+        from models.types import NodeType
         num_node_types = NodeType.objects.count()
         self.assertTrue(num_node_types > 0, 'There are no NodeType objects.')
         

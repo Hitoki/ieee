@@ -3,10 +3,10 @@ import re
 import string
 from django.db import models
 from django.db.models import Q
-from new_models.resource import Resource, ResourceNodes
-from new_models.society import NodeSocieties, Society
-from new_models.types import NodeType, ResourceType
-from new_models.utils import single_row, single_row_or_none
+from models.resource import Resource, ResourceNodes
+from models.society import NodeSocieties, Society
+from models.types import NodeType, ResourceType
+from models.utils import single_row, single_row_or_none
 
 
 class NodeManager(models.Manager):

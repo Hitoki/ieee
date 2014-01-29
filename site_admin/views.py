@@ -40,15 +40,15 @@ from ieeetags.util import *
 from ieeetags.views.views import render
 from ieeetags.widgets import DisplayOnlyWidget
 from forms import *
-from new_models.logs import FailedLoginLog, UrlCheckerLog, ProfileLog
-from new_models.node import Node
-from new_models.profile import Permission, Profile, UserManager, \
+from models.logs import FailedLoginLog, UrlCheckerLog, ProfileLog
+from models.node import Node
+from models.profile import Permission, Profile, UserManager, \
     get_user_from_username, get_user_from_email
-from new_models.resource import Resource, ResourceNodes
-from new_models.society import NodeSocieties, Society
-from new_models.system import Cache, ProcessControl, PROCESS_CONTROL_TYPES
-from new_models.taxonomy import TaxonomyTerm, TaxonomyCluster
-from new_models.types import NodeType, ResourceType, Filter
+from models.resource import Resource, ResourceNodes
+from models.society import NodeSocieties, Society
+from models.system import Cache, ProcessControl, PROCESS_CONTROL_TYPES
+from models.taxonomy import TaxonomyTerm, TaxonomyCluster
+from models.types import NodeType, ResourceType, Filter
 from widgets import make_display_only
 
 

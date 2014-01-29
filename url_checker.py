@@ -10,8 +10,8 @@ import urlparse
 from Queue import Empty, Queue
 import datetime
 
-from new_models.logs import UrlCheckerLog
-from new_models.resource import Resource
+from models.logs import UrlCheckerLog
+from models.resource import Resource
 
 
 class ArrayThreadSafe(object):

@@ -1,7 +1,7 @@
 from django.core.exceptions import MultipleObjectsReturned
 from django.db import models
 from enum import Enum
-from new_models.node import Node
+from models.node import Node
 import util
 
 

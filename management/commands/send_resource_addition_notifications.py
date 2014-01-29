@@ -6,11 +6,11 @@ from django.template import Context, loader
 from html2text import html2text
 from django.contrib.sites.models import Site
 
-from new_models.notification import ResourceAdditionNotificationRequest, \
+from models.notification import ResourceAdditionNotificationRequest, \
     ResourceAdditionNotification
-from new_models.resource import ResourceNodes
+from models.resource import ResourceNodes
 
-from new_models.society import NodeSocieties
+from models.society import NodeSocieties
 import settings
 
 

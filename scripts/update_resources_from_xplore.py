@@ -113,11 +113,11 @@ def main(*args):
     setup_environ(ieeetags.settings)
     
     # Now our django imports.
-    from new_models.node import Node
-    from new_models.society import NodeSocieties
-    from new_models.types import NodeType, ResourceType
-    from new_models.resource import Resource, ResourceNodes
-    from new_models.system import Cache, ProcessControl, PROCESS_CONTROL_TYPES
+    from models.node import Node
+    from models.society import NodeSocieties
+    from models.types import NodeType, ResourceType
+    from models.resource import Resource, ResourceNodes
+    from models.system import Cache, ProcessControl, PROCESS_CONTROL_TYPES
 
     print 'logfilename: %r' % logfilename
     print 'use_processcontrol: %r' % use_processcontrol

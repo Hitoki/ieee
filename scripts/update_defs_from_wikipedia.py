@@ -4,8 +4,8 @@ from datetime import datetime
 from SPARQLWrapper import SPARQLWrapper, JSON
 from django.db.models import Q
 
-from new_models.node import Node
-from new_models.types import NodeType
+from models.node import Node
+from models.types import NodeType
 
 
 def main(*args):

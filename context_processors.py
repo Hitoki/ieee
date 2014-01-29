@@ -56,8 +56,8 @@ def settings(request):
 	}
 
 def total_tag_count(request):
-    from new_models.node import Node
-    from new_models.types import NodeType
+    from models.node import Node
+    from models.types import NodeType
     c = Node.objects.filter(node_type__name=NodeType.TAG).count() - 1
     return {
         'total_tag_count': c

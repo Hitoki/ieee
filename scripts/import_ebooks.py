@@ -4,10 +4,10 @@ import csv
 from django.db.utils import IntegrityError
 
 from dateutil import parser
-from new_models.node import Node
-from new_models.resource import Resource, ResourceNodes
-from new_models.society import Society
-from new_models.types import NodeType, ResourceType
+from models.node import Node
+from models.resource import Resource, ResourceNodes
+from models.society import Society
+from models.types import NodeType, ResourceType
 
 
 script, filepath = argv

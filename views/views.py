@@ -21,10 +21,10 @@ from django.utils import simplejson as json
 
 from decorators import optional_login_required as login_required
 from ieeetags.forms import *
-from new_models.node import Node
-from new_models.society import Society
-from new_models.types import ResourceType, Filter
-from new_models.resource import Resource
+from models.node import Node
+from models.society import Society
+from models.types import ResourceType, Filter
+from models.resource import Resource
 
 #from profiler import Profiler
 import util

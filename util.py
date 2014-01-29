@@ -557,8 +557,8 @@ def update_conference_series_tags(conferences=None, conference_series=None):
     @param conferences A list of conferences to update, should be sorted by conference_series, then year.  All conferences should have a valid conference_series value, and a valid year value.
     @param conference_series (string) A series to parse through. Will grab all conferences of this series and update them.
     '''
-    from new_models.resource import Resource, ResourceNodes
-    from new_models.types import ResourceType
+    from models.resource import Resource, ResourceNodes
+    from models.types import ResourceType
     #from ieeetags.models import Resource, ResourceNodes, ResourceType
     #import models
     if conferences is not None and conference_series is None:

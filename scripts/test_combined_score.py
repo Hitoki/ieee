@@ -12,8 +12,8 @@ import sys
 sys.path = ['../..'] + sys.path
 import ieeetags.settings
 setup_environ(ieeetags.settings)
-from new_models.node import Node
-from new_models.society import Society
+from models.node import Node
+from models.society import Society
 
 
 # -----

@@ -5,12 +5,12 @@ from django.forms import *
 from ieeetags.fields import MultiSearchField
 from ieeetags.widgets import MultiSearchWidget, DisplayOnlyWidget, CheckboxSelectMultipleColumns
 from ieeetags import url_checker
-from new_models.node import Node
-from new_models.profile import Profile
-from new_models.resource import Resource
-from new_models.society import Society
-from new_models.types import NodeType, ResourceType, Filter
-from new_models.utils import list_to_choices
+from models.node import Node
+from models.profile import Profile
+from models.resource import Resource
+from models.society import Society
+from models.types import NodeType, ResourceType, Filter
+from models.utils import list_to_choices
 
 
 TRISTATE_CHOICES = [

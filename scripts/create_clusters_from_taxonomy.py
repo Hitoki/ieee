@@ -13,10 +13,10 @@ setup_environ(ieeetags.settings)
 
 # ------------------------------------------------------------------------------
 
-from new_models.node import Node
-from new_models.society import NodeSocieties
-from new_models.taxonomy import TaxonomyCluster
-from new_models.types import NodeType
+from models.node import Node
+from models.society import NodeSocieties
+from models.taxonomy import TaxonomyCluster
+from models.types import NodeType
 
 
 def main():

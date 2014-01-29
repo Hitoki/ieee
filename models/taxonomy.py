@@ -1,6 +1,6 @@
 import logging
 from django.db import models
-from new_models.node import Node
+from models.node import Node
 
 
 class TaxonomyTermManager(models.Manager):

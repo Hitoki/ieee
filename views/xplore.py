@@ -13,8 +13,8 @@ from django.middleware import csrf
 from django.views.decorators.csrf import csrf_exempt
 
 #from profiler import Profiler
-from new_models.node import Node
-from new_models.types import NodeType
+from models.node import Node
+from models.types import NodeType
 import settings
 
 XPLORE_SORT_AUTHOR = 'au'
