@@ -8,8 +8,11 @@ import threading
 import urllib
 import urlparse
 from Queue import Empty, Queue
-from ieeetags.models import *
 import datetime
+
+from ieeetags.models import *
+from new_models.logs import UrlCheckerLog
+
 
 class ArrayThreadSafe(object):
     def __init__(self):

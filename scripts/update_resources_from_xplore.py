@@ -114,6 +114,7 @@ def main(*args):
     
     # Now our django imports.
     from ieeetags import models
+    from new_models.logs import ProcessControl
     from new_models.node import Node
     from new_models.types import NodeType, ResourceType
 
@@ -146,7 +147,7 @@ def main(*args):
         try:
             if use_processcontrol:
                 # Update the log.
-                process_control = models.ProcessControl.objects.get(type=models.PROCESS_CONTROL_TYPES.XPLORE_IMPORT)
+                process_control = ProcessControl.objects.get(type=models.PROCESS_CONTROL_TYPES.XPLORE_IMPORT)
                 process_control.log += 'Started.\n'
                 process_control.date_updated = datetime.datetime.now()
                 process_control.save()
@@ -177,7 +178,7 @@ def main(*args):
             
             if use_resume:
                 # Filter out all tags up to and including the last processed tag so we can resume where we left off.
-                process_control = models.ProcessControl.objects.get(type=models.PROCESS_CONTROL_TYPES.XPLORE_IMPORT)
+                process_control = ProcessControl.objects.get(type=models.PROCESS_CONTROL_TYPES.XPLORE_IMPORT)
                 last_processed_tag = process_control.last_processed_tag
                 
                 log('Resuming from tag %r.' % last_processed_tag.name)
@@ -198,7 +199,7 @@ def main(*args):
             for i, tag in enumerate(tags):
                 if use_processcontrol:
                     # Update the log.
-                    process_control = models.ProcessControl.objects.get(type=models.PROCESS_CONTROL_TYPES.XPLORE_IMPORT)
+                    process_control = ProcessControl.objects.get(type=models.PROCESS_CONTROL_TYPES.XPLORE_IMPORT)
                     
                     # Update the 'Processing...' log every 1 seconds.
                     if last_updated is None or datetime.datetime.now() - last_updated > datetime.timedelta(seconds=1):
@@ -473,7 +474,7 @@ def main(*args):
             if use_processcontrol:
                 log('Updating model with exit status.')
                 # Update the model to show that this has quit normally.
-                process_control = models.ProcessControl.objects.get(type=models.PROCESS_CONTROL_TYPES.XPLORE_IMPORT)
+                process_control = ProcessControl.objects.get(type=models.PROCESS_CONTROL_TYPES.XPLORE_IMPORT)
                 if last_tag is not None:
                     # Record the last-updated tag name, in case we want to resume.
                     process_control.last_processed_tag = last_tag
@@ -495,7 +496,7 @@ def main(*args):
             try:
                 if use_processcontrol:
                     # Attempt to update the DB with the error-exit state.
-                    process_control = models.ProcessControl.objects.get(type=models.PROCESS_CONTROL_TYPES.XPLORE_IMPORT)
+                    process_control = ProcessControl.objects.get(type=models.PROCESS_CONTROL_TYPES.XPLORE_IMPORT)
                     process_control.log += 'Exception: %s\n' % e
                     process_control.date_updated = datetime.datetime.now()
                     process_control.save()
