@@ -37,6 +37,7 @@ import util
 from BeautifulSoup import BeautifulSoup
 
 from .views import render, get_jobs_info
+from widgets import make_display_only
 from .xplore import _get_xplore_results, ajax_xplore_authors
 
 
