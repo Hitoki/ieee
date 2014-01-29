@@ -1,6 +1,8 @@
 'DEPRECATED: Should use the Permissions model instead of this module.'
 
 import logging
+from new_models.profile import Profile
+
 
 #def require_staff(request):
 #    #logging.debug('request.user.is_staff: %d' % request.user.is_staff)
@@ -13,9 +15,9 @@ import logging
 #    if not request.user.is_superuser:
 #        raise Exception('You must be logged in as a super user to access this page.')
 
+
 def require_society_user(request, society_id):
     "DEPRECATED: Make sure the user is associated with the society."
-    from models import Profile
     #print 'request.user.is_superuser:', request.user.is_superuser
     if request.user.get_profile().role != Profile.ROLE_ADMIN \
         and request.user.get_profile().role != Profile.ROLE_SOCIETY_ADMIN \

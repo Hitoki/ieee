@@ -1,8 +1,8 @@
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.db import models
-from models import Profile
 from new_models.node import Node
+from new_models.profile import Profile
 from new_models.utils import single_row_or_none
 
 
