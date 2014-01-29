@@ -1,18 +1,19 @@
-from django.contrib.auth.models import User, UserManager
+from datetime import datetime
+import time
+import string
+import logging
+import re
+from logging import debug as log
+
+from django.contrib.auth.models import User
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
-from django.core.exceptions import MultipleObjectsReturned 
+from django.core.exceptions import MultipleObjectsReturned
 from django.db import connection
 from django.db import models
 from django.db.models import Q
 from django.db.models.signals import post_save
-from datetime import datetime
-from logging import debug as log
-import time
-import string
-import settings
-import logging
-import re
+
 #from profiler import Profiler
 from enum import Enum
 import util
@@ -56,8 +57,6 @@ def list_to_choices(list):
     for item in list:
         result.append((item, item))
     return result
-
-# ----------------------------------------------------------------------------
 
 
 class NamedTypeManager(models.Manager):
