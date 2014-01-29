@@ -13,8 +13,8 @@ setup_environ(ieeetags.settings)
 
 # ------------------------------------------------------------------------------
 
-from ieeetags.models import *
 from new_models.node import Node
+from new_models.society import NodeSocieties
 from new_models.taxonomy import TaxonomyCluster
 from new_models.types import NodeType
 

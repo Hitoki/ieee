@@ -116,6 +116,7 @@ def main(*args):
     from ieeetags import models
     from new_models.logs import ProcessControl
     from new_models.node import Node
+    from new_models.society import NodeSocieties
     from new_models.types import NodeType, ResourceType
 
     print 'logfilename: %r' % logfilename
@@ -440,7 +441,7 @@ def main(*args):
                     if tag.societies.filter(id=society.id).count() == 0:
                         log('*** Creating relationship to Society.')
                         resSum['society_relationships_created'] += 1
-                        xref = models.NodeSocieties(
+                        xref = NodeSocieties(
                             node = tag,
                             society = society,
                             date_created = now,

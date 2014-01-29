@@ -6,8 +6,9 @@ from django.template import Context, loader
 from html2text import html2text
 from django.contrib.sites.models import Site
 
-from ieeetags.models import ResourceNodes, NodeSocieties, \
-    ResourceAdditionNotificationRequest, ResourceAdditionNotification
+from ieeetags.models import ResourceNodes, ResourceAdditionNotificationRequest, ResourceAdditionNotification
+
+from new_models.society import NodeSocieties
 import settings
 
 
