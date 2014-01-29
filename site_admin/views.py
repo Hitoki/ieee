@@ -5776,7 +5776,6 @@ def admin_info(request):
     for path in sys.path:
         contents.append('    %s' % path)
     
-    import models
     contents.append('models.Node: %r' % Node)
     
     return HttpResponse('\r\n'.join(contents), 'text/plain')

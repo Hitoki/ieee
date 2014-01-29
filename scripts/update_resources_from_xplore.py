@@ -113,7 +113,6 @@ def main(*args):
     setup_environ(ieeetags.settings)
     
     # Now our django imports.
-    from ieeetags import models
     from new_models.node import Node
     from new_models.society import NodeSocieties
     from new_models.types import NodeType, ResourceType
@@ -141,7 +140,9 @@ def main(*args):
 
     if use_daemon:
         log('Starting daemon.')
-        daemonize.daemonize(stdout=logfile, stderr=logfile, pidfilename=pidfilename, exclude_files=[logfile.fileno()])
+        daemonize.daemonize(stdout=logfile, stderr=logfile,
+                            pidfilename=pidfilename,
+                            exclude_files=[logfile.fileno()])
     else:
         log('Running as non-daemon.')
     

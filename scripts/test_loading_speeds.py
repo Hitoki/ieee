@@ -9,7 +9,6 @@ setup_environ(ieeetags.settings)
 
 # -----
 
-from ieeetags.models import *
 import time
 import urllib2
 
