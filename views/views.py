@@ -20,9 +20,9 @@ from django.template import RequestContext
 from django.utils import simplejson as json
 
 from decorators import optional_login_required as login_required
-from ieeetags.models import Filter, Resource, Society
+from ieeetags.models import Resource, Society
 from ieeetags.forms import *
-from new_models.types import ResourceType
+from new_models.types import ResourceType, Filter
 from new_models.node import Node
 
 #from profiler import Profiler

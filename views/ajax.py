@@ -26,13 +26,13 @@ from django.template.loader import render_to_string
 import sys
 
 from decorators import optional_login_required as login_required
-from ieeetags.models import Cache, Filter, Profile, Resource, Society, ProfileLog, \
+from ieeetags.models import Cache, Profile, Resource, Society, ProfileLog, \
     ResourceAdditionNotificationRequest
 from ieeetags.forms import *
 
 #from profiler import Profiler
 from new_models.node import Node
-from new_models.types import NodeType, ResourceType
+from new_models.types import NodeType, ResourceType, Filter
 from new_models.utils import single_row
 import settings
 import util

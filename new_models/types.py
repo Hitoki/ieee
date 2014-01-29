@@ -70,3 +70,33 @@ class ResourceType(NamedType):
     PERIODICAL = 'periodical'
     STANDARD = 'standard'
     EBOOK = 'ebook'
+
+
+class FilterManager(NamedValueTypeManager):
+    def get_from_name_list(self, names):
+        'Returns a list of filters whose names match the given list of names.'
+        results = self.filter(name__in=names)
+        if len(results) != len(names):
+            raise Exception('Did not find matches for all filters:\n'
+                            'names: %s\nresults: %s' % (names, results))
+        return results
+
+
+class Filter(NamedValueType):
+    EMERGING_TECHNOLOGIES = 'emerging_technologies'
+    FOUNDATION_TECHNOLOGIES = 'foundation_technologies'
+    HOT_TOPICS = 'hot_topics'
+    MARKET_AREAS = 'market_areas'
+
+    FILTERS = [
+        EMERGING_TECHNOLOGIES,
+        FOUNDATION_TECHNOLOGIES,
+        HOT_TOPICS,
+        MARKET_AREAS,
+    ]
+
+    objects = FilterManager()
+
+    def __unicode__(self):
+        return self.name
+
