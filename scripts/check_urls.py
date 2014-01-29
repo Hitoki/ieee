@@ -6,11 +6,13 @@ Checks all resources' URLs from the command line.
 
 from django.core.management import setup_environ
 import sys
+
+
 sys.path = ['../..'] + sys.path
 import ieeetags.settings
 setup_environ(ieeetags.settings)
 from ieeetags import url_checker
-from ieeetags.models import Resource
+from new_models.resource import Resource
 import logging
 
 # -----

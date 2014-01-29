@@ -37,13 +37,14 @@ from ieeetags import settings
 from ieeetags import permissions
 from ieeetags import url_checker
 from ieeetags.util import *
-from ieeetags.models import Cache, Permission, Resource, ResourceNodes, Profile, get_user_from_username, get_user_from_email, UserManager
+from ieeetags.models import Cache, Permission, Profile, get_user_from_username, get_user_from_email, UserManager
 from ieeetags.views.views import render
 from ieeetags.widgets import DisplayOnlyWidget
 from forms import *
 from new_models.logs import FailedLoginLog, UrlCheckerLog, ProfileLog, \
     ProcessControl, PROCESS_CONTROL_TYPES
 from new_models.node import Node
+from new_models.resource import Resource, ResourceNodes
 from new_models.society import NodeSocieties, Society
 from new_models.taxonomy import TaxonomyTerm, TaxonomyCluster
 from new_models.types import NodeType, ResourceType, Filter

@@ -118,6 +118,7 @@ def main(*args):
     from new_models.node import Node
     from new_models.society import NodeSocieties
     from new_models.types import NodeType, ResourceType
+    from new_models.resource import Resource, ResourceNodes
 
     print 'logfilename: %r' % logfilename
     print 'use_processcontrol: %r' % use_processcontrol
@@ -350,7 +351,7 @@ def main(*args):
                     # Iterate thru PERIODICALS creating a relationship to the current tag if non-existent.
                     for issn, xhit_title in distinct_issns.iteritems():
                         try:
-                            per = models.Resource.objects.get(ieee_id=issn)
+                            per = Resource.objects.get(ieee_id=issn)
                             log('%s: Found TechNav Resource titled "%s".' % (issn, per.name))
                             
                             if per in tag.resources.all():
@@ -359,7 +360,7 @@ def main(*args):
                             else:
                                 log('*** Creating relationship to Periodical.')
                                 resSum['relationships_to_periodicals_created'] += 1
-                                xref = models.ResourceNodes(
+                                xref = ResourceNodes(
                                     node = tag,
                                     resource = per,
                                     date_created = now,
@@ -370,14 +371,14 @@ def main(*args):
                             for society in per.societies.iterator():
                                 society_set.add(society)
                                 
-                        except models.Resource.DoesNotExist:
+                        except Resource.DoesNotExist:
                             log('%s: No TechNav Resource found.' % issn)
                             resSum['resources_not_found'] += 1\
                             
                     # Iterate thru CONFERENCES creating a relationship to the current tag if non-existent.
                     for punumber, xhit_title in distinct_conference_punumbers.iteritems():
                         try:
-                            conf = models.Resource.objects.get(pub_id=punumber, resource_type__name=ResourceType.CONFERENCE)
+                            conf = Resource.objects.get(pub_id=punumber, resource_type__name=ResourceType.CONFERENCE)
                             log('%s: Found TechNav Resource titled "%s".' % (punumber, conf.name))
                             
                             if conf in tag.resources.all():
@@ -386,7 +387,7 @@ def main(*args):
                             else:
                                 log('*** Creating relationship to Conference.')
                                 resSum['relationships_to_conferences_created'] += 1
-                                xref = models.ResourceNodes(
+                                xref = ResourceNodes(
                                     node = tag,
                                     resource = conf,
                                     date_created = now,
@@ -397,7 +398,7 @@ def main(*args):
                             for society in conf.societies.iterator():
                                 society_set.add(society)
                                 
-                        except models.Resource.DoesNotExist:
+                        except Resource.DoesNotExist:
                             log('%s: No TechNav Resource found.' % punumber)
                             resSum['resources_not_found'] += 1
                             
@@ -406,10 +407,10 @@ def main(*args):
                     for punumber, xhit_title in distinct_standard_punumbers.iteritems():
                         try:
                             try:
-                                standard = models.Resource.objects.get(pub_id=punumber, resource_type__name=ResourceType.STANDARD)
+                                standard = Resource.objects.get(pub_id=punumber, resource_type__name=ResourceType.STANDARD)
                                 log('%s: Found TechNav Resource titled "%s".' % (punumber, standard.name))
-                            except models.Resource.MultipleObjectsReturned:
-                                standard = models.Resource.objects.filter(pub_id=punumber, resource_type__name=ResourceType.STANDARD)[0]
+                            except Resource.MultipleObjectsReturned:
+                                standard = Resource.objects.filter(pub_id=punumber, resource_type__name=ResourceType.STANDARD)[0]
                                 log('%s: Found Multiple TechNav Resource titled "%s". Using first.' % (punumber, standard.name))
                             
                             if standard in tag.resources.all():
@@ -418,7 +419,7 @@ def main(*args):
                             else:
                                 log('*** Creating relationship to Standard.')
                                 resSum['relationships_to_standards_created'] += 1
-                                xref = models.ResourceNodes(
+                                xref = ResourceNodes(
                                     node = tag,
                                     resource = standard,
                                     date_created = now,
@@ -429,7 +430,7 @@ def main(*args):
                             for society in standard.societies.iterator():
                                 society_set.add(society)
                                 
-                        except models.Resource.DoesNotExist:
+                        except Resource.DoesNotExist:
                             log('%s: No TechNav Resource found.' % punumber)
                             resSum['resources_not_found'] += 1
                     

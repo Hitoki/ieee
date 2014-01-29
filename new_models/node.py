@@ -3,7 +3,7 @@ import re
 import string
 from django.db import models
 from django.db.models import Q
-from models import ResourceNodes, Resource
+from new_models.resource import Resource, ResourceNodes
 from new_models.society import NodeSocieties, Society
 from new_models.types import NodeType, ResourceType
 from new_models.utils import single_row, single_row_or_none
