@@ -2,10 +2,13 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.forms import *
 
-from ieeetags.models import Filter, Node, NodeType, Society, Resource, ResourceType, Profile, list_to_choices
+from ieeetags.models import Filter, Node, NodeType, Society, Resource, ResourceType, Profile
+
 from ieeetags.fields import MultiSearchField
 from ieeetags.widgets import MultiSearchWidget, DisplayOnlyWidget, CheckboxSelectMultipleColumns
 from ieeetags import url_checker
+from new_models.utils import list_to_choices
+
 
 TRISTATE_CHOICES = [
     'no change',
