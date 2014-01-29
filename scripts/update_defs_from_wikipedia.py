@@ -5,6 +5,7 @@ from SPARQLWrapper import SPARQLWrapper, JSON
 from django.db.models import Q
 
 from ieeetags.models import *
+from new_models.node import Node
 from new_models.types import NodeType
 
 

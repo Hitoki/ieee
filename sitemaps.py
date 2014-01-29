@@ -2,8 +2,8 @@ from django.contrib.sitemaps import Sitemap
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 from datetime import datetime
-from ieeetags.models import Node
 from urllib import quote
+from new_models.node import Node
 from new_models.types import NodeType
 
 

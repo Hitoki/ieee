@@ -37,10 +37,11 @@ from ieeetags import settings
 from ieeetags import permissions
 from ieeetags import url_checker
 from ieeetags.util import *
-from ieeetags.models import Cache, Node, NodeSocieties, Permission, Resource, ResourceNodes, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager, FailedLoginLog, UrlCheckerLog, TaxonomyTerm, TaxonomyCluster, ProfileLog, ProcessControl, PROCESS_CONTROL_TYPES
+from ieeetags.models import Cache, NodeSocieties, Permission, Resource, ResourceNodes, Society, Filter, Profile, get_user_from_username, get_user_from_email, UserManager, FailedLoginLog, UrlCheckerLog, TaxonomyTerm, TaxonomyCluster, ProfileLog, ProcessControl, PROCESS_CONTROL_TYPES
 from ieeetags.views.views import render
 from ieeetags.widgets import DisplayOnlyWidget
 from forms import *
+from new_models.node import Node
 from new_models.types import NodeType, ResourceType
 from widgets import make_display_only
 
@@ -5768,6 +5769,6 @@ def admin_info(request):
         contents.append('    %s' % path)
     
     import models
-    contents.append('models.Node: %r' % models.Node)
+    contents.append('models.Node: %r' % Node)
     
     return HttpResponse('\r\n'.join(contents), 'text/plain')

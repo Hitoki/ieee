@@ -1,7 +1,7 @@
 from sys import argv
 import csv
 import MySQLdb
-from ieeetags.models import *
+from new_models.node import Node
 from new_models.types import NodeType
 
 

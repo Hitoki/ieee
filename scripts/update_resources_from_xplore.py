@@ -114,6 +114,7 @@ def main(*args):
     
     # Now our django imports.
     from ieeetags import models
+    from new_models.node import Node
     from new_models.types import NodeType, ResourceType
 
     print 'logfilename: %r' % logfilename
@@ -172,7 +173,7 @@ def main(*args):
             resource_type = ResourceType.objects.getFromName('periodical')
             tag_type = NodeType.objects.getFromName('tag')
             
-            tags = models.Node.objects.filter(node_type=tag_type).order_by('name')
+            tags = Node.objects.filter(node_type=tag_type).order_by('name')
             
             if use_resume:
                 # Filter out all tags up to and including the last processed tag so we can resume where we left off.
