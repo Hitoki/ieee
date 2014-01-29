@@ -1,8 +1,8 @@
-from ieeetags.models import Cache
 from ieeetags.views.ajax import _render_textui_nodes
 import simplejson as json
 from new_models.node import Node
 from new_models.society import Society
+from new_models.system import Cache
 from new_models.types import NodeType
 from noomake import *
 

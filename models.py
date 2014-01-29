@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
-from django.core.exceptions import MultipleObjectsReturned
 from django.db import models
 from django.db.models.signals import post_save
 
@@ -125,67 +124,7 @@ def get_user_from_username(username):
 def get_user_from_email(email):
     return single_row_or_none(User.objects.filter(email=email))
 
-# ----------------------------------------------------------------------------
 
 
-# ----------------------------------------------------------------------------
 
 
-def urlencode_sorted(d):
-    import urllib
-    result = []
-    for name in sorted(d.keys()):
-        result.append((name, d[name]))
-    return urllib.urlencode(result)
-
-
-class CacheManager(models.Manager):
-    def get(self, name, params):
-        if type(params) is dict:
-            params = urlencode_sorted(params)
-        try:
-            return super(CacheManager, self).get(name=name, params=params)
-        except Cache.DoesNotExist:
-            return None
-        except MultipleObjectsReturned:
-            idtosave = super(CacheManager, self).\
-                filter(name=name, params=params).order_by('-id')[0:1][0].id
-            super(CacheManager, self).filter(name=name, params=params).\
-                exclude(id=idtosave).delete()
-            return super(CacheManager, self).get(id=idtosave)
-             
-    def set(self, name, params, content):
-        if type(params) is dict:
-            params = urlencode_sorted(params)
-        cache = self.get(name, params)
-        if not cache:
-            cache = Cache()
-            cache.name = name
-            cache.params = params
-        cache.content = content
-        cache.save()
-        return cache
-    
-    def delete(self, name, params=None):
-        if type(params) is dict:
-            params = urlencode_sorted(params)
-        if params is None:
-            caches = self.filter(name=name)
-            caches.delete()
-        else:
-            cache = self.get(name, params)
-            if cache:
-                cache.delete()
-
-
-class Cache(models.Model):
-    name = models.CharField(max_length=100)
-    params = models.CharField(max_length=1000, blank=True)
-    content = models.TextField()
-    date_created = models.DateTimeField(auto_now_add=True)
-    
-    objects = CacheManager()
-    
-    def __str__(self):
-        return '<Cache: %s, %s, %s>' % (self.name, self.params,
-                                        len(self.content))

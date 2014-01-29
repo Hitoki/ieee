@@ -1,10 +1,7 @@
 from datetime import datetime
 import time
-from enum import Enum
 from django.db import models
 from django.db.models import Q
-from new_models.node import Node
-import util
 
 
 class FailedLoginLogManager(models.Manager):
@@ -138,33 +135,3 @@ class ProfileLog(models.Model):
         return '<%s: %s, %s, %s>' % (self.__class__.__name__, self.url,
                                      self.elapsed_time,
                                      self.short_user_agent())
-
-
-PROCESS_CONTROL_TYPES = Enum(
-    'XPLORE_IMPORT',
-)
-
-
-class ProcessControl(models.Model):
-    'Controls and stores information for a long-running process.'
-
-    # The type (ie. name) of process.
-    # Should only be one per name at any given time.
-    type = models.CharField(max_length=100,
-                            choices=util.make_choices(PROCESS_CONTROL_TYPES))
-    'Log messages output by the process (stored in this DB field only).'
-    log = models.CharField(max_length=1000, blank=True)
-    'Filename for the logfile written by the process.'
-    log_filename = models.CharField(max_length=1000, blank=True, default='')
-    'Signal the process to quit.'
-    is_alive = models.BooleanField(default=True)
-    'Process will update periodically to the current time.'
-    date_updated = models.DateTimeField(null=True, blank=True)
-
-    # Process-type specific fields.
-    'This is updated the most-recently processed tag by the Xplore Import ' \
-    'script, allows resuming.'
-    last_processed_tag = models.ForeignKey(Node, null=True, blank=True,
-                                           default=None)
-
-    date_created = models.DateTimeField(auto_now_add=True)
