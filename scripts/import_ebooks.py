@@ -1,8 +1,12 @@
 from sys import argv
 import csv
+
+from django.db.utils import IntegrityError
+
 from ieeetags.models import *
 from dateutil import parser
-from django.db.utils import IntegrityError
+from new_models.types import NodeType, ResourceType
+
 
 script, filepath = argv
 

@@ -2,6 +2,9 @@
 # Setup django.
 import os
 import sys
+import time
+
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 import ieeetags.settings
@@ -10,9 +13,9 @@ setup_environ(ieeetags.settings)
 
 # ------------------------------------------------------------------------------
 
-import time
 from ieeetags.models import *
-from ieeetags.util import profiler
+from new_models.types import NodeType
+
 
 def main():
 

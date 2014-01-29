@@ -2,6 +2,8 @@
 import os
 import sys
 # NOTE: These must be absolute paths, since after daemonizing the process the working directory will change.
+
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -18,9 +20,11 @@ import daemonize
 import xml.dom.minidom
 from sets import Set
 
+
 def log(msg):
     print >>sys.stdout, msg.encode('utf-8')
-    
+
+
 #@transaction.commit_manually
 def main(*args):
     
@@ -110,8 +114,8 @@ def main(*args):
     
     # Now our django imports.
     from ieeetags import models
-    from ieeetags.models import ResourceType
-    
+    from new_models.types import NodeType, ResourceType
+
     print 'logfilename: %r' % logfilename
     print 'use_processcontrol: %r' % use_processcontrol
     print 'pidfilename: %r' % pidfilename
@@ -130,7 +134,7 @@ def main(*args):
     #    pidfile = None
     
     log('logging started.')
-    
+
     if use_daemon:
         log('Starting daemon.')
         daemonize.daemonize(stdout=logfile, stderr=logfile, pidfilename=pidfilename, exclude_files=[logfile.fileno()])
@@ -165,8 +169,8 @@ def main(*args):
             log('Import Xplore Articles into Resource')
             log('Started at %s' % now)
             
-            resource_type = models.ResourceType.objects.getFromName('periodical')
-            tag_type = models.NodeType.objects.getFromName('tag')
+            resource_type = ResourceType.objects.getFromName('periodical')
+            tag_type = NodeType.objects.getFromName('tag')
             
             tags = models.Node.objects.filter(node_type=tag_type).order_by('name')
             

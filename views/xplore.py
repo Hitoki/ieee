@@ -12,8 +12,9 @@ from decorators import optional_login_required as login_required
 from django.middleware import csrf
 from django.views.decorators.csrf import csrf_exempt
 
-from ieeetags.models import Node, NodeType
+from ieeetags.models import Node
 #from profiler import Profiler
+from new_models.types import NodeType
 import settings
 
 XPLORE_SORT_AUTHOR = 'au'

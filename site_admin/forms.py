@@ -2,11 +2,12 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.forms import *
 
-from ieeetags.models import Filter, Node, NodeType, Society, Resource, ResourceType, Profile
+from ieeetags.models import Filter, Node, Society, Resource, Profile
 
 from ieeetags.fields import MultiSearchField
 from ieeetags.widgets import MultiSearchWidget, DisplayOnlyWidget, CheckboxSelectMultipleColumns
 from ieeetags import url_checker
+from new_models.types import NodeType, ResourceType
 from new_models.utils import list_to_choices
 
 

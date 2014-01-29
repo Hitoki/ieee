@@ -1,9 +1,11 @@
-import sys, os
+import sys
 from datetime import datetime
-from urllib import quote
+
 from SPARQLWrapper import SPARQLWrapper, JSON
-from ieeetags.models import *
 from django.db.models import Q
+
+from ieeetags.models import *
+from new_models.types import NodeType
 
 
 def main(*args):

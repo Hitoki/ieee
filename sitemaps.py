@@ -2,8 +2,10 @@ from django.contrib.sitemaps import Sitemap
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 from datetime import datetime
-from ieeetags.models import Node, NodeType
+from ieeetags.models import Node
 from urllib import quote
+from new_models.types import NodeType
+
 
 class BaseSitemap(Sitemap):
     lastmod = datetime(2012, 2, 21, 0, 0, 0)

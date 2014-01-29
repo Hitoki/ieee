@@ -1,6 +1,7 @@
 import django.conf
 import django.http
 
+
 def host_info(request):
     return {'host_info': "http%s://%s" % (("","s")[request.is_secure()], request.META["HTTP_HOST"])}
 
@@ -55,7 +56,8 @@ def settings(request):
 	}
 
 def total_tag_count(request):
-    from ieeetags.models import Node, NodeType
+    from ieeetags.models import Node
+    from new_models.types import NodeType
     c = Node.objects.filter(node_type__name=NodeType.TAG).count() - 1
     return {
         'total_tag_count': c

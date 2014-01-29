@@ -1,8 +1,11 @@
 ﻿
 # Setup django so we can run this from command-line
 
-from django.core.management import setup_environ
 import sys
+
+from django.core.management import setup_environ
+
+
 sys.path = ['../..'] + sys.path
 sys.path = ['..'] + sys.path
 import ieeetags.settings
@@ -10,8 +13,8 @@ setup_environ(ieeetags.settings)
 
 # --
 
-from django.contrib.auth.models import User
 from ieeetags.models import *
+from new_models.types import ResourceType
 from ieeetags.site_admin.views import _open_unicode_csv_reader, _open_unicode_csv_writer
 from logging import debug as log
 import re

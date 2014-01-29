@@ -2,6 +2,8 @@ from sys import argv
 import csv
 import MySQLdb
 from ieeetags.models import *
+from new_models.types import NodeType
+
 
 script, filepath = argv
 

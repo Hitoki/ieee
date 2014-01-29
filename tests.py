@@ -1,6 +1,8 @@
 # Setup django.
 import os
 import sys
+
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../..'))
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 import ieeetags.settings
@@ -30,7 +32,7 @@ class LoadPagesTestCase(unittest.TestCase):
         
     def testDataExists(self):
         'Tests that the test_data fixture is being installed.'
-        from ieeetags.models import NodeType
+        from new_models.types import NodeType
         num_node_types = NodeType.objects.count()
         self.assertTrue(num_node_types > 0, 'There are no NodeType objects.')
         
