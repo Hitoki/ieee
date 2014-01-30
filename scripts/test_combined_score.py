@@ -7,6 +7,7 @@ Checks that score1 is effected by .societies.count().
 from django.core.management import setup_environ
 import random
 import sys
+from models import get_node_extra_info
 
 
 sys.path = ['../..'] + sys.path
@@ -29,7 +30,7 @@ if len(societies) == 0:
     print 'len(societies): %s' % len(societies)
 print ''
 
-tags = Node.objects.get_extra_info(tags)
+tags = get_node_extra_info(tags)
 print 'tags[0].id: %s' % tags[0].id
 print 'tags[0].name: %s' % tags[0].name
 print 'tags[0].score1: %s' % tags[0].score1
@@ -37,7 +38,7 @@ print 'tags[0].societies.count(): %s' % tags[0].societies.count()
 print ''
 
 tags[0].societies = []
-tags = Node.objects.get_extra_info(tags)
+tags = get_node_extra_info(tags)
 print 'tags[0].id: %s' % tags[0].id
 print 'tags[0].name: %s' % tags[0].name
 print 'tags[0].score1: %s' % tags[0].score1
@@ -45,7 +46,7 @@ print 'tags[0].societies.count(): %s' % tags[0].societies.count()
 print ''
 
 tags[0].societies = societies
-tags = Node.objects.get_extra_info(tags)
+tags = get_node_extra_info(tags)
 print 'tags[0].id: %s' % tags[0].id
 print 'tags[0].name: %s' % tags[0].name
 print 'tags[0].score1: %s' % tags[0].score1

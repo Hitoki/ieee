@@ -40,6 +40,7 @@ from ieeetags.util import *
 from ieeetags.views.views import render
 from ieeetags.widgets import DisplayOnlyWidget
 from forms import *
+from models import get_node_extra_info
 from models.logs import FailedLoginLog, UrlCheckerLog, ProfileLog
 from models.node import Node
 from models.profile import Permission, Profile, UserManager, \
@@ -4592,7 +4593,7 @@ def ajax_search_tags(request):
         temp_society_id = None
     tags = Node.objects.searchTagsByNameSubstring(search_for, sector_ids, exclude_tag_id, temp_society_id)
     
-    tags = Node.objects.get_extra_info(tags)
+    tags = get_node_extra_info(tags)
     
     #if len(tags) > MAX_RESULTS:
     #    tags = tags[:MAX_RESULTS]

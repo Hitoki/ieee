@@ -29,6 +29,7 @@ from decorators import optional_login_required as login_required
 from ieeetags.forms import *
 
 #from profiler import Profiler
+from models import get_node_extra_info
 from models.logs import ProfileLog
 from models.node import Node
 from models.notification import ResourceAdditionNotificationRequest
@@ -922,7 +923,7 @@ def ajax_nodes_xml(request):
     # NOTE: Can't use 'filters' in select_related() since it's a
     # many-to-many field.
     child_nodes = child_nodes.select_related('node_type').all()
-    child_nodes = Node.objects.get_extra_info(child_nodes)
+    child_nodes = get_node_extra_info(child_nodes)
 
     # If parent node is a sector, filter the child tags
     valid_node_type = node.node_type.name == NodeType.SECTOR or \
@@ -1140,7 +1141,7 @@ def tooltip(request, tag_id=None):
     if tag_id is not None:
 
         node = Node.objects.filter(id=tag_id)
-        node = Node.objects.get_extra_info(node)
+        node = get_node_extra_info(node)
         node = single_row(node)
 
         #print '  node.node_type.name: %r' % node.node_type.name
@@ -1166,7 +1167,7 @@ def tooltip(request, tag_id=None):
                 else:
                     parent = Node.objects.get(id=parent_id)
                     tags = parent.child_nodes
-                tags = Node.objects.get_extra_info(tags)
+                tags = get_node_extra_info(tags)
                 tags = tags.values(
                     'num_filters1',
                     'num_related_tags1',
@@ -1198,7 +1199,7 @@ def tooltip(request, tag_id=None):
                         # For All Societies, check all tags to get mins/maxes.
 
                         tags = Node.objects.get_tags()
-                        tags = Node.objects.get_extra_info(tags)
+                        tags = get_node_extra_info(tags)
 
                         min_resources = None
                         max_resources = None
@@ -1270,7 +1271,7 @@ def tooltip(request, tag_id=None):
                         Node.objects.filter(queries,
                                             node_type__name=NodeType.TAG)
                     filterIds = [filter.id for filter in Filter.objects.all()]
-                    child_nodes = Node.objects.get_extra_info(child_nodes,
+                    child_nodes = get_node_extra_info(child_nodes,
                                                               None, filterIds)
                 else:
                     child_nodes = Node.objects.none()
@@ -1331,7 +1332,7 @@ def tooltip(request, tag_id=None):
 
             # Filter out related tags without filters (to match roamer)
             related_tags2 = tag.related_tags.all()
-            related_tags2 = Node.objects.get_extra_info(related_tags2)
+            related_tags2 = get_node_extra_info(related_tags2)
             related_tags = []
             for related_tag in related_tags2:
                 positive_nums = related_tag.num_filters1 > 0 and \
@@ -1586,7 +1587,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id,
     else:
         # Restrict to only tags.
         child_nodes = child_nodes.filter(node_type__name=NodeType.TAG)
-    child_nodes = Node.objects.get_extra_info(child_nodes, extra_order_by,
+    child_nodes = get_node_extra_info(child_nodes, extra_order_by,
                                               filterIds)
     print child_nodes.query
     if word_queries:
@@ -1779,7 +1780,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id,
                 #if child_node['filters'].filter(id__in=filterIds).count():
                 #    cluster_child_tags = child_node['get_tags']()
                 #    cluster_child_tags = \
-                #        Node.objects.get_extra_info(cluster_child_tags)
+                #        get_node_extra_info(cluster_child_tags)
                 #    
                 #    # Find out how many of this cluster's child tags would
                 #    # show with the current filters

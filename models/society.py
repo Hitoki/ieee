@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.db import models
-from models.node import Node
+from models import get_node_extra_info
 from models.profile import Profile
 from models.utils import single_row_or_none
 
@@ -120,7 +120,7 @@ class Society(models.Model):
         #log('get_tag_ranges()')
 
         # Filter out tags with no resources
-        tags = Node.objects.get_extra_info(self.tags)
+        tags = get_node_extra_info(self.tags)
 
         min_resources = None
         max_resources = None
@@ -183,7 +183,7 @@ class Society(models.Model):
         #p.tick('get_extra_info()')
 
         # Filter out tags with no resources
-        tags = Node.objects.get_extra_info(self.tags)
+        tags = get_node_extra_info(self.tags)
 
         min_score = None
         max_score = None
