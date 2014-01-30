@@ -29,9 +29,9 @@ from decorators import optional_login_required as login_required
 from ieeetags.forms import *
 
 #from profiler import Profiler
-from models import get_node_extra_info
 from models.logs import ProfileLog
 from models.node import Node
+from models.node_extra import get_node_extra_info
 from models.notification import ResourceAdditionNotificationRequest
 from models.profile import Profile
 from models.resource import Resource

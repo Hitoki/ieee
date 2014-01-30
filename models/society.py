@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.db import models
-from models import get_node_extra_info
+from models.node_extra import get_node_extra_info
 from models.profile import Profile
 from models.utils import single_row_or_none
 

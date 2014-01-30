@@ -40,9 +40,9 @@ from ieeetags.util import *
 from ieeetags.views.views import render
 from ieeetags.widgets import DisplayOnlyWidget
 from forms import *
-from models import get_node_extra_info
 from models.logs import FailedLoginLog, UrlCheckerLog, ProfileLog
 from models.node import Node
+from models.node_extra import get_node_extra_info
 from models.profile import Permission, Profile, UserManager, \
     get_user_from_username, get_user_from_email
 from models.resource import Resource, ResourceNodes

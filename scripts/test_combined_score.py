@@ -7,13 +7,13 @@ Checks that score1 is effected by .societies.count().
 from django.core.management import setup_environ
 import random
 import sys
-from models import get_node_extra_info
 
 
 sys.path = ['../..'] + sys.path
 import ieeetags.settings
 setup_environ(ieeetags.settings)
 from models.node import Node
+from models.node_extra import get_node_extra_info
 from models.society import Society
 
 
