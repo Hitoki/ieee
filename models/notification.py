@@ -12,6 +12,7 @@ class ResourceAdditionNotificationRequest(models.Model):
     email = models.CharField(blank=False, max_length=255)
 
     class Meta:
+        app_label = 'ieeetags'
         unique_together = ('node', 'email')
 
 
@@ -22,3 +23,5 @@ class ResourceAdditionNotification(models.Model):
     resourceSocieties = models.ForeignKey(NodeSocieties, null=True)
     date_notified = models.DateTimeField(blank=False, null=False)
 
+    class Meta:
+        app_label = 'ieeetags'

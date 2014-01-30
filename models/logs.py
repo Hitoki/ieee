@@ -5,7 +5,6 @@ from django.db.models import Q
 
 
 class FailedLoginLogManager(models.Manager):
-
     def check_if_disabled(self, username, ip):
         "Return True if a given username or ip has been disabled."
         #log('check_if_disabled()')
@@ -94,6 +93,9 @@ class FailedLoginLog(models.Model):
 
     objects = FailedLoginLogManager()
 
+    class Meta:
+        app_label = 'ieeetags'
+
 
 class UrlCheckerLog(models.Model):
     'Keeps track of the current URL-checking thread\'s status.'
@@ -101,6 +103,9 @@ class UrlCheckerLog(models.Model):
     date_ended = models.DateTimeField(blank=True, null=True)
     date_updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=1000)
+
+    class Meta:
+        app_label = 'ieeetags'
 
 
 class ProfileLog(models.Model):
@@ -110,6 +115,9 @@ class ProfileLog(models.Model):
     user_agent = models.CharField(max_length=1000)
     category = models.CharField(max_length=100, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        app_label = 'ieeetags'
 
     def short_user_agent(self):
         short_user_agent1 = self.user_agent

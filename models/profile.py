@@ -51,6 +51,9 @@ class Permission(models.Model):
 
     objects = PermissionManager()
 
+    class Meta:
+        app_label = 'ieeetags'
+
 
 class Profile(models.Model):
     '''A user\'s profile.
@@ -75,6 +78,9 @@ class Profile(models.Model):
     copied_resource = models.ForeignKey(Resource, related_name='copied_users',
                                         null=True, blank=True)
     'This stores the source resource for copy & pasting tags.'
+
+    class Meta:
+        app_label = 'ieeetags'
 
 
 class UserManager:

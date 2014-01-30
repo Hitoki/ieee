@@ -60,6 +60,9 @@ class Cache(models.Model):
 
     objects = CacheManager()
 
+    class Meta:
+        app_label = 'ieeetags'
+
     def __str__(self):
         return '<Cache: %s, %s, %s>' % (self.name, self.params,
                                         len(self.content))
@@ -93,3 +96,6 @@ class ProcessControl(models.Model):
                                            default=None)
 
     date_created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        app_label = 'ieeetags'

@@ -11,7 +11,6 @@ from models.utils import single_row, single_row_or_none
 
 
 class NodeManager(models.Manager):
-
     def create(self, **kwargs):
         '''Creates a node.
         Automatically reformats the name using string.capwords(),
@@ -323,6 +322,10 @@ class Node(models.Model):
     definition_updated_when =models.DateTimeField(blank=True, null=True)
 
     objects = NodeManager()
+
+    class Meta:
+        app_label = 'ieeetags'
+        ordering = ['name']
 
     def __unicode__(self):
         return self.name
@@ -648,6 +651,3 @@ class Node(models.Model):
         print 'min_score: %r' % min_score
         print 'max_score: %r' % max_score
         return (min_score, max_score)
-
-    class Meta:
-        ordering = ['name']

@@ -47,6 +47,7 @@ class NodeSocieties(models.Model):
     objects = NodeSocietiesManager()
 
     class Meta:
+        app_label = 'ieeetags'
         db_table = 'ieeetags_node_societies'
         ordering = ['node__name', 'society__name']
 
@@ -207,5 +208,5 @@ class Society(models.Model):
         return (min_score, max_score)
 
     class Meta:
+        app_label = 'ieeetags'
         ordering = ['name']
-

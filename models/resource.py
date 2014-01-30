@@ -201,6 +201,7 @@ class Resource(models.Model):
         return self.name
 
     class Meta:
+        app_label = 'ieeetags'
         ordering = ['resource_type__name', 'name']
 
 
@@ -211,6 +212,7 @@ class ResourceNodes(models.Model):
     is_machine_generated = models.BooleanField(default=False)
 
     class Meta:
+        app_label = 'ieeetags'
         db_table = 'ieeetags_resource_nodes'
         ordering = ['node__name', 'resource__name']
 

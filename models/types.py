@@ -17,10 +17,12 @@ class NamedType(models.Model):
     'A named type.  Used for named constants in the DB.'
     name = models.CharField(max_length=50)
 
+    class Meta:
+        app_label = 'ieeetags'
+        abstract = True
+
     def __unicode__(self):
         return self.name
-    class Meta:
-        abstract = True
 
 
 class NamedValueTypeManager(NamedTypeManager):
@@ -38,7 +40,9 @@ class NamedValueType(NamedType):
 
     def __unicode__(self):
         return '%s (%s)' % (self.name, self.value)
+
     class Meta:
+        app_label = 'ieeetags'
         abstract = True
 
 
@@ -55,6 +59,9 @@ class NodeType(NamedType):
 
     objects = NodeTypeManager()
 
+    class Meta:
+        app_label = 'ieeetags'
+
 
 class ResourceTypeManager(NamedTypeManager):
     pass
@@ -70,6 +77,9 @@ class ResourceType(NamedType):
     PERIODICAL = 'periodical'
     STANDARD = 'standard'
     EBOOK = 'ebook'
+
+    class Meta:
+        app_label = 'ieeetags'
 
 
 class FilterManager(NamedValueTypeManager):
@@ -96,6 +106,9 @@ class Filter(NamedValueType):
     ]
 
     objects = FilterManager()
+
+    class Meta:
+        app_label = 'ieeetags'
 
     def __unicode__(self):
         return self.name
