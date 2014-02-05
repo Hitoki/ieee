@@ -10,7 +10,6 @@ import hotshot
 import os
 import time
 from django.views.generic.list import ListView
-from models.conference_application import TagKeyword
 import settings
 
 
@@ -28,6 +27,7 @@ from models.node import Node
 from models.society import Society
 from models.types import ResourceType, Filter
 from models.resource import Resource
+from models.conference_application import TagKeyword, ConferenceApplication
 
 #from profiler import Profiler
 import util
