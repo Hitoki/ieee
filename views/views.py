@@ -9,13 +9,14 @@ import urllib2
 import hotshot
 import os
 import time
+from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
 import settings
 
 
 from django.core.mail import mail_admins
 from django.core.mail import send_mail
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
@@ -620,9 +621,17 @@ def debug_conf_app_create(request):
 
 
 class ConferenceApplicationListView(ListView):
+    template_name = "conference_application/list.html"
     model = ConferenceApplication
     context_object_name = "items"
-    template_name = "conference_application/list.html"
+
+
+class ConferenceApplicationCreateView(CreateView):
+    template_name = "conference_application/create.html"
+    form_class = ConferenceApplicationForm
+
+    def get_success_url(self):
+        return reverse('conference_applications')
 
 
 def debug_conf_apps_by_keyword(request, keyword_name):

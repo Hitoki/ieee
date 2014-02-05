@@ -99,7 +99,7 @@ else:
             views.debug_send_email,
             name='debug_send_email'),
 
-        url(r'^debug/conf_app/create$',
+        url(r'^debug/conf_app/create/random$',
             views.debug_conf_app_create,
             name='debug_conf_app_create'),
 
@@ -110,6 +110,10 @@ else:
         url(r'^debug/conf_app/list$',
             ConferenceApplicationListView.as_view(),
             name='conference_applications'),
+
+        url(r'^debug/conf_app/create$',
+            ConferenceApplicationCreateView.as_view(),
+            name='create_conference_application'),
 
         # Faux page for demo
         (r'^scss/$', direct_to_template, {'template': 'scss.html'}),

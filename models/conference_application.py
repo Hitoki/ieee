@@ -14,7 +14,7 @@ from models.node import Node
 
 class ConferenceApplication(models.Model):
     name = models.CharField(verbose_name="Conference name", max_length=200)
-    keywords = models.ManyToManyField('TagKeyword', verbose_name="Keywords",
+    keywords = models.ManyToManyField('TagKeyword',
                                       related_name="conference_applications")
 
     class Meta:

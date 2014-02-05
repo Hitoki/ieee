@@ -1,0 +1,13 @@
+{% extends "base_table.html" %}
+
+{% block main_table_content %}
+    <div style="padding: 20px;">
+        <div style="margin: 5px;">
+            <b>Create new conference application</b>:
+        </div>
+        <form method="post">
+            {{ form.as_p }}
+            <input type="submit" value="Create!">
+        </form>
+    </div>
+{% endblock %}

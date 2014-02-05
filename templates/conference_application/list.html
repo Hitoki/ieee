@@ -4,6 +4,11 @@
 {% block main_table_content %}
     <div style="padding: 20px;">
         <div style="margin: 5px;">
+            <a href="{% url 'create_conference_application' %}">Create New</a>
+            ::
+            <a href="{% url 'debug_conf_app_create' %}">Create Random</a>
+        </div>
+        <div style="margin: 5px;">
             {% if keyword_name %}
                 <i>Filtered by:</i> <b>{{ keyword_name }}</b>: (<a href="{% url 'conference_applications' %}">clear filter</a>)
             {% else %}
@@ -21,9 +26,5 @@
             </li>
         {% endfor %}
         </ul>
-
-        <div style="margin: 5px;">
-            <a href="{% url 'debug_conf_app_create' %}">Add random example</a>
-        </div>
     </div>
 {% endblock %}
