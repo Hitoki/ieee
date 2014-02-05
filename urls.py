@@ -91,8 +91,25 @@ else:
         url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
         
         # Debug
-        url(r'^debug/error$', views.debug_error, name='debug_error'),
-        url(r'^debug/send_email$', views.debug_send_email, name='debug_send_email'),
+        url(r'^debug/error$',
+            views.debug_error,
+            name='debug_error'),
+
+        url(r'^debug/send_email$',
+            views.debug_send_email,
+            name='debug_send_email'),
+
+        url(r'^debug/conf_app/create$',
+            views.debug_conf_app_create,
+            name='debug_conf_app_create'),
+
+        url(r'^debug/conf_app/by_keyword/(?P<keyword_name>\w+)$',
+            views.debug_conf_apps_by_keyword,
+            name='debug_conf_apps_by_keyword'),
+
+        url(r'^debug/conf_app/list$',
+            ConferenceApplicationListView.as_view(),
+            name='conference_applications'),
 
         # Faux page for demo
         (r'^scss/$', direct_to_template, {'template': 'scss.html'}),

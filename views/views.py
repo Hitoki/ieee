@@ -1,4 +1,5 @@
 from logging import debug as log
+from random import randint
 import re
 import datetime
 import sys
@@ -8,6 +9,8 @@ import urllib2
 import hotshot
 import os
 import time
+from django.views.generic.list import ListView
+from models.conference_application import TagKeyword
 import settings
 
 
@@ -15,7 +18,7 @@ from django.core.mail import mail_admins
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.utils import simplejson as json
 
@@ -599,3 +602,31 @@ def get_jobs_info(tag, offset=None):
 
     file1 = None
     return jobsHtml, jobsCount, jobsUrl
+
+
+def debug_conf_app_create(request):
+    conf_app_name = "ConferenceApplication_%d" % randint(1, 100)
+    conf_app = ConferenceApplication.objects.create(name=conf_app_name)
+    for i in range(randint(2, 4)):
+        keyword_name = "keyword_%d" % randint(1, 10)
+        keyword, created = TagKeyword.objects.get_or_create(name=keyword_name)
+        conf_app.keywords.add(keyword)
+    just_for_example = ["Acoustics", "Controls", "Design"]
+    node = Node.objects.get(name=just_for_example[randint(0, 2)])
+    keyword, created = TagKeyword.objects.get_or_create(name=node.name,
+                                                        tag=node)
+    conf_app.keywords.add(keyword)
+    return redirect('conference_applications')
+
+
+class ConferenceApplicationListView(ListView):
+    model = ConferenceApplication
+    context_object_name = "items"
+    template_name = "conference_application/list.html"
+
+
+def debug_conf_apps_by_keyword(request, keyword_name):
+    keyword = TagKeyword.objects.get(name=keyword_name)
+    items = keyword.conference_applications.all()
+    return render(request, "conference_application/list.html",
+                  dict(keyword_name=keyword_name, items=items))

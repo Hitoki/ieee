@@ -1,0 +1,29 @@
+{% extends "base_table.html" %}
+{% load url from future %}
+
+{% block main_table_content %}
+    <div style="padding: 20px;">
+        <div style="margin: 5px;">
+            {% if keyword_name %}
+                <i>Filtered by:</i> <b>{{ keyword_name }}</b>: (<a href="{% url 'conference_applications' %}">clear filter</a>)
+            {% else %}
+                <b>All conference applications</b>:
+            {% endif %}
+        </div>
+        <ul style="margin-left: 20px;">
+        {% for item in items %}
+            <li>{{ item.name }}
+                {% if item.keywords.all %}
+                    ({% for keyword in item.keywords.all %}
+                        <a href="{% url 'debug_conf_apps_by_keyword' keyword.name %}">{{ keyword.name }}</a>{% if not forloop.last %},{% endif %}
+                    {% endfor %})
+                {% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+
+        <div style="margin: 5px;">
+            <a href="{% url 'debug_conf_app_create' %}">Add random example</a>
+        </div>
+    </div>
+{% endblock %}
