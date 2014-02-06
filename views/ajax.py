@@ -908,9 +908,10 @@ def ajax_nodes_keywords(request):
                             content_type='application/javascript; '
                                          'charset=utf8')
     nodes = get_nodes(request.GET['q'])
-    values = ['{"value": "%s"}' % node.name for node in nodes]
-    json = "[%s]" % (", ".join(values))
-    return HttpResponse(json,
+
+    values = ['{"value": "%s"}' % json.dumps(node.name) for node in nodes]
+    result = "[%s]" % (", ".join(values))
+    return HttpResponse(result,
                         content_type='application/json; charset=utf8')
 
 
