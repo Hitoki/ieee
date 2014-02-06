@@ -38,7 +38,6 @@ function share_email() {
 		function(data) {
 			alert("Data Loaded: " + data);
 		});
-	
 }
 
 function get_results(q) {

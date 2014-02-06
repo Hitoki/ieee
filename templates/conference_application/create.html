@@ -1,4 +1,24 @@
 {% extends "base_table.html" %}
+{% load url from future %}
+
+{% block extra_head %}
+    <script type="text/javascript">
+
+    $(function() {
+{#        var data = {items: [#}
+{#            {value: "21", name: "Mick Jagger"},#}
+{#            {value: "43", name: "Johnny Storm"},#}
+{#            {value: "46", name: "Richard Hatch"},#}
+{#            {value: "54", name: "Kelly Slater"},#}
+{#            {value: "55", name: "Rudy Hamilton"},#}
+{#            {value: "79", name: "Michael Jordan"}#}
+{#        ]};#}
+{#        $("input#id_keywords_text").autoSuggest(data.items);#}
+        $("input#id_keywords_text").autoSuggest("{% url 'ajax_nodes_keywords' %}");
+    });
+
+    </script>
+{% endblock %}
 
 {% block main_table_content %}
     <div style="padding: 20px;">

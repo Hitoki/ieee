@@ -54,6 +54,7 @@ else:
         url(r'^ajax/node$', ajax.ajax_node, name='ajax_node'),
         url(r'^ajax/nodes_xml$', ajax.ajax_nodes_xml, name='ajax_nodes_xml'),
         url(r'^ajax/nodes_json$', ajax.ajax_nodes_json, name='ajax_nodes_json'),
+        url(r'^ajax/nodes_keywords$', ajax.ajax_nodes_keywords, name='ajax_nodes_keywords'),
         url(r'^ajax/textui_nodes$', ajax.ajax_textui_nodes, name='ajax_textui_nodes'),
         url(r'^ajax/tooltip/(?P<tag_id>\d+)$', ajax.tooltip, name='tooltip'),
         url(r'^ajax/tooltip$', ajax.tooltip, name='tooltip'),

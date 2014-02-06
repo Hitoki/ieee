@@ -874,14 +874,8 @@ def ajax_textui_nodes(request):
     }), 'text/plain')
 
 
-def ajax_nodes_json(request):
-    "Create a JSON collection for API"
-    if not 's' in request.GET or not len(request.GET['s'].strip()):
-        return HttpResponse("{'error': 'no search term provided'}",
-                            content_type='application/javascript; '
-                                         'charset=utf8')
-
-    search_words = re.split(r'\s', request.GET['s'])
+def get_nodes(query):  # todo: move this function to another place in future
+    search_words = re.split(r'\s', query)
 
     queries = None
     for word in search_words:
@@ -890,11 +884,32 @@ def ajax_nodes_json(request):
         else:
             queries &= Q(name__icontains=word)
 
-    nodes = Node.objects.filter(queries)
+    return Node.objects.filter(queries)
 
+
+def ajax_nodes_json(request):
+    "Create a JSON collection for API"
+    if not 's' in request.GET or not len(request.GET['s'].strip()):
+        return HttpResponse("{'error': 'no search term provided'}",
+                            content_type='application/javascript; '
+                                         'charset=utf8')
+    nodes = get_nodes(request.GET['s'])
     json = serializers.serialize("json", nodes, ensure_ascii=False,
                                  fields=('id', 'name'))
     json = json.replace(', "model": "ieeetags.node"', '')
+    return HttpResponse(json,
+                        content_type='application/javascript; charset=utf8')
+
+
+def ajax_nodes_keywords(request):
+    "Create a JSON collection for API"
+    if not 'q' in request.GET or not len(request.GET['q'].strip()):
+        return HttpResponse("{'error': 'no search term provided'}",
+                            content_type='application/javascript; '
+                                         'charset=utf8')
+    nodes = get_nodes(request.GET['q'])
+    values = ['{value: "%s"}' % node.name for node in nodes]
+    json = "[%s]" % (",\n".join(values))
     return HttpResponse(json,
                         content_type='application/javascript; charset=utf8')
 
