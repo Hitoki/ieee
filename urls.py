@@ -104,7 +104,7 @@ else:
             views.debug_conf_app_create,
             name='debug_conf_app_create'),
 
-        url(r'^debug/conf_app/by_keyword/(?P<keyword_name>\w+)$',
+        url(r'^debug/conf_app/by_keyword/(?P<keyword_name>.*)$',
             views.debug_conf_apps_by_keyword,
             name='debug_conf_apps_by_keyword'),
 

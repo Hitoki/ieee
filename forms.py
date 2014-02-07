@@ -19,7 +19,8 @@ class DebugSendEmailForm(forms.Form):
 
 
 class ConferenceApplicationForm(forms.ModelForm):
-    keywords_text = forms.CharField(label="Keywords", required=False)
+    keywords_in = forms.CharField(label="Keywords", required=False)
+    keywords_out = forms.CharField(required=False, widget=forms.HiddenInput())
 
     class Meta:
         model = ConferenceApplication
@@ -27,9 +28,8 @@ class ConferenceApplicationForm(forms.ModelForm):
 
     def save(self, commit=True):
         super(ConferenceApplicationForm, self).save(commit)
-        keywords_text = self.cleaned_data['keywords_text']
-        print 'keywords_text:', keywords_text
-        keywords = keywords_text.split(', ')
+        keywords_out = self.cleaned_data['keywords_out']
+        keywords = keywords_out.split('|')
         for keyword_name in keywords:
             try:
                 node = Node.objects.get(name=keyword_name)

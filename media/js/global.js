@@ -781,7 +781,7 @@ $(function() {
     $('body').bind(
         'ajaxError',
         function (event, XMLHttpRequest, textStatus, errorThrown) {
-            
+
             // Ignore explicit xhr aborts
             if (XMLHttpRequest.statusText == "abort"){
                 return;
@@ -789,7 +789,7 @@ $(function() {
             // Show the error as a DHTML popup
             Lightbox.hide();
             Flyover.hide();
-            
+
             var divElem = $('<div></div>').appendTo('body');
             divElem.css('position', 'absolute');
             divElem.css('margin', '1em');
@@ -800,7 +800,7 @@ $(function() {
             divElem.css('left', '0');
             divElem.css('z-index', '99999');
             divElem.html(XMLHttpRequest["responseText"]);
-            
+
             // Log the error
             log('-- AJAX ERROR: --------------------');
             log(XMLHttpRequest["responseText"].substr(0, 200));
