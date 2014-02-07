@@ -31,31 +31,39 @@
     <h1>Create new conference application</h1>
     <form id="conf_app_create_form" method="post">{% csrf_token %}
         <div class="formRow first">
-            {{ form.as_p }}
+            {{ form.name.label_tag }}
+            {{ form.name }}
         </div>
         <div class="formRow">
             <label>Conference acronym:</label>
             <input type="text" disabled="disabled"/>
         </div>
-        <form id="conf_app_create_form" method="post">{% csrf_token %}
-            <div>
-                <div>
-                    {{ form.name.label_tag }}
-                </div>
-                <div>
-                    {{ form.name }}
-                </div>
-            </div>
-            <div>
-                <div>
-                    {{ form.keywords_in.label_tag }}
-                </div>
-                <div>
-                    {{ form.keywords_in }}
-                </div>
-            </div>
-            {{ form.keywords_out }}  {# just hidden field #}
-            <input type="submit" value="Create!">
-        </form>
-    </div>
+        <div class="formRow">
+            <label>Event type:</label>
+            <select disabled="disabled">
+                <option>Conference</option>
+            </select>
+        </div>
+        <div class="formRow">
+            <label>Conference URL:</label>
+            <input type="text" disabled="disabled"/>
+        </div>
+        <div class="formRow">
+            <label>Start date:*</label>
+            <input type="text" disabled="disabled"/>
+            <label class="short">End date:*</label>
+            <input type="text" disabled="disabled"/>
+        </div>
+        <div class="formRow">
+            {{ form.keywords_in.label_tag }}
+            {{ form.keywords_in }}
+        </div>
+        <div class="formRow last">
+            <label>Scope:*</label>
+            <textarea disabled="disabled"></textarea>
+        </div>
+        {{ form.keywords_out }}  {# just hidden field #}
+        <input type="submit" value="Create!">
+    </form>
+</div>
 {% endblock %}
