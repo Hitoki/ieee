@@ -30,7 +30,7 @@
         <div style="margin: 5px;">
             <b>Create new conference application</b>:
         </div>
-        <form id="conf_app_create_form" method="post">
+        <form id="conf_app_create_form" method="post">{% csrf_token %}
             {{ form.as_p }}
             <input type="submit" value="Create!">
         </form>
