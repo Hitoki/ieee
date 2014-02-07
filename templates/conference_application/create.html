@@ -34,7 +34,23 @@
             <b>Create new conference application</b>:
         </div>
         <form id="conf_app_create_form" method="post">{% csrf_token %}
-            {{ form.as_p }}
+            <div>
+                <div>
+                    {{ form.name.label_tag }}
+                </div>
+                <div>
+                    {{ form.name }}
+                </div>
+            </div>
+            <div>
+                <div>
+                    {{ form.keywords_in.label_tag }}
+                </div>
+                <div>
+                    {{ form.keywords_in }}
+                </div>
+            </div>
+            {{ form.keywords_out }}  {# just hidden field #}
             <input type="submit" value="Create!">
         </form>
     </div>
