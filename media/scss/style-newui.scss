@@ -2452,13 +2452,20 @@ a#zenbox_tab {
         width: 200px;
         display: inline-block;
         font-weight: bold;
+        vertical-align: middle;
         &.short {
             width: auto;
             margin: 0 25px;
         }
     }
-    input[type="text"], select, textarea {
+    input[type="text"], textarea {
         width: 350px;
+        &.short {
+            width: 103px;
+        }
+    }
+    select {
+        width: 355px;
     }
     .formRow {
         margin: 15px 0;
@@ -2466,7 +2473,86 @@ a#zenbox_tab {
             margin-top: 0;
         }
         &.last {
-            margin-bottom: 0;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #dbdbdb;
         }
+    }
+    .meta {
+        margin-left: 205px;
+        font-size: 10px;
+        margin-top: 5px;
+    }
+    .helpBox {
+        float: right;
+        font-size: 11px;
+        &.country {
+            width: 400px;
+            margin-top: -25px;
+        }
+        &.interest {
+            width: 300px;
+            margin-top: -140px;
+        }
+        &.date {
+            width: 455px;
+            margin-top: -40px;
+        }
+    }
+    .as-selections {
+        padding: 0;
+        margin: 0;
+        border-top-width: 1px;
+        border-top-color: #a6a6a6;
+        border-right-color: #b4b4b4;
+        border-bottom-color: #b7b7b7;
+        border-left-color: #b1b1b1;
+        width: 354px;
+        display: inline-block;
+        vertical-align: middle;
+        box-shadow: -1px 1px 1px -1px #b3b3b3 inset;
+        li.as-original input  {
+            width: 350px;
+            height: auto;
+        }
+    }
+    .as-results {
+        margin-left: 205px;
+    }
+    ul.as-list {
+        height: 300px;
+        overflow-y: scroll;
+    }
+    fieldset.comboselect {
+        border: 0;
+        display: block;
+        padding: 0;
+    }
+    fieldset.comboselect fieldset {
+        border: 0;
+        width: 8%;
+        height: 150px;
+        padding: 10px;
+        margin-top: 15px;
+        float: left;
+        input {
+            display: block;
+            width: 30px;
+            margin: 0 auto 5px;
+        }
+    }
+    fieldset.comboselect select {
+        height: 150px;
+        float: left;
+        * {
+            display: block;
+            float: left;
+            width: 40%;
+        }
+    }
+    .sectionHeader {
+        color: #767676;
+        font-weight: bold;
+        border-bottom: 1px solid #dbdbdb;
+        display: block;
     }
 }
