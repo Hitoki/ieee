@@ -19,7 +19,7 @@ class DebugSendEmailForm(forms.Form):
 
 
 class ConferenceApplicationForm(forms.ModelForm):
-    keywords_in = forms.CharField(label="Keywords:", required=False)
+    keywords_in = forms.CharField(label="Keywords:*", required=False)
     keywords_out = forms.CharField(required=False, widget=forms.HiddenInput())
 
     class Meta:
