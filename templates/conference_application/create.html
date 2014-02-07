@@ -1,4 +1,4 @@
-{% extends "base_table.html" %}
+{% extends "base_dummy.html" %}
 {% load url from future %}
 
 {% block extra_head %}
@@ -27,11 +27,9 @@
 
 {% block main_table_content %}
 <div class="conf_app">
-    <a href="{% url 'conference_applications' %}">Go to listing</a><br/>
-    <h1>Create new conference application</h1>
     <form id="conf_app_create_form" method="post">{% csrf_token %}
         <div class="sectionHeader">Name and Scope</div>
-        <p>
+        <p class="headerText">
             When naming your conference the year must be included as the first item in the name, followed by IEEE, if applicable, and then by the specific conference name. The conference acronym should always be listed in parentheses as the final item after the conference name. For example: 2011 IEEE Radio and Wireless Symposium (RWS).
         </p>
         <div class="formRow first">
@@ -62,10 +60,10 @@
             </div>
         </div>
         <div class="formRow">
-            <label>Start date:*</label>
-            <input type="text" class="short" disabled="disabled"/>
-            <label class="short">End date:*</label>
-            <input type="text" class="short" disabled="disabled"/>
+            <label>Start date:<span class="required"><span class="required">*</span></span></label>
+            <input type="text" class="short" disabled="disabled"/> <img src="/media/images/cal_dummy.png"/>
+            <label class="short">End date:<span class="required">*</span></label>
+            <input type="text" class="short" disabled="disabled"/> <img src="/media/images/cal_dummy.png"/>
         </div>
         <div class="formRow">
             {{ form.keywords_in.label_tag }}
@@ -78,7 +76,7 @@
             </div>
         </div>
         <div class="formRow">
-            <label>Scope:*</label>
+            <label>Scope:<span class="required">*</span></label>
             <textarea disabled="disabled"></textarea>
             <div class="meta">
                 (1000 characters left)
@@ -89,13 +87,13 @@
         </div>
         <div class="formRow">
             <label>Field of interest</label>
-            <fieldset class="comboselect"><select disabled="disabled" id="field_of_interest_left" name="field_of_interest_left" class="csleft" multiple="multiple"><option value="1">Aerospace</option><option value="2">Bioengineering</option><option value="3">Communication, Networking and Broadcast Technologies</option><option value="4">Components, Circuits, Devices and Systems</option><option value="5">Computing and Processing</option><option value="6">Engineered Materials, Dielectrics and Plasmas</option><option value="7">Engineering Profession</option><option value="8">Fields, Waves and Electromagnetics</option><option value="9">General Topics for Engineers</option><option value="10">Geoscience</option><option value="11">Nuclear Engineering</option><option value="12">Photonics and Electrooptics</option><option value="13">Power, Energy and Industry Applications</option><option value="14">Robotics and Control Systems</option><option value="15">Signal Processing and Analysis</option><option value="16">Transportation</option></select><fieldset><input type="button" class="csadd" value="+"><input type="button" class="csremove" value="-"></fieldset><select id="field_of_interest_right" disabled="disabled" name="field_of_interest_right" class="csright" multiple="multiple" style=""></select></fieldset>
+            <fieldset class="comboselect"><select disabled="disabled" id="field_of_interest_left" name="field_of_interest_left" class="csleft" multiple="multiple"><option value="1">Aerospace</option><option value="2">Bioengineering</option><option value="3">Communication, Networking and Broadcast Technologies</option><option value="4">Components, Circuits, Devices and Systems</option><option value="5">Computing and Processing</option><option value="6">Engineered Materials, Dielectrics and Plasmas</option><option value="7">Engineering Profession</option><option value="8">Fields, Waves and Electromagnetics</option><option value="9">General Topics for Engineers</option><option value="10">Geoscience</option><option value="11">Nuclear Engineering</option><option value="12">Photonics and Electrooptics</option><option value="13">Power, Energy and Industry Applications</option><option value="14">Robotics and Control Systems</option><option value="15">Signal Processing and Analysis</option><option value="16">Transportation</option></select><fieldset><input type="button" class="csadd" value="+" disabled="disabled"><input type="button" class="csremove" value="-" disabled="disabled"></fieldset><select id="field_of_interest_right" disabled="disabled" name="field_of_interest_right" class="csright" multiple="multiple" style=""></select></fieldset>
             <div class="helpBox interest">
                 Press Ctrl + to select and move more than one item to the right column. Press Ctrl - to remove items.
             </div>
         </div>
         <div class="formRow">
-            <label>Estimated attendance:*</label>
+            <label>Estimated attendance:<span class="required">*</span></label>
             <input type="text" class="short" disabled="disabled"/>
         </div>
         <div class="formRow">
@@ -108,22 +106,21 @@
         </div>
         <div class="sectionHeader">Conference Location</div>
         <div class="formRow">
-            <label>Country:*</label>
-            <select disabled="disabled">
+            <label>Country:<span class="required">*</span></label>
+            <select disabled="disabled" class="location">
                 <option></option>
             </select>
         </div>
          <div class="formRow last">
             <label>City:</label>
-            <select disabled="disabled">
-                <option></option>
-            </select>
+            <input type="text" disabled="disabled" class="location"/>
             <div class="helpBox country">
                 If this is a virtual conference, enter the location of the IEEE operations center.
             </div>
         </div>
 
         {{ form.keywords_out }}  {# just hidden field #}
+        <img src="/media/images/button_dummy.png"/>
         <input type="submit" value="Create!">
     </form>
 </div>

@@ -2444,10 +2444,45 @@ a#zenbox_tab {
 }
 
 /* Conference Application */
+.dummy_base {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    background: url(/media/images/back_dummy.jpg) repeat-x scroll 0 0 #E5E3E4;
+    #inner-container {
+        background-color: transparent;
+    }
+    #inner-container .center-pad {
+        width: 1006px;
+        box-sizing: border-box;
+        padding: 0 17px;
+    }
+    .header {
+        width: 1006px;
+        margin: 0 auto;
+        display: block;
+    }
+    footer {
+        margin: 0;
+        background-color: transparent;
+    }
+    #main {
+        padding-bottom: 0;
+    }
+    input[type=button] {
+        background-color: #CFCFCF;
+        color: #333;
+    }
+}
+
 .conf_app {
-    padding: 0 0 20px;
+    padding: 10px 20px 20px;
     display: inline-block;
     width: 100%;
+    border: 1px solid #CCCCCC;
+    border-top: 0 none;
+    border-bottom: 0 none;
+    border-right-width: 2px;
+    box-sizing: border-box;
     label {
         width: 200px;
         display: inline-block;
@@ -2461,8 +2496,16 @@ a#zenbox_tab {
     input[type="text"], textarea {
         width: 350px;
         &.short {
-            width: 103px;
+            width: 85px;
         }
+    }
+    input[type="submit"] {
+        float: right;
+        color: #333;
+        font-weight: bold;
+        font-size: 11px;
+        border: 0 none !important;
+        background: url(/media/images/submit_dummy.png) repeat-x scroll 0 0 #E5E3E4;
     }
     select {
         width: 355px;
@@ -2477,10 +2520,19 @@ a#zenbox_tab {
             border-bottom: 1px solid #dbdbdb;
         }
     }
+    input.location {
+        width: 150px;
+    }
+    select.location {
+        width: 155px;
+    }
     .meta {
-        margin-left: 205px;
+        margin-left: 203px;
         font-size: 10px;
-        margin-top: 5px;
+        margin-top: 7px;
+    }
+    .headerText {
+        font-size: 11px;
     }
     .helpBox {
         float: right;
@@ -2494,8 +2546,8 @@ a#zenbox_tab {
             margin-top: -140px;
         }
         &.date {
-            width: 455px;
-            margin-top: -40px;
+            width: 355px;
+            margin-top: -55px;
         }
     }
     .as-selections {
@@ -2543,6 +2595,8 @@ a#zenbox_tab {
     fieldset.comboselect select {
         height: 150px;
         float: left;
+        width: 28%;
+        font-size: 11px;
         * {
             display: block;
             float: left;
@@ -2554,5 +2608,7 @@ a#zenbox_tab {
         font-weight: bold;
         border-bottom: 1px solid #dbdbdb;
         display: block;
+        font-size: 14px;
+        padding-bottom: 10px;
     }
 }
