@@ -2442,3 +2442,31 @@ a#zenbox_tab {
 .joyride-close-tip {
     font-size: 14px;
 }
+
+/* Conference Application */
+.conf_app {
+    padding: 0 0 20px;
+    display: inline-block;
+    width: 100%;
+    label {
+        width: 200px;
+        display: inline-block;
+        font-weight: bold;
+        &.short {
+            width: auto;
+            margin: 0 25px;
+        }
+    }
+    input[type="text"], select, textarea {
+        width: 350px;
+    }
+    .formRow {
+        margin: 15px 0;
+        &.first {
+            margin-top: 0;
+        }
+        &.last {
+            margin-bottom: 0;
+        }
+    }
+}

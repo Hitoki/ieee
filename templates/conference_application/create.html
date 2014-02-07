@@ -26,16 +26,38 @@
 {% endblock %}
 
 {% block main_table_content %}
-    <div style="padding: 20px;">
-        <div style="margin: 5px;">
-            <a href="{% url 'conference_applications' %}">Go to listing</a>
-        </div>
-        <div style="margin: 5px;">
-            <b>Create new conference application</b>:
-        </div>
-        <form id="conf_app_create_form" method="post">{% csrf_token %}
+<div class="conf_app">
+    <a href="{% url 'conference_applications' %}">Go to listing</a><br/>
+    <h1>Create new conference application</h1>
+    <form id="conf_app_create_form" method="post">{% csrf_token %}
+        <div class="formRow first">
             {{ form.as_p }}
-            <input type="submit" value="Create!">
-        </form>
-    </div>
+        </div>
+        <div class="formRow">
+            <label>Conference acronym:</label>
+            <input type="text" disabled="disabled"/>
+        </div>
+        <div class="formRow">
+            <label>Event type:</label>
+            <select disabled="disabled">
+                <option>Conference</option>
+            </select>
+        </div>
+        <div class="formRow">
+            <label>Conference URL:</label>
+            <input type="text" disabled="disabled"/>
+        </div>
+        <div class="formRow">
+            <label>Start date:*</label>
+            <input type="text" disabled="disabled"/>
+            <label class="short">End date:*</label>
+            <input type="text" disabled="disabled"/>
+        </div>
+        <div class="formRow last">
+            <label>Scope:*</label>
+            <textarea disabled="disabled"></textarea>
+        </div>
+        <input type="submit" value="Create!">
+    </form>
+</div>
 {% endblock %}
