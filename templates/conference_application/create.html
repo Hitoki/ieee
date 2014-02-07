@@ -28,6 +28,9 @@
 {% block main_table_content %}
     <div style="padding: 20px;">
         <div style="margin: 5px;">
+            <a href="{% url 'conference_applications' %}">Go to listing</a>
+        </div>
+        <div style="margin: 5px;">
             <b>Create new conference application</b>:
         </div>
         <form id="conf_app_create_form" method="post">{% csrf_token %}

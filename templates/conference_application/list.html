@@ -20,7 +20,9 @@
             <li>{{ item.name }}
                 {% if item.keywords.all %}
                     ({% for keyword in item.keywords.all %}
-                        <a href="{% url 'debug_conf_apps_by_keyword' keyword.name %}">{{ keyword.name }}</a>{% if not forloop.last %},{% endif %}
+                        <a {% if keyword.tag %}style="color: blue;"{% else %}{# ... #}{% endif %}  {# todo: make special css-class for this #}
+                           href="{% url 'debug_conf_apps_by_keyword' keyword.name %}">
+                            {{ keyword.name }}</a>{% if not forloop.last %},{% endif %}
                     {% endfor %})
                 {% endif %}
             </li>
