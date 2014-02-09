@@ -5,7 +5,13 @@
     <script type="text/javascript">
 
     $(function() {
-        $("input#id_keywords_in").autoSuggest("{% url 'ajax_nodes_keywords' %}");
+        $("input#id_keywords_in").autoSuggest(
+            "{% url 'ajax_nodes_keywords' %}", {
+            startText: '',
+            start: function() {
+                $(this).attr('placeholder', 'Start typing for suggestions')
+            }
+        });
         $("#conf_app_create_form").on("submit", function () {
             var keywords_out_values = [];
             $('.as-selection-item').each(function () {
