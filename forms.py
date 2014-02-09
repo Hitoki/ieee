@@ -1,5 +1,6 @@
 from django import forms
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.safestring import mark_safe
 from models.node import Node
 from models.conference_application import ConferenceApplication, TagKeyword
 
@@ -19,7 +20,7 @@ class DebugSendEmailForm(forms.Form):
 
 
 class ConferenceApplicationForm(forms.ModelForm):
-    keywords_in = forms.CharField(label="Keywords:*", required=False)
+    keywords_in = forms.CharField(label=mark_safe('Keywords:<span class="required">*</span>'), required=False)
     keywords_out = forms.CharField(required=False, widget=forms.HiddenInput())
 
     class Meta:

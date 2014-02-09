@@ -33,7 +33,7 @@
             When naming your conference the year must be included as the first item in the name, followed by IEEE, if applicable, and then by the specific conference name. The conference acronym should always be listed in parentheses as the final item after the conference name. For example: 2011 IEEE Radio and Wireless Symposium (RWS).
         </p>
         <div class="formRow first">
-            {{ form.name.label_tag }}
+            <label for="id_name">Conference name:<span class="required">*</span></label>
             {{ form.name }}
             <div class="meta">
                 (200 characters left)
@@ -60,7 +60,7 @@
             </div>
         </div>
         <div class="formRow">
-            <label>Start date:<span class="required"><span class="required">*</span></span></label>
+            <label>Start date:<span class="required">*</span></label>
             <input type="text" class="short" disabled="disabled"/> <img src="/media/images/cal_dummy.png"/>
             <label class="short">End date:<span class="required">*</span></label>
             <input type="text" class="short" disabled="disabled"/> <img src="/media/images/cal_dummy.png"/>
