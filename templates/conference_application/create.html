@@ -8,6 +8,7 @@
         $("input#id_keywords_in").autoSuggest(
             "{% url 'ajax_nodes_keywords' %}", {
             startText: '',
+            emptyText: 'No suggestions',
             start: function() {
                 $(this).attr('placeholder', 'Start typing for suggestions')
             }
@@ -75,7 +76,7 @@
             {{ form.keywords_in.label_tag }}
             {{ form.keywords_in }}
             <div class="meta">
-                (500 characters left)
+                (Separate entries with commas)
             </div>
             <div class="helpBox date">
                 IEEE uses the important words from the conference name, including the conference acronym as the keywords. Enter other keywords that would help people search for the conference. Separate each word or phrase by a comma.
