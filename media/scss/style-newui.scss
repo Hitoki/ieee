@@ -2553,21 +2553,43 @@ a#zenbox_tab {
             margin-top: -55px;
         }
     }
-    .as-selections {
-        padding: 0;
+    ul.as-selections {
         margin: 0;
         border-top-width: 1px;
         border-top-color: #a6a6a6;
         border-right-color: #b4b4b4;
         border-bottom-color: #b7b7b7;
         border-left-color: #b1b1b1;
-        width: 354px;
+        width: 350px;
         display: inline-block;
         vertical-align: middle;
         box-shadow: -1px 1px 1px -1px #b3b3b3 inset;
+        a.as-close:hover {
+            color: red !important;
+            text-decoration: none;
+        }
         li.as-original input  {
-            width: 350px;
+            width: 342px;
             height: auto;
+        }
+        li.as-selection-item {
+            cursor: pointer;
+            &.hover,
+            &:hover,
+            &.blur,
+            &.selected {
+                color: #2b3840;
+                background-color: #ddeefe;
+                background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ddeefe), to(#bfe0f1));
+                border: 1px solid #acc3ec;
+                border-top-color: #c0d9e9;
+                box-shadow: 0 1px 1px #e4edf2;
+                -webkit-box-shadow: 0 1px 1px #e4edf2;
+                -moz-box-shadow: 0 1px 1px #e4edf2;
+                a.as-close {
+                    color: #5491be;
+                }
+            }
         }
     }
     .as-results {
