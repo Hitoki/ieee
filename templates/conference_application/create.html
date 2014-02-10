@@ -14,8 +14,10 @@
             }
         });
         $("input[name=keywords_in]").on("blur", function () {
-            var e = $.Event("keydown", { keyCode: 188});
-            $(this).trigger(e);
+            setTimeout(function () {
+                var e = $.Event("keydown", { keyCode: 188});
+                $("input[name=keywords_in]").trigger(e);
+            }, 100);
         });
         $("#conf_app_create_form").on("submit", function () {
             var keywords_out_values = [];
