@@ -2564,10 +2564,6 @@ a#zenbox_tab {
         display: inline-block;
         vertical-align: middle;
         box-shadow: -1px 1px 1px -1px #b3b3b3 inset;
-        a.as-close:hover {
-            color: red !important;
-            text-decoration: none;
-        }
         li.as-original input  {
             width: 342px;
             height: auto;
@@ -2588,6 +2584,13 @@ a#zenbox_tab {
                 -moz-box-shadow: 0 1px 1px #e4edf2;
                 a.as-close {
                     color: #5491be;
+                }
+            }
+            &.cancel-hover {
+                border-color: red;
+                a.as-close {
+                    color: red !important;
+                    text-decoration: none;
                 }
             }
         }

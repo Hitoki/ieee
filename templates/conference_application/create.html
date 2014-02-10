@@ -11,6 +11,13 @@
             emptyText: 'No suggestions',
             start: function() {
                 $(this).attr('placeholder', 'Start typing for suggestions')
+            },
+            selectionAdded: function() {
+                $(".as-close").on("mouseover", function() {
+                    $(this).parent().addClass("cancel-hover");
+                }).on("mouseleave", function() {
+                    $(this).parent().removeClass("cancel-hover");
+                })
             }
         });
         $("input[name=keywords_in]").on("blur", function () {
