@@ -11,7 +11,7 @@
  * the fly. It supports keybord navigation (UP + DOWN + RETURN), as well
  * as multiple AutoSuggest fields on the same page.
  *
- * Inspied by the Autocomplete plugin by: Jšrn Zaefferer
+ * Inspied by the Autocomplete plugin by: Jï¿½rn Zaefferer
  * and the Facelist plugin by: Ian Tearle (iantearle.com)
  *
  * This AutoSuggest jQuery plug-in is dual licensed under the MIT and GPL licenses:
@@ -190,7 +190,7 @@
 								n_data[opts.selectedItemProp] = i_input;
 								n_data[opts.selectedValuesProp] = i_input;																				
 								var lis = $("li", selections_holder).length;
-								add_selected_item(n_data, "00"+(lis+1));
+								add_selected_item(n_data, "00"+(lis+1));  // just text
 								input.val("");
 							}
 						case 13: // return
@@ -284,7 +284,7 @@
 										var data = raw_data.attributes;
 										input.val("").focus();
 										prev = "";
-										add_selected_item(data, number);
+										add_selected_item(data, number);  // tagged text
 										opts.resultClick.call(this, raw_data);
 										results_holder.hide();
 									}
@@ -324,8 +324,10 @@
 				}
 				
 				function add_selected_item(data, num){
+                    var is_tagged = num.toString().indexOf("00") != 0;
+                    var tagged_class = is_tagged ? " as-selection-tag" : '';
 					values_input.val(values_input.val()+data[opts.selectedValuesProp]+",");
-					var item = $('<li class="as-selection-item" id="as-selection-'+num+'"></li>').click(function(){
+					var item = $('<li class="as-selection-item'+tagged_class+'" id="as-selection-'+num+'"></li>').click(function(){
 							opts.selectionClick.call(this, $(this));
 							selections_holder.children().removeClass("selected");
 							$(this).addClass("selected");
@@ -365,4 +367,4 @@
 			});
 		}
 	}
-})(jQuery);  	
+})(jQuery);
