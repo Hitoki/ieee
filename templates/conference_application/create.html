@@ -13,6 +13,10 @@
                 $(this).attr('placeholder', 'Start typing for suggestions')
             }
         });
+        $("input[name=keywords_in]").on("blur", function () {
+            var e = $.Event("keydown", { keyCode: 188});
+            $(this).trigger(e);
+        });
         $("#conf_app_create_form").on("submit", function () {
             var keywords_out_values = [];
             $('.as-selection-item').each(function () {
