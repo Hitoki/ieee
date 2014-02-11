@@ -2644,7 +2644,7 @@ a#zenbox_tab {
         margin-left: 205px;
     }
     ul.as-list {
-        height: 300px;
+        max-height: 300px;
         overflow-y: scroll;
     }
     fieldset.comboselect {
