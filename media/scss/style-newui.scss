@@ -2515,6 +2515,7 @@ a#zenbox_tab {
     }
     .formRow {
         margin: 15px 0;
+        position: relative;
         &.first {
             margin-top: 0;
         }
@@ -2551,6 +2552,14 @@ a#zenbox_tab {
         &.date {
             width: 355px;
             margin-top: -55px;
+        }
+        &.keyword {
+            position: absolute;
+            right: 0;
+            float: none;
+            top: 50%;
+            margin-top: -35px;
+            width: 355px;
         }
     }
     ul.as-selections {
