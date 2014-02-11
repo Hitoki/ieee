@@ -2570,28 +2570,40 @@ a#zenbox_tab {
         }
         li.as-selection-item {
             cursor: pointer;
+            color: #2b3840;
+            background-color: darken(#ddeefe, 15%);
+            background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(darken(#ddeefe, 15%)), to(darken(#bfe0f1, 15%)));
+            border: 1px solid darken(#acc3ec, 15%);
+            border-top-color: darken(#c0d9e9, 15%);
+            box-shadow: 0 1px 1px #e4edf2;
+            -webkit-box-shadow: 0 1px 1px #e4edf2;
+            -moz-box-shadow: 0 1px 1px #e4edf2;
             &.hover,
             &:hover,
             &.blur,
             &.selected {
-                color: #2b3840;
-                background-color: #ddeefe;
-                background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ddeefe), to(#bfe0f1));
-                border: 1px solid #acc3ec;
-                border-top-color: #c0d9e9;
-                box-shadow: 0 1px 1px #e4edf2;
-                -webkit-box-shadow: 0 1px 1px #e4edf2;
-                -moz-box-shadow: 0 1px 1px #e4edf2;
+                @extend li.as-selection-item;
                 a.as-close {
                     color: #5491be;
                 }
             }
-            &.cancel-hover {
-                border-color: red;
-                a.as-close {
-                    color: red !important;
-                    text-decoration: none;
-                }
+        }
+        li.as-selection-tag {
+            border: 1px solid #acc3ec;
+            background-color: #ddeefe;
+            background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ddeefe), to(#bfe0f1));
+            &.hover,
+            &:hover,
+            &.blur,
+            &.selected {
+                @extend li.as-selection-tag;
+            }
+        }
+        li.cancel-hover {
+            border-color: red !important;
+            a.as-close {
+                color: red !important;
+                text-decoration: none;
             }
         }
     }
