@@ -20,7 +20,7 @@ class DebugSendEmailForm(forms.Form):
 
 
 class ConferenceApplicationForm(forms.ModelForm):
-    keywords_in = forms.CharField(label=mark_safe('Tags:<span class="required">*</span>'), required=False)
+    keywords_in = forms.CharField(label=mark_safe('Keywords:<span class="required">*</span>'), required=False)
     keywords_out = forms.CharField(required=False, widget=forms.HiddenInput())
 
     class Meta:
