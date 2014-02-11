@@ -39,7 +39,14 @@
             }
             // generating valid keywords result string for the backend
             $("input[name=keywords_out]").val(keywords_out_values.join("|"));
-        })
+        });
+        // prevents pressing enter from submitting form
+        $(window).keydown(function(event){
+            if(event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
     });
 
     </script>
