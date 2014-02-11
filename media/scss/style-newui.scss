@@ -2530,10 +2530,34 @@ a#zenbox_tab {
     select.location {
         width: 155px;
     }
+    .icon-help {
+        display: inline-block;
+        width: 13px;
+        height: 13px;
+        background-color: #5b7281;
+        border-radius: 12px;
+        color: #FFFFFF;
+        text-align: center;
+        font-style: italic;
+        font-family: serif;
+        vertical-align: text-top;
+        cursor: pointer;
+        &:hover {
+            background-color: $orange;
+        }
+    }
     .meta {
         margin-left: 203px;
         font-size: 10px;
         margin-top: 7px;
+        width: 357px;
+        .powered {
+            float: right;
+            img {
+                vertical-align: text-top;
+                margin-top: -2px;
+            }
+        }
     }
     .headerText {
         font-size: 11px;
