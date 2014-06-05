@@ -275,6 +275,14 @@
                         target="_blank" 
                         onClick="_gaq.push(['_trackEvent', 'Social', 'Email', '{{ tag.name }}']);">
                     </a>
+                    <a 
+                        rel="nofollow" 
+                        href='http://www.linkedin.com/shareArticle?mini=true&url={{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}&title={{ tag.name }}&summary=Check%20out%20the%20topic%20"{{ tag.name }}"%20at%20IEEE%20TechNav%20{{ host_info }}/tag/{{ tag.id }}/{{ tag.name|slugify }}&source={{ host_info }}' 
+                        aria-hidden="true" 
+                        class="icon-linkedin" 
+                        target="_blank" 
+                        onClick="_gaq.push(['_trackEvent', 'Social', 'LinkedIn', '{{ tag.name }}']);">
+                    </a>
                     {% endspaceless %}
                 </div>
                 <div class="printContainer">
