@@ -1916,9 +1916,18 @@ div.group ul li:first-child {
     padding: 10px 10px 10px 32px;
 }
 
-#societySelect_options li {
+.csscolumns #societySelect_options {
+    columns: 4;
+    -webkit-columns: 4;
+    -moz-columns: 4;
+}
+
+.nocsscolumns #societySelect_options li {
     width: 203px;
     display: inline-block;
+}
+
+#societySelect_options li {
     padding-left: 5px;
     text-indent: -4px;
     vertical-align: top;
