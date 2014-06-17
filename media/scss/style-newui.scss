@@ -1102,6 +1102,7 @@ table.vert-center td {
     position:absolute;
     top:0px;
     left:0px;
+    z-index: 99999999;
 }
   
 .browser-warning-shadow {
@@ -1132,6 +1133,7 @@ table.vert-center td {
     height:400px;
     margin-top:15%;
     background-color: white;
+    padding-top: 10px;
 }
   
 .browser-warning-content2 a {
