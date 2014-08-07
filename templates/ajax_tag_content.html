@@ -93,17 +93,17 @@
             <ul class="nootabs-menus">
                 <li id="over-tab"><a href="" rel="nofollow">Overview</a></li>
                 <li id="ieee-societies-tab"><a href="" rel="nofollow">IEEE Orgs <span class="right">{{ societies.count }}</span></a></li>
-                <li id="ieee-authors-tab"><a href="" rel="nofollow">Xplore Authors <span class="right" id="num-authors-results">{{ authors.count }}</span></a></li>
                 <li id="conferences-tab"><a href="" rel="nofollow">Conferences <span class="right">{{conferences|length}}</span></a></li>
-                {#<li id="educations-tab"><a href="" rel="nofollow">Education <span class="right" id="num-education-results"></span></a></li>#}
+                <li id="periodicals-tab"><a href="" rel="nofollow">Periodicals <span class="right">{{periodicals|length}}</span></a></li>
+                <li id="ieee-authors-tab"><a href="" rel="nofollow">Xplore Authors <span class="right" id="num-authors-results">{{ authors.count }}</span></a></li>
                 <li id="articles-tab"><a href="" rel="nofollow">Xplore Articles <span class="right" id="num-xplore-results"></span></a></li>
+                <li id="educations-tab"><a href="" rel="nofollow">Education <span class="right { number: 0 }" id="num-education-total-results"></span></a></li>                
+                {#<li id="educations-tab"><a href="" rel="nofollow">Education <span class="right" id="num-education-results"></span></a></li>#}
+                <li id="standards-tab"><a href="" rel="nofollow">Standards <span class="right">{{standards|length}}</span></a></li>
                 <li id="jobs-tab"><a href="" rel="nofollow">Jobs <span class="right" id="num-job-results"></span></a></li>
                 {% if show_tv %}
                 <li id="tvs-tab"><a href="" rel="nofollow">IEEE.tv <span class="right">{#{{tvCount}}#}0</span></a></li>
                 {% endif %}
-                <li id="periodicals-tab"><a href="" rel="nofollow">Periodicals <span class="right">{{periodicals|length}}</span></a></li>
-                <li id="standards-tab"><a href="" rel="nofollow">Standards <span class="right">{{standards|length}}</span></a></li>
-                <li id="educations-tab"><a href="" rel="nofollow">Education <span class="right { number: 0 }" id="num-education-total-results"></span></a></li>
                 {% comment %}
                 <li id="patents-tab" style="display:none"><a href="" rel="nofollow">Patents <span class="right">{{patents|length}}</span></a></li>
                 <li id="industry-sectors-tab" ><a href="" rel="nofollow">Industry Topics <span class="right">{{ parent_nodes|length }}</span></a></li>
@@ -125,14 +125,29 @@
                 {% include 'ajax_organizations_tab.inc.html' %}
             </div>
 
+<!-- Conferences -->
+            <div id="conference-tab" data-printUrl='{% url print_resource tag.id "conferences" %}'>
+                {% include 'ajax_conferences_tab.inc.html' %}
+            </div>
+
+<!-- Periodicals -->
+            <div id="periodical-tab" data-printUrl='{% url print_resource tag.id "periodicals" %}'>
+                {% include 'ajax_periodical_tab.inc.html' %}
+            </div>
+
 <!-- Authors -->
             <div id="authors-tab" data-printUrl='{% url print_resource tag.id "authors" %}'>
                 {% include 'ajax_authors_tab.inc.html' %}
             </div>
 
-<!-- Conferences -->
-            <div id="conference-tab" data-printUrl='{% url print_resource tag.id "conferences" %}'>
-                {% include 'ajax_conferences_tab.inc.html' %}
+<!-- Xplore Results -->
+            <div id="xplore-tab" data-printUrl='{% url print_resource tag.id "xplore" %}'>
+                {% include 'ajax_xplore_tab.inc.html' %}
+            </div>
+
+<!-- New Education Results -->
+            <div id="education-tab" data-printUrl='{% url print_resource tag.id "xplore_edu" %}'>
+                {% include 'ajax_new_education_tab.inc.html' %}
             </div>
 
 <!-- Xplore Education Results -->
@@ -142,10 +157,11 @@
             </div>
             {% endcomment %}
 
-<!-- Xplore Results -->
-            <div id="xplore-tab" data-printUrl='{% url print_resource tag.id "xplore" %}'>
-                {% include 'ajax_xplore_tab.inc.html' %}
+<!-- Standards -->
+            <div id="standard-tab" data-printUrl='{% url print_resource tag.id "standards" %}'>
+                {% include 'ajax_standard_tab.inc.html' %}
             </div>
+
                 
 <!-- Jobs -->
             <div id="job-tab" data-printUrl='{% url print_resource tag.id "jobs" %}'>
@@ -162,27 +178,12 @@
                 {% include 'ajax_tv_tab.inc.html' %}
             </div>
 {% endif %}
+
 {% comment %}
 <!-- Patents -->
                 {% include 'ajax_patents_tab.inc.html' %}
 {% endcomment %}              
 
-<!-- Periodicals -->
-            <div id="periodical-tab" data-printUrl='{% url print_resource tag.id "periodicals" %}'>
-                {% include 'ajax_periodical_tab.inc.html' %}
-            </div>
-
-<!-- Standards -->
-            <div id="standard-tab" data-printUrl='{% url print_resource tag.id "standards" %}'>
-                {% include 'ajax_standard_tab.inc.html' %}
-            </div>
-
-<!-- New Education Results -->
-            <div id="education-tab" data-printUrl='{% url print_resource tag.id "xplore_edu" %}'>
-                {% include 'ajax_new_education_tab.inc.html' %}
-            </div>
-
-                
 <!-- Disabled Items -->                       
                 {% comment %}
                 <!-- Sectors / Clusters -->
