@@ -529,7 +529,7 @@ ResourceLoader.prototype.loadContent = function(force) {
             };
         }
         
-        this.loadingElem = $('<div id="xplore-loading" class="loading">Loading Xplore articles...<div></div></div>').appendTo(this.scrollElem);
+        this.loadingElem = $('<div id="xplore-loading" class="loading">Loading ...<div></div></div>').appendTo(this.scrollElem);
         
         $("#xplore-loading div").spin({
             lines: 9, // The number of lines to draw
