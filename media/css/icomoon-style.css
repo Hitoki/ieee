@@ -1,15 +1,15 @@
 @font-face {
 	font-family: 'icomoon';
-	src:url('../fonts/icomoon.eot');
-	src:url('../fonts/icomoon.eot?#iefix') format('embedded-opentype'),
-		url('../fonts/icomoon.woff') format('woff'),
-		url('../fonts/icomoon.ttf') format('truetype'),
-		url('../fonts/icomoon.svg#icomoon') format('svg');
+	src:url('../fonts/icomoon.eot?hh5ek2');
+	src:url('../fonts/icomoon.eot?#iefixhh5ek2') format('embedded-opentype'),
+		url('../fonts/icomoon.woff?hh5ek2') format('woff'),
+		url('../fonts/icomoon.ttf?hh5ek2') format('truetype'),
+		url('../fonts/icomoon.svg?hh5ek2#icomoon') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
 
-[class^="icon-"], [class*=" icon-"] {
+[class^="icon-"], [class*=" icon-"], .popup, .drive {
 	font-family: 'icomoon';
 	speak: none;
 	font-style: normal;
@@ -23,11 +23,11 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.icon-linkedin:before {
-	content: "\e600";
-}
 .icon-tab:before {
 	content: "\e000";
+}
+.popup:before {
+	content: "\e001";
 }
 .icon-drop-arrow:before {
 	content: "\e005";
@@ -62,6 +62,6 @@
 .icon-tag:before {
 	content: "\e017";
 }
-.popup:before {
-	content: "\e001";
+.icon-linkedin:before {
+	content: "\e600";
 }
