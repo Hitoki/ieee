@@ -180,6 +180,10 @@ class Resource(models.Model):
     'All conferences with the same "conference_series" are grouped together ' \
     'as a series.'
     date = models.DateField(null=True, blank=True)
+    date_end = models.DateField(null=True, blank=True)
+    city = models.CharField(max_length=50, blank=True, null=True)
+    state_province = models.CharField(max_length=50, blank=True, null=True)
+    country = models.CharField(max_length=50, blank=True, null=True)
     pub_id = models.CharField(max_length=1000, blank=True)
     'Used for Conferences and Standards (optional).  ' \
     'Matches IEEE Xpore PubID field for matching resources during xplore import.'

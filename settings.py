@@ -337,6 +337,11 @@ if not hasattr(logging, "is_setup"):
         file_logger.setFormatter(logging.Formatter('%(asctime)s: %(levelname)s: %(message)s'))
         logging.getLogger().addHandler(file_logger)
     
+        process_conf_diff_logger = logging.FileHandler(PROCESS_CONF_DIFF_LOG)
+        process_conf_diff_logger.setLevel(logging.DEBUG)
+        process_conf_diff_logger.setFormatter(logging.Formatter('%(asctime)s: %(levelname)s: %(message)s'))
+        logging.getLogger('process_conf_diff').addHandler(process_conf_diff_logger)
+
     logging.is_setup = True
 
 if ENABLE_DEBUG_TOOLBAR:
