@@ -33,6 +33,7 @@ class Command(BaseCommand):
         UPDATED_COUNT = 0
         UPDATED_MARKED_NEW_COUNT = 0
         DELETED_COUNT = 0
+        DELETED_MISSING_COUNT = 0
 
         with open(args[0], 'r') as f:
             csv_reader = csv.reader(f)
@@ -84,13 +85,16 @@ class Command(BaseCommand):
                     conf.save()
 
                 elif row[0] == 'Deleted':
-                    conf = Resource.objects.get(
-                        ieee_id=ieee_id,
-                        resource_type=ResourceType.objects.getFromName(ResourceType.CONFERENCE)
-                    )
-                    conf.delete()
-                    logger.info('Conference deleted.')
-                    DELETED_COUNT = DELETED_COUNT + 1
+                    try:
+                        conf = Resource.objects.get(
+                            ieee_id=ieee_id,
+                            resource_type=ResourceType.objects.getFromName(ResourceType.CONFERENCE)
+                        )
+                        conf.delete()
+                        logger.info('Conference deleted.')
+                        DELETED_COUNT = DELETED_COUNT + 1
+                    except Resource.DoesNotExist:
+                        DELETED_MISSING_COUNT = DELETED_MISSING_COUNT  + 1
                 else:
                     logger.warn("Undetermined action: line does not start with 'conference, 'Updated', nor 'Deleted'. Rows starts with: %s" % row[0])
 
@@ -100,5 +104,6 @@ class Command(BaseCommand):
             logger.info("UPDATED COUNT: %d" % UPDATED_COUNT)
             logger.info("UPDATED COUNT (MARKED NEW): %d" % UPDATED_MARKED_NEW_COUNT)
             logger.info("DELETED COUNT: %d" % DELETED_COUNT)
+            logger.info("DELETED COUNT (MISSING): %d" % DELETED_MISSING_COUNT)
             logger.info("")
 
