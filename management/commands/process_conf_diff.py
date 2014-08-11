@@ -92,7 +92,7 @@ class Command(BaseCommand):
                     logger.info('Conference deleted.')
                     DELETED_COUNT = DELETED_COUNT + 1
                 else:
-                    logger.warn("Undetermined action: line does not start with 'conference, 'Updated', nor 'Deleted'")
+                    logger.warn("Undetermined action: line does not start with 'conference, 'Updated', nor 'Deleted'. Rows starts with: %s" % row[0])
 
             logger.info("Processing complete.")
             logger.info("NEW COUNT: %d" % NEW_COUNT)
