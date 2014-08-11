@@ -3,7 +3,6 @@ from datetime import datetime
 from django.core.management.base import BaseCommand
 from django.core.mail import EmailMultiAlternatives
 from django.template import Context, loader
-from html2text import html2text
 from django.contrib.sites.models import Site
 
 from models.notification import ResourceAdditionNotificationRequest, \
@@ -42,13 +41,13 @@ class Command(BaseCommand):
                 lineno = lineno + 1
                 ieee_id = row[1]
                 logger.info("Found ieee_id: %s" % ieee_id)
-                if row[0] == 'conference' or row[0] == 'Updated':
+                if row[0].startswith('conference') or row[0].startswith('Updated'):
                     try:
                         conf = Resource.objects.get(
                             ieee_id=ieee_id,
                             resource_type=ResourceType.objects.getFromName(ResourceType.CONFERENCE)
                         )
-                        if row[0] == 'conference':
+                        if row[0].startswith('conference'):
                             logger.warn('Marked new but existing record found. Updating existing record.')
                             UPDATED_MARKED_NEW_COUNT = UPDATED_MARKED_NEW_COUNT + 1
                         else:
@@ -57,7 +56,7 @@ class Command(BaseCommand):
                         conf = Resource()
                         conf.resource_type = ResourceType.objects.getFromName(ResourceType.CONFERENCE)
                         conf.ieee_id = ieee_id
-                        if row[0] == 'Updated':
+                        if row[0].startswith('Updated'):
                             logger.warn('Marked updated but no existing record found. Creating new record.')
                             NEW_MARKED_OLD_COUNT = NEW_MARKED_OLD_COUNT + 1
                         else:
