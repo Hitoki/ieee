@@ -84,7 +84,7 @@ class Command(BaseCommand):
 
                     conf.save()
 
-                elif row[0] == 'Deleted':
+                elif row[0].startswith('Deleted'):
                     try:
                         conf = Resource.objects.get(
                             ieee_id=ieee_id,
