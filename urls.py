@@ -91,6 +91,17 @@ else:
         # Media
         url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
         
+        # Faux page for demo
+        (r'^scss/$', direct_to_template, {'template': 'scss.html'}),
+    )
+
+if settings.DEBUG:
+    # Test views.views
+    urlpatterns += patterns('',
+        url(r'^test/error$', views.test_error, name='test_error'),
+        url(r'^test/lightbox_error$', views.test_lightbox_error, name='test_lightbox_error'),
+        url(r'^test/browsers$', views.test_browsers, name='test_browsers'),
+
         # Debug
         url(r'^debug/error$',
             views.debug_error,
@@ -116,14 +127,4 @@ else:
             ConferenceApplicationCreateView.as_view(),
             name='create_conference_application'),
 
-        # Faux page for demo
-        (r'^scss/$', direct_to_template, {'template': 'scss.html'}),
-    )
-
-if settings.DEBUG:
-    # Test views.views
-    urlpatterns += patterns('',
-        url(r'^test/error$', views.test_error, name='test_error'),
-        url(r'^test/lightbox_error$', views.test_lightbox_error, name='test_lightbox_error'),
-        url(r'^test/browsers$', views.test_browsers, name='test_browsers'),
     )
