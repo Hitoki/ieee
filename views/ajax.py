@@ -1437,6 +1437,8 @@ def ajax_account(request, account_step):
         return render(request, 'account_lightbox_signin.html')
     elif step == 'register':
         return render(request, 'account_lightbox_register.html')
+    elif step == 'youraccount':
+        return render(request, 'account_lightbox_youraccount.html')
 
 def ajax_video(request):
     'Returns the HTML content for the flash video.'
