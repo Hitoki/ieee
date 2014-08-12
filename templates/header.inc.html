@@ -1,14 +1,24 @@
 {% load humanize %}
 <div id="header">
-    <span id="header-links">
+    <div id="header-links">
         <a href="http://ieee.org" rel="nofollow" style="float:right"><span class="sm-logo"></span></a>
         {% comment %}<span id="tagline">Connecting You to the IEEE Universe of Information</span>{% endcomment %}
-        <span class="header-btns">
-            {% if user.is_superuser %}<a href="{% url admin_home %}" class="btn admin" rel="nofollow">Admin</a>{% endif %} 
+        <div class="header-btns">
             {% comment %}<a href="http://www.ieee.org/membership_services/membership/join/index.html?WT.mc_id=u_join" class="btn join" target="_self" rel="nofollow">Join IEEE!</a>{% endcomment %}
+            {% if user.is_authenticated %}
+            <div class="userMenu">
+                <span aria-hidden="true" class="icon-drop-arrow icomoon-icon"></span>{{ user.email }}
+                <ul>
+                    <li><span aria-hidden="true" class="icon-drop-arrow icomoon-icon"></span>{{ user.email }}</li>
+                    {% if user.is_superuser %}<li><a href="{% url admin_home %}" rel="nofollow">Admin</a></li>{% endif %}
+                    <li><a href="#">Your Account</a></li>
+                    <li><a href="#">Sign Out</a></li>
+                </ul>
+            </div>
+            {% endif %}
             {% if not tag %}<a href="javascript:void(0)" class="btn startTour" rel="nofollow" style="display:none">Tour</a><a href="http://help.technav.systemicist.com/forums" target="_blank" class="btn startTour" rel="nofollow" style="display:none; border-color: #ffa500; background-color: #ffa500">Help</a>{% endif %}
-        </span>
-    </span>
+        </div>
+    </div>
     <div id="header-logo">
         <a href="{{ LOGO_HREF }}" class="home" rel="nofollow"><span class="technav_banner"></span></a>
         <a href="/tags/all" id="totalTagLink">We cover <span id="totalTagCount">{{ total_tag_count|intcomma  }}</span> topics {% if tag %}besides {{ tag.name }}{% endif %}</a> &nbsp;&nbsp;

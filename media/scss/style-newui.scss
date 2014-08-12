@@ -137,6 +137,34 @@ table.main {
     }
 } 
 
+.userMenu {
+    position: relative;
+    margin-bottom: 5px;
+    &:hover {
+        ul {
+            display: block;
+        }
+    }
+    ul {
+        line-height: 1.5;
+        position: absolute;
+        top: -7px;
+        right: -11px;
+        background-color: #FFF;
+        border: 1px solid #069;
+        padding: 5px 10px;
+        z-index: 9999;
+        border-radius: 5px;
+        display: none;
+    }
+    li {
+        &:first-child {
+            margin-bottom: 5px;
+        }
+        list-style-type: none;
+    }
+}
+
 ul#societies, ul#sectors {
     a {
         &.active-society,
@@ -2063,6 +2091,9 @@ width: 165px;
             margin-left: 4px;
         }
     }
+    .icon-drop-arrow {
+        float: right;
+    }
 }
   
 .customSelectList {
@@ -2122,10 +2153,6 @@ float: left;
 -moz-border-radius-bottomright: 0px !important;
 -webkit-border-bottom-left-radius: 0px !important;  
 -webkit-border-bottom-right-radius: 0px !important;  
-}
-  
-.icon-drop-arrow {
-float: right;
 }
   
 #page-container {
