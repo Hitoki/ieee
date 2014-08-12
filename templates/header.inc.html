@@ -12,9 +12,11 @@
                     <li><span aria-hidden="true" class="icon-drop-arrow icomoon-icon"></span>{{ user.email }}</li>
                     {% if user.is_superuser %}<li><a href="{% url admin_home %}" rel="nofollow">Admin</a></li>{% endif %}
                     <li><a href="#">Your Account</a></li>
-                    <li><a href="#">Sign Out</a></li>
+                    <li><a href="#">Log Out</a></li>
                 </ul>
             </div>
+            {% else %}
+            <div><a href="" class="btn account" rel="nofollow">Sign In</a><a href="" class="btn account" rel="nofollow">Register</a></div>
             {% endif %}
             {% if not tag %}<a href="javascript:void(0)" class="btn startTour" rel="nofollow" style="display:none">Tour</a><a href="http://help.technav.systemicist.com/forums" target="_blank" class="btn startTour" rel="nofollow" style="display:none; border-color: #ffa500; background-color: #ffa500">Help</a>{% endif %}
         </div>

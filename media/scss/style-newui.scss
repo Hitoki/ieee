@@ -97,24 +97,25 @@ table.main {
     margin: 8px 0 0 0;
     text-align: right;
     float: right;
+    div {
+        margin-bottom: 5px;
+    }
     .btn {
         border: 1px solid transparent;
         color: $white;
         display: inline-block;
         font-size: 8pt;
-        margin: 0;
+        margin: 0 0 0 5px;
         padding: 1px 8px;
         &:hover {
             text-decoration: none;
             background-color: $white;
         }
     }
-
     .btn.startTour,
     .btn.help {
         background: $green;
         border: 1px solid $green;
-        margin-left: 5px;
         &:hover {
             color: $green;
             background: none repeat scroll 0 0 $white;
@@ -131,8 +132,16 @@ table.main {
         background: $red;
         border: 1px solid $red;
         &:hover {
-            color: #ff3f3f;
-            background: none repeat scroll 0 0 $white;
+            color: $red;
+            background: $white;
+        }
+    }
+    .btn.account {
+        background: $secondaryColor;
+        border: 1px solid $secondaryColor;
+        &:hover {
+            color: $secondaryColor;
+            background: $white;
         }
     }
 } 
@@ -140,6 +149,7 @@ table.main {
 .userMenu {
     position: relative;
     margin-bottom: 5px;
+    color: $primaryColor;
     &:hover {
         ul {
             display: block;
@@ -162,6 +172,10 @@ table.main {
             margin-bottom: 5px;
         }
         list-style-type: none;
+    }
+    .icon-drop-arrow {
+        margin-right: 3px;
+        font-size: 11px;
     }
 }
 
