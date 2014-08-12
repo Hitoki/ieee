@@ -1430,6 +1430,14 @@ def tooltip(request, tag_id=None):
         assert False
 
 
+def ajax_account(request, account_step):
+    'Returns the HTML content for account lightboxs.'
+    step = account_step
+    if step == 'signin':
+        return render(request, 'account_lightbox_signin.html')
+    elif step == 'register':
+        return render(request, 'account_lightbox_register.html')
+
 def ajax_video(request):
     'Returns the HTML content for the flash video.'
     return render(request, 'ajax_video.html')

@@ -8,7 +8,7 @@
             {% if user.is_authenticated %}
             <div class="userMenu">
                 <span aria-hidden="true" class="icon-drop-arrow icomoon-icon"></span>{{ user.email }}
-                <ul>
+                <ul> 
                     <li><span aria-hidden="true" class="icon-drop-arrow icomoon-icon"></span>{{ user.email }}</li>
                     {% if user.is_superuser %}<li><a href="{% url admin_home %}" rel="nofollow">Admin</a></li>{% endif %}
                     <li><a href="#">Your Account</a></li>
@@ -16,7 +16,10 @@
                 </ul>
             </div>
             {% else %}
-            <div><span class="openSignIn btn account">Sign In</span><span class="openRegister btn account">Register</span></div>
+            <div><span class="btn account"><a href="/ajax/account/signin" class="lightbox {customClass: 'overview-video'}">Sign In</a></span><span class="btn account"><a href="/ajax/account/register" class="lightbox {customClass: 'overview-video'}">Register</a></span></div>
+            <div id="signInDialog">
+                Hello
+            </div>
             {% endif %}
             {% if not tag %}<a href="javascript:void(0)" class="btn startTour" rel="nofollow" style="display:none">Tour</a><a href="http://help.technav.systemicist.com/forums" target="_blank" class="btn startTour" rel="nofollow" style="display:none; border-color: #ffa500; background-color: #ffa500">Help</a>{% endif %}
         </div>

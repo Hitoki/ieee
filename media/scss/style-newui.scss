@@ -107,9 +107,14 @@ table.main {
         font-size: 8pt;
         margin: 0 0 0 5px;
         padding: 1px 8px;
+        cursor: pointer;
         &:hover {
             text-decoration: none;
             background-color: $white;
+        }
+        a {
+            color: $white;
+            text-decoration: none;
         }
     }
     .btn.startTour,
@@ -142,6 +147,9 @@ table.main {
         &:hover {
             color: $secondaryColor;
             background: $white;
+            a {
+                color: $secondaryColor;
+            }
         }
     }
 } 
@@ -177,6 +185,10 @@ table.main {
         margin-right: 3px;
         font-size: 11px;
     }
+}
+
+#signInDialog {
+    display: none;
 }
 
 ul#societies, ul#sectors {
