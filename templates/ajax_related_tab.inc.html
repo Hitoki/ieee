@@ -1,11 +1,10 @@
-                        {% for related_tag in tag.related_tags.all %}
-                        <p class="{% cycle 'item_odd' 'item_even' %}">
-                            {% ifequal ui "textui" %}
-                            <a href="javascript:Tags.selectTag({{ related_tag.id }});" rel="nofollow">
-                                <span>{{ related_tag.name }}</span>
-                            </a>
-                            {% else %}
-                            <span>{{ related_tag.name }}</span>
-                            {% endifequal %}
-                        </p>
-                        {% endfor %}
+{% for related_tag in tag.related_tags.all %}
+<p class="{% cycle 'item_odd' 'item_even' %}">
+    {% ifequal ui "textui" %}
+    <a href="javascript:Tags.selectTag({{ related_tag.id }});" rel="nofollow">{{ related_tag.name }}</a>
+    {% else %}
+    {{ related_tag.name }}
+    {% endifequal %}
+    {% if related_tag.is_favorite %}<a href="{% url delete_favorite node_id=related_tag.id %}" class="icon-star-whole icomoon-icon"></span></a>{% else %}<a href="{% url add_favorite node_id=related_tag.id %}" class="icon-star icomoon-icon"></span></a>{% endif %} {{ related_tag.is_favorite }}
+</p>
+{% endfor %}
