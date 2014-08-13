@@ -664,10 +664,18 @@ def debug_conf_apps_by_keyword(request, keyword_name):
 @login_required
 def add_favorites(request, node_id):
     member = User.objects.get(id=request.user.id)
-    favorites = UserFavorites.objects.get(user=member)
+    
     node = Node.objects.get(id=node_id)
 
-    favorites.favorites.add(node)
+    try:
+        favorites = UserFavorites.objects.get(user=member)
+        favorites.favorites.add(node)
+    except UserFavorites.DoesNotExist:
+        favorites_form = UserFavoriteForm(data=request.POST)
+        favorites = favorites_form.save(commit=False)
+        favorites.user = member
+        favorites.save()
+        favorites.favorites.add(node)
 
     return HttpResponseRedirect(reverse('index'))
 
