@@ -249,6 +249,12 @@ p.admin-links {
     padding: 0;
     display: inline-block;
 }
+
+.admin-page {
+    .header-btns {
+        display: none;
+    }
+}
   
 .popup {
    margin-left: 5px;
