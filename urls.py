@@ -5,7 +5,7 @@ import os.path
 import site_admin.views
 import settings
 from django.views.generic.simple import direct_to_template
-from views import *
+from views import ajax, xplore, views
 
 from ieeetags.sitemaps import *
 
@@ -96,7 +96,11 @@ else:
 
         # Account
         url(r'^account/(?P<account_step>\w+)/$', ajax.ajax_account, name='ajax_account'),
-        url(r'^logout/$', log_out, name='logout'),
+        url(r'^logout/$', views.log_out, name='logout'),
+
+        # Favorites
+        url(r'^favorites/(?P<node_id>\w+)/add/$', views.add_favorites, name='add_favorite'),
+        url(r'^favorites/(?P<node_id>\w+)/delete/$', views.delete_favorites, name='delete_favorite'),
     )
 
 if settings.DEBUG:
@@ -124,11 +128,11 @@ if settings.DEBUG:
             name='debug_conf_apps_by_keyword'),
 
         url(r'^debug/conf_app/list$',
-            ConferenceApplicationListView.as_view(),
+            views.ConferenceApplicationListView.as_view(),
             name='conference_applications'),
 
         url(r'^debug/conf_app/create$',
-            ConferenceApplicationCreateView.as_view(),
+            views.ConferenceApplicationCreateView.as_view(),
             name='create_conference_application'),
 
     )

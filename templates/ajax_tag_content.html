@@ -60,7 +60,7 @@
 
 {% if is_ajax %}
 <div class="dialogTitle">
-    <span id="tag-name">{{ tag.name }}</span>
+    <span id="tag-name">{{ tag.name }}</span> {% if is_favorite %}<a href="{% url delete_favorite node_id=tag.id %}" class="icon-star-whole icomoon-icon"></span></a>{% else %}<a href="{% url add_favorite node_id=tag.id %}" class="icon-star icomoon-icon"></span></a>{% endif %}
 </div>
 
 <div id="resources-lightbox-count">

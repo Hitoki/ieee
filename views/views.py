@@ -1,5 +1,7 @@
 from logging import debug as log
 from random import randint
+from datetime import datetime
+from urlparse import urlsplit
 import re
 import sys
 import traceback
@@ -21,6 +23,7 @@ from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.utils import simplejson as json
 from django.contrib import auth
+from django.contrib.auth.models import User
 
 from decorators import optional_login_required as login_required
 from ieeetags.forms import *
@@ -29,7 +32,7 @@ from models.society import Society
 from models.types import ResourceType, Filter
 from models.resource import Resource
 from models.conference_application import TagKeyword, ConferenceApplication
-from datetime import datetime
+from models.favorites import UserFavorites
 
 #from profiler import Profiler
 import util
@@ -656,3 +659,25 @@ def debug_conf_apps_by_keyword(request, keyword_name):
     items = keyword.conference_applications.all()
     return render(request, "conference_application/list.html",
                   dict(keyword_name=keyword_name, items=items))
+
+
+@login_required
+def add_favorites(request, node_id):
+    member = User.objects.get(id=request.user.id)
+    favorites = UserFavorites.objects.get(user=member)
+    node = Node.objects.get(id=node_id)
+
+    favorites.favorites.add(node)
+
+    return HttpResponseRedirect(reverse('index'))
+
+@login_required
+def delete_favorites(request, node_id):
+    member = request.user
+    member = User.objects.get(username=member)
+    favorites = UserFavorites.objects.get(user=member)
+    node = Node.objects.get(id=node_id)
+
+    favorites.favorites.remove(node)
+
+    return HttpResponseRedirect(reverse('index'))

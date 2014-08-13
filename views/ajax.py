@@ -23,6 +23,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.template.loader import render_to_string
+from django.contrib.auth.models import User
 import sys
 
 from decorators import optional_login_required as login_required
@@ -39,6 +40,7 @@ from models.society import Society
 from models.system import Cache
 from models.types import NodeType, ResourceType, Filter
 from models.utils import single_row
+from models.favorites import UserFavorites
 import settings
 import util
 from BeautifulSoup import BeautifulSoup
@@ -458,6 +460,15 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
     # tag.related_tags.count()
 
     #context['num_related_items'] = num_related_items
+
+    # Determines if current tag is in user's list of favorites
+    member = User.objects.get(id=request.user.id)
+    if request.user.is_authenticated():
+        is_favorite = UserFavorites.objects.filter(user=member).filter(favorites=tag).exists()
+    else:
+        is_favorite = False
+
+    context['is_favorite'] = is_favorite
 
     try:
         show_tv = settings.SHOW_TV_TAB

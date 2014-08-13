@@ -9,3 +9,4 @@ from system import *
 from taxonomy import *
 from types import *
 from utils import *
+from favorites import *
