@@ -1451,8 +1451,12 @@ def ajax_account(request, account_step):
         return render(request, 'account_lightbox_register.html')
     elif step == 'youraccount':
         member = request.user
-        user_favorites = get_object_or_404(UserFavorites, user=member)
-        favorites = user_favorites.favorites.all()
+        try:
+            user_favorites = UserFavorites.objects.get(user=member)
+            favorites = user_favorites.favorites.all()
+        except UserFavorites.DoesNotExist:
+            favorites = ''
+
         context_dict = {
             'favorites': favorites
         }
