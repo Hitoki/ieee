@@ -1,10 +1,23 @@
 <a class="lightbox-close"></a>
 <h2>Your Account</h2>
 <div class="signinText">
-	<strong>Manage Connected Accounts</strong><br/>
+	<strong>Connected Accounts</strong><br/>
 	You can add or remove your connected social media accounts:
 </div>
 <div class="signinText">
-	<strong>Manage Alerts</strong><br/>
+	<strong>Alerts</strong><br/>
 	Click 'X' to unsubscribe from alerts to topics.
+</div>
+<div class="signinText">
+	<strong>Favorites</strong><br/>
+	{% if favorites %}
+	Click 'X' to remove from your favorites.
+	<ul>
+		{% for topic in favorites %}
+		<li><a href="javascript:Tags.selectTag({{ topic.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);" rel="nofollow">{{ topic.name }}</a></li>
+		{% endfor %}
+	</ul>
+	{% else %}
+	You have not added any topics to your favorites. Click the <span class="icon-star icomoon-icon"></span> icon to add a topic to your favorites.
+	{% endif %}
 </div>

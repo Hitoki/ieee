@@ -20,7 +20,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import simplejson as json
 from django.middleware import csrf
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
+
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.contrib.auth.models import User
@@ -1449,7 +1450,13 @@ def ajax_account(request, account_step):
     elif step == 'register':
         return render(request, 'account_lightbox_register.html')
     elif step == 'youraccount':
-        return render(request, 'account_lightbox_youraccount.html')
+        member = request.user
+        user_favorites = get_object_or_404(UserFavorites, user=member)
+        favorites = user_favorites.favorites.all()
+        context_dict = {
+            'favorites': favorites
+        }
+        return render(request, 'account_lightbox_youraccount.html', context_dict)
 
 def ajax_video(request):
     'Returns the HTML content for the flash video.'
