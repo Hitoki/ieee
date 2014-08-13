@@ -20,7 +20,7 @@
                         <a href="{% url logout %}" rel="nofollow">Log Out</a>
                         &nbsp;&nbsp;
                     {% else %}
-                        <a href="/account/signin" class="lightbox {customClass: 'overview-video'}" rel="nofollow">*</a>
+                        <a href="{% url admin_login %}" rel="nofollow">*</a>
                     {% endif %}
                 </p>
             {% endif %}

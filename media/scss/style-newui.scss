@@ -17,7 +17,6 @@ body {
   
 h2 {
     margin: 0px;
-    padding-left: .3em;
 }
   
 table {
@@ -97,62 +96,84 @@ table.main {
     margin: 8px 0 0 0;
     text-align: right;
     float: right;
-    div {
-        margin-bottom: 5px;
-    }
     .btn {
-        border: 1px solid transparent;
-        color: $white;
-        display: inline-block;
         font-size: 8pt;
         margin: 0 0 0 5px;
-        padding: 1px 8px;
-        cursor: pointer;
-        &:hover {
-            text-decoration: none;
-            background-color: $white;
-        }
-        a {
-            color: $white;
-            text-decoration: none;
-        }
-    }
-    .btn.startTour,
-    .btn.help {
-        background: $green;
-        border: 1px solid $green;
-        &:hover {
-            color: $green;
-            background: none repeat scroll 0 0 $white;
-        }
-    }
-    .btn.join {
-        background-color: $orange;
-        &:hover {
-            border: 1px solid $orange;
-            color: $orange;
-        }
-    }
-    .btn.admin {
-        background: $red;
-        border: 1px solid $red;
-        &:hover {
-            color: $red;
-            background: $white;
-        }
-    }
-    .btn.account {
-        background: $secondaryColor;
-        border: 1px solid $secondaryColor;
-        &:hover {
-            color: $secondaryColor;
-            background: $white;
-            a {
-                color: $secondaryColor;
-            }
-        }
     }
 } 
+
+.btn {
+    border: 1px solid transparent;
+    color: $white;
+    display: inline-block;
+    padding: 1px 8px;
+    cursor: pointer;
+    &:hover {
+        text-decoration: none;
+        background-color: $white;
+    }
+    a {
+        color: $white;
+        text-decoration: none;
+    }
+    .icomoon-icon {
+        font-size: 18px;
+        background-color: $primaryColor;
+        color: $white;
+        margin: 0px 10px 0px -12px;
+        padding: 5px;
+        vertical-align: middle;
+    }
+}
+.btn.startTour,
+.btn.help {
+    background: $green;
+    border: 1px solid $green;
+    &:hover {
+        color: $green;
+        background: none repeat scroll 0 0 $white;
+    }
+}
+.btn.join {
+    background-color: $orange;
+    &:hover {
+        border: 1px solid $orange;
+        color: $orange;
+    }
+}
+.btn.admin {
+    background: $red;
+    border: 1px solid $red;
+    &:hover {
+        color: $red;
+        background: $white;
+    }
+}
+.btn.account {
+    background: $secondaryColor;
+    border: 1px solid $secondaryColor;
+    color: $white;
+    &:hover {
+        color: $secondaryColor;
+        background: $white;
+        a {
+            color: $secondaryColor;
+        }
+    }
+}
+.signinBtns {
+    margin-top: 20px;
+    .btn {
+        padding: 4px 10px;
+    }
+}
+
+.signinText {
+    margin-top: 20px;
+    ul {
+        margin-left: 20px;
+    }
+}
 
 .userMenu {
     position: relative;

@@ -23,6 +23,9 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.icon-google:before {
+	content: "\e601";
+}
 .icon-tab:before {
 	content: "\e000";
 }
