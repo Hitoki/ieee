@@ -1,7 +1,6 @@
 from logging import debug as log
 from random import randint
 import re
-import datetime
 import sys
 import traceback
 import urllib
@@ -21,6 +20,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.utils import simplejson as json
+from django.contrib import auth
 
 from decorators import optional_login_required as login_required
 from ieeetags.forms import *
@@ -29,6 +29,7 @@ from models.society import Society
 from models.types import ResourceType, Filter
 from models.resource import Resource
 from models.conference_application import TagKeyword, ConferenceApplication
+from datetime import datetime
 
 #from profiler import Profiler
 import util
@@ -538,6 +539,22 @@ def print_resource(request, tag_id, resource_type,
         'overview': overview,
         'show_edu': show_edu
     })
+
+def log_out(request):
+    if request.user.is_authenticated():
+        profile = request.user.get_profile()
+        profile.last_logout_time = datetime.now()
+        profile.save()
+    auth.logout(request)
+    
+    response = HttpResponseRedirect(reverse('index'))
+    
+    #if settings.USE_SITEMINDER_LOGIN:
+    host = request.META['HTTP_HOST']
+    if host.count('.') > 1:
+        host = host[host.find('.'):]
+    response.delete_cookie("SMSESSION", domain=host)
+    return response
 
 
 def debug_error(request):

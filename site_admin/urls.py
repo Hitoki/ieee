@@ -15,7 +15,6 @@ else:
 
 urlpatterns += patterns(
     '',
-    url(r'^logout$', views.logout, name='admin_logout'),
     url(r'^forgot_password$', views.forgot_password, name='forgot_password'),
     url(r'^forgot_password_confirmation$', views.forgot_password_confirmation, name='forgot_password_confirmation'),
     url(r'^password_reset/(?P<user_id>\d+)/(?P<reset_key>.+)$', views.password_reset, name='password_reset'),

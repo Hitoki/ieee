@@ -385,23 +385,6 @@ def login(request):
 def login_siteminder(request):
     return render(request, 'site_admin/login_siteminder.html', {})
 
-def logout(request):
-    if request.user.is_authenticated():
-        profile = request.user.get_profile()
-        profile.last_logout_time = datetime.now()
-        profile.save()
-    auth.logout(request)
-    
-    response = HttpResponseRedirect(reverse('admin_login') + '?feedback=1')
-    
-    #if settings.USE_SITEMINDER_LOGIN:
-    host = request.META['HTTP_HOST']
-    if host.count('.') > 1:
-        host = host[host.find('.'):]
-    response.delete_cookie("SMSESSION", domain=host)
-    return response
-
-
 def forgot_password(request):
     cancel_page = request.GET.get('cancel_page', '')
     error = ''
