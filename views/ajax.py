@@ -463,8 +463,8 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
     #context['num_related_items'] = num_related_items
 
     # Determines if current tag is in user's list of favorites
-    member = User.objects.get(id=request.user.id)
     if request.user.is_authenticated():
+        member = User.objects.get(id=request.user.id)
         is_favorite = UserFavorites.objects.filter(user=member).filter(favorites=tag).exists()
     else:
         is_favorite = False
