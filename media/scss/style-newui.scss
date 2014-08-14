@@ -187,7 +187,17 @@ table.main {
 }
 
 .topicList {
-
+    li {
+        &:hover {
+            .icon-cancel {
+                display: inline;
+                text-decoration: none;
+            }
+        }
+        .icon-cancel {
+            display: none;
+        }
+    }
 }
 
 #account-tabs {
