@@ -59,10 +59,20 @@
 {% include 'includes/js/notification_request.html' %}
 
 {% if is_ajax %}
-<div class="dialogTitle">
-    <span id="tag-name">{{ tag.name }}</span> {% if user.is_authenticated %}{% if is_favorite %}<a href="{% url delete_favorite node_id=tag.id %}" class="icon-star-whole icomoon-icon"></span></a>{% else %}<a href="{% url add_favorite node_id=tag.id %}" class="icon-star icomoon-icon"></span></a>{% endif %}{% endif %}
-</div>
+<div class="dialogTitle">{% spaceless %}
+    <span id="tag-name">{{ tag.name }}</span> 
+    {% if user.is_authenticated %}
+    <span class="tag-icons">
+        {% if is_favorite %}
+        <a href="{% url delete_favorite node_id=tag.id %}" class="icon-star-whole enabled icomoon-icon"></a>
+        {% else %}
+        <a href="{% url add_favorite node_id=tag.id %}" class="icon-star-whole icomoon-icon"></a>
+        {% endif %}
+        <span class="icon-alert icomoon-icon"></span>
+    </span>{% endif %}
+{% endspaceless %}</div>
 
+{% comment %}
 {% if user.is_authenticated %}
 <div id="alertWrapper">
     <div id="alertContainer">
@@ -78,6 +88,7 @@
     </div>
 </div>
 {% endif %}
+{% endcomment %}
 
 <div class="resources-pad">
     <div class="alt-box">

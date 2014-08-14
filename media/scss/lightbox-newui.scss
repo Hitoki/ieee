@@ -134,16 +134,38 @@ input.text {
 .dialogTitle {
     display: inline-block;
     font-size: $xlargeFont;
-    margin: 15px 0 0 25px;
+    margin: 15px 0 0 0;
     color: $white;
     clear: both;
     width: 100%;
 }
 
-a.icon-star,
-a.icon-star-whole {
+#tag-name {
+    margin-left: 25px;
+}
+
+a.icon-star-whole,
+.icon-alert {
     text-decoration: none;
-    color: #FFD700;
+    &:hover {
+        color: #FFD700;
+    }
+    &.enabled {
+        color: #FFD700;
+    }
+}
+
+.icon-alert {
+    font-size: 15px;
+    margin-left: 10px;
+}
+
+.tag-icons {
+    float: right;
+    margin-right: 25px;
+    .icon-star-whole {
+        font-size: 16px;
+    }
 }
 
 #resources-lightbox-count {
