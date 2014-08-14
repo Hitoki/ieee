@@ -285,7 +285,7 @@ def checkout_site():
     sudo('cd "%(site_home)s/python/releases" && rm -rf $(ls | grep -v -E previous\|current\|`readlink previous`\|`readlink current`)' % env, pty=True)
     
     # Install package requirements
-    run('cd "%(site_home)s/python" && source bin/activate && cd "%(site_home)s/python/releases/current/ieeetags/" && pip install -r requirements.txt'
+    run('cd "%(site_home)s/python" && source bin/activate && cd "%(site_home)s/python/releases/current/ieeetags/" && pip install -r requirements.txt')
 
     # Apply any south migrations.
     run('cd "%(site_home)s/python" && source bin/activate && cd "%(site_home)s/python/releases/current/ieeetags/" && export PYTHONPATH=..:../../../lib/python2.6/site-packages/ && python "%(site_code)s/manage.py" syncdb --noinput && python manage.py migrate --delete-ghost-migrations' % env)
