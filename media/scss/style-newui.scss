@@ -171,7 +171,23 @@ table.main {
 .signinText {
     margin-top: 20px;
     ul {
-        margin-left: 20px;
+        margin-top: 5px;
+    }
+    .icomoon-icon {
+        text-decoration: none;
+    }
+    a.icon-cancel {
+        font-size: 11px;
+    }
+}
+
+.topicList {
+    li {
+        list-style-type: none;
+        display: inline-block;
+        background-color: #EFEFEF;
+        padding: 4px 5px;
+        margin: 5px 5px 0 0;
     }
 }
 
@@ -253,6 +269,9 @@ p.admin-links {
 .admin-page {
     .header-btns {
         display: none;
+    }
+    #header {
+        height: 65px;
     }
 }
   

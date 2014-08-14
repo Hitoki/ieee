@@ -6,15 +6,15 @@
 </div>
 <div class="signinText">
 	<strong>Alerts</strong><br/>
-	Click 'X' to unsubscribe from alerts to topics.
+	Click <span class="icon-cancel icomoon-icon"></span> to unsubscribe from alerts to topics.
 </div>
 <div class="signinText">
 	<strong>Favorites</strong><br/>
 	{% if favorites %}
-	Click 'X' to remove from your favorites.
-	<ul>
+	Click <span class="icon-cancel icomoon-icon"></span> to remove from your favorites.
+	<ul class="topicList">
 		{% for topic in favorites %}
-		<li><a href="javascript:Tags.selectTag({{ topic.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);" rel="nofollow">{{ topic.name }}</a></li>
+		<li><a href="javascript:Tags.selectTag({{ topic.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);" rel="nofollow">{{ topic.name }}</a> <a href="/favorites/{{ topic.id }}/delete" class="icon-cancel icomoon-icon"></a></li>
 		{% endfor %}
 	</ul>
 	{% else %}
