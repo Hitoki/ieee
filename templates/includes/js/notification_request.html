@@ -1,7 +1,7 @@
 <script type="text/javascript">
     $(function() {
         var action;
-        $('.icon-alert').click(function(){
+        $('.subscribe').click(function(){
             if ($(this).hasClass('enabled')) {
                 action = 'disable';
                 $('.icon-alert').removeClass('enabled');
@@ -13,6 +13,30 @@
                 {
                     email: '{{ user.email }}',
                     nodeid: {{ tag.id }},
+                    action: action
+                },
+                function(){
+                    return false;
+                }
+            );
+        });
+    });
+
+    $(function() {
+        var action;
+        var nodeid;
+        $('.favorite').click(function(){
+            nodeid = $(this).data('nodeid');
+            if ($(this).hasClass('enabled')) {
+                action = 'disable';
+                $(this).removeClass('enabled');
+            } else {
+                action = 'enable';
+                $(this).addClass('enabled');
+            }
+            $.post('/ajax/favorites/request',
+                {
+                    nodeid: nodeid,
                     action: action
                 },
                 function(){

@@ -150,7 +150,7 @@ input.text {
     a {
         color: #FFFFFF;
     }
-    a.icon-star-whole {
+    .icon-star-whole {
         font-size: 16px;
     }
     .icon-alert {
@@ -159,17 +159,37 @@ input.text {
         cursor: pointer;
         vertical-align: middle;
     }
-    a.icon-star-whole,
-    .icon-alert {
-        text-decoration: none;
+    .favorite,
+    .subscribe {
+        color: $white;
         &:hover {
-            color: #FFD700;
-        }
-        &.enabled {
-            color: #FFD700;
+            color: lighten(#FFD700, 40%);
         }
     }
 }
+
+.favorite,
+.subscribe {
+    text-decoration: none;
+    color: $secondaryColor;
+    cursor: pointer;
+    &:hover {
+        color: #FFD700;
+    }
+    &.enabled {
+        color: #FFD700;
+    }
+}
+
+.unfavorite,
+.unsubscribe {
+    text-decoration: none;
+    color: $secondaryColor;
+    cursor: pointer;
+    &:hover {
+        color: $linkColor-hover;
+    }
+} 
 
 #resources-lightbox-count {
     width: 128px;

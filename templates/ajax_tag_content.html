@@ -51,8 +51,7 @@
                 }
                 $('#xplore-overview').html(html);
             }
-        });        
-
+        });
     });
 </script>
 
@@ -64,11 +63,11 @@
     {% if user.is_authenticated %}
     <span class="tag-icons">
         {% if is_favorite %}
-        <a href="{% url delete_favorite node_id=tag.id %}" class="icon-star-whole enabled icomoon-icon"></a>
+        <span class="icon-star-whole favorite enabled icomoon-icon" data-nodeid="{{ tag.id }}"></span>
         {% else %}
-        <a href="{% url add_favorite node_id=tag.id %}" class="icon-star-whole icomoon-icon"></a>
+        <span class="icon-star-whole favorite icomoon-icon" data-nodeid="{{ tag.id }}"></span>
         {% endif %}
-        <span class="icon-alert icomoon-icon{% if enable_alerts %} enabled{% endif %}"></span>
+        <span class="icon-alert subscribe icomoon-icon{% if enable_alerts %} enabled{% endif %}"></span>
     </span>{% endif %}
 {% endspaceless %}</div>
 

@@ -1137,6 +1137,7 @@ def ajax_nodes_xml(request):
 
 
 @csrf_exempt
+@login_required
 def ajax_notification_request(request):
     rnnr = ResourceAdditionNotificationRequest()
     action = request.POST['action']
@@ -1158,6 +1159,30 @@ def ajax_notification_request(request):
     else:
         return HttpResponse('failure')
 
+@csrf_exempt
+@login_required
+def ajax_favorite_request(request):
+    action = request.POST['action']
+    member = User.objects.get(id=request.user.id)
+    node_id = request.POST['nodeid']
+    node = Node.objects.get(id=node_id)
+    if action == 'enable':
+        try:
+            favorites = UserFavorites.objects.get(user=member)
+            favorites.favorites.add(node)
+        except UserFavorites.DoesNotExist:
+            favorites_form = UserFavoriteForm(data=request.POST)
+            favorites = favorites_form.save(commit=False)
+            favorites.user = member
+            favorites.save()
+            favorites.favorites.add(node)
+        return HttpResponse('success')
+    elif action == 'disable':
+        favorites = UserFavorites.objects.get(user=member)
+        favorites.favorites.remove(node)
+        return HttpResponse('success')
+    else:
+        return HttpResponse('failure')
 
 @login_required
 def tooltip(request, tag_id=None):

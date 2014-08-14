@@ -14,7 +14,7 @@
 		<p class="first">Click <span class="icon-cancel icomoon-icon"></span> to unsubscribe from alert.</p>
 		<ul class="topicList">
 			{% for alert in alerts %}
-			<li><a href="javascript:Tags.selectTag({{ alert.node.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ alert.node.name}}']);" rel="nofollow">{{ alert.node.name }}</a> <a href="javascript:void();" class="icon-cancel unsubscribe icomoon-icon" data-nodeid="{{ alert.node.id }}"></a></li>
+			<li><a href="javascript:Tags.selectTag({{ alert.node.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ alert.node.name}}']);" rel="nofollow">{{ alert.node.name }}</a> <span class="icon-cancel unsubscribe icomoon-icon" data-nodeid="{{ alert.node.id }}"></span></li>
 			{% endfor %}
 		</ul>
 		{% else %}
@@ -29,7 +29,7 @@
 		<ul class="topicList">
 			<strong>Topics</strong><br/>
 			{% for topic in favorites %}
-			<li><a href="javascript:Tags.selectTag({{ topic.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);" rel="nofollow">{{ topic.name }}</a> <a href="/favorites/{{ topic.id }}/delete" class="icon-cancel icomoon-icon"></a></li>
+			<li><a href="javascript:Tags.selectTag({{ topic.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);" rel="nofollow">{{ topic.name }}</a> <span class="icon-cancel unfavorite icomoon-icon" data-nodeid="{{ topic.id }}"></span>
 			{% endfor %}
 		</ul>
 		{% else %}
@@ -54,6 +54,23 @@
             $.post('/ajax/notification/request',
                 {
                     email: '{{ user.email }}',
+                    nodeid: nodeid,
+                    action: 'disable'
+                },
+                function(){
+                    return false;
+                }
+            );
+        });
+    });
+    $(function() {
+    	var action;
+        var nodeid;
+        $('.unfavorite').click(function(){
+            nodeid = $(this).data('nodeid');
+            $(this).parent().remove();
+            $.post('/ajax/favorites/request',
+                {
                     nodeid: nodeid,
                     action: 'disable'
                 },
