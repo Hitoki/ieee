@@ -214,7 +214,6 @@ def create_blank_domain():
     sudo pip install -E "%(site_home)s/python" "django-profiles==0.2"
     sudo pip install -E "%(site_home)s/python" "wsgiref"
     sudo pip install -E "%(site_home)s/python" "BeautifulSoup"
-    sudo pip install -E "%(site_home)s/python" "django-allauth"
     """ % env
     run_multiline_script(script)
     
@@ -285,6 +284,9 @@ def checkout_site():
     # Use sudo for next line. Some cached django media files won't delete otherwise.
     sudo('cd "%(site_home)s/python/releases" && rm -rf $(ls | grep -v -E previous\|current\|`readlink previous`\|`readlink current`)' % env, pty=True)
     
+    # Install package requirements
+    run('cd "%(site_home)s/python" && source bin/activate && cd "%(site_home)s/python/releases/current/ieeetags/" && pip install -r requirements.txt'
+
     # Apply any south migrations.
     run('cd "%(site_home)s/python" && source bin/activate && cd "%(site_home)s/python/releases/current/ieeetags/" && export PYTHONPATH=..:../../../lib/python2.6/site-packages/ && python "%(site_code)s/manage.py" syncdb --noinput && python manage.py migrate --delete-ghost-migrations' % env)
     
