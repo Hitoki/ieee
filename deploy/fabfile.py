@@ -214,6 +214,7 @@ def create_blank_domain():
     sudo pip install -E "%(site_home)s/python" "django-profiles==0.2"
     sudo pip install -E "%(site_home)s/python" "wsgiref"
     sudo pip install -E "%(site_home)s/python" "BeautifulSoup"
+    sudo pip install -E "%(site_home)s/python" "django-allauth"
     """ % env
     run_multiline_script(script)
     
