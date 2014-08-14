@@ -156,14 +156,19 @@ a.icon-star-whole,
 }
 
 .icon-alert {
-    font-size: 15px;
+    font-size: 18px;
     margin-left: 10px;
+    cursor: pointer;
+    vertical-align: middle;
 }
 
 .tag-icons {
     float: right;
     margin-right: 25px;
-    .icon-star-whole {
+    a {
+        color: #FFFFFF;
+    }
+    a.icon-star-whole {
         font-size: 16px;
     }
 }
