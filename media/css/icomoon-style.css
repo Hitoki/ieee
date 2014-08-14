@@ -22,7 +22,9 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
-
+.icon-alert:before {
+	content: "\e602";
+}
 .icon-star-whole:before {
 	content: "\e603";
 }

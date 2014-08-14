@@ -1,23 +1,37 @@
 <a class="lightbox-close"></a>
 <h2>Your Account</h2>
-<div class="signinText">
-	<strong>Connected Accounts</strong><br/>
-	You can add or remove your connected social media accounts:
+
+<div id="account-tabs" class="nootabs {useCookies:false, useHash:false}">
+    <ul class="nootabs-menus">
+        <li><a href="">Alerts</a></li>
+        <li><a href="">Favorites</a></li>
+        <li class="last-menu"><a href="">Connected Accounts</a></li>
+    </ul>
+
+    <!-- Alerts tab -->
+    <div id="alerts-tab" class="nootabs-tab">
+       Click <span class="icon-cancel icomoon-icon"></span> to unsubscribe from alerts to topics.
+    </div>
+    
+    <!-- Favorites tab -->
+    <div id="favorites-tab" class="nootabs-tab">
+		{% if favorites %}
+		<p class="first">Click <span class="icon-cancel icomoon-icon"></span> to remove from your favorites.</p>
+		<ul class="topicList">
+			<strong>Topics</strong><br/>
+			{% for topic in favorites %}
+			<li><a href="javascript:Tags.selectTag({{ topic.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);" rel="nofollow">{{ topic.name }}</a> <a href="/favorites/{{ topic.id }}/delete" class="icon-cancel icomoon-icon"></a></li>
+			{% endfor %}
+		</ul>
+		{% else %}
+		You have not added any topics to your favorites. Click the <span class="icon-star icomoon-icon"></span> icon to add a topic to your favorites.
+		{% endif %}
+    </div>
+
+    <!-- Connected Accounts tab -->
+    <div id="connectacct-tab" class="nootabs-tab">
+        You can add or remove your connected social media accounts:
+    </div>
+
 </div>
-<div class="signinText">
-	<strong>Alerts</strong><br/>
-	Click 'X' to unsubscribe from alerts to topics.
-</div>
-<div class="signinText">
-	<strong>Favorites</strong><br/>
-	{% if favorites %}
-	Click 'X' to remove from your favorites.
-	<ul>
-		{% for topic in favorites %}
-		<li><a href="javascript:Tags.selectTag({{ topic.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);" rel="nofollow">{{ topic.name }}</a></li>
-		{% endfor %}
-	</ul>
-	{% else %}
-	You have not added any topics to your favorites. Click the <span class="icon-star icomoon-icon"></span> icon to add a topic to your favorites.
-	{% endif %}
-</div>
+<div class="clearfix"></div>

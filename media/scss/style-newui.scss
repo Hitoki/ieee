@@ -57,6 +57,10 @@ li {
     padding: 0px;
 }
 
+p.first {
+    margin-top: 0;
+}
+
 .clear {
     clear: both;
 }
@@ -171,7 +175,36 @@ table.main {
 .signinText {
     margin-top: 20px;
     ul {
-        margin-left: 20px;
+        margin-left: 18px;
+        margin-top: 5px;
+    }
+    .icomoon-icon {
+        text-decoration: none;
+    }
+    a.icon-cancel {
+        font-size: 11px;
+    }
+}
+
+.topicList {
+
+}
+
+#account-tabs {
+    margin-top: 15px;
+    .nootabs-tab {
+        height: 500px;
+        padding: 10px;
+        margin-top: 5px;
+        float: left;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .nootabs-menus a {
+        padding: 3px 5px;
+    }
+    .nootabs-menu {
+        margin: 0 0 0 -1px;
     }
 }
 
@@ -193,7 +226,6 @@ table.main {
         border: 1px solid #069;
         padding: 5px 10px;
         z-index: 9999;
-        border-radius: 5px;
         display: none;
     }
     li {
@@ -253,6 +285,9 @@ p.admin-links {
 .admin-page {
     .header-btns {
         display: none;
+    }
+    #header {
+        height: 65px;
     }
 }
   

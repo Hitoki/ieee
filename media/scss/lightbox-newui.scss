@@ -134,25 +134,52 @@ input.text {
 .dialogTitle {
     display: inline-block;
     font-size: $xlargeFont;
-    margin: 15px 0 0 25px;
+    margin: 15px 0 0 0;
     color: $white;
     clear: both;
     width: 100%;
 }
 
-a.icon-star,
-a.icon-star-whole {
+#tag-name {
+    margin-left: 25px;
+}
+
+a.icon-star-whole,
+.icon-alert {
     text-decoration: none;
-    color: #FFD700;
+    &:hover {
+        color: #FFD700;
+    }
+    &.enabled {
+        color: #FFD700;
+    }
+}
+
+.icon-alert {
+    font-size: 18px;
+    margin-left: 10px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.tag-icons {
+    float: right;
+    margin-right: 25px;
+    a {
+        color: #FFFFFF;
+    }
+    a.icon-star-whole {
+        font-size: 16px;
+    }
 }
 
 #resources-lightbox-count {
     width: 128px;
     text-align: center;
     margin-top: 15px;
+    margin-bottom: 10px;
     font-size: 14pt;
     color: #FFFFFF;
-    margin-left: 23px;
     float: left;
     #num-related-items-loading {
         display: inline-block;
@@ -208,13 +235,15 @@ a.icon-star-whole {
 
 #lightbox .resources-lightbox-content .resources-pad .alt-box,
 #lightbox .resources-lightbox-content .resources-pad .alt-box #content,
-#lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs {
+#resource-tabs {
     height: 100%;
+    clear: both;
 }
 
-#lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs .nootabs-selected-tab {
-    height: 100%;
+#lightbox .resources-lightbox-content .nootabs-selected-tab {
+    height: 435px;
     background-color: white;
+    margin-top: -55px;
 }
 
 #lightbox .resources-lightbox-content h1 {
@@ -499,10 +528,6 @@ margin-top: 0;
 
 #lightbox .tester-message-lightbox-content li {
    margin-left: 3em;
-}
-
-.nootabs-selected-tab div.group {
-    padding: 10px 15px 0 15px;
 }
 
 .overview-label {
