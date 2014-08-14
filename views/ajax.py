@@ -484,6 +484,14 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
 
     context['is_favorite'] = is_favorite
 
+    # Determines if user is subscribed to tag alerts
+    if request.user.is_authenticated():
+        email = request.user.email
+        enable_alerts = ResourceAdditionNotificationRequest.objects.filter(email=email).filter(node_id=tag.id).exists()
+    else:
+        enable_alerts = False
+    context['enable_alerts'] = enable_alerts
+
     try:
         show_tv = settings.SHOW_TV_TAB
     except AttributeError:
@@ -1131,14 +1139,24 @@ def ajax_nodes_xml(request):
 @csrf_exempt
 def ajax_notification_request(request):
     rnnr = ResourceAdditionNotificationRequest()
-    rnnr.email = request.POST['email']
-    rnnr.date_created = datetime.datetime.now()
-    rnnr.node = Node.objects.get(id=request.POST['nodeid'])
-    try:
-        rnnr.save()
-    except:
-        pass
-    return HttpResponse('success')
+    action = request.POST['action']
+    if action == 'enable':
+        rnnr.email = request.POST['email']
+        rnnr.date_created = datetime.datetime.now()
+        rnnr.node = Node.objects.get(id=request.POST['nodeid'])
+        try:
+            rnnr.save()
+        except:
+            pass
+        return HttpResponse('success')
+    elif action == 'disable':
+        email = request.POST['email']
+        node = request.POST['nodeid']
+        notifyRecord = ResourceAdditionNotificationRequest.objects.filter(node_id=node).get(email=email)
+        notifyRecord.delete()
+        return HttpResponse('success')
+    else:
+        return HttpResponse('failure')
 
 
 @login_required

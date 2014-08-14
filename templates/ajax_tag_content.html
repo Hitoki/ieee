@@ -68,7 +68,7 @@
         {% else %}
         <a href="{% url add_favorite node_id=tag.id %}" class="icon-star-whole icomoon-icon"></a>
         {% endif %}
-        <span class="icon-alert icomoon-icon"></span>
+        <span class="icon-alert icomoon-icon{% if enable_alerts %} enabled{% endif %}"></span>
     </span>{% endif %}
 {% endspaceless %}</div>
 
