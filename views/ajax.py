@@ -1485,12 +1485,20 @@ def ajax_account(request, account_step):
         try:
             user_favorites = UserFavorites.objects.get(user=member)
             favorites = user_favorites.favorites.all()
+            alerts = ResourceAdditionNotificationRequest.objects.filter(email=member.email).all()
         except UserFavorites.DoesNotExist:
             favorites = ''
+            alerts = ''
 
         context_dict = {
-            'favorites': favorites
+            'favorites': favorites,
+            'alerts': alerts
         }
+
+        for alert in alerts:
+            node_id = alert.node_id
+            alert.node = Node.objects.get(id=node_id)
+
         return render(request, 'account_lightbox_youraccount.html', context_dict)
 
 def ajax_video(request):

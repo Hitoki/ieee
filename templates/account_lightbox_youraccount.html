@@ -10,7 +10,16 @@
 
     <!-- Alerts tab -->
     <div id="alerts-tab" class="nootabs-tab">
-       Click <span class="icon-cancel icomoon-icon"></span> to unsubscribe from alerts to topics.
+       {% if alerts %}
+		<p class="first">Click <span class="icon-cancel icomoon-icon"></span> to unsubscribe from alert.</p>
+		<ul class="topicList">
+			{% for alert in alerts %}
+			<li><a href="javascript:Tags.selectTag({{ alert.node.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ alert.node.name}}']);" rel="nofollow">{{ alert.node.name }}</a> <a href="/favorites/{{ topic.id }}/delete" class="icon-cancel icomoon-icon"></a></li>
+			{% endfor %}
+		</ul>
+		{% else %}
+		You have not added any topics to your favorites. Click the <span class="icon-star icomoon-icon"></span> icon to add a topic to your favorites.
+		{% endif %}
     </div>
     
     <!-- Favorites tab -->
