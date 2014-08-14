@@ -1,7 +1,9 @@
+{% load socialaccount %}
+
 <a class="lightbox-close"></a>
 <h2>Sign In or Join TechNav</h2>
 <div class="signinBtns">
-	<a class="btn account" href="#"><span class="icon-google icomoon-icon"></span>Sign In or Join with Google</a>
+	<a class="btn account" href="{% provider_login_url "google" %}"><span class="icon-google icomoon-icon"></span>Sign In or Join with Google</a>
 </div>
 <div class="signinText">
 	<strong>Why join TechNav?</strong>

@@ -146,7 +146,19 @@ INSTALLED_APPS = [
     'ieeetags',
     'ieeetags.site_admin',
     'noomake',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
 ]
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
@@ -160,10 +172,27 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'ieeetags.context_processors.survey',
     'ieeetags.context_processors.settings',
     'ieeetags.context_processors.host_info',
-    'ieeetags.context_processors.total_tag_count'
+    'ieeetags.context_processors.total_tag_count',
+    "allauth.account.context_processors.account",
+    "allauth.socialaccount.context_processors.socialaccount",
 )
 
 # Application Settings ---------------------------------------------------------
+
+# auth and allauth settings
+LOGIN_REDIRECT_URL = '/'
+SOCIALACCOUNT_QUERY_EMAIL = True
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'SCOPE': ['email', 'publish_stream'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'METHOD': 'oauth2',
+    },
+    'google': {
+        'SCOPE': ['https://www.googleapis.com/auth/userinfo.profile'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+    }
+}
 
 USE_SITEMINDER_LOGIN = False
 'If True application authorizes users against IEEE SiteMinder database. Otherwise use local database.'

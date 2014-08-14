@@ -81,7 +81,7 @@ else:
         
         # Site Admin
         (r'^admin/', include('ieeetags.site_admin.urls')),
-        
+
         # Django Admin
         #url(r'^djangoadmin/(.*)', django.contrib.admin.site.root, name='admin'),
         
@@ -101,6 +101,8 @@ else:
         # Favorites
         url(r'^favorites/(?P<node_id>\w+)/add/$', views.add_favorites, name='add_favorite'),
         url(r'^favorites/(?P<node_id>\w+)/delete/$', views.delete_favorites, name='delete_favorite'),
+
+        url(r'^accounts/', include('allauth.urls')),
     )
 
 if settings.DEBUG:
