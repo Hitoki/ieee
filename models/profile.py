@@ -103,16 +103,16 @@ class UserManager:
             order_by('-profile__last_login_time')
 
 
-def _create_profile_for_user(sender, instance, signal, created,
-                             *args, **kwargs):
-    """Automatically creates a profile for each newly created user.
-    Uses signals to detect user creation."""
-    if created:
-        profile = Profile(user=instance)
-        profile.save()
+# def _create_profile_for_user(sender, instance, signal, created,
+#                              *args, **kwargs):
+#     """Automatically creates a profile for each newly created user.
+#     Uses signals to detect user creation."""
+#     if created:
+#         profile = Profile(user=instance)
+#         profile.save()
 
 
-post_save.connect(_create_profile_for_user, sender=User)
+# post_save.connect(_create_profile_for_user, sender=User)
 
 
 def get_user_from_username(username):
