@@ -60,15 +60,10 @@
 
 {% if is_ajax %}
 <div class="dialogTitle">
-    <span id="tag-name">{{ tag.name }}</span> {% if is_favorite %}<a href="{% url delete_favorite node_id=tag.id %}" class="icon-star-whole icomoon-icon"></span></a>{% else %}<a href="{% url add_favorite node_id=tag.id %}" class="icon-star icomoon-icon"></span></a>{% endif %}
+    <span id="tag-name">{{ tag.name }}</span> {% if user.is_authenticated %}{% if is_favorite %}<a href="{% url delete_favorite node_id=tag.id %}" class="icon-star-whole icomoon-icon"></span></a>{% else %}<a href="{% url add_favorite node_id=tag.id %}" class="icon-star icomoon-icon"></span></a>{% endif %}{% endif %}
 </div>
 
-<div id="resources-lightbox-count">
-    <span id="num-related-items-loading"></span><span id="num-related-items" class="{ number: 0 }"></span>
-    <br/>
-    <span class="count-label">Related Resources</span>
-</div>
-
+{% if user.is_authenticated %}
 <div id="alertWrapper">
     <div id="alertContainer">
         <div id="alertForm_error">Please enter a valid email.</div>
@@ -82,13 +77,18 @@
         </div>
     </div>
 </div>
+{% endif %}
 
 <div class="resources-pad">
     <div class="alt-box">
         <div id="content" class="alt-box-pad">
+            <div id="resources-lightbox-count">
+                <span id="num-related-items-loading"></span><span id="num-related-items" class="{ number: 0 }"></span>
+                <br/>
+                <span class="count-label">Related Resources</span>
+            </div>
 {# if is_ajax #}{% endif %}
             <div id="resource-tabs" class="nootabs tag-resources-tabs { useCookies:false, defaultTab:1, useHash:false }">
-                
 <!-- *** Content Tabs *** -->
             <ul class="nootabs-menus">
                 <li id="over-tab"><a href="" rel="nofollow">Overview</a></li>

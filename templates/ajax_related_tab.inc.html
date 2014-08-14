@@ -5,6 +5,6 @@
     {% else %}
     {{ related_tag.name }}
     {% endifequal %}
-    {% if related_tag.is_favorite %}<a href="{% url delete_favorite node_id=related_tag.id %}" class="icon-star-whole icomoon-icon"></span></a>{% else %}<a href="{% url add_favorite node_id=related_tag.id %}" class="icon-star icomoon-icon"></span></a>{% endif %} {{ related_tag.is_favorite }}
+    {% if user.is_authenticated %}{% if related_tag.is_favorite %}<a href="{% url delete_favorite node_id=related_tag.id %}" class="icon-star-whole icomoon-icon"></span></a>{% else %}<a href="{% url add_favorite node_id=related_tag.id %}" class="icon-star icomoon-icon"></span></a>{% endif %} {% endif %}
 </p>
 {% endfor %}

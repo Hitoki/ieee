@@ -150,9 +150,9 @@ a.icon-star-whole {
     width: 128px;
     text-align: center;
     margin-top: 15px;
+    margin-bottom: 10px;
     font-size: 14pt;
     color: #FFFFFF;
-    margin-left: 23px;
     float: left;
     #num-related-items-loading {
         display: inline-block;
@@ -208,13 +208,15 @@ a.icon-star-whole {
 
 #lightbox .resources-lightbox-content .resources-pad .alt-box,
 #lightbox .resources-lightbox-content .resources-pad .alt-box #content,
-#lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs {
+#resource-tabs {
     height: 100%;
+    clear: both;
 }
 
-#lightbox .resources-lightbox-content .resources-pad .alt-box #content #resource-tabs .nootabs-selected-tab {
-    height: 100%;
+#lightbox .resources-lightbox-content .nootabs-selected-tab {
+    height: 435px;
     background-color: white;
+    margin-top: -55px;
 }
 
 #lightbox .resources-lightbox-content h1 {
@@ -499,10 +501,6 @@ margin-top: 0;
 
 #lightbox .tester-message-lightbox-content li {
    margin-left: 3em;
-}
-
-.nootabs-selected-tab div.group {
-    padding: 10px 15px 0 15px;
 }
 
 .overview-label {
