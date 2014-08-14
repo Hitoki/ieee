@@ -14,11 +14,11 @@
 		<p class="first">Click <span class="icon-cancel icomoon-icon"></span> to unsubscribe from alert.</p>
 		<ul class="topicList">
 			{% for alert in alerts %}
-			<li><a href="javascript:Tags.selectTag({{ alert.node.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ alert.node.name}}']);" rel="nofollow">{{ alert.node.name }}</a> <a href="/favorites/{{ topic.id }}/delete" class="icon-cancel icomoon-icon"></a></li>
+			<li><a href="javascript:Tags.selectTag({{ alert.node.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ alert.node.name}}']);" rel="nofollow">{{ alert.node.name }}</a> <a href="javascript:void();" class="icon-cancel unsubscribe icomoon-icon" data-nodeid="{{ alert.node.id }}"></a></li>
 			{% endfor %}
 		</ul>
 		{% else %}
-		You have not added any topics to your favorites. Click the <span class="icon-star icomoon-icon"></span> icon to add a topic to your favorites.
+		You are not subscribed to any alerts. Click the <span class="icon-alert icomoon-icon"></span> icon to subscribe to alerts.
 		{% endif %}
     </div>
     
@@ -33,7 +33,7 @@
 			{% endfor %}
 		</ul>
 		{% else %}
-		You have not added any topics to your favorites. Click the <span class="icon-star icomoon-icon"></span> icon to add a topic to your favorites.
+		You have not added any topics to your favorites. Click the <span class="icon-star -wholeicomoon-icon"></span> icon to add a topic to your favorites.
 		{% endif %}
     </div>
 
@@ -44,3 +44,23 @@
 
 </div>
 <div class="clearfix"></div>
+
+<script type="text/javascript">
+    $(function() {
+        var action;
+        $('.unsubscribe').click(function(){
+        	nodeid = $(this).data('nodeid');
+        	$(this).parent().remove();
+            $.post('/ajax/notification/request',
+                {
+                    email: '{{ user.email }}',
+                    nodeid: nodeid,
+                    action: 'disable'
+                },
+                function(){
+                    return false;
+                }
+            );
+        });
+    });
+</script>

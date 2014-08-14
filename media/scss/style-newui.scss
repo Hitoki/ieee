@@ -129,13 +129,20 @@ table.main {
         vertical-align: middle;
     }
 }
-.btn.startTour,
-.btn.help {
+.btn.startTour {
     background: $green;
     border: 1px solid $green;
     &:hover {
         color: $green;
         background: none repeat scroll 0 0 $white;
+    }
+}
+.btn.help {
+    background: #ffa500;
+    border: 1px solid #ffa500;
+    &:hover {
+        background: #FFFFFF;
+        color: #ffa500;
     }
 }
 .btn.join {
@@ -231,7 +238,7 @@ table.main {
         line-height: 1.5;
         position: absolute;
         top: -7px;
-        right: -11px;
+        right: -6px;
         background-color: #FFF;
         border: 1px solid #069;
         padding: 5px 10px;

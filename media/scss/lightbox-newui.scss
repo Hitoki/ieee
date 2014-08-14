@@ -144,24 +144,6 @@ input.text {
     margin-left: 25px;
 }
 
-a.icon-star-whole,
-.icon-alert {
-    text-decoration: none;
-    &:hover {
-        color: #FFD700;
-    }
-    &.enabled {
-        color: #FFD700;
-    }
-}
-
-.icon-alert {
-    font-size: 18px;
-    margin-left: 10px;
-    cursor: pointer;
-    vertical-align: middle;
-}
-
 .tag-icons {
     float: right;
     margin-right: 25px;
@@ -170,6 +152,22 @@ a.icon-star-whole,
     }
     a.icon-star-whole {
         font-size: 16px;
+    }
+    .icon-alert {
+        font-size: 18px;
+        margin-left: 10px;
+        cursor: pointer;
+        vertical-align: middle;
+    }
+    a.icon-star-whole,
+    .icon-alert {
+        text-decoration: none;
+        &:hover {
+            color: #FFD700;
+        }
+        &.enabled {
+            color: #FFD700;
+        }
     }
 }
 
