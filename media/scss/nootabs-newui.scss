@@ -290,7 +290,7 @@ div.nootabs-tab {
     padding-bottom: 1px;
 }
 
-#login-tabs li a {
+#login-tabs .nootabs-menus a {
    padding: 5px 20px;
    display: inline-block;
 }
@@ -315,4 +315,8 @@ div.nootabs-tab {
 
 #login-tabs ul.nootabs-menus {
    margin-bottom: -6px;
+}
+
+#account-tabs {
+    @extend #login-tabs;
 }
