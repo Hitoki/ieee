@@ -183,16 +183,21 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 LOGIN_REDIRECT_URL = '/'
 SOCIALACCOUNT_QUERY_EMAIL = True
 SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': ['https://www.googleapis.com/auth/userinfo.profile',
+                  'https://www.googleapis.com/auth/userinfo.email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+    },
     'facebook': {
         'SCOPE': ['email', 'publish_stream'],
         'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
         'METHOD': 'oauth2',
     },
-    'google': {
-        'SCOPE': ['https://www.googleapis.com/auth/userinfo.profile',
-                  'https://www.googleapis.com/auth/userinfo.email'],
-        'AUTH_PARAMS': {'access_type': 'online'},
-    }
+    'linkedin': {
+        'SCOPE': ['r_emailaddress'],
+        'PROFILE_FIELDS': ['id', 'first-name', 'last-name', 'email-address',
+                           'picture-url', 'public-profile-url'],
+    },
 }
 
 USE_SITEMINDER_LOGIN = False
