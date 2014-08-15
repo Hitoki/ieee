@@ -26,11 +26,8 @@
     position:absolute;
 }
 
-#lightbox .lightbox-content {
-}
-
-#lightbox .lightbox-content,
-#lightbox .lightbox-content .create-tag-lightbox
+.lightbox-content,
+.lightbox-content .create-tag-lightbox
 {
     width: 600px;
     margin: 0 auto;
@@ -228,7 +225,7 @@ input.text {
     height: 100%;
 }
 
-#lightbox .lightbox-close {
+.lightbox-close {
     margin: -20px 0 0 856px;
     position: absolute;
     z-index: 9999;
@@ -432,15 +429,19 @@ input.text {
     margin-right: 10px;
 }
 
-#lightbox .overview-video-lightbox-content {
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    background-color: #FFFFFF; /*Old blue*/
-    border:1px solid black;
+.your-account-lightbox-content,
+.overview-video-lightbox-content {
+    background-color: #FFFFFF;
+    border: 1px solid black;
     width: 512px;
     min-width: 512px;
     padding: 2em;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    .lightbox-close {
+        margin: -45px 0 0 520px;
+    }
 }
 
 .slidedeck-navBtns {
@@ -490,10 +491,6 @@ input.text {
     height: 20px;
     padding-left: 0;
     vertical-align: top;
-}
-
-#lightbox .overview-video-lightbox-content .lightbox-close {
-   margin: -45px 0 0 520px;
 }
 
 #lightbox .tester-message-lightbox-content {
