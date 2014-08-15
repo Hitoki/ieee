@@ -17,10 +17,10 @@
             nodeid = $(this).data('nodeid');
             if ($(this).hasClass('enabled')) {
                 action = 'disable';
-                $(this).removeClass('enabled');
+                $(this).removeClass('icon-star-whole enabled').addClass('icon-star');
             } else {
                 action = 'enable';
-                $(this).addClass('enabled');
+                $(this).removeClass('icon-star').addClass('icon-star-whole enabled');
             }
             $.post('/ajax/favorite-resource/request',
                 {
