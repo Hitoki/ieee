@@ -660,32 +660,4 @@ def debug_conf_apps_by_keyword(request, keyword_name):
     return render(request, "conference_application/list.html",
                   dict(keyword_name=keyword_name, items=items))
 
-
-@login_required
-def add_favorites(request, node_id):
-    member = User.objects.get(id=request.user.id)
-    
-    node = Node.objects.get(id=node_id)
-
-    try:
-        favorites = UserFavorites.objects.get(user=member)
-        favorites.favorites.add(node)
-    except UserFavorites.DoesNotExist:
-        favorites_form = UserFavoriteForm(data=request.POST)
-        favorites = favorites_form.save(commit=False)
-        favorites.user = member
-        favorites.save()
-        favorites.favorites.add(node)
-
-    return HttpResponseRedirect(reverse('index'))
-
-@login_required
-def delete_favorites(request, node_id):
-    member = request.user
-    member = User.objects.get(username=member)
-    favorites = UserFavorites.objects.get(user=member)
-    node = Node.objects.get(id=node_id)
-
-    favorites.favorites.remove(node)
-
     return HttpResponseRedirect(reverse('index'))

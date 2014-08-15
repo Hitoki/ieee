@@ -4,10 +4,10 @@
         <a href="http://ieee.org" rel="nofollow" style="float:right"><span class="sm-logo"></span></a>
         {% comment %}<span id="tagline">Connecting You to the IEEE Universe of Information</span>{% endcomment %}
         <div class="header-btns">{% spaceless %}
-            {% if not is_admin %}
+            {% if not tag %}
             {% comment %}<a href="http://www.ieee.org/membership_services/membership/join/index.html?WT.mc_id=u_join" class="btn join" target="_self" rel="nofollow">Join IEEE!</a>{% endcomment %}
             {% if user.is_authenticated %}
-            <div class="userMenu">
+            <span class="userMenu">
                 <span aria-hidden="true" class="icon-drop-arrow icomoon-icon"></span>{{ user.email }}
                 <ul> 
                     <li><span aria-hidden="true" class="icon-drop-arrow icomoon-icon"></span>{{ user.email }}</li>
@@ -15,12 +15,12 @@
                     <li><a href="/account/youraccount" class="lightbox {customClass: 'overview-video'}">Your Account</a></li>
                     <li><a href="{% url logout %}">Log Out</a></li>
                 </ul>
-            </div>
+            </span>
             {% else %}
             <a href="/account/signin" class="lightbox {customClass: 'overview-video'}" rel="nofollow"><span class="btn account">Sign In</span></a>{% comment %}<a href="/account/register" class="lightbox {customClass: 'overview-video'}" rel="nofollow"><span class="btn account">Register</span></a>{% endcomment %}
             {% endif %}
+            <a href="javascript:void(0)" class="btn startTour" rel="nofollow">Tour</a><a href="http://help.technav.systemicist.com/forums" target="_blank" class="btn help" rel="nofollow">Help</a>
             {% endif %}
-            {% if not tag %}<a href="javascript:void(0)" class="btn startTour" rel="nofollow" style="display:none">Tour</a><a href="http://help.technav.systemicist.com/forums" target="_blank" class="btn startTour" rel="nofollow" style="display:none; border-color: #ffa500; background-color: #ffa500">Help</a>{% endif %}
         {% endspaceless %}</div>
     </div>
     <div id="header-logo">

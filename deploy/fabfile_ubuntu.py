@@ -346,6 +346,9 @@ def checkout_site():
     if files.exists("%s/local_settings.py" % code_symlink):
         run('cp -p "%s/local_settings.py" "%s/"' % (code_symlink, env.site_code))
     
+    # Install package requirements
+    run('cd "%(site_home)s/python" && source bin/activate && cd "%(site_home)s/python/releases/current/ieeetags/" && pip install -r requirements.txt' % env)
+
     # Create log.txt
     run('touch %(site_code)s/log.txt' % env)
     run('chmod 666 %(site_code)s/log.txt' % env)

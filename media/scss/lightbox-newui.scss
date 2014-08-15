@@ -144,9 +144,35 @@ input.text {
     margin-left: 25px;
 }
 
-a.icon-star-whole,
-.icon-alert {
+.tag-icons {
+    float: right;
+    margin-right: 25px;
+    a {
+        color: #FFFFFF;
+    }
+    .icon-star-whole {
+        font-size: 16px;
+    }
+    .icon-alert {
+        font-size: 18px;
+        margin-left: 10px;
+        cursor: pointer;
+        vertical-align: middle;
+    }
+    .favorite,
+    .subscribe {
+        color: $white;
+        &:hover {
+            color: lighten(#FFD700, 40%);
+        }
+    }
+}
+
+.favorite,
+.subscribe {
     text-decoration: none;
+    color: $secondaryColor;
+    cursor: pointer;
     &:hover {
         color: #FFD700;
     }
@@ -155,23 +181,15 @@ a.icon-star-whole,
     }
 }
 
-.icon-alert {
-    font-size: 18px;
-    margin-left: 10px;
+.unfavorite,
+.unsubscribe {
+    text-decoration: none;
+    color: $secondaryColor;
     cursor: pointer;
-    vertical-align: middle;
-}
-
-.tag-icons {
-    float: right;
-    margin-right: 25px;
-    a {
-        color: #FFFFFF;
+    &:hover {
+        color: $linkColor-hover;
     }
-    a.icon-star-whole {
-        font-size: 16px;
-    }
-}
+} 
 
 #resources-lightbox-count {
     width: 128px;

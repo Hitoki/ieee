@@ -99,8 +99,7 @@ else:
         url(r'^logout/$', views.log_out, name='logout'),
 
         # Favorites
-        url(r'^favorites/(?P<node_id>\w+)/add/$', views.add_favorites, name='add_favorite'),
-        url(r'^favorites/(?P<node_id>\w+)/delete/$', views.delete_favorites, name='delete_favorite'),
+        url(r'^ajax/favorites/request$', ajax.ajax_favorite_request),
 
         url(r'^accounts/', include('allauth.urls')),
     )
