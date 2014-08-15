@@ -1,3 +1,5 @@
+{% load socialaccount %}
+
 <a class="lightbox-close"></a>
 <h2>Your Account</h2>
 
@@ -39,7 +41,31 @@
 
     <!-- Connected Accounts tab -->
     <div id="connectacct-tab" class="nootabs-tab">
-        You can add or remove your connected social media accounts:
+        You can remove your connected social media accounts:
+        {% get_social_accounts user as accounts %}
+        {% if accounts %}
+            <ul>
+            {% for key, values in accounts.items %}
+                <li>{{ key }} accounts:
+                    <ul>
+                    {% for account in values %}
+                        <li>{{ account.user.username }}</li>
+                    {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            There are no connected accounts (impossible situation)
+        {% endif %}
+
+        You can connect new social media accounts:
+        <div>
+            <a class="btn account" href="{% provider_login_url "google" process="connect" %}"><span class="icon-google icomoon-icon"></span>Sign In or Join with Google</a>
+    {#	    <a class="btn account" href="{% provider_login_url "facebook" process="connect" %}"><span class="icon-facebook icomoon-icon"></span>Sign In or Join with Facebook</a>#}
+            <a class="btn account" href="{% provider_login_url "linkedin_oauth2" process="connect" %}"><span class="icon-linkedin icomoon-icon"></span>Sign In or Join with LinkedIn</a>
+        </div>
+
     </div>
 
 </div>
