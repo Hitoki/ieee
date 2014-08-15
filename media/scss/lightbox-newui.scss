@@ -156,7 +156,8 @@ input.text {
         cursor: pointer;
         vertical-align: middle;
     }
-    .favorite,
+    .favorite-topic,
+    .favorite-resource,
     .subscribe {
         color: $white;
         &:hover {
@@ -165,7 +166,8 @@ input.text {
     }
 }
 
-.favorite,
+.favorite-topic,
+.favorite-resource,
 .subscribe {
     text-decoration: none;
     color: $secondaryColor;
@@ -178,7 +180,8 @@ input.text {
     }
 }
 
-.unfavorite,
+.unfavorite-topic,
+.unfavorite-resource,
 .unsubscribe {
     text-decoration: none;
     color: $secondaryColor;
