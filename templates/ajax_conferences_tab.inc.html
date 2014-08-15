@@ -42,14 +42,13 @@
                                 <li>
                                     {% if resource.url and resource.url_status != "bad" %}
                                     <a href="{{ resource.url }}" target="_blank" rel="nofollow">
-                                        {% endif %}
-                                        <p class="{% cycle 'item_odd' 'item_even' %}">
-                                            <span>{{resource.name}}</span>{% if resource.url and resource.url_status != "bad" %}<span class="popup newWinIcon"></span>{% endif %}{% if resource.is_machine_generated %}<span class="drive flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;"></span>{% endif %}
-                                        </p>
-                                        {% if resource.url and resource.url_status != "bad" %}
-                                    </a>
-                                    {% if user.is_authenticated %}{% if resource.is_favorite %}<span class="icon-star-whole favorite-resource enabled icomoon-icon" data-nodeid="{{ resource.id }}"></span>{% else %}<span class="icon-star-whole favorite-resource icomoon-icon" data-nodeid="{{ resource.id }}"></span>{% endif %}{% endif %}
                                     {% endif %}
+                                        <span>{{resource.name}}</span>{% if resource.url and resource.url_status != "bad" %}<span class="popup newWinIcon"></span>{% endif %}{% if resource.is_machine_generated %}<span class="drive flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;"></span>{% endif %}
+                                    {% if resource.url and resource.url_status != "bad" %}
+                                    </a>
+                                    {% endif %}
+                                    {% if user.is_authenticated %}{% if resource.is_favorite %}<span class="icon-star-whole favorite-resource enabled icomoon-icon" data-nodeid="{{ resource.id }}"></span>{% else %}<span class="icon-star favorite-resource icomoon-icon" data-nodeid="{{ resource.id }}"></span>{% endif %}{% endif %}
+                                    
                                     <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
                                     {% if resource.is_current_conference and resource.other_conferences|length %}
                                     <p class="more-conferences">

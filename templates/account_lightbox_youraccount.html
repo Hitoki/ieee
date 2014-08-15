@@ -13,7 +13,7 @@
     <!-- Alerts tab -->
     <div id="alerts-tab" class="nootabs-tab">
        {% if alerts %}
-		<p class="first">Click <span class="icon-cancel icomoon-icon"></span> to unsubscribe from alert.</p>
+		<p class="first">You will be emailed an alert at {{ user.email }} when a new resource as been associated to any of these topics you are subscribed to.</p>
 		<ul class="topicList">
 			{% for alert in alerts %}
 			<li><a href="javascript:Tags.selectTag({{ alert.node.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ alert.node.name}}']);" rel="nofollow">{{ alert.node.name }}</a> <span class="icon-cancel unsubscribe icomoon-icon" data-nodeid="{{ alert.node.id }}"></span></li>
@@ -27,7 +27,7 @@
     <!-- Favorites tab -->
     <div id="favorites-tab" class="nootabs-tab">
 		{% if favorite_topics or favorite_resources %}
-		<p class="first">Click <span class="icon-cancel icomoon-icon"></span> to remove from your favorites.</p>
+		<p class="first">By clicking the <span class="icon-star-whole icomoon-icon"></span> next to a topic or resource, it will be listed here for easy access later.</p>
 		<strong>Topics</strong><br/>
         <ul class="topicList">
 			{% for topic in favorite_topics %}

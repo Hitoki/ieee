@@ -295,8 +295,12 @@ input.text {
     display: none;
 }
 
-#lightbox .drive {
-    margin-left: 5px;
+.nootabs-tab {
+    .icon-star,
+    .icon-star-whole,
+    .drive {
+        margin-left: 5px;
+    }
 }
 
 #content .other-conferences p.desc_odd,
@@ -434,16 +438,15 @@ input.text {
 
 .your-account-lightbox-content,
 .overview-video-lightbox-content {
-    background-color: #FFFFFF;
-    border: 1px solid black;
+    background-color: $primaryColor;
     width: 512px;
     min-width: 512px;
     padding: 2em;
-    border-radius: 5px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
     .lightbox-close {
         margin: -45px 0 0 520px;
+    }
+    h2 {
+        color: $white;
     }
 }
 
