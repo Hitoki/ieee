@@ -11,6 +11,7 @@ import hotshot
 import os
 import time
 from allauth.socialaccount.models import SocialAccount
+from django.contrib.sites.models import Site
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
 import settings
@@ -665,4 +666,11 @@ def debug_conf_apps_by_keyword(request, keyword_name):
 
 def delete_user(request, user_id):
     User.objects.filter(id=user_id).delete()
+    return HttpResponse('deleted')
+
+def allauth_init(request):
+    site = Site.objects.filter(id=1)
+    site.name = 'newdev.systemicist.com'
+    site.domain = 'newdev.systemicist.com'
+    # todo
     return HttpResponse('deleted')

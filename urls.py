@@ -136,7 +136,9 @@ if settings.DEBUG:
             views.ConferenceApplicationCreateView.as_view(),
             name='create_conference_application'),
 
-        url(r'^debug/allauth/delete-user/(\d+)$',
-            views.delete_user,
-            name='create_conference_application'),
+        url(r'^debug/delete_user/(\d+)$',
+            views.delete_user),
+
+        url(r'^debug/allauth_init$',
+            views.allauth_init),
     )
