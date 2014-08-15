@@ -32,12 +32,15 @@
 			<li><a href="javascript:Tags.selectTag({{ topic.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);" rel="nofollow">{{ topic.name }}</a> <span class="icon-cancel unfavorite-topic icomoon-icon" data-nodeid="{{ topic.id }}"></span>
 			{% endfor %}
 		</ul>
-        <strong>Resources</strong><br/>
+        {% regroup favorite_resources by resource_type as favorite_resources %}
+        {% for resource_type in favorite_resources %}
+        <strong>{{ resource_type.grouper|title }}s</strong>
         <ul class="topicList">
-            {% for resource in favorite_resources %}
-            <li><a href="#" rel="nofollow">{{ resource.name }}</a> <span class="icon-cancel unfavorite-resource icomoon-icon" data-nodeid="{{ resource.id }}"></span>
+            {% for resource in resource_type.list %}
+            <li><a href="{{ resource.url }}" target="_blank" rel="nofollow">{{ resource.name }}<span class="popup newWinIcon"></span></a> <span class="icon-cancel unfavorite-resource icomoon-icon" data-nodeid="{{ resource.id }}"></span>
             {% endfor %}
         </ul>
+        {% endfor %}
 		{% else %}
 		You have not favorited any topics or resources. Click the <span class="icon-star -wholeicomoon-icon"></span> icon to add a topic to your favorites.
 		{% endif %}
