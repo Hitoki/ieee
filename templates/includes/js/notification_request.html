@@ -25,7 +25,7 @@
     $(function() {
         var action;
         var nodeid;
-        $('.favorite').click(function(){
+        $('.favorite-topic').click(function(){
             nodeid = $(this).data('nodeid');
             if ($(this).hasClass('enabled')) {
                 action = 'disable';
@@ -34,7 +34,7 @@
                 action = 'enable';
                 $(this).addClass('enabled');
             }
-            $.post('/ajax/favorites/request',
+            $.post('/ajax/favorite-topic/request',
                 {
                     nodeid: nodeid,
                     action: action

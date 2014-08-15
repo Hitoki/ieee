@@ -26,16 +26,25 @@
     
     <!-- Favorites tab -->
     <div id="favorites-tab" class="nootabs-tab">
-		{% if favorites %}
+		{% if favorite_topics or favorite_resources %}
 		<p class="first">Click <span class="icon-cancel icomoon-icon"></span> to remove from your favorites.</p>
-		<ul class="topicList">
-			<strong>Topics</strong><br/>
-			{% for topic in favorites %}
-			<li><a href="javascript:Tags.selectTag({{ topic.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);" rel="nofollow">{{ topic.name }}</a> <span class="icon-cancel unfavorite icomoon-icon" data-nodeid="{{ topic.id }}"></span>
+		<strong>Topics</strong><br/>
+        <ul class="topicList">
+			{% for topic in favorite_topics %}
+			<li><a href="javascript:Tags.selectTag({{ topic.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);" rel="nofollow">{{ topic.name }}</a> <span class="icon-cancel unfavorite-topic icomoon-icon" data-nodeid="{{ topic.id }}"></span>
 			{% endfor %}
 		</ul>
+        {% regroup favorite_resources by resource_type as favorite_resources %}
+        {% for resource_type in favorite_resources %}
+        <strong>{{ resource_type.grouper|title }}s</strong>
+        <ul class="topicList">
+            {% for resource in resource_type.list %}
+            <li><a href="{{ resource.url }}" target="_blank" rel="nofollow">{{ resource.name }}<span class="popup newWinIcon"></span></a> <span class="icon-cancel unfavorite-resource icomoon-icon" data-nodeid="{{ resource.id }}"></span>
+            {% endfor %}
+        </ul>
+        {% endfor %}
 		{% else %}
-		You have not added any topics to your favorites. Click the <span class="icon-star -wholeicomoon-icon"></span> icon to add a topic to your favorites.
+		You have not favorited any topics or resources. Click the <span class="icon-star -wholeicomoon-icon"></span> icon to add a topic to your favorites.
 		{% endif %}
     </div>
 
@@ -93,10 +102,27 @@
     $(function() {
     	var action;
         var nodeid;
-        $('.unfavorite').click(function(){
+        $('.unfavorite-topic').click(function(){
             nodeid = $(this).data('nodeid');
             $(this).parent().remove();
-            $.post('/ajax/favorites/request',
+            $.post('/ajax/favorite-topic/request',
+                {
+                    nodeid: nodeid,
+                    action: 'disable'
+                },
+                function(){
+                    return false;
+                }
+            );
+        });
+    });
+    $(function() {
+        var action;
+        var nodeid;
+        $('.unfavorite-resource').click(function(){
+            nodeid = $(this).data('nodeid');
+            $(this).parent().remove();
+            $.post('/ajax/favorite-resource/request',
                 {
                     nodeid: nodeid,
                     action: 'disable'

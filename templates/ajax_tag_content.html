@@ -63,9 +63,9 @@
     {% if user.is_authenticated %}
     <span class="tag-icons">
         {% if is_favorite %}
-        <span class="icon-star-whole favorite enabled icomoon-icon" data-nodeid="{{ tag.id }}"></span>
+        <span class="icon-star-whole favorite-topic enabled icomoon-icon" data-nodeid="{{ tag.id }}"></span>
         {% else %}
-        <span class="icon-star-whole favorite icomoon-icon" data-nodeid="{{ tag.id }}"></span>
+        <span class="icon-star-whole favorite-topic icomoon-icon" data-nodeid="{{ tag.id }}"></span>
         {% endif %}
         <span class="icon-alert subscribe icomoon-icon{% if enable_alerts %} enabled{% endif %}"></span>
     </span>{% endif %}

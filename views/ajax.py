@@ -372,6 +372,16 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
             periodicals.append(periodical)
 
         counts += len(periodicals)
+
+        member = request.user
+        for periodical in periodicals:
+            if request.user.is_authenticated():
+                member = User.objects.get(id=request.user.id)
+                is_favorite = UserFavorites.objects.filter(user=member).filter(resources=periodical).exists()
+            else:
+                is_favorite = False
+            periodical.is_favorite = is_favorite
+
         context['periodicals'] = periodicals
         tab_template = 'ajax_periodical_tab.inc.html'
         context['loaded'] = True
@@ -395,6 +405,16 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
                                   reverse=True))
         conferences = util.group_conferences_by_series(conferences)
         counts += len(conferences)
+
+        member = request.user
+        for conference in conferences:
+            if request.user.is_authenticated():
+                member = User.objects.get(id=request.user.id)
+                is_favorite = UserFavorites.objects.filter(user=member).filter(resources=conference).exists()
+            else:
+                is_favorite = False
+            conference.is_favorite = is_favorite
+
         context['conferences'] = conferences
         tab_template = 'ajax_conferences_tab.inc.html'
         context['loaded'] = True
@@ -459,7 +479,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         for related_tag in related_tags:
             if request.user.is_authenticated():
                 member = User.objects.get(id=request.user.id)
-                is_favorite = UserFavorites.objects.filter(user=member).filter(favorites=related_tag).exists()
+                is_favorite = UserFavorites.objects.filter(user=member).filter(topics=related_tag).exists()
             else:
                 is_favorite = False
             related_tag.is_favorite = is_favorite
@@ -478,7 +498,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
     # Determines if current tag is in user's list of favorites
     if request.user.is_authenticated():
         member = User.objects.get(id=request.user.id)
-        is_favorite = UserFavorites.objects.filter(user=member).filter(favorites=tag).exists()
+        is_favorite = UserFavorites.objects.filter(user=member).filter(topics=tag).exists()
     else:
         is_favorite = False
 
@@ -1161,7 +1181,7 @@ def ajax_notification_request(request):
 
 @csrf_exempt
 @login_required
-def ajax_favorite_request(request):
+def ajax_favorite_topic_request(request):
     action = request.POST['action']
     member = User.objects.get(id=request.user.id)
     node_id = request.POST['nodeid']
@@ -1169,17 +1189,42 @@ def ajax_favorite_request(request):
     if action == 'enable':
         try:
             favorites = UserFavorites.objects.get(user=member)
-            favorites.favorites.add(node)
+            favorites.topics.add(node)
         except UserFavorites.DoesNotExist:
             favorites_form = UserFavoriteForm(data=request.POST)
             favorites = favorites_form.save(commit=False)
             favorites.user = member
             favorites.save()
-            favorites.favorites.add(node)
+            favorites.topics.add(node)
         return HttpResponse('success')
     elif action == 'disable':
         favorites = UserFavorites.objects.get(user=member)
-        favorites.favorites.remove(node)
+        favorites.topics.remove(node)
+        return HttpResponse('success')
+    else:
+        return HttpResponse('failure')
+
+@csrf_exempt
+@login_required
+def ajax_favorite_resource_request(request):
+    action = request.POST['action']
+    node_id = request.POST['nodeid']
+    member = User.objects.get(id=request.user.id)
+    node = Resource.objects.get(id=node_id)
+    if action == 'enable':
+        try:
+            favorites = UserFavorites.objects.get(user=member)
+            favorites.resources.add(node)
+        except UserFavorites.DoesNotExist:
+            favorites_form = UserFavoriteForm(data=request.POST)
+            favorites = favorites_form.save(commit=False)
+            favorites.user = member
+            favorites.save()
+            favorites.resources.add(node)
+        return HttpResponse('success')
+    elif action == 'disable':
+        favorites = UserFavorites.objects.get(user=member)
+        favorites.resources.remove(node)
         return HttpResponse('success')
     else:
         return HttpResponse('failure')
@@ -1509,14 +1554,17 @@ def ajax_account(request, account_step):
         member = request.user
         try:
             user_favorites = UserFavorites.objects.get(user=member)
-            favorites = user_favorites.favorites.all()
+            favorite_topics = user_favorites.topics.all()
+            favorite_resources = user_favorites.resources.all()
             alerts = ResourceAdditionNotificationRequest.objects.filter(email=member.email).all()
         except UserFavorites.DoesNotExist:
-            favorites = ''
+            favorite_topics = ''
+            favorite_resources = ''
             alerts = ''
 
         context_dict = {
-            'favorites': favorites,
+            'favorite_topics': favorite_topics,
+            'favorite_resources': favorite_resources,
             'alerts': alerts
         }
 
