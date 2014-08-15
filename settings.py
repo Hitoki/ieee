@@ -151,6 +151,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.linkedin_oauth2',
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -198,6 +199,17 @@ SOCIALACCOUNT_PROVIDERS = {
         'PROFILE_FIELDS': ['id', 'first-name', 'last-name', 'email-address',
                            'picture-url', 'public-profile-url'],
     },
+}
+
+SOCIALACCOUNT_KEYS = {
+    'google': {
+        'client_id': '769505530548-k75b93tfttmhaojb1vf3btca36dljjrd.apps.googleusercontent.com',
+        'secret': '_UrMw6FDhYpiUuw3MWsJzWH5',
+    },
+    'linkedin_oauth2': {
+        'client_id': '77b5n1cbs93nzw',
+        'secret': 'B9HdT4f7VSoV0T8J',
+    }
 }
 
 USE_SITEMINDER_LOGIN = False
