@@ -10,6 +10,7 @@ import urllib2
 import hotshot
 import os
 import time
+from allauth.socialaccount.models import SocialAccount
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
 import settings
@@ -659,5 +660,9 @@ def debug_conf_apps_by_keyword(request, keyword_name):
     items = keyword.conference_applications.all()
     return render(request, "conference_application/list.html",
                   dict(keyword_name=keyword_name, items=items))
+    # return HttpResponseRedirect(reverse('index'))
 
-    return HttpResponseRedirect(reverse('index'))
+
+def delete_user(request, user_id):
+    User.objects.filter(id=user_id).delete()
+    return HttpResponse('deleted')
