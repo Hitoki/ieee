@@ -355,6 +355,16 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
             standards.append(standard)
 
         counts += len(standards)
+
+        member = request.user
+        for standard in standards:
+            if request.user.is_authenticated():
+                member = User.objects.get(id=request.user.id)
+                is_favorite = UserFavorites.objects.filter(user=member).filter(resources=standard).exists()
+            else:
+                is_favorite = False
+            standard.is_favorite = is_favorite
+
         context['standards'] = standards
         tab_template = 'ajax_standard_tab.inc.html'
         context['loaded'] = True
