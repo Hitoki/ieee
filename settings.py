@@ -201,6 +201,17 @@ SOCIALACCOUNT_PROVIDERS = {
     },
 }
 
+SOCIALACCOUNT_KEYS = {
+    'google': {
+        'client_id': '769505530548-k75b93tfttmhaojb1vf3btca36dljjrd.apps.googleusercontent.com',
+        'secret': '_UrMw6FDhYpiUuw3MWsJzWH5',
+    },
+    'linkedin_oauth2': {
+        'client_id': '77b5n1cbs93nzw',
+        'secret': 'B9HdT4f7VSoV0T8J',
+    }
+}
+
 USE_SITEMINDER_LOGIN = False
 'If True application authorizes users against IEEE SiteMinder database. Otherwise use local database.'
 
