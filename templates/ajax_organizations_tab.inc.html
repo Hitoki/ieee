@@ -9,12 +9,35 @@
             $('#num-related-items').metadata().number = count;      
         }
     });
+    $(function() {
+        var action;
+        var nodeid;
+        $('.favorite-society').on('click', function(){
+            nodeid = $(this).data('nodeid');
+            if ($(this).hasClass('enabled')) {
+                action = 'disable';
+                $(this).removeClass('icon-star-whole enabled').addClass('icon-star');
+            } else {
+                action = 'enable';
+                $(this).removeClass('icon-star').addClass('icon-star-whole enabled');
+            }
+            $.post('/ajax/favorite-society/request',
+                {
+                    nodeid: nodeid,
+                    action: action,
+                },
+                function(){
+                    return false;
+                }
+            );
+        });
+    });
 </script>            
                     <div class="group">
                             {% if loaded %}                  
                                 {% if societies.all %}
                                 <table class="society-images">
-                                    {% for society in societies.all %}
+                                    {% for society in societies %}
                                     <tr>
                                         <td class="society-logo">
                                             {% if society.logo_thumbnail %}
@@ -34,6 +57,7 @@
                                                 <span>{{ society.name }} ({{ society.abbreviation }})</span>{% if society.url %}<span class="popup newWinIcon"></span>{% if society.node_society.is_machine_generated %}<span class="drive flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;"></span>{% endif %}{% endif %}
                                                 {% if society.url %}
                                             </a>
+                                            {% if user.is_authenticated %}{% if society.is_favorite %}<span class="icon-star-whole favorite-society enabled icomoon-icon" data-nodeid="{{ society.id }}"></span>{% else %}<span class="icon-star favorite-society icomoon-icon" data-nodeid="{{ society.id }}"></span>{% endif %}{% endif %}
                                             <br/>
                                             <span>
                                                 {{ society.description }}

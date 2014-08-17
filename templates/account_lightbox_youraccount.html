@@ -28,6 +28,12 @@
     <div id="favorites-tab" class="nootabs-tab">
 		{% if favorite_topics or favorite_resources %}
 		<p class="first">By clicking the <span class="icon-star-whole icomoon-icon"></span> next to a topic or resource, it will be listed here for easy access later.</p>
+        <strong>IEEE Organizations</strong><br/>
+        <ul class="topicList">
+            {% for society in favorite_societies %}
+            <li><a href="javascript:Tags.selectTag({{ society.id }});" rel="nofollow">{{ society.name }}</a> <span class="icon-cancel unfavorite-society icomoon-icon" data-nodeid="{{ society.id }}"></span>
+            {% endfor %}
+        </ul>
 		<strong>Topics</strong><br/>
         <ul class="topicList">
 			{% for topic in favorite_topics %}
@@ -123,6 +129,23 @@
             nodeid = $(this).data('nodeid');
             $(this).parent().remove();
             $.post('/ajax/favorite-resource/request',
+                {
+                    nodeid: nodeid,
+                    action: 'disable'
+                },
+                function(){
+                    return false;
+                }
+            );
+        });
+    });
+    $(function() {
+        var action;
+        var nodeid;
+        $('.unfavorite-society').click(function(){
+            nodeid = $(this).data('nodeid');
+            $(this).parent().remove();
+            $.post('/ajax/favorite-society/request',
                 {
                     nodeid: nodeid,
                     action: 'disable'

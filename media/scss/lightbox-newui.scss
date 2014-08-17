@@ -159,6 +159,7 @@ input.text {
     }
     .favorite-topic,
     .favorite-resource,
+    .favorite-society,
     .subscribe {
         color: $white;
         &:hover {
@@ -169,6 +170,7 @@ input.text {
 
 .favorite-topic,
 .favorite-resource,
+.favorite-society,
 .subscribe {
     text-decoration: none;
     color: $secondaryColor;
@@ -183,6 +185,7 @@ input.text {
 
 .unfavorite-topic,
 .unfavorite-resource,
+.unfavorite-society,
 .unsubscribe {
     text-decoration: none;
     color: $secondaryColor;

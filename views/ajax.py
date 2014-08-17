@@ -434,6 +434,16 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         # Hide the TAB society.
         societies = societies.exclude(abbreviation='tab')
         counts += societies.count()
+
+        member = request.user
+        for society in societies:
+            if request.user.is_authenticated():
+                member = User.objects.get(id=request.user.id)
+                is_favorite = UserFavorites.objects.filter(user=member).filter(societies=society).exists()
+            else:
+                is_favorite = False
+            society.is_favorite = is_favorite
+
         context['societies'] = societies
         tab_template = 'ajax_organizations_tab.inc.html'
         context['loaded'] = True
@@ -1249,6 +1259,31 @@ def ajax_favorite_resource_request(request):
     else:
         return HttpResponse('failure')
 
+@csrf_exempt
+@login_required
+def ajax_favorite_societies_request(request):
+    action = request.POST['action']
+    node_id = request.POST['nodeid']
+    member = User.objects.get(id=request.user.id)
+    node = Society.objects.get(id=node_id)
+    if action == 'enable':
+        try:
+            favorites = UserFavorites.objects.get(user=member)
+            favorites.societies.add(node)
+        except UserFavorites.DoesNotExist:
+            favorites_form = UserFavoriteForm(data=request.POST)
+            favorites = favorites_form.save(commit=False)
+            favorites.user = member
+            favorites.save()
+            favorites.societies.add(node)
+        return HttpResponse('success')
+    elif action == 'disable':
+        favorites = UserFavorites.objects.get(user=member)
+        favorites.societies.remove(node)
+        return HttpResponse('success')
+    else:
+        return HttpResponse('failure')
+
 @login_required
 def tooltip(request, tag_id=None):
     'Returns the AJAX content for the tag tooltip/flyover in textui.'
@@ -1576,6 +1611,7 @@ def ajax_account(request, account_step):
             user_favorites = UserFavorites.objects.get(user=member)
             favorite_topics = user_favorites.topics.all()
             favorite_resources = user_favorites.resources.all()
+            favorite_societies = user_favorites.societies.all()
             alerts = ResourceAdditionNotificationRequest.objects.filter(email=member.email).all()
         except UserFavorites.DoesNotExist:
             favorite_topics = ''
@@ -1585,6 +1621,7 @@ def ajax_account(request, account_step):
         context_dict = {
             'favorite_topics': favorite_topics,
             'favorite_resources': favorite_resources,
+            'favorite_societies': favorite_societies,
             'alerts': alerts
         }
 

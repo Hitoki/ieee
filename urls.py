@@ -101,6 +101,7 @@ else:
         # Favorites
         url(r'^ajax/favorite-topic/request$', ajax.ajax_favorite_topic_request),
         url(r'^ajax/favorite-resource/request$', ajax.ajax_favorite_resource_request),
+        url(r'^ajax/favorite-society/request$', ajax.ajax_favorite_societies_request),
 
         url(r'^accounts/', include('allauth.urls')),
     )
