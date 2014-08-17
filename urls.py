@@ -96,6 +96,7 @@ else:
 
         # Account
         url(r'^account/(?P<account_step>\w+)/$', ajax.ajax_account, name='ajax_account'),
+        url(r'^ajax/favorite_list$', ajax.ajax_favorite_list),
         url(r'^logout/$', views.log_out, name='logout'),
 
         # Favorites

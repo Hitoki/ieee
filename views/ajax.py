@@ -559,6 +559,25 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         # return the specific tab's template
         return render(request, tab_template, context)
 
+def ajax_favorite_list(request):
+    member = request.user
+    try:
+        user_favorites = UserFavorites.objects.get(user=member)
+        favorite_topics = user_favorites.topics.all()
+        favorite_resources = user_favorites.resources.all()
+        favorite_societies = user_favorites.societies.all()
+    except UserFavorites.DoesNotExist:
+        favorite_topics = ''
+        favorite_resources = ''
+        favorite_societies = ''
+
+    context_dict = {
+        'favorite_topics': favorite_topics,
+        'favorite_resources': favorite_resources,
+        'favorite_societies': favorite_societies,
+    }
+
+    return render(request, 'youraccount_favorites.inc.html', context_dict)
 
 #@login_required
 #def ajax_term_content(request, term_id, ui=None):
@@ -1608,20 +1627,11 @@ def ajax_account(request, account_step):
     elif step == 'youraccount':
         member = request.user
         try:
-            user_favorites = UserFavorites.objects.get(user=member)
-            favorite_topics = user_favorites.topics.all()
-            favorite_resources = user_favorites.resources.all()
-            favorite_societies = user_favorites.societies.all()
             alerts = ResourceAdditionNotificationRequest.objects.filter(email=member.email).all()
         except UserFavorites.DoesNotExist:
-            favorite_topics = ''
-            favorite_resources = ''
             alerts = ''
 
         context_dict = {
-            'favorite_topics': favorite_topics,
-            'favorite_resources': favorite_resources,
-            'favorite_societies': favorite_societies,
             'alerts': alerts
         }
 
