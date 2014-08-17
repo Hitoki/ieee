@@ -39,17 +39,10 @@
                             {% if loaded %}
                                 {% if conferences|length %}
                                 {% for resource in conferences %}
-                                <li>
-                                    {% if resource.url and resource.url_status != "bad" %}
-                                    <a href="{{ resource.url }}" target="_blank" rel="nofollow">
-                                    {% endif %}
-                                        <span>{{resource.name}}</span>{% if resource.url and resource.url_status != "bad" %}<span class="popup newWinIcon"></span>{% endif %}{% if resource.is_machine_generated %}<span class="drive flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;"></span>{% endif %}
-                                    {% if resource.url and resource.url_status != "bad" %}
-                                    </a>
-                                    {% endif %}
-                                    {% if user.is_authenticated %}<span class="{% if resource.is_favorite %}icon-star-whole enabled{% else %}icon-star{% endif %} favorite-resource icomoon-icon" data-nodeid="{{ resource.id }}"></span>{% endif %}
-                                    
-                                    <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
+                                <li class="{% cycle 'desc_odd' 'desc_even' %}">
+                                    {% spaceless %}{% if user.is_authenticated %}<span class="{% if resource.is_favorite %}icon-star-whole enabled{% else %}icon-star{% endif %} favorite-resource icomoon-icon" data-nodeid="{{ resource.id }}"></span>{% endif %}
+                                    {% if resource.url and resource.url_status != "bad" %}<a href="{{ resource.url }}" target="_blank" rel="nofollow">{% endif %}{{resource.name}} {% if resource.url and resource.url_status != "bad" %}<span class="popup newWinIcon"></span>{% endif %}{% if resource.is_machine_generated %}<span class="drive flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;"></span>{% endif %}{% if resource.url and resource.url_status != "bad" %}</a>{% endif %}{% endspaceless %}
+                                    <p class="auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
                                     {% if resource.is_current_conference and resource.other_conferences|length %}
                                     <p class="more-conferences">
                                         <a href="#" id="show-other-conferences-{{ resource.id }}" class="show-other-conferences {id: {{ resource.id }}}" rel="nofollow">

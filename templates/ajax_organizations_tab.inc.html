@@ -50,20 +50,20 @@
                                             </div>
                                             {% endif %}
                                         </td>
-                                        <td>
+                                        <td>{% spaceless %}
+                                            {% if user.is_authenticated %}<span class="{% if society.is_favorite %}icon-star-whole enabled{% else %}icon-star{% endif %} favorite-society icomoon-icon" data-nodeid="{{ society.id }}"></span>{% endif %}
                                             {% if society.url %}
                                             <a href="{{ society.url }}" target="_blank" rel="nofollow">
-                                                {% endif %}
-                                                <span>{{ society.name }} ({{ society.abbreviation }})</span>{% if society.url %}<span class="popup newWinIcon"></span>{% if society.node_society.is_machine_generated %}<span class="drive flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;"></span>{% endif %}{% endif %}
-                                                {% if society.url %}
+                                            {% endif %}
+                                                {{ society.name }} ({{ society.abbreviation }}){% if society.url %} <span class="popup newWinIcon"></span>{% endif %}{% if society.node_society.is_machine_generated %}<span class="drive flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;"></span>{% endif %}
+                                            {% if society.url %}
                                             </a>
-                                            {% if user.is_authenticated %}<span class="{% if society.is_favorite %}icon-star-whole enabled{% else %}icon-star{% endif %} favorite-society icomoon-icon" data-nodeid="{{ society.id }}"></span>{% endif %}
+                                            {% endif %}
                                             <br/>
                                             <span>
                                                 {{ society.description }}
                                             </span>
-                                            {% endif %}
-                                        </td>
+                                        {% endspaceless %}</td>
                                     </tr>    
                                     {% endfor %}
                                 </table>

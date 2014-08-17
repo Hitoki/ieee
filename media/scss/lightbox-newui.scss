@@ -299,9 +299,11 @@ input.text {
     display: none;
 }
 
-.resources-lightbox-content {
+.resources-lightbox-content .nootabs-tab {
     .icon-star,
-    .icon-star-whole,
+    .icon-star-whole, {
+        margin-right: 5px;
+    }
     .drive {
         margin-left: 5px;
     }
