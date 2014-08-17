@@ -1781,10 +1781,18 @@ ul.errors {
     color: $white;
 }
   
-div.group ul li {
-    list-style-type: none;
-    margin: 20px 0;
-    padding: 0;
+div.group {
+    p {
+        margin: 0;
+    }
+    li {
+        list-style-type: none;
+        margin: 20px 0;
+        padding: 0;
+        li {
+            margin: 0;
+        }
+    }
 }
   
 div.group ul li:first-child {

@@ -587,6 +587,10 @@ margin-top: 0;
     top: 15px !important;
 }
 
+ul#overview-list {
+    line-height: 1.5;
+}
+
 #xplore-overview-loading {
     float: left;
     height: 16px;
@@ -674,8 +678,16 @@ margin-top: 0;
     margin-top: 32px;
 }
 
-#authors-results-container .print-resource {
-    text-align: left;
+#authors-results-container {
+    .print-resource {
+        text-align: left;
+    }
+    li {
+        margin: 0;
+    }
+    ul {
+        line-height: 1.5;
+    }
 }
 
 #xplore-results-container div.group ul {

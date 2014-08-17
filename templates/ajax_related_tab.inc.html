@@ -1,10 +1,12 @@
+<ul>
 {% for related_tag in related_tags %}
-<p class="{% cycle 'item_odd' 'item_even' %}">{% spaceless %}
+<li class="{% cycle 'item_odd' 'item_even' %}">{% spaceless %}
 	{% if user.is_authenticated %}<span class="{% if related_tag.is_favorite %}icon-star-whole enabled{% else %}icon-star{% endif %} favorite-topic icomoon-icon" data-nodeid="{{ related_tag.id }}"></span>{% endif %}
     {% ifequal ui "textui" %}
     <a href="javascript:Tags.selectTag({{ related_tag.id }});" rel="nofollow">{{ related_tag.name }}</a>
     {% else %}
     {{ related_tag.name }}
     {% endifequal %}{% endspaceless %}
-</p>
+</li>
 {% endfor %}
+</ul>
