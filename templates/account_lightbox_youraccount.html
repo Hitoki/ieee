@@ -26,20 +26,25 @@
     
     <!-- Favorites tab -->
     <div id="favorites-tab" class="nootabs-tab">
-		{% if favorite_topics or favorite_resources %}
+		{% if favorite_topics or favorite_resources or favorite_societies %}
 		<p class="first">By clicking the <span class="icon-star-whole icomoon-icon"></span> next to a topic or resource, it will be listed here for easy access later.</p>
+        {% if favorite_societies %}
         <strong>IEEE Organizations</strong><br/>
         <ul class="topicList">
             {% for society in favorite_societies %}
             <li><a href="{{ society.url }}" rel="nofollow">{{ society.name }}</a> <span class="icon-cancel unfavorite-society icomoon-icon" data-nodeid="{{ society.id }}"></span>
             {% endfor %}
         </ul>
+        {% endif %}
+        {% if favorite_topics %}
 		<strong>Topics</strong><br/>
         <ul class="topicList">
 			{% for topic in favorite_topics %}
 			<li><a href="javascript:Tags.selectTag({{ topic.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);" rel="nofollow">{{ topic.name }}</a> <span class="icon-cancel unfavorite-topic icomoon-icon" data-nodeid="{{ topic.id }}"></span>
 			{% endfor %}
 		</ul>
+        {% endif %}
+        {% if favorite_resources %}
         {% regroup favorite_resources by resource_type as favorite_resources %}
         {% for resource_type in favorite_resources %}
         <strong>{{ resource_type.grouper|title }}s</strong>
@@ -49,8 +54,9 @@
             {% endfor %}
         </ul>
         {% endfor %}
+        {% endif %}
 		{% else %}
-		You have not favorited any topics or resources. Click the <span class="icon-star -wholeicomoon-icon"></span> icon to add a topic to your favorites.
+		You do not have any favorites. Click the <span class="icon-star -wholeicomoon-icon"></span> icon for topics, resources, or organizations to list here for easy access later.
 		{% endif %}
     </div>
 
@@ -144,13 +150,13 @@
         var nodeid;
         $('.unfavorite-society').click(function(){
             nodeid = $(this).data('nodeid');
-            $(this).parent().remove();
             $.post('/ajax/favorite-society/request',
                 {
                     nodeid: nodeid,
                     action: 'disable'
                 },
                 function(){
+                    $('#lightbox').load("/account/youraccount/");
                     return false;
                 }
             );
