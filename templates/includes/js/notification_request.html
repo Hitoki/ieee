@@ -30,9 +30,11 @@
             if ($(this).hasClass('enabled')) {
                 action = 'disable';
                 $(this).removeClass('icon-star-whole enabled').addClass('icon-star');
+                $(this).siblings('.icon-alert').addClass('hidden').removeClass('enabled');
             } else {
                 action = 'enable';
                 $(this).removeClass('icon-star').addClass('icon-star-whole enabled');
+                $(this).siblings('.icon-alert').removeClass('hidden');
             }
             $.post('/ajax/favorite-topic/request',
                 {

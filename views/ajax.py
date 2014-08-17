@@ -577,6 +577,9 @@ def ajax_favorite_list(request):
         'favorite_societies': favorite_societies,
     }
 
+    for topic in favorite_topics:
+        topic.has_alert = ResourceAdditionNotificationRequest.objects.filter(email=member.email).filter(node_id=topic).exists()
+
     return render(request, 'youraccount_favorites.inc.html', context_dict)
 
 #@login_required
@@ -1249,6 +1252,9 @@ def ajax_favorite_topic_request(request):
     elif action == 'disable':
         favorites = UserFavorites.objects.get(user=member)
         favorites.topics.remove(node)
+        email = member.email
+        notifyRecord = ResourceAdditionNotificationRequest.objects.filter(node_id=node).get(email=email)
+        notifyRecord.delete()
         return HttpResponse('success')
     else:
         return HttpResponse('failure')
@@ -1625,21 +1631,7 @@ def ajax_account(request, account_step):
     elif step == 'register':
         return render(request, 'account_lightbox_register.html')
     elif step == 'youraccount':
-        member = request.user
-        try:
-            alerts = ResourceAdditionNotificationRequest.objects.filter(email=member.email).all()
-        except UserFavorites.DoesNotExist:
-            alerts = ''
-
-        context_dict = {
-            'alerts': alerts
-        }
-
-        for alert in alerts:
-            node_id = alert.node_id
-            alert.node = Node.objects.get(id=node_id)
-
-        return render(request, 'account_lightbox_youraccount.html', context_dict)
+        return render(request, 'account_lightbox_youraccount.html')
 
 def ajax_video(request):
     'Returns the HTML content for the flash video.'

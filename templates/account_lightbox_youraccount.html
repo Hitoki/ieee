@@ -5,24 +5,9 @@
 
 <div id="account-tabs" class="nootabs {useCookies:false, useHash:false}">
     <ul class="nootabs-menus">
-        <li><a href="">Alerts</a></li>
         <li><a href="">Favorites</a></li>
         <li class="last-menu"><a href="">Connected Accounts</a></li>
     </ul>
-
-    <!-- Alerts tab -->
-    <div id="alerts-tab" class="nootabs-tab">
-       {% if alerts %}
-		<p class="first">You will be emailed an alert at {{ user.email }} when a new resource as been associated to any of these topics you are subscribed to.</p>
-		<ul class="topicList">
-			{% for alert in alerts %}
-			<li><a href="javascript:Tags.selectTag({{ alert.node.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ alert.node.name}}']);" rel="nofollow">{{ alert.node.name }}</a> <span class="icon-cancel unsubscribe icomoon-icon" data-nodeid="{{ alert.node.id }}"></span></li>
-			{% endfor %}
-		</ul>
-		{% else %}
-		You are not subscribed to any alerts. Click the <span class="icon-alert icomoon-icon"></span> icon to subscribe to alerts.
-		{% endif %}
-    </div>
     
     <!-- Favorites tab -->
     <div id="favorites-tab" class="nootabs-tab"></div>
@@ -61,22 +46,4 @@
 
 <script type="text/javascript">
     $('#favorites-tab').load('/ajax/favorite_list');
-    $(function() {
-        var action;
-        var nodeid;
-        $('.unsubscribe').click(function(){
-        	nodeid = $(this).data('nodeid');
-        	$(this).parent().remove();
-            $.post('/ajax/notification/request',
-                {
-                    email: '{{ user.email }}',
-                    nodeid: nodeid,
-                    action: 'disable'
-                },
-                function(){
-                    return false;
-                }
-            );
-        });
-    });
 </script>

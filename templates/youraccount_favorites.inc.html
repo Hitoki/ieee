@@ -12,7 +12,7 @@
 <strong>Topics</strong><br/>
 <ul class="topicList">
 	{% for topic in favorite_topics %}
-	<li><a href="javascript:Tags.selectTag({{ topic.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);" rel="nofollow">{{ topic.name }}</a> <span class="icon-cancel unfavorite-topic icomoon-icon" data-nodeid="{{ topic.id }}"></span>
+	<li><a href="javascript:Tags.selectTag({{ topic.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);" rel="nofollow">{{ topic.name }}</a> {% if topic.has_alert %}<span class="icon-alert unsubscribe icomoon-icon" data-nodeid="{{ topic.id }}"></span>{% endif %} <span class="icon-cancel unfavorite-topic icomoon-icon" data-nodeid="{{ topic.id }}"></span></li>
 	{% endfor %}
 </ul>
 {% endif %}
@@ -32,6 +32,24 @@ You do not have any favorites. Click the <span class="icon-star -wholeicomoon-ic
 {% endif %}
 
 <script type="text/javascript">
+    $(function() {
+        var action;
+        var nodeid;
+        $('.unsubscribe').click(function(){
+            nodeid = $(this).data('nodeid');
+            $.post('/ajax/notification/request',
+                {
+                    email: '{{ user.email }}',
+                    nodeid: nodeid,
+                    action: 'disable'
+                },
+                function(){
+                    $('#favorites-tab').load('/ajax/favorite_list');
+                    return false;
+                }
+            );
+        });
+    });
     $(function() {
         var action;
         var nodeid;

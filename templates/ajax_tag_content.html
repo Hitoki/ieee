@@ -67,7 +67,7 @@
         {% else %}
         <span class="icon-star-whole favorite-topic icomoon-icon" data-nodeid="{{ tag.id }}"></span>
         {% endif %}
-        <span class="icon-alert subscribe icomoon-icon{% if enable_alerts %} enabled{% endif %}"></span>
+        <span class="icon-alert subscribe icomoon-icon{% if enable_alerts %} enabled{% endif %} {% if not is_favorite %}hidden{% endif %}"></span>
     </span>{% endif %}
 {% endspaceless %}</div>
 
