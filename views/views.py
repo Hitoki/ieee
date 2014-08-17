@@ -620,7 +620,7 @@ def get_jobs_info(tag, offset=None):
     for job in jobs:
         jobsHtml = jobsHtml + \
                    '<a href="%(Url)s" target="_blank" class="featured">' \
-                   '%(JobTitle)s <span class="popup newWinIcon"></span></a> ' \
+                   '%(JobTitle)s<span class="popup newWinIcon"></span></a>' \
                    '%(Company)s<br>\n' % job
 
     file1 = None
