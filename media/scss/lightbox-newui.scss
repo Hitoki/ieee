@@ -300,7 +300,13 @@ input.text {
 }
 
 .resources-lightbox-content .nootabs-tab {
-    .icon-star,
+    .icon-star {
+        margin-right: 5px;
+        color: $medium-gray;
+        &:hover {
+            color: #FFD700;
+        }
+    }
     .icon-star-whole, {
         margin-right: 5px;
     }
