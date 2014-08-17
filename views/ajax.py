@@ -1253,8 +1253,8 @@ def ajax_favorite_topic_request(request):
         favorites = UserFavorites.objects.get(user=member)
         favorites.topics.remove(node)
         email = member.email
-        notifyRecord = ResourceAdditionNotificationRequest.objects.filter(node_id=node).get(email=email)
-        notifyRecord.delete()
+        if ResourceAdditionNotificationRequest.objects.filter(node_id=node).filter(email=email).exists():
+            ResourceAdditionNotificationRequest.objects.filter(node_id=node).get(email=email).delete()
         return HttpResponse('success')
     else:
         return HttpResponse('failure')
