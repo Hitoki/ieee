@@ -31,7 +31,7 @@
         <strong>IEEE Organizations</strong><br/>
         <ul class="topicList">
             {% for society in favorite_societies %}
-            <li><a href="javascript:Tags.selectTag({{ society.id }});" rel="nofollow">{{ society.name }}</a> <span class="icon-cancel unfavorite-society icomoon-icon" data-nodeid="{{ society.id }}"></span>
+            <li><a href="{{ society.url }}" rel="nofollow">{{ society.name }}</a> <span class="icon-cancel unfavorite-society icomoon-icon" data-nodeid="{{ society.id }}"></span>
             {% endfor %}
         </ul>
 		<strong>Topics</strong><br/>
