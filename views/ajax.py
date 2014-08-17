@@ -450,6 +450,16 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
             ebooks.append(ebook)
 
         counts += len(ebooks)
+
+        member = request.user
+        for ebook in ebooks:
+            if request.user.is_authenticated():
+                member = User.objects.get(id=request.user.id)
+                is_favorite = UserFavorites.objects.filter(user=member).filter(resources=ebook).exists()
+            else:
+                is_favorite = False
+            ebook.is_favorite = is_favorite
+
         context['ebooks'] = ebooks
         tab_template = 'ajax_ebook_results.inc.html'
         context['loaded'] = True
