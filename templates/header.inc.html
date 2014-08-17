@@ -12,12 +12,12 @@
                 <ul> 
                     <li><span aria-hidden="true" class="icon-drop-arrow icomoon-icon"></span>{{ user.email }}</li>
                     {% if user.is_superuser %}<li><a href="{% url admin_home %}" rel="nofollow">Admin</a></li>{% endif %}
-                    <li><a href="/account/youraccount" class="lightbox {customClass: 'your-account'}">Your Account</a></li>
+                    <li><a href="{% url ajax_account account_step='youraccount' %}" class="lightbox {customClass: 'your-account'}">Your Account</a></li>
                     <li><a href="{% url logout %}">Log Out</a></li>
                 </ul>
             </span>
             {% else %}
-            <a href="/account/signin" class="lightbox {customClass: 'your-account'}" rel="nofollow"><span class="btn account">Sign In</span></a>{% comment %}<a href="/account/register" class="lightbox {customClass: 'your-account'}" rel="nofollow"><span class="btn account">Register</span></a>{% endcomment %}
+            <a href="{% url ajax_account account_step='signin' %}" class="lightbox {customClass: 'your-account'}" rel="nofollow"><span class="btn account">Sign In</span></a>{% comment %}<a href="{% url ajax_account account_step='register' %}" class="lightbox {customClass: 'your-account'}" rel="nofollow"><span class="btn account">Register</span></a>{% endcomment %}
             {% endif %}
             <a href="javascript:void(0)" class="btn startTour" rel="nofollow">Tour</a><a href="http://help.technav.systemicist.com/forums" target="_blank" class="btn help" rel="nofollow">Help</a>
             {% endif %}
