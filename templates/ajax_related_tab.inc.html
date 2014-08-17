@@ -5,6 +5,6 @@
     {% else %}
     {{ related_tag.name }}
     {% endifequal %}
-    {% if user.is_authenticated %}{% if related_tag.is_favorite %}<span class="icon-star-whole favorite-topic enabled icomoon-icon" data-nodeid="{{ related_tag.id }}"></span>{% else %}<span class="icon-star favorite-topic icomoon-icon" data-nodeid="{{ related_tag.id }}"></span>{% endif %}{% endif %}
+    {% if user.is_authenticated %}<span class="{% if related_tag.is_favorite %}icon-star-whole enabled{% else %}icon-star{% endif %} favorite-topic icomoon-icon" data-nodeid="{{ related_tag.id }}"></span>{% endif %}
 </p>
 {% endfor %}

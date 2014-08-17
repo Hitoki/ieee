@@ -57,7 +57,7 @@
                                                 <span>{{ society.name }} ({{ society.abbreviation }})</span>{% if society.url %}<span class="popup newWinIcon"></span>{% if society.node_society.is_machine_generated %}<span class="drive flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;"></span>{% endif %}{% endif %}
                                                 {% if society.url %}
                                             </a>
-                                            {% if user.is_authenticated %}{% if society.is_favorite %}<span class="icon-star-whole favorite-society enabled icomoon-icon" data-nodeid="{{ society.id }}"></span>{% else %}<span class="icon-star favorite-society icomoon-icon" data-nodeid="{{ society.id }}"></span>{% endif %}{% endif %}
+                                            {% if user.is_authenticated %}<span class="{% if society.is_favorite %}icon-star-whole enabled{% else %}icon-star{% endif %} favorite-society icomoon-icon" data-nodeid="{{ society.id }}"></span>{% endif %}
                                             <br/>
                                             <span>
                                                 {{ society.description }}
