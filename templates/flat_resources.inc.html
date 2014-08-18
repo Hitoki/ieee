@@ -50,18 +50,19 @@ Include file used by both print_resource.html and tag_landing.html
         <h1 style="font-size:13pt">{{ related_items_count|intcomma }} resources related to {{ tag.name }}</h1>
         {# Using break line list method for browser compatibility #}
         <ol style="width:570px">
-            <li {% if not conferences %}class="disabled"{% endif %}><a href="#conferences">Conferences related to {{ tag.name }}</a></li>
-            <li {% if not xplore_results %}class="disabled"{% endif %}><a href="#xplore">Xplore Articles related to  {{ tag.name }}</a></li>
-            <li {% if not jobsHtml %}class="disabled"{% endif %}><a href="#jobs">Jobs related to {{ tag.name }}</a></li>
-            {% comment %}<li><a href="#patents">Patents related to {{ tag.name }}</a></li>{% endcomment %}
-            <li {% if not show_edu %}class="disabled"{% endif %}><a href="#xplore_edu">Educational Resources on {{ tag.name }}</a></li>
-            <li {% if not standards %}class="disabled"{% endif %}><a href="#standards">Standards related to {{ tag.name }}</a></li>  
+            <li {% if not related_tags %}class="disabled"{% endif %}><a href="#concepts">Topics related to {{ tag.name }}</a></li>
+             <li {% if not societies %}class="disabled"{% endif %}><a href="#societies">IEEE Organizations related to {{ tag.name }}</a></li>
+             <li {% if not conferences %}class="disabled"{% endif %}><a href="#conferences">Conferences related to {{ tag.name }}</a></li>
+             <li {% if not periodicals %}class="disabled"{% endif %}><a href="#periodicals">Periodicals related to {{ tag.name }}</a></li>
+             <li {% if not authors %}class="disabled"{% endif %}><a href="#authors">Most published Xplore authors for {{ tag.name }}</a></li>
+             
         </ol>
         <ol start="6">
-            <li {% if not periodicals %}class="disabled"{% endif %}><a href="#periodicals">Periodicals related to {{ tag.name }}</a></li>
-            <li {% if not societies %}class="disabled"{% endif %}><a href="#societies">IEEE Organizations related to {{ tag.name }}</a></li>
-            <li {% if not related_tags %}class="disabled"{% endif %}><a href="#concepts">Topics related to {{ tag.name }}</a></li>
-            <li {% if not authors %}class="disabled"{% endif %}><a href="#authors">Most published Xplore authors for {{ tag.name }}</a></li>
+            <li {% if not xplore_results %}class="disabled"{% endif %}><a href="#xplore">Xplore Articles related to  {{ tag.name }}</a></li>
+            <li {% if not show_edu %}class="disabled"{% endif %}><a href="#xplore_edu">Educational Resources on {{ tag.name }}</a></li>
+            <li {% if not standards %}class="disabled"{% endif %}><a href="#standards">Standards related to {{ tag.name }}</a></li>  
+            <li {% if not jobsHtml %}class="disabled"{% endif %}><a href="#jobs">Jobs related to {{ tag.name }}</a></li>
+            {% comment %}<li><a href="#patents">Patents related to {{ tag.name }}</a></li>{% endcomment %}
             {% comment %}<li {% if not sectors %}class="disabled"{% endif %}><a href="#sectors">Industry topics related to {{ tag.name }}</a></li>{% endcomment %}
         </ol>
     </div>
@@ -109,6 +110,60 @@ Include file used by both print_resource.html and tag_landing.html
         </ul>
         </div>
     </div>
+    <hr/>
+    {% endif %}
+
+    {% if related_tags or toc %}
+    <div id="tag-related-tags" class="tag-section">
+        <h3><a name="concepts"></a>{% if toc %}<span class="index"></span>{% endif %} Topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <div>
+            {% if related_tags %}
+                {% for related_tag in related_tags|slice:":5" %}
+                    {% if create_links %}
+                        <a href="/tag/{{ related_tag.id }}/{{ related_tag.name|slugify }}">{{ related_tag.name }}</a>
+                    {% else %}
+                        {{ related_tag.name }}
+                    {% endif %}
+                    <br/>
+                {% endfor %}
+                {% if related_tags|length > 5 %}
+                    <span class="more-link">
+                    <a href="/textui/?autoload={{tag.id}}&tab=related-tab" rel="nofollow">More Related Topics</a>
+                    </span>
+                {% endif %}
+            {% else %}
+            <p class="no-resources">No topics related to "{{ tag.name }}"</p>
+            {% endif %}
+        </div>
+    </div>
+    <br/>
+    <hr/>
+    {% endif %}
+
+    {% if societies or toc %}
+    <div id="tag-societies" class="tag-section">
+        <h3><a name="societies"></a>{% if toc %}<span class="index"></span>{% endif %} IEEE Organizations related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <div>
+            {% if societies %}
+                {% for society in societies|slice:":5" %}
+                    {% if create_links %}
+                        <a href="{{ society.url }}" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ society.url }}'); return false;">{{ society.name }}</a>
+                    {% else %}
+                        {{ society.name }}
+                    {% endif %}
+                    <br/>
+                {% endfor %}
+               {% if societies|length > 5 %}
+                    <span class="more-link">
+                    <a href="/textui/?autoload={{tag.id}}&tab=society-tab" rel="nofollow">More Organizations</a>
+                    </span>
+                {% endif %}
+            {% else %}
+            <p class="no-resources">No organizations are currently tagged "{{ tag.name }}"</p>
+            {% endif %}
+        </div>
+    </div>
+    <br/>
     <hr/>
     {% endif %}
 
@@ -168,6 +223,61 @@ Include file used by both print_resource.html and tag_landing.html
     <hr/>
     {% endif %}
 
+    {% if periodicals or toc %}
+    <div id="tag-periodicals" class="tag-section">
+        <h3><a name="periodicals"></a>{% if toc %}<span class="index"></span>{% endif %} Periodicals related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        {% if periodicals %}
+            {% for periodical in periodicals.all|slice:":5" %}
+                <p class="title">
+                {% if create_links %}
+                    <a href="{{ periodical.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ periodical.url }}'); return false;">{{ periodical.name }} <span class="popup newWinIcon"></span></a>
+                {% else %}
+                    {{ periodical.name }}
+                {% endif %}
+                </p>
+                <p class="description">
+                    {{ periodical.description|truncatewords:60 }}
+                </p>
+                <br/>
+            {% endfor %}
+            {% if periodicals.all|length > 5 %}
+                <span class="more-link">
+                <a href="/textui/?autoload={{tag.id}}&tab=periodical-tab" rel="nofollow">More Periodicals</a>
+                </span>
+            {% endif %}
+        {% else %}
+        <p class="no-resources">No periodicals are currently tagged "{{ tag.name }}"</p>
+        {% endif %}
+    </div>
+    <hr/>
+    {% endif %}
+
+    {% if authors or toc %}
+    <div id="tag-authors" class="tag-section">
+        <h3><a name="authors"></a>{% if toc %}<span class="index"></span>{% endif %} Most published Xplore authors for {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <div>
+            {% if authors %}
+                {% for author in authors|slice:":5" %}
+                    {% if create_links %}
+                        <a href="{{ author.url }}" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ author.url }}'); return false;">{{ author.name }}</a>
+                    {% else %}
+                        {{ author.name }}
+                    {% endif %}
+                    <br/>
+                {% endfor %}
+               {% if authors|length > 5 %}
+                    <span class="more-link">
+                    <a href="/textui/?autoload={{tag.id}}&tab=authors-tab" rel="nofollow">More Authors</a>
+                    </span>
+                {% endif %}
+            {% else %}
+            <p class="no-resources">No authors for "{{ tag.name }}"</p>
+            {% endif %}
+        </div>
+    </div>
+    <hr/>
+    {% endif %}
+
     {% if xplore_results or toc %}
     <div id="tag-xplore" class="tag-section">
         <h3><a name="xplore"></a>{% if toc %}<span class="index"></span>{% endif %} Xplore Articles related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
@@ -200,47 +310,6 @@ Include file used by both print_resource.html and tag_landing.html
     <hr/>
     {% endif %}
 
-    {% if jobsHtml or toc %}
-    <div id="tag-jobs" class="tag-section">
-        <h3><a href="" name="jobs"></a>{% if toc %}<span class="index"></span>{% endif %} Jobs related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
-        <div>
-            {% if jobsHtml %}
-                {{ jobsHtml|safe }}
-            {% else %}
-            <p class="no-resources">No jobs are currently tagged "{{ tag.name }}"</p>
-            {% endif %}
-        </div>
-    </div>
-    <hr/>
-    {% endif %}
-    
-    {% comment %}
-    {% if tvHtml or toc %}
-    <div id="tag-tv" class="tag-section">
-        <h3><a href="" name="tv"></a>{% if toc %}<span class="index"></span>{% endif %} Tv related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
-        <div>
-            {% if tvHtml %}
-                {{ tvHtml|safe }}
-            {% else %}
-            <p class="no-resources">No videos are currently tagged "{{ tag.name }}"</p>
-            {% endif %}
-        </div>
-    </div>
-    <hr/>
-    {% endif %}
-    {% endcoment %}
-
-    {% comment %}
-    {% if patents or toc %}
-    <div id="tag-patents" class="tag-section">
-        <h3><a name="patents"></a>{% if toc %}<span class="index"></span>{% endif %} Patents related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
-        <div class="patent-list"></div>
-        <div id="branding"></div>
-    </div>
-    <hr/>
-    {% endif %}
-    {% endcomment %}
-    
     {% if show_edu or tvHtml or ebooks or toc %}
     <div id="tag-xplore_edu" class="tag-section">
         <h3><a name="xplore_edu"></a>{% if toc %}<span class="index"></span>{% endif %} Educational Resources on {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
@@ -344,115 +413,48 @@ Include file used by both print_resource.html and tag_landing.html
     </div>
     <hr/>
     {% endif %}
-    
-    {% if periodicals or toc %}
-    <div id="tag-periodicals" class="tag-section">
-        <h3><a name="periodicals"></a>{% if toc %}<span class="index"></span>{% endif %} Periodicals related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
-        {% if periodicals %}
-            {% for periodical in periodicals.all|slice:":5" %}
-                <p class="title">
-                {% if create_links %}
-                    <a href="{{ periodical.url }}" target="_blank" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ periodical.url }}'); return false;">{{ periodical.name }} <span class="popup newWinIcon"></span></a>
-                {% else %}
-                    {{ periodical.name }}
-                {% endif %}
-                </p>
-                <p class="description">
-                    {{ periodical.description|truncatewords:60 }}
-                </p>
-                <br/>
-            {% endfor %}
-            {% if periodicals.all|length > 5 %}
-                <span class="more-link">
-                <a href="/textui/?autoload={{tag.id}}&tab=periodical-tab" rel="nofollow">More Periodicals</a>
-                </span>
-            {% endif %}
-        {% else %}
-        <p class="no-resources">No periodicals are currently tagged "{{ tag.name }}"</p>
-        {% endif %}
-    </div>
-    <hr/>
-    {% endif %}
-    
-    {% if societies or toc %}
-    <div id="tag-societies" class="tag-section">
-        <h3><a name="societies"></a>{% if toc %}<span class="index"></span>{% endif %} IEEE Organizations related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+
+    {% if jobsHtml or toc %}
+    <div id="tag-jobs" class="tag-section">
+        <h3><a href="" name="jobs"></a>{% if toc %}<span class="index"></span>{% endif %} Jobs related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         <div>
-            {% if societies %}
-                {% for society in societies|slice:":5" %}
-                    {% if create_links %}
-                        <a href="{{ society.url }}" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ society.url }}'); return false;">{{ society.name }}</a>
-                    {% else %}
-                        {{ society.name }}
-                    {% endif %}
-                    <br/>
-                {% endfor %}
-               {% if societies|length > 5 %}
-                    <span class="more-link">
-                    <a href="/textui/?autoload={{tag.id}}&tab=society-tab" rel="nofollow">More Organizations</a>
-                    </span>
-                {% endif %}
+            {% if jobsHtml %}
+                {{ jobsHtml|safe }}
             {% else %}
-            <p class="no-resources">No organizations are currently tagged "{{ tag.name }}"</p>
+            <p class="no-resources">No jobs are currently tagged "{{ tag.name }}"</p>
             {% endif %}
         </div>
     </div>
-    <br/>
-    <hr/>
-    {% endif %}
-    
-    {% if related_tags or toc %}
-    <div id="tag-related-tags" class="tag-section">
-        <h3><a name="concepts"></a>{% if toc %}<span class="index"></span>{% endif %} Topics related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
-        <div>
-            {% if related_tags %}
-                {% for related_tag in related_tags|slice:":5" %}
-                    {% if create_links %}
-                        <a href="/tag/{{ related_tag.id }}/{{ related_tag.name|slugify }}">{{ related_tag.name }}</a>
-                    {% else %}
-                        {{ related_tag.name }}
-                    {% endif %}
-                    <br/>
-                {% endfor %}
-                {% if related_tags|length > 5 %}
-                    <span class="more-link">
-                    <a href="/textui/?autoload={{tag.id}}&tab=related-tab" rel="nofollow">More Related Topics</a>
-                    </span>
-                {% endif %}
-            {% else %}
-            <p class="no-resources">No topics related to "{{ tag.name }}"</p>
-            {% endif %}
-        </div>
-    </div>
-    <br/>
     <hr/>
     {% endif %}
 
-    {% if authors or toc %}
-    <div id="tag-authors" class="tag-section">
-        <h3><a name="authors"></a>{% if toc %}<span class="index"></span>{% endif %} Most published Xplore authors for {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+    
+    {% comment %}
+    {% if tvHtml or toc %}
+    <div id="tag-tv" class="tag-section">
+        <h3><a href="" name="tv"></a>{% if toc %}<span class="index"></span>{% endif %} Tv related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
         <div>
-            {% if authors %}
-                {% for author in authors|slice:":5" %}
-                    {% if create_links %}
-                        <a href="{{ author.url }}" rel="nofollow" onClick="trackOutboundLink(this, 'Landing Page Outbound Links', '{{ author.url }}'); return false;">{{ author.name }}</a>
-                    {% else %}
-                        {{ author.name }}
-                    {% endif %}
-                    <br/>
-                {% endfor %}
-               {% if authors|length > 5 %}
-                    <span class="more-link">
-                    <a href="/textui/?autoload={{tag.id}}&tab=authors-tab" rel="nofollow">More Authors</a>
-                    </span>
-                {% endif %}
+            {% if tvHtml %}
+                {{ tvHtml|safe }}
             {% else %}
-            <p class="no-resources">No authors for "{{ tag.name }}"</p>
+            <p class="no-resources">No videos are currently tagged "{{ tag.name }}"</p>
             {% endif %}
         </div>
     </div>
-    <br/>
+    <hr/>
     {% endif %}
+    {% endcoment %}
+
+    {% comment %}
+    {% if patents or toc %}
+    <div id="tag-patents" class="tag-section">
+        <h3><a name="patents"></a>{% if toc %}<span class="index"></span>{% endif %} Patents related to {{ tag.name }}</h3><a href="javascript:void(0)" class="topLink" rel="nofollow">Back to Top</a>
+        <div class="patent-list"></div>
+        <div id="branding"></div>
+    </div>
+    <hr/>
+    {% endif %}
+    {% endcomment %}
     
     {% comment %}
     <div id="tag-sectors" class="tag-section">
