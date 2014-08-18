@@ -426,22 +426,25 @@ def ajax_xplore_authors(tag_id):
 
         xplore_results = []
         total_count = 0
-        for author in xml1.documentElement.childNodes[5].childNodes[1].getElementsByTagName('refinement'):
-            name = getElementValueByTagName(author, 'name')
-            count = getElementValueByTagName(author, 'count')
-            url = getElementValueByTagName(author, 'url')
-            
-            # massage the url
-            url = url.replace('gateway/ipsSearch', 'search/searchresult')
-            url = url.replace('&hc=0', '')
-            url = url.replace('md=', 'queryText=')
+        if xml1.documentElement.nodeName == "Error":
+            pass
+        else:
+            for author in xml1.documentElement.childNodes[5].childNodes[1].getElementsByTagName('refinement'):
+                name = getElementValueByTagName(author, 'name')
+                count = getElementValueByTagName(author, 'count')
+                url = getElementValueByTagName(author, 'url')
 
-            result = {
-                'name': name,
-                'count': count,
-                'url': url
-                }
-            
-            xplore_results.append(result)
+                # massage the url
+                url = url.replace('gateway/ipsSearch', 'search/searchresult')
+                url = url.replace('&hc=0', '')
+                url = url.replace('md=', 'queryText=')
+
+                result = {
+                    'name': name,
+                    'count': count,
+                    'url': url
+                    }
+
+                xplore_results.append(result)
 
     return xplore_results, xplore_error, len(xplore_results)
