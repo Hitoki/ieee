@@ -1715,7 +1715,7 @@ div.group ul li:first-child {
   
 #textui-tags-search {
     width: 210px;
-    padding: 5px;
+    padding: 5px 0 5px 5px;
     display: inline-block;
     margin-top: 0;
     outline: none;
@@ -1732,13 +1732,14 @@ div.group ul li:first-child {
     .icon-filter {
         color: $secondaryColor;
         float: left;
+        width: 16px;
     }
     input {
         border: 0 none;
         float: left;
         margin-left: 5px;
         outline: none;
-        width: 168px;
+        width: 165px;
         height: 18px;
         vertical-align: top;
     }
