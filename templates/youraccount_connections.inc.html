@@ -24,16 +24,22 @@ You can remove your connected social media accounts:
 
 You can connect new social media accounts:
 <div>
-    <a class="btn account connect_account" href="{% provider_login_url "google" process="connect" %}"><span class="icon-google icomoon-icon"></span>Sign In or Join with Google</a>
-{#	    <a class="btn account" href="{% provider_login_url "facebook" process="connect" %}"><span class="icon-facebook icomoon-icon"></span>Sign In or Join with Facebook</a>#}
-    <a class="btn account connect_account" href="{% provider_login_url "linkedin_oauth2" process="connect" %}"><span class="icon-linkedin icomoon-icon"></span>Sign In or Join with LinkedIn</a>
+    <a class="btn account connect_account" target="_blank" href="{% provider_login_url "google" process="connect" %}"><span class="icon-google icomoon-icon"></span>Sign In or Join with Google</a>
+{#    <a class="btn account" target="_blank" href="{% provider_login_url "facebook" process="connect" %}"><span class="icon-facebook icomoon-icon"></span>Sign In or Join with Facebook</a>#}
+    <a class="btn account connect_account" target="_blank" href="{% provider_login_url "linkedin_oauth2" process="connect" %}"><span class="icon-linkedin icomoon-icon"></span>Sign In or Join with LinkedIn</a>
 </div>
 
 <script type="text/javascript">
+    function update_connections() {
+        // note: this function is also used in "socialaccount/connections.html"
+        $('#connectacct-tab').load('/ajax/connections');
+    }
+
     $('.disconnect_account').click(function () {
         var account_id = $(this).data('account-id');
+        //todo: add some "refreshing" icon
         $.post("{% url 'socialaccount_connections' %}", {'account': account_id}, function () {
-            $('#connectacct-tab').load('/ajax/connections');
+            update_connections()
         });
     });
 </script>
