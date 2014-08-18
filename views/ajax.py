@@ -582,6 +582,11 @@ def ajax_favorite_list(request):
 
     return render(request, 'youraccount_favorites.inc.html', context_dict)
 
+
+def ajax_connections(request):
+    return render(request, 'youraccount_connections.inc.html', {})
+
+
 #@login_required
 #def ajax_term_content(request, term_id, ui=None):
 #    'The AJAX resource results popup for taxonomy terms.'
