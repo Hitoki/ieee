@@ -5,6 +5,7 @@ from models.node import Node
 from models.conference_application import ConferenceApplication, TagKeyword
 from models.favorites import UserFavorites
 
+
 class FeedbackForm(forms.Form):
     name = forms.CharField(max_length=1000)
     email = forms.EmailField(max_length=1000)
@@ -20,7 +21,9 @@ class DebugSendEmailForm(forms.Form):
 
 
 class ConferenceApplicationForm(forms.ModelForm):
-    keywords_in = forms.CharField(label=mark_safe('Keywords:<span class="required">*</span>'), required=False)
+    keywords_in = forms.CharField(
+        label=mark_safe('Keywords:<span class="required">*</span>'),
+        required=False)
     keywords_out = forms.CharField(required=False, widget=forms.HiddenInput())
 
     class Meta:
@@ -40,11 +43,12 @@ class ConferenceApplicationForm(forms.ModelForm):
                 TagKeyword.objects.get_or_create(name=keyword_name, tag=node)
             self.instance.keywords.add(keyword)
 
+
 class UserFavoriteForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserFavoriteForm, self).__init__(*args, **kwargs)
         self.fields['user'].required=False
-        self.fields['user'].widget = forms.HiddenInput();
+        self.fields['user'].widget = forms.HiddenInput()
 
     class Meta:
         model = UserFavorites
