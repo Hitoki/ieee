@@ -822,14 +822,16 @@ ul#overview-list {
     .share-links {
         float: left;
         a {
-            color: $secondaryColor;
-            font-size: 25px;
+            background-color: $secondaryColor;
+            color: $white;
+            font-size: 19px;
             margin-right: 5px;
+            padding: 3px;
             vertical-align: middle;
             cursor: pointer;
             display: inline-block;
             &:hover {
-                color: $orange;
+                background-color: $orange;
                 text-decoration: none;
             }
         }
