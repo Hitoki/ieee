@@ -1,4 +1,5 @@
 {% load socialaccount %}
+{% load url from future %}
 
 <a class="lightbox-close"></a>
 <h2>Your Account</h2>
@@ -22,7 +23,10 @@
                 <li>{{ key }} accounts:
                     <ul>
                     {% for account in values %}
-                        <li>{{ account.user.username }}</li>
+                        <li>
+                            - {{ account }}
+                            <a class="disconnect_account" href="#" data-account-id="{{ account.id }}">disconnect</a>
+                        </li>
                     {% endfor %}
                     </ul>
                 </li>
@@ -46,4 +50,10 @@
 
 <script type="text/javascript">
     $('#favorites-tab').load('/ajax/favorite_list');
+    $('.disconnect_account').click(function () {
+        var account_id = $(this).data('account-id');
+        $.post("{% url 'socialaccount_connections' %}", {'account': account_id}, function () {
+            alert('deleted');
+        });
+    });
 </script>
