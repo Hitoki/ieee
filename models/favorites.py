@@ -5,28 +5,30 @@ from models.node import Node
 from models.resource import Resource
 from models.society import Society
 
-class UserFavorites(models.Model):
-	user = models.OneToOneField(User)
-	topics = models.ManyToManyField(
-		Node,
-		blank=True,
-		help_text='Favorite Topics',
-		related_name='user_favorite_topics'
-	)
-	resources = models.ManyToManyField(
-		Resource,
-		blank=True,
-		help_text='Favorite Resources',
-		related_name='user_favorite_resources'
-	)
-	societies = models.ManyToManyField(
-		Society,
-		blank=True,
-		help_text='Favorite Societies',
-		related_name='user_favorite_societies'
-	)
-	class Meta:
-		app_label = 'ieeetags'
 
-	def __unicode__(self):
-		return self.name
+class UserFavorites(models.Model):
+    user = models.OneToOneField(User)
+    topics = models.ManyToManyField(
+        Node,
+        blank=True,
+        help_text='Favorite Topics',
+        related_name='user_favorite_topics'
+    )
+    resources = models.ManyToManyField(
+        Resource,
+        blank=True,
+        help_text='Favorite Resources',
+        related_name='user_favorite_resources'
+    )
+    societies = models.ManyToManyField(
+        Society,
+        blank=True,
+        help_text='Favorite Societies',
+        related_name='user_favorite_societies'
+    )
+
+    class Meta:
+        app_label = 'ieeetags'
+
+    def __unicode__(self):
+        return self.name
