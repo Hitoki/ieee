@@ -809,6 +809,11 @@ ul#overview-list {
         float: right;
         position: relative;
         width: 127px;
+        &:hover {
+            .icon-printer {
+                background-color: $orange;
+            }
+        }
     }
     .printMenu {
         position: absolute;
@@ -821,12 +826,15 @@ ul#overview-list {
         display: none;
     }
     .icon-printer {
-        font-size: 25px;
-        color: $secondaryColor;
+        background-color: $secondaryColor;
+        color: $white;
+        font-size: 19px;
+        padding: 3px;
+        vertical-align: middle;
         cursor: pointer;
         float: right;
         &:hover {
-            color: $orange;
+            background-color: $orange;
         }
     }
     .share-links {

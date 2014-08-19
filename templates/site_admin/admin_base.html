@@ -15,7 +15,7 @@
     {% if user.is_authenticated %}
         <div id="admin_header" class='admin-user-links'>
             <span id="left">
-            {{ user.username }} ({{ user.get_profile.role }}) | <a href="{% url change_password %}?return_url=" class="changePassword { varName:'return_url' }">Change Password</a> | <a href="{% url logout %}" class="logout">Log Out</a>
+            {{ user.username }} ({{ user.get_profile.role }}) | <a href="{% url change_password %}?return_url=" class="changePassword { varName:'return_url' }">Change Password</a> | <a href="{% url logout %}" class="logout">Sign Out</a>
         </span>
         </div>
     {% endif %}    
@@ -67,7 +67,7 @@
     {% if user.is_authenticated %}
         <div id="admin_footer" class='admin-user-links'>
             <span id="left">
-            {{ user.username }} ({{ user.get_profile.role }}) | <a href="{% url change_password %}?return_url=" class="changePassword { varName:'return_url' }">Change Password</a> | <a href="{% url logout %}" class="logout">Log Out</a>
+            {{ user.username }} ({{ user.get_profile.role }}) | <a href="{% url change_password %}?return_url=" class="changePassword { varName:'return_url' }">Change Password</a> | <a href="{% url logout %}" class="logout">Sign Out</a>
         </span>
         </div>
     {% endif %}
