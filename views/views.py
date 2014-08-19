@@ -617,11 +617,12 @@ def get_jobs_info(tag, offset=None):
     jobsJson = json.loads(file1)
     jobsCount = jobsJson.get('Total')
     jobs = jobsJson.get('Jobs')
+    print jobs
     for job in jobs:
-        jobsHtml = jobsHtml + \
-                   '<a href="%(Url)s" target="_blank" class="featured">' \
-                   '%(JobTitle)s<span class="popup newWinIcon"></span></a>' \
-                   '%(Company)s<br>\n' % job
+        jobsHtml += '<span class="icon-star favorite-job icomoon-icon" data-nodeid="%(Id)s"></span>' \
+                    '<a href="%(Url)s" target="_blank" class="featured">' \
+                    '%(JobTitle)s<span class="popup newWinIcon"></span></a>' \
+                    '%(Company)s<br>\n' % job
 
     file1 = None
     return jobsHtml, jobsCount, jobsUrl

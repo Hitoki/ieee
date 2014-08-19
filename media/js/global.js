@@ -387,6 +387,7 @@ function getXploreSortName(sort) {
 
 // This loads the resource results for a tag into the given element via AJAX.
 function ResourceLoader(elem, ctype, showAll, sort) {
+    console.log('ResourceLoader()');
     var resourceloader = this;
     this.elem = $(elem);
     this.listElem = this.elem.find('ul');
@@ -466,6 +467,7 @@ ResourceLoader.prototype.setSort = function (sort, desc) {
 };
 
 ResourceLoader.prototype.loadContent = function (force) {
+    console.log('ResourceLoader.loadContent()');
     loadingTabs.push(this.ctype);
     if (!this.isLoading || force) {
         this.isLoading = true;
@@ -536,13 +538,36 @@ ResourceLoader.prototype.loadContent = function (force) {
             trail: 25 // Afterglow percentage
         });
 
+        var url = this.url;
+        console.log('url: ' + this.url);
         $.ajax({
             url: this.url,
             data: this.data,
             type: 'post',
             dataType: 'json',
             success: function (data) {
+                console.log(url + ' -> ajax call success');
                 resourceloader.onLoadData(data);
+                $('.favorite-job').on('click', function(){
+                    var action;
+                    var nodeid = $(this).data('nodeid');
+                    if ($(this).hasClass('enabled')) {
+                        action = 'disable';
+                        $(this).removeClass('icon-star-whole enabled').addClass('icon-star');
+                    } else {
+                        action = 'enable';
+                        $(this).removeClass('icon-star').addClass('icon-star-whole enabled');
+                    }
+                    $.post('/ajax/favorite-job/request',
+                        {
+                            nodeid: nodeid,
+                            action: action
+                        },
+                        function () {
+                            return false;
+                        }
+                    );
+                });
             }
         });
 
@@ -551,6 +576,8 @@ ResourceLoader.prototype.loadContent = function (force) {
 };
 
 ResourceLoader.prototype.onLoadData = function (data) {
+    console.log('ResourceLoader.onLoadData');
+    console.log(data);
     removeNumRelatedLoader();
     if (data.token == this.ajaxToken) {
         this.loadingElem.remove();
@@ -665,6 +692,7 @@ ResourceLoader.prototype.onScroll = function () {
 };
 
 function attachResourceResults(elem, ctype, showAll) {
+    console.log('attachResourceResults("' + elem + '", "'+ ctype +'")');
     if (showAll == undefined) {
         showAll = null;
     }
