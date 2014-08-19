@@ -10,8 +10,10 @@ You can remove your connected social media accounts:
             <ul>
             {% for account in values %}
                 <li>
-                    - {{ account }}
-                    <a class="disconnect_account" href="#" data-account-id="{{ account.id }}">disconnect</a>
+                    - {{ account.extra_data.email }}{{ account.extra_data.emailAddress }}
+                    {% if accounts|length > 1 or accounts.items.0.1|length > 1 %}
+                        <a class="disconnect_account" href="#" data-account-id="{{ account.id }}">disconnect</a>
+                    {% endif %}
                 </li>
             {% endfor %}
             </ul>
