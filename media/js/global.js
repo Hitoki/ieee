@@ -51,7 +51,6 @@ function logobj(obj, indent) {
         } catch (e) {
             // do nothing
         }
-        
     }
 }
 
@@ -71,7 +70,6 @@ function extendExisting() {
             }
         }
     }
-    
     return args[0];
 }
 
@@ -105,7 +103,6 @@ function setBrowserCookie() {
 }
 
 $(function() {
-
     // get browser compatibility cookie
     var browser_cookie = $.cookie("ignoreWarning");
     
@@ -116,7 +113,6 @@ $(function() {
         $('html').css('overflow', 'hidden');
         showBrowserWarning();
     }
-    
 });
 
 // Append a string to the end of a URL, before the #hash
@@ -200,7 +196,7 @@ HighlightCheckbox.prototype.onChange = function (e) {
             }
         }
     }
-}
+};
 
 function attachHighlightCheckboxes(elem) {
     if (elem) {
@@ -260,7 +256,7 @@ function attachItemsPerPage(elem) {
             querystring = '?' + querystring;
         }
         
-        var fullurl = url + querystring + hash
+        var fullurl = url + querystring + hash;
         
         window.location = fullurl;
     });    
@@ -294,7 +290,7 @@ function attachExpandSeries(elem) {
 function attachCopyTags(elem) {
     // Attach handlers to the "copy tags" links
     elem.find('a.copy-tags-to-clipboard').click(function() {
-        var resourceId = $(this).metadata().resourceId
+        var resourceId = $(this).metadata().resourceId;
         var linkElem = this;
         $.ajax({
             url: INDEX_URL + 'admin/ajax/copy_resource_tags',
@@ -363,7 +359,7 @@ var XPLORE_SORT_PUBLICATION_TITLE = 'jn';
 //var XPLORE_SORT_ARTICLE_NUMBER = 'an';
 var XPLORE_SORT_PUBLICATION_YEAR = 'py';
 
-var loadingTabs = []
+var loadingTabs = [];
 function removeNumRelatedLoader() {
     loadingTabs.pop();
     if (loadingTabs.length == 0) {
@@ -384,10 +380,8 @@ function getXploreSortName(sort) {
     //    return 'Article Number';
     } else if (sort == XPLORE_SORT_PUBLICATION_YEAR) {
         return 'Publication Year';
-    } else {
-        ajax_report_error('getXploreSortName(): ERROR: Unknown sort "' + sort + '"');
-        return;
     }
+    ajax_report_error('getXploreSortName(): ERROR: Unknown sort "' + sort + '"');
 }
 
 // This loads the resource results for a tag into the given element via AJAX.
@@ -455,7 +449,7 @@ ResourceLoader.prototype.onChangeSelect = function() {
         sort = sort.substr(1, sort.length);
     }
     this.setSort(sort, desc);
-}
+};
 
 ResourceLoader.prototype.setSort = function(sort, desc) {
     if (sort !=  this.sort || this.sortDesc != desc) {
@@ -468,7 +462,7 @@ ResourceLoader.prototype.setSort = function(sort, desc) {
         // Force another load to happen, regardless of if one is already happening.
         this.loadContent(true);
     }
-}
+};
 
 ResourceLoader.prototype.loadContent = function(force) {
     loadingTabs.push(this.ctype);
@@ -553,7 +547,7 @@ ResourceLoader.prototype.loadContent = function(force) {
         
         this.offset += this.numXploreResultsPerPage;
     }
-}
+};
 
 ResourceLoader.prototype.onLoadData = function(data) {
     removeNumRelatedLoader();
@@ -657,7 +651,7 @@ ResourceLoader.prototype.onLoadData = function(data) {
         
         this.isLoading = false;
     }
-}
+};
 
 ResourceLoader.prototype.onScroll = function() {
 	if (!this.showAll) {
@@ -667,7 +661,7 @@ ResourceLoader.prototype.onScroll = function() {
     		this.loadContent();
     	}
     }
-}
+};
 
 function attachResourceResults(elem, ctype, showAll) {
     if (showAll == undefined) {
