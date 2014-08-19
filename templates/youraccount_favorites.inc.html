@@ -3,6 +3,7 @@
         var action;
         var nodeid;
         $('.unsubscribe').click(function(){
+            $('.qtip').qtip('hide');
             nodeid = $(this).data('nodeid');
             $.post('/ajax/notification/request',
                 {
@@ -21,6 +22,7 @@
         var action;
         var nodeid;
         $('.unfavorite-topic').click(function(){
+            $('.qtip').qtip('hide');
             nodeid = $(this).data('nodeid');
             $.post('/ajax/favorite-topic/request',
                 {
@@ -38,6 +40,7 @@
         var action;
         var nodeid;
         $('.unfavorite-resource').click(function(){
+            $('.qtip').qtip('hide');
             nodeid = $(this).data('nodeid');
             $.post('/ajax/favorite-resource/request',
                 {
@@ -55,6 +58,7 @@
         var action;
         var nodeid;
         $('.unfavorite-society').click(function(){
+            $('.qtip').qtip('hide');
             nodeid = $(this).data('nodeid');
             $.post('/ajax/favorite-society/request',
                 {

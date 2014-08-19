@@ -13,6 +13,7 @@
         var action;
         var nodeid;
         $('.favorite-society').on('click', function(){
+            $('.qtip').qtip('hide');
             nodeid = $(this).data('nodeid');
             if ($(this).hasClass('enabled')) {
                 action = 'disable';

@@ -2,6 +2,7 @@
     $(function() {
         var action;
         $('.subscribe').click(function(){
+            $('.qtip').qtip('hide');
             if ($(this).hasClass('enabled')) {
                 action = 'disable';
                 $('.icon-alert').removeClass('enabled');
@@ -26,6 +27,7 @@
         var action;
         var nodeid;
         $('.favorite-topic').click(function(){
+            $('.qtip').qtip('hide');
             nodeid = $(this).data('nodeid');
             if ($(this).hasClass('enabled')) {
                 action = 'disable';
