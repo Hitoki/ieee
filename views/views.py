@@ -667,7 +667,7 @@ def debug_conf_apps_by_keyword(request, keyword_name):
 def delete_user(request):
     user_id=request.user.id
     User.objects.filter(id=user_id).delete()
-    return HttpResponse('deleted')
+    return HttpResponseRedirect(reverse('textui'))
 
 
 def allauth_init(request):
