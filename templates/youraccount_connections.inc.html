@@ -8,7 +8,7 @@
         {% for account in values %}
             <li>
                 {{ account.extra_data.email }}{{ account.extra_data.emailAddress }} ({{ key|title }} Account)
-                {% if accounts|length > 1 or accounts.items.0.1|length > 1 %}
+                {% if accounts|length > 1 or accounts.items.0.1|length > 1 or user.get_profile.role = "admin" or user.get_profile.role = "society_admin" or user.get_profile.role = "society_manager" %}
                     <a class="disconnect_account" href="#" data-account-id="{{ account.id }}">disconnect</a>
                 {% endif %}
             </li>
