@@ -301,7 +301,7 @@ input.text {
 
 .resources-lightbox-content .nootabs-tab {
     .icon-star {
-        margin-right: 5px;
+        margin-left: 5px;
         color: $medium-gray;
         &:hover {
             color: #FFD700;
@@ -450,6 +450,7 @@ input.text {
     margin-right: 10px;
 }
 
+.signin-lightbox-content,
 .your-account-lightbox-content,
 .overview-video-lightbox-content {
     background-color: $primaryColor;
@@ -597,6 +598,9 @@ margin-top: 0;
 
 ul#overview-list {
     line-height: 1.5;
+    img {
+        display: none;
+    }
 }
 
 #xplore-overview-loading {
@@ -822,14 +826,16 @@ ul#overview-list {
     .share-links {
         float: left;
         a {
-            color: $secondaryColor;
-            font-size: 25px;
+            background-color: $secondaryColor;
+            color: $white;
+            font-size: 19px;
             margin-right: 5px;
+            padding: 3px;
             vertical-align: middle;
             cursor: pointer;
             display: inline-block;
             &:hover {
-                color: $orange;
+                background-color: $orange;
                 text-decoration: none;
             }
         }

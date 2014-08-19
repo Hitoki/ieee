@@ -23,10 +23,10 @@ You can remove your connected social media accounts:
 {% endif %}
 
 You can connect new social media accounts:
-<div>
-    <a class="btn account connect_account" target="_blank" href="{% provider_login_url "google" process="connect" %}"><span class="icon-google icomoon-icon"></span>Sign In or Join with Google</a>
+<div class="signinBtns">
+    <a class="btn account connect_account" target="_blank" href="{% provider_login_url "google" process="connect" %}"><span class="icon-google icomoon-icon"></span>Connect your Google Account</a>
 {#    <a class="btn account" target="_blank" href="{% provider_login_url "facebook" process="connect" %}"><span class="icon-facebook icomoon-icon"></span>Sign In or Join with Facebook</a>#}
-    <a class="btn account connect_account" target="_blank" href="{% provider_login_url "linkedin_oauth2" process="connect" %}"><span class="icon-linkedin icomoon-icon"></span>Sign In or Join with LinkedIn</a>
+    <a class="btn account connect_account" target="_blank" href="{% provider_login_url "linkedin_oauth2" process="connect" %}"><span class="icon-linkedin icomoon-icon"></span>Connect your LinkedIn account</a>
 </div>
 
 <script type="text/javascript">

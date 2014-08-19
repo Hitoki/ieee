@@ -22,8 +22,12 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
-.icon-alert:before {
-	content: "\e602";
+
+.icon-twitter:before {
+	content: "\e600";
+}
+.icon-facebook:before {
+	content: "\e605";
 }
 .icon-star-whole:before {
 	content: "\e603";
@@ -37,7 +41,7 @@
 .icon-tab:before {
 	content: "\e000";
 }
-.popup:before {
+.icon-popup:before {
 	content: "\e001";
 }
 .icon-drop-arrow:before {
@@ -46,7 +50,7 @@
 .icon-printer:before {
 	content: "\e00d";
 }
-.drive:before {
+.icon-drive:before {
 	content: "\e00e";
 }
 .icon-users:before {
@@ -58,15 +62,6 @@
 .icon-filter:before {
 	content: "\e011";
 }
-.icon-facebook:before {
-	content: "\e012";
-}
-.icon-mail:before {
-	content: "\e014";
-}
-.icon-twitter:before {
-	content: "\e015";
-}
 .icon-tags:before {
 	content: "\e016";
 }
@@ -74,5 +69,8 @@
 	content: "\e017";
 }
 .icon-linkedin:before {
-	content: "\e600";
+	content: "\e606";
+}
+.icon-alert:before {
+	content: "\e602";
 }

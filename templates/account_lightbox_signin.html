@@ -2,17 +2,21 @@
 
 <a class="lightbox-close"></a>
 <h2>Sign In or Join TechNav</h2>
-<div class="signinBtns">
-	<a class="btn account" href="{% provider_login_url "google" %}"><span class="icon-google icomoon-icon"></span>Sign In or Join with Google</a>
-{#	<a class="btn account" href="{% provider_login_url "facebook" %}"><span class="icon-facebook icomoon-icon"></span>Sign In or Join with Facebook</a>#}
-	<a class="btn account" href="{% provider_login_url "linkedin_oauth2" %}"><span class="icon-linkedin icomoon-icon"></span>Sign In or Join with LinkedIn</a>
-</div>
-<div class="signinText">
-	<strong>Why join TechNav?</strong>
-	<ul>
-		<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
-		<li>Curabitur convallis sem et nisl varius, a consectetur risus semper.</li>
-		<li>Nullam sollicitudin nulla vel lorem volutpat lacinia.</li>
-		<li>Quisque vitae mi id augue rutrum congue at nec magna.</li>
-	</ul>
+<div class="lightbox-box">
+	<div class="signinBtns">
+		<a class="btn account" href="{% provider_login_url "google" %}"><span class="icon-google icomoon-icon"></span>Sign In or Join with Google</a>
+	{#	<a class="btn account" href="{% provider_login_url "facebook" %}"><span class="icon-facebook icomoon-icon"></span>Sign In or Join with Facebook</a>#}
+		<a class="btn account" href="{% provider_login_url "linkedin_oauth2" %}"><span class="icon-linkedin icomoon-icon"></span>Sign In or Join with LinkedIn</a>
+	</div>
+	<div class="signinText">
+		<strong>Why join TechNav?</strong>
+		<ul>
+			<li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+			<li>Curabitur convallis sem et nisl varius, a consectetur risus semper.</li>
+			<li>Nullam sollicitudin nulla vel lorem volutpat lacinia.</li>
+			<li>Quisque vitae mi id augue rutrum congue at nec magna.</li>
+		</ul>
+	</div>
+	<br/>
+	<a href="{% url admin_login %}" rel="nofollow">Admin Login</a>
 </div>

@@ -8,16 +8,16 @@
         <p id="tag-and-cluster-counts">
             Showing 
             {% if num_clusters %}
-                <span class="first-value">{{ num_clusters|intcomma }} topic area{{ num_clusters|pluralize }}</span> &nbsp;&amp;&nbsp; 
+                <span class="first-value">{{ num_clusters|intcomma }} topic area{{ num_clusters|pluralize }}</span> {% if num_tags %}&nbsp;&amp;&nbsp; {% endif %}
             {% endif %}
             {% if no_results %}
                 0 results
             {% else %}
-                <span class="second-value">
                 {% if num_tags %}
+                <span class="second-value">
                     {{ num_tags|intcomma }} topic{{ num_tags|pluralize }}
-                {% endif %}
                 </span>
+                {% endif %}
             {% endif %}
             {% if cluster %} in the topic area "{{ cluster.name }}" <a href="javascript:Tags.selectSociety({% if society %}'{{ society.id }}'{% else %}'all'{% endif %},null,1);" class="filter-clear icon-cancel"></a></span>{% endif %}
             {% if sector %} in the industry sector "{{ sector }}"{% endif %}
