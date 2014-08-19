@@ -33,6 +33,7 @@
                 }
             );
         }).qtip();
+        $('.drive').qtip();
     });
 </script>                    
                     <div class="group">
@@ -42,7 +43,7 @@
                                 {% for resource in conferences %}
                                 <li class="{% cycle 'desc_odd' 'desc_even' %}">{% spaceless %}
                                     {% if resource.url and resource.url_status != "bad" %}<a href="{{ resource.url }}" target="_blank" rel="nofollow">{% endif %}{{resource.name}}{% if resource.url and resource.url_status != "bad" %}<span class="popup newWinIcon"></span>{% endif %}{% if resource.url and resource.url_status != "bad" %}</a>{% endif %}
-                                    {% if resource.is_machine_generated %}<span class="drive flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship"></span>{% endif %}
+                                    {% if resource.is_machine_generated %}<span class="drive" title="Machine-generated relationship"></span>{% endif %}
                                     {% if user.is_authenticated %}<span class="{% if resource.is_favorite %}icon-star-whole enabled{% else %}icon-star{% endif %} favorite-resource icomoon-icon" data-nodeid="{{ resource.id }}" title="{% if resource.is_favorite %}Unfavorite conference{% else %}Favorite conference{% endif %}"></span>{% endif %}
                                     {% endspaceless %}
                                     <p class="auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>
@@ -61,7 +62,7 @@
                                         <a href="{{ other_conference.url }}" target="_blank" rel="nofollow" rel="nofollow">
                                             {% endif %}
                                             <p class="{% cycle 'item_odd' 'item_even' %}">
-                                                <span>{{other_conference.name}}</span>{% if other_conference.url and other_conference.url_status != "bad" %}<span class="popup newWinIcon"></span>{% endif %}{% if other_conference.is_machine_generated %}<span class="drive flyover {width:300}"  alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;"></span>{% endif %}
+                                                <span>{{other_conference.name}}</span>{% if other_conference.url and other_conference.url_status != "bad" %}<span class="popup newWinIcon"></span>{% endif %}{% if other_conference.is_machine_generated %}<span class="drive"  alt="Machine-generated relationship" style="vertical-align:middle;"></span>{% endif %}
                                             </p>
                                             {% if other_conference.url and other_conference.url_status != "bad" %}
                                         </a>
