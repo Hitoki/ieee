@@ -2868,6 +2868,16 @@ a#zenbox_tab {
     background: $orange;
     color: $white;
     border: $orange;
+    &.truncated-qtip {
+        white-space: normal;
+        width: 600px;
+        max-width: 600px;
+        max-height: 250px;
+        overflow: hidden;
+        background: $light-gray;
+        color: $dark-gray;
+        border: $light-gray;
+    }
 }
 
 .qtip.qtip-tip {

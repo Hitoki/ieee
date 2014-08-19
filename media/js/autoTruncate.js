@@ -122,13 +122,21 @@ function autoTruncate(elems, options) {
             abbr.text(shortText);
             if (!options.no_tooltip) {
                 abbr.attr('title', original_text);
-                abbr.addClass("flyover {position:'left-top', width:640, style:{tip:{corner:false}}, show:{delay:300}}");
             }
             
             if (options.flyover) {
                 var content = {text: true, attr: 'title'};
-                setupQtips($(abbr),content=content);
-                //Flyover.attach(abbr, flyoverOptions);
+                $('.truncatedText').qtip({
+                    content: content,
+                    style: {
+                        classes: 'truncated-qtip'
+                    },
+                    position: {
+                        my: 'bottom center',
+                        at: 'top center',
+                        target: false
+                    }
+                });
             }
         }
         
