@@ -181,6 +181,15 @@ table.main {
         font-size: 12px;
     }
 }
+.accountField {
+    &:hover a {
+        display: inline;
+    }
+    .icon-cancel {
+        text-decoration: none;
+        display: none;
+    }
+}
 .your-account-lightbox-content {
     .signinBtns {
         margin-top: 5px;

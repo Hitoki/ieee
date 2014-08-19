@@ -6,10 +6,10 @@
     <ul>
     {% for key, values in accounts.items %}
         {% for account in values %}
-            <li>
+            <li class="accountField">
                 {{ account.extra_data.email }}{{ account.extra_data.emailAddress }} ({{ key|title }} Account)
                 {% if accounts|length > 1 or accounts.items.0.1|length > 1 or user.get_profile.role = "admin" or user.get_profile.role = "society_admin" or user.get_profile.role = "society_manager" %}
-                    <a class="disconnect_account" href="#" data-account-id="{{ account.id }}">disconnect</a>
+                    <a class="disconnect_account icon-cancel icomoon-icon" href="#" title="Disconnect account" data-account-id="{{ account.id }}"></a>
                 {% endif %}
             </li>
         {% endfor %}
@@ -39,10 +39,11 @@
     }
 
     $('.disconnect_account').click(function () {
+        $('.qtip').qtip('hide');
         var account_id = $(this).data('account-id');
         //todo: add some "refreshing" icon
         $.post("{% url 'socialaccount_connections' %}", {'account': account_id}, function () {
             update_connections()
         });
-    });
+    }).qtip();
 </script>
