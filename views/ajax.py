@@ -1637,8 +1637,12 @@ def ajax_account(request, account_step):
         return render(request, 'account_lightbox_register.html')
     elif step == 'youraccount':
         return render(request, 'account_lightbox_youraccount.html')
-    elif step == 'delete':
+    elif step == 'delete_confirm':
         return render(request, 'account_lightbox_delete.html')
+    elif step =='delete':
+        member = request.user
+        member.delete()
+        return HttpResponseRedirect(reverse('textui'))
 
 def ajax_video(request):
     'Returns the HTML content for the flash video.'
