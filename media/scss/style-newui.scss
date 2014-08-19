@@ -2853,3 +2853,14 @@ a#zenbox_tab {
         padding-bottom: 10px;
     }
 }
+
+.qtip-default {
+    white-space: nowrap;
+    background: $orange;
+    color: $white;
+    border: $orange;
+}
+
+.qtip.qtip-tip {
+    background-color: $secondaryColor;
+}
