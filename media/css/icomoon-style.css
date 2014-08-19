@@ -43,7 +43,7 @@
 .icon-tab:before {
 	content: "\e000";
 }
-.icon-popup:before {
+.popup:before {
 	content: "\e001";
 }
 .icon-drop-arrow:before {
@@ -52,7 +52,7 @@
 .icon-printer:before {
 	content: "\e00d";
 }
-.icon-drive:before {
+.drive:before {
 	content: "\e00e";
 }
 .icon-users:before {
