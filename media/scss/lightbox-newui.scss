@@ -188,10 +188,10 @@ input.text {
 .unfavorite-society,
 .unsubscribe {
     text-decoration: none;
-    color: $secondaryColor;
+    color: $medium-gray;
     cursor: pointer;
     &:hover {
-        color: $linkColor-hover;
+        color: darken($medium-gray, 10%);
     }
 } 
 

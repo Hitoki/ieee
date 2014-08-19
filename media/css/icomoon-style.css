@@ -22,7 +22,9 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
-
+.icon-cancel2:before {
+	content: "\e607";
+}
 .icon-twitter:before {
 	content: "\e600";
 }

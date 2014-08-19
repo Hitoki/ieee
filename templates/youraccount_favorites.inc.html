@@ -80,7 +80,7 @@
 <strong>IEEE Organizations</strong><br/>
 <ul class="topicList">
     {% for society in favorite_societies %}
-    <li><a href="{{ society.url }}" rel="nofollow">{{ society.name }}</a> <span class="icon-cancel unfavorite-society icomoon-icon" title="Unfavorite organization" data-nodeid="{{ society.id }}"></span>
+    <li><a href="{{ society.url }}" rel="nofollow">{{ society.name }}</a> <span class="icon-cancel2 unfavorite-society icomoon-icon" title="Unfavorite organization" data-nodeid="{{ society.id }}"></span>
     {% endfor %}
 </ul>
 {% endif %}
@@ -88,7 +88,7 @@
 <strong>Topics</strong><br/>
 <ul class="topicList">
 	{% for topic in favorite_topics %}
-	<li><a href="javascript:Tags.selectTag({{ topic.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);" rel="nofollow">{{ topic.name }}</a> {% if topic.has_alert %}<span class="icon-alert unsubscribe icomoon-icon" title="Unsubscribe from alerts" data-nodeid="{{ topic.id }}"></span>{% endif %} <span class="icon-cancel unfavorite-topic icomoon-icon" title="Unfavorite topic" data-nodeid="{{ topic.id }}"></span></li>
+	<li><a href="javascript:Tags.selectTag({{ topic.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);" rel="nofollow">{{ topic.name }}</a> {% if topic.has_alert %}<span class="icon-alert unsubscribe icomoon-icon" title="Unsubscribe from alerts" data-nodeid="{{ topic.id }}"></span>{% endif %} <span class="icon-cancel2 unfavorite-topic icomoon-icon" title="Unfavorite topic" data-nodeid="{{ topic.id }}"></span></li>
 	{% endfor %}
 </ul>
 {% endif %}
@@ -98,7 +98,7 @@
 <strong>{{ resource_type.grouper|title }}s</strong>
 <ul class="topicList">
     {% for resource in resource_type.list %}
-    <li><a href="{{ resource.url }}" target="_blank" rel="nofollow">{{ resource.name }}<span class="popup newWinIcon"></span></a> <span class="icon-cancel unfavorite-resource icomoon-icon" title="Unfavorite {{ resource_type.grouper|lower }}" data-nodeid="{{ resource.id }}"></span>
+    <li><a href="{{ resource.url }}" target="_blank" rel="nofollow">{{ resource.name }}<span class="popup newWinIcon"></span></a> <span class="icon-cancel2 unfavorite-resource icomoon-icon" title="Unfavorite {{ resource_type.grouper|lower }}" data-nodeid="{{ resource.id }}"></span>
     {% endfor %}
 </ul>
 {% endfor %}

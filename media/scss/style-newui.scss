@@ -69,6 +69,10 @@ p.first {
     margin-left: 5px;
 }
 
+.icon-cancel2 {
+    font-size: 11px;
+}
+
 #misc-bar .icon-cancel {
     color: $white;
     cursor: pointer;
@@ -185,7 +189,7 @@ table.main {
     &:hover a {
         display: inline;
     }
-    .icon-cancel {
+    .icon-cancel2 {
         text-decoration: none;
         display: none;
     }
@@ -211,7 +215,7 @@ table.main {
     .icomoon-icon {
         text-decoration: none;
     }
-    a.icon-cancel {
+    a.icon-cancel2 {
         font-size: 11px;
     }
 }
@@ -228,12 +232,12 @@ table.main {
     line-height: 1.5;
     li {
         &:hover {
-            .icon-cancel {
+            .icon-cancel2 {
                 display: inline;
                 text-decoration: none;
             }
         }
-        .icon-cancel {
+        .icon-cancel2 {
             display: none;
         }
     }

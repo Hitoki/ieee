@@ -482,7 +482,7 @@ def print_resource(request, tag_id, resource_type,
     if resource_type == 'authors' or resource_type == 'all':
         xplore_authors, xplore_error, totalfound = ajax_xplore_authors(tag_id)
 
-    page_date = datetime.datetime.now()
+    page_date = datetime.now()
 
     related_items_count = sectors.count() + related_tags.count() + \
                           societies.count() + conf_count + \
