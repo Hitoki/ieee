@@ -2869,9 +2869,9 @@ a#zenbox_tab {
 
 .qtip-default {
     white-space: nowrap;
-    background: $orange;
+    background: $primaryColor;
     color: $white;
-    border: $orange;
+    border: $primaryColor;
     &.truncated-qtip {
         white-space: normal;
         width: 600px;
