@@ -1,16 +1,17 @@
-
-function getUrlParam(name, url){
-    if (typeof url == "undefined"){
+function getUrlParam(name, url) {
+    if (typeof url == "undefined") {
         url = window.location.href;
     }
     var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(url);
-    if (!results) { return 0; }
+    if (!results) {
+        return 0;
+    }
     return results[1] || 0;
 }
 
 function implode(glue, array) {
     var str = "";
-    for (var i=0; i<array.length; i++) {
+    for (var i = 0; i < array.length; i++) {
         if (i)
             str += glue + array[i];
         else
@@ -57,11 +58,11 @@ function logobj(obj, indent) {
 // Similar to jQuery's $.extend(), except it only overwrites exising vars in obj1 with obj2 values
 function extendExisting() {
     var args = extendExisting.arguments;
-    
+
     if (!args[0])
         args[0] = {};
-    
-    for (var argnum=1; argnum<args.length; argnum++) {
+
+    for (var argnum = 1; argnum < args.length; argnum++) {
         if (args[argnum]) {
             for (var i in args[0]) {
                 if (i in args[argnum]) {
@@ -85,14 +86,14 @@ function isCompatibleBrowser() {
     //alert('$.browser.browser(): ' + $.browser.browser());
     //alert('$.browser.version.string(): ' + $.browser.version.string());
     //alert('$.browser.version.number(): ' + $.browser.version.number());
-    
+
     var v = $.browser.version.number();
     return (
-    	( $.browser.msie    && v >= 8 ) ||
-    	( $.browser.firefox && v >= 3.6 ) ||
-		( $.browser.safari  && v >= 4 ) ||
-		( $.browser.chrome  && v >= 5 )
-    );
+        ( $.browser.msie && v >= 8 ) ||
+        ( $.browser.firefox && v >= 3.6 ) ||
+        ( $.browser.safari && v >= 4 ) ||
+        ( $.browser.chrome && v >= 5 )
+        );
 }
 
 function setBrowserCookie() {
@@ -102,10 +103,10 @@ function setBrowserCookie() {
     $.cookie("ignoreWarning", 'ignore', options);
 }
 
-$(function() {
+$(function () {
     // get browser compatibility cookie
     var browser_cookie = $.cookie("ignoreWarning");
-    
+
     // Show browser compatibility warning
     if (document.location.hostname.match(/^\m./) == null && browser_cookie != 'ignore' && !isCompatibleBrowser()) {
         $('html').css('height', '100%');
@@ -148,12 +149,12 @@ function HighlightCheckbox(elem, options) {
         this.elem.metadata(),
         options
     );
-    
+
     if (this.options.highlightElem == null) {
         // Attempt to find the label
         var id = this.elem.attr('id');
         var label = null;
-        $('label').each(function() {
+        $('label').each(function () {
             if ($(this).attr('for') == id)
                 label = $(this);
         });
@@ -162,20 +163,20 @@ function HighlightCheckbox(elem, options) {
     } else {
         this.options.highlightElem = $(this.options.highlightElem);
     }
-    
+
     if (this.options.highlightElem == null) {
         ajax_report_error('HighlightCheckbox(): Error, this.options.highlightElem must be specified.');
         return;
     }
-    
-    this.elem.change(function(e) {
+
+    this.elem.change(function (e) {
         highlightcheckbox.onChange(e);
     });
-    
-    this.elem.click(function(e) {
+
+    this.elem.click(function (e) {
         highlightcheckbox.onChange(e);
     });
-    
+
     this.onChange();
 }
 
@@ -183,15 +184,15 @@ HighlightCheckbox.prototype.onChange = function (e) {
     if (this.elem.attr('checked')) {
         var classes = this.options.highlightElem.attr('className');
         var classes = classes ? classes.split(' ') : '';
-        for (var i=0; i<classes.length; i++) {
-            if (classes[i].substr(classes[i].length-10, 10) != '_highlight') {
+        for (var i = 0; i < classes.length; i++) {
+            if (classes[i].substr(classes[i].length - 10, 10) != '_highlight') {
                 this.options.highlightElem.addClass(classes[i] + '_highlight');
             }
         }
     } else {
         var classes = this.options.highlightElem.attr('className').split(' ');
-        for (var i=0; i<classes.length; i++) {
-            if (classes[i].substr(classes[i].length-10) == '_highlight') {
+        for (var i = 0; i < classes.length; i++) {
+            if (classes[i].substr(classes[i].length - 10) == '_highlight') {
                 this.options.highlightElem.removeClass(classes[i]);
             }
         }
@@ -200,11 +201,11 @@ HighlightCheckbox.prototype.onChange = function (e) {
 
 function attachHighlightCheckboxes(elem) {
     if (elem) {
-        elem.find('.highlight-checkbox').each(function() {
+        elem.find('.highlight-checkbox').each(function () {
             new HighlightCheckbox(this);
         });
     } else {
-        $('.highlight-checkbox').each(function() {
+        $('.highlight-checkbox').each(function () {
             new HighlightCheckbox(this);
         });
     }
@@ -214,11 +215,11 @@ function attachHighlightCheckboxes(elem) {
 
 function attachSelectCheckboxOnClick(elem) {
     elem = $(elem);
-    elem.find('.select-checkbox-on-click').click(function() {
+    elem.find('.select-checkbox-on-click').click(function () {
         $(this).find('input[type="checkbox"]').click();
         $(this).find('input[type="checkbox"]').change();
     });
-    elem.find('.select-checkbox-on-click input[type="checkbox"]').click(function(e) {
+    elem.find('.select-checkbox-on-click input[type="checkbox"]').click(function (e) {
         // Stop propagation to above function, otherwise checkbox is clicked twice & doesn't change
         e.stopPropagation();
     });
@@ -228,8 +229,8 @@ function attachItemsPerPage(elem) {
     if (elem == undefined) {
         elem = $('body');
     }
-    
-    elem.find('select.items-per-page').change(function() {
+
+    elem.find('select.items-per-page').change(function () {
         // Can't use a simple this.form.submit() here, since IE7 removes the hash from the URL (!).
         var urlbits = this.form.action.split('#');
         if (urlbits.length > 1) {
@@ -240,11 +241,11 @@ function attachItemsPerPage(elem) {
             var hash = '';
         }
         var queryvars = {};
-        for (var i=0; i<this.form.elements.length; i++) {
+        for (var i = 0; i < this.form.elements.length; i++) {
             var element = this.form.elements[i];
             queryvars[element.name] = element.value;
         }
-        
+
         var querystring = '';
         for (var i in queryvars) {
             if (querystring != '') {
@@ -255,15 +256,15 @@ function attachItemsPerPage(elem) {
         if (querystring != '') {
             querystring = '?' + querystring;
         }
-        
+
         var fullurl = url + querystring + hash;
-        
+
         window.location = fullurl;
-    });    
+    });
 }
 
 function attachSocietyLogoFlyovers(elem) {
-    elem.find('img.logo-flyover').each(function() {
+    elem.find('img.logo-flyover').each(function () {
         Flyover.attach(this, {
             content_html: "<img src=\"" + $(this).metadata().full_url + "\" />"
         });
@@ -271,8 +272,8 @@ function attachSocietyLogoFlyovers(elem) {
 }
 
 function attachOtherConferencesToggle(elem) {
-    elem.find('a.show-other-conferences, a.hide-other-conferences').each(function() {
-        $(this).click(function() {
+    elem.find('a.show-other-conferences, a.hide-other-conferences').each(function () {
+        $(this).click(function () {
             $('#other-conferences-' + $(this).metadata().id).toggle();
             $('#show-other-conferences-' + $(this).metadata().id).toggle();
             $('#hide-other-conferences-' + $(this).metadata().id).toggle();
@@ -282,14 +283,14 @@ function attachOtherConferencesToggle(elem) {
 }
 
 function attachExpandSeries(elem) {
-    elem.find('tr.current-conference').each(function() {
+    elem.find('tr.current-conference').each(function () {
         var expandSeries = new ExpandSeries(this);
     });
 }
 
 function attachCopyTags(elem) {
     // Attach handlers to the "copy tags" links
-    elem.find('a.copy-tags-to-clipboard').click(function() {
+    elem.find('a.copy-tags-to-clipboard').click(function () {
         var resourceId = $(this).metadata().resourceId;
         var linkElem = this;
         $.ajax({
@@ -299,16 +300,16 @@ function attachCopyTags(elem) {
                 csrfmiddlewaretoken: $('input:hidden[name="csrfmiddlewaretoken"]').val()
             },
             type: 'POST',
-            success: function(data) {
+            success: function (data) {
                 onCopyTagsSuccess(linkElem, data);
             }
         });
-        
+
         return false;
     });
-    
+
     // Attach handlers to the "paste tags" links
-    elem.find('a.paste-tags').click(function() {
+    elem.find('a.paste-tags').click(function () {
         var resourceId = $(this).metadata().resourceId;
         Lightbox.show(INDEX_URL + 'admin/ajax/paste_resource_tags?resource_id=' + resourceId, { customClass: 'paste-tags' });
         return false;
@@ -335,19 +336,19 @@ function resizeLightboxTab() {
 
 function addCommas(nStr) {
     // From http://www.mredkj.com/javascript/nfbasic.html, public domain
-	nStr += '';
-	x = nStr.split('.');
-	x1 = x[0];
-	x2 = x.length > 1 ? '.' + x[1] : '';
-	var rgx = /(\d+)(\d{3})/;
-	while (rgx.test(x1)) {
-		x1 = x1.replace(rgx, '$1' + ',' + '$2');
-	}
-	return x1 + x2;
+    nStr += '';
+    x = nStr.split('.');
+    x1 = x[0];
+    x2 = x.length > 1 ? '.' + x[1] : '';
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    }
+    return x1 + x2;
 }
 
 function getScrollBottom(elem) {
-	return elem.prop("scrollHeight") - elem.scrollTop() - elem.outerHeight();
+    return elem.prop("scrollHeight") - elem.scrollTop() - elem.outerHeight();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -376,8 +377,8 @@ function getXploreSortName(sort) {
         return 'Affiliations';
     } else if (sort == XPLORE_SORT_PUBLICATION_TITLE) {
         return 'Publication Title';
-    //} else if (sort == XPLORE_SORT_ARTICLE_NUMBER) {
-    //    return 'Article Number';
+        //} else if (sort == XPLORE_SORT_ARTICLE_NUMBER) {
+        //    return 'Article Number';
     } else if (sort == XPLORE_SORT_PUBLICATION_YEAR) {
         return 'Publication Year';
     }
@@ -398,46 +399,46 @@ function ResourceLoader(elem, ctype, showAll, sort) {
     this.totalsCalced = false;
     this.resultsGathered = false;
     this.data = null;
-	
-    this.scrollElem.scroll(function() {
+
+    this.scrollElem.scroll(function () {
         resourceloader.onScroll();
     });
-	
+
     if (showAll == undefined) {
         showAll = false;
     }
-	
+
     if (sort == undefined) {
         sort = null;
     }
-    
+
     if (ctype == undefined) {
         ctype = null;
     }
-    
-	this.offset = 0;
-    
+
+    this.offset = 0;
+
     this.numXploreResultsPerPage = 10;
-    
+
     this.tagId = this.elem.metadata().tagId;
     this.termId = this.elem.metadata().termId;
-	
+
     this.showAll = showAll;
     this.sort = sort;
     this.sortDesc = false;
     this.ctype = ctype;
-	
-    $('#xplore-sort').click(function() {
+
+    $('#xplore-sort').click(function () {
         resourceloader.onChangeSelect();
     });
-    $('#xplore-sort').change(function() {
+    $('#xplore-sort').change(function () {
         resourceloader.onChangeSelect();
     });
-    
+
     this.loadContent();
 }
 
-ResourceLoader.prototype.onChangeSelect = function() {
+ResourceLoader.prototype.onChangeSelect = function () {
     var sort = $('#xplore-sort').val();
     if (sort == '') {
         sort = null;
@@ -451,8 +452,8 @@ ResourceLoader.prototype.onChangeSelect = function() {
     this.setSort(sort, desc);
 };
 
-ResourceLoader.prototype.setSort = function(sort, desc) {
-    if (sort !=  this.sort || this.sortDesc != desc) {
+ResourceLoader.prototype.setSort = function (sort, desc) {
+    if (sort != this.sort || this.sortDesc != desc) {
         this.sort = sort;
         this.sortDesc = desc;
         // Clear the previous results.
@@ -464,67 +465,67 @@ ResourceLoader.prototype.setSort = function(sort, desc) {
     }
 };
 
-ResourceLoader.prototype.loadContent = function(force) {
+ResourceLoader.prototype.loadContent = function (force) {
     loadingTabs.push(this.ctype);
     if (!this.isLoading || force) {
         this.isLoading = true;
-        
+
         var resourceloader = this;
         this.ajaxToken = (new Date()).getTime() + '-' + Math.random();
 
         if (this.ctype == 'xplore') {
             this.url = '/ajax/xplore_results';
             this.data = {
-                tag_id: this.tagId
-                , term_id: this.termId
-                , show_all: this.showAll
-                , offset: this.offset
-                , sort: this.sort
-                , sort_desc: this.sortDesc
-                , token: this.ajaxToken
-                , ctype: null
+                tag_id: this.tagId,
+                term_id: this.termId,
+                show_all: this.showAll,
+                offset: this.offset,
+                sort: this.sort,
+                sort_desc: this.sortDesc,
+                token: this.ajaxToken,
+                ctype: null
             };
         } else if (this.ctype == 'education') {
             this.url = '/ajax/xplore_results';
             this.data = {
-                tag_id: this.tagId
-                , term_id: this.termId
-                , show_all: this.showAll
-                , offset: this.offset
-                , sort: this.sort
-                , sort_desc: this.sortDesc
-                , token: this.ajaxToken
-                , ctype: 'Educational Courses'
+                tag_id: this.tagId,
+                term_id: this.termId,
+                show_all: this.showAll,
+                offset: this.offset,
+                sort: this.sort,
+                sort_desc: this.sortDesc,
+                token: this.ajaxToken,
+                ctype: 'Educational Courses'
             };
         } else if (this.ctype == 'jobs') {
             this.url = '/ajax/jobs_results';
             this.data = {
-                tag_id: this.tagId
-                , term_id: this.termId
-                , show_all: this.showAll
-                , offset: this.offset
-                , token: this.ajaxToken
+                tag_id: this.tagId,
+                term_id: this.termId,
+                show_all: this.showAll,
+                offset: this.offset,
+                token: this.ajaxToken
             };
         } else if (this.ctype == 'tv') {
             this.url = '/ajax/tv_results';
             this.data = {
-                tag_id: this.tagId
-                , term_id: this.termId
-                , show_all: this.showAll
-                , offset: this.offset
-                , token: this.ajaxToken
-            };        
+                tag_id: this.tagId,
+                term_id: this.termId,
+                show_all: this.showAll,
+                offset: this.offset,
+                token: this.ajaxToken
+            };
         } else if (this.ctype == 'authors') {
             this.url = '/ajax/authors_results';
             this.data = {
-                tag_id: this.tagId
-                , term_id: this.termId
-                , token: this.ajaxToken
+                tag_id: this.tagId,
+                term_id: this.termId,
+                token: this.ajaxToken
             };
         }
-        
+
         this.loadingElem = $('<div id="xplore-loading" class="loading">Loading ...<div></div></div>').appendTo(this.scrollElem);
-        
+
         $("#xplore-loading div").spin({
             lines: 9, // The number of lines to draw
             length: 10, // The length of each line
@@ -536,27 +537,27 @@ ResourceLoader.prototype.loadContent = function(force) {
         });
 
         $.ajax({
-            url: this.url
-            , data: this.data
-            , type: 'post'
-            , dataType: 'json'
-            , success: function(data) {
+            url: this.url,
+            data: this.data,
+            type: 'post',
+            dataType: 'json',
+            success: function (data) {
                 resourceloader.onLoadData(data);
             }
         });
-        
+
         this.offset += this.numXploreResultsPerPage;
     }
 };
 
-ResourceLoader.prototype.onLoadData = function(data) {
+ResourceLoader.prototype.onLoadData = function (data) {
     removeNumRelatedLoader();
     if (data.token == this.ajaxToken) {
         this.loadingElem.remove();
         this.loadingElem = null;
         this.numResults += data.num_results;
-        
-        if (data.num_results == 0 && this.numResults != 0){
+
+        if (data.num_results == 0 && this.numResults != 0) {
             this.resultsGathered = true;
         }
 
@@ -564,7 +565,7 @@ ResourceLoader.prototype.onLoadData = function(data) {
             this.noResultsElem.remove();
             this.noResultsElem = null;
         }
-	
+
         if (data.xplore_error != null && data.num_results != 0) {
             // Xplore error, show the error message.
             this.errorElem = $('<p class="error" style="margin: 50px 0 0 10px;"></p>').appendTo(this.scrollElem);
@@ -572,35 +573,35 @@ ResourceLoader.prototype.onLoadData = function(data) {
 
         } else {
             // Normal results, load into the page.
-                        
+
             if (this.ctype == 'tv' || this.ctype == 'jobs') {
                 this.scrollElem.append(data.html);
-            } else { 
+            } else {
                 this.listElem[0].innerHTML += data.html;
             }
-            
-            resizeLightboxTab();
-            
-            // Hook up auto-truncate for the descriptions.
-            autoTruncate(this.listElem.find('.auto-truncate-words'), { word_boundary:true } );
 
-            if(this.ctype == "education"){
+            resizeLightboxTab();
+
+            // Hook up auto-truncate for the descriptions.
+            autoTruncate(this.listElem.find('.auto-truncate-words'), { word_boundary: true });
+
+            if (this.ctype == "education") {
                 $('option#jump-to-articles').append('&nbsp;(' + addCommas(data.num_results) + ')');
-                if(this.numResults != 0 && data.num_results != 0){
+                if (this.numResults != 0 && data.num_results != 0) {
                     $('#num-education-results').text(addCommas(data.num_results));
                     var currentEdCount = parseInt($('#num-education-total-results').metadata().number);
                     var newEdCount = currentEdCount + data.num_results;
                     $('#num-education-total-results').metadata().number = newEdCount;
                     $('#num-education-total-results').text(addCommas(newEdCount));
                 }
-		   
+
             } else if (this.ctype == 'tv') {
                 $('#num-tv-results').text(addCommas(data.num_results));
                 $('option#jump-to-videos').append('&nbsp;(' + addCommas(data.num_results) + ')');
                 var currentEdCount = parseInt($('#num-education-total-results').metadata().number);
                 var newEdCount = currentEdCount + data.num_results;
                 $('#num-education-total-results').metadata().number = newEdCount;
-                $('#num-education-total-results').text(addCommas(newEdCount));            
+                $('#num-education-total-results').text(addCommas(newEdCount));
             } else if (this.ctype == 'jobs') {
                 $('#num-job-results').text(addCommas(data.num_results));
 
@@ -610,56 +611,56 @@ ResourceLoader.prototype.onLoadData = function(data) {
                     this.noResultsElem = $('<p class="no-resources">No Jobs are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
                 }
             } else {
-                if(this.numResults != 0 && data.num_results != 0){
+                if (this.numResults != 0 && data.num_results != 0) {
                     $('#num-' + this.ctype + '-results').text(addCommas(data.num_results));
                 }
             }
 
-            if(!this.totalsCalced){
+            if (!this.totalsCalced) {
                 var numRelatedItems = parseInt($('#num-related-items').metadata().number);
                 var newTotal = numRelatedItems + parseInt(data.num_results);
                 $('#num-related-items').text(addCommas(newTotal));
                 $('#num-related-items').metadata().number = newTotal;
                 this.totalsCalced = true;
             }
-            
+
             if (data.num_results == 0 && this.numResults == 0) {
-        		if(this.ctype == "education"){
-        		    $('#num-education-results').text('0').parent('h3').addClass('no-education-results');
-        		    //$('#education-results-container .print-resource').remove(); 
-        		    //this.listElem.html('<p class="no-resources">No educational resources are currently tagged ' + $('#tag-name').text() + '</p>');
-        		} else if (this.ctype == 'tv') {
+                if (this.ctype == "education") {
+                    $('#num-education-results').text('0').parent('h3').addClass('no-education-results');
+                    //$('#education-results-container .print-resource').remove();
+                    //this.listElem.html('<p class="no-resources">No educational resources are currently tagged ' + $('#tag-name').text() + '</p>');
+                } else if (this.ctype == 'tv') {
                     $('#num-tv-results').parent('h3').addClass('no-education-results');
                 } else {
-        		    $('#num-' + this.ctype + '-results').text('0');
-        		    //$('#xplore-results-container .print-resource').remove(); 
+                    $('#num-' + this.ctype + '-results').text('0');
+                    //$('#xplore-results-container .print-resource').remove();
                     this.noResultsElem = $('<p class="no-resources">No ' + this.ctype + ' Articles are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
-        		}
+                }
 
             } else {
                 var html = '<div class="articles-search">Show articles containing: <input class="live-search" id="article-live-search"><span id="article-search-clear" class="live-search-clear">&nbsp;</span></div>';
                 html = ''; // removing search-in-xplore UI
                 html += '<div class="articles-show-count">' + addCommas(data.num_results) + ' articles';
-                if (!this.ctype){
+                if (!this.ctype) {
                     html += ' (<a href="http://xploreuat.ieee.org/search/freesearchresult.jsp?newsearch=true&queryText=' + escape(data.search_term) + '&x=0&y=0' + (this.ctype ? '&ctype=' + this.ctype : '') + '" target="_blank" rel="nofollow"><span>show search in Xplore</span><span class="popup newWinIcon"></span></a>)</div>'
                 }
             }
-            
+
             // Showing {{ xplore_results|length }} of {{ totalfound|intcomma }} results 
-            
+
         }
-        
+
         this.isLoading = false;
     }
 };
 
-ResourceLoader.prototype.onScroll = function() {
-	if (!this.showAll) {
+ResourceLoader.prototype.onScroll = function () {
+    if (!this.showAll) {
         var minScrollBottom = 10;
-    	var scrollBottom = getScrollBottom(this.scrollElem);
-    	if (scrollBottom <= minScrollBottom && !this.resultsGathered) {
-    		this.loadContent();
-    	}
+        var scrollBottom = getScrollBottom(this.scrollElem);
+        if (scrollBottom <= minScrollBottom && !this.resultsGathered) {
+            this.loadContent();
+        }
     }
 };
 
@@ -689,14 +690,14 @@ function attachScripts(elem) {
     attachCopyTags(elem);
 }
 
-function openIEEEtv(URL){
-	newWindow = window.open(URL,"ieeeTV","scrollbars=no,resizable=no,HEIGHT=624,WIDTH=982");
-	newWindow.focus();
+function openIEEEtv(URL) {
+    newWindow = window.open(URL, "ieeeTV", "scrollbars=no,resizable=no,HEIGHT=624,WIDTH=982");
+    newWindow.focus();
 }
 
 // Add a custom outerHTML function to all jQuery objects.
-jQuery.fn.outerHTML = function() {
-    return $('<div>').append( this.eq(0).clone() ).html();
+jQuery.fn.outerHTML = function () {
+    return $('<div>').append(this.eq(0).clone()).html();
 };
 
 function createUUID() {
@@ -737,14 +738,14 @@ function ajax_report_error(msg) {
         }
     }
     $.post(
-        INDEX_URL + 'ajax/javascript_error_log'
-        , {
-            message: msg
-            , url: window.location.href
-            , vars: url_encode(vars)
+        INDEX_URL + 'ajax/javascript_error_log',
+        {
+            message: msg,
+            url: window.location.href,
+            vars: url_encode(vars)
         }
     );
-    
+
     if (DEBUG) {
         alert('ajax_report_error(): ' + msg);
     }
@@ -753,31 +754,31 @@ function ajax_report_error(msg) {
 var mouseX = null;
 var mouseY = null;
 
-$(function() {
+$(function () {
     log('global.js');
-    
+
     // Use the old style of ajax param serialization
     $.ajaxSettings.traditional = true;
-    
-    $('.select-checkbox-on-click').click(function() {
+
+    $('.select-checkbox-on-click').click(function () {
         $(this).find('input[type="checkbox"]').click();
         $(this).find('input[type="checkbox"]').change();
     });
-    $('.select-checkbox-on-click input[type="checkbox"]').click(function(e) {
+    $('.select-checkbox-on-click input[type="checkbox"]').click(function (e) {
         // Stop propagation to above function, otherwise checkbox is clicked twice & doesn't change
         e.stopPropagation();
     });
-    
+
     attachHighlightCheckboxes();
     attachItemsPerPage();
-    
+
     // Bind a callback to any AJAX error (to prevent silent fails).
     $('body').bind(
         'ajaxError',
         function (event, XMLHttpRequest, textStatus, errorThrown) {
 
             // Ignore explicit xhr aborts
-            if (XMLHttpRequest.statusText == "abort"){
+            if (XMLHttpRequest.statusText == "abort") {
                 return;
             }
             // Show the error as a DHTML popup
@@ -801,23 +802,23 @@ $(function() {
             log('-----------------------------------');
         }
     );
-    
+
     // Bind society logo flyovers
     attachSocietyLogoFlyovers($(document));
-    
+
     attachOtherConferencesToggle($(document));
-    
-    setTimeout(function() {
+
+    setTimeout(function () {
         attachExpandSeries($(document));
     }, 500);
-    
+
     attachCopyTags($(document));
-	
-	// Keep track of the mouse's position
-	$().mousemove(function(e) {
-		mouseX = e.pageX;
-		mouseY = e.pageY;
-	}); 
+
+    // Keep track of the mouse's position
+    $().mousemove(function (e) {
+        mouseX = e.pageX;
+        mouseY = e.pageY;
+    });
 
 });
 
@@ -872,7 +873,7 @@ function setupQtips(sel, position, content, classes, showEvents) {
                     api.set('hide.event', 'unfocus');
                 });
             },
-            hide: function  (event, api) {
+            hide: function (event, api) {
                 api.set('hide.event', 'mouseleave');
                 event: 'unfocus';
             }
