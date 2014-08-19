@@ -181,7 +181,11 @@ table.main {
         font-size: 12px;
     }
 }
-
+.your-account-lightbox-content {
+    .signinBtns {
+        margin-top: 20px;
+    }
+}
 .lightbox-box {
     background: $white;
     padding: 20px;
