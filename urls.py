@@ -19,12 +19,15 @@ if not settings.DEBUG:
 if settings.DISABLE_SITE:
     # Disable the entire site!
     urlpatterns = patterns('',
-        url(r'^.*$', views.site_disabled, name='site_disabled'),
+        url(r'^.*$', 
+            views.site_disabled,
+            name='site_disabled'),
     )
     
 else:
     urlpatterns = patterns('',
-        url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap',
+        url(r'^sitemap\.xml$',
+            'django.contrib.sitemaps.views.sitemap',
             {'sitemaps': {
                     'OneOffs':        OneOffsSitemap
                     ,'TagsStartWith': TagsStartWithSitemap
@@ -211,13 +214,14 @@ else:
          direct_to_template,
          {'template': 'scss.html'}),
 
-        # Account:
+        # Account
         url(r'^delete_user/$',
             views.delete_user,
             name='delete_user'),
 
         url(r'^account/(?P<account_step>\w+)/$',
-            ajax.ajax_account, name='ajax_account'),
+            ajax.ajax_account,
+            name='ajax_account'),
 
         url(r'^ajax/favorite_list$',
             ajax.ajax_favorite_list),
@@ -229,7 +233,7 @@ else:
             views.log_out,
             name='logout'),
 
-        # Favorites:
+        # Favorites
         url(r'^ajax/favorite-(topic|resource|society)/request$',
             ajax.ajax_favorite_request),
 

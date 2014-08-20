@@ -584,7 +584,21 @@ def ajax_favorite_list(request):
 
 
 def ajax_connections(request):
-    return render(request, 'youraccount_connections.inc.html', {})
+    try:
+        member = User.objects.get(id=request.user.id)
+        if member.has_usable_password():
+            password_exists = True
+        else:
+            password_exists = False
+            pass
+    except User.DoesNotExist:
+        pass
+
+    context_dict = {
+        'password_exists': password_exists
+    }
+
+    return render(request, 'youraccount_connections.inc.html', context_dict)
 
 
 #@login_required

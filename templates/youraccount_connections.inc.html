@@ -3,30 +3,22 @@
 <strong>Connected Accounts</strong><br/>
 {% get_social_accounts user as accounts %}
 {% if accounts %}
-    <ul>
+    <ul class="accountList">
     {% for key, values in accounts.items %}
         {% for account in values %}
             <li class="accountField">
                 {{ account.extra_data.email }}{{ account.extra_data.emailAddress }} ({{ key|title }} Account)
-                {% if accounts|length > 1 or accounts.items.0.1|length > 1 or user.get_profile.role = "admin" or user.get_profile.role = "society_admin" or user.get_profile.role = "society_manager" %}
+                {% if accounts|length > 1 or accounts.items.0.1|length > 1 or user.get_profile.role = "admin" and password_exists or user.get_profile.role = "society_admin" and password_exists or user.get_profile.role = "society_manager" and password_exists %}
                     <a class="disconnect_account icon-cancel2 icomoon-icon" href="#" title="Disconnect account" data-account-id="{{ account.id }}"></a>
                 {% endif %}
             </li>
         {% endfor %}
     {% endfor %}
     </ul>
-<p>
     You can connect another social media account:
 {% else %}
     You can connect new social media accounts:
 {% endif %}
-    <span class="signinBtns">
-        <a class="btn account connect_account" target="_blank" href="{% provider_login_url "google" process="connect" %}"><span class="icon-google icomoon-icon"></span>Connect your Google Account</a>
-    {#    <a class="btn account" target="_blank" href="{% provider_login_url "facebook" process="connect" %}"><span class="icon-facebook icomoon-icon"></span>Sign In or Join with Facebook</a>#}
-        <a class="btn account connect_account" target="_blank" href="{% provider_login_url "linkedin_oauth2" process="connect" %}"><span class="icon-linkedin icomoon-icon"></span>Connect your LinkedIn account</a>
-    </span>
-</p>
-
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
@@ -36,6 +28,11 @@
     {% endfor %}
 </ul>
 {% endif %}
+<div class="signinBtns">
+    <a class="btn account connect_account" target="_blank" href="{% provider_login_url "google" process="connect" %}"><span class="icon-google icomoon-icon"></span>Connect your Google Account</a>
+{#    <a class="btn account" target="_blank" href="{% provider_login_url "facebook" process="connect" %}"><span class="icon-facebook icomoon-icon"></span>Sign In or Join with Facebook</a>#}
+    <a class="btn account connect_account" target="_blank" href="{% provider_login_url "linkedin_oauth2" process="connect" %}"><span class="icon-linkedin icomoon-icon"></span>Connect your LinkedIn account</a>
+</div>
 
 <p>
     <strong>Delete TechNav Account</strong><br/>
