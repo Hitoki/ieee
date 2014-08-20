@@ -550,7 +550,7 @@ ResourceLoader.prototype.loadContent = function (force) {
                 resourceloader.onLoadData(data);
                 $('.favorite-job').on('click', function(){
                     var action;
-                    var nodeid = $(this).data('nodeid');
+                    var externalId = $(this).data('nodeid');
                     if ($(this).hasClass('enabled')) {
                         action = 'disable';
                         $(this).removeClass('icon-star-whole enabled').addClass('icon-star');
@@ -558,10 +558,11 @@ ResourceLoader.prototype.loadContent = function (force) {
                         action = 'enable';
                         $(this).removeClass('icon-star').addClass('icon-star-whole enabled');
                     }
-                    $.post('/ajax/favorite-job/request',
+                    $.post('/ajax/favorite-external/request',
                         {
-                            nodeid: nodeid,
-                            action: action
+                            action: action,
+                            externalResourceType: 'job',
+                            externalId: externalId
                         },
                         function () {
                             return false;

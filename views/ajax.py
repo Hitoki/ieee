@@ -41,7 +41,7 @@ from models.society import Society
 from models.system import Cache
 from models.types import NodeType, ResourceType, Filter
 from models.utils import single_row
-from models.favorites import UserFavorites
+from models.favorites import UserFavorites, UserExternalFavorites
 import settings
 import util
 from BeautifulSoup import BeautifulSoup
@@ -1285,6 +1285,25 @@ def ajax_favorite_request(request, ftype):
         if ftype == 'topic':
             ResourceAdditionNotificationRequest.objects.filter(node_id=node).\
                 filter(email=request.user.email).delete()
+        return HttpResponse('success')
+    else:
+        return HttpResponse('failure')
+
+
+@csrf_exempt
+@login_required
+def ajax_external_favorite_request(request):
+    action = request.POST['action']
+    kwargs = {
+        'user': request.user,
+        'external_resource_type': request.POST['externalResourceType'],
+        'external_id': request.POST['externalId'],
+    }
+    if action == 'enable':
+        UserExternalFavorites.objects.create(**kwargs)
+        return HttpResponse('success')
+    elif action == 'disable':
+        UserExternalFavorites.objects.filter(**kwargs).delete()
         return HttpResponse('success')
     else:
         return HttpResponse('failure')

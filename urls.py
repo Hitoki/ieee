@@ -237,6 +237,9 @@ else:
         url(r'^ajax/favorite-(topic|resource|society)/request$',
             ajax.ajax_favorite_request),
 
+        url(r'^ajax/favorite-external/request$',
+            ajax.ajax_external_favorite_request),
+
         url(r'^accounts/', include('allauth.urls')),
     )
 
