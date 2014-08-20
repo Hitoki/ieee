@@ -285,11 +285,11 @@ table.main {
         position: absolute;
         top: -7px;
         right: -11px;
-        border: 1px solid darken($primaryColor, 10%);
+        border: 1px solid darken($primaryColor, 15%);
         padding: 5px 10px;
         z-index: 9999;
         display: none;
-        background-color: $primaryColor;
+        background-color: darken($primaryColor, 15%);
         color: $white;
     }
     li {
@@ -2884,9 +2884,9 @@ a#zenbox_tab {
 
 .qtip-default {
     white-space: nowrap;
-    background: $primaryColor;
+    background: darken($primaryColor, 15%);
     color: $white;
-    border: 1px solid darken($primaryColor, 10%);
+    border: 1px solid darken($primaryColor, 15%);
     &.truncated-qtip {
         white-space: normal;
         width: 600px;
