@@ -194,12 +194,8 @@ table.main {
     margin-bottom: 15px;
 }
 .accountField {
-    &:hover a {
-        display: inline;
-    }
     .icon-cancel2 {
         text-decoration: none;
-        display: none;
     }
 }
 .your-account-lightbox-content {
@@ -241,13 +237,21 @@ table.main {
     li {
         &:hover {
             .icon-cancel2 {
-                display: inline;
                 text-decoration: none;
             }
         }
-        .icon-cancel2 {
-            display: none;
-        }
+    }
+    a {
+        display: inline-block;
+        max-width: 415px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .popup {
+        vertical-align: top;
+        display: inline-block;
+        color: $secondaryColor;
     }
 }
 
@@ -270,6 +274,15 @@ table.main {
     }
     .icon-star-whole {
         color: #FFD700;
+    }
+}
+
+.topic-icons {
+    float: right;
+    width: 50px;
+    text-align: right;
+    .subscribe {
+        margin-right: 10px;
     }
 }
 
