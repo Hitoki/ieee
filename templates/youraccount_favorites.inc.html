@@ -83,20 +83,20 @@
 
 {% if favorite_topics or favorite_resources or favorite_societies %}
 <p class="first">By clicking the <span class="icon-star-whole icomoon-icon"></span> next to a topic or resource, it will be listed here for easy access later.</p>
+{% if favorite_topics %}
+<strong>Topics</strong><br/>
+<ul class="topicList">
+    {% for topic in favorite_topics %}
+    <li><a href="javascript:Tags.selectTag({{ topic.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);" rel="nofollow">{{ topic.name }}</a> {% if topic.has_alert %}<span class="icon-alert subscribe enabled icomoon-icon" title="Unsubscribe from alerts" data-nodeid="{{ topic.id }}"></span>{% else %}<span class="icon-alert2 subscribe icomoon-icon" title="Subscribe to alerts" data-nodeid="{{ topic.id }}"></span>{% endif %} <span class="icon-cancel2 unfavorite-topic icomoon-icon" title="Unfavorite topic" data-nodeid="{{ topic.id }}"></span></li>
+    {% endfor %}
+</ul>
+{% endif %}
 {% if favorite_societies %}
 <strong>IEEE Organizations</strong><br/>
 <ul class="topicList">
     {% for society in favorite_societies %}
     <li><a href="{{ society.url }}" rel="nofollow">{{ society.name }}</a> <span class="icon-cancel2 unfavorite-society icomoon-icon" title="Unfavorite organization" data-nodeid="{{ society.id }}"></span>
     {% endfor %}
-</ul>
-{% endif %}
-{% if favorite_topics %}
-<strong>Topics</strong><br/>
-<ul class="topicList">
-	{% for topic in favorite_topics %}
-	<li><a href="javascript:Tags.selectTag({{ topic.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);" rel="nofollow">{{ topic.name }}</a> {% if topic.has_alert %}<span class="icon-alert subscribe enabled icomoon-icon" title="Unsubscribe from alerts" data-nodeid="{{ topic.id }}"></span>{% else %}<span class="icon-alert subscribe icomoon-icon" title="Subscribe from alerts" data-nodeid="{{ topic.id }}"></span>{% endif %} <span class="icon-cancel2 unfavorite-topic icomoon-icon" title="Unfavorite topic" data-nodeid="{{ topic.id }}"></span></li>
-	{% endfor %}
 </ul>
 {% endif %}
 {% if favorite_resources %}
