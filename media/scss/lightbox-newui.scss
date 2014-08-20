@@ -191,7 +191,8 @@ input.text {
 .unfavorite-topic,
 .unfavorite-resource,
 .unfavorite-society,
-.icon-alert {
+.icon-alert,
+.icon-alert2 {
     text-decoration: none;
     color: $medium-gray;
     cursor: pointer;
@@ -200,7 +201,8 @@ input.text {
     }
 } 
 
-.icon-alert {
+.icon-alert,
+.icon-alert2 {
     font-size: 15px;
     vertical-align: middle;
     &.enabled {
