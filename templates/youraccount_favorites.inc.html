@@ -2,14 +2,20 @@
     $(function() {
         var action;
         var nodeid;
-        $('.unsubscribe').click(function(){
+        $('.subscribe').click(function(){
             $('.qtip').qtip('hide');
             nodeid = $(this).data('nodeid');
+            if ($(this).hasClass('enabled')) {
+                action = 'disable'
+            } else {
+                action = 'enable'
+            }
+            $(this).toggleClass('enabled');
             $.post('/ajax/notification/request',
-                {
+            {
                     email: '{{ user.email }}',
                     nodeid: nodeid,
-                    action: 'disable'
+                    action: action
                 },
                 function(){
                     $('#favorites-tab').load('/ajax/favorite_list');
@@ -18,6 +24,7 @@
             );
         }).qtip();
     });
+
     $(function() {
         var action;
         var nodeid;
@@ -88,7 +95,7 @@
 <strong>Topics</strong><br/>
 <ul class="topicList">
 	{% for topic in favorite_topics %}
-	<li><a href="javascript:Tags.selectTag({{ topic.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);" rel="nofollow">{{ topic.name }}</a> {% if topic.has_alert %}<span class="icon-alert unsubscribe icomoon-icon" title="Unsubscribe from alerts" data-nodeid="{{ topic.id }}"></span>{% endif %} <span class="icon-cancel2 unfavorite-topic icomoon-icon" title="Unfavorite topic" data-nodeid="{{ topic.id }}"></span></li>
+	<li><a href="javascript:Tags.selectTag({{ topic.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);" rel="nofollow">{{ topic.name }}</a> {% if topic.has_alert %}<span class="icon-alert subscribe enabled icomoon-icon" title="Unsubscribe from alerts" data-nodeid="{{ topic.id }}"></span>{% else %}<span class="icon-alert subscribe icomoon-icon" title="Subscribe from alerts" data-nodeid="{{ topic.id }}"></span>{% endif %} <span class="icon-cancel2 unfavorite-topic icomoon-icon" title="Unfavorite topic" data-nodeid="{{ topic.id }}"></span></li>
 	{% endfor %}
 </ul>
 {% endif %}
