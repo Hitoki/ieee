@@ -811,7 +811,7 @@ ul#overview-list {
         width: 127px;
         &:hover {
             .icon-printer {
-                background-color: $orange;
+                color: $orange;
             }
         }
     }
@@ -826,16 +826,12 @@ ul#overview-list {
         display: none;
     }
     .icon-printer {
-        background-color: $secondaryColor;
-        color: $white;
+        color: $secondaryColor;
         font-size: 19px;
         padding: 3px;
         vertical-align: middle;
         cursor: pointer;
         float: right;
-        &:hover {
-            background-color: $orange;
-        }
     }
     .share-links {
         float: left;
