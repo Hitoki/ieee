@@ -34,10 +34,10 @@ class UserFavorites(models.Model):
         return self.name
 
 
-class OtherFavorites(models.Model):
-    user_id = models.ForeignKey(User)
+class UserExternalFavorites(models.Model):
+    user = models.ForeignKey(User)
     external_resource_type = models.CharField(max_length=50)
-    data_id = models.CharField(max_length=50)
+    external_id = models.CharField(max_length=50)
     creation_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
