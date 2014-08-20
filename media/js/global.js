@@ -548,7 +548,7 @@ ResourceLoader.prototype.loadContent = function (force) {
             success: function (data) {
                 console.log(url + ' -> ajax call success');
                 resourceloader.onLoadData(data);
-                $('.favorite-job').on('click', function(){
+                $('.favorite-job').off('click').on('click', function(){
                     var action;
                     var externalId = $(this).data('nodeid');
                     if ($(this).hasClass('enabled')) {
