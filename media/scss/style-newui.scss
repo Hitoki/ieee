@@ -69,6 +69,10 @@ p.first {
     margin-left: 5px;
 }
 
+.icon-cancel2 {
+    font-size: 11px;
+}
+
 #misc-bar .icon-cancel {
     color: $white;
     cursor: pointer;
@@ -181,9 +185,19 @@ table.main {
         font-size: 12px;
     }
 }
+.accountField {
+    &:hover a {
+        display: inline;
+    }
+    .icon-cancel2 {
+        text-decoration: none;
+        display: none;
+    }
+}
 .your-account-lightbox-content {
     .signinBtns {
-        margin-top: 20px;
+        margin-top: 5px;
+        display: inline-block;
     }
 }
 .lightbox-box {
@@ -201,8 +215,15 @@ table.main {
     .icomoon-icon {
         text-decoration: none;
     }
-    a.icon-cancel {
+    a.icon-cancel2 {
         font-size: 11px;
+    }
+}
+
+#account-tabs ul.deleteText {
+    li {
+        list-style-type: disc;
+        margin-left: 15px;
     }
 }
 
@@ -211,12 +232,12 @@ table.main {
     line-height: 1.5;
     li {
         &:hover {
-            .icon-cancel {
+            .icon-cancel2 {
                 display: inline;
                 text-decoration: none;
             }
         }
-        .icon-cancel {
+        .icon-cancel2 {
             display: none;
         }
     }
@@ -244,7 +265,6 @@ table.main {
 .userMenu {
     position: relative;
     margin-bottom: 5px;
-    color: $primaryColor;
     float: left;
     &:hover {
         ul {
@@ -252,21 +272,29 @@ table.main {
         }
     }
     ul {
+        cursor: default;
         line-height: 1.5;
         position: absolute;
         top: -7px;
         right: -11px;
-        background-color: #FFF;
-        border: 1px solid #069;
+        border: 1px solid darken($primaryColor, 10%);
         padding: 5px 10px;
         z-index: 9999;
         display: none;
+        background-color: $primaryColor;
+        color: $white;
     }
     li {
         &:first-child {
             margin-bottom: 5px;
         }
         list-style-type: none;
+    }
+    a {
+        color: $white;
+        &:hover {
+            text-decoration: underline;
+        }
     }
     .icon-drop-arrow {
         margin-right: 3px;
@@ -2844,4 +2872,25 @@ a#zenbox_tab {
         font-size: 14px;
         padding-bottom: 10px;
     }
+}
+
+.qtip-default {
+    white-space: nowrap;
+    background: $primaryColor;
+    color: $white;
+    border: 1px solid darken($primaryColor, 10%);
+    &.truncated-qtip {
+        white-space: normal;
+        width: 600px;
+        max-width: 600px;
+        max-height: 250px;
+        overflow: hidden;
+        background: $light-gray;
+        color: $dark-gray;
+        border: $light-gray;
+    }
+}
+
+.qtip.qtip-tip {
+    background-color: $secondaryColor;
 }

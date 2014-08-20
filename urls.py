@@ -95,6 +95,7 @@ else:
         (r'^scss/$', direct_to_template, {'template': 'scss.html'}),
 
         # Account
+        url(r'^delete_user/$', views.delete_user, name='delete_user'),
         url(r'^account/(?P<account_step>\w+)/$', ajax.ajax_account, name='ajax_account'),
         url(r'^ajax/favorite_list$', ajax.ajax_favorite_list),
         url(r'^ajax/connections$', ajax.ajax_connections),

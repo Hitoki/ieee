@@ -119,6 +119,7 @@ MIDDLEWARE_CLASSES = [
     #'django.middleware.gzip.GZipMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'ieeetags.middleware.ExceptionMiddleware.ExceptionMiddleware',
@@ -139,6 +140,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'django.contrib.messages',
     'django.contrib.sites',
     'django.contrib.humanize',
     'django.contrib.sitemaps',
@@ -167,6 +169,7 @@ AUTHENTICATION_BACKENDS = (
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.request',
+    'django.contrib.messages.context_processors.messages',
     'ieeetags.context_processors.media_url',
     'ieeetags.context_processors.logo_href',
     'ieeetags.context_processors.external_help_url',
