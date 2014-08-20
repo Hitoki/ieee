@@ -360,7 +360,8 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         for standard in standards:
             if request.user.is_authenticated():
                 member = User.objects.get(id=request.user.id)
-                is_favorite = UserFavorites.objects.filter(user=member).filter(resources=standard).exists()
+                is_favorite = UserFavorites.objects.filter(user=member).\
+                    filter(resources=standard).exists()
             else:
                 is_favorite = False
             standard.is_favorite = is_favorite
@@ -387,7 +388,8 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         for periodical in periodicals:
             if request.user.is_authenticated():
                 member = User.objects.get(id=request.user.id)
-                is_favorite = UserFavorites.objects.filter(user=member).filter(resources=periodical).exists()
+                is_favorite = UserFavorites.objects.filter(user=member).\
+                    filter(resources=periodical).exists()
             else:
                 is_favorite = False
             periodical.is_favorite = is_favorite
@@ -420,7 +422,8 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         for conference in conferences:
             if request.user.is_authenticated():
                 member = User.objects.get(id=request.user.id)
-                is_favorite = UserFavorites.objects.filter(user=member).filter(resources=conference).exists()
+                is_favorite = UserFavorites.objects.filter(user=member).\
+                    filter(resources=conference).exists()
             else:
                 is_favorite = False
             conference.is_favorite = is_favorite
@@ -439,7 +442,8 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         for society in societies:
             if request.user.is_authenticated():
                 member = User.objects.get(id=request.user.id)
-                is_favorite = UserFavorites.objects.filter(user=member).filter(societies=society).exists()
+                is_favorite = UserFavorites.objects.filter(user=member).\
+                    filter(societies=society).exists()
             else:
                 is_favorite = False
             society.is_favorite = is_favorite
@@ -465,7 +469,8 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         for ebook in ebooks:
             if request.user.is_authenticated():
                 member = User.objects.get(id=request.user.id)
-                is_favorite = UserFavorites.objects.filter(user=member).filter(resources=ebook).exists()
+                is_favorite = UserFavorites.objects.filter(user=member).\
+                    filter(resources=ebook).exists()
             else:
                 is_favorite = False
             ebook.is_favorite = is_favorite
@@ -509,7 +514,8 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         for related_tag in related_tags:
             if request.user.is_authenticated():
                 member = User.objects.get(id=request.user.id)
-                is_favorite = UserFavorites.objects.filter(user=member).filter(topics=related_tag).exists()
+                is_favorite = UserFavorites.objects.filter(user=member).\
+                    filter(topics=related_tag).exists()
             else:
                 is_favorite = False
             related_tag.is_favorite = is_favorite
@@ -528,7 +534,8 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
     # Determines if current tag is in user's list of favorites
     if request.user.is_authenticated():
         member = User.objects.get(id=request.user.id)
-        is_favorite = UserFavorites.objects.filter(user=member).filter(topics=tag).exists()
+        is_favorite = UserFavorites.objects.filter(user=member).\
+            filter(topics=tag).exists()
     else:
         is_favorite = False
 
@@ -537,7 +544,8 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
     # Determines if user is subscribed to tag alerts
     if request.user.is_authenticated():
         email = request.user.email
-        enable_alerts = ResourceAdditionNotificationRequest.objects.filter(email=email).filter(node_id=tag.id).exists()
+        enable_alerts = ResourceAdditionNotificationRequest.objects.\
+            filter(email=email).filter(node_id=tag.id).exists()
     else:
         enable_alerts = False
     context['enable_alerts'] = enable_alerts
@@ -559,6 +567,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         # return the specific tab's template
         return render(request, tab_template, context)
 
+
 def ajax_favorite_list(request):
     member = request.user
     try:
@@ -578,7 +587,8 @@ def ajax_favorite_list(request):
     }
 
     for topic in favorite_topics:
-        topic.has_alert = ResourceAdditionNotificationRequest.objects.filter(email=member.email).filter(node_id=topic).exists()
+        topic.has_alert = ResourceAdditionNotificationRequest.objects.\
+            filter(email=member.email).filter(node_id=topic).exists()
 
     return render(request, 'youraccount_favorites.inc.html', context_dict)
 
@@ -1244,11 +1254,13 @@ def ajax_notification_request(request):
     elif action == 'disable':
         email = request.POST['email']
         node = request.POST['nodeid']
-        notifyRecord = ResourceAdditionNotificationRequest.objects.filter(node_id=node).get(email=email)
+        notifyRecord = ResourceAdditionNotificationRequest.objects.\
+            filter(node_id=node).get(email=email)
         notifyRecord.delete()
         return HttpResponse('success')
     else:
         return HttpResponse('failure')
+
 
 @csrf_exempt
 @login_required
@@ -1634,6 +1646,7 @@ def ajax_account(request, account_step):
         return render(request, 'account_lightbox_youraccount.html')
     elif step == 'delete_confirm':
         return render(request, 'account_lightbox_delete.html')
+
 
 def ajax_video(request):
     'Returns the HTML content for the flash video.'
