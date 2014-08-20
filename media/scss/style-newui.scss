@@ -97,7 +97,12 @@ table.main {
    margin: 8px 5px 0 0;
    float: left;
 }
-  
+.message-error {
+    color: $red;
+}
+.message-info {
+    color: $green;
+}
 .header-btns {
     display: block;
     clear: both;
@@ -184,6 +189,9 @@ table.main {
         padding: 4px 10px;
         font-size: 12px;
     }
+}
+.accountList {
+    margin-bottom: 15px;
 }
 .accountField {
     &:hover a {
