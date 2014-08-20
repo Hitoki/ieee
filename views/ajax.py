@@ -16,7 +16,7 @@ from django.core import serializers
 from django.core.mail import mail_admins, send_mail
 from django.core.urlresolvers import reverse
 from django.db.models import Count, Q
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.utils import simplejson as json
 from django.middleware import csrf
 from django.views.decorators.csrf import csrf_exempt
@@ -1238,81 +1238,45 @@ def ajax_notification_request(request):
 
 @csrf_exempt
 @login_required
-def ajax_favorite_topic_request(request):
+def ajax_favorite_request(request, ftype):
     action = request.POST['action']
     member = User.objects.get(id=request.user.id)
     node_id = request.POST['nodeid']
-    node = Node.objects.get(id=node_id)
-    if action == 'enable':
-        try:
-            favorites = UserFavorites.objects.get(user=member)
-            favorites.topics.add(node)
-        except UserFavorites.DoesNotExist:
+    try:
+        favorites = UserFavorites.objects.get(user=member)
+    except UserFavorites.DoesNotExist:
+        if action == 'enable':
             favorites_form = UserFavoriteForm(data=request.POST)
             favorites = favorites_form.save(commit=False)
             favorites.user = member
             favorites.save()
-            favorites.topics.add(node)
+        else:  # action == 'disable'
+            # can't disable if there are no any favorites
+            return HttpResponse('failure')
+    if ftype == 'topic':
+        node = Node.objects.get(id=node_id)
+        favorites_items = favorites.topics
+    elif ftype == 'resource':
+        node = Resource.objects.get(id=node_id)
+        favorites_items = favorites.resources
+    elif ftype == 'society':
+        node = Society.objects.get(id=node_id)
+        favorites_items = favorites.societies
+    else:
+        raise Http404()
+    if action == 'enable':
+        favorites_items.add(node)
         return HttpResponse('success')
     elif action == 'disable':
-        favorites = UserFavorites.objects.get(user=member)
-        favorites.topics.remove(node)
-        email = member.email
-        if ResourceAdditionNotificationRequest.objects.filter(node_id=node).filter(email=email).exists():
-            ResourceAdditionNotificationRequest.objects.filter(node_id=node).get(email=email).delete()
+        favorites_items.remove(node)
+        if ftype == 'topic':
+            email = member.email
+            if ResourceAdditionNotificationRequest.objects.filter(node_id=node).filter(email=email).exists():
+                ResourceAdditionNotificationRequest.objects.filter(node_id=node).get(email=email).delete()
         return HttpResponse('success')
     else:
         return HttpResponse('failure')
 
-@csrf_exempt
-@login_required
-def ajax_favorite_resource_request(request):
-    action = request.POST['action']
-    node_id = request.POST['nodeid']
-    member = User.objects.get(id=request.user.id)
-    node = Resource.objects.get(id=node_id)
-    if action == 'enable':
-        try:
-            favorites = UserFavorites.objects.get(user=member)
-            favorites.resources.add(node)
-        except UserFavorites.DoesNotExist:
-            favorites_form = UserFavoriteForm(data=request.POST)
-            favorites = favorites_form.save(commit=False)
-            favorites.user = member
-            favorites.save()
-            favorites.resources.add(node)
-        return HttpResponse('success')
-    elif action == 'disable':
-        favorites = UserFavorites.objects.get(user=member)
-        favorites.resources.remove(node)
-        return HttpResponse('success')
-    else:
-        return HttpResponse('failure')
-
-@csrf_exempt
-@login_required
-def ajax_favorite_societies_request(request):
-    action = request.POST['action']
-    node_id = request.POST['nodeid']
-    member = User.objects.get(id=request.user.id)
-    node = Society.objects.get(id=node_id)
-    if action == 'enable':
-        try:
-            favorites = UserFavorites.objects.get(user=member)
-            favorites.societies.add(node)
-        except UserFavorites.DoesNotExist:
-            favorites_form = UserFavoriteForm(data=request.POST)
-            favorites = favorites_form.save(commit=False)
-            favorites.user = member
-            favorites.save()
-            favorites.societies.add(node)
-        return HttpResponse('success')
-    elif action == 'disable':
-        favorites = UserFavorites.objects.get(user=member)
-        favorites.societies.remove(node)
-        return HttpResponse('success')
-    else:
-        return HttpResponse('failure')
 
 @login_required
 def tooltip(request, tag_id=None):
