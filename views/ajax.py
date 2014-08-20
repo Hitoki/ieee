@@ -1254,15 +1254,14 @@ def ajax_notification_request(request):
 @login_required
 def ajax_favorite_request(request, ftype):
     action = request.POST['action']
-    member = User.objects.get(id=request.user.id)
     node_id = request.POST['nodeid']
     try:
-        favorites = UserFavorites.objects.get(user=member)
+        favorites = UserFavorites.objects.get(user=request.user)
     except UserFavorites.DoesNotExist:
         if action == 'enable':
             favorites_form = UserFavoriteForm(data=request.POST)
             favorites = favorites_form.save(commit=False)
-            favorites.user = member
+            favorites.user = request.user
             favorites.save()
         else:  # action == 'disable'
             # can't disable if there are no any favorites
@@ -1285,7 +1284,7 @@ def ajax_favorite_request(request, ftype):
         favorites_items.remove(node)
         if ftype == 'topic':
             ResourceAdditionNotificationRequest.objects.filter(node_id=node).\
-                filter(email=member.email).delete()
+                filter(email=request.user.email).delete()
         return HttpResponse('success')
     else:
         return HttpResponse('failure')
