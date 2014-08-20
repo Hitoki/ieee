@@ -31,6 +31,16 @@ You can connect new social media accounts:
     <a class="btn account connect_account" target="_blank" href="{% provider_login_url "linkedin_oauth2" process="connect" %}"><span class="icon-linkedin icomoon-icon"></span>Connect your LinkedIn account</a>
 </div>
 
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="message-{{ message.tags }}"{% endif %}>
+        {{ message }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
 <p>
     <strong>Delete TechNav Account</strong><br/>
     Your social accounts will be disconnected and you will be unsubscribed from all alerts. This cannot be undone.<br/>
