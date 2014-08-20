@@ -1270,9 +1270,8 @@ def ajax_favorite_request(request, ftype):
     elif action == 'disable':
         favorites_items.remove(node)
         if ftype == 'topic':
-            email = member.email
-            if ResourceAdditionNotificationRequest.objects.filter(node_id=node).filter(email=email).exists():
-                ResourceAdditionNotificationRequest.objects.filter(node_id=node).get(email=email).delete()
+            ResourceAdditionNotificationRequest.objects.filter(node_id=node).\
+                filter(email=member.email).delete()
         return HttpResponse('success')
     else:
         return HttpResponse('failure')
