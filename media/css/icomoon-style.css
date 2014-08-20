@@ -23,6 +23,9 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.icon-star-whole-alert:before {
+	content: "\e60a";
+}
 .icon-printer:before {
 	content: "\e609";
 }

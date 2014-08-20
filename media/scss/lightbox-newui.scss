@@ -144,11 +144,18 @@ input.text {
 .tag-icons {
     float: right;
     margin-right: 25px;
+    position: relative;
+    &.is-favorite:hover {
+        .alertMenu {
+            display: block !important;
+        }
+    }
     a {
         color: #FFFFFF;
     }
     .icon-star-whole,
-    .icon-star {
+    .icon-star,
+    .icon-star-whole-alert {
         font-size: 16px;
     }
     .icon-alert {
@@ -159,8 +166,7 @@ input.text {
     }
     .favorite-topic,
     .favorite-resource,
-    .favorite-society,
-    .subscribe {
+    .favorite-society {
         color: $white;
         &:hover {
             color: lighten(#FFD700, 40%);
@@ -170,8 +176,7 @@ input.text {
 
 .favorite-topic,
 .favorite-resource,
-.favorite-society,
-.subscribe {
+.favorite-society {
     text-decoration: none;
     color: $secondaryColor;
     cursor: pointer;
@@ -858,5 +863,22 @@ ul#overview-list {
         float: right;
         text-decoration: none;
         color: $white;   
+    }
+}
+
+.alertMenu {
+    font-size: 11px;
+    position: absolute;
+    background-color: darken($primaryColor, 15%);
+    padding: 5px;
+    right: 1px;
+    top: 25px;
+    white-space: nowrap;
+    display: none;
+    span span {
+        cursor: pointer;
+        &:hover {
+            text-decoration: underline;
+        }
     }
 }
