@@ -30,9 +30,6 @@ class UserFavorites(models.Model):
     class Meta:
         app_label = 'ieeetags'
 
-    def __unicode__(self):
-        return self.name
-
 
 class UserExternalFavorites(models.Model):
     user = models.ForeignKey(User)
