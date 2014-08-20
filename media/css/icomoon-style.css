@@ -23,6 +23,15 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.icon-printer:before {
+	content: "\e609";
+}
+.icon-linkedin:before {
+	content: "\e606";
+}
+.icon-cancel2:before {
+	content: "\e607";
+}
 .icon-twitter:before {
 	content: "\e600";
 }
@@ -41,17 +50,8 @@
 .icon-tab:before {
 	content: "\e000";
 }
-.icon-popup:before {
-	content: "\e001";
-}
 .icon-drop-arrow:before {
 	content: "\e005";
-}
-.icon-printer:before {
-	content: "\e00d";
-}
-.icon-drive:before {
-	content: "\e00e";
 }
 .icon-users:before {
 	content: "\e00f";
@@ -68,9 +68,14 @@
 .icon-tag:before {
 	content: "\e017";
 }
-.icon-linkedin:before {
-	content: "\e606";
-}
 .icon-alert:before {
 	content: "\e602";
+}
+
+/* Modified Selectors */
+.drive:before {
+	content: "\e608";
+}
+.popup:before {
+	content: "\e001";
 }
