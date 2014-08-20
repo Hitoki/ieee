@@ -26,6 +26,17 @@
         <a class="btn account connect_account" target="_blank" href="{% provider_login_url "linkedin_oauth2" process="connect" %}"><span class="icon-linkedin icomoon-icon"></span>Connect your LinkedIn account</a>
     </span>
 </p>
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="message-{{ message.tags }}"{% endif %}>
+        {{ message }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
 <p>
     <strong>Delete TechNav Account</strong><br/>
     Your social accounts will be disconnected and you will be unsubscribed from all alerts. This cannot be undone.<br/>
@@ -39,11 +50,10 @@
     }
 
     $('.disconnect_account').click(function () {
-        $('.qtip').qtip('hide');
         var account_id = $(this).data('account-id');
         //todo: add some "refreshing" icon
         $.post("{% url 'socialaccount_connections' %}", {'account': account_id}, function () {
             update_connections()
         });
-    }).qtip();
+    });
 </script>
