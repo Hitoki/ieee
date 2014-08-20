@@ -11,6 +11,7 @@ import hotshot
 import os
 import time
 from xml.etree.ElementTree import fromstring
+import sys
 
 from django.core import serializers
 from django.core.mail import mail_admins, send_mail
@@ -21,16 +22,15 @@ from django.utils import simplejson as json
 from django.middleware import csrf
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render_to_response, get_object_or_404
-
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.contrib.auth.models import User
-import sys
 
 from decorators import optional_login_required as login_required
 from ieeetags.forms import *
 
-#from profiler import Profiler
+
+# from profiler import Profiler
 from models.logs import ProfileLog
 from models.node import Node
 from models.node_extra import get_node_extra_info
@@ -60,6 +60,7 @@ def render(request, template, dictionary=None):
     automatically."""
     return render_to_response(template, dictionary=dictionary,
                               context_instance=RequestContext(request))
+
 
 # ----------------------------------------------------------------------------
 
@@ -360,7 +361,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         for standard in standards:
             if request.user.is_authenticated():
                 member = User.objects.get(id=request.user.id)
-                is_favorite = UserFavorites.objects.filter(user=member).\
+                is_favorite = UserFavorites.objects.filter(user=member). \
                     filter(resources=standard).exists()
             else:
                 is_favorite = False
@@ -388,7 +389,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         for periodical in periodicals:
             if request.user.is_authenticated():
                 member = User.objects.get(id=request.user.id)
-                is_favorite = UserFavorites.objects.filter(user=member).\
+                is_favorite = UserFavorites.objects.filter(user=member). \
                     filter(resources=periodical).exists()
             else:
                 is_favorite = False
@@ -422,7 +423,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         for conference in conferences:
             if request.user.is_authenticated():
                 member = User.objects.get(id=request.user.id)
-                is_favorite = UserFavorites.objects.filter(user=member).\
+                is_favorite = UserFavorites.objects.filter(user=member). \
                     filter(resources=conference).exists()
             else:
                 is_favorite = False
@@ -442,7 +443,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         for society in societies:
             if request.user.is_authenticated():
                 member = User.objects.get(id=request.user.id)
-                is_favorite = UserFavorites.objects.filter(user=member).\
+                is_favorite = UserFavorites.objects.filter(user=member). \
                     filter(societies=society).exists()
             else:
                 is_favorite = False
@@ -469,7 +470,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         for ebook in ebooks:
             if request.user.is_authenticated():
                 member = User.objects.get(id=request.user.id)
-                is_favorite = UserFavorites.objects.filter(user=member).\
+                is_favorite = UserFavorites.objects.filter(user=member). \
                     filter(resources=ebook).exists()
             else:
                 is_favorite = False
@@ -514,7 +515,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         for related_tag in related_tags:
             if request.user.is_authenticated():
                 member = User.objects.get(id=request.user.id)
-                is_favorite = UserFavorites.objects.filter(user=member).\
+                is_favorite = UserFavorites.objects.filter(user=member). \
                     filter(topics=related_tag).exists()
             else:
                 is_favorite = False
@@ -534,7 +535,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
     # Determines if current tag is in user's list of favorites
     if request.user.is_authenticated():
         member = User.objects.get(id=request.user.id)
-        is_favorite = UserFavorites.objects.filter(user=member).\
+        is_favorite = UserFavorites.objects.filter(user=member). \
             filter(topics=tag).exists()
     else:
         is_favorite = False
@@ -544,7 +545,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
     # Determines if user is subscribed to tag alerts
     if request.user.is_authenticated():
         email = request.user.email
-        enable_alerts = ResourceAdditionNotificationRequest.objects.\
+        enable_alerts = ResourceAdditionNotificationRequest.objects. \
             filter(email=email).filter(node_id=tag.id).exists()
     else:
         enable_alerts = False
@@ -587,7 +588,7 @@ def ajax_favorite_list(request):
     }
 
     for topic in favorite_topics:
-        topic.has_alert = ResourceAdditionNotificationRequest.objects.\
+        topic.has_alert = ResourceAdditionNotificationRequest.objects. \
             filter(email=member.email).filter(node_id=topic).exists()
 
     return render(request, 'youraccount_favorites.inc.html', context_dict)
@@ -1254,7 +1255,7 @@ def ajax_notification_request(request):
     elif action == 'disable':
         email = request.POST['email']
         node = request.POST['nodeid']
-        notifyRecord = ResourceAdditionNotificationRequest.objects.\
+        notifyRecord = ResourceAdditionNotificationRequest.objects. \
             filter(node_id=node).get(email=email)
         notifyRecord.delete()
         return HttpResponse('success')
@@ -1295,7 +1296,7 @@ def ajax_favorite_request(request, ftype):
     elif action == 'disable':
         favorites_items.remove(node)
         if ftype == 'topic':
-            ResourceAdditionNotificationRequest.objects.filter(node_id=node).\
+            ResourceAdditionNotificationRequest.objects.filter(node_id=node). \
                 filter(email=request.user.email).delete()
         return HttpResponse('success')
     else:
@@ -1438,33 +1439,32 @@ def tooltip(request, tag_id=None):
                                                 'num_societies1',
                                                 'score1'):
                             if min_resources is None or \
-                               tag1['num_resources1'] < min_resources:
+                                    tag1['num_resources1'] < min_resources:
                                 min_resources = tag1['num_resources1']
                             if max_resources is None or \
-                               tag1['num_resources1'] > max_resources:
+                                    tag1['num_resources1'] > max_resources:
                                 max_resources = tag1['num_resources1']
                             if min_sectors is None or \
-                               tag1['num_sectors1'] < min_sectors:
+                                    tag1['num_sectors1'] < min_sectors:
                                 print "new min"
                                 min_sectors = tag1['num_sectors1']
                             if max_sectors is None or \
-                               tag1['num_sectors1'] > max_sectors:
+                                    tag1['num_sectors1'] > max_sectors:
                                 print "new max"
                                 max_sectors = tag1['num_sectors1']
                             if min_related_tags is None or \
-                               tag1['num_related_tags1'] > min_related_tags:
+                                    tag1['num_related_tags1'] > min_related_tags:
                                 min_related_tags = tag1['num_related_tags1']
                             if max_related_tags is None or \
-                               tag1['num_related_tags1'] < max_related_tags:
+                                    tag1['num_related_tags1'] < max_related_tags:
                                 max_related_tags = tag1['num_related_tags1']
                             if min_societies is None or \
-                               tag1['num_societies1'] > min_societies:
+                                    tag1['num_societies1'] > min_societies:
                                 min_societies = tag1['num_societies1']
                             if max_societies is None or \
-                               tag1['num_societies1'] < max_societies:
+                                    tag1['num_societies1'] < max_societies:
                                 max_societies = tag1['num_societies1']
-                            if min_score is None or \
-                               tag1['score1'] > min_score:
+                            if min_score is None or tag1['score1'] > min_score:
                                 min_score = tag1['score1']
                             if max_score is None or tag1['score1'] < max_score:
                                 max_score = tag1['score1']
@@ -1493,7 +1493,7 @@ def tooltip(request, tag_id=None):
                                             node_type__name=NodeType.TAG)
                     filterIds = [filter.id for filter in Filter.objects.all()]
                     child_nodes = get_node_extra_info(child_nodes,
-                                                              None, filterIds)
+                                                      None, filterIds)
                 else:
                     child_nodes = Node.objects.none()
 
@@ -1822,7 +1822,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id,
         # Restrict to only tags.
         child_nodes = child_nodes.filter(node_type__name=NodeType.TAG)
     child_nodes = get_node_extra_info(child_nodes, extra_order_by,
-                                              filterIds)
+                                      filterIds)
     print child_nodes.query
     if word_queries:
         log('  using min/max for all results.')
