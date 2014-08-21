@@ -34,7 +34,7 @@ from models.society import Society
 from models.types import ResourceType, Filter
 from models.resource import Resource
 from models.conference_application import TagKeyword, ConferenceApplication
-from models.favorites import UserFavorites
+from models.favorites import UserFavorites, UserExternalFavorites
 
 #from profiler import Profiler
 import util
@@ -628,7 +628,7 @@ def test_browsers(request):
     return render(request, 'test_browsers.html')
 
 
-def get_jobs_info(tag, offset=None):
+def get_jobs_info(tag, offset=None, user=None):
     jobs_html = ''
     if offset:
         jobs_url = "%s?%s&rows=25&page=%s&format=json" % \
@@ -643,12 +643,20 @@ def get_jobs_info(tag, offset=None):
     jobs_json = json.loads(file1)
     jobs_count = jobs_json.get('Total')
     jobs = jobs_json.get('Jobs')
-    print jobs
+    user_favorites = UserExternalFavorites.objects.filter(user=user).\
+        filter(external_resource_type='job').\
+        values_list('external_id', flat=True)
     for job in jobs:
+        job_id = job['Id']
+        if job_id in user_favorites:
+            job['StarClass'] = 'icon-star-whole enabled'
+        else:
+            job['StarClass'] = 'icon-star'
         jobs_html += '<a href="%(Url)s" target="_blank" class="featured">' \
-                    '%(JobTitle)s<span class="popup newWinIcon"></span></a>' \
-                    '<span class="icon-star favorite-job icomoon-icon" data-nodeid="%(Id)s"></span>' \
-                    '%(Company)s<br>\n' % job
+                     '%(JobTitle)s<span class="popup newWinIcon"></span></a>' \
+                     '<span class="%(StarClass)s favorite-job icomoon-icon" ' \
+                     'data-nodeid="%(Id)s"></span>' \
+                     '%(Company)s<br>\n' % job
     return jobs_html, jobs_count, jobs_url
 
 

@@ -672,17 +672,17 @@ def ajax_jobs_results(request):
     #     name, show_all=show_all, offset=offset, sort=sort,
     #     sort_desc=sort_desc, ctype=ctype)
 
-    jobsHtml, jobsCount, jobsUrl = get_jobs_info(tag, offset)
+    jobs_html, jobs_count, jobs_url = get_jobs_info(tag, offset, request.user)
 
     # DEBUG:
     #xplore_error = 'BAD ERROR.'
 
     data = {
-        'num_results': jobsCount,
-        'html': jobsHtml,
+        'num_results': jobs_count,
+        'html': jobs_html,
         'search_term': name,
         'token': token,
-        'job_url': jobsUrl.replace('&format=json', ''),
+        'job_url': jobs_url.replace('&format=json', ''),
     }
 
     return HttpResponse(json.dumps(data), 'application/javascript')
