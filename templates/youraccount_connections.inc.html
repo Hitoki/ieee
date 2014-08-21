@@ -16,15 +16,17 @@
                 if ('{{ key|title }}' == 'Linkedin_Oauth2') {
                     $('.linkedMeth').remove();
                     $('.icomoon-icon').addClass('icon-linkedin');
+                    $('.dynaService').text('LinkedIn')
                 } else if ('{{ key|title }}' == 'Google') {
                     $('.googleMeth').remove();
                     $('.icomoon-icon').addClass('icon-google');
+                    $('.dynaService').text('Google')
                 }
             </script>
         {% endfor %}
     {% endfor %}
     </ul>
-    You can connect another social media account:
+    If you like, you can also connect your <span class="dynaService"></span> account:
 {% else %}
     You can connect new social media accounts:
 {% endif %}
@@ -44,7 +46,7 @@
 </div>
 
 <p>
-    <strong>Delete TechNav Account</strong><br/>
+    <strong>Delete Your Technology Navigator Account</strong><br/>
     Your social accounts will be disconnected and you will be unsubscribed from all alerts. This cannot be undone.<br/>
     <a href="javascript:void()" onclick="$('#connectacct-tab').load('/account/delete_confirm/');">Delete my account</a>
 </p>
