@@ -197,6 +197,12 @@ table.main {
     .icon-cancel2 {
         text-decoration: none;
     }
+    .icon-google,
+    .icon-linkedin {
+        background-color: $primaryColor;
+        padding: 2px;
+        color: $white;
+    }
 }
 .your-account-lightbox-content {
     .signinBtns {
