@@ -224,13 +224,6 @@ table.main {
     }
 }
 
-#account-tabs ul.deleteText {
-    li {
-        list-style-type: disc;
-        margin-left: 15px;
-    }
-}
-
 .topicList {
     margin-bottom: 15px;
     line-height: 1.5;
@@ -257,6 +250,10 @@ table.main {
 
 #account-tabs {
     margin-top: 15px;
+    strong {
+        display: inline-block;
+        margin-bottom: 3px;
+    }
     .nootabs-tab {
         height: 500px;
         padding: 10px;
@@ -274,6 +271,12 @@ table.main {
     }
     .icon-star-whole {
         color: #FFD700;
+    }
+    ul.deleteText {
+        li {
+            list-style-type: disc;
+            margin-left: 15px;
+        }
     }
 }
 
