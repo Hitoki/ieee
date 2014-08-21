@@ -1031,6 +1031,8 @@ var Tags = {
         } else {
             initialTab = tabName;
         }
+
+        Lightbox.hide();
         Lightbox.show('/ajax/tag_content/' + id + '/textui/' + initialTab + '?load_framework=True', {
             verticalCenter: false,
             customClass: 'resources',
@@ -1090,7 +1092,6 @@ var Tags = {
                 //google.search.Search.getBranding('branding');
 
                 $(document).trigger('onShowLightboxTab');
-
             },
             showCloseButton: true
         });
