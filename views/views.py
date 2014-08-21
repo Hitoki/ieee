@@ -48,8 +48,10 @@ TOOLTIP_MAX_CHARS = 120
 
 
 def render(request, template, dictionary=None):
-    """Use this instead of 'render_to_response' to enable custom context
-    processors, which add things like MEDIA_URL to the page automatically."""
+    """
+    Use this instead of 'render_to_response' to enable custom context
+    processors, which add things like MEDIA_URL to the page automatically.
+    """
     return render_to_response(template, dictionary=dictionary,
                               context_instance=RequestContext(request))
 
@@ -57,12 +59,12 @@ def render(request, template, dictionary=None):
 
 
 def error_view(request):
-    '''
+    """
     Custom error view for production servers.  Sends an email to admins for
     every error with a traceback.
-    
+
     Only active when settings.DEBUG == True.
-    '''
+    """
 
     # Get the latest exception from Python system service 
     (type, value, traceback1) = sys.exc_info()
@@ -86,10 +88,10 @@ def error_view(request):
 
 
 def site_disabled(request):
-    '''
+    """
     Displays "site disabled" message when the entire site is disabled
-    (settings.DISABLE_SITE == True).'
-    '''
+    (settings.DISABLE_SITE == True).
+    """
     return render(request, 'site_disabled.html', {})
 
 
@@ -104,12 +106,14 @@ def index(request):
 
 @login_required
 def roamer(request):
-    '''Shows the Asterisq Constellation Roamer flash UI.'''
-    nodeId = request.GET.get('nodeId', Node.objects.getRoot().id)
+    """
+    Shows the Asterisq Constellation Roamer flash UI.
+    """
+    node_id = request.GET.get('nodeId', Node.objects.getRoot().id)
     sectors = Node.objects.getSectors()
     filters = Filter.objects.all()
     return render(request, 'roamer.html', {
-        'nodeId': nodeId,
+        'nodeId': node_id,
         'sectors': sectors,
         'filters': filters,
     })
@@ -117,7 +121,9 @@ def roamer(request):
 
 @login_required
 def textui(request, survey=False):
-    '''Shows the textui (aka. Tag Galaxy) UI.'''
+    """
+    Shows the textui (aka. Tag Galaxy) UI.
+    """
     nodeId = request.GET.get('nodeId', None)
     sectorId = None
     clusterId = None
@@ -179,19 +185,25 @@ def textui(request, survey=False):
 
 @login_required
 def textui_home(request):
-    'Shows textui "home" AJAX page.'
+    """
+    Shows textui "home" AJAX page.
+    """
     return render(request, 'textui_home.html')
 
 
 @login_required
 def textui_help(request):
-    '''Shows textui "help" AJAX page.'''
+    """
+    Shows textui "help" AJAX page.
+    """
     return render(request, 'textui_help.html')
 
 
 @login_required
 def feedback(request):
-    '''User feedback page.  When submitted, sends an email to all admins.'''
+    """
+    User feedback page.  When submitted, sends an email to all admins.
+    """
     if request.method == 'GET':
         if request.user.is_authenticated and not request.user.is_anonymous:
             form = FeedbackForm(
@@ -238,18 +250,24 @@ def feedback(request):
 
 
 def browser_warning(request):
-    '''Shows the AJAX browser compatability warning page.
-    Allows the user to click through if they still want to browse the site.'''
+    """
+    Shows the AJAX browser compatability warning page.
+    Allows the user to click through if they still want to browse the site.
+    """
     return render(request, 'browser_warning.html')
 
 
 def tester_message(request):
-    '''Returns the HTML content for the tester message.'''
+    """
+    Returns the HTML content for the tester message.
+    """
     return render(request, 'tester_message.html')
 
 
 def tester_survey(request):
-    '''Returns the HTML content for the tester survey.'''
+    """
+    Returns the HTML content for the tester survey.
+    """
     return render(request, 'tester_survey.html')
 
 
@@ -260,7 +278,8 @@ except:
 
 
 def profile(log_file):
-    """Profile some callable.
+    """
+    Profile some callable.
 
     This decorator uses the hotshot profiler to profile some callable (like
     a view function or method) and dumps the profile data somewhere sensible
@@ -272,7 +291,6 @@ def profile(log_file):
     where the time stamp is in UTC. This makes it easy to run and compare 
     multiple trials.     
     """
-
     if not os.path.isabs(log_file):
         log_file = os.path.join(PROFILE_LOG_BASE, log_file)
 
@@ -297,11 +315,11 @@ def profile(log_file):
 
 
 def tags_list(request):
-    '''
+    """
     Displays a list of links to the tag "wikipedia-style" pages
     (see views.tag_landing)
     Mostly useful for spider link discovery and SEO.
-    '''
+    """
     is_staff = request.user.is_staff
     return render_to_response('tags_list.html',
                               {"tags": Node.objects.get_tags(),
@@ -312,10 +330,10 @@ def tags_list(request):
 
 
 def tags_all(request):
-    '''
+    """
     Displays a list of "high_potency" links to the tag "wikipedia-style"
     pages (see views.tag_landing)
-    '''
+    """
 
     nodes = Node.objects.filter(high_potency=True)
 
@@ -331,10 +349,10 @@ def tags_starts(request, starts_with):
 
 
 def tag_landing(request, tag_id):
-    '''
+    """
     Displays a wikipedia-style flat view of the tag. No tabs or other fancy UI.
     Simply uses the print_resource view passing in a different template name.
-    '''
+    """
     # TODO move logic to decorator
     is_mobile = (
         re.match(settings.MOBILE_URL_PREFIX, request.META['HTTP_HOST']) and
@@ -349,20 +367,20 @@ def tag_landing(request, tag_id):
 
 
 def clusters_list(request):
-    '''
+    """
     Displays a wikipedia-style "flat" view of the cluster.
-    '''
+    """
     return render(request, 'clusters_list.html', {
         'clusters': Node.objects.get_clusters(),
     })
 
 
 def cluster_landing(request, cluster_id):
-    '''
+    """
     Displays a wikipedia-style "flat" view of the cluster.
     No tabs or other fancy UI.
     Simply uses the print_resource view passing in a different template name.
-    '''
+    """
     return print_resource(request, cluster_id, 'all',
                           template_name='cluster_landing.html',
                           create_links=True, toc=True)
@@ -374,13 +392,12 @@ XPLORE_SORT_PUBLICATION_YEAR = 'py'
 def print_resource(request, tag_id, resource_type,
                    template_name='print_resource.html', create_links=False,
                    toc=False):
-    '''
+    """
     The print resource page.
-    
+
     @param tag_id: The tag to print results for.
     @param resource_type: Which resource(s) to include.
-    '''
-
+    """
     tag = Node.objects.get(id=tag_id)
 
     sectors = Node.objects.none()
@@ -391,8 +408,8 @@ def print_resource(request, tag_id, resource_type,
     periodicals = Node.objects.none()
     standards = Node.objects.none()
     ebooks = Node.objects.none()
-    jobsHtml = ''
-    tvHtml = ''
+    jobs_html = ''
+    tv_html = ''
     conf_count = 0
     totalfound = 0
     xplore_edu_results = None
@@ -463,15 +480,15 @@ def print_resource(request, tag_id, resource_type,
         results = tv_xml.findall('search-item')
         tvCount = len(results)
 
-        tvHtml = ""
+        tv_html = ""
         for result in results:
             thumb = result.find('images').find('thumbnail').text
             title = result.find('title').text
             url = result.find('web-page').text
-            tvHtml = tvHtml + '<img src="%s" height="60" width="105"/>' \
-                              '<a href="%s" target="_blank">%s ' \
-                              '<span class="popup newWinIcon"></span>' \
-                              '</a><br>\n' % (thumb, url, title)
+            tv_html += '<img src="%s" height="60" width="105"/>' \
+                      '<a href="%s" target="_blank">%s ' \
+                      '<span class="popup newWinIcon"></span>' \
+                      '</a><br>\n' % (thumb, url, title)
 
         ebooks = Resource.objects.getForNode(tag,
                                              resourceType=ResourceType.EBOOK)
@@ -490,7 +507,7 @@ def print_resource(request, tag_id, resource_type,
                           totaledufound + totalfound
 
     if resource_type == 'jobs' or resource_type == 'all':
-        jobsHtml, jobsCount, jobsUrl = get_jobs_info(tag)
+        jobs_html, jobs_count, jobs_url = get_jobs_info(tag)
 
     try:
         xplore_article = \
@@ -511,7 +528,7 @@ def print_resource(request, tag_id, resource_type,
 
     if xplore_edu_results:
         show_edu = True
-    elif tvHtml:
+    elif tv_html:
         show_edu = True
     elif ebooks:
         show_edu = True
@@ -534,12 +551,12 @@ def print_resource(request, tag_id, resource_type,
         'toc': toc,
         'create_links': create_links,
         'related_items_count': related_items_count,
-        'jobsHtml': jobsHtml,
+        'jobsHtml': jobs_html,
         #'tvHtml': tvHtml,
         'close_conference': tag._get_closest_conference(),
         'definition': tag._get_definition_link(),
         'xplore_article': xplore_article,
-        'tvHtml': tvHtml,
+        'tvHtml': tv_html,
         'ebooks': ebooks,
         'overview': overview,
         'show_edu': show_edu
@@ -563,14 +580,17 @@ def log_out(request):
 
 
 def debug_error(request):
-    '''DEBUG: Causes an error, to test the error handling.'''
+    """
+    DEBUG: Causes an error, to test the error handling.
+    """
     test = 0 / 0
 
 
 @login_required
 def debug_send_email(request):
-    '''DEBUG: Tests sending an email.'''
-
+    """
+    DEBUG: Tests sending an email.
+    """
     assert request.user.is_superuser, 'Page disabled for non superusers.'
 
     log('sending email to "%s"' % request.user.email)
@@ -583,7 +603,9 @@ def debug_send_email(request):
 
 
 def test_error(request):
-    '''DEBUG: Tests causing an error.'''
+    """
+    DEBUG: Tests causing an error.
+    """
     assert settings.DEBUG
     # Divide by zero error
     1 / 0
@@ -591,41 +613,43 @@ def test_error(request):
 
 
 def test_lightbox_error(request):
-    '''DEBUG: Tests a lightbox error.'''
+    """
+    DEBUG: Tests a lightbox error.
+    """
     assert settings.DEBUG
     return render(request, 'test_lightbox_error.html')
 
 
 def test_browsers(request):
-    '''DEBUG: Tests a browsers error.'''
+    """
+    DEBUG: Tests a browsers error.
+    """
     assert settings.DEBUG
     return render(request, 'test_browsers.html')
 
 
 def get_jobs_info(tag, offset=None):
-    jobsHtml = ''
+    jobs_html = ''
     if offset:
-        jobsUrl = "%s?%s&rows=25&page=%s&format=json" % \
+        jobs_url = "%s?%s&rows=25&page=%s&format=json" % \
                   (settings.JOBS_URL,
                    urllib.urlencode({"kwsMustContainPhrase": tag.name}),
                    offset)
     else:
-        jobsUrl = "%s?%s&rows=25&format=json" % \
+        jobs_url = "%s?%s&rows=25&format=json" % \
                   (settings.JOBS_URL,
                    urllib.urlencode({"kwsMustContainPhrase": tag.name}))
-    file1 = urllib2.urlopen(jobsUrl).read()
-    jobsJson = json.loads(file1)
-    jobsCount = jobsJson.get('Total')
-    jobs = jobsJson.get('Jobs')
+    file1 = urllib2.urlopen(jobs_url).read()
+    jobs_json = json.loads(file1)
+    jobs_count = jobs_json.get('Total')
+    jobs = jobs_json.get('Jobs')
     print jobs
     for job in jobs:
-        jobsHtml += '<span class="icon-star favorite-job icomoon-icon" data-nodeid="%(Id)s"></span>' \
-                    '<a href="%(Url)s" target="_blank" class="featured">' \
+        jobs_html += '<a href="%(Url)s" target="_blank" class="featured">' \
                     '%(JobTitle)s<span class="popup newWinIcon"></span></a>' \
+                    '<span class="icon-star favorite-job icomoon-icon" data-nodeid="%(Id)s"></span>' \
                     '%(Company)s<br>\n' % job
-
-    file1 = None
-    return jobsHtml, jobsCount, jobsUrl
+    return jobs_html, jobs_count, jobs_url
 
 
 def debug_conf_app_create(request):
