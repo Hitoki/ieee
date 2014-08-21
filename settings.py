@@ -1,6 +1,6 @@
-'''
+"""
 Django settings for the ieeetags project.
-'''
+"""
 
 import logging
 import os
@@ -21,11 +21,11 @@ MANAGERS = ADMINS
 # Database Settings
 
 DATABASE_ENGINE = 'mysql'
-DATABASE_NAME = None			 # Or path to database file if using sqlite3.
-DATABASE_USER = None			 # Not used with sqlite3.
-DATABASE_PASSWORD = None		 # Not used with sqlite3.
-DATABASE_HOST = ''			 # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = ''			 # Set to empty string for default. Not used with sqlite3.
+DATABASE_NAME = None
+DATABASE_USER = None
+DATABASE_PASSWORD = None
+DATABASE_HOST = ''
+DATABASE_PORT = ''
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -184,7 +184,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "allauth.socialaccount.context_processors.socialaccount",
 )
 
-# Application Settings ---------------------------------------------------------
+# Application Settings --------------------------------------------------------
 
 # auth and allauth settings
 LOGIN_REDIRECT_URL = '/'
@@ -225,7 +225,7 @@ USE_SITEMINDER_LOGIN = False
 REQUIRE_LOGIN_FOR_NON_ADMIN_VIEWS = False
 'If False the optional_login_required decorator will allow unauthenticated users.'
 
-# Django Debug Toolbar Settings ------------------------------------------------
+# Django Debug Toolbar Settings -----------------------------------------------
 
 DEBUG_TOOLBAR_CONFIG = {
 	'INTERCEPT_REDIRECTS': False,
@@ -243,7 +243,7 @@ logging.getLogger('south').setLevel(logging.CRITICAL)
 # This forces south to use 'syncdb' when running tests, vs. using the migrations.
 SOUTH_TESTS_MIGRATE = False
 
-# Debug Settings ---------------------------------------------------------------
+# Debug Settings --------------------------------------------------------------
 
 # Used for the COMSOC demo to assign all tags to comsoc by default
 DEBUG_IMPORT_ASSIGN_ALL_TAGS_TO_COMSOC = False
@@ -314,7 +314,7 @@ ENABLE_PROGRESSIVE_LOADING = True
 DEBUG_IGNORE_CACHE = False
 'If enabled, the cache is never used (ie. pages are regenerated for each view).'
 
-# Local Settings ---------------------------------------------------------------
+# Local Settings --------------------------------------------------------------
 
 try:
     from local_settings import *
@@ -343,7 +343,7 @@ if DEBUG:
         'debug_toolbar.panels.logger.LoggingPanel',
     )
 
-# Setup testing database -------------------------------------------------------
+# Setup testing database ------------------------------------------------------
 
 import sys
 if 'test' in sys.argv:
@@ -356,7 +356,7 @@ if 'test' in sys.argv:
     DATABASE_PORT = ''
     TEST_DATABASE_NAME = ":memory:"
 
-# Check for mandatory settings -------------------------------------------------
+# Check for mandatory settings ------------------------------------------------
 
 MANDATORY_VARS = [
     'DEFAULT_FROM_EMAIL',
@@ -383,7 +383,8 @@ logging.basicConfig(
     format = '%(levelname)s %(message)s',
 )
 
-# Check if the logger has been setup yet, otherwise we create a new handler everytime settings.py is loaded
+# Check if the logger has been setup yet, otherwise we create a new handler
+# everytime settings.py is loaded
 if not hasattr(logging, "is_setup"):
     if LOG_FILENAME is not None:
         # Add the file handler
