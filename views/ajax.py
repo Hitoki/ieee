@@ -1649,8 +1649,12 @@ def ajax_account(request, account_step):
         return render(request, 'account_lightbox_signin.html')
     elif step == 'register':
         return render(request, 'account_lightbox_register.html')
-    elif step == 'youraccount':
-        return render(request, 'account_lightbox_youraccount.html')
+    elif step == 'yourfavorites':
+        context_dict = {'defaultTab': 1}
+        return render(request, 'account_lightbox_youraccount.html', context_dict)
+    elif step == 'yoursettings':
+        context_dict = {'defaultTab': 2}
+        return render(request, 'account_lightbox_youraccount.html', context_dict)
     elif step == 'delete_confirm':
         return render(request, 'account_lightbox_delete.html')
 
