@@ -108,6 +108,14 @@ SEARCH_KEY_DELAY = 500
 # Jobs settings
 JOBS_URL = "http://jobs.ieee.org/jobs/search/results"
 
+# External resources' urls
+EXTERNAL_RESOURCE_URLS = {
+    'job': "http://jobs.ieee.org/jobs/%(slug)s-%(id)s-d",
+    'xplore_author': "http://ieeexplore.ieee.org/search/searchresult.jsp?facet=d-au&queryText=%(query)s&refinements=%(id)s",
+    'xplore_article': "http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=%(id)s",
+    'education': "http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=%(id)s",
+}
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',

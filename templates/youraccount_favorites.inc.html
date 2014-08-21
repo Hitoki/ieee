@@ -143,7 +143,7 @@
             <strong>{{ resource_type.grouper|title }}s</strong>
             <ul class="topicList">
                 {% for resource in resource_type.list %}
-                    <li><a href="{{ resource.url }}" target="_blank" rel="nofollow">{{ resource.title }}</a><span class="popup newWinIcon"></span>
+                    <li><a href="{{ resource.get_url }}" target="_blank" rel="nofollow">{{ resource.title }}</a><span class="popup newWinIcon"></span>
                         <span class="topic-icons">
                             <span class="icon-cancel2 unfavorite-external icomoon-icon"
                                   title="Unfavorite {{ resource_type.grouper|lower }}" data-nodeid="{{ resource.id }}"></span>

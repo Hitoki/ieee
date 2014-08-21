@@ -40,3 +40,6 @@ class UserExternalFavorites(models.Model):
 
     class Meta:
         app_label = 'ieeetags'
+
+    def get_url(self):
+        pass
