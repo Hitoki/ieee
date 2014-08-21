@@ -551,6 +551,7 @@ ResourceLoader.prototype.loadContent = function (force) {
                 $('.favorite-job').off('click').on('click', function(){
                     var action;
                     var externalId = $(this).data('nodeid');
+                    var title = $(this).prev().text();
                     if ($(this).hasClass('enabled')) {
                         action = 'disable';
                         $(this).removeClass('icon-star-whole enabled').addClass('icon-star');
@@ -562,7 +563,8 @@ ResourceLoader.prototype.loadContent = function (force) {
                         {
                             action: action,
                             externalResourceType: 'job',
-                            externalId: externalId
+                            externalId: externalId,
+                            title: title
                         },
                         function () {
                             return false;
