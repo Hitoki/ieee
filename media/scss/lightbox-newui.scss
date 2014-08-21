@@ -191,13 +191,12 @@ input.text {
 .unfavorite-topic,
 .unfavorite-resource,
 .unfavorite-society,
-.icon-alert,
-.icon-alert2 {
+.icon-cancel2 {
     text-decoration: none;
-    color: $medium-gray;
+    color: $light-gray;
     cursor: pointer;
     &:hover {
-        color: darken($medium-gray, 10%);
+        color: red;
     }
 } 
 
@@ -205,6 +204,10 @@ input.text {
 .icon-alert2 {
     font-size: 15px;
     vertical-align: middle;
+    color: $light-gray;
+    cursor: pointer;
+    text-decoration: none;
+    &:hover,
     &.enabled {
         color: #FFD700;
     }

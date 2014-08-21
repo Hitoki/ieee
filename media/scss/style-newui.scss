@@ -198,9 +198,9 @@ table.main {
         margin-top: 5px;
     }
     .icon-cancel2 {
+        color: $light-gray;
         text-decoration: none;
         float: right;
-        color: $medium-gray;
         &:hover {
             color: $red;
         }
@@ -232,9 +232,6 @@ table.main {
     }
     .icomoon-icon {
         text-decoration: none;
-    }
-    a.icon-cancel2 {
-        font-size: 11px;
     }
 }
 
