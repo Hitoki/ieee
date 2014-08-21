@@ -70,7 +70,6 @@ $(document).ready(function(){
         }
     );
 
-
     //Removes hover state from selected text when other option is chosen in dropdowns
     $(".customSelectList li").click(function() {
          $(".selected").removeClass("selected-hover");
@@ -126,8 +125,7 @@ $(document).ready(function(){
                 } else if (tab.tab[0].id == 'societies-tab') {
                     Tags.selectSociety('all');
                 } else {
-                                        ajax_report_error('onChangeTab(): Error: unknown tab id "' + tab.tab[0].id + '"');
-                    return;
+                    ajax_report_error('onChangeTab(): Error: unknown tab id "' + tab.tab[0].id + '"');
                 }
             }
         });
@@ -294,11 +292,10 @@ var Tags = {
                     societyId = parseInt(societyId);
                 }
                 this.selectCluster(clusterId, null, societyId, false);
-            
+
             } else {
                 // Catch all for bad hashes... especially "#tag-login-tab" leftover from login redirect...
                 Tags.selectSociety('all');
-                
             }
             
             this.oldHash = hash;
@@ -425,16 +422,15 @@ var Tags = {
         this.updateChangedNode();
         
         Lightbox.show(null, {
-            content:
-                '<div class="please-wait"><h1>Please wait...</h1><div></div></div>'
-            , useBackground: false
-            , onShowCallback: function() {
+            content: '<div class="please-wait"><h1>Please wait...</h1><div></div></div>',
+            useBackground: false,
+            onShowCallback: function() {
                 // NOTE: Use a small delay to make sure the loading screen shows before the browser gets busy.
                 setTimeout(callback, 1000);
-            }
-            , parentElement: $('#tags')
-            , customClass: 'lightbox-waiting-over'
-            , closeOnClickOutside: false
+            },
+            parentElement: $('#tags'),
+            customClass: 'lightbox-waiting-over',
+            closeOnClickOutside: false
         });
         $(".please-wait div").spin({
             lines: 9, // The number of lines to draw
@@ -480,8 +476,7 @@ var Tags = {
         //log('  societyId: ' + societyId);
         //log('  setHash: ' + setHash);
         if (this.page != this.PAGE_SOCIETY || this.societyId != societyId) {
-            this.page = this.PAGE_SOCIETY
-            
+            this.page = this.PAGE_SOCIETY;
             this.societyId = societyId;
         }
 
@@ -562,14 +557,14 @@ var Tags = {
             Tags.textuiNodes_xhr = $.get(
                 '/ajax/textui_nodes',
                 {
-                    sector_id: this.sectorId
-                    , cluster_id: this.clusterId
-                    , sort: this.getSort()
-                    , search_for: search_for
-                    , page: 'sector'
-                                        , show_clusters: showClusters
-                                        , show_terms: showTerms
-                    , token: token
+                    sector_id: this.sectorId,
+                    cluster_id: this.clusterId,
+                    sort: this.getSort(),
+                    search_for: search_for,
+                    page: 'sector',
+                    show_clusters: showClusters,
+                    show_terms: showTerms,
+                    token: token
                 },
                 function(data) {
                     Tags.onLoadResults(data);
@@ -589,14 +584,14 @@ var Tags = {
             Tags.textuiNodes_xhr = $.get(
                 '/ajax/textui_nodes',
                 {
-                    society_id: this.societyId
-                    , cluster_id: this.clusterId
-                    , sort: this.getSort()
-                    , search_for: search_for
-                    , page: 'society'
-                                        , show_clusters: showClusters
-                                        , show_terms: showTerms
-                    , token: token
+                    society_id: this.societyId,
+                    cluster_id: this.clusterId,
+                    sort: this.getSort(),
+                    search_for: search_for,
+                    page: 'society',
+                    show_clusters: showClusters,
+                    show_terms: showTerms,
+                    token: token
                 },
                 function(data) {
                     Tags.onLoadResults(data);
@@ -630,15 +625,15 @@ var Tags = {
             Tags.textuiNodes_xhr = $.get(
                 '/ajax/textui_nodes',
                 {
-                                        search_for: search_for
-                                        , society_id: this.societyId
-                                        , node_id: this.sectorId
-                                        , cluster_id: this.clusterId
-                                        , page: page
-                                        , show_clusters: showClusters
-                                        , show_terms: showTerms
-                    , token: token
-                                },
+                    search_for: search_for,
+                    society_id: this.societyId,
+                    node_id: this.sectorId,
+                    cluster_id: this.clusterId,
+                    page: page,
+                    show_clusters: showClusters,
+                    show_terms: showTerms,
+                    token: token
+                },
                 function(data) {
                     Tags.onLoadResults(data);
                     if (showSearchResultsCallback) {
@@ -655,7 +650,6 @@ var Tags = {
             // Nothing selected
             Tags.selectSector('all');
         }
-        
     },
     
     clearSearchResults: function() {
@@ -713,7 +707,6 @@ var Tags = {
             $('#tags').scroll(function() {
                 tags.onScroll();
             });
-
         }
     },
     
@@ -960,16 +953,16 @@ var Tags = {
         $.get(
             '/ajax/textui_nodes',
             {
-                cluster_id: clusterId
-                , sector_id: sectorId
-                , society_id: societyId
-                , filterValues: filterStr
-                , sort: this.getSort()
-                , page: page
-                , show_clusters: showClusters
-                , show_terms: showTerms
-                , search_for: search_for
-                , token: token
+                cluster_id: clusterId,
+                sector_id: sectorId,
+                society_id: societyId,
+                filterValues: filterStr,
+                sort: this.getSort(),
+                page: page,
+                show_clusters: showClusters,
+                show_terms: showTerms,
+                search_for: search_for,
+                token: token
             },
             function(data) {
                 Tags.onLoadResults(data);
@@ -1041,9 +1034,9 @@ var Tags = {
             initialTab = tabName;
         }
         Lightbox.show('/ajax/tag_content/' + id + '/textui/' + initialTab + '?load_framework=True', {
-            verticalCenter: false
-            , customClass: 'resources'
-            , onShowCallback: function() {
+            verticalCenter: false,
+            customClass: 'resources',
+            onShowCallback: function() {
                 if (tabName != undefined) {
                     // if there was no tab name given, use the default tab
                     log('  calling Tags.onSelectTag()');
@@ -1100,8 +1093,8 @@ var Tags = {
 
                 $(document).trigger('onShowLightboxTab');
 
-            }
-            , showCloseButton: true
+            },
+            showCloseButton: true
         });
     	$('.resources-lightbox-content').append($('<div class="resource-loading">'));
     	$(".resource-loading").spin({
@@ -1119,7 +1112,6 @@ var Tags = {
         var tabs = $('#resource-tabs').data('nootabs');
         tabs.setTab(tabName);
     },
-    
 
     getFilters: function() {
         var result = [];
@@ -1164,7 +1156,6 @@ var Tags = {
             this.selectSociety(this.societyId);
         } else {
             ajax_report_error('Tags.updateSort(): Error, page (' + this.page + ') must be "sector", "tag_cluster", or "society".');
-            return;
         }
     },
     
@@ -1187,7 +1178,7 @@ var Tags = {
             return;
         }
         
-        var clusterIcon = tag.find('.cluster-icon')
+        var clusterIcon = tag.find('.cluster-icon');
         if (clusterIcon.length == 0) {
             ajax_report_error('ERROR: In setDefaultZoomValues(), could not find #default-height-tag .cluster-icon element.');
             return;
@@ -1294,7 +1285,6 @@ var Tags = {
         this.oldZoom = zoom;
         
         //log('~resizeNodes()');
-
     },
     
     onScroll: function() {
@@ -1354,7 +1344,7 @@ var Tags = {
                 s.push('padding-left:' + (this.defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
                 s.push('padding-right:' + (this.defaultPadding * scaleZoom(zoom, 3) / 100) + 'px');
                 s = s.join('; ');
-                chunk = chunk.replace(/(<div [^>]+)(>)/gi, '$1 style="' + s + '" $2')
+                chunk = chunk.replace(/(<div [^>]+)(>)/gi, '$1 style="' + s + '" $2');
                 
                 // Add zoom styles to cluster icons.
                 //var s = [];
@@ -1406,7 +1396,5 @@ var Tags = {
                 }
             }
         }
-        
     }
-    
 };
