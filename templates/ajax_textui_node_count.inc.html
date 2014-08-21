@@ -29,9 +29,9 @@
     <p id="tag-and-cluster-counts">
         Showing 
         {% if num_clusters %}
-            <span class="first-value">{{ num_clusters|intcomma }} topic area{{ num_clusters|pluralize }}</span> &nbsp;&amp;&nbsp; 
-        {% endif %}
-        <span class="second-value">{{ num_tags|intcomma }} topic{{ num_tags|pluralize }}</span>
+            <span class="first-value">{{ num_clusters|intcomma }} topic area{{ num_clusters|pluralize }}</span> {% if num_tags %}&nbsp;&amp;&nbsp; {% endif %}
+        {% endif %}{% if num_tags %}
+        <span class="second-value">{{ num_tags|intcomma }} topic{{ num_tags|pluralize }}</span>{% endif %}
         {% if num_terms %}
              ({{ num_terms|intcomma }} terms)
         {% endif %}
