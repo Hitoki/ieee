@@ -1,7 +1,9 @@
 from django import template
 from logging import debug as log
 
+
 register = template.Library()
+
 
 @register.filter
 def textlist(values):
@@ -11,39 +13,40 @@ def textlist(values):
     ie. [1, 2] becomes "1 and 2"
     ie. [1, 2, 3] becomes "1, 2, and 3"
     """
-    
     list1 = [str(value) for value in values]
-    
     if len(list1) == 0:
         return ''
-    else:
-        str1 = ''
-        for i in range(len(list1) - 1):
-            if i > 0:
-                str1 += ', '
-            str1 += list1[i]
-        
-        if len(list1) == 1:
-            str1 += '%s' % list1[len(list1)-1]
-        elif len(list1) == 2:
-            str1 += ' and %s' % list1[len(list1)-1]
-        elif len(list1) > 2:
-            str1 += ', and %s' % list1[len(list1)-1]
-            
-        return str1
+    str1 = ''
+    for i in range(len(list1) - 1):
+        if i > 0:
+            str1 += ', '
+        str1 += list1[i]
+    if len(list1) == 1:
+        str1 += '%s' % list1[len(list1)-1]
+    elif len(list1) == 2:
+        str1 += ' and %s' % list1[len(list1)-1]
+    elif len(list1) > 2:
+        str1 += ', and %s' % list1[len(list1)-1]
+    return str1
+
 
 @register.filter
 def truncatechars(value, arg):
-    'Like truncatewords, except it works by char count.'
+    """
+    Like truncatewords, except it works by char count.
+    """
     char_count = int(arg)
     if len(value) > char_count:
         return value[:char_count-3] + '...'
     else:
         return value
-    
+
+
 @register.filter
 def reprjs(value):
-    'This outputs a python value in javascript-friendly format.'
+    """
+    This outputs a python value in javascript-friendly format.
+    """
     
     # None
     if value is None:
@@ -70,13 +73,15 @@ def reprjs(value):
     if type(value) is float:
         return value
     
-    raise ValueError('Could not convert value %r (type %r) to javascript.' % (value, type(value)))
-    
+    raise ValueError('Could not convert value %r (type %r) to javascript.' %
+                     (value, type(value)))
+
+
 @register.filter    
 def columns(thelist, n):
     """
-    Break a list into ``n`` columns, filling up each column to the maximum equal
-    length possible. For example::
+    Break a list into ``n`` columns, filling up each column to the maximum
+    equal length possible. For example::
 
         >>> from pprint import pprint
         >>> for i in range(7, 11):
