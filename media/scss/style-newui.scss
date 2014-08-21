@@ -194,6 +194,9 @@ table.main {
     margin-bottom: 15px;
 }
 .accountField {
+    &.row-2 {
+        margin-top: 5px;
+    }
     .icon-cancel2 {
         text-decoration: none;
     }
