@@ -55,9 +55,11 @@ TOOLTIP_MAX_CHARS = 120
 
 
 def render(request, template, dictionary=None):
-    """Use this instead of 'render_to_response' to enable
+    """
+    Use this instead of 'render_to_response' to enable
     custom context processors, which add things like MEDIA_URL to the page
-    automatically."""
+    automatically.
+    """
     return render_to_response(template, dictionary=dictionary,
                               context_instance=RequestContext(request))
 
@@ -66,13 +68,12 @@ def render(request, template, dictionary=None):
 
 
 def error_view(request):
-    '''
+    """
     Custom error view for production servers.
     Sends an email to admins for every error with a traceback.
-    
-    Only active when settings.DEBUG == True.
-    '''
 
+    Only active when settings.DEBUG == True.
+    """
     # Get the latest exception from Python system service 
     (type, value, traceback1) = sys.exc_info()
     traceback1 = '.'.join(traceback.format_exception(type, value, traceback1))
@@ -95,8 +96,10 @@ def error_view(request):
 
 
 def site_disabled(request):
-    '''Displays "site disabled" message when the entire site is disabled
-    (settings.DISABLE_SITE == True).'''
+    """
+    Displays "site disabled" message when the entire site is disabled
+    (settings.DISABLE_SITE == True).
+    """
     return render(request, 'site_disabled.html', {})
 
 
@@ -111,7 +114,9 @@ def index(request):
 
 @login_required
 def roamer(request):
-    '''Shows the Asterisq Constellation Roamer flash UI.'''
+    """
+    Shows the Asterisq Constellation Roamer flash UI.
+    """
     nodeId = request.GET.get('nodeId', Node.objects.getRoot().id)
     sectors = Node.objects.getSectors()
     filters = Filter.objects.all()
@@ -124,7 +129,9 @@ def roamer(request):
 
 @login_required
 def textui(request, survey=False):
-    '''Shows the textui (aka. Tag Galaxy) UI.'''
+    """
+    Shows the textui (aka. Tag Galaxy) UI.
+    """
     nodeId = request.GET.get('nodeId', None)
     sectorId = None
     clusterId = None
@@ -184,19 +191,25 @@ def textui(request, survey=False):
 
 @login_required
 def textui_home(request):
-    '''Shows textui "home" AJAX page.'''
+    """
+    Shows textui "home" AJAX page.
+    """
     return render(request, 'textui_home.html')
 
 
 @login_required
 def textui_help(request):
-    '''Shows textui "help" AJAX page.'''
+    """
+    Shows textui "help" AJAX page.
+    """
     return render(request, 'textui_help.html')
 
 
 @login_required
 def feedback(request):
-    '''User feedback page.  When submitted, sends an email to all admins.'''
+    """
+    User feedback page.  When submitted, sends an email to all admins.
+    """
     if request.method == 'GET':
         if request.user.is_authenticated and not request.user.is_anonymous:
             form = FeedbackForm(
@@ -243,8 +256,10 @@ def feedback(request):
 
 
 def browser_warning(request):
-    '''Shows the AJAX browser compatability warning page.
-    Allows the user to click through if they still want to browse the site.'''
+    """
+    Shows the AJAX browser compatability warning page.
+    Allows the user to click through if they still want to browse the site.
+    """
     return render(request, 'browser_warning.html')
 
 
@@ -255,7 +270,8 @@ except:
 
 
 def profile(log_file):
-    """Profile some callable.
+    """
+    Profile some callable.
 
     This decorator uses the hotshot profiler to profile some callable (like
     a view function or method) and dumps the profile data somewhere sensible
@@ -612,33 +628,33 @@ def ajax_connections(request):
     return render(request, 'youraccount_connections.inc.html', context_dict)
 
 
-#@login_required
-#def ajax_term_content(request, term_id, ui=None):
-#    'The AJAX resource results popup for taxonomy terms.'
-#    if ui is None:
-#        ui = 'textui'
-#    assert ui in ['roamer', 'textui'], 'Unrecognized ui "%s"' % ui
+# @login_required
+# def ajax_term_content(request, term_id, ui=None):
+#     """The AJAX resource results popup for taxonomy terms."""
+#     if ui is None:
+#         ui = 'textui'
+#     assert ui in ['roamer', 'textui'], 'Unrecognized ui "%s"' % ui
+#
+#     term = TaxonomyTerm.objects.get(id=term_id)
+#     num_related_items = term.related_nodes.count()
 #    
-#    term = TaxonomyTerm.objects.get(id=term_id)
-#    num_related_items = term.related_nodes.count()
-#    
-#    return render(request, 'ajax_term_content.html', {
-#        'term':term,
-#        'num_related_items': num_related_items,
-#        'ui': ui,
-#    })
+#     return render(request, 'ajax_term_content.html', {
+#         'term':term,
+#         'num_related_items': num_related_items,
+#         'ui': ui,
+#     })
 
 
 @csrf_exempt
 def ajax_jobs_results(request):
-    '''
+    """
     Shows the list of IEEE xplore articles for the given tag.
     @param tag_id: POST var, specifyies the tag.
     @param show_all: POST var, ("true" or "false"): if true, return all rows.
     @param offset: POST var, int: the row to start at.
     @param token: POST var, the ajax token to pass through.
     @return: HTML output of results.
-    '''
+    """
     tag_id = request.POST.get('tag_id')
 
     if tag_id is not None and tag_id != 'undefined':
@@ -674,14 +690,14 @@ def ajax_jobs_results(request):
 
 @csrf_exempt
 def ajax_tv_results(request):
-    '''
+    """
     Shows the list of IEEE xplore articles for the given tag.
     @param tag_id: POST var, specifyies the tag.
     @param show_all: POST var, ("true" or "false"): if true, return all rows.
     @param offset: POST var, int: the row to start at.
     @param token: POST var, the ajax token to pass through.
     @return: HTML output of results.
-    '''
+    """
     tag_id = request.POST.get('tag_id')
 
     if tag_id is not None and tag_id != 'undefined':
@@ -740,12 +756,12 @@ def ajax_tv_results(request):
 
 @csrf_exempt
 def ajax_authors_results(request):
-    '''
+    """
     Shows the list of IEEE xplore authors for the given tag.
     @param tag_id: POST var, specifyies the tag.
     @param token: POST var, the ajax token to pass through.
     @return: HTML output of results.
-    '''
+    """
     tag_id = request.POST.get('tag_id')
 
     if tag_id is not None and tag_id != 'undefined':
@@ -783,7 +799,9 @@ def ajax_authors_results(request):
 
 @login_required
 def ajax_node(request):
-    "Returns JSON data for the given node, including its parents."
+    """
+    Returns JSON data for the given node, including its parents.
+    """
 
     nodeId = request.GET['nodeId']
     node = Node.objects.get(id=nodeId)
@@ -815,7 +833,7 @@ def ajax_node(request):
 @login_required
 #@util.profiler
 def ajax_textui_nodes(request):
-    '''
+    """
     Returns HTML for the list of tags/clusters for the textui page.
     @param token: The unique token for this request, used in JS to ignore
                   overlapping AJAX requests.
@@ -829,7 +847,7 @@ def ajax_textui_nodes(request):
     @param show_clusters: (Boolean)
     @param show_terms: (Boolean)
     @return: The HTML content for all results.
-    '''
+    """
     log('ajax_textui_nodes()')
     token = request.GET['token']
 
@@ -1023,7 +1041,9 @@ def get_nodes(query):  # todo: move this function to another place in future
 
 
 def ajax_nodes_json(request):
-    "Create a JSON collection for API"
+    """
+    Create a JSON collection for API
+    """
     if not 's' in request.GET or not len(request.GET['s'].strip()):
         return HttpResponse("{'error': 'no search term provided'}",
                             content_type='application/javascript; '
@@ -1037,7 +1057,9 @@ def ajax_nodes_json(request):
 
 
 def ajax_nodes_keywords(request):
-    "Create a JSON collection for API"
+    """
+    Create a JSON collection for API
+    """
     if not 'q' in request.GET or not len(request.GET['q'].strip()):
         return HttpResponse("{'error': 'no search term provided'}",
                             content_type='application/javascript; '
@@ -1052,8 +1074,10 @@ def ajax_nodes_keywords(request):
 
 @login_required
 def ajax_nodes_xml(request):
-    """Creates an XML list of nodes & connections for Asterisq Constellation
-    Roamer."""
+    """
+    Creates an XML list of nodes & connections for Asterisq Constellation
+    Roamer.
+    """
 
     #log('ajax_nodes_xml()')
 
@@ -1324,7 +1348,9 @@ def ajax_external_favorite_request(request):
 
 @login_required
 def tooltip(request, tag_id=None):
-    'Returns the AJAX content for the tag tooltip/flyover in textui.'
+    """
+    Returns the AJAX content for the tag tooltip/flyover in textui.
+    """
     parent_id = request.GET.get('parent_id', None)
     society_id = request.GET.get('society_id', None)
     search_for = request.GET.get('search_for', None)
@@ -1636,7 +1662,7 @@ def tooltip(request, tag_id=None):
 
 
 def ajax_account(request, account_step):
-    'Returns the HTML content for account lightboxs.'
+    """Returns the HTML content for account lightboxs."""
     step = account_step
     if step == 'signin':
         return render(request, 'account_lightbox_signin.html')
@@ -1649,12 +1675,12 @@ def ajax_account(request, account_step):
 
 
 def ajax_video(request):
-    'Returns the HTML content for the flash video.'
+    """Returns the HTML content for the flash video."""
     return render(request, 'ajax_video.html')
 
 
 def ajax_welcome(request):
-    'Returns the HTML content for the welcome lightbox.'
+    """Returns the HTML content for the welcome lightbox."""
     if request.path == '/textui_new':
         NEWUI = True
     else:
