@@ -199,6 +199,11 @@ table.main {
     }
     .icon-cancel2 {
         text-decoration: none;
+        float: right;
+        color: $medium-gray;
+        &:hover {
+            color: $red;
+        }
     }
     .icon-google,
     .icon-linkedin {
@@ -262,6 +267,7 @@ table.main {
     strong {
         display: inline-block;
         margin-bottom: 3px;
+        color: $medium-gray;
     }
     .nootabs-tab {
         height: 500px;

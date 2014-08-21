@@ -26,12 +26,15 @@
         {% endfor %}
     {% endfor %}
     </ul>
+    {% comment %}
     {% if accounts|length < 2 %}
         If you like, you can also connect your <span class="dynaService"></span> account:
     {% endif %}
+    {% endcomment %}
 {% else %}
     You can connect new social media accounts:
 {% endif %}
+{% comment %}
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
@@ -41,7 +44,8 @@
     {% endfor %}
 </ul>
 {% endif %}
-{% if accounts|length < 2 %}
+{% endcomment %}
+{% if accounts|length < 1 %}
 <div class="signinBtns">
     <a class="btn account connect_account googleMeth" target="_blank" href="{% provider_login_url "google" process="connect" %}"><span class="icon-google icomoon-icon"></span>Connect your Google Account</a>
 {#    <a class="btn account" target="_blank" href="{% provider_login_url "facebook" process="connect" %}"><span class="icon-facebook icomoon-icon"></span>Sign In or Join with Facebook</a>#}
