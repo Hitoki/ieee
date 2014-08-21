@@ -2,13 +2,16 @@
     $(function() {
         var action;
         $('.subscribe').click(function(){
-            $('.qtip').qtip('hide');
             if ($(this).hasClass('enabled')) {
                 action = 'disable';
-                $('.icon-alert').removeClass('enabled');
+                $('.alertOff').hide();
+                $('.alertOn').show();
+                $('.tag-icons').children('.favorite-topic').removeClass('icon-star-whole-alert').addClass('icon-star-whole');
             } else {
                 action = 'enable';
-                $('.icon-alert').addClass('enabled');
+                $('.alertOn').hide();
+                $('.alertOff').show();
+                $('.tag-icons').children('.favorite-topic').removeClass('icon-star-whole').addClass('icon-star-whole-alert');
             }
             $.post('/ajax/notification/request',
                 {
@@ -20,7 +23,7 @@
                     return false;
                 }
             );
-        }).qtip();;
+        });
     });
 
     $(function() {
@@ -31,12 +34,16 @@
             nodeid = $(this).data('nodeid');
             if ($(this).hasClass('enabled')) {
                 action = 'disable';
+                $(this).parent().removeClass('is-favorite');
                 $(this).removeClass('icon-star-whole enabled').addClass('icon-star');
-                $(this).siblings('.icon-alert').addClass('hidden').removeClass('enabled');
+                $(this).siblings('.alertMenu').children('.alertOn').hide();
+                $(this).siblings('.alertMenu').children('.alertOff').show();
             } else {
                 action = 'enable';
+                $(this).parent().addClass('is-favorite');
                 $(this).removeClass('icon-star').addClass('icon-star-whole enabled');
-                $(this).siblings('.icon-alert').removeClass('hidden');
+                $(this).siblings('.alertMenu').children('.alertOff').hide();
+                $(this).siblings('.alertMenu').children('.alertOn').show();
             }
             $.post('/ajax/favorite-topic/request',
                 {
@@ -48,5 +55,11 @@
                 }
             );
         }).qtip();
+    });
+
+    $(function() {
+        $('.no-enable-alert').click(function() {
+            $(this).parent().parent().hide();
+        });
     });
 </script>

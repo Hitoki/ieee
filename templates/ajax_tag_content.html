@@ -61,13 +61,23 @@
 <div class="dialogTitle">{% spaceless %}
     <span id="tag-name">{{ tag.name }}</span> 
     {% if user.is_authenticated %}
-    <span class="tag-icons">
+    <span class="tag-icons{% if is_favorite %} is-favorite {% endif %}">
         {% if is_favorite %}
-        <span class="icon-star-whole favorite-topic enabled icomoon-icon" title="Unfavorite topic" data-nodeid="{{ tag.id }}"></span>
+        <span class="icon-star-whole{% if enable_alerts %}-alert{% endif %} favorite-topic enabled icomoon-icon" data-nodeid="{{ tag.id }}"></span>
         {% else %}
         <span class="icon-star-whole favorite-topic icomoon-icon" title="Favorite topic" data-nodeid="{{ tag.id }}"></span>
         {% endif %}
-        <span class="icon-alert subscribe icomoon-icon{% if enable_alerts %} enabled{% endif %} {% if not is_favorite %}hidden{% endif %}" title="{% if enable_alerts%}Unsubscribe from alerts{% else %}Subscribe to alerts{% endif %}"></span>
+        <span class="alertMenu">
+            Click star to<br/>unfavorite topic<br/><br/>
+            <span class="alertOn"{% if enable_alerts %} style="display:none;"{% endif %}>
+                <strong>Alerts Off</strong><br/>
+                <span class="subscribe">Subscribe</span>
+            </span>
+            <span class="alertOff"{% if not enable_alerts %} style="display:none;"{% endif %}>
+               <strong>Alerts On</strong><br/>
+                <span class="subscribe enabled">Unsubscribe</span>
+            </span>
+        </span>
     </span>{% endif %}
 {% endspaceless %}</div>
 

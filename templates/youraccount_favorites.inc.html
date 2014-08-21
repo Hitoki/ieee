@@ -2,14 +2,20 @@
     $(function() {
         var action;
         var nodeid;
-        $('.unsubscribe').click(function(){
+        $('.subscribe').click(function(){
             $('.qtip').qtip('hide');
             nodeid = $(this).data('nodeid');
+            if ($(this).hasClass('enabled')) {
+                action = 'disable'
+            } else {
+                action = 'enable'
+            }
+            $(this).toggleClass('enabled');
             $.post('/ajax/notification/request',
-                {
+            {
                     email: '{{ user.email }}',
                     nodeid: nodeid,
-                    action: 'disable'
+                    action: action
                 },
                 function(){
                     $('#favorites-tab').load('/ajax/favorite_list');
@@ -18,6 +24,7 @@
             );
         }).qtip();
     });
+
     $(function() {
         var action;
         var nodeid;
@@ -76,20 +83,20 @@
 
 {% if favorite_topics or favorite_resources or favorite_societies %}
 <p class="first">By clicking the <span class="icon-star-whole icomoon-icon"></span> next to a topic or resource, it will be listed here for easy access later.</p>
+{% if favorite_topics %}
+<strong>Topics</strong><br/>
+<ul class="topicList">
+    {% for topic in favorite_topics %}
+    <li><a href="javascript:Tags.selectTag({{ topic.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);" rel="nofollow">{{ topic.name }}</a> <span class="topic-icons">{% if topic.has_alert %}<span class="icon-alert subscribe enabled icomoon-icon" title="Unsubscribe from alerts" data-nodeid="{{ topic.id }}"></span>{% else %}<span class="icon-alert2 subscribe icomoon-icon" title="Subscribe to alerts" data-nodeid="{{ topic.id }}"></span>{% endif %} <span class="icon-cancel2 unfavorite-topic icomoon-icon" title="Unfavorite topic" data-nodeid="{{ topic.id }}"></span></span></li>
+    {% endfor %}
+</ul>
+{% endif %}
 {% if favorite_societies %}
 <strong>IEEE Organizations</strong><br/>
 <ul class="topicList">
     {% for society in favorite_societies %}
-    <li><a href="{{ society.url }}" rel="nofollow">{{ society.name }}</a> <span class="icon-cancel2 unfavorite-society icomoon-icon" title="Unfavorite organization" data-nodeid="{{ society.id }}"></span>
+    <li><a href="{{ society.url }}" rel="nofollow">{{ society.name }}</a> <span class="topic-icons"><span class="icon-cancel2 unfavorite-society icomoon-icon" title="Unfavorite organization" data-nodeid="{{ society.id }}"></span></span>
     {% endfor %}
-</ul>
-{% endif %}
-{% if favorite_topics %}
-<strong>Topics</strong><br/>
-<ul class="topicList">
-	{% for topic in favorite_topics %}
-	<li><a href="javascript:Tags.selectTag({{ topic.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);" rel="nofollow">{{ topic.name }}</a> {% if topic.has_alert %}<span class="icon-alert unsubscribe icomoon-icon" title="Unsubscribe from alerts" data-nodeid="{{ topic.id }}"></span>{% endif %} <span class="icon-cancel2 unfavorite-topic icomoon-icon" title="Unfavorite topic" data-nodeid="{{ topic.id }}"></span></li>
-	{% endfor %}
 </ul>
 {% endif %}
 {% if favorite_resources %}
@@ -98,7 +105,7 @@
 <strong>{{ resource_type.grouper|title }}s</strong>
 <ul class="topicList">
     {% for resource in resource_type.list %}
-    <li><a href="{{ resource.url }}" target="_blank" rel="nofollow">{{ resource.name }}<span class="popup newWinIcon"></span></a> <span class="icon-cancel2 unfavorite-resource icomoon-icon" title="Unfavorite {{ resource_type.grouper|lower }}" data-nodeid="{{ resource.id }}"></span>
+    <li><a href="{{ resource.url }}" target="_blank" rel="nofollow">{{ resource.name }}</a><span class="popup newWinIcon"></span> <span class="topic-icons"><span class="icon-cancel2 unfavorite-resource icomoon-icon" title="Unfavorite {{ resource_type.grouper|lower }}" data-nodeid="{{ resource.id }}"></span></span>
     {% endfor %}
 </ul>
 {% endfor %}

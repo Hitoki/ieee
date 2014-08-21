@@ -23,6 +23,12 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.icon-alert2:before {
+	content: "\e60b";
+}
+.icon-star-whole-alert:before {
+	content: "\e60a";
+}
 .icon-printer:before {
 	content: "\e609";
 }
