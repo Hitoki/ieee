@@ -82,34 +82,62 @@
 </script>
 
 {% if favorite_topics or favorite_resources or favorite_societies %}
-<p class="first">By clicking the <span class="icon-star-whole icomoon-icon"></span> next to a topic or resource, it will be listed here for easy access later.</p>
-{% if favorite_topics %}
-<strong>Topics</strong><br/>
-<ul class="topicList">
-    {% for topic in favorite_topics %}
-    <li><a href="javascript:Tags.selectTag({{ topic.id }});" onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);" rel="nofollow">{{ topic.name }}</a> <span class="topic-icons">{% if topic.has_alert %}<span class="icon-alert subscribe enabled icomoon-icon" title="Unsubscribe from alerts" data-nodeid="{{ topic.id }}"></span>{% else %}<span class="icon-alert2 subscribe icomoon-icon" title="Subscribe to alerts" data-nodeid="{{ topic.id }}"></span>{% endif %} <span class="icon-cancel2 unfavorite-topic icomoon-icon" title="Unfavorite topic" data-nodeid="{{ topic.id }}"></span></span></li>
-    {% endfor %}
-</ul>
-{% endif %}
-{% if favorite_societies %}
-<strong>IEEE Organizations</strong><br/>
-<ul class="topicList">
-    {% for society in favorite_societies %}
-    <li><a href="{{ society.url }}" rel="nofollow">{{ society.name }}</a> <span class="topic-icons"><span class="icon-cancel2 unfavorite-society icomoon-icon" title="Unfavorite organization" data-nodeid="{{ society.id }}"></span></span>
-    {% endfor %}
-</ul>
-{% endif %}
-{% if favorite_resources %}
-{% regroup favorite_resources by resource_type as favorite_resources %}
-{% for resource_type in favorite_resources %}
-<strong>{{ resource_type.grouper|title }}s</strong>
-<ul class="topicList">
-    {% for resource in resource_type.list %}
-    <li><a href="{{ resource.url }}" target="_blank" rel="nofollow">{{ resource.name }}</a><span class="popup newWinIcon"></span> <span class="topic-icons"><span class="icon-cancel2 unfavorite-resource icomoon-icon" title="Unfavorite {{ resource_type.grouper|lower }}" data-nodeid="{{ resource.id }}"></span></span>
-    {% endfor %}
-</ul>
-{% endfor %}
-{% endif %}
+    <p class="first">
+        By clicking the <span class="icon-star-whole icomoon-icon"></span>
+        next to a topic or resource, it will be listed here for easy access later.
+    </p>
+    {% if favorite_topics %}
+        <strong>Topics</strong><br/>
+        <ul class="topicList">
+            {% for topic in favorite_topics %}
+                <li><a href="javascript:Tags.selectTag({{ topic.id }});"
+                       onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);"
+                       rel="nofollow">{{ topic.name }}</a>
+                    <span class="topic-icons">
+                        {% if topic.has_alert %}
+                            <span class="icon-alert subscribe enabled icomoon-icon"
+                                  title="Unsubscribe from alerts" data-nodeid="{{ topic.id }}"></span>
+                        {% else %}
+                            <span class="icon-alert2 subscribe icomoon-icon"
+                                  title="Subscribe to alerts" data-nodeid="{{ topic.id }}"></span>
+                        {% endif %}
+                        <span class="icon-cancel2 unfavorite-topic icomoon-icon" title="Unfavorite topic" data-nodeid="{{ topic.id }}"></span>
+                    </span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if favorite_societies %}
+        <strong>IEEE Organizations</strong><br/>
+        <ul class="topicList">
+            {% for society in favorite_societies %}
+                <li>
+                    <a href="{{ society.url }}" rel="nofollow">{{ society.name }}</a>
+                    <span class="topic-icons">
+                        <span class="icon-cancel2 unfavorite-society icomoon-icon"
+                              title="Unfavorite organization" data-nodeid="{{ society.id }}"></span>
+                    </span>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if favorite_resources %}
+        {% regroup favorite_resources by resource_type as favorite_resources %}
+        {% for resource_type in favorite_resources %}
+            <strong>{{ resource_type.grouper|title }}s</strong>
+            <ul class="topicList">
+                {% for resource in resource_type.list %}
+                    <li><a href="{{ resource.url }}" target="_blank" rel="nofollow">{{ resource.name }}</a><span class="popup newWinIcon"></span>
+                        <span class="topic-icons">
+                            <span class="icon-cancel2 unfavorite-resource icomoon-icon"
+                                  title="Unfavorite {{ resource_type.grouper|lower }}" data-nodeid="{{ resource.id }}"></span>
+                        </span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    {% endif %}
 {% else %}
-You do not have any favorites. Click the <span class="icon-star -wholeicomoon-icon"></span> icon for topics, resources, or organizations to list here for easy access later.
+    You do not have any favorites. Click the <span class="icon-star -wholeicomoon-icon"></span>
+    icon for topics, resources, or organizations to list here for easy access later.
 {% endif %}
