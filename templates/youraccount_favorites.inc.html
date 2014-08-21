@@ -137,6 +137,22 @@
             </ul>
         {% endfor %}
     {% endif %}
+    {% if external_favorites %}
+        {% regroup external_favorites by external_resource_type as external_favorites %}
+        {% for resource_type in external_favorites %}
+            <strong>{{ resource_type.grouper|title }}s</strong>
+            <ul class="topicList">
+                {% for resource in resource_type.list %}
+                    <li><a href="{{ resource.url }}" target="_blank" rel="nofollow">{{ resource.title }}</a><span class="popup newWinIcon"></span>
+                        <span class="topic-icons">
+                            <span class="icon-cancel2 unfavorite-external icomoon-icon"
+                                  title="Unfavorite {{ resource_type.grouper|lower }}" data-nodeid="{{ resource.id }}"></span>
+                        </span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    {% endif %}
 {% else %}
     You do not have any favorites. Click the <span class="icon-star -wholeicomoon-icon"></span>
     icon for topics, resources, or organizations to list here for easy access later.

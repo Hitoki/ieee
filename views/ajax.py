@@ -592,15 +592,19 @@ def ajax_favorite_list(request):
         favorite_topics = user_favorites.topics.all()
         favorite_resources = user_favorites.resources.all()
         favorite_societies = user_favorites.societies.all()
+        external_favorites = UserExternalFavorites.objects.\
+            filter(user=request.user).order_by('external_resource_type')
     except UserFavorites.DoesNotExist:
         favorite_topics = ''
         favorite_resources = ''
         favorite_societies = ''
+        external_favorites = ''
 
     context_dict = {
         'favorite_topics': favorite_topics,
         'favorite_resources': favorite_resources,
         'favorite_societies': favorite_societies,
+        'external_favorites': external_favorites,
     }
 
     for topic in favorite_topics:
