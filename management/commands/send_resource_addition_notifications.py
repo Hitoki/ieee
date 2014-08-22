@@ -55,7 +55,7 @@ class Command(NoArgsCommand):
                     nt.request = req
                     nt.resourceNodes = nr
                     nt.date_notified = datetime.utcnow()
-                    nt.save()
+                    # nt.save()
                 print "new resource count: %d" % new_resources.count()
 
                 if new_resources.count():
