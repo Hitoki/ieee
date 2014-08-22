@@ -166,7 +166,8 @@ input.text {
     }
     .favorite-topic,
     .favorite-resource,
-    .favorite-society {
+    .favorite-society,
+    .favorite-job {
         color: $white;
         &:hover {
             color: lighten(#FFD700, 40%);
@@ -176,7 +177,8 @@ input.text {
 
 .favorite-topic,
 .favorite-resource,
-.favorite-society {
+.favorite-society,
+.favorite-job {
     text-decoration: none;
     color: $secondaryColor;
     cursor: pointer;
@@ -191,6 +193,7 @@ input.text {
 .unfavorite-topic,
 .unfavorite-resource,
 .unfavorite-society,
+.unfavorite-job,
 .icon-cancel2 {
     text-decoration: none;
     color: $light-gray;
@@ -646,8 +649,6 @@ ul#overview-list {
 
 #job-tab{
     .group a {
-        display: block;
-        clear: both;
         margin-top: 20px;
         &:first-child {
             margin-top: 0;

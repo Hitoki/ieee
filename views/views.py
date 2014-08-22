@@ -646,17 +646,19 @@ def get_jobs_info(tag, offset=None, user=None):
     user_favorites = UserExternalFavorites.objects.filter(user=user).\
         filter(external_resource_type='job').\
         values_list('external_id', flat=True)
+    jobs_html = '<ul>'
     for job in jobs:
         job_id = job['Id']
         if job_id in user_favorites:
             job['StarClass'] = 'icon-star-whole enabled'
         else:
             job['StarClass'] = 'icon-star'
-        jobs_html += '<a href="%(Url)s" target="_blank" class="featured">' \
+        jobs_html += '<li><a href="%(Url)s" target="_blank" class="featured">' \
                      '%(JobTitle)s<span class="popup newWinIcon"></span></a>' \
                      '<span class="%(StarClass)s favorite-job icomoon-icon" ' \
                      'data-nodeid="%(Id)s"></span>' \
-                     '%(Company)s<br>\n' % job
+                     '<p>%(Company)s</p>\n' % job
+    jobs_html += '</ul>'
     return jobs_html, jobs_count, jobs_url
 
 
