@@ -13,15 +13,20 @@
                 {% endif %}
             </li>
             <script type="text/javascript">
+                {% if USING_LINKEDIN_PROVIDER %}    
                 if ('{{ key|title }}' == 'Linkedin_Oauth2') {
                     $('.linkedMeth').remove();
                     $('.service-icon{{ forloop.parentloop.counter }}').addClass('icon-linkedin');
                     $('.dynaService').text('Google')
-                } else if ('{{ key|title }}' == 'Google') {
+                }
+                {% endif %}
+                {% if USING_GOOGLE_PROVIDER %}
+                if ('{{ key|title }}' == 'Google') {
                     $('.googleMeth').remove();
                     $('.service-icon{{ forloop.parentloop.counter }}').addClass('icon-google');
                     $('.dynaService').text('LinkedIn')
                 }
+                {% endif %}
             </script>
         {% endfor %}
     {% endfor %}
@@ -32,7 +37,7 @@
     {% endif %}
     {% endcomment %}
 {% else %}
-    You can connect new social media accounts:
+    You can connect a new social media account:
 {% endif %}
 {% comment %}
 {% if messages %}
