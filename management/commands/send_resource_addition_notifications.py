@@ -23,6 +23,7 @@ class Command(NoArgsCommand):
                 filter(email=email.email)
             reqs_with_new_items = []
             for req in reqs:
+                print "req: %d" % req.id
                 previous_notifications = \
                     ResourceAdditionNotification.objects.filter(request=req). \
                         order_by('-date_notified')
@@ -30,6 +31,8 @@ class Command(NoArgsCommand):
                     last_update = previous_notifications[0].date_notified
                 else:
                     last_update = req.date_created
+
+                print "last_update: %s" % last_update
 
                 new_societies = \
                     NodeSocieties.objects.filter(node=req.node,
@@ -45,13 +48,14 @@ class Command(NoArgsCommand):
                 new_resources = ResourceNodes.objects. \
                     filter(node=req.node, date_created__gt=last_update). \
                     order_by('resource__resource_type')
-                for nr in new_resources:
-                    # Save record of this relationship being notified via email
-                    nt = ResourceAdditionNotification()
-                    nt.request = req
-                    nt.resourceNodes = nr
-                    nt.date_notified = datetime.utcnow()
-                    nt.save()
+                print "new resource count: %d" % new_resources.count()
+                # for nr in new_resources:
+                #     # Save record of this relationship being notified via email
+                #     nt = ResourceAdditionNotification()
+                #     nt.request = req
+                #     nt.resourceNodes = nr
+                #     nt.date_notified = datetime.utcnow()
+                #     nt.save()
 
                 if new_resources.count():
                     req.new_resources = new_resources
@@ -62,6 +66,8 @@ class Command(NoArgsCommand):
                     req.new_societies = new_societies
                     if req not in reqs_with_new_items:
                         reqs_with_new_items.append(req)
+
+                print "reqs with new items count: %d" % len(reqs_with_new_items)
 
             if len(reqs_with_new_items):
                 context = Context({
