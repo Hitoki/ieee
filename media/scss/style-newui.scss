@@ -88,6 +88,10 @@ table.main {
     background: $white;
 }
   
+.smallFont {
+    font-size: 11px;
+}
+
 .custom_images {
    float: left;
    margin-right: 11px;
@@ -191,13 +195,16 @@ table.main {
 .signinBtns {
     text-align: center;
     .btn {
-        margin: 0 5px;
+        margin: 0 10px 0 0;
         padding: 4px 10px;
         font-size: 12px;
     }
 }
 .accountList {
     margin: 3px 0 15px;
+    li {
+        line-height: 1;
+    }
 }
 .accountField {
     &.row-2 {
@@ -214,10 +221,11 @@ table.main {
     .icon-google,
     .icon-linkedin {
         background-color: $primaryColor;
-        padding: 2px;
         color: $white;
         float: left;
         margin-right: 5px;
+        font-size: 18px;
+        padding: 4px 5px;
     }
 }
 .your-account-lightbox-content {
