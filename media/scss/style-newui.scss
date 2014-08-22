@@ -194,8 +194,22 @@ table.main {
     margin-bottom: 15px;
 }
 .accountField {
+    &.row-2 {
+        margin-top: 5px;
+    }
     .icon-cancel2 {
+        color: $light-gray;
         text-decoration: none;
+        float: right;
+        &:hover {
+            color: $red;
+        }
+    }
+    .icon-google,
+    .icon-linkedin {
+        background-color: $primaryColor;
+        padding: 2px;
+        color: $white;
     }
 }
 .your-account-lightbox-content {
@@ -218,9 +232,6 @@ table.main {
     }
     .icomoon-icon {
         text-decoration: none;
-    }
-    a.icon-cancel2 {
-        font-size: 11px;
     }
 }
 
@@ -253,6 +264,7 @@ table.main {
     strong {
         display: inline-block;
         margin-bottom: 3px;
+        color: $medium-gray;
     }
     .nootabs-tab {
         height: 500px;
@@ -300,7 +312,7 @@ table.main {
     }
     ul {
         cursor: default;
-        line-height: 1.5;
+        line-height: 1.8;
         position: absolute;
         top: -7px;
         right: -11px;

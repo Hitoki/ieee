@@ -23,17 +23,8 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.icon-alert2:before {
-	content: "\e60b";
-}
-.icon-star-whole-alert:before {
-	content: "\e60a";
-}
 .icon-printer:before {
-	content: "\e609";
-}
-.icon-linkedin:before {
-	content: "\e606";
+	content: "\e60c";
 }
 .icon-cancel2:before {
 	content: "\e607";
@@ -74,10 +65,19 @@
 .icon-tag:before {
 	content: "\e017";
 }
+.icon-alert2:before {
+	content: "\e60b";
+}
+.icon-star-whole-alert:before {
+	content: "\e60a";
+}
+.icon-linkedin:before {
+	content: "\e606";
+}
 .icon-alert:before {
 	content: "\e602";
 }
-
+d
 /* Modified Selectors */
 .drive:before {
 	content: "\e608";
