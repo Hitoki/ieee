@@ -67,7 +67,7 @@ class Command(NoArgsCommand):
                     if req not in reqs_with_new_items:
                         reqs_with_new_items.append(req)
 
-                        print "reqs with new items count: %d" % len(reqs_with_new_items)
+                print "reqs with new items count: %d" % len(reqs_with_new_items)
 
             if len(reqs_with_new_items):
                 context = Context({
