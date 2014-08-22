@@ -191,7 +191,7 @@ table.main {
     }
 }
 .accountList {
-    margin-bottom: 15px;
+    margin: 3px 0 15px;
 }
 .accountField {
     &.row-2 {
@@ -210,6 +210,8 @@ table.main {
         background-color: $primaryColor;
         padding: 2px;
         color: $white;
+        float: left;
+        margin-right: 5px;
     }
 }
 .your-account-lightbox-content {
