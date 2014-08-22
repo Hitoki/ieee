@@ -79,6 +79,14 @@
             );
         }).qtip();
     });
+    $(function() {
+        var action;
+        var nodeid;
+        $('.unfavorite-external').click(function(){
+            $('.qtip').qtip('hide');
+            // Need ajax post here
+        }).qtip();
+    });
 </script>
 
 {% if favorite_topics or favorite_resources or favorite_societies or external_favorites %}

@@ -167,6 +167,8 @@ def textui(request, survey=False):
     NEWUI = True
     newui_search_button = False
 
+    enable_joyride = settings.ENABLE_JOYRIDE
+
     return render(request, template, {
         'sectorId': sectorId,
         'clusterId': clusterId,
@@ -179,7 +181,8 @@ def textui(request, survey=False):
         'ENABLE_SEARCH_BUTTON': settings.ENABLE_SEARCH_BUTTON,
         'SEARCH_KEY_DELAY': settings.SEARCH_KEY_DELAY,
         'NEWUI': NEWUI,
-        'ENABLE_SEARCH_BUTTON': newui_search_button
+        'ENABLE_SEARCH_BUTTON': newui_search_button,
+        'ENABLE_JOYRIDE': enable_joyride
     })
 
 

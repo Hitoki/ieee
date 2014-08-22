@@ -105,6 +105,9 @@ GA_SITE_NUM = 1
 ENABLE_SEARCH_BUTTON = True
 SEARCH_KEY_DELAY = 500
 
+# JoyRide tour
+ENABLE_JOYRIDE = True
+
 # Jobs settings
 JOBS_URL = "http://jobs.ieee.org/jobs/search/results"
 
