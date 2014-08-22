@@ -16,6 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 from models.node import Node
 from models.types import NodeType
 import settings
+import socket
 
 XPLORE_SORT_AUTHOR = 'au'
 XPLORE_SORT_TITLE = 'ti'
@@ -115,7 +116,7 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
             log('xplore query: %s' % url)
             
         try:
-            file1 = urllib2.urlopen(url)
+            file1 = urllib2.urlopen(url, timeout=settings.EXTERNAL_XPLORE_TIMEOUT_SECS)
         
             # Get the charset of the request and decode/re-encode the response text into UTF-8 so we can parse it
             info = file1.info()
@@ -131,6 +132,10 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
             totalfound = 0
         except KeyError:
             xplore_error = 'Error: Could not determine content type of the IEEE Xplore response.'
+            xplore_results = []
+            totalfound = 0
+        except socket.timeout:
+            xplore_error = 'Error: Connection to IEEE Xplore timed out.'
             xplore_results = []
             totalfound = 0
 
@@ -248,7 +253,7 @@ def ajax_recent_xplore(request):
         url = settings.EXTERNAL_XPLORE_URL + urllib.urlencode(params)
                 
         try:
-            file1 = urllib2.urlopen(url)
+            file1 = urllib2.urlopen(url, timeout=settings.EXTERNAL_XPLORE_TIMEOUT_SECS)
             
             # Get the charset of the request and decode/re-encode the response text into UTF-8 so we can parse it
             info = file1.info()
@@ -263,6 +268,10 @@ def ajax_recent_xplore(request):
             totalfound = 0
         except KeyError:
             xplore_error = 'Error: Could not determine content type of the IEEE Xplore response.'
+            xplore_results = []
+            totalfound = 0
+        except socket.timeout:
+            xplore_error = 'Error: Connection to IEEE Xplore timed out.'
             xplore_results = []
             totalfound = 0
 
@@ -386,7 +395,7 @@ def ajax_xplore_authors(tag_id):
         log('xplore query: %s' % url)
         
     try:
-        file1 = urllib2.urlopen(url)
+        file1 = urllib2.urlopen(url, timeout=settings.EXTERNAL_XPLORE_TIMEOUT_SECS)
     
         # Get the charset of the request and decode/re-encode the response text into UTF-8 so we can parse it
         info = file1.info()
@@ -402,6 +411,10 @@ def ajax_xplore_authors(tag_id):
         totalfound = 0
     except KeyError:
         xplore_error = 'Error: Could not determine content type of the IEEE Xplore response.'
+        xplore_results = []
+        totalfound = 0
+    except socket.timeout:
+        xplore_error = 'Error: Connection to IEEE Xplore timed out.'
         xplore_results = []
         totalfound = 0
 
