@@ -52,9 +52,13 @@ class Command(NoArgsCommand):
                 for nr in new_resources:
                     # Save record of this relationship being notified via email
                     nt = ResourceAdditionNotification()
+                    print "new notification"
                     nt.request = req
+                    print "request id: %d" % req.id
                     nt.resourceNodes = nr
+                    print "resourceNodes id: %d" % nr.id
                     nt.date_notified = datetime.utcnow()
+                    print "date_notified: %s" % nt.date_notified
                     # nt.save()
                 print "new resource count: %d" % new_resources.count()
 
