@@ -59,7 +59,7 @@ class Command(NoArgsCommand):
                     print "resourceNodes id: %d" % nr.id
                     nt.date_notified = datetime.utcnow()
                     print "date_notified: %s" % nt.date_notified
-                    # nt.save()
+                    nt.save()
                 print "new resource count: %d" % new_resources.count()
 
                 if new_resources.count():
