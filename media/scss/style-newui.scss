@@ -134,8 +134,9 @@ table.main {
         background-color: $primaryColor;
         color: $white;
         margin: 0px 10px 0px -12px;
-        padding: 5px;
+        padding: 4px 5px;
         vertical-align: middle;
+        border: 1px solid $primaryColor;
     }
 }
 .btn.startTour {
@@ -179,6 +180,11 @@ table.main {
         background: $white;
         a {
             color: $secondaryColor;
+        }
+        .icomoon-icon {
+            color: $primaryColor;
+            background-color: $white;
+            border: 1px solid $secondaryColor;    
         }
     }
 }
