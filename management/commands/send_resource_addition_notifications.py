@@ -27,7 +27,7 @@ class Command(NoArgsCommand):
                 previous_notifications = \
                     ResourceAdditionNotification.objects.filter(request=req). \
                         order_by('-date_notified')
-                if len(previous_notifications): # use len() cause evaluation
+                if previous_notifications.count():
                     last_update = previous_notifications[0].date_notified
                 else:
                     last_update = req.date_created
