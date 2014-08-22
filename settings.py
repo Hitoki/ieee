@@ -185,9 +185,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'ieeetags.context_processors.current_url',
     'ieeetags.context_processors.is_ajax',
     'ieeetags.context_processors.survey',
-    'ieeetags.context_processors.settings',
+    'ieeetags.context_processors.django_settings',
     'ieeetags.context_processors.host_info',
     'ieeetags.context_processors.total_tag_count',
+    'ieeetags.context_processors.socialauth_using_providers',
     "allauth.account.context_processors.account",
     "allauth.socialaccount.context_processors.socialaccount",
 )
@@ -226,6 +227,10 @@ SOCIALACCOUNT_KEYS = {
         'secret': 'B9HdT4f7VSoV0T8J',
     }
 }
+
+USING_GOOGLE_PROVIDER = True
+USING_LINKEDIN_PROVIDER = False
+USING_FACEBOOK_PROVIDER = False
 
 USE_SITEMINDER_LOGIN = False
 'If True application authorizes users against IEEE SiteMinder database. Otherwise use local database.'

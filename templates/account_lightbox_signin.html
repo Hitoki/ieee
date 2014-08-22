@@ -4,9 +4,21 @@
 <h2>Sign In or Join TechNav</h2>
 <div class="lightbox-box">
 	<div class="signinBtns">
-		<a class="btn account" href="{% provider_login_url "google" %}"><span class="icon-google icomoon-icon"></span>Sign In or Join with Google</a>
-	{#	<a class="btn account" href="{% provider_login_url "facebook" %}"><span class="icon-facebook icomoon-icon"></span>Sign In or Join with Facebook</a>#}
-		<a class="btn account" href="{% provider_login_url "linkedin_oauth2" %}"><span class="icon-linkedin icomoon-icon"></span>Sign In or Join with LinkedIn</a>
+        {% if USING_GOOGLE_PROVIDER %}
+		    <a class="btn account" href="{% provider_login_url "google" %}">
+                <span class="icon-google icomoon-icon"></span>Sign In or Join with Google
+            </a>
+        {% endif %}
+        {% if USING_LINKEDIN_PROVIDER %}
+		    <a class="btn account" href="{% provider_login_url "linkedin_oauth2" %}">
+                <span class="icon-linkedin icomoon-icon"></span>Sign In or Join with LinkedIn
+            </a>
+        {% endif %}
+        {% if USING_FACEBOOK_PROVIDER %}
+		    <a class="btn account" href="{% provider_login_url "facebook" %}">
+                <span class="icon-facebook icomoon-icon"></span>Sign In or Join with Facebook
+            </a>
+        {% endif %}
 	</div>
 	<div class="signinText">
 		<strong>Why join TechNav?</strong>

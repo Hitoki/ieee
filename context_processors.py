@@ -99,3 +99,11 @@ def total_tag_count(request):
     return {
         'total_tag_count': value
     }
+
+
+def socialauth_using_providers(request):
+    return {
+        'USING_GOOGLE_PROVIDER': settings.USING_GOOGLE_PROVIDER,
+        'USING_LINKEDIN_PROVIDER': settings.USING_LINKEDIN_PROVIDER,
+        'USING_FACEBOOK_PROVIDER': settings.USING_FACEBOOK_PROVIDER,
+    }

@@ -47,9 +47,24 @@
 {% endcomment %}
 {% if accounts|length < 1 %}
 <div class="signinBtns">
-    <a class="btn account connect_account googleMeth" target="_blank" href="{% provider_login_url "google" process="connect" %}"><span class="icon-google icomoon-icon"></span>Connect your Google Account</a>
-{#    <a class="btn account" target="_blank" href="{% provider_login_url "facebook" process="connect" %}"><span class="icon-facebook icomoon-icon"></span>Sign In or Join with Facebook</a>#}
-    <a class="btn account connect_account linkedMeth" target="_blank" href="{% provider_login_url "linkedin_oauth2" process="connect" %}"><span class="icon-linkedin icomoon-icon"></span>Connect your LinkedIn account</a>
+    {% if USING_GOOGLE_PROVIDER %}
+        <a class="btn account connect_account googleMeth" target="_blank"
+           href="{% provider_login_url "google" process="connect" %}">
+            <span class="icon-google icomoon-icon"></span>Connect your Google account
+        </a>
+    {% endif %}
+    {% if USING_LINKEDIN_PROVIDER %}
+        <a class="btn account connect_account linkedMeth" target="_blank"
+           href="{% provider_login_url "linkedin_oauth2" process="connect" %}">
+            <span class="icon-linkedin icomoon-icon"></span>Connect your LinkedIn account
+        </a>
+    {% endif %}
+    {% if USING_FACEBOOK_PROVIDER %}
+        <a class="btn account connect_account facebookMeth" target="_blank"
+           href="{% provider_login_url "facebook" process="connect" %}">
+            <span class="icon-facebook icomoon-icon"></span>Connect your Facebook account
+        </a>
+    {% endif %}
 </div>
 {% endif %}
 
