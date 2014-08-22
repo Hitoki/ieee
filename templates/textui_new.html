@@ -75,6 +75,7 @@
             Tags.init();             
         });
 
+    {% if ENABLE_JOYRIDE %}
     // Starts tour when help button is clicked.
     function startTour() {
         if ($.cookie('ShowTour') != "ridden" ) {
@@ -90,6 +91,7 @@
     $(window).load(function() {
         startTour();
     });
+    {% endif %}
 
     </script>
 {% endblock %}
