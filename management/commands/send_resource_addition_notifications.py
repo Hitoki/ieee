@@ -49,13 +49,14 @@ class Command(NoArgsCommand):
                     filter(node=req.node, date_created__gt=last_update). \
                     order_by('resource__resource_type')
                 print "new resource count: %d" % new_resources.count()
-                # for nr in new_resources:
-                #     # Save record of this relationship being notified via email
-                #     nt = ResourceAdditionNotification()
-                #     nt.request = req
-                #     nt.resourceNodes = nr
-                #     nt.date_notified = datetime.utcnow()
-                #     nt.save()
+                for nr in new_resources:
+                    # Save record of this relationship being notified via email
+                    nt = ResourceAdditionNotification()
+                    nt.request = req
+                    nt.resourceNodes = nr
+                    nt.date_notified = datetime.utcnow()
+                    nt.save()
+                print "new resource count: %d" % new_resources.count()
 
                 if new_resources.count():
                     req.new_resources = new_resources
