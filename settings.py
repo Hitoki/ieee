@@ -349,3 +349,9 @@ if not hasattr(logging, "is_setup"):
 if ENABLE_DEBUG_TOOLBAR:
     MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
     INSTALLED_APPS.append('debug_toolbar')
+
+try:
+    if RAVEN_CONFIG:
+        INSTALLED_APPS.append('raven.contrib.django.raven_compat')
+except NameError:
+    pass
