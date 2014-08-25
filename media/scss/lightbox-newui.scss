@@ -821,34 +821,6 @@ ul#overview-list {
     width: 657px;
     padding: 10px 15px;
     margin-left: 137px;
-    .printContainer {
-        float: right;
-        position: relative;
-        width: 127px;
-        &:hover {
-            .icon-printer {
-                color: $orange;
-            }
-        }
-    }
-    .printMenu {
-        position: absolute;
-        background-color: white;
-        border: 1px solid $primaryColor;
-        padding: 5px;
-        width: 115px;
-        right: 0;
-        top: -45px;
-        display: none;
-    }
-    .icon-printer {
-        color: $secondaryColor;
-        font-size: 19px;
-        padding: 3px;
-        vertical-align: middle;
-        cursor: pointer;
-        float: right;
-    }
     .share-links {
         float: left;
         a {
@@ -865,6 +837,42 @@ ul#overview-list {
                 text-decoration: none;
             }
         }
+    }
+}
+
+.printContainer {
+    float: right;
+    position: relative;
+    width: 127px;
+    &:hover {
+        .icon-printer {
+            color: $orange;
+        }
+        .printMenu {
+            display: block;
+        }
+    }
+    .printMenu {
+        position: absolute;
+        background-color: darken($primaryColor, 15%); 
+        color: $white;
+        padding: 5px;
+        width: 115px;
+        right: 0;
+        top: -47px;
+        display: none;
+        line-height: 1.5;
+        a {
+            color: $white;
+        }
+    }
+    .icon-printer {
+        color: $secondaryColor;
+        font-size: 19px;
+        padding: 3px;
+        vertical-align: middle;
+        cursor: pointer;
+        float: right;
     }
 }
 
