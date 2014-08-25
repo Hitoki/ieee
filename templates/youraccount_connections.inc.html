@@ -1,6 +1,15 @@
 {% load socialaccount %}
 {% load url from future %}
 <strong>Connected Account</strong><br/>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="message-{{ message.tags }}"{% endif %}>
+        {{ message }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
 {% get_social_accounts user as accounts %}
 {% if accounts %}
     <ul class="accountList">
@@ -17,14 +26,14 @@
                 if ('{{ key|title }}' == 'Linkedin_Oauth2') {
                     $('.linkedMeth').remove();
                     $('.service-icon{{ forloop.parentloop.counter }}').addClass('icon-linkedin');
-                    $('.dynaService').text('Google')
+                    {% comment %}$('.dynaService').text('Google'){% endcomment %}
                 }
                 {% endif %}
                 {% if USING_GOOGLE_PROVIDER %}
                 if ('{{ key|title }}' == 'Google') {
                     $('.googleMeth').remove();
                     $('.service-icon{{ forloop.parentloop.counter }}').addClass('icon-google');
-                    $('.dynaService').text('LinkedIn')
+                    {% comment %}$('.dynaService').text('LinkedIn'){% endcomment %}
                 }
                 {% endif %}
             </script>
@@ -34,19 +43,8 @@
 {% else %}
     You can connect a new social media account:
 {% endif %}
-{% comment %}
-{% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="message-{{ message.tags }}"{% endif %}>
-        {{ message }}
-    </li>
-    {% endfor %}
-</ul>
-{% endif %}
-{% endcomment %}
 {% if USING_LINKEDIN_PROVIDER or USING_FACEBOOK_PROVIDER %}
-If you like, you can also connect your <span class="dynaService"></span> account:
+{% comment %}If you like, you can also connect your <span class="dynaService"></span> account:{% endcomment %}
 <div class="signinBtns">
     {% if USING_GOOGLE_PROVIDER %}
         <a class="btn account connect_account googleMeth" target="_blank"
