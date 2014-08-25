@@ -18,6 +18,8 @@ from models.types import NodeType
 import settings
 import socket
 
+from raven.contrib.django.raven_compat.models import client as raven_client
+
 XPLORE_SORT_AUTHOR = 'au'
 XPLORE_SORT_TITLE = 'ti'
 XPLORE_SORT_AUTHOR_AFFILIATIONS = 'cs'
@@ -137,6 +139,7 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
         except socket.timeout:
             xplore_error = 'Error: Connection to IEEE Xplore timed out.'
             xplore_results = []
+            raven_client.captureMessage("Request for Xplore articles timed out after %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS, extra={"xplore_url" : url})
             totalfound = 0
 
         else:
@@ -273,6 +276,7 @@ def ajax_recent_xplore(request):
         except socket.timeout:
             xplore_error = 'Error: Connection to IEEE Xplore timed out.'
             xplore_results = []
+            raven_client.captureMessage("Request for most recent Xplore article timed out after %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS, extra={"xplore_url" : url})
             totalfound = 0
 
         else:
@@ -416,6 +420,7 @@ def ajax_xplore_authors(tag_id):
     except socket.timeout:
         xplore_error = 'Error: Connection to IEEE Xplore timed out.'
         xplore_results = []
+        raven_client.captureMessage("Request for Xplore authors timed out after %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS, extra={"xplore_url" : url})
         totalfound = 0
 
     else:
