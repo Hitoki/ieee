@@ -323,12 +323,53 @@ if DEBUG_ENABLE_CPROFILE:
     MIDDLEWARE_CLASSES = tuple(list1)
 
 # Logging setup
-
 logging.basicConfig(
     level = logging.DEBUG,
     #format = '%(asctime)s %(levelname)s %(message)s',
     format = '%(levelname)s %(message)s',
 )
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'root': {
+        'level': 'WARNING',
+        'handlers': ['sentry'],
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+    },
+    'handlers': {
+        'sentry': {
+            'level': 'ERROR',
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': 'ERROR',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'raven': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'sentry.errors': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+    },
+}
 
 # Check if the logger has been setup yet, otherwise we create a new handler everytime settings.py is loaded
 if not hasattr(logging, "is_setup"):
@@ -344,22 +385,7 @@ if not hasattr(logging, "is_setup"):
         process_conf_diff_logger.setFormatter(logging.Formatter('%(asctime)s: %(levelname)s: %(message)s'))
         logging.getLogger('process_conf_diff').addHandler(process_conf_diff_logger)
 
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'handlers': {
-            'sentry': {
-                'level': 'ERROR',
-                'class': 'raven.contrib.django.handlers.SentryHandler',
-            }
-        },
-        'loggers': {
-            'raven': {
-                'handlers': ['sentry'],
-                'level': 'ERROR'
-            }
-        }
-    }
+
 
     logging.is_setup = True
 
