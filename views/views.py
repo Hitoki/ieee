@@ -26,6 +26,7 @@ from django.template import RequestContext
 from django.utils import simplejson as json
 from django.contrib import auth
 from django.contrib.auth.models import User
+from django.contrib import messages
 
 from decorators import optional_login_required as login_required
 from ieeetags.forms import *
@@ -572,6 +573,7 @@ def log_out(request):
         profile.save()
     auth.logout(request)
     
+    messages.success(request, "You have been signed out.")
     response = HttpResponseRedirect(reverse('index'))
     
     #if settings.USE_SITEMINDER_LOGIN:
@@ -580,7 +582,6 @@ def log_out(request):
         host = host[host.find('.'):]
     response.delete_cookie("SMSESSION", domain=host)
     return response
-
 
 def debug_error(request):
     """

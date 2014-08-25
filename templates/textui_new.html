@@ -89,7 +89,12 @@
     }
 
     $(window).load(function() {
-        startTour();
+        {% if ENABLE_JOYRIDE %}startTour();{% endif %}
+        {% if messages %}
+            setTimeout(function () {
+                $('.messages.blip').fadeOut();
+            }, 5000);
+        {% endif %}
     });
     {% endif %}
 
@@ -97,7 +102,15 @@
 {% endblock %}
 
 {% block content %}
-
+{% if messages %}
+<ul class="messages blip">
+    {% for message in messages %}
+    <li{% if message.tags %} class="message-{{ message.tags }}"{% endif %}>
+        {{ message }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
 <ol id="joyrideTour" style='display:none;'>
   /* data-id needs to be the same as the parent it will attach to */
     <li data-id="header-logo" class="firstStop">
