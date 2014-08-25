@@ -123,7 +123,7 @@ ul.nootabs-menus li {
 #xplore-tab div.group,
 #education-tab div.group,
 #authors-tab div.group {
-    height: 380px;
+    height: 415px;
 }
 
 /* used to be .nootab_tab */
@@ -257,6 +257,7 @@ ul.nootabs-menus li.nootabs-selected-menu a:hover {
 
 div.nootabs-tab {
     border:1px solid #006699;
+    border-bottom: 0 none;
     background-color:#FFFFFF;
 }
 

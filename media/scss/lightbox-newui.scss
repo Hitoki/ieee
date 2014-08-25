@@ -166,6 +166,7 @@ input.text {
     }
     .favorite-topic,
     .favorite-resource,
+    .over-favorite-resource,
     .favorite-society,
     .favorite-job {
         color: $white;
@@ -177,6 +178,7 @@ input.text {
 
 .favorite-topic,
 .favorite-resource,
+.over-favorite-resource,
 .favorite-society,
 .favorite-job {
     text-decoration: none;
@@ -242,10 +244,10 @@ input.text {
 #lightbox .resources-lightbox-content {
     margin-top:5em;
     padding-bottom: 30px;
-    height:530px;
+    height:560px;
     min-width:875px;
     background-color: $primaryColor;
-    min-height: 530px;   
+    min-height: 560px;   
 }
 
 .resources-lightbox-content .resource-loading {
@@ -284,7 +286,7 @@ input.text {
 }
 
 #lightbox .resources-lightbox-content .nootabs-selected-tab {
-    height: 435px;
+    height: 458px;
     background-color: white;
     margin-top: -55px;
 }
