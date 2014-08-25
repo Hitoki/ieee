@@ -706,6 +706,7 @@ def debug_conf_apps_by_keyword(request, keyword_name):
 def delete_user(request):
     user_id=request.user.id
     User.objects.filter(id=user_id).delete()
+    messages.add_message(request, messages.SUCCESS, 'Your account has been deleted.')
     return HttpResponseRedirect(reverse('textui'))
 
 
