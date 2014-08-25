@@ -344,6 +344,23 @@ if not hasattr(logging, "is_setup"):
         process_conf_diff_logger.setFormatter(logging.Formatter('%(asctime)s: %(levelname)s: %(message)s'))
         logging.getLogger('process_conf_diff').addHandler(process_conf_diff_logger)
 
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'sentry': {
+                'level': 'ERROR',
+                'class': 'raven.contrib.django.handlers.SentryHandler',
+            }
+        },
+        'loggers': {
+            'raven': {
+                'handlers': ['sentry'],
+                'level': 'ERROR'
+            }
+        }
+    }
+
     logging.is_setup = True
 
 if ENABLE_DEBUG_TOOLBAR:
