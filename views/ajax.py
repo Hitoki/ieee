@@ -513,6 +513,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         context['loaded'] = True
 
     if tab == 'overview':
+        member = request.user
         #try:
         #    xplore_article = ajax_recent_xplore(tag.name)
         #    xplore_article = _get_xplore_results(
@@ -523,10 +524,18 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         #    xplore_article = None
 
         #context['xplore_article'] = xplore_article
-        context['close_conference'] = tag._get_closest_conference()
+        close_conference = tag._get_closest_conference()
+        if request.user.is_authenticated():
+            member = User.objects.get(id=request.user.id)
+            is_favorite = UserFavorites.objects.filter(user=member). \
+                filter(resources=close_conference).exists()
+        else:
+            is_favorite = False
+        close_conference.is_favorite = is_favorite
+        context['close_conference'] = close_conference
+
         context['definition'] = tag._get_definition_link()
 
-        member = request.user
         related_tags = tag.related_tags.all()
         for related_tag in related_tags:
             if request.user.is_authenticated():
@@ -536,7 +545,6 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
             else:
                 is_favorite = False
             related_tag.is_favorite = is_favorite
-
         context['related_tags'] = related_tags
 
         tab_template = 'ajax_over_tab.inc.html'
