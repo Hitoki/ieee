@@ -17,3 +17,4 @@ simplejson==2.5.2
 wsgiref==0.1.2
 lxml
 unicodecsv
+raven>=4.1.1
