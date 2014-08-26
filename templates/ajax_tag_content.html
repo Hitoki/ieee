@@ -45,7 +45,13 @@
             dataType: 'json',
             success: function(data) {
                 if (data != undefined) {
-                    var html = '<a href="' + data.url + '" target="_blank" rel="nofollow">' + data.name + '<span class="popup newWinIcon"></span></a>';
+                    var html;
+                    if (data.url) {
+                            html = '<a href="' + data.url + '" target="_blank" rel="nofollow">' + data.name + '<span class="popup newWinIcon"></span></a>';
+                    }
+                    else {
+                        html = '<span>' + data.name + '</span>'
+                    }
                 } else {
                     var html = 'No recent Xplore Article';
                 }

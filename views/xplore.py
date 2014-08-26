@@ -128,9 +128,13 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
                 charset = 'utf-8'
 
 
-        except urllib2.URLError:
+        except urllib2.URLError, e:
             xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
             xplore_results = []
+            if isinstance(e.reason, socket.timeout):
+                raven_client.captureMessage("Request for Xplore articles timed out after %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS, extra={"xplore_url" : url})
+            else:
+                raven_client.captureMessage(e, extra={"xplore_url" : url})
             totalfound = 0
         except KeyError:
             xplore_error = 'Error: Could not determine content type of the IEEE Xplore response.'
@@ -265,9 +269,13 @@ def ajax_recent_xplore(request):
             except ValueError:
                 charset = 'utf-8'
 
-        except urllib2.URLError:
+        except urllib2.URLError, e:
             xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
             xplore_results = []
+            if isinstance(e.reason, socket.timeout):
+                raven_client.captureMessage("Request for most recent Xplore article timed out after %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS, extra={"xplore_url" : url})
+            else:
+                raven_client.captureMessage(e, extra={"xplore_url" : url})
             totalfound = 0
         except KeyError:
             xplore_error = 'Error: Could not determine content type of the IEEE Xplore response.'
@@ -308,7 +316,13 @@ def ajax_recent_xplore(request):
             'url': xplore_result['url']
         }
     except IndexError:
-        data = None
+        if xplore_error != None:
+            data = {
+                'name': settings.XPLORE_TIMEOUT_RECENT_MESSAGE,
+                'url': ''
+            }
+        else:
+            data = None
 
     return HttpResponse(json.dumps(data), 'application/javascript')
 
@@ -409,9 +423,13 @@ def ajax_xplore_authors(tag_id):
             charset = 'utf-8'
 
 
-    except urllib2.URLError:
+    except urllib2.URLError, e:
         xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
         xplore_results = []
+        if isinstance(e.reason, socket.timeout):
+            raven_client.captureMessage("Request for Xplore authors timed out after %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS, extra={"xplore_url" : url})
+        else:
+            raven_client.captureMessage(e, extra={"xplore_url" : url})
         totalfound = 0
     except KeyError:
         xplore_error = 'Error: Could not determine content type of the IEEE Xplore response.'
