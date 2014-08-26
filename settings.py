@@ -69,6 +69,7 @@ EXTERNAL_XPLORE_URL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?'
 EXTERNAL_XPLORE_AUTHORS_URL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?'
 #EXTERNAL_XPLORE_AUTHORS_URL = 'http://xploreqa.ieee.org/gateway/ipsSearch.jsp?'
 EXTERNAL_XPLORE_TIMEOUT_SECS = 10
+XPLORE_TIMEOUT_RECENT_MESSAGE = 'Recent Xplore article is unavailable. Please try again later.'
 
 MOBILE_URL_PREFIX = 'm.'
 
@@ -246,7 +247,7 @@ REQUIRE_LOGIN_FOR_NON_ADMIN_VIEWS = False
 # Django Debug Toolbar Settings -----------------------------------------------
 
 DEBUG_TOOLBAR_CONFIG = {
-	'INTERCEPT_REDIRECTS': False,
+    'INTERCEPT_REDIRECTS': False,
 }
 
 #XPLORE_IMPORT_LOG_PATH = None
@@ -339,7 +340,7 @@ try:
 except ImportError, e:
     print 'ERROR: "local_settings.py" file not found'
 
-# django debug toolbar 
+# django debug toolbar
 if DEBUG:
     INSTALLED_APPS += (
         'debug_toolbar',
@@ -451,7 +452,7 @@ if not hasattr(logging, "is_setup"):
         file_logger.setLevel(logging.DEBUG)
         file_logger.setFormatter(logging.Formatter('%(asctime)s: %(levelname)s: %(message)s'))
         logging.getLogger().addHandler(file_logger)
-    
+
         process_conf_diff_logger = logging.FileHandler(PROCESS_CONF_DIFF_LOG)
         process_conf_diff_logger.setLevel(logging.DEBUG)
         process_conf_diff_logger.setFormatter(logging.Formatter('%(asctime)s: %(levelname)s: %(message)s'))
