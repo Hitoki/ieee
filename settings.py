@@ -200,6 +200,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 # auth and allauth settings
 LOGIN_REDIRECT_URL = '/'
+ACCOUNT_USER_DISPLAY = 'ieeetags.models.profile.email_user_display'
 ACCOUNT_USERNAME_REQUIRED = False
 SOCIALACCOUNT_QUERY_EMAIL = True
 SOCIALACCOUNT_PROVIDERS = {
