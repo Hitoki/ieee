@@ -125,9 +125,9 @@ def textui(request, survey=False):
     """
     Shows the textui (aka. Tag Galaxy) UI.
     """
-    nodeId = request.GET.get('nodeId', None)
-    sectorId = None
-    clusterId = None
+    node_id = request.GET.get('nodeId', None)
+    sector_id = None
+    cluster_id = None
 
     # If url ends with /survey set a session var so we can display an
     # additional banner.
@@ -136,24 +136,24 @@ def textui(request, survey=False):
         request.session.set_expiry(0)
 
     # NOTE: Disabled so we can land on the help page
-    #if nodeId is None:
+    #if node_id is None:
     #    # Default to the first sector (instead of the help page)
     #    first_sector = Node.objects.getSectors()[0]
-    #    nodeId = first_sector.id
+    #    node_id = first_sector.id
 
-    if nodeId is not None:
+    if node_id is not None:
         # Node selected
-        node = Node.objects.get(id=nodeId)
+        node = Node.objects.get(id=node_id)
         # Double check to make sure we didn't get a root or tag node
         if node.node_type.name == 'root':
-            sectorId = Node.objects.getFirstSector().id
+            sector_id = Node.objects.getFirstSector().id
         elif node.node_type.name == 'tag':
             # TODO: a node has many sectors, for now just use the first one.
-            sectorId = node.get_sectors()[0].id
+            sector_id = node.get_sectors()[0].id
         elif node.node_type.name == 'sector':
-            sectorId = nodeId
+            sector_id = node_id
         elif node.node_type.name == 'tag_cluster':
-            clusterId = nodeId
+            cluster_id = node_id
         else:
             raise Exception('Unknown node_type "%s"' % node.node_type.name)
 
@@ -171,8 +171,8 @@ def textui(request, survey=False):
     enable_joyride = settings.ENABLE_JOYRIDE
 
     return render(request, template, {
-        'sectorId': sectorId,
-        'clusterId': clusterId,
+        'sectorId': sector_id,
+        'clusterId': cluster_id,
         'sectors': sectors,
         'filters': filters,
         'societies': societies,
@@ -469,9 +469,9 @@ def print_resource(request, tag_id, resource_type,
         # jobs_results, jobs_error, num_results = \
         #     _get_xplore_results(name, show_all=show_all, offset=offset,
         #                         sort=sort, sort_desc=sort_desc, ctype=ctype)
-        tvUrl = "http://ieeetv.ieee.org/service/Signature?url=" \
-                "http://ieeetv.ieee.org/service/VideosSearch?q=%s" % tag.name
-        file2 = urllib2.urlopen(tvUrl).read()
+        tv_url = "http://ieeetv.ieee.org/service/Signature?url=" \
+                 "http://ieeetv.ieee.org/service/VideosSearch?q=%s" % tag.name
+        file2 = urllib2.urlopen(tv_url).read()
 
         # get url from xml that is returned
         from xml.etree.ElementTree import fromstring
@@ -482,7 +482,7 @@ def print_resource(request, tag_id, resource_type,
         tv_xml = fromstring(urllib2.urlopen(dev_url).read())
 
         results = tv_xml.findall('search-item')
-        tvCount = len(results)
+        tv_count = len(results)
 
         tv_html = ""
         for result in results:
@@ -556,7 +556,6 @@ def print_resource(request, tag_id, resource_type,
         'create_links': create_links,
         'related_items_count': related_items_count,
         'jobsHtml': jobs_html,
-        #'tvHtml': tvHtml,
         'close_conference': tag._get_closest_conference(),
         'definition': tag._get_definition_link(),
         'xplore_article': xplore_article,
