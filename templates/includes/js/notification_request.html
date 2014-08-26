@@ -1,37 +1,74 @@
 <script type="text/javascript">    
     $(function() {
         var action;
-        $('.subscribe').click(function(){
-            if ($(this).hasClass('enabled')) {
-                action = 'disable';
-                $('.alertOff').hide();
-                $('.alertOn').show();
-                $('.tag-icons').children('.favorite-topic').removeClass('icon-star-whole-alert').addClass('icon-star-whole');
-            } else {
-                action = 'enable';
-                $('.alertOn').hide();
-                $('.alertOff').show();
-                $('.tag-icons').children('.favorite-topic').removeClass('icon-star-whole').addClass('icon-star-whole-alert');
-            }
-            
-        });
-
         $('input[type=radio][name=topicOpt]').change(function() {
             if (this.value == 'nofav') {
-                action = 'disable';
-                $('.tag-icons').children('.openAlerts').removeClass('enabled icon-star-whole icon-star-whole-alert').addClass('icon-star');
+                $('.tag-icons').children('.openAlerts').removeClass('enabled icon-star-whole-alert').addClass('icon-star-whole');
+                $.post('/ajax/favorite-topic/request',
+                    {
+                        nodeid: {{ tag.id }},
+                        action: 'disable'
+                    },
+                    function(){
+                        return false;
+                    }
+                );
+                $.post('/ajax/notification/request',
+                    {
+                        email: '{{ user.email }}',
+                        nodeid: {{ tag.id }},
+                        action: 'disable'
+                    },
+                    function(){
+                        return false;
+                    }
+                );
             }
             else if (this.value == 'fav') {
-                action = 'enable';
                 $('.tag-icons').children('.openAlerts').removeClass('icon-star icon-star-whole-alert').addClass('enabled icon-star-whole');
+                $.post('/ajax/favorite-topic/request',
+                    {
+                        nodeid: {{ tag.id }},
+                        action: 'enable'
+                    },
+                    function(){
+                        return false;
+                    }
+                );
+                $.post('/ajax/notification/request',
+                    {
+                        email: '{{ user.email }}',
+                        nodeid: {{ tag.id }},
+                        action: 'disable'
+                    },
+                    function(){
+                        return false;
+                    }
+                );
             }
             else if (this.value == 'favalert') {
-                action = 'enable';
                 $('.tag-icons').children('.openAlerts').removeClass('icon-star-whole icon-star').addClass('enabled icon-star-whole-alert');
+                $.post('/ajax/favorite-topic/request',
+                    {
+                        nodeid: {{ tag.id }},
+                        action: 'enable'
+                    },
+                    function(){
+                        return false;
+                    }
+                );
+                $.post('/ajax/notification/request',
+                    {
+                        email: '{{ user.email }}',
+                        nodeid: {{ tag.id }},
+                        action: 'enable'
+                    },
+                    function(){
+                        return false;
+                    }
+                );
             }
-            
         });
-
     });
 
     $(function() {
