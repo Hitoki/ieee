@@ -13,17 +13,25 @@
                 $('.alertOff').show();
                 $('.tag-icons').children('.favorite-topic').removeClass('icon-star-whole').addClass('icon-star-whole-alert');
             }
-            $.post('/ajax/notification/request',
-                {
-                    email: '{{ user.email }}',
-                    nodeid: {{ tag.id }},
-                    action: action
-                },
-                function(){
-                    return false;
-                }
-            );
+            
         });
+
+        $('input[type=radio][name=topicOpt]').change(function() {
+            if (this.value == 'nofav') {
+                action = 'disable';
+                $('.tag-icons').children('.openAlerts').removeClass('enabled icon-star-whole icon-star-whole-alert').addClass('icon-star');
+            }
+            else if (this.value == 'fav') {
+                action = 'enable';
+                $('.tag-icons').children('.openAlerts').removeClass('icon-star icon-star-whole-alert').addClass('enabled icon-star-whole');
+            }
+            else if (this.value == 'favalert') {
+                action = 'enable';
+                $('.tag-icons').children('.openAlerts').removeClass('icon-star-whole icon-star').addClass('enabled icon-star-whole-alert');
+            }
+            
+        });
+
     });
 
     $(function() {
