@@ -67,7 +67,7 @@ def error_view(request):
     Only active when settings.DEBUG == True.
     """
 
-    # Get the latest exception from Python system service 
+    # Get the latest exception from Python system service
     (type, value, traceback1) = sys.exc_info()
     traceback1 = '.'.join(traceback.format_exception(type, value, traceback1))
 
@@ -291,9 +291,9 @@ def profile(log_file):
 
     It takes one argument, the profile log name. If it's a relative path, it
     places it under the PROFILE_LOG_BASE. It also inserts a time stamp into the
-    file name, such that 'my_view.prof' become 'my_view-20100211T170321.prof', 
-    where the time stamp is in UTC. This makes it easy to run and compare 
-    multiple trials.     
+    file name, such that 'my_view.prof' become 'my_view-20100211T170321.prof',
+    where the time stamp is in UTC. This makes it easy to run and compare
+    multiple trials.
     """
     if not os.path.isabs(log_file):
         log_file = os.path.join(PROFILE_LOG_BASE, log_file)
@@ -490,9 +490,9 @@ def print_resource(request, tag_id, resource_type,
             title = result.find('title').text
             url = result.find('web-page').text
             tv_html += '<img src="%s" height="60" width="105"/>' \
-                      '<a href="%s" target="_blank">%s ' \
-                      '<span class="popup newWinIcon"></span>' \
-                      '</a><br>\n' % (thumb, url, title)
+                       '<a href="%s" target="_blank">%s ' \
+                       '<span class="popup newWinIcon"></span>' \
+                       '</a><br>\n' % (thumb, url, title)
 
         ebooks = Resource.objects.getForNode(tag,
                                              resourceType=ResourceType.EBOOK)
@@ -566,22 +566,24 @@ def print_resource(request, tag_id, resource_type,
         'show_edu': show_edu
     })
 
+
 def log_out(request):
     if request.user.is_authenticated():
         profile = request.user.get_profile()
         profile.last_logout_time = datetime.now()
         profile.save()
     auth.logout(request)
-    
+
     messages.success(request, "You have been signed out.")
     response = HttpResponseRedirect(reverse('index'))
-    
+
     #if settings.USE_SITEMINDER_LOGIN:
     host = request.META['HTTP_HOST']
     if host.count('.') > 1:
         host = host[host.find('.'):]
     response.delete_cookie("SMSESSION", domain=host)
     return response
+
 
 def debug_error(request):
     """
@@ -636,13 +638,13 @@ def get_jobs_info(tag, offset=None, user=None):
     jobs_html = ''
     if offset:
         jobs_url = "%s?%s&rows=25&page=%s&format=json" % \
-                  (settings.JOBS_URL,
-                   urllib.urlencode({"kwsMustContainPhrase": tag.name}),
-                   offset)
+                   (settings.JOBS_URL,
+                    urllib.urlencode({"kwsMustContainPhrase": tag.name}),
+                    offset)
     else:
         jobs_url = "%s?%s&rows=25&format=json" % \
-                  (settings.JOBS_URL,
-                   urllib.urlencode({"kwsMustContainPhrase": tag.name}))
+                   (settings.JOBS_URL,
+                    urllib.urlencode({"kwsMustContainPhrase": tag.name}))
     file1 = urllib2.urlopen(jobs_url).read()
     jobs_json = json.loads(file1)
     jobs_count = jobs_json.get('Total')
@@ -657,10 +659,10 @@ def get_jobs_info(tag, offset=None, user=None):
             job['StarClass'] = 'icon-star-whole enabled'
         else:
             job['StarClass'] = 'icon-star'
-        jobs_html += '<li><a href="%(Url)s" target="_blank" class="featured">' \
-                     '%(JobTitle)s<span class="popup newWinIcon"></span></a>' \
-                     '<span class="%(StarClass)s favorite-job icomoon-icon" ' \
-                     'data-nodeid="%(Id)s"></span>' \
+        jobs_html += '<li><a href="%(Url)s" target="_blank" class="featured">'\
+                     '%(JobTitle)s<span class="popup newWinIcon"></span></a>'\
+                     '<span class="%(StarClass)s favorite-job icomoon-icon" '\
+                     'data-nodeid="%(Id)s"></span>'\
                      '<p>%(Company)s</p>\n' % job
     jobs_html += '</ul>'
     return jobs_html, jobs_count, jobs_url
@@ -704,9 +706,10 @@ def debug_conf_apps_by_keyword(request, keyword_name):
 
 
 def delete_user(request):
-    user_id=request.user.id
+    user_id = request.user.id
     User.objects.filter(id=user_id).delete()
-    messages.add_message(request, messages.SUCCESS, 'Your account has been deleted.')
+    messages.add_message(request, messages.SUCCESS,
+                         'Your account has been deleted.')
     return HttpResponseRedirect(reverse('textui'))
 
 
