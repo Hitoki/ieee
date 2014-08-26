@@ -69,6 +69,7 @@ EXTERNAL_XPLORE_URL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?'
 EXTERNAL_XPLORE_AUTHORS_URL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?'
 #EXTERNAL_XPLORE_AUTHORS_URL = 'http://xploreqa.ieee.org/gateway/ipsSearch.jsp?'
 EXTERNAL_XPLORE_TIMEOUT_SECS = 10
+XPLORE_TIMEOUT_RECENT_MESSAGE = 'Recent Xplore article is unavailable. Please try again later.'
 
 MOBILE_URL_PREFIX = 'm.'
 

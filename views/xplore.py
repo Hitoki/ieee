@@ -316,7 +316,13 @@ def ajax_recent_xplore(request):
             'url': xplore_result['url']
         }
     except IndexError:
-        data = None
+        if xplore_error != None:
+            data = {
+                'name': settings.XPLORE_TIMEOUT_RECENT_MESSAGE,
+                'url': ''
+            }
+        else:
+            data = None
 
     return HttpResponse(json.dumps(data), 'application/javascript')
 
