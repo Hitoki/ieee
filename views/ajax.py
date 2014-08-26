@@ -330,7 +330,6 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
     context['tag'] = tag
 
     counts = 0
-    tv_count = "0"
 
     #sectors1 = tag.get_sectors()
     #counts += sectors1.count()
@@ -496,22 +495,6 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         tab_template = 'ajax_ebook_results.inc.html'
         context['loaded'] = True
 
-    if tab == 'tv':
-        #http://ieeetv.ieee.org/service/Signature
-        #http://ieeetv.ieee.org/service/Signature?url=
-        # http://ieeetv.ieee.org/service/VideosSearch?q=ieee
-        tv_url = "http://ieeetv.ieee.org/service/Signature?url=" \
-                 "http://ieeetv.ieee.org/service/VideosSearch?q=%s" % \
-                 urllib.urlencode({"kwsMustContain": tag.name})
-        file2 = urllib2.urlopen(tv_url).read()
-        tv_json = json.loads(file1)
-        tv_count = tv_json.get('Total')
-        tv_url = tv_url.replace('&format=json', '')
-        tab_template = 'ajax_tv_tab.inc.html'
-        context['tvCount'] = tv_count
-        context['tvUrl'] = tv_url
-        context['loaded'] = True
-
     if tab == 'overview':
         member = request.user
         #try:
@@ -575,16 +558,6 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
     else:
         enable_alerts = False
     context['enable_alerts'] = enable_alerts
-
-    try:
-        show_tv = settings.SHOW_TV_TAB
-    except AttributeError:
-        show_tv = False
-
-    if show_tv:
-        context['show_tv'] = True
-    else:
-        context['show_tv'] = False
 
     if load_framework:
         # Show the normal tag content popup.
