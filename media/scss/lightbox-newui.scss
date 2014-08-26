@@ -145,11 +145,6 @@ input.text {
     float: right;
     margin-right: 25px;
     position: relative;
-    &.is-favorite:hover {
-        .alertMenu {
-            display: block !important;
-        }
-    }
     a {
         color: #FFFFFF;
     }
@@ -187,6 +182,13 @@ input.text {
     &:hover {
         color: #FFD700;
     }
+    &.enabled {
+        color: #FFD700;
+    }
+}
+
+.icon-star-whole-alert,
+.icon-star-whole {
     &.enabled {
         color: #FFD700;
     }

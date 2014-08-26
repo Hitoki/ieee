@@ -47,6 +47,9 @@
             }
         });
     });
+    $('.openAlerts').click(function() {
+        $('.alertMenu').toggle();
+    });
 </script>
 
 {% include 'includes/js/notification_request.html' %}
@@ -57,9 +60,9 @@
     {% if user.is_authenticated %}
     <div class="tag-icons{% if is_favorite %} is-favorite {% endif %}">
         {% if is_favorite %}
-        <span class="icon-star-whole{% if enable_alerts %}-alert{% endif %} favorite-topic enabled icomoon-icon" data-nodeid="{{ tag.id }}"></span>
+        <span class="openAlerts icon-star-whole{% if enable_alerts %}-alert{% endif %} enabled icomoon-icon" data-nodeid="{{ tag.id }}"></span>
         {% else %}
-        <span class="icon-star-whole favorite-topic icomoon-icon" title="Favorite topic" data-nodeid="{{ tag.id }}"></span>
+        <span class="openAlerts icon-star-whole icomoon-icon" title="Favorite topic" data-nodeid="{{ tag.id }}"></span>
         {% endif %}
         <div class="alertMenu">
             Click star to unfavorite topic
