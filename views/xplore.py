@@ -273,7 +273,7 @@ def ajax_recent_xplore(request):
             xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
             xplore_results = []
             if isinstance(e.reason, socket.timeout):
-                raven_client.captureMessage("Request for Xplore articles timed out after %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS, extra={"xplore_url" : url})
+                raven_client.captureMessage("Request for most recent Xplore article timed out after %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS, extra={"xplore_url" : url})
             else:
                 raven_client.captureMessage(e, extra={"xplore_url" : url})
             totalfound = 0
@@ -421,7 +421,7 @@ def ajax_xplore_authors(tag_id):
         xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
         xplore_results = []
         if isinstance(e.reason, socket.timeout):
-            raven_client.captureMessage("Request for Xplore articles timed out after %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS, extra={"xplore_url" : url})
+            raven_client.captureMessage("Request for Xplore authors timed out after %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS, extra={"xplore_url" : url})
         else:
             raven_client.captureMessage(e, extra={"xplore_url" : url})
         totalfound = 0
