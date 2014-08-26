@@ -525,13 +525,14 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
 
         #context['xplore_article'] = xplore_article
         close_conference = tag._get_closest_conference()
-        if request.user.is_authenticated():
-            member = User.objects.get(id=request.user.id)
-            is_favorite = UserFavorites.objects.filter(user=member). \
-                filter(resources=close_conference).exists()
-        else:
-            is_favorite = False
-        close_conference.is_favorite = is_favorite
+        if close_conference:
+            if request.user.is_authenticated():
+                member = User.objects.get(id=request.user.id)
+                is_favorite = UserFavorites.objects.filter(user=member). \
+                    filter(resources=close_conference).exists()
+            else:
+                is_favorite = False
+            close_conference.is_favorite = is_favorite
         context['close_conference'] = close_conference
 
         context['definition'] = tag._get_definition_link()
