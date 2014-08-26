@@ -888,6 +888,10 @@ ul#overview-list {
             text-decoration: underline;
         }
     }
+    .icon-cancel2:hover {
+        cursor: pointer;
+        color: $secondaryColor;
+    }
 }
 
 .closeAlertMenu {

@@ -50,6 +50,9 @@
     $('.openAlerts').click(function() {
         $('.alertMenu').toggle();
     });
+    $('.alertMenu .icon-cancel2').click(function() {
+        $('.alertMenu').hide();
+    })
 </script>
 
 {% include 'includes/js/notification_request.html' %}
