@@ -128,7 +128,7 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
                 charset = 'utf-8'
 
 
-        except urllib2.URLError:
+        except urllib2.URLError, e:
             xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
             xplore_results = []
             if isinstance(e.reason, socket.timeout):
@@ -269,7 +269,7 @@ def ajax_recent_xplore(request):
             except ValueError:
                 charset = 'utf-8'
 
-        except urllib2.URLError:
+        except urllib2.URLError, e:
             xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
             xplore_results = []
             if isinstance(e.reason, socket.timeout):
@@ -417,7 +417,7 @@ def ajax_xplore_authors(tag_id):
             charset = 'utf-8'
 
 
-    except urllib2.URLError:
+    except urllib2.URLError, e:
         xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
         xplore_results = []
         if isinstance(e.reason, socket.timeout):
