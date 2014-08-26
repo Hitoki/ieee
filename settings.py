@@ -68,6 +68,7 @@ EXTERNAL_HELP_URL = 'http://help.technav.systemicist.com/forums'
 EXTERNAL_XPLORE_URL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?'
 EXTERNAL_XPLORE_AUTHORS_URL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?'
 #EXTERNAL_XPLORE_AUTHORS_URL = 'http://xploreqa.ieee.org/gateway/ipsSearch.jsp?'
+EXTERNAL_XPLORE_TIMEOUT_SECS = 10
 
 MOBILE_URL_PREFIX = 'm.'
 
@@ -392,12 +393,53 @@ if DEBUG_ENABLE_CPROFILE:
     MIDDLEWARE_CLASSES = tuple(list1)
 
 # Logging setup
-
 logging.basicConfig(
     level = logging.DEBUG,
     #format = '%(asctime)s %(levelname)s %(message)s',
     format = '%(levelname)s %(message)s',
 )
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'root': {
+        'level': 'WARNING',
+        'handlers': ['sentry'],
+    },
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+    },
+    'handlers': {
+        'sentry': {
+            'level': 'ERROR',
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        }
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': 'ERROR',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'raven': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        'sentry.errors': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+    },
+}
 
 # Check if the logger has been setup yet, otherwise we create a new handler
 # everytime settings.py is loaded
@@ -414,8 +456,16 @@ if not hasattr(logging, "is_setup"):
         process_conf_diff_logger.setFormatter(logging.Formatter('%(asctime)s: %(levelname)s: %(message)s'))
         logging.getLogger('process_conf_diff').addHandler(process_conf_diff_logger)
 
+
+
     logging.is_setup = True
 
 if ENABLE_DEBUG_TOOLBAR:
     MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
     INSTALLED_APPS.append('debug_toolbar')
+
+try:
+    if RAVEN_CONFIG:
+        INSTALLED_APPS.append('raven.contrib.django.raven_compat')
+except NameError:
+    pass
