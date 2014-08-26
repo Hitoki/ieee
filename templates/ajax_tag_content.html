@@ -60,9 +60,9 @@
     {% if user.is_authenticated %}
     <div class="tag-icons{% if is_favorite %} is-favorite {% endif %}">
         {% if is_favorite %}
-        <span class="openAlerts icon-star-whole{% if enable_alerts %}-alert{% endif %} enabled icomoon-icon" data-nodeid="{{ tag.id }}" title=""></span>
+        <span class="openAlerts icon-star-whole{% if enable_alerts %}-alert{% endif %} enabled icomoon-icon" data-nodeid="{{ tag.id }}" title="Click to set options"></span>
         {% else %}
-        <span class="openAlerts icon-star-whole icomoon-icon" title="Favorite topic" data-nodeid="{{ tag.id }}"></span>
+        <span class="openAlerts icon-star-whole icomoon-icon" title="Favorite topic" data-nodeid="{{ tag.id }}" title="Click to set options"></span>
         {% endif %}
         <div class="alertMenu">
             <span class="icon-cancel2 icomoon-icon closeAlertMenu"></span>
