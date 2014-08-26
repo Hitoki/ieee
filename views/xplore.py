@@ -131,6 +131,10 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
         except urllib2.URLError:
             xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
             xplore_results = []
+            if isinstance(e.reason, socket.timeout):
+                raven_client.captureMessage("Request for Xplore articles timed out after %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS, extra={"xplore_url" : url})
+            else:
+                raven_client.captureMessage(e, extra={"xplore_url" : url})
             totalfound = 0
         except KeyError:
             xplore_error = 'Error: Could not determine content type of the IEEE Xplore response.'
@@ -268,6 +272,10 @@ def ajax_recent_xplore(request):
         except urllib2.URLError:
             xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
             xplore_results = []
+            if isinstance(e.reason, socket.timeout):
+                raven_client.captureMessage("Request for Xplore articles timed out after %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS, extra={"xplore_url" : url})
+            else:
+                raven_client.captureMessage(e, extra={"xplore_url" : url})
             totalfound = 0
         except KeyError:
             xplore_error = 'Error: Could not determine content type of the IEEE Xplore response.'
@@ -412,6 +420,10 @@ def ajax_xplore_authors(tag_id):
     except urllib2.URLError:
         xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
         xplore_results = []
+        if isinstance(e.reason, socket.timeout):
+            raven_client.captureMessage("Request for Xplore articles timed out after %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS, extra={"xplore_url" : url})
+        else:
+            raven_client.captureMessage(e, extra={"xplore_url" : url})
         totalfound = 0
     except KeyError:
         xplore_error = 'Error: Could not determine content type of the IEEE Xplore response.'
