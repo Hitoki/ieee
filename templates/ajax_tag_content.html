@@ -60,12 +60,16 @@
     {% if user.is_authenticated %}
     <div class="tag-icons{% if is_favorite %} is-favorite {% endif %}">
         {% if is_favorite %}
-        <span class="openAlerts icon-star-whole{% if enable_alerts %}-alert{% endif %} enabled icomoon-icon" data-nodeid="{{ tag.id }}"></span>
+        <span class="openAlerts icon-star-whole{% if enable_alerts %}-alert{% endif %} enabled icomoon-icon" data-nodeid="{{ tag.id }}" title=""></span>
         {% else %}
         <span class="openAlerts icon-star-whole icomoon-icon" title="Favorite topic" data-nodeid="{{ tag.id }}"></span>
         {% endif %}
         <div class="alertMenu">
-            Click star to unfavorite topic
+            <span class="icon-cancel2 icomoon-icon closeAlertMenu"></span>
+            Subscribe to this topic:<br/>
+            <input type="radio" name="topicOpt" id="fav" value="fav"> <label for="fav">Favorite</label><br/>
+            <input type="radio" name="topicOpt" id="favalert" value="favalert"> <label for="favAlert">Favorite + Email Alerts</label>
+            {% comment %}
             <div class="alertToggles">
                 <span class="alertOn"{% if enable_alerts %} style="display:none;"{% endif %}>
                     <strong>Email Alerts Off</strong> &nbsp; <span class="subscribe">Turn On</span>
@@ -74,6 +78,7 @@
                     <strong>Email Alerts On</strong> &nbsp; <span class="subscribe enabled">Turn Off</span>
                 </span>
             </div>
+            {% endcomment %}
         </div>
     </div>
 </div>
