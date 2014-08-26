@@ -74,7 +74,7 @@ def error_view(request):
 
     Only active when settings.DEBUG == True.
     """
-    # Get the latest exception from Python system service 
+    # Get the latest exception from Python system service
     (type, value, traceback1) = sys.exc_info()
     traceback1 = '.'.join(traceback.format_exception(type, value, traceback1))
 
@@ -344,7 +344,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
     #    for cluster in clusters1:
     #        if sector in cluster.parents.all():
     #            clusters.append(cluster)
-    #    
+    #
     #    parent_nodes.append({
     #        'sector': sector,
     #        'clusters': clusters,
@@ -501,8 +501,8 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         #http://ieeetv.ieee.org/service/Signature?url=
         # http://ieeetv.ieee.org/service/VideosSearch?q=ieee
         tv_url = "http://ieeetv.ieee.org/service/Signature?url=" \
-                "http://ieeetv.ieee.org/service/VideosSearch?q=%s" % \
-                urllib.urlencode({"kwsMustContain": tag.name})
+                 "http://ieeetv.ieee.org/service/VideosSearch?q=%s" % \
+                 urllib.urlencode({"kwsMustContain": tag.name})
         file2 = urllib2.urlopen(tv_url).read()
         tv_json = json.loads(file1)
         tv_count = tv_json.get('Total')
@@ -636,7 +636,6 @@ def ajax_connections(request):
     context_dict = {
         'password_exists': password_exists
     }
-
     return render(request, 'youraccount_connections.inc.html', context_dict)
 
 
@@ -649,7 +648,7 @@ def ajax_connections(request):
 #
 #     term = TaxonomyTerm.objects.get(id=term_id)
 #     num_related_items = term.related_nodes.count()
-#    
+#
 #     return render(request, 'ajax_term_content.html', {
 #         'term':term,
 #         'num_related_items': num_related_items,
@@ -696,7 +695,6 @@ def ajax_jobs_results(request):
         'token': token,
         'job_url': jobs_url.replace('&format=json', ''),
     }
-
     return HttpResponse(json.dumps(data), 'application/javascript')
 
 
@@ -726,7 +724,7 @@ def ajax_tv_results(request):
     #     _get_xplore_results(name, show_all=show_all, offset=offset,
     #                         sort=sort, sort_desc=sort_desc, ctype=ctype)
     tv_url = "http://ieeetv.ieee.org/service/Signature" \
-            "?url=http://ieeetv.ieee.org/service/VideosSearch?q=%s" % tag.name
+             "?url=http://ieeetv.ieee.org/service/VideosSearch?q=%s" % tag.name
     file2 = urllib2.urlopen(tv_url).read()
 
     # get url from xml that is returned
@@ -745,10 +743,10 @@ def ajax_tv_results(request):
             thumb = result.find('images').find('thumbnail').text
             title = result.find('title').text
             url = result.find('web-page').text
-            tv_html = tv_html + '<img src="%s" height="60" width="105"/>' \
-                              '<a href="%s" target="_blank">%s ' \
-                              '<span class="popup newWinIcon">' \
-                              '</span></a><br>\n' % (thumb, url, title)
+            tv_html += '<img src="%s" height="60" width="105"/>' \
+                       '<a href="%s" target="_blank">%s ' \
+                       '<span class="popup newWinIcon">' \
+                       '</span></a><br>\n' % (thumb, url, title)
     except:
         tv_count = 0
         tv_html = ''
@@ -762,7 +760,6 @@ def ajax_tv_results(request):
         'search_term': name,
         'token': token,
     }
-
     return HttpResponse(json.dumps(data), 'application/javascript')
 
 
@@ -805,7 +802,6 @@ def ajax_authors_results(request):
         'search_term': name,
         'token': token
     }
-
     return HttpResponse(json.dumps(data), 'application/javascript')
 
 
@@ -814,7 +810,6 @@ def ajax_node(request):
     """
     Returns JSON data for the given node, including its parents.
     """
-
     node_Id = request.GET['nodeId']
     node = Node.objects.get(id=node_Id)
     if len(node.parents.all()) == 0:
@@ -838,7 +833,6 @@ def ajax_node(request):
             })
 
     json1 = json.dumps(data, sort_keys=True, indent=4)
-
     return HttpResponse(json1, mimetype="text/plain")
 
 
@@ -1224,9 +1218,9 @@ def ajax_nodes_xml(request):
         node_elem.setAttribute('depth_loaded', str(2))
 
         node_elem.setAttribute('graphic_fill_color',
-                              ROAMER_NODE_COLORS[node1.node_type.name])
+                               ROAMER_NODE_COLORS[node1.node_type.name])
         node_elem.setAttribute('selected_graphic_fill_color',
-                              ROAMER_NODE_COLORS[node1.node_type.name])
+                               ROAMER_NODE_COLORS[node1.node_type.name])
         node_elem.setAttribute('graphic_border_color', GRAPHIC_BORDER_COLOR)
         node_elem.setAttribute('graphic_type', 'shape')
 
@@ -1373,10 +1367,10 @@ def tooltip(request, tag_id=None):
         raise Exception('Must specify "tag_id".')
 
     def get_int_all_or_none(value):
-        '''
+        """
         Converts the given value to an integer, the 'all' string, or None.
         Raises a ValueException if no conversion can be made.
-        '''
+        """
         try:
             value = int(value)
             return value
@@ -1556,7 +1550,8 @@ def tooltip(request, tag_id=None):
             num_related_tags = tag.get_filtered_related_tag_count()
             num_societies = tag.societies.all()
 
-            resource_level = _get_popularity_level(min_resources, max_resources,
+            resource_level = _get_popularity_level(min_resources,
+                                                   max_resources,
                                                    tag.num_resources1)
             sector_level = _get_popularity_level(min_sectors, max_sectors,
                                                  tag.num_sectors1)
@@ -1566,7 +1561,8 @@ def tooltip(request, tag_id=None):
             society_level = _get_popularity_level(min_societies, max_societies,
                                                   tag.num_societies1)
 
-            tag_level = _get_popularity_level(min_score, max_score, node.score1)
+            tag_level = _get_popularity_level(min_score, max_score,
+                                              node.score1)
 
             sectors_str = util.truncate_link_list(
                 tag.get_sectors(),
@@ -1675,7 +1671,9 @@ def tooltip(request, tag_id=None):
 
 
 def ajax_account(request, account_step):
-    """Returns the HTML content for account lightboxs."""
+    """
+    Returns the HTML content for account lightboxs.
+    """
     step = account_step
     if step == 'signin':
         return render(request, 'account_lightbox_signin.html')
@@ -1683,21 +1681,27 @@ def ajax_account(request, account_step):
         return render(request, 'account_lightbox_register.html')
     elif step == 'yourfavorites':
         context_dict = {'defaultTab': 1}
-        return render(request, 'account_lightbox_youraccount.html', context_dict)
+        return render(request, 'account_lightbox_youraccount.html',
+                      context_dict)
     elif step == 'yoursettings':
         context_dict = {'defaultTab': 2}
-        return render(request, 'account_lightbox_youraccount.html', context_dict)
+        return render(request, 'account_lightbox_youraccount.html',
+                      context_dict)
     elif step == 'delete_confirm':
         return render(request, 'account_lightbox_delete.html')
 
 
 def ajax_video(request):
-    """Returns the HTML content for the flash video."""
+    """
+    Returns the HTML content for the flash video.
+    """
     return render(request, 'ajax_video.html')
 
 
 def ajax_welcome(request):
-    """Returns the HTML content for the welcome lightbox."""
+    """
+    Returns the HTML content for the welcome lightbox.
+    """
     if request.path == '/textui_new':
         NEWUI = True
     else:
@@ -1958,7 +1962,6 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id,
                 else:
                     max_cluster_score = max(max_cluster_score, node1.score1)
 
-
     #log('  min_resources: %s' % min_resources)
     #log('  max_resources: %s' % max_resources)
     #log('  min_score: %s' % min_score)
@@ -1982,7 +1985,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id,
     # (prevents DB hit for every single child_node)
     child_nodes = child_nodes.select_related('node_type')
 
-    # remove 'False and' below to enable the term count (for staff only) 
+    # remove 'False and' below to enable the term count (for staff only)
     if False and is_staff:
         num_terms = child_nodes.filter(is_taxonomy_term=True).count()
     else:
@@ -2011,7 +2014,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id,
                 #          child_node['num_societies1'] > 0 and
                 #          child_node['num_resources1'] > 0):
                 if (show_empty_terms and child_node['is_taxonomy_term']) or \
-                        (child_node['num_societies1'] > 0 ):
+                        (child_node['num_societies1'] > 0):
 
                     try:
                         combined_level = \
@@ -2058,7 +2061,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id,
                 #    cluster_child_tags = child_node['get_tags']()
                 #    cluster_child_tags = \
                 #        get_node_extra_info(cluster_child_tags)
-                #    
+                #
                 #    # Find out how many of this cluster's child tags would
                 #    # show with the current filters
                 #    num_child_tags = 0
@@ -2069,7 +2072,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id,
                 #           cluster_child_tag.filters.filter(id__in=filterIds)\
                 #                            .count() > 0:
                 #            num_child_tags += 1
-                #    
+                #
                 #    if num_child_tags > 0:
                 #        # do nothing
                 #        pass
@@ -2093,7 +2096,6 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id,
                 # Make sure clusters show on top of the list.
                 filter_child_node = True
                 clusters.append(child_node)
-
 
             else:
                 raise Exception('Unknown child node type "%s" for node "%s"' %
@@ -2185,20 +2187,20 @@ _POPULARITY_LEVELS = [
 
 
 def _get_popularity_level(min, max, count, node=None):
-    '''
+    """
     Gets the popularity level for the given count of items.
-    
+
     For example, if we are looking at all tags for a given sector,
     then we find the min/max number of related tags is 1 and 10 respectively.
     Then we can call this function for each tag with params (1, 10, count)
     where count is the number of related tags for each tag,
     and we'll get a popularity level for each tag.
-    
+
     @param min: The minimum count for all other peer items.
     @param max: The maximum count for all other peer items.
     @param count: The count for this specific item.
     @return: A text label 'level1' through 'level6'.
-    '''
+    """
 
     min = min or 0
 
