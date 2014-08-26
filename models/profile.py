@@ -124,3 +124,7 @@ def get_user_from_username(username):
 
 def get_user_from_email(email):
     return single_row_or_none(User.objects.filter(email=email))
+
+
+def email_user_display(user):
+    return user.email

@@ -18,3 +18,4 @@ wsgiref==0.1.2
 lxml
 django-allauth
 unicodecsv
+raven>=4.1.1

@@ -16,6 +16,9 @@ from django.views.decorators.csrf import csrf_exempt
 from models.node import Node
 from models.types import NodeType
 import settings
+import socket
+
+from raven.contrib.django.raven_compat.models import client as raven_client
 
 XPLORE_SORT_AUTHOR = 'au'
 XPLORE_SORT_TITLE = 'ti'
@@ -115,7 +118,7 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
             log('xplore query: %s' % url)
             
         try:
-            file1 = urllib2.urlopen(url)
+            file1 = urllib2.urlopen(url, timeout=settings.EXTERNAL_XPLORE_TIMEOUT_SECS)
         
             # Get the charset of the request and decode/re-encode the response text into UTF-8 so we can parse it
             info = file1.info()
@@ -132,6 +135,11 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
         except KeyError:
             xplore_error = 'Error: Could not determine content type of the IEEE Xplore response.'
             xplore_results = []
+            totalfound = 0
+        except socket.timeout:
+            xplore_error = 'Error: Connection to IEEE Xplore timed out.'
+            xplore_results = []
+            raven_client.captureMessage("Request for Xplore articles timed out after %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS, extra={"xplore_url" : url})
             totalfound = 0
 
         else:
@@ -248,7 +256,7 @@ def ajax_recent_xplore(request):
         url = settings.EXTERNAL_XPLORE_URL + urllib.urlencode(params)
                 
         try:
-            file1 = urllib2.urlopen(url)
+            file1 = urllib2.urlopen(url, timeout=settings.EXTERNAL_XPLORE_TIMEOUT_SECS)
             
             # Get the charset of the request and decode/re-encode the response text into UTF-8 so we can parse it
             info = file1.info()
@@ -264,6 +272,11 @@ def ajax_recent_xplore(request):
         except KeyError:
             xplore_error = 'Error: Could not determine content type of the IEEE Xplore response.'
             xplore_results = []
+            totalfound = 0
+        except socket.timeout:
+            xplore_error = 'Error: Connection to IEEE Xplore timed out.'
+            xplore_results = []
+            raven_client.captureMessage("Request for most recent Xplore article timed out after %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS, extra={"xplore_url" : url})
             totalfound = 0
 
         else:
@@ -386,7 +399,7 @@ def ajax_xplore_authors(tag_id):
         log('xplore query: %s' % url)
         
     try:
-        file1 = urllib2.urlopen(url)
+        file1 = urllib2.urlopen(url, timeout=settings.EXTERNAL_XPLORE_TIMEOUT_SECS)
     
         # Get the charset of the request and decode/re-encode the response text into UTF-8 so we can parse it
         info = file1.info()
@@ -403,6 +416,11 @@ def ajax_xplore_authors(tag_id):
     except KeyError:
         xplore_error = 'Error: Could not determine content type of the IEEE Xplore response.'
         xplore_results = []
+        totalfound = 0
+    except socket.timeout:
+        xplore_error = 'Error: Connection to IEEE Xplore timed out.'
+        xplore_results = []
+        raven_client.captureMessage("Request for Xplore authors timed out after %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS, extra={"xplore_url" : url})
         totalfound = 0
 
     else:
@@ -426,22 +444,25 @@ def ajax_xplore_authors(tag_id):
 
         xplore_results = []
         total_count = 0
-        for author in xml1.documentElement.childNodes[5].childNodes[1].getElementsByTagName('refinement'):
-            name = getElementValueByTagName(author, 'name')
-            count = getElementValueByTagName(author, 'count')
-            url = getElementValueByTagName(author, 'url')
-            
-            # massage the url
-            url = url.replace('gateway/ipsSearch', 'search/searchresult')
-            url = url.replace('&hc=0', '')
-            url = url.replace('md=', 'queryText=')
+        if xml1.documentElement.nodeName == "Error":
+            pass
+        else:
+            for author in xml1.documentElement.childNodes[5].childNodes[1].getElementsByTagName('refinement'):
+                name = getElementValueByTagName(author, 'name')
+                count = getElementValueByTagName(author, 'count')
+                url = getElementValueByTagName(author, 'url')
 
-            result = {
-                'name': name,
-                'count': count,
-                'url': url
-                }
-            
-            xplore_results.append(result)
+                # massage the url
+                url = url.replace('gateway/ipsSearch', 'search/searchresult')
+                url = url.replace('&hc=0', '')
+                url = url.replace('md=', 'queryText=')
+
+                result = {
+                    'name': name,
+                    'count': count,
+                    'url': url
+                    }
+
+                xplore_results.append(result)
 
     return xplore_results, xplore_error, len(xplore_results)

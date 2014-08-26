@@ -74,7 +74,7 @@ def error_view(request):
 
     Only active when settings.DEBUG == True.
     """
-    # Get the latest exception from Python system service 
+    # Get the latest exception from Python system service
     (type, value, traceback1) = sys.exc_info()
     traceback1 = '.'.join(traceback.format_exception(type, value, traceback1))
 
@@ -117,11 +117,11 @@ def roamer(request):
     """
     Shows the Asterisq Constellation Roamer flash UI.
     """
-    nodeId = request.GET.get('nodeId', Node.objects.getRoot().id)
+    node_id = request.GET.get('nodeId', Node.objects.getRoot().id)
     sectors = Node.objects.getSectors()
     filters = Filter.objects.all()
     return render(request, 'roamer.html', {
-        'nodeId': nodeId,
+        'nodeId': node_id,
         'sectors': sectors,
         'filters': filters,
     })
@@ -132,9 +132,9 @@ def textui(request, survey=False):
     """
     Shows the textui (aka. Tag Galaxy) UI.
     """
-    nodeId = request.GET.get('nodeId', None)
-    sectorId = None
-    clusterId = None
+    node_id = request.GET.get('nodeId', None)
+    sector_id = None
+    cluster_id = None
 
     # If url ends with /survey set a session var so we can display
     # an additional banner.
@@ -143,24 +143,24 @@ def textui(request, survey=False):
         request.session.set_expiry(0)
 
     # NOTE: Disabled so we can land on the help page
-    #if nodeId is None:
+    #if node_id is None:
     #    # Default to the first sector (instead of the help page)
     #    first_sector = Node.objects.getSectors()[0]
-    #    nodeId = first_sector.id
+    #    node_id = first_sector.id
 
-    if nodeId is not None:
+    if node_id is not None:
         # Node selected
-        node = Node.objects.get(id=nodeId)
+        node = Node.objects.get(id=node_id)
         # Double check to make sure we didn't get a root or tag node
         if node.node_type.name == 'root':
-            sectorId = Node.objects.getFirstSector().id
+            sector_id = Node.objects.getFirstSector().id
         elif node.node_type.name == 'tag':
             # TODO: a node has many sectors, for now just use the first one.
-            sectorId = node.get_sectors()[0].id
+            sector_id = node.get_sectors()[0].id
         elif node.node_type.name == 'sector':
-            sectorId = nodeId
+            sector_id = node_id
         elif node.node_type.name == 'tag_cluster':
-            clusterId = nodeId
+            cluster_id = node_id
         else:
             raise Exception('Unknown node_type "%s"' % node.node_type.name)
 
@@ -175,8 +175,8 @@ def textui(request, survey=False):
     newui_search_button = False
 
     return render(request, template, {
-        'sectorId': sectorId,
-        'clusterId': clusterId,
+        'sectorId': sector_id,
+        'clusterId': cluster_id,
         'sectors': sectors,
         'filters': filters,
         'societies': societies,
@@ -330,7 +330,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
     context['tag'] = tag
 
     counts = 0
-    tvCount = "0"
+    tv_count = "0"
 
     #sectors1 = tag.get_sectors()
     #counts += sectors1.count()
@@ -344,7 +344,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
     #    for cluster in clusters1:
     #        if sector in cluster.parents.all():
     #            clusters.append(cluster)
-    #    
+    #
     #    parent_nodes.append({
     #        'sector': sector,
     #        'clusters': clusters,
@@ -500,16 +500,16 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
         #http://ieeetv.ieee.org/service/Signature
         #http://ieeetv.ieee.org/service/Signature?url=
         # http://ieeetv.ieee.org/service/VideosSearch?q=ieee
-        tvUrl = "http://ieeetv.ieee.org/service/Signature?url=" \
-                "http://ieeetv.ieee.org/service/VideosSearch?q=%s" % \
-                urllib.urlencode({"kwsMustContain": tag.name})
-        file2 = urllib2.urlopen(tvUrl).read()
-        tvJson = json.loads(file1)
-        tvCount = tvJson.get('Total')
-        tvUrl = tvUrl.replace('&format=json', '')
+        tv_url = "http://ieeetv.ieee.org/service/Signature?url=" \
+                 "http://ieeetv.ieee.org/service/VideosSearch?q=%s" % \
+                 urllib.urlencode({"kwsMustContain": tag.name})
+        file2 = urllib2.urlopen(tv_url).read()
+        tv_json = json.loads(file1)
+        tv_count = tv_json.get('Total')
+        tv_url = tv_url.replace('&format=json', '')
         tab_template = 'ajax_tv_tab.inc.html'
-        context['tvCount'] = tvCount
-        context['tvUrl'] = tvUrl
+        context['tvCount'] = tv_count
+        context['tvUrl'] = tv_url
         context['loaded'] = True
 
     if tab == 'overview':
@@ -525,13 +525,14 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
 
         #context['xplore_article'] = xplore_article
         close_conference = tag._get_closest_conference()
-        if request.user.is_authenticated():
-            member = User.objects.get(id=request.user.id)
-            is_favorite = UserFavorites.objects.filter(user=member). \
-                filter(resources=close_conference).exists()
-        else:
-            is_favorite = False
-        close_conference.is_favorite = is_favorite
+        if close_conference:
+            if request.user.is_authenticated():
+                member = User.objects.get(id=request.user.id)
+                is_favorite = UserFavorites.objects.filter(user=member). \
+                    filter(resources=close_conference).exists()
+            else:
+                is_favorite = False
+            close_conference.is_favorite = is_favorite
         context['close_conference'] = close_conference
 
         context['definition'] = tag._get_definition_link()
@@ -636,7 +637,6 @@ def ajax_connections(request):
     context_dict = {
         'password_exists': password_exists
     }
-
     return render(request, 'youraccount_connections.inc.html', context_dict)
 
 
@@ -649,7 +649,7 @@ def ajax_connections(request):
 #
 #     term = TaxonomyTerm.objects.get(id=term_id)
 #     num_related_items = term.related_nodes.count()
-#    
+#
 #     return render(request, 'ajax_term_content.html', {
 #         'term':term,
 #         'num_related_items': num_related_items,
@@ -696,7 +696,6 @@ def ajax_jobs_results(request):
         'token': token,
         'job_url': jobs_url.replace('&format=json', ''),
     }
-
     return HttpResponse(json.dumps(data), 'application/javascript')
 
 
@@ -725,9 +724,9 @@ def ajax_tv_results(request):
     # jobs_results, jobs_error, num_results = \
     #     _get_xplore_results(name, show_all=show_all, offset=offset,
     #                         sort=sort, sort_desc=sort_desc, ctype=ctype)
-    tvUrl = "http://ieeetv.ieee.org/service/Signature" \
-            "?url=http://ieeetv.ieee.org/service/VideosSearch?q=%s" % tag.name
-    file2 = urllib2.urlopen(tvUrl).read()
+    tv_url = "http://ieeetv.ieee.org/service/Signature" \
+             "?url=http://ieeetv.ieee.org/service/VideosSearch?q=%s" % tag.name
+    file2 = urllib2.urlopen(tv_url).read()
 
     # get url from xml that is returned
 
@@ -738,31 +737,30 @@ def ajax_tv_results(request):
         tv_xml = fromstring(urllib2.urlopen(dev_url).read())
 
         results = tv_xml.findall('search-item')
-        tvCount = len(results)
+        tv_count = len(results)
 
-        tvHtml = ""
+        tv_html = ""
         for result in results:
             thumb = result.find('images').find('thumbnail').text
             title = result.find('title').text
             url = result.find('web-page').text
-            tvHtml = tvHtml + '<img src="%s" height="60" width="105"/>' \
-                              '<a href="%s" target="_blank">%s ' \
-                              '<span class="popup newWinIcon">' \
-                              '</span></a><br>\n' % (thumb, url, title)
+            tv_html += '<img src="%s" height="60" width="105"/>' \
+                       '<a href="%s" target="_blank">%s ' \
+                       '<span class="popup newWinIcon">' \
+                       '</span></a><br>\n' % (thumb, url, title)
     except:
-        tvCount = 0
-        tvHtml = ''
+        tv_count = 0
+        tv_html = ''
 
     # DEBUG:
     #xplore_error = 'BAD ERROR.'
 
     data = {
-        'num_results': tvCount,
-        'html': tvHtml,
+        'num_results': tv_count,
+        'html': tv_html,
         'search_term': name,
         'token': token,
     }
-
     return HttpResponse(json.dumps(data), 'application/javascript')
 
 
@@ -789,10 +787,10 @@ def ajax_authors_results(request):
     #     _get_xplore_results(name, show_all=show_all, offset=offset,
     #                         sort=sort, sort_desc=sort_desc, ctype=ctype)
 
-    authors, xplore_error, authorsCount = \
+    authors, xplore_error, authors_count = \
         ajax_xplore_authors(request.POST.get('tag_id'))
 
-    authorsHtml = render_to_string('include_xplore_authors.html', {
+    authors_html = render_to_string('include_xplore_authors.html', {
         'xplore_results': authors
     })
 
@@ -800,12 +798,11 @@ def ajax_authors_results(request):
     #xplore_error = 'BAD ERROR.'
 
     data = {
-        'num_results': authorsCount,
-        'html': authorsHtml,
+        'num_results': authors_count,
+        'html': authors_html,
         'search_term': name,
         'token': token
     }
-
     return HttpResponse(json.dumps(data), 'application/javascript')
 
 
@@ -814,13 +811,12 @@ def ajax_node(request):
     """
     Returns JSON data for the given node, including its parents.
     """
-
-    nodeId = request.GET['nodeId']
-    node = Node.objects.get(id=nodeId)
+    node_Id = request.GET['nodeId']
+    node = Node.objects.get(id=node_Id)
     if len(node.parents.all()) == 0:
-        parentName = None
+        parent_name = None
     else:
-        parentName = ', '.join([parent.name for parent in node.parents.all()])
+        parent_name = ', '.join([parent.name for parent in node.parents.all()])
 
     data = {
         'id': node.id,
@@ -838,7 +834,6 @@ def ajax_node(request):
             })
 
     json1 = json.dumps(data, sort_keys=True, indent=4)
-
     return HttpResponse(json1, mimetype="text/plain")
 
 
@@ -943,8 +938,8 @@ def ajax_textui_nodes(request):
     if page != 'sector' and page != 'society':
         raise Exception('page (%r) should be "sector" or "society"' % page)
 
-    #filterValues = request.GET.get('filterValues')
-    ##log('filterValues: %s' % filterValues)
+    #filter_values = request.GET.get('filterValues')
+    ##log('filterValues: %s' % filter_values)
 
     log('')
 
@@ -1095,12 +1090,12 @@ def ajax_nodes_xml(request):
 
     DEBUG_ROAMER_MAX_NODES = 40
 
-    nodeId = request.GET['nodeId']
+    node_id = request.GET['nodeId']
     #log('  url: ' + request.get_full_path())
 
     # TODO: the depth param is ignored, doesn't seem to affect anything now
 
-    node = Node.objects.select_related('filters').get(id=nodeId)
+    node = Node.objects.select_related('filters').get(id=node_id)
 
     if node.node_type.name == NodeType.SECTOR:
         child_nodes = node.get_tags_and_clusters()
@@ -1117,7 +1112,7 @@ def ajax_nodes_xml(request):
                       node.node_type.name == NodeType.TAG_CLUSTER
     if valid_node_type:
         # Filter out any tags that don't have any societies
-        childNodes1 = []
+        child_nodes_1 = []
 
         for child_node in child_nodes:
             # List all clusters, plus any tags that have societies and
@@ -1127,8 +1122,8 @@ def ajax_nodes_xml(request):
                              child_node.num_resources1 > 0 and
                              child_node.num_filters1 > 0)
             if valid_node_type or positive_nums:
-                childNodes1.append(child_node)
-        child_nodes = childNodes1
+                child_nodes_1.append(child_node)
+        child_nodes = child_nodes_1
 
     # The main node
     nodes = [node]
@@ -1181,8 +1176,8 @@ def ajax_nodes_xml(request):
 
     edges = []
 
-    for childNode in child_nodes:
-        edges.append((node.id, childNode.id))
+    for child_node in child_nodes:
+        edges.append((node.id, child_node.id))
 
     for parent in parent_nodes:
         edges.append((parent.id, node.id))
@@ -1199,8 +1194,8 @@ def ajax_nodes_xml(request):
     root = doc.createElement('graph_data')
     doc.appendChild(root)
 
-    nodesElem = doc.createElement('nodes')
-    root.appendChild(nodesElem)
+    nodes_elem = doc.createElement('nodes')
+    root.appendChild(nodes_elem)
 
     ROAMER_NODE_COLORS = {
         'selected': '#006599',
@@ -1215,33 +1210,33 @@ def ajax_nodes_xml(request):
     #log('  edges: %s' % len(edges))
 
     for node1 in nodes:
-        nodeElem = doc.createElement('node')
-        nodeElem.setAttribute('id', str(node1.id))
+        node_elem = doc.createElement('node')
+        node_elem.setAttribute('id', str(node1.id))
 
         label = node1.name
 
-        nodeElem.setAttribute('label', util.word_wrap(label, 25))
-        nodeElem.setAttribute('depth_loaded', str(2))
+        node_elem.setAttribute('label', util.word_wrap(label, 25))
+        node_elem.setAttribute('depth_loaded', str(2))
 
-        nodeElem.setAttribute('graphic_fill_color',
-                              ROAMER_NODE_COLORS[node1.node_type.name])
-        nodeElem.setAttribute('selected_graphic_fill_color',
-                              ROAMER_NODE_COLORS[node1.node_type.name])
-        nodeElem.setAttribute('graphic_border_color', GRAPHIC_BORDER_COLOR)
-        nodeElem.setAttribute('graphic_type', 'shape')
+        node_elem.setAttribute('graphic_fill_color',
+                               ROAMER_NODE_COLORS[node1.node_type.name])
+        node_elem.setAttribute('selected_graphic_fill_color',
+                               ROAMER_NODE_COLORS[node1.node_type.name])
+        node_elem.setAttribute('graphic_border_color', GRAPHIC_BORDER_COLOR)
+        node_elem.setAttribute('graphic_type', 'shape')
 
         if node1.node_type.name == NodeType.ROOT:
-            nodeElem.setAttribute('graphic_shape', 'circle')
-            nodeElem.setAttribute('selected_graphic_shape', 'circle')
+            node_elem.setAttribute('graphic_shape', 'circle')
+            node_elem.setAttribute('selected_graphic_shape', 'circle')
         elif node1.node_type.name == NodeType.SECTOR:
-            nodeElem.setAttribute('graphic_shape', 'circle')
-            nodeElem.setAttribute('selected_graphic_shape', 'circle')
+            node_elem.setAttribute('graphic_shape', 'circle')
+            node_elem.setAttribute('selected_graphic_shape', 'circle')
         elif node1.node_type.name == NodeType.TAG_CLUSTER:
-            nodeElem.setAttribute('graphic_shape', 'pentagon')
-            nodeElem.setAttribute('selected_graphic_shape', 'pentagon')
+            node_elem.setAttribute('graphic_shape', 'pentagon')
+            node_elem.setAttribute('selected_graphic_shape', 'pentagon')
         elif node1.node_type.name == NodeType.TAG:
-            nodeElem.setAttribute('graphic_shape', 'square')
-            nodeElem.setAttribute('selected_graphic_shape', 'square')
+            node_elem.setAttribute('graphic_shape', 'square')
+            node_elem.setAttribute('selected_graphic_shape', 'square')
         else:
             raise Exception('Unknown node type "%s" for node "%s"' %
                             (node1.node_type.name, node1.name))
@@ -1252,18 +1247,18 @@ def ajax_nodes_xml(request):
             filters.append(filter.value)
 
         # Add filters
-        nodeElem.setAttribute('filter_groups', string.join(filters, ','))
-        nodesElem.appendChild(nodeElem)
+        node_elem.setAttribute('filter_groups', string.join(filters, ','))
+        nodes_elem.appendChild(node_elem)
 
-    edgesElem = doc.createElement('edges')
-    root.appendChild(edgesElem)
+    edges_elem = doc.createElement('edges')
+    root.appendChild(edges_elem)
 
     for edge in edges:
-        edgeElem = doc.createElement('edge')
-        edgeElem.setAttribute('id', str(edge[0]) + '-' + str(edge[1]))
-        edgeElem.setAttribute('head_node_id', str(edge[0]))
-        edgeElem.setAttribute('tail_node_id', str(edge[1]))
-        edgesElem.appendChild(edgeElem)
+        edge_elem = doc.createElement('edge')
+        edge_elem.setAttribute('id', str(edge[0]) + '-' + str(edge[1]))
+        edge_elem.setAttribute('head_node_id', str(edge[0]))
+        edge_elem.setAttribute('tail_node_id', str(edge[1]))
+        edges_elem.appendChild(edge_elem)
 
     #if False:
     #    #log('XML: ----------')
@@ -1291,9 +1286,9 @@ def ajax_notification_request(request):
     elif action == 'disable':
         email = request.POST['email']
         node = request.POST['nodeid']
-        notifyRecord = ResourceAdditionNotificationRequest.objects. \
+        notify_record = ResourceAdditionNotificationRequest.objects. \
             filter(node_id=node).get(email=email)
-        notifyRecord.delete()
+        notify_record.delete()
         return HttpResponse('success')
     else:
         return HttpResponse('failure')
@@ -1373,10 +1368,10 @@ def tooltip(request, tag_id=None):
         raise Exception('Must specify "tag_id".')
 
     def get_int_all_or_none(value):
-        '''
+        """
         Converts the given value to an integer, the 'all' string, or None.
         Raises a ValueException if no conversion can be made.
-        '''
+        """
         try:
             value = int(value)
             return value
@@ -1530,9 +1525,9 @@ def tooltip(request, tag_id=None):
                     child_nodes = \
                         Node.objects.filter(queries,
                                             node_type__name=NodeType.TAG)
-                    filterIds = [filter.id for filter in Filter.objects.all()]
+                    filter_ids = [filter.id for filter in Filter.objects.all()]
                     child_nodes = get_node_extra_info(child_nodes,
-                                                      None, filterIds)
+                                                      None, filter_ids)
                 else:
                     child_nodes = Node.objects.none()
 
@@ -1556,17 +1551,19 @@ def tooltip(request, tag_id=None):
             num_related_tags = tag.get_filtered_related_tag_count()
             num_societies = tag.societies.all()
 
-            resourceLevel = _get_popularity_level(min_resources, max_resources,
-                                                  tag.num_resources1)
-            sectorLevel = _get_popularity_level(min_sectors, max_sectors,
-                                                tag.num_sectors1)
+            resource_level = _get_popularity_level(min_resources,
+                                                   max_resources,
+                                                   tag.num_resources1)
+            sector_level = _get_popularity_level(min_sectors, max_sectors,
+                                                 tag.num_sectors1)
             related_tag_level = _get_popularity_level(min_related_tags,
                                                       max_related_tags,
                                                       num_related_tags)
             society_level = _get_popularity_level(min_societies, max_societies,
                                                   tag.num_societies1)
 
-            tagLevel = _get_popularity_level(min_score, max_score, node.score1)
+            tag_level = _get_popularity_level(min_score, max_score,
+                                              node.score1)
 
             sectors_str = util.truncate_link_list(
                 tag.get_sectors(),
@@ -1624,8 +1621,8 @@ def tooltip(request, tag_id=None):
 
             return render(request, 'tooltip.html', {
                 'tag': tag,
-                'tagLevel': tagLevel,
-                'sectorLevel': sectorLevel,
+                'tagLevel': tag_level,
+                'sectorLevel': sector_level,
                 'relatedTagLevel': related_tag_level,
                 'societyLevel': society_level,
                 'sectors': sectors_str,
@@ -1675,7 +1672,9 @@ def tooltip(request, tag_id=None):
 
 
 def ajax_account(request, account_step):
-    """Returns the HTML content for account lightboxs."""
+    """
+    Returns the HTML content for account lightboxs.
+    """
     step = account_step
     if step == 'signin':
         return render(request, 'account_lightbox_signin.html')
@@ -1683,21 +1682,27 @@ def ajax_account(request, account_step):
         return render(request, 'account_lightbox_register.html')
     elif step == 'yourfavorites':
         context_dict = {'defaultTab': 1}
-        return render(request, 'account_lightbox_youraccount.html', context_dict)
+        return render(request, 'account_lightbox_youraccount.html',
+                      context_dict)
     elif step == 'yoursettings':
         context_dict = {'defaultTab': 2}
-        return render(request, 'account_lightbox_youraccount.html', context_dict)
+        return render(request, 'account_lightbox_youraccount.html',
+                      context_dict)
     elif step == 'delete_confirm':
         return render(request, 'account_lightbox_delete.html')
 
 
 def ajax_video(request):
-    """Returns the HTML content for the flash video."""
+    """
+    Returns the HTML content for the flash video.
+    """
     return render(request, 'ajax_video.html')
 
 
 def ajax_welcome(request):
-    """Returns the HTML content for the welcome lightbox."""
+    """
+    Returns the HTML content for the welcome lightbox.
+    """
     if request.path == '/textui_new':
         NEWUI = True
     else:
@@ -1774,7 +1779,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id,
     #    for filterValue in filterValues.split(','):
     #        filterIds.append(Filter.objects.getFromValue(filterValue).id)
     # TODO: Just select all filters for now
-    filterIds = [filter.id for filter in Filter.objects.all()]
+    filter_ids = [filter.id for filter in Filter.objects.all()]
 
     search_for_too_short = False
 
@@ -1865,7 +1870,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id,
         # Restrict to only tags.
         child_nodes = child_nodes.filter(node_type__name=NodeType.TAG)
     child_nodes = get_node_extra_info(child_nodes, extra_order_by,
-                                      filterIds)
+                                      filter_ids)
     print child_nodes.query
     if word_queries:
         log('  using min/max for all results.')
@@ -1958,7 +1963,6 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id,
                 else:
                     max_cluster_score = max(max_cluster_score, node1.score1)
 
-
     #log('  min_resources: %s' % min_resources)
     #log('  max_resources: %s' % max_resources)
     #log('  min_score: %s' % min_score)
@@ -1982,7 +1986,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id,
     # (prevents DB hit for every single child_node)
     child_nodes = child_nodes.select_related('node_type')
 
-    # remove 'False and' below to enable the term count (for staff only) 
+    # remove 'False and' below to enable the term count (for staff only)
     if False and is_staff:
         num_terms = child_nodes.filter(is_taxonomy_term=True).count()
     else:
@@ -2011,10 +2015,10 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id,
                 #          child_node['num_societies1'] > 0 and
                 #          child_node['num_resources1'] > 0):
                 if (show_empty_terms and child_node['is_taxonomy_term']) or \
-                        (child_node['num_societies1'] > 0 ):
+                        (child_node['num_societies1'] > 0):
 
                     try:
-                        combinedLevel = \
+                        combined_level = \
                             _get_popularity_level(min_score, max_score,
                                                   child_node['score1'],
                                                   node=child_node)
@@ -2035,9 +2039,9 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id,
 
                     # Combined scores
                     child_node['score'] = child_node['score1']
-                    child_node['level'] = combinedLevel
+                    child_node['level'] = combined_level
 
-                    #print 'combinedLevel: %s' % combinedLevel
+                    #print 'combinedLevel: %s' % combined_level
 
                     #child_node['min_score'] = min_score
                     #child_node['max_score'] = max_score
@@ -2058,7 +2062,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id,
                 #    cluster_child_tags = child_node['get_tags']()
                 #    cluster_child_tags = \
                 #        get_node_extra_info(cluster_child_tags)
-                #    
+                #
                 #    # Find out how many of this cluster's child tags would
                 #    # show with the current filters
                 #    num_child_tags = 0
@@ -2069,7 +2073,7 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id,
                 #           cluster_child_tag.filters.filter(id__in=filterIds)\
                 #                            .count() > 0:
                 #            num_child_tags += 1
-                #    
+                #
                 #    if num_child_tags > 0:
                 #        # do nothing
                 #        pass
@@ -2093,7 +2097,6 @@ def _render_textui_nodes(sort, search_for, sector_id, sector, society_id,
                 # Make sure clusters show on top of the list.
                 filter_child_node = True
                 clusters.append(child_node)
-
 
             else:
                 raise Exception('Unknown child node type "%s" for node "%s"' %
@@ -2185,20 +2188,20 @@ _POPULARITY_LEVELS = [
 
 
 def _get_popularity_level(min, max, count, node=None):
-    '''
+    """
     Gets the popularity level for the given count of items.
-    
+
     For example, if we are looking at all tags for a given sector,
     then we find the min/max number of related tags is 1 and 10 respectively.
     Then we can call this function for each tag with params (1, 10, count)
     where count is the number of related tags for each tag,
     and we'll get a popularity level for each tag.
-    
+
     @param min: The minimum count for all other peer items.
     @param max: The maximum count for all other peer items.
     @param count: The count for this specific item.
     @return: A text label 'level1' through 'level6'.
-    '''
+    """
 
     min = min or 0
 
