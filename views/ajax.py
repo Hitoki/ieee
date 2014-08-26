@@ -1259,9 +1259,13 @@ def ajax_notification_request(request):
     elif action == 'disable':
         email = request.POST['email']
         node = request.POST['nodeid']
-        notify_record = ResourceAdditionNotificationRequest.objects. \
+        try:
+            notify_record = ResourceAdditionNotificationRequest.objects. \
             filter(node_id=node).get(email=email)
-        notify_record.delete()
+        except:
+            notify_record = None
+        if notify_record:
+            notify_record.delete()
         return HttpResponse('success')
     else:
         return HttpResponse('failure')
