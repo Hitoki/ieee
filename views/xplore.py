@@ -37,23 +37,33 @@ XPLORE_SORTS = [
     XPLORE_SORT_PUBLICATION_YEAR,
 ]
 
+
 @login_required
 def xplore_full_results(request, tag_id):
-    'Returns full listing of IEEE xplore results for the given tag.'
+    """
+    Returns full listing of IEEE xplore results for the given tag.
+    """
     tag = Node.objects.get(id=tag_id)
-
-    results, errors, total_results = _get_xplore_results(tag.name, show_all=True)
+    results, errors, total_results = _get_xplore_results(tag.name,
+                                                         show_all=True)
     return render(request, 'xplore_full_results.html', {
-        'tag':tag,
+        'tag': tag,
         'xplore_error': errors,
         'xplore_results': results,
         'totalfound': total_results,
     })
 
-def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, offset=0, sort=None, sort_desc=False, ctype=None, recent=False):
-    '''
-    Get xplore results for the given tag_name from the IEEE Xplore search gateway.  Searches all fields for the tag_name phrase, returns results.
-    @return: a 3-tuple of (results, errors, total_results).  'errors' is a string of any errors that occurred, or None.  'total_results' is the total number of results (regardless of how many are returned in 'results'.  'results' is an array of dicts:
+
+def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
+                        offset=0, sort=None, sort_desc=False, ctype=None,
+                        recent=False):
+    """
+    Get xplore results for the given tag_name from the IEEE Xplore search
+    gateway.  Searches all fields for the tag_name phrase, returns results.
+    @return: a 3-tuple of (results, errors, total_results).  'errors' is a
+    string of any errors that occurred, or None.  'total_results' is the
+    total number of results (regardless of how many are returned in
+    'results'.  'results' is an array of dicts:
         [
             {
                 'name': ...
@@ -62,9 +72,7 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
             },
             ...
         ]
-        
-    '''
-    
+    """
     if show_all:
         # Some arbitrarily big number...
         max_num_results = 10000
@@ -72,10 +80,10 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
         max_num_results = 1
     else:
         max_num_results = 10
-    
+
     if sort is not None and sort not in XPLORE_SORTS:
         raise Exception('Unknown sort %r' % sort)
-    
+
     params = {
         # Number of results
         'hc': max_num_results,
@@ -90,10 +98,12 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
     if ctype:
         params['ctype'] = ctype
 
-    tax_term_count = Node.objects.filter(name=tag_name, is_taxonomy_term=True).count()
+    tax_term_count = \
+        Node.objects.filter(name=tag_name, is_taxonomy_term=True).count()
 
-    """ Different query parameter keys/values that return different result counts.
-    Well, loop thru these in order until we get more than zero results from xplore."""
+    # Different query parameter keys/values that return different result counts
+    # Well, loop thru these in order until we get more than zero results
+    # from xplore.
     param_options = [
         {'key': 'thsrsterms', 'value': '"%s"' % tag_name.encode('utf-8')},
         {'key': 'md', 'value': '"%s"' % tag_name.encode('utf-8')},
@@ -101,7 +111,8 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
     ]
 
     if not tax_term_count:
-        del param_options[0] # no need for thsrsterm so toss out the first item
+        # no need for thsrsterm so toss out the first item
+        del param_options[0]
 
     for obj in param_options:
         # clear any previous values
@@ -116,34 +127,40 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
 
         if settings.DEBUG:
             log('xplore query: %s' % url)
-            
+
         try:
-            file1 = urllib2.urlopen(url, timeout=settings.EXTERNAL_XPLORE_TIMEOUT_SECS)
-        
-            # Get the charset of the request and decode/re-encode the response text into UTF-8 so we can parse it
+            timeout = settings.EXTERNAL_XPLORE_TIMEOUT_SECS
+            file1 = urllib2.urlopen(url, timeout=timeout)
+
+            # Get the charset of the request and decode/re-encode the response
+            # text into UTF-8 so we can parse it
             info = file1.info()
             try:
                 temp, charset = info['content-type'].split('charset=')
             except ValueError:
                 charset = 'utf-8'
-
-
         except urllib2.URLError, e:
-            xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
+            xplore_error = 'Error: Could not connect to the IEEE Xplore ' \
+                           'site to download articles.'
             xplore_results = []
             if isinstance(e.reason, socket.timeout):
-                raven_client.captureMessage("Request for Xplore articles timed out after %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS, extra={"xplore_url" : url})
+                msg = "Request for Xplore articles timed out after %d " \
+                      "seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS
+                raven_client.captureMessage(msg, extra={"xplore_url": url})
             else:
-                raven_client.captureMessage(e, extra={"xplore_url" : url})
+                raven_client.captureMessage(e, extra={"xplore_url": url})
             totalfound = 0
         except KeyError:
-            xplore_error = 'Error: Could not determine content type of the IEEE Xplore response.'
+            xplore_error = 'Error: Could not determine content type of the ' \
+                           'IEEE Xplore response.'
             xplore_results = []
             totalfound = 0
         except socket.timeout:
             xplore_error = 'Error: Connection to IEEE Xplore timed out.'
             xplore_results = []
-            raven_client.captureMessage("Request for Xplore articles timed out after %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS, extra={"xplore_url" : url})
+            msg = "Request for Xplore articles timed out after %d seconds." % \
+                  settings.EXTERNAL_XPLORE_TIMEOUT_SECS
+            raven_client.captureMessage(msg, extra={"xplore_url": url})
             totalfound = 0
 
         else:
@@ -152,52 +169,62 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False, of
             xml_body = file1.read()
             file1.close()
             xml_body = xml_body.decode(charset, 'replace').encode('utf-8')
-            
+
             xml1 = xml.dom.minidom.parseString(xml_body)
-                
+
             try:
-                totalfound = int(getElementValueByTagName(xml1.documentElement, 'totalfound'))
-                
-            # If no records found Xplore will return xml like this and the int parse with raise an exeption
-            # <Error><![CDATA[Cannot go to record 1 since query  only returned 0 records]]></Error>
+                totalfound = int(getElementValueByTagName(xml1.documentElement,
+                                                          'totalfound'))
+
+            # If no records found Xplore will return xml like this and the int
+            # parse with raise an exeption
+            # <Error><![CDATA[Cannot go to record 1 since query only
+            # returned 0 records]]></Error>
             except TypeError:
                 # If there's any query param choice to try, do so.
                 if obj != param_options[-1]:
                     continue
-                
+
                 # Otherwise, give up.
                 return [], 'No records found', 0
-                
+
             xplore_results = []
-            for document1 in xml1.documentElement.getElementsByTagName('document'):
+            nodes = xml1.documentElement.getElementsByTagName('document')
+            for document1 in nodes:
                 rank = getElementValueByTagName(document1, 'rank')
                 title = getElementValueByTagName(document1, 'title')
                 abstract = getElementValueByTagName(document1, 'abstract')
-                if abstract != None:
+                if abstract is not None:
                     abstract = html2text(abstract)
                 pdf = getElementValueByTagName(document1, 'pdf')
                 authors = getElementValueByTagName(document1, 'authors')
                 pub_title = getElementValueByTagName(document1, 'pubtitle')
                 pub_year = getElementValueByTagName(document1, 'py')
-                
-                # Escape here, since we're going to output this as |safe on the template
+
+                m = re.search('\?arnumber=([\w\d]+)$', pdf)
+                ext_id = m.group(1) if m else ''
+
+                # Escape here, since we're going to output this as |safe
+                # on the template
                 # title = cgi.escape(title)
                 if highlight_search_term:
-                    title = re.sub('(?i)(%s)' % tag_name, r'<strong>\1</strong>', title)
-                    
+                    title = re.sub('(?i)(%s)' % tag_name,
+                                   r'<strong>\1</strong>',
+                                   title)
                 result = {
                     'rank': rank,
+                    'ext_id': ext_id,
                     'name': title,
                     'description': abstract,
                     'url': pdf,
                     'authors': authors,
                     'pub_title': pub_title,
                     'pub_year': pub_year,
-                    }
-                
+                }
                 xplore_results.append(result)
 
     return xplore_results, xplore_error, totalfound
+
 
 def getElementByTagName(node, tag_name):
     nodes = node.getElementsByTagName(tag_name)
@@ -205,22 +232,22 @@ def getElementByTagName(node, tag_name):
         return None
     elif len(nodes) == 1:
         return nodes[0]
-    else:
-        raise Exception('More than one element found for topic name "%s"' % tag_name)    
+    raise Exception('More than one element found for topic name "%s"' %
+                    tag_name)
+
 
 def getElementValueByTagName(node, tag_name):
     node1 = getElementByTagName(node, tag_name)
     if node1 is None:
         return None
-    else:
-        value = ''
-        # print '  len(node1.childNodes): %r' % len(node1.childNodes)
-        for child_node in node1.childNodes:
-            # print '  child_node: %r' % child_node
-            if child_node.nodeType == child_node.TEXT_NODE or child_node.nodeType == child_node.CDATA_SECTION_NODE:
-                value += child_node.nodeValue
-                
-        return value
+    value = ''
+    # print '  len(node1.childNodes): %r' % len(node1.childNodes)
+    for child_node in node1.childNodes:
+        # print '  child_node: %r' % child_node
+        if child_node.nodeType == child_node.TEXT_NODE \
+                or child_node.nodeType == child_node.CDATA_SECTION_NODE:
+            value += child_node.nodeValue
+    return value
 
 
 @csrf_exempt
@@ -237,16 +264,18 @@ def ajax_recent_xplore(request):
     params['sortorder'] = 'desc'
     params['sortfield'] = XPLORE_SORT_PUBLICATION_YEAR
 
-    tax_term_count = Node.objects.filter(name=tag_name, is_taxonomy_term=True).count()
+    tax_term_count = \
+        Node.objects.filter(name=tag_name, is_taxonomy_term=True).count()
 
     param_options = [
-        {'key': 'thsrsterms', 'value': '"%s"' % tag_name.encode('utf-8')},    
+        {'key': 'thsrsterms', 'value': '"%s"' % tag_name.encode('utf-8')},
         {'key': 'md', 'value': '"%s"' % tag_name.encode('utf-8')},
         {'key': 'md', 'value': '%s' % tag_name.encode('utf-8')}
     ]
 
     if not tax_term_count:
-        del param_options[0] # no need for thsrsterm so toss out the first item    
+        # no need for thsrsterm so toss out the first item
+        del param_options[0]
 
     for obj in param_options:
         # clear any previous values
@@ -258,11 +287,13 @@ def ajax_recent_xplore(request):
         params[obj['key']] = obj['value']
 
         url = settings.EXTERNAL_XPLORE_URL + urllib.urlencode(params)
-                
+
         try:
-            file1 = urllib2.urlopen(url, timeout=settings.EXTERNAL_XPLORE_TIMEOUT_SECS)
-            
-            # Get the charset of the request and decode/re-encode the response text into UTF-8 so we can parse it
+            timeout = settings.EXTERNAL_XPLORE_TIMEOUT_SECS
+            file1 = urllib2.urlopen(url, timeout=timeout)
+
+            # Get the charset of the request and decode/re-encode the response
+            # text into UTF-8 so we can parse it
             info = file1.info()
             try:
                 temp, charset = info['content-type'].split('charset=')
@@ -270,21 +301,27 @@ def ajax_recent_xplore(request):
                 charset = 'utf-8'
 
         except urllib2.URLError, e:
-            xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
+            xplore_error = 'Error: Could not connect to the IEEE Xplore site' \
+                           ' to download articles.'
             xplore_results = []
             if isinstance(e.reason, socket.timeout):
-                raven_client.captureMessage("Request for most recent Xplore article timed out after %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS, extra={"xplore_url" : url})
+                msg = "Request for most recent Xplore article timed out after"\
+                      " %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS
+                raven_client.captureMessage(msg, extra={"xplore_url": url})
             else:
-                raven_client.captureMessage(e, extra={"xplore_url" : url})
+                raven_client.captureMessage(e, extra={"xplore_url": url})
             totalfound = 0
         except KeyError:
-            xplore_error = 'Error: Could not determine content type of the IEEE Xplore response.'
+            xplore_error = 'Error: Could not determine content type of the ' \
+                           'IEEE Xplore response.'
             xplore_results = []
             totalfound = 0
         except socket.timeout:
             xplore_error = 'Error: Connection to IEEE Xplore timed out.'
             xplore_results = []
-            raven_client.captureMessage("Request for most recent Xplore article timed out after %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS, extra={"xplore_url" : url})
+            msg = "Request for most recent Xplore article timed out after %d "\
+                  "seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS
+            raven_client.captureMessage(msg, extra={"xplore_url": url})
             totalfound = 0
 
         else:
@@ -293,15 +330,16 @@ def ajax_recent_xplore(request):
             xml_body = file1.read()
             file1.close()
             xml_body = xml_body.decode(charset).encode('utf-8')
-                
+
             xml1 = xml.dom.minidom.parseString(xml_body)
-                    
+
             xplore_results = []
 
-            for document1 in xml1.documentElement.getElementsByTagName('document'):
+            nodes = xml1.documentElement.getElementsByTagName('document')
+            for document1 in nodes:
                 title = getElementValueByTagName(document1, 'title')
                 pdf = getElementValueByTagName(document1, 'pdf')
-                      
+
                 result = {
                     'name': title,
                     'url': pdf,
@@ -316,7 +354,7 @@ def ajax_recent_xplore(request):
             'url': xplore_result['url']
         }
     except IndexError:
-        if xplore_error != None:
+        if xplore_error is not None:
             data = {
                 'name': settings.XPLORE_TIMEOUT_RECENT_MESSAGE,
                 'url': ''
@@ -329,7 +367,7 @@ def ajax_recent_xplore(request):
 
 @csrf_exempt
 def ajax_xplore_results(request):
-    '''
+    """
     Shows the list of IEEE xplore articles for the given tag.
     @param tag_id: POST var, specifyies the tag.
     @param show_all: POST var, ("true" or "false"): if true, return all rows.
@@ -337,18 +375,19 @@ def ajax_xplore_results(request):
     @param sort: POST var, the sorting field.
     @param sort_desc: POST var, the direction for sorting.
     @param token: POST var, the ajax token to pass through.
-    @param ctype: POST var, the document type to search for. Blank equals all types.
+    @param ctype: POST var, the document type to search for. Blank equals all
+        types.
     @return: HTML output of results.
-    '''
+    """
     tag_id = request.POST.get('tag_id')
-    
+
     if tag_id is not None and tag_id != 'undefined':
         tag = Node.objects.get(id=tag_id)
         term = None
         name = tag.name
     else:
         assert False, 'Must specify tag_id.'
-    
+
     show_all = (request.POST['show_all'] == 'true')
     offset = int(request.POST.get('offset', 0))
     sort = request.POST['sort']
@@ -359,13 +398,15 @@ def ajax_xplore_results(request):
     ctype = None
     if 'ctype' in request.POST:
         ctype = request.POST['ctype']
-    
-    xplore_results, xplore_error, num_results = _get_xplore_results(name, show_all=show_all, offset=offset, sort=sort, sort_desc=sort_desc, ctype=ctype)
-    
+
+    xplore_results, xplore_error, num_results = \
+        _get_xplore_results(name, show_all=show_all, offset=offset, sort=sort,
+                            sort_desc=sort_desc, ctype=ctype)
+
     # DEBUG:
     #xplore_results = []
     #num_results = 0
-    
+
     from django.template.loader import render_to_string
     content = render_to_string('include_xplore_results.html', {
         'MEDIA_URL': settings.MEDIA_URL,
@@ -377,10 +418,10 @@ def ajax_xplore_results(request):
         #'totalfound': totalfound,
         #'show_all': show_all,
     })
-    
+
     # DEBUG:
     #xplore_error = 'BAD ERROR.'
-    
+
     data = {
         'num_results': num_results,
         'html': content,
@@ -388,11 +429,11 @@ def ajax_xplore_results(request):
         'search_term': name,
         'token': token,
     }
-    
+
     return HttpResponse(json.dumps(data), 'application/javascript')
 
+
 def ajax_xplore_authors(tag_id):
-    
     if tag_id is not None and tag_id != 'undefined':
         tag = Node.objects.get(id=tag_id)
         term = None
@@ -411,34 +452,40 @@ def ajax_xplore_authors(tag_id):
 
     if settings.DEBUG:
         log('xplore query: %s' % url)
-        
+
     try:
-        file1 = urllib2.urlopen(url, timeout=settings.EXTERNAL_XPLORE_TIMEOUT_SECS)
-    
-        # Get the charset of the request and decode/re-encode the response text into UTF-8 so we can parse it
+        timeout = settings.EXTERNAL_XPLORE_TIMEOUT_SECS
+        file1 = urllib2.urlopen(url, timeout=timeout)
+
+        # Get the charset of the request and decode/re-encode the response text
+        # into UTF-8 so we can parse it
         info = file1.info()
         try:
             temp, charset = info['content-type'].split('charset=')
         except ValueError:
             charset = 'utf-8'
-
-
     except urllib2.URLError, e:
-        xplore_error = 'Error: Could not connect to the IEEE Xplore site to download articles.'
+        xplore_error = 'Error: Could not connect to the IEEE Xplore site to ' \
+                       'download articles.'
         xplore_results = []
         if isinstance(e.reason, socket.timeout):
-            raven_client.captureMessage("Request for Xplore authors timed out after %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS, extra={"xplore_url" : url})
+            msg = "Request for Xplore authors timed out after %d seconds." % \
+                  settings.EXTERNAL_XPLORE_TIMEOUT_SECS
+            raven_client.captureMessage(msg, extra={"xplore_url": url})
         else:
-            raven_client.captureMessage(e, extra={"xplore_url" : url})
+            raven_client.captureMessage(e, extra={"xplore_url": url})
         totalfound = 0
     except KeyError:
-        xplore_error = 'Error: Could not determine content type of the IEEE Xplore response.'
+        xplore_error = 'Error: Could not determine content type of the IEEE ' \
+                       'Xplore response.'
         xplore_results = []
         totalfound = 0
     except socket.timeout:
         xplore_error = 'Error: Connection to IEEE Xplore timed out.'
         xplore_results = []
-        raven_client.captureMessage("Request for Xplore authors timed out after %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS, extra={"xplore_url" : url})
+        msg = "Request for Xplore authors timed out after %d seconds." % \
+              settings.EXTERNAL_XPLORE_TIMEOUT_SECS
+        raven_client.captureMessage(msg, extra={"xplore_url": url})
         totalfound = 0
 
     else:
@@ -447,25 +494,29 @@ def ajax_xplore_authors(tag_id):
         xml_body = file1.read()
         file1.close()
         xml_body = xml_body.decode(charset, 'replace').encode('utf-8')
-        
+
         xml1 = xml.dom.minidom.parseString(xml_body)
-            
+
         # try:
-        #     totalfound = int(getElementValueByTagName(xml1.documentElement, 'totalfound'))
-            
-        # # If no records found Xplore will return xml like this and the int parse with raise an exeption
-        # # <Error><![CDATA[Cannot go to record 1 since query  only returned 0 records]]></Error>
+        #     totalfound = int(getElementValueByTagName(xml1.documentElement,
+        #                                               'totalfound'))
+
+        # # If no records found Xplore will return xml like this and the int
+        # # parse with raise an exeption
+        # # <Error><![CDATA[Cannot go to record 1 since query  only
+        # # returned 0 records]]></Error>
         # except TypeError:
         #     # Otherwise, give up.
         #     return [], 'No records found', 0
-
 
         xplore_results = []
         total_count = 0
         if xml1.documentElement.nodeName == "Error":
             pass
         else:
-            for author in xml1.documentElement.childNodes[5].childNodes[1].getElementsByTagName('refinement'):
+            author_nodes = xml1.documentElement.childNodes[5].childNodes[1].\
+                getElementsByTagName('refinement')
+            for author in author_nodes:
                 name = getElementValueByTagName(author, 'name')
                 count = getElementValueByTagName(author, 'count')
                 url = getElementValueByTagName(author, 'url')
@@ -475,12 +526,15 @@ def ajax_xplore_authors(tag_id):
                 url = url.replace('&hc=0', '')
                 url = url.replace('md=', 'queryText=')
 
+                m = re.search('&refinements=(\d+)$', url)
+                ext_id = m.group(1) if m else ''
+
                 result = {
+                    'ext_id': ext_id,
                     'name': name,
                     'count': count,
                     'url': url
-                    }
-
+                }
                 xplore_results.append(result)
 
     return xplore_results, xplore_error, len(xplore_results)

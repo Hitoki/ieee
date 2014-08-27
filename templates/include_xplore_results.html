@@ -11,6 +11,7 @@
         {% if result.url %}
             </a>
         {% endif %}
+        <span class="icon-star favorite-job icomoon-icon" data-nodeid="{{ result.ext_id }}"></span>
         <p class="{% cycle 'pub_odd' 'pub_even' %}">{{ result.authors|safe }} {{ result.pub_title|safe }},  {{ result.pub_year|safe }}</p>
         <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{ result.description|safe|default:"(no description)" }}</p>
     </li>

@@ -14,6 +14,7 @@ from allauth.socialaccount.models import SocialApp
 from django.contrib.sites.models import Site
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
+from models import Cache
 import settings
 
 
@@ -714,6 +715,13 @@ def delete_user(request):
     return HttpResponseRedirect(reverse('textui'))
 
 
+@login_required
+def clear_cache(request):
+    Cache.objects.all().delete()
+    return HttpResponse('cache cleared')
+
+
+@login_required
 def allauth_init(request):
     site = Site.objects.filter(id=1)
     site.name = 'newdev.systemicist.com'

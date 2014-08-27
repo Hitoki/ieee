@@ -283,8 +283,8 @@ if settings.DEBUG:
             views.ConferenceApplicationCreateView.as_view(),
             name='create_conference_application'),
 
-        url(r'^debug/delete_user/(\d+)$',
-            views.delete_user),
+        url(r'^debug/clear_cache$',
+            views.clear_cache),
 
         url(r'^debug/allauth_init$',
             views.allauth_init),
