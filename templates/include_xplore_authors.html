@@ -5,12 +5,12 @@
         {% if result.url %}
             <a href="{{ result.url }}" target="_blank" rel="nofollow">
         {% endif %}
-        <p class="{% cycle 'item_odd' 'item_even' %}">
+        <span class="{% cycle 'item_odd' 'item_even' %}">
             <span class="auto-truncate-words {length:165, flyover:true}">{{ result.name|safe }} ({{ result.count }})</span>{% if result.url %}<span class="popup newWinIcon"></span>{% endif %}
-        </p>
+        </span>
         {% if result.url %}
             </a>
         {% endif %}
-        <span class="icon-star favorite-job icomoon-icon" data-nodeid="{{ result.ext_id }}"></span>
+        <span class="icon-star favorite-job icomoon-icon" data-nodeid="{{ result.ext_id }}" title="Favorite Author"></span>
     </li>
 {% endfor %}
