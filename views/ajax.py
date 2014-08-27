@@ -1245,27 +1245,22 @@ def ajax_nodes_xml(request):
 @csrf_exempt
 @login_required
 def ajax_notification_request(request):
-    rnnr = ResourceAdditionNotificationRequest()
     action = request.POST['action']
+    email = request.POST['email']
+    node_id = request.POST['nodeid']
     if action == 'enable':
-        rnnr.email = request.POST['email']
+        rnnr = ResourceAdditionNotificationRequest()
+        rnnr.email = email
         rnnr.date_created = datetime.datetime.now()
-        rnnr.node = Node.objects.get(id=request.POST['nodeid'])
+        rnnr.node = Node.objects.get(id=node_id)
         try:
             rnnr.save()
         except:
             pass
         return HttpResponse('success')
     elif action == 'disable':
-        email = request.POST['email']
-        node = request.POST['nodeid']
-        try:
-            notify_record = ResourceAdditionNotificationRequest.objects. \
-            filter(node_id=node).get(email=email)
-        except:
-            notify_record = None
-        if notify_record:
-            notify_record.delete()
+        ResourceAdditionNotificationRequest.objects.\
+            filter(node_id=node_id, email=email).delete()
         return HttpResponse('success')
     else:
         return HttpResponse('failure')
