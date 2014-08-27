@@ -746,6 +746,7 @@ def ajax_authors_results(request):
     @return: HTML output of results.
     """
     tag_id = request.POST.get('tag_id')
+    token = request.POST['token']
 
     if tag_id is not None and tag_id != 'undefined':
         tag = Node.objects.get(id=tag_id)
@@ -754,14 +755,11 @@ def ajax_authors_results(request):
     else:
         assert False, 'Must specify tag_id.'
 
-    token = request.POST['token']
-
     # jobs_results, jobs_error, num_results = \
     #     _get_xplore_results(name, show_all=show_all, offset=offset,
     #                         sort=sort, sort_desc=sort_desc, ctype=ctype)
 
-    authors, xplore_error, authors_count = \
-        ajax_xplore_authors(request.POST.get('tag_id'))
+    authors, xplore_error, authors_count = ajax_xplore_authors(tag_id)
 
     authors_html = render_to_string('include_xplore_authors.html', {
         'xplore_results': authors
