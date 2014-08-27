@@ -2945,6 +2945,10 @@ a#zenbox_tab {
         color: $dark-gray;
         border: $light-gray;
     }
+    &.secondary-qtip {
+        background: $secondaryColor;
+        border: $secondaryColor;
+    }
 }
 
 .qtip.qtip-tip {

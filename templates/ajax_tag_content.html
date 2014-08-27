@@ -54,11 +54,21 @@
         });
     });
     $('.openAlerts').click(function() {
+        $('.qtip').hide();
         $('.alertMenu').toggle();
     });
     $('.alertMenu .icon-cancel2').click(function() {
         $('.alertMenu').hide();
     })
+    $('.alertOpt').qtip({
+        position: {
+            my: 'middle left',  // Position my top left...
+            at: 'middle right', // at the bottom right of...
+        },
+        style: {
+            classes: 'secondary-qtip'
+        },
+    });
 </script>
 
 {% include 'includes/js/notification_request.html' %}
@@ -75,9 +85,9 @@
         {% endif %}
         <div class="alertMenu">
             <span class="icon-cancel2 icomoon-icon closeAlertMenu"></span>
-            <input type="radio" name="topicOpt" id="nofav" value="nofav"{% if not is_favorite %} checked="checked"{% endif %}> <label for="nofav">Nothing</label><br/>
-            <input type="radio" name="topicOpt" id="fav" value="fav"{% if is_favorite and not enable_alerts %} checked="checked"{% endif %}> <label for="fav">Favorite this Topic</label><br/>
-            <input type="radio" name="topicOpt" id="favAlert" value="favalert"{% if is_favorite and enable_alerts %} checked="checked"{% endif %}> <label for="favAlert">Favorite + Email Alerts</label>
+            <div class="alertOpt" title="Not a favorite topic<br/>and no email alerts"><input type="radio" name="topicOpt" id="nofav" value="nofav"{% if not is_favorite %} checked="checked"{% endif %}> <label for="nofav">Nothing</label></div>
+            <div class="alertOpt" title="Favorite topic but<br/>no email alerts"><input type="radio" name="topicOpt" id="fav" value="fav"{% if is_favorite and not enable_alerts %} checked="checked"{% endif %}> <label for="fav">Favorite this Topic</label></div>
+            <div class="alertOpt" title="Favorite topic<br/>with email alerts"><input type="radio" name="topicOpt" id="favAlert" value="favalert"{% if is_favorite and enable_alerts %} checked="checked"{% endif %}> <label for="favAlert">Favorite + Email Alerts</label></div>
             {% comment %}
             <div class="alertToggles">
                 <span class="alertOn"{% if enable_alerts %} style="display:none;"{% endif %}>
