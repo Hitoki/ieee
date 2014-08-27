@@ -315,7 +315,8 @@ input.text {
             color: #FFD700;
         }
     }
-    .icon-star-whole, {
+    .icon-star-whole,
+    .icon-star {
         margin-right: 5px;
         margin-left: 5px;
     }
@@ -705,7 +706,10 @@ ul#overview-list {
         margin: 0;
     }
     ul {
-        line-height: 1.5;
+        line-height: 2;
+    }
+    .group {
+        padding-top: 5px;
     }
 }
 
