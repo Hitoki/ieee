@@ -186,29 +186,36 @@ class Resource(models.Model):
     standard_status = models.CharField(blank=True, max_length=100)
     priority_to_tag = models.BooleanField()
     completed = models.BooleanField()
+
+    # This field is a text field, displayed to society managers
+    # on Edit Resource page to help them tag.  Not used in any other way.
     keywords = models.CharField(max_length=5000, blank=True)
-    'This field is a text field, displayed to society managers ' \
-    'on Edit Resource page to help them tag.  Not used in any other way.'
+
+    # Optional.
+    # All conferences with the same "conference_series" are grouped together
+    # as a series.
     conference_series = models.CharField(max_length=100, blank=True)
-    'Optional.  ' \
-    'All conferences with the same "conference_series" are grouped together ' \
-    'as a series.'
+
     date = models.DateField(null=True, blank=True)
     date_end = models.DateField(null=True, blank=True)
     city = models.CharField(max_length=50, blank=True, null=True)
     state_province = models.CharField(max_length=50, blank=True, null=True)
     country = models.CharField(max_length=50, blank=True, null=True)
-    pub_id = models.CharField(max_length=1000, blank=True)
-    'Used for Conferences and Standards (optional).  ' \
-    'Matches IEEE Xpore PubID field for matching resources during xplore import.'
 
+    # Used for Conferences and Standards (optional).
+    # Matches IEEE Xpore PubID field for matching resources during xplore
+    # import.
+    pub_id = models.CharField(max_length=1000, blank=True)
+
+    # Reflects the status of this URL.
+    # Can be "good", "bad", or None (not yet checked).
     url_status = models.CharField(blank=True, max_length=100,
                                   choices=URL_STATUS_CHOICES)
-    'Reflects the status of this URL.  ' \
-    'Can be "good", "bad", or None (not yet checked).'
+
     url_date_checked = models.DateTimeField(null=True, blank=True)
+
+    # The error (if any) that occured when checking this URL.
     url_error = models.CharField(null=True, blank=True, max_length=1000)
-    'The error (if any) that occured when checking this URL.'
 
     nodes = models.ManyToManyField('Node', related_name='resources',
                                    through='ResourceNodes')

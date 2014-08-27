@@ -1,5 +1,4 @@
 
-
 def single_row(results, message=None):
     """
     Returns a single row from the results.

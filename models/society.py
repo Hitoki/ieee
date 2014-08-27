@@ -86,8 +86,7 @@ class SocietyManager(models.Manager):
             return self.all()
         elif user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER:
             return self.filter(users=user)
-        else:
-            raise Exception('Unknown role "%s"' % user.get_profile().role)
+        raise Exception('Unknown role "%s"' % user.get_profile().role)
 
     def searchByNameSubstringForUser(self, substring, user):
         """
@@ -107,7 +106,6 @@ class Society(models.Model):
     logo_thumbnail = models.FileField(upload_to='images/sc_logos/thumbnail',
                                       blank=True)
     logo_full = models.FileField(upload_to='images/sc_logos/full', blank=True)
-
     users = models.ManyToManyField(User, related_name='societies', blank=True)
 
     objects = SocietyManager()
@@ -130,7 +128,6 @@ class Society(models.Model):
             min_societies,
             max_societies)
         """
-
         #log('get_tag_ranges()')
 
         # Filter out tags with no resources
@@ -148,7 +145,8 @@ class Society(models.Model):
         for tag in tags:
             if (show_empty_terms and tag.is_taxonomy_term) \
                     or (tag.num_societies1 > 0 and tag.num_resources1 > 0):
-            #if tag.num_resources1 > 0 and tag.num_societies1 > 0 and tag.num_filters1 > 0:
+            # if tag.num_resources1 > 0 and tag.num_societies1 > 0 \
+            #         and tag.num_filters1 > 0:
                 if min_resources is None or tag.num_resources1 < min_resources:
                     min_resources = tag.num_resources1
                 if max_resources is None or tag.num_resources1 > max_resources:
@@ -192,11 +190,8 @@ class Society(models.Model):
         Ignores tags with no resources, no filters, or no societies.
         @return a tuple (min, max)
         """
-
         #p = Profiler('get_combined_sector_ranges()')
-
         #log('get_combined_sector_ranges()')
-
         #p.tick('get_extra_info()')
 
         # Filter out tags with no resources
@@ -209,10 +204,12 @@ class Society(models.Model):
 
         for tag in tags:
             # Ignore all hidden tags
-            #if (show_empty_terms and tag['is_taxonomy_term']) or (tag['num_societies1'] > 0 and tag['num_resources1'] > 0):
+            # if (show_empty_terms and tag['is_taxonomy_term'])
+            #     or (tag['num_societies1'] > 0 and tag['num_resources1'] > 0):
             if (show_empty_terms and tag.is_taxonomy_term) \
                     or (tag.num_societies1 > 0 and tag.num_resources1 > 0):
-            #if tag.num_resources1 > 0 and tag.num_societies1 > 0 and tag.num_filters1 > 0:
+            # if tag.num_resources1 > 0 and tag.num_societies1 > 0 \
+            #         and tag.num_filters1 > 0:
                 if min_score is None or tag.score1 < min_score:
                     min_score = tag.score1
 
@@ -221,8 +218,7 @@ class Society(models.Model):
 
         #log('  min_score: %s' % min_score)
         #log('  max_score: %s' % max_score)
-
-        return (min_score, max_score)
+        return min_score, max_score
 
     class Meta:
         app_label = 'ieeetags'

@@ -15,7 +15,8 @@ def get_node_extra_info(queryset, order_by=None, selected_filter_ids=None):
     """
     tag_node_type_id = NodeType.objects.getFromName(NodeType.TAG).id
     sector_node_type_id = NodeType.objects.getFromName(NodeType.SECTOR).id
-    cluster_node_type_id = NodeType.objects.getFromName(NodeType.TAG_CLUSTER).id
+    cluster_node_type_id = \
+        NodeType.objects.getFromName(NodeType.TAG_CLUSTER).id
 
     if selected_filter_ids is not None:
         selected_filter_ids = [str(id) for id in selected_filter_ids]

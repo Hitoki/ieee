@@ -82,18 +82,22 @@ class ProcessControl(models.Model):
     # Should only be one per name at any given time.
     type = models.CharField(max_length=100,
                             choices=util.make_choices(PROCESS_CONTROL_TYPES))
-    'Log messages output by the process (stored in this DB field only).'
+
+    # Log messages output by the process (stored in this DB field only).
     log = models.CharField(max_length=1000, blank=True)
-    'Filename for the logfile written by the process.'
+
+    # Filename for the logfile written by the process.
     log_filename = models.CharField(max_length=1000, blank=True, default='')
-    'Signal the process to quit.'
+
+    # Signal the process to quit.
     is_alive = models.BooleanField(default=True)
-    'Process will update periodically to the current time.'
+
+    # Process will update periodically to the current time.
     date_updated = models.DateTimeField(null=True, blank=True)
 
     # Process-type specific fields.
-    'This is updated the most-recently processed tag by the Xplore Import ' \
-    'script, allows resuming.'
+    # This is updated the most-recently processed tag by the Xplore Import
+    # script, allows resuming.
     last_processed_tag = models.ForeignKey(Node, null=True, blank=True,
                                            default=None)
 
