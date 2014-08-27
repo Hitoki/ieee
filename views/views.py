@@ -715,11 +715,13 @@ def delete_user(request):
     return HttpResponseRedirect(reverse('textui'))
 
 
+@login_required
 def clear_cache(request):
     Cache.objects.all().delete()
     return HttpResponse('cache cleared')
 
 
+@login_required
 def allauth_init(request):
     site = Site.objects.filter(id=1)
     site.name = 'newdev.systemicist.com'
