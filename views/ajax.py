@@ -1249,21 +1249,14 @@ def ajax_notification_request(request):
     email = request.POST['email']
     node_id = request.POST['nodeid']
     if action == 'enable':
-        rnnr = ResourceAdditionNotificationRequest()
-        rnnr.email = email
-        rnnr.date_created = datetime.datetime.now()
-        rnnr.node = Node.objects.get(id=node_id)
-        try:
-            rnnr.save()
-        except:
-            pass
+        ResourceAdditionNotificationRequest.objects.\
+            get_or_create(email=email, node_id=node_id)
         return HttpResponse('success')
     elif action == 'disable':
         ResourceAdditionNotificationRequest.objects.\
             filter(node_id=node_id, email=email).delete()
         return HttpResponse('success')
-    else:
-        return HttpResponse('failure')
+    return HttpResponse('failure')
 
 
 @csrf_exempt
@@ -1302,8 +1295,7 @@ def ajax_favorite_request(request, ftype):
             ResourceAdditionNotificationRequest.objects.filter(node_id=node). \
                 filter(email=request.user.email).delete()
         return HttpResponse('success')
-    else:
-        return HttpResponse('failure')
+    return HttpResponse('failure')
 
 
 @csrf_exempt
@@ -1322,8 +1314,7 @@ def ajax_external_favorite_request(request):
     elif action == 'disable':
         UserExternalFavorites.objects.filter(**kwargs).delete()
         return HttpResponse('success')
-    else:
-        return HttpResponse('failure')
+    return HttpResponse('failure')
 
 
 @login_required

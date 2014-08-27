@@ -10,7 +10,8 @@ class ResourceAdditionNotificationRequest(models.Model):
     related to a node.
     """
     node = models.ForeignKey(Node, related_name='notification_node')
-    date_created = models.DateTimeField(blank=False, null=False)
+    date_created = models.DateTimeField(blank=False, null=False,
+                                        auto_now_add=True)
     email = models.CharField(blank=False, max_length=255)
 
     class Meta:
