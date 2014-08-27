@@ -201,6 +201,9 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
                 pub_title = getElementValueByTagName(document1, 'pubtitle')
                 pub_year = getElementValueByTagName(document1, 'py')
 
+                m = re.search('\?arnumber=([\w\d]+)$', pdf)
+                ext_id = m.group(1) if m else ''
+
                 # Escape here, since we're going to output this as |safe
                 # on the template
                 # title = cgi.escape(title)
@@ -210,6 +213,7 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
                                    title)
                 result = {
                     'rank': rank,
+                    'ext_id': ext_id,
                     'name': title,
                     'description': abstract,
                     'url': pdf,
@@ -522,11 +526,15 @@ def ajax_xplore_authors(tag_id):
                 url = url.replace('&hc=0', '')
                 url = url.replace('md=', 'queryText=')
 
+                m = re.search('&refinements=(\d+)$', url)
+                ext_id = m.group(1) if m else ''
+
                 result = {
+                    'ext_id': ext_id,
                     'name': name,
                     'count': count,
                     'url': url
-                    }
+                }
                 xplore_results.append(result)
 
     return xplore_results, xplore_error, len(xplore_results)
