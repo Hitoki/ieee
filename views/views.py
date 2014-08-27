@@ -14,6 +14,7 @@ from allauth.socialaccount.models import SocialApp
 from django.contrib.sites.models import Site
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
+from models import Cache
 import settings
 
 
@@ -712,6 +713,11 @@ def delete_user(request):
     messages.add_message(request, messages.SUCCESS,
                          'Your account has been deleted.')
     return HttpResponseRedirect(reverse('textui'))
+
+
+def clear_cache(request):
+    Cache.objects.all().delete()
+    return HttpResponse('cache cleared')
 
 
 def allauth_init(request):
