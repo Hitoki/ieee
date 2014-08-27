@@ -9,11 +9,15 @@ from models.utils import list_to_choices, single_row_or_none
 
 
 class PermissionManager(models.Manager):
-    '''This object stores all permission-related functions.
-    All new permission checks should go here.'''
+    """
+    This object stores all permission-related functions.
+    All new permission checks should go here.
+    """
 
     def user_can_edit_society(self, user, society):
-        'Checks if a user can edit a society.'
+        """
+        Checks if a user can edit a society.
+        """
         if user.is_superuser:
             return True
         elif society in user.societies.all():
@@ -25,15 +29,19 @@ class PermissionManager(models.Manager):
                                              society)
 
     def user_can_edit_society_name(self, user, society):
-        'Only superusers (admins) can edit a society name.'
+        """
+        Only superusers (admins) can edit a society name.
+        """
         if user.is_superuser:
             return True
         else:
             return False
 
     def _user_has_permission(self, user, permission_type, object):
-        '''Generic helper function to check if the user has the a certain
-        permission for an object.'''
+        """
+        Generic helper function to check if the user has the a certain
+        permission for an object.
+        """
         object_type = ContentType.objects.get_for_model(object)
         results = self.filter(user=user, object_id=object.id,
                               object_type=object_type,
@@ -57,8 +65,10 @@ class Permission(models.Model):
 
 
 class Profile(models.Model):
-    '''A user\'s profile.
-    By default, a profile is created whenever a user is created.'''
+    """
+    A user's profile.
+    By default, a profile is created whenever a user is created.
+    """
     ROLE_ADMIN = 'admin'
     ROLE_SOCIETY_ADMIN = 'society_admin'
     ROLE_SOCIETY_MANAGER = 'society_manager'
@@ -106,8 +116,10 @@ class UserManager:
 
 def _create_profile_for_user(sender, instance, signal, created,
                              *args, **kwargs):
-    """Automatically creates a profile for each newly created user.
-    Uses signals to detect user creation."""
+    """
+    Automatically creates a profile for each newly created user.
+    Uses signals to detect user creation.
+    """
     if created:
         try:
             Profile.objects.get(user=instance)

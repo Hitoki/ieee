@@ -3,9 +3,9 @@ from models.node import Node
 
 
 # class TestModel(models.Model):
-#     '''
+#     """
 #     Just for check if migrations is working here, it can be removed later
-#     '''
+#     """
 #     test_field = models.IntegerField(default=0)
 #
 #     class Meta:

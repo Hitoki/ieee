@@ -4,8 +4,10 @@ from models.utils import single_row
 
 class NamedTypeManager(models.Manager):
     def getFromName(self, name):
-        '''Looks up a NamedType that matches the given name.
-        Fails if none found.'''
+        """
+        Looks up a NamedType that matches the given name.
+        Fails if none found.
+        """
         types = self.filter(name=name)
         if len(types) != 1:
             raise Exception('Found %d %s for name "%s", looking for 1 result' %
@@ -14,7 +16,9 @@ class NamedTypeManager(models.Manager):
 
 
 class NamedType(models.Model):
-    'A named type.  Used for named constants in the DB.'
+    """
+    A named type.  Used for named constants in the DB.
+    """
     name = models.CharField(max_length=50)
 
     class Meta:
@@ -27,15 +31,19 @@ class NamedType(models.Model):
 
 class NamedValueTypeManager(NamedTypeManager):
     def getFromValue(self, value):
-        '''Looks up a NamedType that matches the given value.
-        Fails if none found.'''
+        """
+        Looks up a NamedType that matches the given value.
+        Fails if none found.
+        """
         types = self.filter(value=value)
         return single_row(types)
 
 
 class NamedValueType(NamedType):
-    '''A named & valued type.  Each object has a name and value.
-    Used for named/valued constants in the DB.'''
+    """
+    A named & valued type.  Each object has a name and value.
+    Used for named/valued constants in the DB.
+    """
     value = models.CharField(max_length=500)
 
     def __unicode__(self):
@@ -51,7 +59,10 @@ class NodeTypeManager(NamedTypeManager):
 
 
 class NodeType(NamedType):
-    'The constant node types.  Can be a cluster, tag, sector, or root.'
+    """
+    The constant node types.
+    Can be a cluster, tag, sector, or root.
+    """
     TAG_CLUSTER = 'tag_cluster'
     TAG = 'tag'
     SECTOR = 'sector'
@@ -68,8 +79,10 @@ class ResourceTypeManager(NamedTypeManager):
 
 
 class ResourceType(NamedType):
-    '''NamedType model for each of the available resource types:
-    conference, expert, periodical, standard.'''
+    """
+    NamedType model for each of the available resource types:
+    conference, expert, periodical, standard.
+    """
     objects = ResourceTypeManager()
 
     CONFERENCE = 'conference'
@@ -84,7 +97,10 @@ class ResourceType(NamedType):
 
 class FilterManager(NamedValueTypeManager):
     def get_from_name_list(self, names):
-        'Returns a list of filters whose names match the given list of names.'
+        """
+        Returns a list of filters whose names match the given list of
+        names.
+        """
         results = self.filter(name__in=names)
         if len(results) != len(names):
             raise Exception('Did not find matches for all filters:\n'
@@ -112,4 +128,3 @@ class Filter(NamedValueType):
 
     def __unicode__(self):
         return self.name
-

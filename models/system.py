@@ -74,7 +74,9 @@ PROCESS_CONTROL_TYPES = Enum(
 
 
 class ProcessControl(models.Model):
-    'Controls and stores information for a long-running process.'
+    """
+    Controls and stores information for a long-running process.
+    """
 
     # The type (ie. name) of process.
     # Should only be one per name at any given time.

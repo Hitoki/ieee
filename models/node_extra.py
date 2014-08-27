@@ -36,7 +36,8 @@ def get_node_extra_info(queryset, order_by=None, selected_filter_ids=None):
             WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id)
         ,
             (SELECT AVG(child_resources.num_count) FROM (
-                SELECT COUNT(*) as num_count, ieeetags_resource_nodes.node_id as nodeId
+                SELECT COUNT(*) as num_count,
+                    ieeetags_resource_nodes.node_id as nodeId
                 FROM ieeetags_resource_nodes
                 GROUP BY ieeetags_resource_nodes.node_id
             ) AS child_resources WHERE nodeId = ieeetags_node.id )
@@ -51,14 +52,18 @@ def get_node_extra_info(queryset, order_by=None, selected_filter_ids=None):
             WHERE ieeetags_node_societies.node_id = ieeetags_node.id)
         ,
             (SELECT AVG(child_societies.num_count) FROM (
-                SELECT COUNT(*) as num_count, ieeetags_node_societies.node_id as nodeId
+                SELECT COUNT(*) as num_count,
+                    ieeetags_node_societies.node_id as nodeId
                 FROM ieeetags_node_societies
                 GROUP BY ieeetags_node_societies.node_id
             ) AS child_societies WHERE nodeId = ieeetags_node.id)
         ),0)
-    """ %{'tag_node_type_id': tag_node_type_id, 'cluster_node_type_id': cluster_node_type_id, 'sector_node_type_id': sector_node_type_id}
+    """ % {'tag_node_type_id': tag_node_type_id,
+           'cluster_node_type_id': cluster_node_type_id,
+           'sector_node_type_id': sector_node_type_id}
 
-    num_filters_sql = 'SELECT COUNT(*) FROM ieeetags_node_filters WHERE ieeetags_node_filters.node_id = ieeetags_node.id'
+    num_filters_sql = 'SELECT COUNT(*) FROM ieeetags_node_filters ' \
+                      'WHERE ieeetags_node_filters.node_id = ieeetags_node.id'
 
     num_sectors_sql = """
         -- This tag's sectors.
@@ -79,7 +84,9 @@ def get_node_extra_info(queryset, order_by=None, selected_filter_ids=None):
                 GROUP BY n.id
             ) AS child_sectors WHERE nodeId = ieeetags_node.id)
         ),0)
-    """ % {'tag_node_type_id': tag_node_type_id, 'cluster_node_type_id': cluster_node_type_id, 'sector_node_type_id': sector_node_type_id}
+    """ % {'tag_node_type_id': tag_node_type_id,
+           'cluster_node_type_id': cluster_node_type_id,
+           'sector_node_type_id': sector_node_type_id}
 
     num_related_tags_sql = """
         -- Count of this tag's related tags
@@ -90,12 +97,15 @@ def get_node_extra_info(queryset, order_by=None, selected_filter_ids=None):
         ,
            -- AVG of cluster's tags related tag count.
             (SELECT AVG(child_related_tags.num_count) FROM (
-                SELECT COUNT(*) as num_count, ieeetags_node_related_tags.from_node_id AS nodeId
+                SELECT COUNT(*) as num_count,
+                    ieeetags_node_related_tags.from_node_id AS nodeId
                 FROM ieeetags_node_related_tags
                 GROUP BY ieeetags_node_related_tags.from_node_id
             ) AS child_related_tags WHERE nodeId = ieeetags_node.id)
         ),0)
-    """ % {'tag_node_type_id': tag_node_type_id, 'cluster_node_type_id': cluster_node_type_id, 'sector_node_type_id': sector_node_type_id}
+    """ % {'tag_node_type_id': tag_node_type_id,
+           'cluster_node_type_id': cluster_node_type_id,
+           'sector_node_type_id': sector_node_type_id}
 
     return queryset.extra(
         select={
@@ -104,10 +114,15 @@ def get_node_extra_info(queryset, order_by=None, selected_filter_ids=None):
             'num_filters1': num_filters_sql,
             'num_selected_filters1': num_selected_filters1_sql,
             'num_sectors1': num_sectors_sql,
-            #'num_clusters1': 'SELECT COUNT(*) FROM ieeetags_node_parents INNER JOIN ieeetags_node as parent on ieeetags_node_parents.to_node_id = parent.id WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id AND parent.node_type_id = %s' % (cluster_node_type_id),
+            # 'num_clusters1': 'SELECT COUNT(*) FROM ieeetags_node_parents '
+            #                  'INNER JOIN ieeetags_node as parent '
+            #                  'on ieeetags_node_parents.to_node_id = parent.id '
+            #                  'WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id '
+            #                  'AND parent.node_type_id = %s' % (cluster_node_type_id),
             # TODO: Some of the related tags will be hidden (no resources, no filters, etc), so this count is off
             'num_related_tags1': num_related_tags_sql,
-            'num_parents1': 'SELECT COUNT(*) FROM ieeetags_node_parents WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id',
+            'num_parents1': 'SELECT COUNT(*) FROM ieeetags_node_parents '
+                            'WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id',
             'score1': """
                 %(num_resources_sql)s
                 +
@@ -116,9 +131,16 @@ def get_node_extra_info(queryset, order_by=None, selected_filter_ids=None):
                 %(num_related_tags_sql)s
                 +
                 %(num_societies_sql)s
-                """ % {'num_resources_sql': num_resources_sql, 'num_societies_sql': num_societies_sql, 'num_sectors_sql': num_sectors_sql, 'num_related_tags_sql': num_related_tags_sql, 'cluster_node_type_id': cluster_node_type_id, 'sector_node_type_id': sector_node_type_id},
-            #'filtered_num_related_tags1': """
-            #    SELECT COUNT(ieeetags_node_related_tags.id) FROM ieeetags_node_related_tags WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id
+                """ % {'num_resources_sql': num_resources_sql,
+                       'num_societies_sql': num_societies_sql,
+                       'num_sectors_sql': num_sectors_sql,
+                       'num_related_tags_sql': num_related_tags_sql,
+                       'cluster_node_type_id': cluster_node_type_id,
+                       'sector_node_type_id': sector_node_type_id},
+            # 'filtered_num_related_tags1': """
+            #    SELECT COUNT(ieeetags_node_related_tags.id)
+            #    FROM ieeetags_node_related_tags
+            #    WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id
             #    """,
         },
         order_by=order_by,

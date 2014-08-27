@@ -6,7 +6,9 @@ from django.db.models import Q
 
 class FailedLoginLogManager(models.Manager):
     def check_if_disabled(self, username, ip):
-        "Return True if a given username or ip has been disabled."
+        """
+        Return True if a given username or ip has been disabled.
+        """
         #log('check_if_disabled()')
         #log('  username: %s' % username)
         #log('  ip: %s' % ip)
@@ -34,15 +36,18 @@ class FailedLoginLogManager(models.Manager):
             return num > 0
 
     def add_and_check_if_disabled(self, username, ip):
-        """Records a bad login and checks if the max has been reached.
+        """
+        Records a bad login and checks if the max has been reached.
         Returns True if user is under the limit, and False if user is over
-        the limit."""
+        the limit.
+        """
         self._add_failed_login(username, ip)
         return self.check_if_disabled(username, ip)
 
     def _add_failed_login(self, username, ip):
-        "Adds a bad login entry and disables an account if necessary."
-
+        """
+        Adds a bad login entry and disables an account if necessary.
+        """
         #log('_add_failed_login()')
         #log('  username: %s' % username)
         #log('  ip: %s' % ip)
@@ -52,7 +57,7 @@ class FailedLoginLogManager(models.Manager):
                                         FailedLoginLog.FAILED_LOGINS_TIME)
         num_failed_logins = self.filter(
             Q(username=username) | Q(ip=ip),
-            date_created__gt = before,
+            date_created__gt=before,
         ).count()
         #log('  num_failed_logins: %s' % num_failed_logins)
 
@@ -65,9 +70,9 @@ class FailedLoginLogManager(models.Manager):
 
         # Add a log entry for this failed entry
         log = self.create(
-            username = username,
-            ip = ip,
-            disabled = disabled,
+            username=username,
+            ip=ip,
+            disabled=disabled,
         )
         log.save()
 
@@ -75,10 +80,11 @@ class FailedLoginLogManager(models.Manager):
 
 
 class FailedLoginLog(models.Model):
-    '''Keeps track of past failed logins.
+    """
+    Keeps track of past failed logins.
     Suspends future logins for a certain time if there are too many
-    failed logins.'''
-
+    failed logins.
+    """
     # This is the number of seconds in the past to check for bad logins
     FAILED_LOGINS_TIME = 10 * 60
     # The number of minutes to disable an account for
@@ -98,7 +104,9 @@ class FailedLoginLog(models.Model):
 
 
 class UrlCheckerLog(models.Model):
-    'Keeps track of the current URL-checking thread\'s status.'
+    """
+    Keeps track of the current URL-checking thread\'s status.
+    """
     date_started = models.DateTimeField(auto_now_add=True)
     date_ended = models.DateTimeField(blank=True, null=True)
     date_updated = models.DateTimeField(auto_now=True)
@@ -109,7 +117,9 @@ class UrlCheckerLog(models.Model):
 
 
 class ProfileLog(models.Model):
-    'Debugging class, used to keep track of profiling pages.'
+    """
+    Debugging class, used to keep track of profiling pages.
+    """
     url = models.CharField(max_length=1000)
     elapsed_time = models.FloatField()
     user_agent = models.CharField(max_length=1000)

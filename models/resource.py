@@ -5,30 +5,36 @@ from models.types import ResourceType
 
 class ResourceManager(models.Manager):
     def get_conferences(self):
-        'Returns all conferences.'
+        """
+        Returns all conferences.
+        """
         resource_type = \
             ResourceType.objects.getFromName(ResourceType.CONFERENCE)
         return self.filter(resource_type=resource_type)
 
     def get_standards(self):
-        'Returns all standards.'
+        """
+        Returns all standards.
+        """
         resource_type = \
             ResourceType.objects.getFromName(ResourceType.STANDARD)
         return self.filter(resource_type=resource_type)
 
     def get_periodicals(self):
-        'Returns all periodicals.'
+        """
+        Returns all periodicals.
+        """
         resource_type = \
             ResourceType.objects.getFromName(ResourceType.PERIODICAL)
         return self.filter(resource_type=resource_type)
 
     def getForNode(self, node, resourceType=None):
-        '''
+        """
         Gets all resources for the given node.
         Optionally filter by resource type.
         @param node: The node to search for.
         @param resourceType: (Optional) The type of resource to filter by.
-        '''
+        """
         if type(resourceType) is str:
             resourceType = ResourceType.objects.getFromName(resourceType)
         if resourceType is not None:
@@ -37,19 +43,19 @@ class ResourceManager(models.Manager):
             return self.filter(nodes=node)
 
     def getNumForNode(self, node, resourceType=None):
-        '''
+        """
         Get number of resources for the given node.
         @param node: The node to search for.
         @param resourceType: (Optional) The type of resource to filter by.
-        '''
+        """
         return len(self.getForNode(node, resourceType))
 
     def getForSociety(self, society, resourceType=None):
-        '''
+        """
         Get all resources for the society.
         @param node: The node to search for.
         @param resourceType: (Optional) The type of resource to filter by.
-        '''
+        """
         if type(resourceType) is str:
             resourceType = ResourceType.objects.getFromName(resourceType)
         if resourceType is not None:
@@ -58,15 +64,17 @@ class ResourceManager(models.Manager):
             return self.filter(society=society)
 
     def getNumForSociety(self, society, resourceType=None):
-        '''
+        """
         Get the number of resources for the society.
         @param node: The node to search for.
         @param resourceType: (Optional) The type of resource to filter by.
-        '''
+        """
         return len(self.getForSociety(society, resourceType))
 
     def searchByNameSubstring(self, substring):
-        'Return resources that match the search string.'
+        """
+        Return resources that match the search string.
+        """
         if substring.strip() == '':
             return None
         return self.filter(name__icontains=substring)
@@ -124,7 +132,11 @@ class ResourceManager(models.Manager):
                 return resources[0]
             else:
                 # Check if any resources have a NULL year
-                resources = Resource.objects.filter(resource_type__name=ResourceType.CONFERENCE, conference_series=series, year=None).order_by('-date', '-year', '-id')
+                resources = \
+                    Resource.objects.filter(
+                        resource_type__name=ResourceType.CONFERENCE,
+                        conference_series=series, year=None).\
+                    order_by('-date', '-year', '-id')
                 if resources.count():
                     return resources[0]
                 else:
@@ -133,7 +145,9 @@ class ResourceManager(models.Manager):
 
     def get_non_current_conferences_for_series(self, series,
                                                current_conference=None):
-        'Get all non-current conferences in the given series.'
+        """
+        Get all non-current conferences in the given series.
+        """
         #print 'get_non_current_conferences_for_series()'
         #print '  series: %s' % series
         #print '  current_conference: %s' % current_conference
@@ -164,7 +178,7 @@ class Resource(models.Model):
     ]
 
     resource_type = models.ForeignKey(ResourceType)
-    ieee_id = models.CharField(max_length=500,blank=True, null=True)
+    ieee_id = models.CharField(max_length=500, blank=True, null=True)
     name = models.CharField(max_length=500)
     description = models.CharField(blank=True, max_length=5000)
     url = models.CharField(blank=True, max_length=1000)
@@ -201,6 +215,7 @@ class Resource(models.Model):
     societies = models.ManyToManyField('Society', related_name='resources')
 
     objects = ResourceManager()
+
     def __unicode__(self):
         return self.name
 
@@ -219,4 +234,3 @@ class ResourceNodes(models.Model):
         app_label = 'ieeetags'
         db_table = 'ieeetags_resource_nodes'
         ordering = ['node__name', 'resource__name']
-

@@ -1,13 +1,13 @@
 
 
 def single_row(results, message=None):
-    '''
+    """
     Returns a single row from the results.
     Raises an error if there is 0 or >1 rows.
     @param results: queryset.
     @param message: (Optional) Message to include in the exception
                     if there are 0 or >1 results.
-    '''
+    """
     if len(results) != 1:
         if message is None:
             raise Exception('Require 1 row, found %i.' % len(results))
@@ -18,10 +18,10 @@ def single_row(results, message=None):
 
 
 def single_row_or_none(results):
-    '''
+    """
     Returns a single row from the results, or None if there are 0 results.
     Raises an exception if there are >1 results.
-    '''
+    """
     if len(results) > 1:
         raise Exception('Require 1 row, found %d' % len(results))
     elif len(results) == 0:

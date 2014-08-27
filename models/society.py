@@ -8,8 +8,8 @@ from models.utils import single_row_or_none
 
 class NodeSocietiesManager(models.Manager):
     def update_for_node(self, node, societies):
-        societies_to_delete = self.filter(node=node).exclude(society__in=societies)
-        societies_to_delete.delete()
+        # societies to delete
+        self.filter(node=node).exclude(society__in=societies).delete()
 
         for society in societies:
             ns, created = self.get_or_create(node=node, society=society)
@@ -28,7 +28,10 @@ class NodeSocietiesManager(models.Manager):
                 ns.save()
 
     def update_for_society_cluster(self, nodes, society, cluster):
-        nodes_to_delete = self.filter(society=society, node__parents__id__contains=cluster.id).exclude(node__in=nodes)
+        nodes_to_delete = \
+            self.filter(society=society,
+                        node__parents__id__contains=cluster.id).\
+            exclude(node__in=nodes)
         nodes_to_delete.delete()
 
         for node in nodes:
@@ -54,21 +57,29 @@ class NodeSocieties(models.Model):
 
 class SocietyManager(models.Manager):
     def getFromName(self, name):
-        'Returns the society with the given name, or None.'
+        """
+        Returns the society with the given name, or None.
+        """
         return single_row_or_none(self.filter(name=name))
 
     def getFromAbbreviation(self, abbr):
-        'Returns the society with the given abbreviation, or None.'
+        """
+        Returns the society with the given abbreviation, or None.
+        """
         return single_row_or_none(self.filter(abbreviation=abbr))
 
     def searchByNameSubstring(self, substring):
-        'Returns any societies that match the search phrase.'
+        """
+        Returns any societies that match the search phrase.
+        """
         if substring.strip() == '':
             return None
         return self.filter(name__icontains=substring)
 
     def getForUser(self, user):
-        'Returns all societies that the given user has access to.'
+        """
+        Returns all societies that the given user has access to.
+        """
         if user.get_profile().role == Profile.ROLE_ADMIN:
             return self.all()
         elif user.get_profile().role == Profile.ROLE_SOCIETY_ADMIN:
@@ -79,8 +90,10 @@ class SocietyManager(models.Manager):
             raise Exception('Unknown role "%s"' % user.get_profile().role)
 
     def searchByNameSubstringForUser(self, substring, user):
-        '''Returns all societies that the given user has access to and that
-        match the search phrase.'''
+        """
+        Returns all societies that the given user has access to and that
+        match the search phrase.
+        """
         if substring.strip() == '':
             return None
         return self.getForUser(user).filter(name__icontains=substring)
@@ -90,10 +103,10 @@ class Society(models.Model):
     name = models.CharField(max_length=500)
     description = models.CharField(blank=True, max_length=5000)
     abbreviation = models.CharField(max_length=20)
-    url = models.CharField(blank=True,max_length=1000)
+    url = models.CharField(blank=True, max_length=1000)
     logo_thumbnail = models.FileField(upload_to='images/sc_logos/thumbnail',
                                       blank=True)
-    logo_full = models.FileField(upload_to='images/sc_logos/full',blank=True)
+    logo_full = models.FileField(upload_to='images/sc_logos/full', blank=True)
 
     users = models.ManyToManyField(User, related_name='societies', blank=True)
 
@@ -133,7 +146,8 @@ class Society(models.Model):
         max_societies = None
 
         for tag in tags:
-            if (show_empty_terms and tag.is_taxonomy_term) or (tag.num_societies1 > 0 and tag.num_resources1 > 0):
+            if (show_empty_terms and tag.is_taxonomy_term) \
+                    or (tag.num_societies1 > 0 and tag.num_resources1 > 0):
             #if tag.num_resources1 > 0 and tag.num_societies1 > 0 and tag.num_filters1 > 0:
                 if min_resources is None or tag.num_resources1 < min_resources:
                     min_resources = tag.num_resources1
@@ -145,9 +159,11 @@ class Society(models.Model):
                 if max_sectors is None or tag.num_sectors1 > max_sectors:
                     max_sectors = tag.num_sectors1
 
-                if min_related_tags is None or tag.num_related_tags1 < min_related_tags:
+                if min_related_tags is None \
+                        or tag.num_related_tags1 < min_related_tags:
                     min_related_tags = tag.num_related_tags1
-                if max_related_tags is None or tag.num_related_tags1 > max_related_tags:
+                if max_related_tags is None \
+                        or tag.num_related_tags1 > max_related_tags:
                     max_related_tags = tag.num_related_tags1
 
                 if min_societies is None or tag.num_societies1 < min_societies:
@@ -194,7 +210,8 @@ class Society(models.Model):
         for tag in tags:
             # Ignore all hidden tags
             #if (show_empty_terms and tag['is_taxonomy_term']) or (tag['num_societies1'] > 0 and tag['num_resources1'] > 0):
-            if (show_empty_terms and tag.is_taxonomy_term) or (tag.num_societies1 > 0 and tag.num_resources1 > 0):
+            if (show_empty_terms and tag.is_taxonomy_term) \
+                    or (tag.num_societies1 > 0 and tag.num_resources1 > 0):
             #if tag.num_resources1 > 0 and tag.num_societies1 > 0 and tag.num_filters1 > 0:
                 if min_score is None or tag.score1 < min_score:
                     min_score = tag.score1

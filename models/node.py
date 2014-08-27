@@ -439,7 +439,7 @@ class Node(models.Model):
             for tag in self.child_nodes.all():
                 if filter in tag.filters.all():
                     exists = True
-            if exists == False:
+            if exists is False:
                 self.filters.remove(filter)
 
         # Add any new filters
@@ -660,10 +660,10 @@ class Node(models.Model):
             if (show_empty_terms and tag['is_taxonomy_term']) or \
                     (tag['num_societies1'] > 0 and tag['num_resources1'] > 0):
                 if min_resources is None or \
-                                tag['num_resources1'] < min_resources:
+                        tag['num_resources1'] < min_resources:
                     min_resources = tag['num_resources1']
                 if max_resources is None or \
-                                tag['num_resources1'] > max_resources:
+                        tag['num_resources1'] > max_resources:
                     max_resources = tag['num_resources1']
 
                 if min_sectors is None or tag['num_sectors1'] < min_sectors:
@@ -672,17 +672,17 @@ class Node(models.Model):
                     max_sectors = tag['num_sectors1']
 
                 if min_related_tags is None or \
-                                tag['num_related_tags1'] < min_related_tags:
+                        tag['num_related_tags1'] < min_related_tags:
                     min_related_tags = tag['num_related_tags1']
                 if max_related_tags is None or \
-                                tag['num_related_tags1'] > max_related_tags:
+                        tag['num_related_tags1'] > max_related_tags:
                     max_related_tags = tag['num_related_tags1']
 
                 if min_societies is None or \
-                                tag['num_societies1'] < min_societies:
+                        tag['num_societies1'] < min_societies:
                     min_societies = tag['num_societies1']
                 if max_societies is None or \
-                                tag['num_societies1'] > max_societies:
+                        tag['num_societies1'] > max_societies:
                     max_societies = tag['num_societies1']
 
         return (min_resources, max_resources, min_sectors, max_sectors,
