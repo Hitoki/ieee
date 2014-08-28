@@ -11,6 +11,8 @@
         {% if result.url %}
             </a>
         {% endif %}
-        <span class="icon-star favorite-job icomoon-icon" data-nodeid="{{ result.ext_id }}" title="Favorite Author"></span>
+        {% if user.is_authenticated %}
+            <span class="icon-star favorite-author icomoon-icon" data-nodeid="{{ result.ext_id }}" title="Favorite Author"></span>
+        {% endif %}
     </li>
 {% endfor %}
