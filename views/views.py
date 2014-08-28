@@ -650,15 +650,18 @@ def get_jobs_info(tag, offset=None, user=None):
     jobs_html = '<ul>'
     for job in jobs:
         job_id = job['Id']
-        if job_id in user_favorites:
-            job['StarClass'] = 'icon-star-whole enabled'
-        else:
-            job['StarClass'] = 'icon-star'
+        job['Star'] = ''
+        if user and user.is_authenticated():
+            if job_id in user_favorites:
+                job['StarClass'] = 'icon-star-whole enabled'
+            else:
+                job['StarClass'] = 'icon-star'
+            job['Star'] = \
+                '<span class="%(StarClass)s favorite-job icomoon-icon" '\
+                'data-nodeid="%(Id)s"></span>' % job
         jobs_html += '<li><a href="%(Url)s" target="_blank" class="featured">'\
                      '%(JobTitle)s<span class="popup newWinIcon"></span></a>'\
-                     '<span class="%(StarClass)s favorite-job icomoon-icon" '\
-                     'data-nodeid="%(Id)s"></span>'\
-                     '<p>%(Company)s</p>\n' % job
+                     '%(Star)s<p>%(Company)s</p>\n' % job
     jobs_html += '</ul>'
     return jobs_html, jobs_count, jobs_url
 
