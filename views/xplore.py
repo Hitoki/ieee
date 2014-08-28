@@ -189,10 +189,16 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
                 # Otherwise, give up.
                 return [], 'No records found', 0
 
+            if ctype == 'Educational Courses':
+                external_resource_type = 'educational course'
+            else:
+                external_resource_type = 'article'
+
             user_favorites = []
             if user and user.is_authenticated():
                 user_favorites = UserExternalFavorites.objects.\
-                    filter(user=user, external_resource_type='article').\
+                    filter(user=user,
+                           external_resource_type=external_resource_type).\
                     values_list('external_id', flat=True)
 
             xplore_results = []
@@ -228,6 +234,7 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
                     'authors': authors,
                     'pub_title': pub_title,
                     'pub_year': pub_year,
+                    'external_resource_type': external_resource_type,
                     'is_favorite': is_favorite,
                 }
                 xplore_results.append(result)

@@ -11,7 +11,8 @@
         {% endif %}
         {% if user.is_authenticated %}
             <span class="{% if result.is_favorite %}icon-star-whole enabled{% else %}icon-star{% endif %} favorite-article icomoon-icon"
-                  data-nodeid="{{ result.ext_id }}" data-rtype="article"
+                  data-nodeid="{{ result.ext_id }}"
+                  data-rtype="{{ result.external_resource_type }}"
                   title="Favorite Xplore Article"></span>
         {% endif %}
         <span class="articleDesc">
