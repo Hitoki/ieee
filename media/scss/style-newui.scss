@@ -85,6 +85,7 @@ p.first {
 .newWinTrigger {
     .popup {
         color: $linkColor;
+        pointer-events: none;
     }
     &:hover {
         a {
