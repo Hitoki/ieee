@@ -719,6 +719,9 @@ div.image-container {
     div.group ul li {
         list-style-type: none;
     }
+    .articleDesc {
+        display: block;
+    }
 }
   
 .xplore-full-results-page p.item_even, .xplore-full-results-page p.item_odd {
@@ -2598,6 +2601,7 @@ td.machine-generated-column {
 .truncatedText {
     border-bottom: 1px dotted black;
     display: inline;
+    cursor: default;
 }
 
 .ui-tooltip.ui-tooltip-default {
