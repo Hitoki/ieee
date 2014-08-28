@@ -12,7 +12,7 @@
             </a>
         {% endif %}
         {% if user.is_authenticated %}
-            <span class="icon-star favorite-author icomoon-icon" data-nodeid="{{ result.ext_id }}" data-rtype="author" title="Favorite Author"></span>
+            <span class="{% if result.is_favorite %}icon-star-whole enabled{% else %}icon-star{% endif %} favorite-author icomoon-icon" data-nodeid="{{ result.ext_id }}" data-rtype="author" title="Favorite Author"></span>
         {% endif %}
     </li>
 {% endfor %}

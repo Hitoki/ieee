@@ -708,7 +708,6 @@ def ajax_tv_results(request):
 
     try:
         tv_xml = fromstring(urllib2.urlopen(dev_url).read())
-
         results = tv_xml.findall('search-item')
         tv_count = len(results)
 
@@ -759,7 +758,8 @@ def ajax_authors_results(request):
     #     _get_xplore_results(name, show_all=show_all, offset=offset,
     #                         sort=sort, sort_desc=sort_desc, ctype=ctype)
 
-    authors, xplore_error, authors_count = ajax_xplore_authors(tag_id)
+    authors, xplore_error, authors_count = \
+        ajax_xplore_authors(tag_id, request.user)
 
     authors_html = render_to_string('include_xplore_authors.html', {
         'xplore_results': authors,

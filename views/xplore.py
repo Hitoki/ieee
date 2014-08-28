@@ -13,6 +13,7 @@ from django.middleware import csrf
 from django.views.decorators.csrf import csrf_exempt
 
 #from profiler import Profiler
+from models import UserExternalFavorites
 from models.node import Node
 from models.types import NodeType
 import settings
@@ -432,7 +433,7 @@ def ajax_xplore_results(request):
     return HttpResponse(json.dumps(data), 'application/javascript')
 
 
-def ajax_xplore_authors(tag_id):
+def ajax_xplore_authors(tag_id, user=None):
     if tag_id is not None and tag_id != 'undefined':
         tag = Node.objects.get(id=tag_id)
         term = None
@@ -513,6 +514,11 @@ def ajax_xplore_authors(tag_id):
         if xml1.documentElement.nodeName == "Error":
             pass
         else:
+            user_favorites = []
+            if user and user.is_authenticated():
+                user_favorites = UserExternalFavorites.objects.\
+                    filter(user=user, external_resource_type='author').\
+                    values_list('external_id', flat=True)
             author_nodes = xml1.documentElement.childNodes[5].childNodes[1].\
                 getElementsByTagName('refinement')
             for author in author_nodes:
@@ -527,12 +533,14 @@ def ajax_xplore_authors(tag_id):
 
                 m = re.search('&refinements=(\d+)$', url)
                 ext_id = m.group(1) if m else ''
+                is_favorite = ext_id in user_favorites
 
                 result = {
                     'ext_id': ext_id,
                     'name': name,
                     'count': count,
-                    'url': url
+                    'url': url,
+                    'is_favorite': is_favorite,
                 }
                 xplore_results.append(result)
 
