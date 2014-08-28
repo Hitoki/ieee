@@ -104,10 +104,10 @@
                     <span class="topic-icons">
                         {% if topic.has_alert %}
                             <span class="icon-alert subscribe enabled icomoon-icon"
-                                  title="Unsubscribe from alerts" data-nodeid="{{ topic.id }}"></span>
+                                  title="Stop receiving email alerts for this topic" data-nodeid="{{ topic.id }}"></span>
                         {% else %}
                             <span class="icon-alert2 subscribe icomoon-icon"
-                                  title="Subscribe to alerts" data-nodeid="{{ topic.id }}"></span>
+                                  title="We'll email you when resources are added to this topic" data-nodeid="{{ topic.id }}"></span>
                         {% endif %}
                         <span class="icon-cancel2 unfavorite-topic icomoon-icon" title="Unfavorite topic" data-nodeid="{{ topic.id }}"></span>
                     </span>
@@ -123,7 +123,7 @@
                     <a href="{{ society.url }}" rel="nofollow">{{ society.name }}</a>
                     <span class="topic-icons">
                         <span class="icon-cancel2 unfavorite-society icomoon-icon"
-                              title="Unfavorite organization" data-nodeid="{{ society.id }}"></span>
+                              title="Remove organization from your favorites" data-nodeid="{{ society.id }}"></span>
                     </span>
                 </li>
             {% endfor %}
@@ -138,7 +138,7 @@
                     <li><a href="{{ resource.url }}" target="_blank" rel="nofollow">{{ resource.name }}</a><span class="popup newWinIcon"></span>
                         <span class="topic-icons">
                             <span class="icon-cancel2 unfavorite-resource icomoon-icon"
-                                  title="Unfavorite {{ resource_type.grouper|lower }}" data-nodeid="{{ resource.id }}"></span>
+                                  title="Remove {{ resource_type.grouper|lower }} from your favorites" data-nodeid="{{ resource.id }}"></span>
                         </span>
                     </li>
                 {% endfor %}
@@ -154,7 +154,7 @@
                     <li><a href="{{ resource.get_url }}" target="_blank" rel="nofollow">{{ resource.title }}</a><span class="popup newWinIcon"></span>
                         <span class="topic-icons">
                             <span class="icon-cancel2 unfavorite-external icomoon-icon"
-                                  title="Unfavorite {{ resource_type.grouper|lower }}" data-nodeid="{{ resource.id }}"></span>
+                                  title="Remove {{ resource_type.grouper|lower }} from your favorites" data-nodeid="{{ resource.id }}"></span>
                         </span>
                     </li>
                 {% endfor %}
