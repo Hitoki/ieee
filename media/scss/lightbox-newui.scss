@@ -885,7 +885,7 @@ ul#overview-list {
     white-space: nowrap;
     display: none;
     z-index: 5;
-    width: 165px;
+    width: 260px;
     line-height: 2;
     span span {
         cursor: pointer;
@@ -897,8 +897,11 @@ ul#overview-list {
         cursor: pointer;
         color: $secondaryColor;
     }
-}
-
-.closeAlertMenu {
-    float: right;
+    .center {
+        text-align: center;
+    }
+    .closeAlertMenu:hover {
+        cursor: pointer;
+        text-decoration: underline;
+    }
 }
