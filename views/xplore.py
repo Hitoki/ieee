@@ -395,9 +395,7 @@ def ajax_xplore_results(request):
         sort = None
     sort_desc = (request.POST['sort_desc'] == 'true')
     token = request.POST['token']
-    ctype = None
-    if 'ctype' in request.POST:
-        ctype = request.POST['ctype']
+    ctype = request.POST.get('ctype')
 
     xplore_results, xplore_error, num_results = \
         _get_xplore_results(name, show_all=show_all, offset=offset, sort=sort,

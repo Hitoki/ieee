@@ -64,10 +64,8 @@ def error_view(request):
     """
     Custom error view for production servers.  Sends an email to admins for
     every error with a traceback.
-
     Only active when settings.DEBUG == True.
     """
-
     # Get the latest exception from Python system service
     (type, value, traceback1) = sys.exc_info()
     traceback1 = '.'.join(traceback.format_exception(type, value, traceback1))
@@ -339,9 +337,7 @@ def tags_all(request):
     Displays a list of "high_potency" links to the tag "wikipedia-style"
     pages (see views.tag_landing)
     """
-
     nodes = Node.objects.filter(high_potency=True)
-
     return render_to_response('tags_all.html', {"tags": nodes},
                               context_instance=RequestContext(request))
 
@@ -404,7 +400,6 @@ def print_resource(request, tag_id, resource_type,
     @param resource_type: Which resource(s) to include.
     """
     tag = Node.objects.get(id=tag_id)
-
     sectors = Node.objects.none()
     related_tags = Node.objects.none()
     societies = Society.objects.none()
@@ -495,8 +490,8 @@ def print_resource(request, tag_id, resource_type,
                        '<span class="popup newWinIcon"></span>' \
                        '</a><br>\n' % (thumb, url, title)
 
-        ebooks = Resource.objects.getForNode(tag,
-                                             resourceType=ResourceType.EBOOK)
+        ebooks = \
+            Resource.objects.getForNode(tag, resourceType=ResourceType.EBOOK)
     if resource_type == 'xplore' or resource_type == 'all':
         xplore_results, xplore_error, totalfound = \
             _get_xplore_results(tag.name, False)
@@ -506,10 +501,10 @@ def print_resource(request, tag_id, resource_type,
 
     page_date = datetime.now()
 
-    related_items_count = sectors.count() + related_tags.count() + \
-                          societies.count() + conf_count + \
-                          periodicals.count() + standards.count() + \
-                          totaledufound + totalfound
+    related_items_count = \
+        sectors.count() + related_tags.count() + societies.count() + \
+        conf_count + periodicals.count() + standards.count() + totaledufound +\
+        totalfound
 
     if resource_type == 'jobs' or resource_type == 'all':
         jobs_html, jobs_count, jobs_url = get_jobs_info(tag)
@@ -598,7 +593,6 @@ def debug_send_email(request):
     DEBUG: Tests sending an email.
     """
     assert request.user.is_superuser, 'Page disabled for non superusers.'
-
     log('sending email to "%s"' % request.user.email)
     subject = 'debug_send_email() to "%s"' % request.user.email
     message = 'debug_send_email() to "%s"' % request.user.email
@@ -635,7 +629,6 @@ def test_browsers(request):
 
 
 def get_jobs_info(tag, offset=None, user=None):
-    jobs_html = ''
     if offset:
         jobs_url = "%s?%s&rows=25&page=%s&format=json" % \
                    (settings.JOBS_URL,
@@ -645,8 +638,8 @@ def get_jobs_info(tag, offset=None, user=None):
         jobs_url = "%s?%s&rows=25&format=json" % \
                    (settings.JOBS_URL,
                     urllib.urlencode({"kwsMustContainPhrase": tag.name}))
-    file1 = urllib2.urlopen(jobs_url).read()
-    jobs_json = json.loads(file1)
+    content = urllib2.urlopen(jobs_url).read()
+    jobs_json = json.loads(content)
     jobs_count = jobs_json.get('Total')
     jobs = jobs_json.get('Jobs')
     user_favorites = []
