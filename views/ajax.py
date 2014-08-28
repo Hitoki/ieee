@@ -762,7 +762,8 @@ def ajax_authors_results(request):
     authors, xplore_error, authors_count = ajax_xplore_authors(tag_id)
 
     authors_html = render_to_string('include_xplore_authors.html', {
-        'xplore_results': authors
+        'xplore_results': authors,
+        'user': request.user,
     })
 
     # DEBUG:

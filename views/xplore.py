@@ -409,6 +409,7 @@ def ajax_xplore_results(request):
     content = render_to_string('include_xplore_results.html', {
         'MEDIA_URL': settings.MEDIA_URL,
         'xplore_results': xplore_results,
+        'user': request.user,
         #'name': name,
         # TODO: This should use quote(), not replace()...
         #'search_term': name.replace(' ', '+'),

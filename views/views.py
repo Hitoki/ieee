@@ -658,7 +658,7 @@ def get_jobs_info(tag, offset=None, user=None):
                 job['StarClass'] = 'icon-star'
             job['Star'] = \
                 '<span class="%(StarClass)s favorite-job icomoon-icon" '\
-                'data-nodeid="%(Id)s"></span>' % job
+                'data-nodeid="%(Id)s" data-rtype="job"></span>' % job
         jobs_html += '<li><a href="%(Url)s" target="_blank" class="featured">'\
                      '%(JobTitle)s<span class="popup newWinIcon"></span></a>'\
                      '%(Star)s<p>%(Company)s</p>\n' % job

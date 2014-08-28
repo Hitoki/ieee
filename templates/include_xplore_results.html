@@ -10,7 +10,7 @@
         </a>
         {% endif %}
         {% if user.is_authenticated %}
-            <span class="icon-star favorite-xplore icomoon-icon" data-nodeid="{{ result.ext_id }}" title="Favorite Xplore Article"></span>
+            <span class="icon-star favorite-article icomoon-icon" data-nodeid="{{ result.ext_id }}" data-rtype="article" title="Favorite Xplore Article"></span>
         {% endif %}
         <span class="{% cycle 'pub_odd' 'pub_even' %}">{{ result.authors|safe }} {{ result.pub_title|safe }},  {{ result.pub_year|safe }}</span>
         <span class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{ result.description|safe|default:"(no description)" }}</span>
