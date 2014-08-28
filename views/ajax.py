@@ -708,18 +708,38 @@ def ajax_tv_results(request):
 
     try:
         tv_xml = fromstring(urllib2.urlopen(dev_url).read())
+        # print '#' * 100
+        # print urllib2.urlopen(dev_url).read()
         results = tv_xml.findall('search-item')
         tv_count = len(results)
+
+        user_favorites = []
+        if request.user.is_authenticated():
+            user_favorites = UserExternalFavorites.objects.\
+                filter(user=request.user, external_resource_type='video').\
+                values_list('external_id', flat=True)
 
         tv_html = ""
         for result in results:
             thumb = result.find('images').find('thumbnail').text
             title = result.find('title').text
             url = result.find('web-page').text
-            tv_html += '<img src="%s" height="60" width="105"/>' \
-                       '<a href="%s" target="_blank">%s ' \
+            ext_id = result.find('video-id').text
+            star = ''
+            if request.user.is_authenticated():
+                if ext_id in user_favorites:
+                    star_class = 'icon-star-whole enabled'
+                else:
+                    star_class = 'icon-star'
+                star = \
+                    '<span class="%(star_class)s favorite-video icomoon-icon"'\
+                    ' data-nodeid="%(ext_id)s" data-rtype="video"></span>' % \
+                    dict(star_class=star_class, ext_id=ext_id)
+            tv_html += '<img src="%(thumb)s" height="60" width="105"/>' \
+                       '<a href="%(url)s" target="_blank">%(title)s ' \
                        '<span class="popup newWinIcon">' \
-                       '</span></a><br>\n' % (thumb, url, title)
+                       '</span></a>%(star)s<br>\n' % \
+                       dict(thumb=thumb, url=url, title=title, star=star)
     except:
         tv_count = 0
         tv_html = ''

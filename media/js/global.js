@@ -548,7 +548,8 @@ ResourceLoader.prototype.loadContent = function (force) {
             success: function (data) {
                 console.log(url + ' -> ajax call success');
                 resourceloader.onLoadData(data);
-                $('.favorite-job, .favorite-author, .favorite-article').off('click').on('click', function(){
+                var $favorite_stars = $('.favorite-job, .favorite-author, .favorite-article, .favorite-video');
+                $favorite_stars.off('click').on('click', function(){
                     var action;
                     var externalId = $(this).data('nodeid');
                     var externalResourceType = $(this).data('rtype');
