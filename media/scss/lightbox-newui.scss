@@ -185,6 +185,7 @@ input.text {
 .unfavorite-job,
 .icon-cancel2 {
     color: $light-gray;
+    cursor: pointer;
     &:hover {
         color: red;
     }
