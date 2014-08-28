@@ -729,12 +729,14 @@ def ajax_tv_results(request):
             if request.user.is_authenticated():
                 if ext_id in user_favorites:
                     star_class = 'icon-star-whole enabled'
+                    title_text = 'Remove job from your favorites'
                 else:
                     star_class = 'icon-star'
+                    title_text = 'Add job to your favorites'
                 star = \
                     '<span class="%(star_class)s favorite-video icomoon-icon"'\
-                    ' data-nodeid="%(ext_id)s" data-rtype="video"></span>' % \
-                    dict(star_class=star_class, ext_id=ext_id)
+                    ' data-nodeid="%(ext_id)s" data-rtype="video" title="%(title_text)s"></span>' % \
+                    dict(star_class=star_class, ext_id=ext_id, title_text=title_text)
             tv_html += '<div><img src="%(thumb)s" height="60" width="105"/>' \
                        '<a href="%(url)s" target="_blank">%(title)s ' \
                        '<span class="popup newWinIcon">' \
