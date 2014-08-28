@@ -260,6 +260,12 @@ table.main {
                 text-decoration: none;
             }
         }
+        &.delHover {
+            color: $red;
+            a, .popup {
+                color: $red;
+            }
+        }
     }
     a {
         display: inline-block;

@@ -91,6 +91,12 @@
             );
         }).qtip();
     });
+    var classList = ".unfavorite-topic, .unfavorite-society, .unfavorite-external, .unfavorite-resource";
+    $(classList).hover(function() {
+        $(this).parent().parent().addClass('delHover');
+    }, function() {
+        $(this).parent().parent().removeClass('delHover');
+    });
 </script>
 
 {% if favorite_topics or favorite_resources or favorite_societies or external_favorites %}
