@@ -654,10 +654,10 @@ def get_jobs_info(tag, offset=None, user=None):
         if user and user.is_authenticated():
             if job_id in user_favorites:
                 job['StarClass'] = 'icon-star-whole enabled'
-                job['TitleText'] = 'Remove job from your favorites'
+                job['TitleText'] = 'Remove job from Your Favorites'
             else:
                 job['StarClass'] = 'icon-star'
-                job['TitleText'] = 'Add job to your favorites'
+                job['TitleText'] = 'Add job to Your Favorites'
             job['Star'] = \
                 '<span class="%(StarClass)s favorite-job icomoon-icon" '\
                 'data-nodeid="%(Id)s" data-rtype="job" title="%(TitleText)s"></span>' % job

@@ -84,8 +84,8 @@
         <span class="openAlerts icon-star-whole icomoon-icon" title="Click to set options" data-nodeid="{{ tag.id }}" title="Click to set options"></span>
         {% endif %}
         <div class="alertMenu">
-            <span><input type="radio" name="topicOpt" id="fav" value="fav"{% if is_favorite and not enable_alerts %} checked="checked"{% endif %}> <label for="fav">Add this topic to your favorites</label></span><br/>
-            <span class="alertOpt" title="We'll email you alerts when<br/>resources are added to this topic"><input type="radio" name="topicOpt" id="favAlert" value="favalert"{% if is_favorite and enable_alerts %} checked="checked"{% endif %}> <label for="favAlert">Add to your favorites + receive email alerts</label></span><br/>
+            <span><input type="radio" name="topicOpt" id="fav" value="fav"{% if is_favorite and not enable_alerts %} checked="checked"{% endif %}> <label for="fav">Add this topic to Your Favorites</label></span><br/>
+            <span class="alertOpt" title="We'll email you alerts when<br/>resources are added to this topic"><input type="radio" name="topicOpt" id="favAlert" value="favalert"{% if is_favorite and enable_alerts %} checked="checked"{% endif %}> <label for="favAlert">Add to Your Favorites + receive email alerts</label></span><br/>
             <span><input type="radio" name="topicOpt" id="nofav" value="nofav"{% if not is_favorite %} checked="checked"{% endif %}> <label for="nofav">Do nothing</label></span>
             <div class="center"><span class="closeAlertMenu smallFont">Close</span></div>
         </div>

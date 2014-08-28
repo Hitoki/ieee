@@ -729,10 +729,10 @@ def ajax_tv_results(request):
             if request.user.is_authenticated():
                 if ext_id in user_favorites:
                     star_class = 'icon-star-whole enabled'
-                    title_text = 'Remove video from your favorites'
+                    title_text = 'Remove video from Your Favorites'
                 else:
                     star_class = 'icon-star'
-                    title_text = 'Add video to your favorites'
+                    title_text = 'Add video to Your Favorites'
                 star = \
                     '<span class="%(star_class)s favorite-video icomoon-icon"'\
                     ' data-nodeid="%(ext_id)s" data-rtype="video" title="%(title_text)s"></span>' % \
