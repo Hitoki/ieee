@@ -286,6 +286,9 @@ if settings.DEBUG:
         url(r'^debug/clear_cache$',
             views.clear_cache),
 
+        url(r'^debug/clear_cache/(?P<pk>\d+)$',
+            views.clear_cache),
+
         url(r'^debug/allauth_init$',
             views.allauth_init),
     )

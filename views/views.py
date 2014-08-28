@@ -716,9 +716,13 @@ def delete_user(request):
 
 
 @login_required
-def clear_cache(request):
-    Cache.objects.all().delete()
-    return HttpResponse('cache cleared')
+def clear_cache(request, pk=None):
+    if pk:
+        Cache.objects.filter(pk=pk).delete()
+        return HttpResponse('cache %d cleared' % pk)
+    else:
+        Cache.objects.all().delete()
+        return HttpResponse('cache cleared')
 
 
 @login_required
