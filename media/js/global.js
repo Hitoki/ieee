@@ -634,11 +634,13 @@ ResourceLoader.prototype.onLoadData = function (data) {
                 var newEdCount = currentEdCount + data.num_results;
                 $('#num-education-total-results').metadata().number = newEdCount;
                 $('#num-education-total-results').text(addCommas(newEdCount));
+                $('.favorite-video').qtip();
             } else if (this.ctype == 'jobs') {
                 $('#num-job-results').text(addCommas(data.num_results));
 
                 $('#job-url-container').html('<a href="' + data.job_url + '" target="_blank">View jobs on the IEEE Job Site <span class="popup newWindIcon"></span></a>');
 
+                $('.favorite-job').qtip();
                 if (data.num_results == 0) {
                     this.noResultsElem = $('<p class="no-resources">No Jobs are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
                 }
