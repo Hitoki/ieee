@@ -1,20 +1,20 @@
 {% load humanize filters %}
 
 {% for result in xplore_results %}
-    <li>
+    <li>{% spaceless %}
         {% if result.url %}
-            <a href="{{ result.url }}" target="_blank" rel="nofollow">
+            <span class="newWinTrigger"><a href="{{ result.url }}" target="_blank" rel="nofollow">
         {% endif %}
         <span class="{% cycle 'item_odd' 'item_even' %}">
-            <span class="auto-truncate-words {length:165, flyover:true}">{{ result.name|safe }} ({{ result.count }})</span>{% if result.url %}<span class="popup newWinIcon"></span>{% endif %}
+            <span class="auto-truncate-words {length:165, flyover:true}">{{ result.name|safe }} ({{ result.count }})</span>
         </span>
         {% if result.url %}
-            </a>
+            </a> <span class="popup newWinIcon"></span></span>
         {% endif %}
         {% if user.is_authenticated %}
             <span class="{% if result.is_favorite %}icon-star-whole enabled{% else %}icon-star{% endif %} favorite-author icomoon-icon"
                   data-nodeid="{{ result.ext_id }}" data-rtype="author"
                   title="Favorite Author"></span>
         {% endif %}
-    </li>
+    {% endspaceless %}</li>
 {% endfor %}

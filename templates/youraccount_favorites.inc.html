@@ -150,7 +150,7 @@
             <strong>{{ resource_type.grouper|title }}s</strong>
             <ul class="topicList">
                 {% for resource in resource_type.list %}
-                    <li><a href="{{ resource.url }}" target="_blank" rel="nofollow">{{ resource.name }}</a><span class="popup newWinIcon"></span>
+                    <li><span class="newWinTrigger"><a href="{{ resource.url }}" target="_blank" rel="nofollow">{{ resource.name }}</a><span class="popup newWinIcon"></span></span>
                         <span class="topic-icons">
                             <span class="icon-cancel2 unfavorite-resource icomoon-icon"
                                   title="Remove {{ resource_type.grouper|lower }} from your favorites"
@@ -167,7 +167,7 @@
             <strong>{{ resource_type.grouper|title }}s</strong>
             <ul class="topicList">
                 {% for resource in resource_type.list %}
-                    <li><a href="{{ resource.get_url }}" target="_blank" rel="nofollow">{{ resource.title }}</a><span class="popup newWinIcon"></span>
+                    <li><span class="newWinTrigger"><a href="{{ resource.get_url }}" target="_blank" rel="nofollow">{{ resource.title }}</a><span class="popup newWinIcon"></span></span>
                         <span class="topic-icons">
                             <span class="icon-cancel2 unfavorite-external icomoon-icon"
                                   title="Remove {{ resource_type.grouper|lower }} from your favorites"

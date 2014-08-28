@@ -16,7 +16,7 @@
                                 {% if periodicals|length %}
                                 {% for resource in periodicals %}
                                 <li class="{% cycle 'item_odd' 'item_even' %}">{% spaceless %}
-                                    {% if resource.url and resource.url_status != "bad" %}<a href="{{ resource.url }}" target="_blank" rel="nofollow">{% endif %}{{resource.name}}{% if resource.url and resource.url_status != "bad" %}<span class="popup newWinIcon"></span>{% endif %}{% if resource.url and resource.url_status != "bad" %}</a>{% endif %}
+                                    {% if resource.url and resource.url_status != "bad" %}<span class="newWinTrigger"><a href="{{ resource.url }}" target="_blank" rel="nofollow">{% endif %}{{resource.name}}{% if resource.url and resource.url_status != "bad" %}</a> <span class="popup newWinIcon"></span></span>{% endif %}
                                     {% if resource.is_machine_generated %}<span class="drive" title="Machine-generated relationship" style="vertical-align:middle;"></span>{% endif %}
                                     {% if user.is_authenticated %}<span class="{% if resource.is_favorite %}icon-star-whole enabled{% else %}icon-star{% endif %} favorite-resource icomoon-icon" data-nodeid="{{ resource.id }}" title="{% if resource.is_favorite %}Remove periodical from your favorites{% else %}Add periodical to your favorites{% endif %}"></span>{% endif %}
                                     <p class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{resource.description}}</p>

@@ -738,9 +738,9 @@ def ajax_tv_results(request):
                     ' data-nodeid="%(ext_id)s" data-rtype="video" title="%(title_text)s"></span>' % \
                     dict(star_class=star_class, ext_id=ext_id, title_text=title_text)
             tv_html += '<div><img src="%(thumb)s" height="60" width="105"/>' \
-                       '<a href="%(url)s" target="_blank">%(title)s ' \
-                       '<span class="popup newWinIcon">' \
-                       '</span></a>%(star)s</div>\n' % \
+                       '<span class="newWinTrigger">' \
+                       '<a href="%(url)s" target="_blank">%(title)s</a>' \
+                       '<span class="popup newWinIcon"></span></span>%(star)s</div>\n' % \
                        dict(thumb=thumb, url=url, title=title, star=star)
     except:
         tv_count = 0

@@ -81,6 +81,21 @@ p.first {
         color: $orange;
     }
 }
+
+.newWinTrigger {
+    .popup {
+        color: $linkColor;
+    }
+    &:hover {
+        a {
+            color: $linkColor-hover;
+            text-decoration: underline;
+        }
+        .popup {
+            color: $linkColor-hover;
+        }
+    }
+}
   
 // Main Structure //
 table.main {

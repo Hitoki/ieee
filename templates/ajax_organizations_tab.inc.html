@@ -52,7 +52,8 @@
                                             {% endif %}
                                         </td>
                                         <td>{% spaceless %}
-                                            {% if society.url %}<a href="{{ society.url }}" target="_blank" rel="nofollow">{% endif %}{{ society.name }}{% if society.abbreviation %} ({{ society.abbreviation }}){% endif %}{% if society.url %}<span class="popup newWinIcon"></span>{% endif %}{% if society.node_society.is_machine_generated %}<span class="drive flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;"></span>{% endif %}{% if society.url %}</a>{% endif %}
+                                            {% if society.url %}<span class="newWinTrigger"><a href="{{ society.url }}" target="_blank" rel="nofollow">{% endif %}{{ society.name }}{% if society.abbreviation %} ({{ society.abbreviation }}){% endif %}{% if society.url %}</a><span class="popup newWinIcon"></span></span>{% endif %}
+                                            {% if society.node_society.is_machine_generated %}<span class="drive flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;"></span>{% endif %}
                                             {% if user.is_authenticated %}<span class="{% if society.is_favorite %}icon-star-whole enabled{% else %}icon-star{% endif %} favorite-society icomoon-icon" data-nodeid="{{ society.id }}" title="{% if society.is_favorite %}Remove organization from your favorites{% else %}Add organization to your favorites{% endif %}"></span>{% endif %}
                                             {% if society.description %}<p>{{ society.description }}</p>{% endif %}
                                         {% endspaceless %}</td>

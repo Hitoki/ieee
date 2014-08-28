@@ -1,13 +1,13 @@
 {% load humanize filters %}
 
 {% for result in xplore_results %}
-    <li>
+    <li>{% spaceless %}
         {% if result.url %}
-        <a href="{{ result.url }}" target="_blank" rel="nofollow" class="{% cycle 'item_odd' 'item_even' %}">
+        <span class="newWinTrigger"><a href="{{ result.url }}" target="_blank" rel="nofollow" class="{% cycle 'item_odd' 'item_even' %}">
         {% endif %}
-            <span class="auto-truncate-words {length:165, flyover:true}">{{ result.name|safe }}</span>{% if result.url %}<span class="popup newWinIcon"></span>{% endif %}
+            <span class="auto-truncate-words {length:165, flyover:true}">{{ result.name|safe }}</span>
         {% if result.url %}
-        </a>
+        </a> <span class="popup newWinIcon"></span></span>
         {% endif %}
         {% if user.is_authenticated %}
             <span class="{% if result.is_favorite %}icon-star-whole enabled{% else %}icon-star{% endif %} favorite-article icomoon-icon"
@@ -19,5 +19,5 @@
             <span class="{% cycle 'pub_odd' 'pub_even' %}">{{ result.authors|safe }} {{ result.pub_title|safe }},  {{ result.pub_year|safe }}</span>
             <span class="{% cycle 'desc_odd' 'desc_even' %} auto-truncate-words {length:165, flyover:true, flyoverPosition:'top', flyoverCustomClass:'resource-description'}">{{ result.description|safe|default:"(no description)" }}</span>
         </span>
-    </li>
+    {% endspaceless %}</li>
 {% endfor %}
