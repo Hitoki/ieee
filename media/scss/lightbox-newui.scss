@@ -654,14 +654,14 @@ ul#overview-list {
 #new-tv-results-container,
 #tv-tab {
     img {
-        margin: 0 15px 5px 0;
-        vertical-align: middle;
+        margin: 0 15px 0 0;
         width: 105px;
         height: 60px;
+        float: left;
     }
-    a {
-        display: inline-block;
-        width: 500px;
+    div {
+        clear: both;
+        height: 75px;
     }
 }
 
