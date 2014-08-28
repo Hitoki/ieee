@@ -1307,7 +1307,7 @@ def ajax_external_favorite_request(request):
         'external_id': request.POST['externalId'],
     }
     if action == 'enable':
-        kwargs['title'] = request.POST['title']
+        kwargs['title'] = request.POST.get('title', '').strip()
         UserExternalFavorites.objects.create(**kwargs)
         return HttpResponse('success')
     elif action == 'disable':
