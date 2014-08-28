@@ -13,7 +13,7 @@
             <span class="{% if result.is_favorite %}icon-star-whole enabled{% else %}icon-star{% endif %} favorite-article icomoon-icon"
                   data-nodeid="{{ result.ext_id }}"
                   data-rtype="{{ result.external_resource_type }}"
-                  title="Favorite Xplore Article"></span>
+                  title="{% if result.is_favorite %}Remove article from Your Favorites{% else %}Add article to Your Favorites{% endif %}"></span>
         {% endif %}
         <span class="articleDesc">
             <span class="{% cycle 'pub_odd' 'pub_even' %}">{{ result.authors|safe }} {{ result.pub_title|safe }},  {{ result.pub_year|safe }}</span>

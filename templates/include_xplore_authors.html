@@ -14,7 +14,7 @@
         {% if user.is_authenticated %}
             <span class="{% if result.is_favorite %}icon-star-whole enabled{% else %}icon-star{% endif %} favorite-author icomoon-icon"
                   data-nodeid="{{ result.ext_id }}" data-rtype="author"
-                  title="Favorite Author"></span>
+                  title="{% if result.is_favorite %}Remove author from Your Favorites{% else %}Add author to Your Favorites{% endif %}"></span>
         {% endif %}
     {% endspaceless %}</li>
 {% endfor %}
