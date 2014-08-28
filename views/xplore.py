@@ -57,7 +57,7 @@ def xplore_full_results(request, tag_id):
 
 def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
                         offset=0, sort=None, sort_desc=False, ctype=None,
-                        recent=False):
+                        recent=False, user=None):
     """
     Get xplore results for the given tag_name from the IEEE Xplore search
     gateway.  Searches all fields for the tag_name phrase, returns results.
@@ -189,6 +189,12 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
                 # Otherwise, give up.
                 return [], 'No records found', 0
 
+            user_favorites = []
+            if user and user.is_authenticated():
+                user_favorites = UserExternalFavorites.objects.\
+                    filter(user=user, external_resource_type='article').\
+                    values_list('external_id', flat=True)
+
             xplore_results = []
             nodes = xml1.documentElement.getElementsByTagName('document')
             for document1 in nodes:
@@ -204,6 +210,7 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
 
                 m = re.search('\?arnumber=([\w\d]+)$', pdf)
                 ext_id = m.group(1) if m else ''
+                is_favorite = ext_id in user_favorites
 
                 # Escape here, since we're going to output this as |safe
                 # on the template
@@ -221,6 +228,7 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
                     'authors': authors,
                     'pub_title': pub_title,
                     'pub_year': pub_year,
+                    'is_favorite': is_favorite,
                 }
                 xplore_results.append(result)
 
@@ -400,7 +408,8 @@ def ajax_xplore_results(request):
 
     xplore_results, xplore_error, num_results = \
         _get_xplore_results(name, show_all=show_all, offset=offset, sort=sort,
-                            sort_desc=sort_desc, ctype=ctype)
+                            sort_desc=sort_desc, ctype=ctype,
+                            user=request.user)
 
     # DEBUG:
     #xplore_results = []
