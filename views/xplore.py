@@ -105,10 +105,12 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
     # Different query parameter keys/values that return different result counts
     # Well, loop thru these in order until we get more than zero results
     # from xplore.
+    tag_name_replaced_brackets = tag_name.encode('utf-8').\
+        replace('(', '.LB.').replace(')', '.RB.')
     param_options = [
-        {'key': 'thsrsterms', 'value': '"%s"' % tag_name.encode('utf-8')},
-        {'key': 'md', 'value': '"%s"' % tag_name.encode('utf-8')},
-        {'key': 'md', 'value': '%s' % tag_name.encode('utf-8')}
+        {'key': 'thsrsterms', 'value': '"%s"' % tag_name_replaced_brackets},
+        {'key': 'md', 'value': '"%s"' % tag_name_replaced_brackets},
+        {'key': 'md', 'value': '%s' % tag_name_replaced_brackets}
     ]
 
     if not tax_term_count:
@@ -206,6 +208,8 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
             for document1 in nodes:
                 rank = getElementValueByTagName(document1, 'rank')
                 title = getElementValueByTagName(document1, 'title')
+                title = re.sub('<img [^>]*alt="(?P<alt>[^"]+)"[^>]*>',
+                               '\g<alt>', title)
                 abstract = getElementValueByTagName(document1, 'abstract')
                 if abstract is not None:
                     abstract = html2text(abstract)
@@ -283,10 +287,12 @@ def ajax_recent_xplore(request):
     tax_term_count = \
         Node.objects.filter(name=tag_name, is_taxonomy_term=True).count()
 
+    tag_name_replaced_brackets = tag_name.encode('utf-8').\
+        replace('(', '.LB.').replace(')', '.RB.')
     param_options = [
-        {'key': 'thsrsterms', 'value': '"%s"' % tag_name.encode('utf-8')},
-        {'key': 'md', 'value': '"%s"' % tag_name.encode('utf-8')},
-        {'key': 'md', 'value': '%s' % tag_name.encode('utf-8')}
+        {'key': 'thsrsterms', 'value': '"%s"' % tag_name_replaced_brackets},
+        {'key': 'md', 'value': '"%s"' % tag_name_replaced_brackets},
+        {'key': 'md', 'value': '%s' % tag_name_replaced_brackets}
     ]
 
     if not tax_term_count:
@@ -354,6 +360,8 @@ def ajax_recent_xplore(request):
             nodes = xml1.documentElement.getElementsByTagName('document')
             for document1 in nodes:
                 title = getElementValueByTagName(document1, 'title')
+                title = re.sub('<img [^>]*alt="(?P<alt>[^"]+)"[^>]*>',
+                               '\g<alt>', title)
                 pdf = getElementValueByTagName(document1, 'pdf')
 
                 result = {
@@ -453,15 +461,18 @@ def ajax_xplore_authors(tag_id, user=None):
     if tag_id is not None and tag_id != 'undefined':
         tag = Node.objects.get(id=tag_id)
         term = None
-        name = tag.name
+        tag_name = tag.name
     else:
         assert False, 'Must specify tag_id.'
+
+    tag_name_replaced_brackets = tag_name.encode('utf-8').\
+        replace('(', '.LB.').replace(')', '.RB.')
 
     params = {
         # No actual results, just the authors
         'hc': 0,
         'facet': 'd-au',
-        'md': name
+        'md': tag_name_replaced_brackets
     }
 
     url = settings.EXTERNAL_XPLORE_AUTHORS_URL + urllib.urlencode(params)
@@ -539,6 +550,8 @@ def ajax_xplore_authors(tag_id, user=None):
                 getElementsByTagName('refinement')
             for author in author_nodes:
                 name = getElementValueByTagName(author, 'name')
+                name = re.sub('<img [^>]*alt="(?P<alt>[^"]+)"[^>]*>',
+                              '\g<alt>', name)
                 count = getElementValueByTagName(author, 'count')
                 url = getElementValueByTagName(author, 'url')
 

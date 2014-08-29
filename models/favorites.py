@@ -34,7 +34,7 @@ class UserFavorites(models.Model):
 class UserExternalFavorites(models.Model):
     user = models.ForeignKey(User)
     external_resource_type = models.CharField(max_length=50)
-    external_id = models.CharField(max_length=50)
+    external_id = models.CharField(max_length=500)
     title = models.CharField(max_length=500, default='Untitled')
     creation_date = models.DateTimeField(auto_now_add=True)
 
