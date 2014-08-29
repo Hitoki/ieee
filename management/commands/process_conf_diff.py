@@ -40,7 +40,7 @@ class Command(BaseCommand):
             csv_reader = csv.reader(f)
             lineno = -1
             for row in csv_reader:
-                lineno = lineno + 1
+                lineno += 1
                 ieee_id = row[1]
                 logger.info("Found ieee_id: %s" % ieee_id)
                 if row[0].startswith('conference') \
@@ -57,7 +57,7 @@ class Command(BaseCommand):
                                         ' Updating existing record.')
                             UPDATED_MARKED_NEW_COUNT += 1
                         else:
-                            UPDATED_COUNT = UPDATED_COUNT + 1
+                            UPDATED_COUNT += 1
                     except Resource.DoesNotExist:
                         conf = Resource()
                         conf.resource_type = ResourceType.objects.\
