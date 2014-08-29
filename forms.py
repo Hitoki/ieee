@@ -47,7 +47,7 @@ class ConferenceApplicationForm(forms.ModelForm):
 class UserFavoriteForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserFavoriteForm, self).__init__(*args, **kwargs)
-        self.fields['user'].required=False
+        self.fields['user'].required = False
         self.fields['user'].widget = forms.HiddenInput()
 
     class Meta:

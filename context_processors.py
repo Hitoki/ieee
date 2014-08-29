@@ -4,7 +4,7 @@ from django.http import HttpRequest
 
 def host_info(request):
     return {
-        'host_info': "http%s://%s" % (("","s")[request.is_secure()],
+        'host_info': "http%s://%s" % (("", "s")[request.is_secure()],
                                       request.META["HTTP_HOST"]),
     }
 

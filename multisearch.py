@@ -16,6 +16,7 @@ def make_options(objects):
             })
     return results
 
+
 def parse_input(object_type, id_list):
     # Passed a list of id's, convert them into objects first
     results = []

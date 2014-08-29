@@ -20,9 +20,10 @@ import django.core.handlers.wsgi
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 DEBUG = os.environ.get('DEBUG', False)
-sys.stdout = sys.stderr # in case there are any errant 'print' statements
+sys.stdout = sys.stderr  # in case there are any errant 'print' statements
 
-class WSGIDebugWrapper: # log traceback in case of exceptions Django doesn't handle
+
+class WSGIDebugWrapper:  # log traceback in case of exceptions Django doesn't handle
     def __init__(self, app):
         self.app = app
 
