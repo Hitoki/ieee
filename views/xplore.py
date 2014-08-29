@@ -208,6 +208,8 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
             for document1 in nodes:
                 rank = getElementValueByTagName(document1, 'rank')
                 title = getElementValueByTagName(document1, 'title')
+                title = re.sub('<img [^>]*alt="(?P<alt>[^"]+)"[^>]*>',
+                               '\g<alt>', title)
                 abstract = getElementValueByTagName(document1, 'abstract')
                 if abstract is not None:
                     abstract = html2text(abstract)
@@ -358,6 +360,8 @@ def ajax_recent_xplore(request):
             nodes = xml1.documentElement.getElementsByTagName('document')
             for document1 in nodes:
                 title = getElementValueByTagName(document1, 'title')
+                title = re.sub('<img [^>]*alt="(?P<alt>[^"]+)"[^>]*>',
+                               '\g<alt>', title)
                 pdf = getElementValueByTagName(document1, 'pdf')
 
                 result = {
@@ -546,6 +550,8 @@ def ajax_xplore_authors(tag_id, user=None):
                 getElementsByTagName('refinement')
             for author in author_nodes:
                 name = getElementValueByTagName(author, 'name')
+                name = re.sub('<img [^>]*alt="(?P<alt>[^"]+)"[^>]*>',
+                              '\g<alt>', name)
                 count = getElementValueByTagName(author, 'count')
                 url = getElementValueByTagName(author, 'url')
 
