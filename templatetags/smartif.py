@@ -142,7 +142,7 @@ class SmartIfTests(unittest.TestCase):
         self.assertCalcFalse(GreaterOrEqual(self.low, self.high))
 
     def test_in(self):
-        list_ = TestVar([1,2,3])
+        list_ = TestVar([1, 2, 3])
         invalid_list = TestVar(None)
         self.assertCalc(In(self.low, list_))
         self.assertCalcFalse(In(self.low, invalid_list))
@@ -372,12 +372,12 @@ class SmartIfNode(template.Node):
 def smart_if(parser, token):
     if_elifs = []
     if_spelling = 'if'
-    
+
     class Enders(list):
         def __contains__(self, val):
             return val.startswith('elif') or val in ['else', 'endif']
     enders = Enders()
-                
+
     while True:
         contents = token.split_contents()
         command = contents[0]
