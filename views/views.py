@@ -659,11 +659,13 @@ def get_jobs_info(tag, offset=None, user=None):
                 job['StarClass'] = 'icon-star'
                 job['TitleText'] = 'Add job to Your Favorites'
             job['Star'] = \
-                '<span class="%(StarClass)s favorite-job icomoon-icon" '\
-                'data-nodeid="%(Id)s" data-rtype="job" title="%(TitleText)s"></span>' % job
-        jobs_html += '<li><span class="newWinTrigger"><a href="%(Url)s" target="_blank" class="featured">'\
-                     '%(JobTitle)s</a><span class="popup newWinIcon"></span></span>'\
-                     '%(Star)s<p>%(Company)s</p>\n' % job
+                '<span class="%(StarClass)s favorite-job icomoon-icon"'\
+                ' data-nodeid="%(Id)s" data-rtype="job"' \
+                ' title="%(TitleText)s"></span>' % job
+        jobs_html += '<li><span class="newWinTrigger">' \
+                     '<a href="%(Url)s" target="_blank" class="featured">'\
+                     '%(JobTitle)s</a><span class="popup newWinIcon"></span>' \
+                     '</span>%(Star)s<p>%(Company)s</p>\n' % job
     jobs_html += '</ul>'
     return jobs_html, jobs_count, jobs_url
 
