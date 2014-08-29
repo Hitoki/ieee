@@ -24,9 +24,8 @@ class Command(NoArgsCommand):
             reqs_with_new_items = []
             for req in reqs:
                 print "req: %d" % req.id
-                previous_notifications = \
-                    ResourceAdditionNotification.objects.filter(request=req). \
-                        order_by('-date_notified')
+                previous_notifications = ResourceAdditionNotification.objects.\
+                    filter(request=req).order_by('-date_notified')
                 if previous_notifications.count():
                     last_update = previous_notifications[0].date_notified
                 else:
@@ -72,7 +71,8 @@ class Command(NoArgsCommand):
                     if req not in reqs_with_new_items:
                         reqs_with_new_items.append(req)
 
-                print "reqs with new items count: %d" % len(reqs_with_new_items)
+                print "reqs with new items count: %d" % \
+                      len(reqs_with_new_items)
 
             if len(reqs_with_new_items):
                 context = Context({
