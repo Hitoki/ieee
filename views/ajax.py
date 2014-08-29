@@ -514,7 +514,9 @@ def ajax_tv_results(request):
             thumb = result.find('images').find('thumbnail').text
             title = result.find('title').text
             url = result.find('web-page').text
-            ext_id = result.find('video-id').text
+            # ext_id = result.find('video-id').text
+            m = re.search('^http://ieeetv.ieee.org/(.+)$', url)
+            ext_id = m.group(1) if m else ''
             star = ''
             if request.user.is_authenticated():
                 if ext_id in user_favorites:

@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -42,4 +43,7 @@ class UserExternalFavorites(models.Model):
         app_label = 'ieeetags'
 
     def get_url(self):
-        pass
+        kwargs = dict(id=self.external_id)
+        rtype = self.external_resource_type
+        url_pattern = settings.EXTERNAL_RESOURCE_URLS.get(rtype, '')
+        return url_pattern % kwargs
