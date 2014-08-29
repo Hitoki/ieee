@@ -53,29 +53,33 @@
         <tbody>
             <tr>
                 <td>
-                    <p>The following <a href="http://{{ domain }}">IEEE Technology Navigator</a> {% if notification_requests|length > 1 %}topics have{% else %}topic has{% endif %} {% if new_resources|length > 1 %}new resources{% else %}a new resource{% endif %} associated with {% if notification_requests|length > 1 %}them{% else %}it{% endif %}:</p>
-                    
-                    {% for topic in notification_requests %}
-                    <p>
-                        <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}">{{ topic.node }}</a><br/>
-                        {% for resource in topic.new_resources %}
-                        <div>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<em>{% ifchanged %}In <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}&tab={{ resource.resource.resource_type.name }}-tab">{{ resource.resource.resource_type.name|slice:"0:1"|upper }}{{ resource.resource.resource_type.name|slice:"1:" }}s</a>:{% endifchanged %}</em>
-                            <br/>
-                            &nbsp;&nbsp;&nbsp;&nbsp;{% if resource.resource.url %}<a href="{{ resource.resource.url }}">{{ resource.resource.name }}</a>{% else %}{{ resource.resource.name }}{% endif %}<br/>
-                        </div>
-                        {% endfor %}
-                        {% for society in topic.new_societies %}
-                        <div>
-                            &nbsp;&nbsp;&nbsp;&nbsp;<em>{% ifchanged %}In <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}&tab=society-tab">Organizations</a>:{% endifchanged %}</em>
-                            <br/>
-                            &nbsp;&nbsp;&nbsp;&nbsp;{% if society.society.url %}<a href="{{ society.society.url }}">{{ society.society.name }}</a>{% else %}{{ society.society.name }}{% endif %}<br/>
-                        </div>
-                        {% endfor %}
-                    </p>
+                    <span style="font-size:18px;font-weight:bold;">IEEE Technology Navigator Topic Alert</span>
+                {% for topic in notification_requests %}
+                    <br/>
+                    <br/>
+                    The topic <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}">{{ topic.node }}</a> has:
+                    <br/>
+                    <div style="padding-left:30px">
+                    {% for resource in topic.new_resources %}
+                        {% ifchanged %}
+                        <br/>
+                        [count] new <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}&tab={{ resource.resource.resource_type.name }}-tab">{{ resource.resource.resource_type.name|slice:"0:1"|upper }}{{ resource.resource.resource_type.name|slice:"1:" }}s</a>:
+                        {% endifchanged %}
+                        <br/>
+                        {% if resource.resource.url %}<a href="{{ resource.resource.url }}">{{ resource.resource.name }}</a>{% else %}{{ resource.resource.name }}{% endif %}
+                        <br/>
                     {% endfor %}
-
-                    <p>You’re receiving this email because you asked to be alerted when new resources related to the above {% if notification_requests.count > 1 %}topics{% else %}topic{% endif %} are added to IEEE Technology Navigator. {% comment %}You can <a href="http://{{ domain }}">unsubscribe from alerts</a> as well.{% endcomment %}</p>
+                    {% for society in topic.new_societies %}
+                        {% ifchanged %}In <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}&tab=society-tab">Organizations</a>:{% endifchanged %}
+                        <br/>
+                        {% if society.society.url %}<a href="{{ society.society.url }}">{{ society.society.name }}</a>{% else %}{{ society.society.name }}{% endif %}
+                        <br/>
+                    {% endfor %}
+                    </div>
+                {% endfor %}
+                    <br/>
+                    <br/>
+                    <span class="font-size:9px">You're receiving this email because you have subscribed to alerts when new resources are associated with your favorite topics. Visit <a href="http://{{ domain }}">Your Account</a> to edit your alert settings.</span>
                 </td>
             </tr>
         </tbody>
