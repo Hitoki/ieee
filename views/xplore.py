@@ -105,10 +105,12 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
     # Different query parameter keys/values that return different result counts
     # Well, loop thru these in order until we get more than zero results
     # from xplore.
+    tag_name_replaced_brackets = tag_name.encode('utf-8').\
+        replace('(', '.LB.').replace(')', '.RB.')
     param_options = [
-        {'key': 'thsrsterms', 'value': '"%s"' % tag_name.encode('utf-8')},
-        {'key': 'md', 'value': '"%s"' % tag_name.encode('utf-8')},
-        {'key': 'md', 'value': '%s' % tag_name.encode('utf-8')}
+        {'key': 'thsrsterms', 'value': '"%s"' % tag_name_replaced_brackets},
+        {'key': 'md', 'value': '"%s"' % tag_name_replaced_brackets},
+        {'key': 'md', 'value': '%s' % tag_name_replaced_brackets}
     ]
 
     if not tax_term_count:
