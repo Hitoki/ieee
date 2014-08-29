@@ -118,7 +118,7 @@ EXTERNAL_RESOURCE_URLS = {
     'job': "http://jobs.ieee.org/jobs/-%(id)s-d",
     'author': "http://ieeexplore.ieee.org/search/searchresult.jsp?facet=d-au&refinements=%(id)s",
     'article': "http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=%(id)s",
-    'video': "http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=%(id)s",
+    'video': "http://ieeetv.ieee.org/%(id)s",
     'educational course': "http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=%(id)s",
 }
 
