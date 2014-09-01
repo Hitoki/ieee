@@ -1,3 +1,4 @@
+from HTMLParser import HTMLParseError
 import cgi
 from django.http import HttpResponse
 from django.utils import simplejson as json
@@ -208,7 +209,10 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
                                '\g<alt>', title)
                 abstract = getElementValueByTagName(document1, 'abstract')
                 if abstract is not None:
-                    abstract = html2text(abstract)
+                    try:
+                        abstract = html2text(abstract)
+                    except HTMLParseError:
+                        pass
                 pdf = getElementValueByTagName(document1, 'pdf')
                 authors = getElementValueByTagName(document1, 'authors')
                 pub_title = getElementValueByTagName(document1, 'pubtitle')
