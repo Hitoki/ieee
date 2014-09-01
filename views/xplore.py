@@ -1,26 +1,22 @@
-from HTMLParser import HTMLParseError
 import cgi
-from django.http import HttpResponse
-from django.utils import simplejson as json
-from logging import debug as log
-from html2text import html2text
+import re
+import socket
 import urllib
 import urllib2
-import re
 import xml.dom.minidom
-from decorators import optional_login_required as login_required
-
-from django.middleware import csrf
+from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.utils import simplejson as json
+from html2text import html2text
+from HTMLParser import HTMLParseError
+from logging import debug as log
+from raven.contrib.django.raven_compat.models import client as raven_client
 
-#from profiler import Profiler
+from decorators import optional_login_required as login_required
 from models import UserExternalFavorites
 from models.node import Node
-from models.types import NodeType
 import settings
-import socket
 
-from raven.contrib.django.raven_compat.models import client as raven_client
 
 XPLORE_SORT_AUTHOR = 'au'
 XPLORE_SORT_TITLE = 'ti'
