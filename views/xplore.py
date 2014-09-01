@@ -52,6 +52,47 @@ def xplore_full_results(request, tag_id):
     })
 
 
+class XploreError(Exception):
+    pass
+
+
+def get_xplore_xml_tree(url, items_type):
+    try:
+        timeout = settings.EXTERNAL_XPLORE_TIMEOUT_SECS
+        f = urllib2.urlopen(url, timeout=timeout)
+
+        # Get the charset of the request and decode/re-encode the response text
+        # into UTF-8 so we can parse it
+        info = f.info()
+        try:
+            temp, charset = info['content-type'].split('charset=')
+        except ValueError:
+            charset = 'utf-8'
+    except urllib2.URLError, e:
+        if isinstance(e.reason, socket.timeout):
+            msg = "Request for %s timed out after %d seconds." % \
+                  (items_type, settings.EXTERNAL_XPLORE_TIMEOUT_SECS)
+            raven_client.captureMessage(msg, extra={"xplore_url": url})
+        else:
+            raven_client.captureMessage(e, extra={"xplore_url": url})
+        raise XploreError('Error: Could not connect to the IEEE Xplore site'
+                          ' to download %s.' % items_type)
+    except KeyError:
+        raise XploreError('Error: Could not determine content type of the'
+                          ' IEEE Xplore response.')
+    except socket.timeout:
+        msg = "Request for %s timed out after %d seconds." % \
+              (items_type, settings.EXTERNAL_XPLORE_TIMEOUT_SECS)
+        raven_client.captureMessage(msg, extra={"xplore_url": url})
+        raise XploreError('Error: Connection to IEEE Xplore timed out.')
+    else:
+        xml_body = f.read()
+        f.close()
+        xml_body = xml_body.decode(charset, 'replace').encode('utf-8')
+        xml_tree = xml.dom.minidom.parseString(xml_body)
+        return xml_tree
+
+
 def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
                         offset=0, sort=None, sort_desc=False, ctype=None,
                         recent=False, user=None):
@@ -104,10 +145,10 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
     # from xplore.
     tag_name_replaced_brackets = tag_name.encode('utf-8').\
         replace('(', '.LB.').replace(')', '.RB.')
-    param_options = [
+    param_options = [  # todo: fix
         {'key': 'thsrsterms', 'value': '"%s"' % tag_name_replaced_brackets},
-        {'key': 'md', 'value': '"%s"' % tag_name_replaced_brackets},
-        {'key': 'md', 'value': '%s' % tag_name_replaced_brackets}
+        # {'key': 'md', 'value': '"%s"' % tag_name_replaced_brackets},
+        {'key': 'md', 'value': '%s' % tag_name_replaced_brackets},
     ]
 
     if not tax_term_count:
@@ -129,117 +170,80 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
             log('xplore query: %s' % url)
 
         try:
-            timeout = settings.EXTERNAL_XPLORE_TIMEOUT_SECS
-            file1 = urllib2.urlopen(url, timeout=timeout)
+            xml_tree = get_xplore_xml_tree(url, "Xplore articles")
+        except XploreError as e:
+            xplore_results = []
+            xplore_error = e.message
+            total_found = 0
+            return xplore_results, xplore_error, total_found
 
-            # Get the charset of the request and decode/re-encode the response
-            # text into UTF-8 so we can parse it
-            info = file1.info()
-            try:
-                temp, charset = info['content-type'].split('charset=')
-            except ValueError:
-                charset = 'utf-8'
-        except urllib2.URLError, e:
-            xplore_error = 'Error: Could not connect to the IEEE Xplore ' \
-                           'site to download articles.'
-            xplore_results = []
-            if isinstance(e.reason, socket.timeout):
-                msg = "Request for Xplore articles timed out after %d " \
-                      "seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS
-                raven_client.captureMessage(msg, extra={"xplore_url": url})
-            else:
-                raven_client.captureMessage(e, extra={"xplore_url": url})
-            totalfound = 0
-        except KeyError:
-            xplore_error = 'Error: Could not determine content type of the ' \
-                           'IEEE Xplore response.'
-            xplore_results = []
-            totalfound = 0
-        except socket.timeout:
-            xplore_error = 'Error: Connection to IEEE Xplore timed out.'
-            xplore_results = []
-            msg = "Request for Xplore articles timed out after %d seconds." % \
-                  settings.EXTERNAL_XPLORE_TIMEOUT_SECS
-            raven_client.captureMessage(msg, extra={"xplore_url": url})
-            totalfound = 0
+        try:
+            totalfound = int(getElementValueByTagName(xml_tree.documentElement,
+                                                      'totalfound'))
+        # If no records found Xplore will return xml like this and the int
+        # parse with raise an exeption
+        # <Error><![CDATA[Cannot go to record 1 since query only
+        # returned 0 records]]></Error>
+        except TypeError:
+            # If there's any query param choice to try, do so.
+            if obj != param_options[-1]:
+                continue
+            # Otherwise, give up.
+            return [], 'No records found', 0
 
+        if ctype == 'Educational Courses':
+            external_resource_type = 'educational course'
         else:
-            xplore_error = None
+            external_resource_type = 'article'
 
-            xml_body = file1.read()
-            file1.close()
-            xml_body = xml_body.decode(charset, 'replace').encode('utf-8')
+        xplore_error = None
+        user_favorites = \
+            UserExternalFavorites.objects.get_external_ids(
+                external_resource_type, user)
+        xplore_results = []
+        nodes = xml_tree.documentElement.getElementsByTagName('document')
+        for document1 in nodes:
+            rank = getElementValueByTagName(document1, 'rank')
+            title = getElementValueByTagName(document1, 'title')
+            title = re.sub('<img [^>]*alt="(?P<alt>[^"]+)"[^>]*>',
+                           '\g<alt>', title)
+            abstract = getElementValueByTagName(document1, 'abstract')
+            if abstract is not None:
+                try:
+                    abstract = html2text(abstract)
+                except HTMLParseError:
+                    pass
+            pdf = getElementValueByTagName(document1, 'pdf')
+            authors = getElementValueByTagName(document1, 'authors')
+            pub_title = getElementValueByTagName(document1, 'pubtitle')
+            pub_year = getElementValueByTagName(document1, 'py')
 
-            xml1 = xml.dom.minidom.parseString(xml_body)
+            m = re.search('\?arnumber=([\w\d]+)$', pdf)
+            ext_id = m.group(1) if m else ''
+            is_favorite = ext_id in user_favorites
 
-            try:
-                totalfound = int(getElementValueByTagName(xml1.documentElement,
-                                                          'totalfound'))
+            # Escape here, since we're going to output this as |safe
+            # on the template
+            # title = cgi.escape(title)
+            if highlight_search_term:
+                title = re.sub('(?i)(%s)' % tag_name,
+                               r'<strong>\1</strong>',
+                               title)
+            result = {
+                'rank': rank,
+                'ext_id': ext_id,
+                'name': title,
+                'description': abstract,
+                'url': pdf,
+                'authors': authors,
+                'pub_title': pub_title,
+                'pub_year': pub_year,
+                'external_resource_type': external_resource_type,
+                'is_favorite': is_favorite,
+            }
+            xplore_results.append(result)
 
-            # If no records found Xplore will return xml like this and the int
-            # parse with raise an exeption
-            # <Error><![CDATA[Cannot go to record 1 since query only
-            # returned 0 records]]></Error>
-            except TypeError:
-                # If there's any query param choice to try, do so.
-                if obj != param_options[-1]:
-                    continue
-
-                # Otherwise, give up.
-                return [], 'No records found', 0
-
-            if ctype == 'Educational Courses':
-                external_resource_type = 'educational course'
-            else:
-                external_resource_type = 'article'
-
-            user_favorites = \
-                UserExternalFavorites.objects.get_external_ids(
-                    external_resource_type, user)
-            xplore_results = []
-            nodes = xml1.documentElement.getElementsByTagName('document')
-            for document1 in nodes:
-                rank = getElementValueByTagName(document1, 'rank')
-                title = getElementValueByTagName(document1, 'title')
-                title = re.sub('<img [^>]*alt="(?P<alt>[^"]+)"[^>]*>',
-                               '\g<alt>', title)
-                abstract = getElementValueByTagName(document1, 'abstract')
-                if abstract is not None:
-                    try:
-                        abstract = html2text(abstract)
-                    except HTMLParseError:
-                        pass
-                pdf = getElementValueByTagName(document1, 'pdf')
-                authors = getElementValueByTagName(document1, 'authors')
-                pub_title = getElementValueByTagName(document1, 'pubtitle')
-                pub_year = getElementValueByTagName(document1, 'py')
-
-                m = re.search('\?arnumber=([\w\d]+)$', pdf)
-                ext_id = m.group(1) if m else ''
-                is_favorite = ext_id in user_favorites
-
-                # Escape here, since we're going to output this as |safe
-                # on the template
-                # title = cgi.escape(title)
-                if highlight_search_term:
-                    title = re.sub('(?i)(%s)' % tag_name,
-                                   r'<strong>\1</strong>',
-                                   title)
-                result = {
-                    'rank': rank,
-                    'ext_id': ext_id,
-                    'name': title,
-                    'description': abstract,
-                    'url': pdf,
-                    'authors': authors,
-                    'pub_title': pub_title,
-                    'pub_year': pub_year,
-                    'external_resource_type': external_resource_type,
-                    'is_favorite': is_favorite,
-                }
-                xplore_results.append(result)
-
-    return xplore_results, xplore_error, totalfound
+        return xplore_results, xplore_error, totalfound  # todo: fix
 
 
 def getElementByTagName(node, tag_name):
@@ -285,9 +289,9 @@ def ajax_recent_xplore(request):
 
     tag_name_replaced_brackets = tag_name.encode('utf-8').\
         replace('(', '.LB.').replace(')', '.RB.')
-    param_options = [
+    param_options = [  # todo: fix
         {'key': 'thsrsterms', 'value': '"%s"' % tag_name_replaced_brackets},
-        {'key': 'md', 'value': '"%s"' % tag_name_replaced_brackets},
+        # {'key': 'md', 'value': '"%s"' % tag_name_replaced_brackets},
         {'key': 'md', 'value': '%s' % tag_name_replaced_brackets}
     ]
 
@@ -307,68 +311,25 @@ def ajax_recent_xplore(request):
         url = settings.EXTERNAL_XPLORE_URL + urllib.urlencode(params)
 
         try:
-            timeout = settings.EXTERNAL_XPLORE_TIMEOUT_SECS
-            file1 = urllib2.urlopen(url, timeout=timeout)
-
-            # Get the charset of the request and decode/re-encode the response
-            # text into UTF-8 so we can parse it
-            info = file1.info()
-            try:
-                temp, charset = info['content-type'].split('charset=')
-            except ValueError:
-                charset = 'utf-8'
-
-        except urllib2.URLError, e:
-            xplore_error = 'Error: Could not connect to the IEEE Xplore site' \
-                           ' to download articles.'
+            xml_tree = get_xplore_xml_tree(url, "most recent Xplore article")
+        except XploreError as e:
             xplore_results = []
-            if isinstance(e.reason, socket.timeout):
-                msg = "Request for most recent Xplore article timed out after"\
-                      " %d seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS
-                raven_client.captureMessage(msg, extra={"xplore_url": url})
-            else:
-                raven_client.captureMessage(e, extra={"xplore_url": url})
-            totalfound = 0
-        except KeyError:
-            xplore_error = 'Error: Could not determine content type of the ' \
-                           'IEEE Xplore response.'
-            xplore_results = []
-            totalfound = 0
-        except socket.timeout:
-            xplore_error = 'Error: Connection to IEEE Xplore timed out.'
-            xplore_results = []
-            msg = "Request for most recent Xplore article timed out after %d "\
-                  "seconds." % settings.EXTERNAL_XPLORE_TIMEOUT_SECS
-            raven_client.captureMessage(msg, extra={"xplore_url": url})
-            totalfound = 0
-
+            xplore_error = e.message
         else:
-            xplore_error = None
-
-            xml_body = file1.read()
-            file1.close()
-            xml_body = xml_body.decode(charset).encode('utf-8')
-
-            xml1 = xml.dom.minidom.parseString(xml_body)
-
             xplore_results = []
-
-            nodes = xml1.documentElement.getElementsByTagName('document')
+            nodes = xml_tree.documentElement.getElementsByTagName('document')
             for document1 in nodes:
                 title = getElementValueByTagName(document1, 'title')
                 title = re.sub('<img [^>]*alt="(?P<alt>[^"]+)"[^>]*>',
                                '\g<alt>', title)
                 pdf = getElementValueByTagName(document1, 'pdf')
-
-                result = {
+                xplore_results.append({
                     'name': title,
                     'url': pdf,
-                }
-
-                xplore_results.append(result)
+                })
 
     try:
-        xplore_result = xplore_results[0]
+        xplore_result = xplore_results[0]  # todo: fix
         data = {
             'name': xplore_result['name'],
             'url': xplore_result['url']
@@ -477,89 +438,54 @@ def ajax_xplore_authors(tag_id, user=None):
         log('xplore query: %s' % url)
 
     try:
-        timeout = settings.EXTERNAL_XPLORE_TIMEOUT_SECS
-        file1 = urllib2.urlopen(url, timeout=timeout)
-
-        # Get the charset of the request and decode/re-encode the response text
-        # into UTF-8 so we can parse it
-        info = file1.info()
-        try:
-            temp, charset = info['content-type'].split('charset=')
-        except ValueError:
-            charset = 'utf-8'
-    except urllib2.URLError, e:
-        xplore_error = 'Error: Could not connect to the IEEE Xplore site to ' \
-                       'download articles.'
+        xml_tree = get_xplore_xml_tree(url, "Xplore authors")
+    except XploreError as e:
         xplore_results = []
-        if isinstance(e.reason, socket.timeout):
-            msg = "Request for Xplore authors timed out after %d seconds." % \
-                  settings.EXTERNAL_XPLORE_TIMEOUT_SECS
-            raven_client.captureMessage(msg, extra={"xplore_url": url})
-        else:
-            raven_client.captureMessage(e, extra={"xplore_url": url})
-        totalfound = 0
-    except KeyError:
-        xplore_error = 'Error: Could not determine content type of the IEEE ' \
-                       'Xplore response.'
-        xplore_results = []
-        totalfound = 0
-    except socket.timeout:
-        xplore_error = 'Error: Connection to IEEE Xplore timed out.'
-        xplore_results = []
-        msg = "Request for Xplore authors timed out after %d seconds." % \
-              settings.EXTERNAL_XPLORE_TIMEOUT_SECS
-        raven_client.captureMessage(msg, extra={"xplore_url": url})
-        totalfound = 0
+        xplore_error = e.message
+        total_found = 0
+        return xplore_results, xplore_error, total_found
 
-    else:
-        xplore_error = None
+    # try:
+    #     totalfound = int(getElementValueByTagName(xml_tree.documentElement,
+    #                                               'totalfound'))
 
-        xml_body = file1.read()
-        file1.close()
-        xml_body = xml_body.decode(charset, 'replace').encode('utf-8')
+    # # If no records found Xplore will return xml like this and the int
+    # # parse with raise an exeption
+    # # <Error><![CDATA[Cannot go to record 1 since query  only
+    # # returned 0 records]]></Error>
+    # except TypeError:
+    #     # Otherwise, give up.
+    #     return [], 'No records found', 0
 
-        xml1 = xml.dom.minidom.parseString(xml_body)
+    xplore_results = []
+    if xml_tree.documentElement.nodeName != "Error":
+        user_favorites = \
+            UserExternalFavorites.objects.get_external_ids('author', user)
+        author_nodes = xml_tree.documentElement.childNodes[5].childNodes[1].\
+            getElementsByTagName('refinement')
+        for author in author_nodes:
+            name = getElementValueByTagName(author, 'name')
+            name = re.sub('<img [^>]*alt="(?P<alt>[^"]+)"[^>]*>',
+                          '\g<alt>', name)
+            count = getElementValueByTagName(author, 'count')
+            url = getElementValueByTagName(author, 'url')
 
-        # try:
-        #     totalfound = int(getElementValueByTagName(xml1.documentElement,
-        #                                               'totalfound'))
+            # massage the url
+            url = url.replace('gateway/ipsSearch', 'search/searchresult')
+            url = url.replace('&hc=0', '')
+            url = url.replace('md=', 'queryText=')
 
-        # # If no records found Xplore will return xml like this and the int
-        # # parse with raise an exeption
-        # # <Error><![CDATA[Cannot go to record 1 since query  only
-        # # returned 0 records]]></Error>
-        # except TypeError:
-        #     # Otherwise, give up.
-        #     return [], 'No records found', 0
+            m = re.search('&refinements=(\d+)$', url)
+            ext_id = m.group(1) if m else ''
+            is_favorite = ext_id in user_favorites
 
-        xplore_results = []
-        if xml1.documentElement.nodeName != "Error":
-            user_favorites = \
-                UserExternalFavorites.objects.get_external_ids('author', user)
-            author_nodes = xml1.documentElement.childNodes[5].childNodes[1].\
-                getElementsByTagName('refinement')
-            for author in author_nodes:
-                name = getElementValueByTagName(author, 'name')
-                name = re.sub('<img [^>]*alt="(?P<alt>[^"]+)"[^>]*>',
-                              '\g<alt>', name)
-                count = getElementValueByTagName(author, 'count')
-                url = getElementValueByTagName(author, 'url')
+            xplore_results.append({
+                'ext_id': ext_id,
+                'name': name,
+                'count': count,
+                'url': url,
+                'is_favorite': is_favorite,
+            })
 
-                # massage the url
-                url = url.replace('gateway/ipsSearch', 'search/searchresult')
-                url = url.replace('&hc=0', '')
-                url = url.replace('md=', 'queryText=')
-
-                m = re.search('&refinements=(\d+)$', url)
-                ext_id = m.group(1) if m else ''
-                is_favorite = ext_id in user_favorites
-
-                xplore_results.append({
-                    'ext_id': ext_id,
-                    'name': name,
-                    'count': count,
-                    'url': url,
-                    'is_favorite': is_favorite,
-                })
-
+    xplore_error = None
     return xplore_results, xplore_error, len(xplore_results)
