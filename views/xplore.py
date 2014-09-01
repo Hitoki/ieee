@@ -196,13 +196,9 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
             else:
                 external_resource_type = 'article'
 
-            user_favorites = []
-            if user and user.is_authenticated():
-                user_favorites = UserExternalFavorites.objects.\
-                    filter(user=user,
-                           external_resource_type=external_resource_type).\
-                    values_list('external_id', flat=True)
-
+            user_favorites = \
+                UserExternalFavorites.objects.get_external_ids(
+                    external_resource_type, user)
             xplore_results = []
             nodes = xml1.documentElement.getElementsByTagName('document')
             for document1 in nodes:
@@ -537,15 +533,9 @@ def ajax_xplore_authors(tag_id, user=None):
         #     return [], 'No records found', 0
 
         xplore_results = []
-        total_count = 0
-        if xml1.documentElement.nodeName == "Error":
-            pass
-        else:
-            user_favorites = []
-            if user and user.is_authenticated():
-                user_favorites = UserExternalFavorites.objects.\
-                    filter(user=user, external_resource_type='author').\
-                    values_list('external_id', flat=True)
+        if xml1.documentElement.nodeName != "Error":
+            user_favorites = \
+                UserExternalFavorites.objects.get_external_ids('author', user)
             author_nodes = xml1.documentElement.childNodes[5].childNodes[1].\
                 getElementsByTagName('refinement')
             for author in author_nodes:
@@ -564,13 +554,12 @@ def ajax_xplore_authors(tag_id, user=None):
                 ext_id = m.group(1) if m else ''
                 is_favorite = ext_id in user_favorites
 
-                result = {
+                xplore_results.append({
                     'ext_id': ext_id,
                     'name': name,
                     'count': count,
                     'url': url,
                     'is_favorite': is_favorite,
-                }
-                xplore_results.append(result)
+                })
 
     return xplore_results, xplore_error, len(xplore_results)

@@ -32,12 +32,23 @@ class UserFavorites(models.Model):
         app_label = 'ieeetags'
 
 
+class UserExternalFavoritesManager(models.Manager):
+    def get_external_ids(self, external_resource_type, user=None):
+        if user is None or user.is_anonymous():
+            return list()
+        return self.filter(user=user,
+                           external_resource_type=external_resource_type).\
+            values_list('external_id', flat=True)
+
+
 class UserExternalFavorites(models.Model):
     user = models.ForeignKey(User)
     external_resource_type = models.CharField(max_length=50)
     external_id = models.CharField(max_length=500)
     title = models.CharField(max_length=500, default='Untitled')
     creation_date = models.DateTimeField(auto_now_add=True)
+
+    objects = UserExternalFavoritesManager()
 
     class Meta:
         app_label = 'ieeetags'

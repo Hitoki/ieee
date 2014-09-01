@@ -599,11 +599,8 @@ def get_jobs_info(tag, offset=None, user=None):
     jobs_json = json.loads(content)
     jobs_count = jobs_json.get('Total')
     jobs = jobs_json.get('Jobs')
-    user_favorites = []
-    if user and user.is_authenticated():
-        user_favorites = UserExternalFavorites.objects.filter(user=user).\
-            filter(external_resource_type='job').\
-            values_list('external_id', flat=True)
+    user_favorites = \
+        UserExternalFavorites.objects.get_external_ids('job', user)
     jobs_html = '<ul>'
     for job in jobs:
         job_id = job['Id']

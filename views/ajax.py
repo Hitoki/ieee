@@ -503,12 +503,9 @@ def ajax_tv_results(request):
         results = tv_xml.findall('search-item')
         tv_count = len(results)
 
-        user_favorites = []
-        if request.user.is_authenticated():
-            user_favorites = UserExternalFavorites.objects.\
-                filter(user=request.user, external_resource_type='video').\
-                values_list('external_id', flat=True)
-
+        user_favorites = \
+            UserExternalFavorites.objects.get_external_ids('video',
+                                                           request.user)
         tv_html = ""
         for result in results:
             thumb = result.find('images').find('thumbnail').text
