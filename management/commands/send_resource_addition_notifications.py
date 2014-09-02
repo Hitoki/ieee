@@ -84,7 +84,7 @@ class Command(NoArgsCommand):
 
                 htmlbody = body
                 body = html2text(body)
-                msg = EmailMultiAlternatives("New resource alert", body,
+                msg = EmailMultiAlternatives("Topic Alert from IEEE Technology Navigator", body,
                                              settings.DEFAULT_FROM_EMAIL,
                                              [email.email])
                 msg.attach_alternative(htmlbody, 'text/html')
