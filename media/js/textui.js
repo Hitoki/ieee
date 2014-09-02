@@ -224,7 +224,7 @@ var Tags = {
 
         var url = location.pathname.split("/");
         if (url.length > 2 && url[2] == "account") {
-            $('#youraccountLink').click();
+            $('#yourfavsLink').click();
         }
 
         this.updateChangedNode();
