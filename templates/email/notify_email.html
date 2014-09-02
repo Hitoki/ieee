@@ -66,7 +66,7 @@
                         [ COUNT ] new <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}&tab={{ resource.resource.resource_type.name }}-tab">{{ resource.resource.resource_type.name|slice:"0:1"|upper }}{{ resource.resource.resource_type.name|slice:"1:" }}s</a>:
                         {% endifchanged %}
                         <br/>
-                        {% if resource.resource.url %}<a href="{{ resource.resource.url }}">{{ resource.resource.name }}</a>{% else %}{{ resource.resource.name }}{% endif %}
+                        <span style="margin-left:25px">{% if resource.resource.url %}<a href="{{ resource.resource.url }}">{{ resource.resource.name }}</a>{% else %}{{ resource.resource.name }}{% endif %}</span>
                         <br/>
                     {% endfor %}
                     {% for society in topic.new_societies %}
