@@ -21,7 +21,7 @@
                         <a href="{% url admin_home %}">Organization Manager</a>
                     {% endifequal %}
                     <li><a href="{% url ajax_account account_step='yourfavorites' %}" class="lightbox {customClass: 'your-account'}">Your Favorites</a></li>
-                    <li><a href="{% url ajax_account account_step='yoursettings' %}" class="lightbox {customClass: 'your-account'}">Account Settings</a></li>
+                    <li><a id="youraccountLink" href="{% url ajax_account account_step='yoursettings' %}" class="lightbox {customClass: 'your-account'}">Account Settings</a></li>
                     <li><a href="{% url logout %}">Sign Out</a></li>
                 </ul>
             </span>

@@ -120,7 +120,7 @@ def roamer(request):
 
 
 @login_required
-def textui(request, survey=False):
+def textui(request, survey=False, account=False):
     """
     Shows the textui (aka. Tag Galaxy) UI.
     """

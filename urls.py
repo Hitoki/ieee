@@ -48,6 +48,10 @@ else:
             views.textui,
             name='textui'),
 
+        url(r'^textui/(account)?$',
+            views.textui,
+            name='textui'),
+
         url(r'^textui_new$',
             views.textui,
             name='textui_new'),

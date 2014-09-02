@@ -222,6 +222,11 @@ var Tags = {
             tags.onScroll();
         });
 
+        var url = location.pathname.split("/");
+        if (url.length > 2 && url[2] == "account") {
+            $('#youraccountLink').click();
+        }
+
         this.updateChangedNode();
     },
 
