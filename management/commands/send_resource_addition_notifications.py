@@ -74,8 +74,11 @@ class Command(NoArgsCommand):
                 print "reqs with new items count: %d" % \
                       len(reqs_with_new_items)
 
-            if len(reqs_with_new_items):
-                title = "Topic Alert from IEEE Technology Navigator"
+            topics_count = len(reqs_with_new_items)
+            if topics_count:
+                subject = \
+                    "%d New Topic Alert%s from IEEE Technology Navigator" % \
+                    (topics_count, "s" if topics_count > 1 else "")
                 context = Context({
                     "notification_requests": reqs_with_new_items,
                     "domain": Site.objects.get_current()
@@ -83,7 +86,7 @@ class Command(NoArgsCommand):
                 template = loader.get_template('email/notify_email.html')
                 body_html = template.render(context)
                 body_text = html2text(body_html)
-                msg = EmailMultiAlternatives(title, body_text,
+                msg = EmailMultiAlternatives(subject, body_text,
                                              settings.DEFAULT_FROM_EMAIL,
                                              [email.email])
                 msg.attach_alternative(body_html, 'text/html')
