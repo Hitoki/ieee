@@ -525,19 +525,18 @@ class Node(models.Model):
         """
         Returns the single closest upcoming conference related to the tag
         """
-        if self.node_type.name == NodeType.TAG:
-            # return self.filter(nodes=node,
-            # resource_type=ResourceType.CONFERENCE)
-            try:
-                return Resource.objects. \
-                    getForNode(self, resourceType=ResourceType.CONFERENCE). \
-                    filter(year__gte=datetime.today().year). \
-                    order_by('date', 'year', 'id')[0]
-            except IndexError:
-                return None
-                # datetime.date.today()
-        else:
-            raise Exception('Node is not a tag')
+        if self.node_type.name != NodeType.TAG:
+            raise Exception(''
+                            '')
+        # return self.filter(nodes=node, resource_type=ResourceType.CONFERENCE)
+        try:
+            return Resource.objects. \
+                getForNode(self, resourceType=ResourceType.CONFERENCE). \
+                filter(year__gte=datetime.today().year). \
+                order_by('date', 'year', 'id')[0]
+        except IndexError:
+            return None
+            # datetime.date.today()
 
     closest_conference = property(_get_closest_conference)
 

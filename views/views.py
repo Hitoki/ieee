@@ -350,7 +350,7 @@ def cluster_landing(request, cluster_id, node_slug=None):
 XPLORE_SORT_PUBLICATION_YEAR = 'py'
 
 
-def print_resource(request, tag_id, resource_type, node_slug=None,
+def print_resource(request, tag_id, resource_type, node_slug='',
                    node_type=None, template_name='print_resource.html',
                    create_links=False, toc=False):
     """
@@ -359,19 +359,35 @@ def print_resource(request, tag_id, resource_type, node_slug=None,
     @param tag_id: The tag to print results for.
     @param resource_type: Which resource(s) to include.
     """
+    tag = None
     try:
         tag = Node.objects.get(id=tag_id)
+        if node_type in ["tag", "tag_cluster"] \
+                and tag.node_type.name != node_type:
+            # if wrong type of node - try to find one by slug
+            raise ObjectDoesNotExist()
     except ObjectDoesNotExist:
         try:
+            if node_slug:  # if there is slug in the url
+                name = node_slug.replace('-', ' ')
+            else:
+                if not tag:
+                    # if there no slug and also no node with wrong node_type
+                    return HttpResponse(status=410)
+                # get name from node with wrong node_type
+                name = tag.name
             if node_type not in ["tag", "tag_cluster"]:
-                raise Http404()
-            name = node_slug.replace('-', ' ')
+                return HttpResponse(status=410)
             tag = Node.objects.get(name=name, node_type__name=node_type)
             url_name = "cluster" if node_type == "tag_cluster" else node_type
             url_name = "%s_landing" % url_name
-            return redirect(url_name, tag.id, node_slug, permanent=True)
+            if node_slug:
+                args = [tag.id, node_slug]
+            else:
+                args = [tag.id]
+            return redirect(url_name, *args, permanent=True)
         except ObjectDoesNotExist:
-            raise Http404()
+            return HttpResponse(status=410)
     sectors = Node.objects.none()
     related_tags = Node.objects.none()
     societies = Society.objects.none()
