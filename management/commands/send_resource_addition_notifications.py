@@ -59,6 +59,8 @@ class Command(NoArgsCommand):
                     nt.date_notified = datetime.utcnow()
                     print "date_notified: %s" % nt.date_notified
                     nt.save()
+                for nr in new_resources:
+                    nr.resource_type = nr.resource.resource_type.name
                 print "new resource count: %d" % new_resources.count()
 
                 if new_resources.count():
