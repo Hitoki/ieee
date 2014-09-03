@@ -306,7 +306,7 @@ def tags_starts(request, starts_with):
                               context_instance=RequestContext(request))
 
 
-def tag_landing(request, tag_id, tag_slug=None):
+def tag_landing(request, tag_id, node_slug=None):
     """
     Displays a wikipedia-style flat view of the tag. No tabs or other fancy UI.
     Simply uses the print_resource view passing in a different template name.
@@ -320,7 +320,8 @@ def tag_landing(request, tag_id, tag_slug=None):
         template_name = 'tag_landing_mobile.html'
     else:
         template_name = 'tag_landing.html'
-    return print_resource(request, tag_id, 'all', tag_slug,
+    return print_resource(request, tag_id, 'all', node_slug,
+                          node_type='tag',
                           template_name=template_name,
                           create_links=True, toc=True)
 
@@ -334,13 +335,14 @@ def clusters_list(request):
     })
 
 
-def cluster_landing(request, cluster_id):
+def cluster_landing(request, cluster_id, node_slug=None):
     """
     Displays a wikipedia-style "flat" view of the cluster.
     No tabs or other fancy UI.
     Simply uses the print_resource view passing in a different template name.
     """
-    return print_resource(request, cluster_id, 'all',
+    return print_resource(request, cluster_id, 'all', node_slug,
+                          node_type='tag_cluster',
                           template_name='cluster_landing.html',
                           create_links=True, toc=True)
 
@@ -348,9 +350,9 @@ def cluster_landing(request, cluster_id):
 XPLORE_SORT_PUBLICATION_YEAR = 'py'
 
 
-def print_resource(request, tag_id, resource_type, tag_slug=None,
-                   template_name='print_resource.html', create_links=False,
-                   toc=False):
+def print_resource(request, tag_id, resource_type, node_slug=None,
+                   node_type=None, template_name='print_resource.html',
+                   create_links=False, toc=False):
     """
     The print resource page.
 
@@ -360,7 +362,16 @@ def print_resource(request, tag_id, resource_type, tag_slug=None,
     try:
         tag = Node.objects.get(id=tag_id)
     except ObjectDoesNotExist:
-        raise Http404()
+        try:
+            if node_type not in ["tag", "tag_cluster"]:
+                raise Http404()
+            name = node_slug.replace('-', ' ')
+            tag = Node.objects.get(name=name, node_type__name=node_type)
+            url_name = "cluster" if node_type == "tag_cluster" else node_type
+            url_name = "%s_landing" % url_name
+            return redirect(url_name, tag.id, node_slug, permanent=True)
+        except ObjectDoesNotExist:
+            raise Http404()
     sectors = Node.objects.none()
     related_tags = Node.objects.none()
     societies = Society.objects.none()

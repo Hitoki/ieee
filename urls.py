@@ -182,7 +182,7 @@ else:
             views.tag_landing,
             name='tag_landing'),
 
-        url(r'^tag/(?P<tag_id>\d+)/(?P<tag_slug>[-0-9a-zA-Z_]+)/?$',
+        url(r'^tag/(?P<tag_id>\d+)/(?P<node_slug>[-0-9a-zA-Z_]+)/?$',
             views.tag_landing,
             name='tag_landing'),
 
@@ -190,10 +190,14 @@ else:
             views.clusters_list,
             name='clusters_list'),
 
-        url(r'^cluster/(?P<cluster_id>\d+)/[0-9a-zA-Z_-]*/?$',
+        url(r'^cluster/(?P<cluster_id>\d+)/$',
             views.cluster_landing,
             name='cluster_landing'),
         
+        url(r'^cluster/(?P<cluster_id>\d+)/(?P<node_slug>[0-9a-zA-Z_-]+)/?$',
+            views.cluster_landing,
+            name='cluster_landing'),
+
         # Single static SWF file, for Flash player bug
         url(r'^admin/(?P<path>SkinUnderAllNoCaption.swf)$',
             'django.views.static.serve',
