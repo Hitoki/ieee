@@ -1,6 +1,6 @@
 {% load i18n %}{% autoescape off %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-<html xmlns="http://www.w3.org/1999/xhtml" style="background-color:#EFEFEF">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>{{ subject_line }}</title>
@@ -20,6 +20,10 @@
         p {
         margin: 1em 0;
         line-height: 1.5 !important; /*Required for Yahoo Mail*/
+        }
+
+        a {
+            text-decoration: none;
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -66,7 +70,7 @@
                         [ COUNT ] new <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}&tab={{ resource.resource.resource_type.name }}-tab">{{ resource.resource.resource_type.name|slice:"0:1"|upper }}{{ resource.resource.resource_type.name|slice:"1:" }}s</a>:
                         {% endifchanged %}
                         <br/>
-                        {% if resource.resource.url %}<a href="{{ resource.resource.url }}">{{ resource.resource.name }}</a>{% else %}{{ resource.resource.name }}{% endif %}
+                        <span style="margin-left:25px">{% if resource.resource.url %}<a href="{{ resource.resource.url }}">{{ resource.resource.name }}</a>{% else %}{{ resource.resource.name }}{% endif %}</span>
                         <br/>
                     {% endfor %}
                     {% for society in topic.new_societies %}
@@ -82,7 +86,7 @@
                 {% endfor %}
                     <br/>
                     <br/>
-                    <span class="font-size:9px">You're receiving this email because you have subscribed to alerts when new resources are associated with your favorite topics. Visit <a href="http://{{ domain }}">Your Account</a> to edit your alert settings.</span>
+                    <span class="font-size:9px">You're receiving this email because you have requested to be alerted when new resources are associated with your favorite topics. Visit <a href="http://{{ domain }}/textui/account">Your Account</a> to edit your alert settings.</span>
                 </td>
             </tr>
         </tbody>
