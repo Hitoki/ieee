@@ -174,7 +174,11 @@ else:
             views.tags_all,
             name='tags_all'),
 
-        url(r'^tag/(?P<tag_id>\d+)/[0-9a-zA-Z_-]*/?$',
+        url(r'^tag/(?P<tag_id>\d+)/$',
+            views.tag_landing,
+            name='tag_landing'),
+
+        url(r'^tag/(?P<tag_id>\d+)/(?P<tag_slug>[-0-9a-zA-Z_]+)/?$',
             views.tag_landing,
             name='tag_landing'),
 

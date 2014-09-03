@@ -21,7 +21,7 @@ import settings
 from django.core.mail import mail_admins
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
 from django.utils import simplejson as json
@@ -306,7 +306,7 @@ def tags_starts(request, starts_with):
                               context_instance=RequestContext(request))
 
 
-def tag_landing(request, tag_id):
+def tag_landing(request, tag_id, tag_slug=None):
     """
     Displays a wikipedia-style flat view of the tag. No tabs or other fancy UI.
     Simply uses the print_resource view passing in a different template name.
@@ -320,7 +320,8 @@ def tag_landing(request, tag_id):
         template_name = 'tag_landing_mobile.html'
     else:
         template_name = 'tag_landing.html'
-    return print_resource(request, tag_id, 'all', template_name=template_name,
+    return print_resource(request, tag_id, 'all', tag_slug,
+                          template_name=template_name,
                           create_links=True, toc=True)
 
 
@@ -347,7 +348,7 @@ def cluster_landing(request, cluster_id):
 XPLORE_SORT_PUBLICATION_YEAR = 'py'
 
 
-def print_resource(request, tag_id, resource_type,
+def print_resource(request, tag_id, resource_type, tag_slug=None,
                    template_name='print_resource.html', create_links=False,
                    toc=False):
     """
@@ -356,7 +357,10 @@ def print_resource(request, tag_id, resource_type,
     @param tag_id: The tag to print results for.
     @param resource_type: Which resource(s) to include.
     """
-    tag = Node.objects.get(id=tag_id)
+    try:
+        tag = Node.objects.get(id=tag_id)
+    except ObjectDoesNotExist:
+        raise Http404()
     sectors = Node.objects.none()
     related_tags = Node.objects.none()
     societies = Society.objects.none()
