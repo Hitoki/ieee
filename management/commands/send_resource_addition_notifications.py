@@ -75,17 +75,16 @@ class Command(NoArgsCommand):
                       len(reqs_with_new_items)
 
             if len(reqs_with_new_items):
+                title = "Topic Alert from IEEE Technology Navigator"
                 context = Context({
                     "notification_requests": reqs_with_new_items,
                     "domain": Site.objects.get_current()
                 })
                 template = loader.get_template('email/notify_email.html')
-                body = template.render(context)
-
-                htmlbody = body
-                body = html2text(body)
-                msg = EmailMultiAlternatives("Topic Alert from IEEE Technology Navigator", body,
+                body_html = template.render(context)
+                body_text = html2text(body_html)
+                msg = EmailMultiAlternatives(title, body_text,
                                              settings.DEFAULT_FROM_EMAIL,
                                              [email.email])
-                msg.attach_alternative(htmlbody, 'text/html')
+                msg.attach_alternative(body_html, 'text/html')
                 msg.send()
