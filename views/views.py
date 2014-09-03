@@ -368,26 +368,31 @@ def print_resource(request, tag_id, resource_type, node_slug='',
             raise ObjectDoesNotExist()
     except ObjectDoesNotExist:
         try:
+            if node_type not in ["tag", "tag_cluster"]:
+                # only tag and cluster urls has slugs in url
+                # so there is no any info to process
+                return HttpResponse(status=410)  # gone
             if node_slug:  # if there is slug in the url
+                # try to get name by slug (unslugify)
                 name = node_slug.replace('-', ' ')
             else:
                 if not tag:
                     # if there no slug and also no node with wrong node_type
-                    return HttpResponse(status=410)
+                    return HttpResponse(status=410)  # gone
                 # get name from node with wrong node_type
                 name = tag.name
-            if node_type not in ["tag", "tag_cluster"]:
-                return HttpResponse(status=410)
             tag = Node.objects.get(name=name, node_type__name=node_type)
+            # get url_name by node_type
             url_name = "cluster" if node_type == "tag_cluster" else node_type
             url_name = "%s_landing" % url_name
             if node_slug:
                 args = [tag.id, node_slug]
             else:
                 args = [tag.id]
+            # permanent redirect (301)
             return redirect(url_name, *args, permanent=True)
         except ObjectDoesNotExist:
-            return HttpResponse(status=410)
+            return HttpResponse(status=410)  # gone
     sectors = Node.objects.none()
     related_tags = Node.objects.none()
     societies = Society.objects.none()
