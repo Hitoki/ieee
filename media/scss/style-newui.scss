@@ -42,6 +42,11 @@ a:hover {
 button, input, select, textarea {
     font-family: $fontFamily;
 }
+
+input[type='radio'],
+input[type='checkbox'] {
+    cursor: pointer;
+}
   
 img {
    border: 0 none;
@@ -300,7 +305,7 @@ table.main {
     margin-top: 15px;
     strong {
         display: inline-block;
-        margin-bottom: 3px;
+        margin-bottom: 5px;
         color: $medium-gray;
     }
     .nootabs-tab {
