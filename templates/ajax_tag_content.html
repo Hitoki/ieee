@@ -41,7 +41,7 @@
                 if (data != undefined) {
                     var html;
                     if (data.url) {
-                            html = '<a href="' + data.url + '" target="_blank" rel="nofollow">' + data.name + '<span class="popup newWinIcon"></span></a>';
+                            html = '<span class="newWinTrigger"><a href="' + data.url + '" target="_blank" rel="nofollow">' + data.name + '</a><span class="popup newWinIcon"></span></span>';
                     }
                     else {
                         html = '<span>' + data.name + '</span>'
