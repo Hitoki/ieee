@@ -4,7 +4,7 @@ import os.path
 import time
 
 
-# Django util functions --------------------------------------------------------
+# Django util functions -------------------------------------------------------
 
 
 def relpath(file, path):
@@ -34,7 +34,9 @@ def strip_bom(file):
 
 
 def begins_with(str1, prefix):
-    'DEPRECATED: This should be replaced with x.beginswith(...) instead.'
+    """
+    DEPRECATED: This should be replaced with x.beginswith(...) instead.
+    """
     return str1[:len(prefix)] == prefix
 
 
@@ -43,7 +45,9 @@ class EndUserException(Exception):
 
 
 def default_date_format(date1=None):
-    'Formats a date.'
+    """
+    Formats a date.
+    """
     import datetime
     if date1 is None:
         date1 = datetime.date.today()
@@ -51,24 +55,29 @@ def default_date_format(date1=None):
 
 
 def default_time_format(time1=None):
-    'Formats a time.'
+    """
+    Formats a time.
+    """
     import time
     if time1 is None:
         time1 = time.localtime()
     return time.strftime('%I:%M %p', time1)
 
+
 def default_datetime_format(datetime1=None):
-    'Formats a date/time.'
+    """
+    Formats a date/time.
+    """
     return default_date_format(datetime1) + ' ' + default_time_format(datetime1)
 
 
 def generate_password(length=8, chars='all'):
-    '''
+    """
     Creates a random string useful for passwords.
     @param length: The number of chars for this password.
     @param chars: The charset to use, can be ALPHA_LOWER, ALPHA_UPPER, ALPHA,
     NUMERIC, SYMBOLS, SYMBOLS2, or ALL.
-    '''
+    """
     ALPHA_LOWER = 'abcdefghijklmnopqrstuvwxyz'
     ALPHA_UPPER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     ALPHA = ALPHA_LOWER + ALPHA_UPPER
@@ -105,7 +114,9 @@ def generate_password(length=8, chars='all'):
 
 
 def generate_words(min, max, chars='loweralpha'):
-    'Generates random strings of chars, for testing.'
+    """
+    Generates random strings of chars, for testing.
+    """
     import random
     length = random.randint(min, max)
     string = generate_password(length, chars)
@@ -119,9 +130,10 @@ from UserDict import UserDict
 
 
 class odict(UserDict):
-    'Represents an ordered dict.  Normal dict objects do not maintain order.'
-
-    def __init__(self, dict = None):
+    """
+    Represents an ordered dict.  Normal dict objects do not maintain order.
+    """
+    def __init__(self, dict=None):
         self._keys = []
         UserDict.__init__(self, dict)
 
@@ -131,7 +143,8 @@ class odict(UserDict):
 
     def __setitem__(self, key, item):
         UserDict.__setitem__(self, key, item)
-        if key not in self._keys: self._keys.append(key)
+        if key not in self._keys:
+            self._keys.append(key)
 
     def clear(self):
         UserDict.clear(self)
@@ -159,26 +172,28 @@ class odict(UserDict):
 
         return (key, val)
 
-    def setdefault(self, key, failobj = None):
+    def setdefault(self, key, failobj=None):
         UserDict.setdefault(self, key, failobj)
-        if key not in self._keys: self._keys.append(key)
+        if key not in self._keys:
+            self._keys.append(key)
 
     def update(self, dict):
         UserDict.update(self, dict)
         for key in dict.keys():
-            if key not in self._keys: self._keys.append(key)
+            if key not in self._keys:
+                self._keys.append(key)
 
     def values(self):
         return map(self.get, self._keys)
 
 
 def group_conferences_by_series(resources, include_current_conference=False):
-    '''
-    For a sequence of resources, groups any conferences in the same series together.
+    """
+    For a sequence of resources, groups any conferences in the same series
+    together.
         -Loop through each conference series
-        -If the 
-    '''
-
+        -If the
+    """
     resources = list(resources)
 
     # Create a dict of series with all matching conferences from the list.
@@ -218,7 +233,8 @@ def group_conferences_by_series(resources, include_current_conference=False):
                 # Found the current conference in a series
 
                 resources[i].is_current_conference = True
-                other_conferences = series_conferences[resources[i].conference_series]
+                other_conferences = \
+                    series_conferences[resources[i].conference_series]
 
                 if not include_current_conference:
                     other_conferences1 = []
@@ -228,13 +244,16 @@ def group_conferences_by_series(resources, include_current_conference=False):
                     other_conferences = other_conferences1
 
                 # Sort the other conferences by year latest to earliest.
-                other_conferences = sorted(other_conferences, key=lambda resource: resource.year, reverse=True)
+                other_conferences = \
+                    sorted(other_conferences,
+                           key=lambda resource: resource.year, reverse=True)
 
                 resources[i].other_conferences = other_conferences
                 i += 1
             elif resources[i] in conferences:
                 # Remove all the non-current conferences
-                del resources[i] # warning: altering collection while looping through it.
+                # warning: altering collection while looping through it.
+                del resources[i]
             else:
                 # Found a non-series resource, just ignore it
                 i += 1
@@ -242,7 +261,9 @@ def group_conferences_by_series(resources, include_current_conference=False):
 
 
 def word_wrap(string, max_chars):
-    'Breaks up a string into separate lines, wrapping at word boundaries.'
+    """
+    Breaks up a string into separate lines, wrapping at word boundaries.
+    """
     import re
 
     lines = [string]
@@ -265,18 +286,19 @@ def word_wrap(string, max_chars):
 
 
 def profiler(view_func):
-    '''
+    """
     Decorator to use for profiling a specific view.  Use like:
         @profiler
         def your_view(request):
             ...
-    Will output profiler data files to the folder set in settings.PROFILER_OUTPUT_ROOT.
+    Will output profiler data files to the folder set in
+    settings.PROFILER_OUTPUT_ROOT.
     By default, filename is [function_name] + [time].
     Outputs 3 formats:
         .txt - printed stats summary.
         .profile_out - binary python profiler output.
         .kcachegrind - kchachegrind-compatible output.
-    '''
+    """
     #print 'profiler()'
     def _inner(*args, **kwargs):
         try:
@@ -289,7 +311,8 @@ def profiler(view_func):
         import settings
         import sys
 
-        # NOTE: Must use this, or the 'filename' global/local var gets messed up.
+        # NOTE: Must use this, or the 'filename' global/local var gets
+        # messed up.
         #filename2 = filename
         filename2 = None
 
@@ -304,10 +327,12 @@ def profiler(view_func):
         #print 'filename_full: %r' %filename_full
 
         if settings.PROFILER_OUTPUT_ROOT is None:
-            raise Exception('settings.PROFILER_OUTPUT_ROOT must be set to save profiler output.')
+            raise Exception('settings.PROFILER_OUTPUT_ROOT must be set '
+                            'to save profiler output.')
         elif not os.path.exists(settings.PROFILER_OUTPUT_ROOT):
             os.mkdir(settings.PROFILER_OUTPUT_ROOT)
-            #raise Exception('The settings.PROFILER_OUTPUT_ROOT folder %r does not exist.' % settings.PROFILER_OUTPUT_ROOT)
+            # raise Exception('The settings.PROFILER_OUTPUT_ROOT folder %r '
+            #                'does not exist.' % settings.PROFILER_OUTPUT_ROOT)
 
         #print '  view_func: %r' % view_func
         #print '  args: %s' % repr(args)
@@ -315,12 +340,11 @@ def profiler(view_func):
         #print '  ----------'
         #response = view_func(*args, **kwargs)
 
-
         if settings.PROFILER_OUTPUT_LINEBYLINE:
             import line_profiler
             prof = line_profiler.LineProfiler(view_func)
 
-            response = prof.runcall(view_func, *args, **kwargs )
+            response = prof.runcall(view_func, *args, **kwargs)
             #print 'response: %r' % response
 
             # Line-by-line profiler
@@ -364,10 +388,13 @@ def profiler(view_func):
                 if not os.path.exists(filename):
                     print >>stream, ""
                     print >>stream, "Could not find file %s" % filename
-                    print >>stream, "Are you sure you are running this program from the same directory"
+                    print >>stream, "Are you sure you are running this " \
+                                    "program from the same directory"
                     print >>stream, "that you ran the profiler from?"
-                    print >>stream, "Continuing without the function's contents."
-                    # Fake empty lines so we can see the timings, if not the code.
+                    print >>stream, "Continuing without the function's " \
+                                    "contents."
+                    # Fake empty lines so we can see the timings,
+                    # if not the code.
                     nlines = max(linenos) - min(min(linenos), start_lineno) + 1
                     sublines = [''] * nlines
                 else:
@@ -404,8 +431,9 @@ def profiler(view_func):
                     if percent != '' and float(percent) == 0:
                         percent = '-'
 
-                    print >>stream, template % (lineno, nhits, time, per_hit, percent,
-                        line.rstrip('\n').rstrip('\r'))
+                    print >>stream, template % \
+                                    (lineno, nhits, time, per_hit, percent,
+                                     line.rstrip('\n').rstrip('\r'))
                 print >>stream, ""
 
             show_text2(stats.timings, stats.unit, stream=file1)
@@ -418,7 +446,7 @@ def profiler(view_func):
 
             prof = profile.Profile()
 
-            response = prof.runcall(view_func, *args, **kwargs )
+            response = prof.runcall(view_func, *args, **kwargs)
             #print 'response: %r' % response
 
             if hasattr(settings, 'PROFILER_OUTPUT_TXT') \
@@ -434,19 +462,29 @@ def profiler(view_func):
                 sys.stdout = old_stdout
                 del file1
 
-            if (hasattr(settings, 'PROFILER_OUTPUT_BINARY') and settings.PROFILER_OUTPUT_BINARY) or (hasattr(settings, 'PROFILER_OUTPUT_PNG') and settings.PROFILER_OUTPUT_PNG):
+            if (hasattr(settings, 'PROFILER_OUTPUT_BINARY')
+                    and settings.PROFILER_OUTPUT_BINARY) \
+                    or (hasattr(settings, 'PROFILER_OUTPUT_PNG')
+                        and settings.PROFILER_OUTPUT_PNG):
                 # Save the binary output.
                 prof.dump_stats(filename_full + '.profile_out')
 
-                if hasattr(settings, 'PROFILER_OUTPUT_PNG') and settings.PROFILER_OUTPUT_PNG:
+                if hasattr(settings, 'PROFILER_OUTPUT_PNG') \
+                        and settings.PROFILER_OUTPUT_PNG:
                     # Create the PNG callgraph image.
-                    os.system('%s -f pstats %s | dot -Tpng -o %s 2>NUL' % (relpath(__file__, 'scripts/gprof2dot.py'), filename_full + '.profile_out', filename_full + '.png'))
+                    os.system('%s -f pstats %s | dot -Tpng -o %s 2>NUL' %
+                              (relpath(__file__, 'scripts/gprof2dot.py'),
+                               filename_full + '.profile_out',
+                               filename_full + '.png'))
 
-                if not hasattr(settings, 'PROFILER_OUTPUT_BINARY') or not settings.PROFILER_OUTPUT_BINARY:
-                    # We only wanted the PNG file, delete the binary file now that we're done with it.
+                if not hasattr(settings, 'PROFILER_OUTPUT_BINARY') \
+                        or not settings.PROFILER_OUTPUT_BINARY:
+                    # We only wanted the PNG file, delete the binary file now
+                    # that we're done with it.
                     os.remove(filename_full + '.profile_out')
 
-            if hasattr(settings, 'PROFILER_OUTPUT_KCACHEGRIND') and settings.PROFILER_OUTPUT_KCACHEGRIND:
+            if hasattr(settings, 'PROFILER_OUTPUT_KCACHEGRIND') \
+                    and settings.PROFILER_OUTPUT_KCACHEGRIND:
                 # Save kcachegrind-compatible output.
                 if hasattr(prof, 'getstats'):
                     import lsprofcalltree
@@ -507,12 +545,12 @@ def truncate_link_list(items, output_func, plain_output_func, max_chars,
 
 
 def get_min_max(list, attr):
-    '''
+    """
     Finds the min and max value of the attr attribute of each item in the list.
     @param list: the list of items.
     @param attr: the name of the attribute to check the value.
     @return: A 2-tuple (min, max).
-    '''
+    """
     min1 = None
     max1 = None
     for item in list:
@@ -524,7 +562,9 @@ def get_min_max(list, attr):
 
 
 def send_admin_email(subject, body):
-    'Sends an email to the admins.'
+    """
+    Sends an email to the admins.
+    """
     import settings
     from django.core.mail import send_mail
 
@@ -545,10 +585,10 @@ def make_choices(values):
 
 
 def get_process_info(pid):
-    '''
+    """
     Returns the command line for a given PID.
     Returns None if the process does not exist.
-    '''
+    """
     import subprocess
     proc = subprocess.Popen(['ps', 'p', str(pid), 'h', '-o', 'args'],
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -561,7 +601,10 @@ def get_process_info(pid):
 
 
 def safejoin(a, b):
-    'Works like os.path.join(a, b) - but insures that the result is within the "a" folder.'
+    """
+    Works like os.path.join(a, b) - but insures that the result is within
+    the "a" folder.
+    """
     import os
     #print 'safejoin()'
     #print '  a: %r' % a
@@ -584,7 +627,7 @@ def safejoin(a, b):
 
 
 def update_conference_series_tags(conferences=None, conference_series=None):
-    '''
+    """
     Updates conferences so that each future conference inherits all previous
     years' conferences' tags.
     Must give either conferences or conference_series.
@@ -593,7 +636,7 @@ def update_conference_series_tags(conferences=None, conference_series=None):
     conference_series value, and a valid year value.
     @param conference_series (string) A series to parse through. Will grab all
     conferences of this series and update them.
-    '''
+    """
     from models.resource import Resource, ResourceNodes
     from models.types import ResourceType
     #from ieeetags.models import Resource, ResourceNodes, ResourceType
@@ -631,7 +674,7 @@ def update_conference_series_tags(conferences=None, conference_series=None):
             tags = []
             series = conference.conference_series
             num_series += 1
-            #print '' 
+            #print ''
 
         tags1 = [tag.name for tag in conference.nodes.all()]
         num_tags1 = conference.nodes.count()
@@ -725,7 +768,7 @@ def get_svn_info(path):
 
     return result
 
-# ------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 # NOTE: Cannot remove these yet, since they're included by default into any
 # file that does "from util import *".  Need to fix all those first.
