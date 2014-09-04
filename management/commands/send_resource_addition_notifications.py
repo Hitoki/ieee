@@ -76,11 +76,17 @@ class Command(NoArgsCommand):
                 print "reqs with new items count: %d" % \
                       len(reqs_with_new_items)
 
-            topics_count = new_resources.count()
-            if topics_count:
+            if reqs_with_new_items:
+                total_count = 0
+                for req in reqs_with_new_items:
+                    if hasattr(req, 'new_resources'):
+                        total_count += req.new_resources.count()
+                    if hasattr(req, 'new_societies'):
+                        total_count += req.new_societies.count()
                 subject = \
                     "%d New Topic Alert%s from IEEE Technology Navigator" % \
-                    (topics_count, "s" if topics_count > 1 else "")
+                    (total_count,  # count of both resources and societies
+                     "s" if total_count > 1 else "")
                 context = Context({
                     "notification_requests": reqs_with_new_items,
                     "domain": Site.objects.get_current()
