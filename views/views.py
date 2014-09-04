@@ -1,6 +1,7 @@
 from logging import debug as log
 from random import randint
 from datetime import datetime
+import socket
 from urlparse import urlsplit
 import re
 import sys
@@ -14,9 +15,9 @@ from allauth.socialaccount.models import SocialApp
 from django.contrib.sites.models import Site
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
+from xml.etree.ElementTree import fromstring
 from models import Cache
 import settings
-
 
 from django.core.mail import mail_admins
 from django.core.mail import send_mail
@@ -350,6 +351,18 @@ def cluster_landing(request, cluster_id, node_slug=None):
 XPLORE_SORT_PUBLICATION_YEAR = 'py'
 
 
+def get_tv_xml_tree(tag_name):
+    tv_url = "http://ieeetv.ieee.org/service/Signature" \
+             "?url=http://ieeetv.ieee.org/service/VideosSearch?q=%s" % tag_name
+    try:
+        api_xml = fromstring(urllib2.urlopen(tv_url).read())
+        dev_url = api_xml.find('url_dev').text  # get url from xml
+        tv_xml = fromstring(urllib2.urlopen(dev_url).read())
+        return tv_xml
+    except (urllib2.URLError, socket.timeout):
+        return None
+
+
 def print_resource(request, tag_id, resource_type, node_slug='',
                    node_type=None, template_name='print_resource.html',
                    create_links=False, toc=False):
@@ -404,7 +417,7 @@ def print_resource(request, tag_id, resource_type, node_slug='',
     jobs_html = ''
     tv_html = ''
     conf_count = 0
-    totalfound = 0
+    total_found = 0
     xplore_edu_results = None
     totaledufound = 0
     xplore_results = None
@@ -452,52 +465,39 @@ def print_resource(request, tag_id, resource_type, node_slug='',
             Resource.objects.getForNode(tag,
                                         resourceType=ResourceType.STANDARD)
     if resource_type == 'xplore_edu' or resource_type == 'all':
-        xplore_edu_results, xplore_edu_error, totalfound = \
+        # Educational Courses:
+        xplore_edu_results, xplore_edu_error, total_found = \
             _get_xplore_results(tag.name, False, ctype='Educational Courses')
-
-        # jobs_results, jobs_error, num_results = \
-        #     _get_xplore_results(name, show_all=show_all, offset=offset,
-        #                         sort=sort, sort_desc=sort_desc, ctype=ctype)
-        tv_url = "http://ieeetv.ieee.org/service/Signature?url=" \
-                 "http://ieeetv.ieee.org/service/VideosSearch?q=%s" % tag.name
-        file2 = urllib2.urlopen(tv_url).read()
-
-        # get url from xml that is returned
-        from xml.etree.ElementTree import fromstring
-
-        apixml = fromstring(file2)
-        dev_url = apixml.find('url_dev').text
-
-        tv_xml = fromstring(urllib2.urlopen(dev_url).read())
-
-        results = tv_xml.findall('search-item')
-        tv_count = len(results)
-
+        # Videos:
+        tv_xml = get_tv_xml_tree(tag.name)
         tv_html = ""
-        for result in results:
-            thumb = result.find('images').find('thumbnail').text
-            title = result.find('title').text
-            url = result.find('web-page').text
-            tv_html += '<img src="%s" height="60" width="105"/>' \
-                       '<a href="%s" target="_blank">%s ' \
-                       '<span class="popup newWinIcon"></span>' \
-                       '</a><br>\n' % (thumb, url, title)
-
+        if tv_xml:
+            results = tv_xml.findall('search-item')
+            tv_count = len(results)
+            for result in results:
+                thumb = result.find('images').find('thumbnail').text
+                title = result.find('title').text
+                url = result.find('web-page').text
+                tv_html += '<img src="%s" height="60" width="105"/>' \
+                           '<a href="%s" target="_blank">%s ' \
+                           '<span class="popup newWinIcon"></span>' \
+                           '</a><br>\n' % (thumb, url, title)
+        # E-Books:
         ebooks = \
             Resource.objects.getForNode(tag, resourceType=ResourceType.EBOOK)
     if resource_type == 'xplore' or resource_type == 'all':
-        xplore_results, xplore_error, totalfound = \
+        xplore_results, xplore_error, total_found = \
             _get_xplore_results(tag.name, False)
 
     if resource_type == 'authors' or resource_type == 'all':
-        xplore_authors, xplore_error, totalfound = ajax_xplore_authors(tag_id)
+        xplore_authors, xplore_error, total_found = ajax_xplore_authors(tag_id)
 
     page_date = datetime.now()
 
     related_items_count = \
         sectors.count() + related_tags.count() + societies.count() + \
         conf_count + periodicals.count() + standards.count() + totaledufound +\
-        totalfound
+        total_found
 
     if resource_type == 'jobs' or resource_type == 'all':
         jobs_html, jobs_count, jobs_url = get_jobs_info(tag)

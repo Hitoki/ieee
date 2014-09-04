@@ -46,7 +46,7 @@ import settings
 import util
 from BeautifulSoup import BeautifulSoup
 
-from .views import render, get_jobs_info
+from .views import render, get_jobs_info, get_tv_xml_tree
 from widgets import make_display_only
 from .xplore import _get_xplore_results, ajax_xplore_authors
 
@@ -487,19 +487,10 @@ def ajax_tv_results(request):
     # jobs_results, jobs_error, num_results = \
     #     _get_xplore_results(name, show_all=show_all, offset=offset,
     #                         sort=sort, sort_desc=sort_desc, ctype=ctype)
-    tv_url = "http://ieeetv.ieee.org/service/Signature" \
-             "?url=http://ieeetv.ieee.org/service/VideosSearch?q=%s" % tag.name
-    file2 = urllib2.urlopen(tv_url).read()
-
-    # get url from xml that is returned
-
-    apixml = fromstring(file2)
-    dev_url = apixml.find('url_dev').text
-
     try:
-        tv_xml = fromstring(urllib2.urlopen(dev_url).read())
-        # print '#' * 100
-        # print urllib2.urlopen(dev_url).read()
+        tv_xml = get_tv_xml_tree(tag.name)
+        if not tv_xml:
+            raise Exception("Error in loading tv_xml")
         results = tv_xml.findall('search-item')
         tv_count = len(results)
 
@@ -537,9 +528,6 @@ def ajax_tv_results(request):
     except:
         tv_count = 0
         tv_html = ''
-
-    # DEBUG:
-    #xplore_error = 'BAD ERROR.'
 
     data = {
         'num_results': tv_count,
