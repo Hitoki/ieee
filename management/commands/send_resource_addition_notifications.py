@@ -76,7 +76,7 @@ class Command(NoArgsCommand):
                 print "reqs with new items count: %d" % \
                       len(reqs_with_new_items)
 
-            topics_count = len(reqs_with_new_items)
+            topics_count = new_resources.count()
             if topics_count:
                 subject = \
                     "%d New Topic Alert%s from IEEE Technology Navigator" % \
