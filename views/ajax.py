@@ -489,7 +489,7 @@ def ajax_tv_results(request):
     #                         sort=sort, sort_desc=sort_desc, ctype=ctype)
     try:
         tv_xml = get_tv_xml_tree(tag.name)
-        if not tv_xml:
+        if tv_xml is None:
             raise Exception("Error in loading tv_xml")
         results = tv_xml.findall('search-item')
         tv_count = len(results)

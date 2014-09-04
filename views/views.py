@@ -384,14 +384,14 @@ def print_resource(request, tag_id, resource_type, node_slug='',
             if node_type not in ["tag", "tag_cluster"]:
                 # only tag and cluster urls has slugs in url
                 # so there is no any info to process
-                return HttpResponse(status=410)  # gone
+                return HttpResponse("gone", status=410)  # gone
             if node_slug:  # if there is slug in the url
                 # try to get name by slug (unslugify)
                 name = node_slug.replace('-', ' ')
             else:
                 if not tag:
                     # if there no slug and also no node with wrong node_type
-                    return HttpResponse(status=410)  # gone
+                    return HttpResponse("gone", status=410)  # gone
                 # get name from node with wrong node_type
                 name = tag.name
             tag = Node.objects.get(name=name, node_type__name=node_type)
@@ -405,7 +405,7 @@ def print_resource(request, tag_id, resource_type, node_slug='',
             # permanent redirect (301)
             return redirect(url_name, *args, permanent=True)
         except ObjectDoesNotExist:
-            return HttpResponse(status=410)  # gone
+            return HttpResponse("gone", status=410)  # gone
     sectors = Node.objects.none()
     related_tags = Node.objects.none()
     societies = Society.objects.none()
@@ -471,7 +471,7 @@ def print_resource(request, tag_id, resource_type, node_slug='',
         # Videos:
         tv_xml = get_tv_xml_tree(tag.name)
         tv_html = ""
-        if tv_xml:
+        if tv_xml is not None:
             results = tv_xml.findall('search-item')
             tv_count = len(results)
             for result in results:
@@ -631,7 +631,12 @@ def get_jobs_info(tag, offset=None, user=None):
         jobs_url = "%s?%s&rows=25&format=json" % \
                    (settings.JOBS_URL,
                     urllib.urlencode({"kwsMustContainPhrase": tag.name}))
-    content = urllib2.urlopen(jobs_url).read()
+    try:
+        content = urllib2.urlopen(jobs_url).read()
+    except (urllib2.URLError, socket.timeout):
+        jobs_html = []
+        jobs_count = 0
+        return jobs_html, jobs_count, jobs_url
     jobs_json = json.loads(content)
     jobs_count = jobs_json.get('Total')
     jobs = jobs_json.get('Jobs')
