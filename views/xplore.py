@@ -68,9 +68,9 @@ def get_xplore_xml_tree(url, items_type):
             temp, charset = info['content-type'].split('charset=')
         except ValueError:
             charset = 'utf-8'
-    except urllib2.URLError, e:
-        if isinstance(e.reason, socket.timeout):
-            msg = "Request for %s timed out after %d seconds." % \
+    except urllib2.URLError as e:
+        if hasattr(e, 'reason') and isinstance(e.reason, socket.timeout):
+            msg = "URLError: Request for %s timed out after %d seconds." % \
                   (items_type, settings.EXTERNAL_XPLORE_TIMEOUT_SECS)
             raven_client.captureMessage(msg, extra={"xplore_url": url})
         else:

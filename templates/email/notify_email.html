@@ -64,14 +64,19 @@
                     The topic <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}">{{ topic.node }}</a> has:
                     <br/>
                     <div style="padding-left:25px;line-height:1">
-                    {% for resource in topic.new_resources %}
-                        {% ifchanged %}
+                    {% regroup topic.new_resources by resource_type as new_resources %}
+                    {% for resource_type in new_resources %}
                         <br/>
-                        [ COUNT ] new <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}&tab={{ resource.resource.resource_type.name }}-tab">{{ resource.resource.resource_type.name|slice:"0:1"|upper }}{{ resource.resource.resource_type.name|slice:"1:" }}s</a>:<br/>
-                        {% endifchanged %}
-                        <br/>
-                        {% if resource.resource.url %}<a href="{{ resource.resource.url }}">{{ resource.resource.name }}</a>{% else %}{{ resource.resource.name }}{% endif %}
-                        <br/>
+                        {{ resource_type.list|length }} new
+                        <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}&tab={{ resource_type.grouper }}-tab">
+                            {{ resource_type.grouper|slice:"0:1"|upper }}{{ resource_type.grouper|slice:"1:" }}s</a>:<br/>
+                            <div class="padding-left:15px">
+                        {% for resource in resource_type.list %}
+                            <br/>
+                            {% if resource.resource.url %}<a href="{{ resource.resource.url }}">{{ resource.resource.name }}</a>{% else %}{{ resource.resource.name }}{% endif %}
+                            <br/>
+                        {% endfor %}
+                            </div>
                     {% endfor %}
                     {% for society in topic.new_societies %}
                         {% ifchanged %}
