@@ -224,7 +224,11 @@ var Tags = {
 
         var url = location.pathname.split("/");
         if (url.length > 2 && url[2] == "account") {
-            $('#yourfavsLink').click();
+            if ($('#yourfavsLink').length) {
+                $('#yourfavsLink').click();
+            } else {
+                $('#signinLink').click();
+            }
         }
 
         this.updateChangedNode();
