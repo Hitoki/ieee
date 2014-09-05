@@ -321,7 +321,7 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
             related_tag.is_favorite = is_favorite
         context['related_tags'] = related_tags
 
-        tab_template = 'ajax_over_tab.inc.html'
+        tab_template = 'ajax_overview_tab.inc.html'
 
     file1 = None
     # removied sectors from count

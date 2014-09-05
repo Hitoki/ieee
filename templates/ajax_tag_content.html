@@ -38,16 +38,17 @@
             type: 'post', 
             dataType: 'json',
             success: function(data) {
+                var html;
                 if (data != undefined) {
-                    var html;
                     if (data.url) {
-                            html = '<a href="' + data.url + '" target="_blank" rel="nofollow">' + data.name + '<span class="popup newWinIcon"></span></a>';
+                        html = '<a href="' + data.url + '" target="_blank" rel="nofollow">' +
+                                data.name + '<span class="popup newWinIcon"></span></a>';
                     }
                     else {
                         html = '<span>' + data.name + '</span>'
                     }
                 } else {
-                    var html = 'No recent Xplore Article';
+                    html = 'No recent Xplore Article';
                 }
                 $('#xplore-overview').html(html);
             }
@@ -146,7 +147,7 @@
 
 <!-- Overview-->
             <div id="overview-tab" class="overview-tab" data-printUrl='{% url print_resource tag.id "overview" %}'>
-                    {% include 'ajax_over_tab.inc.html' %}
+                    {% include 'ajax_overview_tab.inc.html' %}
             </div>
 
 <!-- Organizations -->
