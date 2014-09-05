@@ -38,16 +38,30 @@
             type: 'post', 
             dataType: 'json',
             success: function(data) {
+                var html;
                 if (data != undefined) {
-                    var html;
                     if (data.url) {
-                            html = '<span class="newWinTrigger"><a href="' + data.url + '" target="_blank" rel="nofollow">' + data.name + '</a><span class="popup newWinIcon"></span></span>';
+                        html = '<span class="newWinTrigger"><a href="' + data.url + '" target="_blank" rel="nofollow">' +
+                                data.name + '</a><span class="popup newWinIcon"></span></span>';
+                        if (data.isFavorite != undefined) {
+                            var starClass, starTitle;
+                            if (data.isFavorite) {
+                                starClass = "icon-star-whole enabled";
+                                starTitle = "Remove article from Your Favorites";
+                            } else {
+                                starClass = "icon-star";
+                                starTitle = "Add article to Your Favorites";
+                            }
+                            html += '<span class="' + starClass + ' favorite-article icomoon-icon"' +
+                                    ' data-nodeid="' + data.externalId + '"' +
+                                    ' data-rtype="article" title="' + starTitle + '"></span>';
+                        }
                     }
                     else {
                         html = '<span>' + data.name + '</span>'
                     }
                 } else {
-                    var html = 'No recent Xplore Article';
+                    html = 'No recent Xplore Article';
                 }
                 $('#xplore-overview').html(html);
             }
@@ -146,7 +160,7 @@
 
 <!-- Overview-->
             <div id="overview-tab" class="overview-tab" data-printUrl='{% url print_resource tag.id "overview" %}'>
-                    {% include 'ajax_over_tab.inc.html' %}
+                    {% include 'ajax_overview_tab.inc.html' %}
             </div>
 
 <!-- Organizations -->

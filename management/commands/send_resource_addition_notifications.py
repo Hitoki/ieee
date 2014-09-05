@@ -1,4 +1,6 @@
 from datetime import datetime
+from itertools import groupby
+from operator import attrgetter
 
 from django.core.management.base import NoArgsCommand
 from django.core.mail import EmailMultiAlternatives
@@ -12,6 +14,7 @@ from models.resource import ResourceNodes
 
 from models.society import NodeSocieties
 import settings
+from util import group_conferences_by_series
 
 
 class Command(NoArgsCommand):
@@ -83,6 +86,25 @@ class Command(NoArgsCommand):
                         total_count += req.new_resources.count()
                     if hasattr(req, 'new_societies'):
                         total_count += req.new_societies.count()
+                    new_resources = [item.resource
+                                     for item in req.new_resources]
+                    resources_groupby = \
+                        groupby(new_resources, attrgetter('resource_type'))
+                    grouped_resources = {}
+                    for key, values in resources_groupby:
+                        values = list(values)
+                        if key.name == 'conference':
+                            reordered_conferences = []
+                            grouped_conferences = \
+                                group_conferences_by_series(values)
+                            for conference in grouped_conferences:
+                                reordered_conferences.append(conference)
+                                if hasattr(conference, 'other_conferences'):
+                                    for item in conference.other_conferences:
+                                        reordered_conferences.append(item)
+                            values = reordered_conferences
+                        grouped_resources[key] = values
+                    req.grouped_resources = grouped_resources
                 subject = \
                     "%d New Topic Alert%s from IEEE Technology Navigator" % \
                     (total_count,  # count of both resources and societies
