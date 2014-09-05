@@ -635,7 +635,7 @@ def get_jobs_info(tag, offset=None, user=None):
         content = urllib2.urlopen(jobs_url).read()
     except (urllib2.URLError, socket.timeout):
         jobs_html = []
-        jobs_count = 0
+        jobs_count = "N/A"
         return jobs_html, jobs_count, jobs_url
     jobs_json = json.loads(content)
     jobs_count = jobs_json.get('Total')

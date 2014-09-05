@@ -526,7 +526,7 @@ def ajax_tv_results(request):
                        '%(star)s</div>\n' % \
                        dict(thumb=thumb, url=url, title=title, star=star)
     except:
-        tv_count = 0
+        tv_count = "N/A"
         tv_html = ''
 
     data = {

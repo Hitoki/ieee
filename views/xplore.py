@@ -176,6 +176,7 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
         try:
             xml_tree = get_xplore_xml_tree(url, "Xplore articles")
         except XploreError as e:
+            total_found = "N/A"
             xplore_error = e.message
             continue
 
@@ -189,6 +190,7 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
         # returned 0 records]]></Error>
         except TypeError:
             # If there's any query param choice to try, do so.
+            total_found = "N/A"
             if obj != param_options[-1]:
                 continue
             # Otherwise, give up.
@@ -450,7 +452,7 @@ def ajax_xplore_authors(tag_id, user=None):
     except XploreError as e:
         xplore_results = []
         xplore_error = e.message
-        total_found = 0
+        total_found = "N/A"
         return xplore_results, xplore_error, total_found
 
     # try:

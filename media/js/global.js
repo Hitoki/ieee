@@ -336,6 +336,9 @@ function resizeLightboxTab() {
 
 function addCommas(nStr) {
     // From http://www.mredkj.com/javascript/nfbasic.html, public domain
+    if (nStr == 'N/A') {
+        return nStr;
+    }
     nStr += '';
     x = nStr.split('.');
     x1 = x[0];
@@ -587,7 +590,9 @@ ResourceLoader.prototype.onLoadData = function (data) {
     if (data.token == this.ajaxToken) {
         this.loadingElem.remove();
         this.loadingElem = null;
-        this.numResults += data.num_results;
+        if (data.num_results == parseInt(data.num_results)) {
+            this.numResults += data.num_results;
+        }
 
         if (data.num_results == 0 && this.numResults != 0) {
             this.resultsGathered = true;
@@ -619,10 +624,13 @@ ResourceLoader.prototype.onLoadData = function (data) {
 
             if (this.ctype == "education") {
                 $('option#jump-to-articles').append('&nbsp;(' + addCommas(data.num_results) + ')');
-                if (this.numResults != 0 && data.num_results != 0) {
+                if (this.numResults != 0 && data.num_results != 0 || data.num_results == 'N/A') {
                     $('#num-education-results').text(addCommas(data.num_results));
                     var currentEdCount = parseInt($('#num-education-total-results').metadata().number);
-                    var newEdCount = currentEdCount + data.num_results;
+                    var newEdCount = currentEdCount;
+                    if (data.num_results == parseInt(data.num_results)) {
+                        newEdCount += data.num_results;
+                    }
                     $('#num-education-total-results').metadata().number = newEdCount;
                     $('#num-education-total-results').text(addCommas(newEdCount));
                 }
@@ -631,7 +639,10 @@ ResourceLoader.prototype.onLoadData = function (data) {
                 $('#num-tv-results').text(addCommas(data.num_results));
                 $('option#jump-to-videos').append('&nbsp;(' + addCommas(data.num_results) + ')');
                 var currentEdCount = parseInt($('#num-education-total-results').metadata().number);
-                var newEdCount = currentEdCount + data.num_results;
+                var newEdCount = currentEdCount;
+                if (data.num_results == parseInt(data.num_results)) {
+                    newEdCount += data.num_results;
+                }
                 $('#num-education-total-results').metadata().number = newEdCount;
                 $('#num-education-total-results').text(addCommas(newEdCount));
                 $('.favorite-video').qtip();
@@ -645,14 +656,17 @@ ResourceLoader.prototype.onLoadData = function (data) {
                     this.noResultsElem = $('<p class="no-resources">No Jobs are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
                 }
             } else {
-                if (this.numResults != 0 && data.num_results != 0) {
+                if (this.numResults != 0 && data.num_results != 0 || data.num_results == 'N/A') {
                     $('#num-' + this.ctype + '-results').text(addCommas(data.num_results));
                 }
             }
 
             if (!this.totalsCalced) {
                 var numRelatedItems = parseInt($('#num-related-items').metadata().number);
-                var newTotal = numRelatedItems + parseInt(data.num_results);
+                var newTotal = numRelatedItems;
+                if (data.num_results == parseInt(data.num_results)) {
+                    newTotal += parseInt(data.num_results);
+                }
                 $('#num-related-items').text(addCommas(newTotal));
                 $('#num-related-items').metadata().number = newTotal;
                 this.totalsCalced = true;
