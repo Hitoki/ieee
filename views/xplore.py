@@ -289,9 +289,9 @@ def ajax_recent_xplore(request):
 
     tag_name_replaced_brackets = tag_name.encode('utf-8').\
         replace('(', '.LB.').replace(')', '.RB.')
-    param_options = [  # todo: fix
+    param_options = [
         {'key': 'thsrsterms', 'value': '"%s"' % tag_name_replaced_brackets},
-        # {'key': 'md', 'value': '"%s"' % tag_name_replaced_brackets},
+        {'key': 'md', 'value': '"%s"' % tag_name_replaced_brackets},
         {'key': 'md', 'value': '%s' % tag_name_replaced_brackets}
     ]
 
@@ -299,6 +299,8 @@ def ajax_recent_xplore(request):
         # no need for thsrsterm so toss out the first item
         del param_options[0]
 
+    xplore_error = None
+    xplore_result = None
     for obj in param_options:
         # clear any previous values
         if 'thsrsterms' in params:
@@ -308,43 +310,32 @@ def ajax_recent_xplore(request):
 
         params[obj['key']] = obj['value']
 
-        url = settings.EXTERNAL_XPLORE_URL + urllib.urlencode(params)
-
         try:
+            url = settings.EXTERNAL_XPLORE_URL + urllib.urlencode(params)
             xml_tree = get_xplore_xml_tree(url, "most recent Xplore article")
         except XploreError as e:
-            xplore_results = []
             xplore_error = e.message
         else:
-            xplore_results = []
             nodes = xml_tree.documentElement.getElementsByTagName('document')
-            for document1 in nodes:
-                title = getElementValueByTagName(document1, 'title')
+            if len(nodes):
+                title = getElementValueByTagName(nodes[0], 'title')
                 title = re.sub('<img [^>]*alt="(?P<alt>[^"]+)"[^>]*>',
                                '\g<alt>', title)
-                pdf = getElementValueByTagName(document1, 'pdf')
-                xplore_results.append({
+                pdf = getElementValueByTagName(nodes[0], 'pdf')
+                xplore_result = {
                     'name': title,
                     'url': pdf,
-                })
+                }
 
-    try:
-        xplore_result = xplore_results[0]  # todo: fix
-        data = {
-            'name': xplore_result['name'],
-            'url': xplore_result['url']
-        }
-    except IndexError:
+    if not xplore_result:
         if xplore_error is not None:
-            data = {
+            xplore_result = {
                 'name': settings.XPLORE_TIMEOUT_RECENT_MESSAGE,
                 'url': ''
             }
         else:
-            data = None
-
-    return HttpResponse(json.dumps(data), 'application/javascript')
-
+            xplore_result = None
+    return HttpResponse(json.dumps(xplore_result), 'application/javascript')
 
 @csrf_exempt
 def ajax_xplore_results(request):
