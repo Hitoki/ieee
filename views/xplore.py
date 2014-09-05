@@ -147,13 +147,17 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
         replace('(', '.LB.').replace(')', '.RB.')
     param_options = [  # todo: fix
         {'key': 'thsrsterms', 'value': '"%s"' % tag_name_replaced_brackets},
-        # {'key': 'md', 'value': '"%s"' % tag_name_replaced_brackets},
+        {'key': 'md', 'value': '"%s"' % tag_name_replaced_brackets},
         {'key': 'md', 'value': '%s' % tag_name_replaced_brackets},
     ]
 
     if not tax_term_count:
         # no need for thsrsterm so toss out the first item
         del param_options[0]
+
+    xplore_results = []
+    xplore_error = None
+    total_found = 0
 
     for obj in param_options:
         # clear any previous values
@@ -172,14 +176,13 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
         try:
             xml_tree = get_xplore_xml_tree(url, "Xplore articles")
         except XploreError as e:
-            xplore_results = []
             xplore_error = e.message
-            total_found = 0
-            return xplore_results, xplore_error, total_found
+            continue
 
         try:
-            totalfound = int(getElementValueByTagName(xml_tree.documentElement,
-                                                      'totalfound'))
+            total_found = \
+                int(getElementValueByTagName(xml_tree.documentElement,
+                                             'totalfound'))
         # If no records found Xplore will return xml like this and the int
         # parse with raise an exeption
         # <Error><![CDATA[Cannot go to record 1 since query only
@@ -189,7 +192,8 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
             if obj != param_options[-1]:
                 continue
             # Otherwise, give up.
-            return [], 'No records found', 0
+            xplore_error = 'No records found'
+            continue
 
         if ctype == 'Educational Courses':
             external_resource_type = 'educational course'
@@ -242,8 +246,9 @@ def _get_xplore_results(tag_name, highlight_search_term=True, show_all=False,
                 'is_favorite': is_favorite,
             }
             xplore_results.append(result)
+        break
 
-        return xplore_results, xplore_error, totalfound  # todo: fix
+    return xplore_results, xplore_error, total_found
 
 
 def getElementByTagName(node, tag_name):
