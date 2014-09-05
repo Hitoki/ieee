@@ -326,6 +326,17 @@ def ajax_recent_xplore(request):
                     'name': title,
                     'url': pdf,
                 }
+                if request.user.is_authenticated():
+                    m = re.search('\?arnumber=([\w\d]+)$', pdf)
+                    ext_id = m.group(1) if m else ''
+                    is_favorite = UserExternalFavorites.objects.filter(
+                        user=request.user,
+                        external_resource_type='article',
+                        external_id=ext_id).exists()
+                    xplore_result.update({
+                        'externalId': ext_id,
+                        'isFavorite': is_favorite,
+                    })
 
     if not xplore_result:
         if xplore_error is not None:
@@ -336,6 +347,7 @@ def ajax_recent_xplore(request):
         else:
             xplore_result = None
     return HttpResponse(json.dumps(xplore_result), 'application/javascript')
+
 
 @csrf_exempt
 def ajax_xplore_results(request):

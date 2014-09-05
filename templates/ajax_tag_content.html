@@ -43,6 +43,19 @@
                     if (data.url) {
                         html = '<a href="' + data.url + '" target="_blank" rel="nofollow">' +
                                 data.name + '<span class="popup newWinIcon"></span></a>';
+                        if (data.isFavorite != undefined) {
+                            var starClass, starTitle;
+                            if (data.isFavorite) {
+                                starClass = "icon-star-whole enabled";
+                                starTitle = "Remove article from Your Favorites";
+                            } else {
+                                starClass = "icon-star";
+                                starTitle = "Add article to Your Favorites";
+                            }
+                            html += '<span class="' + starClass + ' favorite-article icomoon-icon"' +
+                                    ' data-nodeid="' + data.externalId + '"' +
+                                    ' data-rtype="article" title="' + starTitle + '"></span>';
+                        }
                     }
                     else {
                         html = '<span>' + data.name + '</span>'
