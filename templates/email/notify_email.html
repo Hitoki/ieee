@@ -61,7 +61,7 @@
                 {% for topic in notification_requests %}
                     <br/>
                     <br/>
-                    The topic <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}">{{ topic.node }}</a> has:
+                    <span style="font-size:16px">Topic: <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}">{{ topic.node }}</a></span>
                     <br/>
                     <div style="padding-left:25px;line-height:1">
                     {% regroup topic.new_resources by resource_type as new_resources %}
@@ -69,8 +69,8 @@
                         <br/>
                         {{ resource_type.list|length }} new
                         <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}&tab={{ resource_type.grouper }}-tab">
-                            {{ resource_type.grouper|slice:"0:1"|upper }}{{ resource_type.grouper|slice:"1:" }}s</a>:<br/>
-                            <div class="padding-left:15px">
+                            {{ resource_type.grouper|title }}{% if resource_type.list|length > 1 %}s{% endif %}</a>:<br/>
+                            <div style="padding-left:15px">
                         {% for resource in resource_type.list %}
                             <br/>
                             {% if resource.resource.url %}<a href="{{ resource.resource.url }}">{{ resource.resource.name }}</a>{% else %}{{ resource.resource.name }}{% endif %}
