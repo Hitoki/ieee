@@ -666,9 +666,14 @@ ResourceLoader.prototype.onLoadData = function (data) {
                 } else if (this.ctype == 'tv') {
                     $('#num-tv-results').parent('h3').addClass('no-education-results');
                 } else {
-                    $('#num-' + this.ctype + '-results').text('0');
-                    //$('#xplore-results-container .print-resource').remove();
-                    this.noResultsElem = $('<p class="no-resources">No ' + this.ctype + ' Articles are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
+                    if (data.xplore_error) {
+                        $('#num-' + this.ctype + '-results').text('N/A');
+                        this.noResultsElem = $('<p class="no-resources">' + 'Xplore is not currently responding. Please try again later.'  + '</p>').appendTo(this.scrollElem);
+                    } else {
+                        $('#num-' + this.ctype + '-results').text('0');
+                        //$('#xplore-results-container .print-resource').remove();
+                        this.noResultsElem = $('<p class="no-resources">No ' + this.ctype + ' Articles are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);
+                    }
                 }
 
             } else {
