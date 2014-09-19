@@ -1,6 +1,9 @@
 {% load humanize %}
 <div id="header">
     <div id="header-links">
+        {% if not user.is_authenticated %}
+        <a id="signinLink" href="{% url ajax_account account_step='signin' %}" class="lightbox {customClass: 'signin'}" rel="nofollow"><span class="btn account">Sign In</span></a>{% comment %}<a href="{% url ajax_account account_step='register' %}" class="lightbox {customClass: 'register'}" rel="nofollow"><span class="btn account">Register</span></a>{% endcomment %}
+        {% endif %}
         <a href="http://ieee.org" rel="nofollow" style="float:right"><span class="sm-logo"></span></a>
         {% comment %}<span id="tagline">Connecting You to the IEEE Universe of Information</span>{% endcomment %}
         <div class="header-btns">{% spaceless %}
@@ -24,9 +27,7 @@
                     <li><a id="youraccountLink" href="{% url ajax_account account_step='yoursettings' %}" class="lightbox {customClass: 'your-account'}">Account Settings</a></li>
                     <li><a href="{% url logout %}">Sign Out</a></li>
                 </ul>
-            </span>
-            {% else %}
-            <a id="signinLink" href="{% url ajax_account account_step='signin' %}" class="lightbox {customClass: 'signin'}" rel="nofollow"><span class="btn account">Sign In</span></a>{% comment %}<a href="{% url ajax_account account_step='register' %}" class="lightbox {customClass: 'register'}" rel="nofollow"><span class="btn account">Register</span></a>{% endcomment %}
+            </span>            
             {% endif %}
             <a href="javascript:void(0)" class="btn startTour" rel="nofollow">Tour</a><a href="http://help.technav.systemicist.com/forums" target="_blank" class="btn help" rel="nofollow">Help</a>
             {% endif %}
