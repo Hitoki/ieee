@@ -67,6 +67,15 @@ Include file used by both print_resource.html and tag_landing.html
             {% endif %}
         </div>
     </div>
+{% if messages %}
+<ul class="messages blip">
+    {% for message in messages %}
+    <li{% if message.tags %} class="message-{{ message.tags }}"{% endif %}>
+        {{ message }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
 <div id="tag_page">
     
     <hr/>
@@ -542,6 +551,14 @@ Include file used by both print_resource.html and tag_landing.html
     //patentSearch1.setResultOrder(google.search.Search.ORDER_BY_DATE);
         // Specify search quer(ies)
     //patentSearch1.execute($('h1.title').text());
+
+    {% if messages %}
+    $(window).load(function() {
+        setTimeout(function () {
+            $('.messages.blip').fadeOut();
+        }, 5000);
+    });
+    {% endif %}
 
     // Dynamically number the section content blocks.
     $(document).ready(function(){
