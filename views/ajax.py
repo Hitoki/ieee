@@ -359,6 +359,12 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
 
 def ajax_favorite_list(request):
     member = request.user
+
+    if request.path == '/textui/':
+        landing_page = False
+    else:
+        landing_page = True
+
     try:
         user_favorites = UserFavorites.objects.get(user=member)
         favorite_topics = user_favorites.topics.all()
@@ -377,6 +383,7 @@ def ajax_favorite_list(request):
         'favorite_resources': favorite_resources,
         'favorite_societies': favorite_societies,
         'external_favorites': external_favorites,
+        'landing_page': landing_page
     }
 
     for topic in favorite_topics:

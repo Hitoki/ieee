@@ -108,7 +108,7 @@
         <strong>Topics</strong><br/>
         <ul class="topicList">
             {% for topic in favorite_topics %}
-                <li><a href="javascript:Tags.selectTag({{ topic.id }});"
+                <li><a href="{% if landing_page %}/textui/?autoload={{ topic.id }}{% else %}javascript:Tags.selectTag({{ topic.id }});{% endif %}"
                        onclick="_gaq.push(['_trackEvent', 'Tags', 'Click', '{{ topic.name}}']);"
                        rel="nofollow">{{ topic.name }}</a>
                     <span class="topic-icons">
