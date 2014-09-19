@@ -761,6 +761,9 @@ div.image-container {
     }
     .articleDesc {
         display: block;
+        .truncatedText {
+            margin-left: 10px;
+        }
     }
 }
   
@@ -2642,7 +2645,6 @@ td.machine-generated-column {
     border-bottom: 1px dotted black;
     display: inline;
     cursor: default;
-    margin-left: 10px;
 }
 
 .ui-tooltip.ui-tooltip-default {
