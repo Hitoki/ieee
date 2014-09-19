@@ -312,6 +312,14 @@ def tag_landing(request, tag_id, node_slug=None):
     Displays a wikipedia-style flat view of the tag. No tabs or other fancy UI.
     Simply uses the print_resource view passing in a different template name.
     """
+    tag = Node.objects.get(id=tag_id);
+    if request.user.is_authenticated():
+        member = User.objects.get(id=request.user.id)
+        tag.is_favorite = UserFavorites.objects.filter(user=member). \
+            filter(id=tag_id).exists()
+    else:
+        tag.is_favorite = False
+
     # TODO move logic to decorator
     is_mobile = (
         re.match(settings.MOBILE_URL_PREFIX, request.META['HTTP_HOST']) and

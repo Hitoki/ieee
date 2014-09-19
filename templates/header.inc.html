@@ -7,7 +7,6 @@
         <a href="http://ieee.org" rel="nofollow" style="float:right"><span class="sm-logo"></span></a>
         {% comment %}<span id="tagline">Connecting You to the IEEE Universe of Information</span>{% endcomment %}
         <div class="header-btns">{% spaceless %}
-            {% if not tag %}
             {% comment %}<a href="http://www.ieee.org/membership_services/membership/join/index.html?WT.mc_id=u_join" class="btn join" target="_self" rel="nofollow">Join IEEE!</a>{% endcomment %}
             {% if user.is_authenticated %}
             <span class="userMenu">
@@ -29,6 +28,7 @@
                 </ul>
             </span>            
             {% endif %}
+            {% if not tag %}
             <a href="javascript:void(0)" class="btn startTour" rel="nofollow">Tour</a><a href="http://help.technav.systemicist.com/forums" target="_blank" class="btn help" rel="nofollow">Help</a>
             {% endif %}
         {% endspaceless %}</div>
