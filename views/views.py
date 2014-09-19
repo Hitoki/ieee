@@ -570,14 +570,24 @@ def log_out(request):
     auth.logout(request)
 
     messages.success(request, "You have been signed out.")
-    response = HttpResponseRedirect(reverse('index'))
+
+    referer = request.META.get('HTTP_REFERER', None)
+    if referer is None:
+        pass
+        # do something here
+    try:
+        redirect_to = urlsplit(referer, 'http', False)[2]
+    except IndexError:
+        pass
+    # do another thing here
+    return HttpResponseRedirect(redirect_to)
 
     #if settings.USE_SITEMINDER_LOGIN:
-    host = request.META['HTTP_HOST']
-    if host.count('.') > 1:
-        host = host[host.find('.'):]
-    response.delete_cookie("SMSESSION", domain=host)
-    return response
+    #host = request.META['HTTP_HOST']
+    #if host.count('.') > 1:
+    #    host = host[host.find('.'):]
+    #response.delete_cookie("SMSESSION", domain=host)
+    #return response
 
 
 def debug_error(request):
