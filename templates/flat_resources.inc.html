@@ -38,13 +38,6 @@
             );
         }).qtip();
     });
-    $('.deferRegister').click(function() {
-        Lightbox.hide();
-        $('.qtip').hide();
-        setTimeout(function () {
-            $('#signinLink').click();
-        }, 100);
-    }).qtip();
 </script>
 {% endblock %}
 
@@ -582,6 +575,14 @@ Include file used by both print_resource.html and tag_landing.html
                 $(textEl).remove();
         });
 
-        $('span.Featured').children('table').attr('id','jobs-table')
+        $('span.Featured').children('table').attr('id','jobs-table');
+
+        $('.deferRegister').click(function() {
+            Lightbox.hide();
+            $('.qtip').hide();
+            setTimeout(function () {
+                $('#signinLink').click();
+            }, 100);
+        }).qtip();
     });
 </script>
