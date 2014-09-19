@@ -52,8 +52,8 @@ Include file used by both print_resource.html and tag_landing.html
         {% include "header.inc.html" %}
         {% comment %}{% include 'includes/alert_updates_form.html' %}{% endcomment %}
         <div class="tag_header_inner">
-            <h1 class="title">{{ tag.name }} {{ tag.is_favorite }}
-            {% if user.is_authenticated %}<span class="{% if is_favorite %}icon-star-whole enabled{% else %}icon-star{% endif %} favorite-topic icomoon-icon" data-nodeid="{{ tag.id }}" title="{% if is_favorite %}Remove topic from Your Favorites{% else %}Add topic to Your Favorites{% endif %}"></span>{% else %}<span class="deferRegister icon-star icomoon-icon" title="Join IEEE Technology Navigator<br/>to add topic to favorites."></span>{% endif %}
+            <h1 class="title">{{ tag.name }}
+            {% if user.is_authenticated %}<span class="{% if tag.is_favorite %}icon-star-whole enabled{% else %}icon-star{% endif %} favorite-topic icomoon-icon" data-nodeid="{{ tag.id }}" title="{% if tag.is_favorite %}Remove topic from Your Favorites{% else %}Add topic to Your Favorites{% endif %}"></span>{% else %}<span class="deferRegister icon-star icomoon-icon" title="Join IEEE Technology Navigator<br/>to add topic to favorites."></span>{% endif %}
             </h1>
             {% if tag and create_links %}
                 <div id="tag_technav" onclick="location.href='/textui/?autoload={{ tag.id }}';" rel="nofollow">
