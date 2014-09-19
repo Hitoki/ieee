@@ -574,6 +574,7 @@ def ajax_authors_results(request):
     data = {
         'num_results': authors_count,
         'html': authors_html,
+        'xplore_error': xplore_error,
         'search_term': name,
         'token': token
     }
