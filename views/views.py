@@ -657,6 +657,9 @@ def get_jobs_info(tag, offset=None, user=None):
                 '<span class="%(StarClass)s favorite-job icomoon-icon"'\
                 ' data-nodeid="%(Id)s" data-rtype="job"' \
                 ' title="%(TitleText)s"></span>' % job
+        if user and not user.is_authenticated():
+            job['Star'] = \
+                '<span class="deferRegister icon-star icomoon-icon" title="Join IEEE Technology Navigator<br/>to add topic to favorites."></span>'
         jobs_html += '<li><span class="newWinTrigger">' \
                      '<a href="%(Url)s" target="_blank" class="featured">'\
                      '%(JobTitle)s</a><span class="popup newWinIcon"></span>' \

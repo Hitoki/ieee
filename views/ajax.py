@@ -519,6 +519,9 @@ def ajax_tv_results(request):
                     ' title="%(title_text)s"></span>' % \
                     dict(star_class=star_class, ext_id=ext_id,
                          title_text=title_text)
+            else:
+                star = \
+                    '<span class="deferRegister icon-star icomoon-icon" title="Join IEEE Technology Navigator<br/>to add topic to favorites."></span>'
             tv_html += '<div><img src="%(thumb)s" height="60" width="105"/>' \
                        '<span class="newWinTrigger">' \
                        '<a href="%(url)s" target="_blank">%(title)s</a>' \

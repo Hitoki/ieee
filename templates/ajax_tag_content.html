@@ -83,15 +83,22 @@
             classes: 'secondary-qtip'
         },
     });
+    $('.deferRegister').click(function() {
+        Lightbox.hide();
+        $('.qtip').hide();
+        setTimeout(function () {
+            $('#signinLink').click();
+        }, 100);
+    }).qtip();
 </script>
 
 {% include 'includes/js/notification_request.html' %}
 
 {% if is_ajax %}
 <div class="dialogTitle">
-    <span id="tag-name">{{ tag.name }}</span> 
+    <span id="tag-name">{{ tag.name }}</span>
+    <div class="tag-icons{% if is_favorite %} is-favorite {% endif %}"> 
     {% if user.is_authenticated %}
-    <div class="tag-icons{% if is_favorite %} is-favorite {% endif %}">
         {% if is_favorite %}
         <span class="openAlerts icon-star-whole{% if enable_alerts %}-alert{% endif %} enabled icomoon-icon" data-nodeid="{{ tag.id }}" title="Click to edit tracking<br/>options for this topic"></span>
         {% else %}
@@ -103,8 +110,10 @@
             <span><input type="radio" name="topicOpt" id="nofav" value="nofav"{% if not is_favorite %} checked="checked"{% endif %}> <label for="nofav">Do nothing</label></span>
             <div class="center"><span class="closeAlertMenu smallFont">Close</span></div>
         </div>
-    </div>
+    {% else %}
+    <span class="deferRegister icon-star-whole icomoon-icon" title="Join IEEE Technology Navigator<br/>to add topic to favorites."></span>
     {% endif %}
+    </div>
 </div>
 
 {% comment %}
