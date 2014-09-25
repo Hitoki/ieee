@@ -42,10 +42,10 @@ Include file used by both print_resource.html and tag_landing.html
                     <span><input type="radio" name="topicOpt" id="nofav" value="nofav"{% if not tag.is_favorite %} checked="checked"{% endif %}> <label for="nofav">Do nothing</label></span>
                     <div class="center"><span class="closeAlertMenu smallFont">Close</span></div>
                 </div>
-                {% else %}
-                <span class="deferRegister icon-star icomoon-icon" title="Join IEEE Technology Navigator<br/>to add topic to favorites."></span>
-                {% endif %}
             </div>
+            {% else %}
+            <span class="deferRegister icon-star icomoon-icon" title="Join IEEE Technology Navigator<br/>to add topic to favorites."></span>
+            {% endif %}
             {% if tag and create_links %}
                 <div id="tag_technav" onclick="location.href='/textui/?autoload={{ tag.id }}';" rel="nofollow">
                     <div><span>View this topic in</span></div>
