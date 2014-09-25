@@ -73,7 +73,7 @@
     });
     $('.closeAlertMenu').click(function() {
         $('.alertMenu').hide();
-    })
+    });
     $('.alertOpt').qtip({
         position: {
             my: 'middle right',
@@ -102,7 +102,7 @@
         {% if is_favorite %}
         <span class="openAlerts icon-star-whole{% if enable_alerts %}-alert{% endif %} enabled icomoon-icon" data-nodeid="{{ tag.id }}" title="Click to edit tracking<br/>options for this topic"></span>
         {% else %}
-        <span class="openAlerts icon-star-whole icomoon-icon" title="Click to set options" data-nodeid="{{ tag.id }}" title="Click to set options"></span>
+        <span class="openAlerts icon-star icomoon-icon" title="Click to set options" data-nodeid="{{ tag.id }}" title="Click to set options"></span>
         {% endif %}
         <div class="alertMenu">
             <span><input type="radio" name="topicOpt" id="fav" value="fav"{% if is_favorite and not enable_alerts %} checked="checked"{% endif %}> <label for="fav">Add this topic to Your Favorites</label></span><br/>

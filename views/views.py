@@ -36,6 +36,7 @@ from models.node import Node
 from models.society import Society
 from models.types import ResourceType, Filter
 from models.resource import Resource
+from models.notification import ResourceAdditionNotificationRequest
 from models.conference_application import TagKeyword, ConferenceApplication
 from models.favorites import UserFavorites, UserExternalFavorites
 
@@ -409,9 +410,13 @@ def print_resource(request, tag_id, resource_type, node_slug='',
 
     if request.user.is_authenticated():
         member = User.objects.get(id=request.user.id)
+        email = request.user.email
         tag.is_favorite = UserFavorites.objects.filter(user=member).filter(topics=tag_id).exists()
+        tag.enable_alerts = ResourceAdditionNotificationRequest.objects. \
+            filter(email=email).filter(node_id=tag_id).exists()
     else:
         tag.is_favorite = False
+        tag.enable_alerts = False
 
     sectors = Node.objects.none()
     related_tags = Node.objects.none()
