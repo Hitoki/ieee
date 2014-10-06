@@ -22,14 +22,14 @@
         {{ errors|safe }}
     {% endif %}
     
-    <form action="{% url admin_save_user %}" method="post">
+    <form action="{% url 'admin_save_user' %}" method="post">
         {% csrf_token %}
         <table class="grid">
             {{ form }}
         </table>
         <input type="submit" value="Ok" />
         {% if user_id %}
-            <input type="button" value="Delete" onclick="if (confirm('Delete this user?')) window.location='{% url admin_delete_user user_id %}';" />
+            <input type="button" value="Delete" onclick="if (confirm('Delete this user?')) window.location='{% url 'admin_delete_user' user_id %}';" />
         {% endif %}
     </form>
     

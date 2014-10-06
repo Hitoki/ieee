@@ -5,7 +5,7 @@
     <h1>{{ page_title }}</h1>
     
 	<h2>New Update</h2>
-	<a href="{% url admin_update_resources_from_xplore_perform%}">Perform Update</a>
+	<a href="{% url 'admin_update_resources_from_xplore_perform'%}">Perform Update</a>
 	
 	<br/>
 	<h2>Logs from Previous Updates</h2>
@@ -16,6 +16,6 @@
 	</select>
 	<p><a href="javascript:document.location='update_resources_from_xplore_log/' + $('#logList').val();">Download selected log</a></p>
     
-    <p><a href="{% url admin_home %}">home</a></p>
+    <p><a href="{% url 'admin_home' %}">home</a></p>
     
 {% endblock %}

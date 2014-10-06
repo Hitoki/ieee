@@ -23,24 +23,24 @@
         {% for tag in tags %}
             <tr>
                 <td>
-                    <a href="{% url admin_view_tag tag.id %}">{{tag.name}}</a>
+                    <a href="{% url 'admin_view_tag' tag.id %}">{{tag.name}}</a>
                 </td>
                 {% comment %}
                 <td>
                     {% for sector in tag.parents.all %}
-                        <a href="{% url admin_view_sector sector.id %}">{{ sector.name }}</a>{% if not forloop.last %},{% endif %}
+                        <a href="{% url 'admin_view_sector' sector.id %}">{{ sector.name }}</a>{% if not forloop.last %},{% endif %}
                     {% endfor %}
                 </td>
                 {% endcomment %}
                 <td>
                     {% for related_tag in tag.related_tags.all %}
-                        <a href="{% url admin_view_tag related_tag.id %}">{{ related_tag.name }}</a>{% if not forloop.last %},{% endif %}
+                        <a href="{% url 'admin_view_tag' related_tag.id %}">{{ related_tag.name }}</a>{% if not forloop.last %},{% endif %}
                     {% endfor %}
                 </td>
             </tr>
         {% endfor %}
     </table>
     
-    <a href="{% url admin_create_tag %}?return_url={{ current_url|urlencode }}">Create a new Topic</a>
+    <a href="{% url 'admin_create_tag' %}?return_url={{ current_url|urlencode }}">Create a new Topic</a>
     
 {% endblock %}

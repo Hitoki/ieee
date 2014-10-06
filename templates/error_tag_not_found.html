@@ -39,18 +39,18 @@
                             {% if user %}
                             <p class="admin-links">                                
                                 {% ifequal user.get_profile.role "admin" %}
-                                    <a href="{% url admin_home %}">Admin</a>
+                                    <a href="{% url 'admin_home' %}">Admin</a>
                                 {% endifequal %}
                                 {% ifequal user.get_profile.role "society_admin" %}
-                                    <a href="{% url admin_home %}">Organization Admin</a>
+                                    <a href="{% url 'admin_home' %}">Organization Admin</a>
                                 {% endifequal %}
                                 {% ifequal user.get_profile.role "society_manager" %}
-                                    <a href="{% url admin_home %}">Organization Manager</a>
+                                    <a href="{% url 'admin_home' %}">Organization Manager</a>
                                 {% endifequal %}
                                 {% if user.is_authenticated %}
-                                    <a href="{% url admin_logout %}">*</a>
+                                    <a href="{% url 'admin_logout' %}">*</a>
                                 {% else %}
-                                    <a href="{% url admin_login %}">*</a>
+                                    <a href="{% url 'admin_login' %}">*</a>
                                 {% endif %}
                             </p>
                             {% endif %}

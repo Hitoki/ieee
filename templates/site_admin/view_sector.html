@@ -15,7 +15,7 @@
             {% for cluster in sector.get_child_clusters %}
                 <tr>
                     <td>
-                        <a href="{% url admin_view_cluster cluster.id %}">{{ cluster.name }}</a>
+                        <a href="{% url 'admin_view_cluster' cluster.id %}">{{ cluster.name }}</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -48,7 +48,7 @@
         {% for tag in sector.get_tags %}
             <tr>
                 <td>
-                    <a href="{% url admin_view_tag tag.id %}">{{ tag.name }}</a>
+                    <a href="{% url 'admin_view_tag' tag.id %}">{{ tag.name }}</a>
                 </td>
                 <td>
                     {{ tag.resources.count }}
@@ -71,10 +71,10 @@
     <p>
         {% comment %}
         TODO: Fix this link
-        <a href="{% url admin_show_create_tag_form sector.id %}">Create a topic</a>
+        <a href="{% url 'admin_show_create_tag_form' sector.id %}">Create a topic</a>
         {% endcomment %}
     </p>
     
-    <p><a href="{% url admin_home %}">home</a></p>
+    <p><a href="{% url 'admin_home' %}">home</a></p>
     
 {% endblock %}

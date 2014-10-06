@@ -5,7 +5,7 @@
     <h1>"{{ resource.name }}" Resource</h1>
     
     <p>
-        <a href="{% url admin_edit_resource resource.id %}?return_url={{ return_url }}">Edit Resource</a>
+        <a href="{% url 'admin_edit_resource' resource.id %}?return_url={{ return_url }}">Edit Resource</a>
     </p>
     
     <table class="full-grid">
@@ -82,7 +82,7 @@
             <td>
 				{% if resource.url %}
 					{% ifequal resource.url_status "bad" %}
-						<div class="error">URL is broken: {{ resource.url_error }} <a href="{% url admin_broken_links_check "resource" resource.id %}?next={{ current_url|urlencode }}">[recheck url]</a></div>
+						<div class="error">URL is broken: {{ resource.url_error }} <a href="{% url 'admin_broken_links_check' "resource" resource.id %}?next={{ current_url|urlencode }}">[recheck url]</a></div>
 					{% endifequal %}
 					<a href="{{ resource.url }}">{{ resource.url }}</a>
 				{% endif %}
@@ -94,7 +94,7 @@
             </th>
             <td>
                 {% for tag in resource.nodes.all %}
-                    <a href="{% url admin_view_tag tag.id %}">{{ tag.name }}</a>{% if not forloop.last %},{% endif %}
+                    <a href="{% url 'admin_view_tag' tag.id %}">{{ tag.name }}</a>{% if not forloop.last %},{% endif %}
                 {% endfor %}
             </td>
         </tr>
@@ -104,7 +104,7 @@
             </th>
             <td>
                 {% for society in resource.societies.all %}
-                    <a href="{% url admin_view_society society.id %}">{{ society.name }}</a>{% if not forloop.last %},{% endif %}
+                    <a href="{% url 'admin_view_society' society.id %}">{{ society.name }}</a>{% if not forloop.last %},{% endif %}
                 {% endfor %}
             </td>
         </tr>

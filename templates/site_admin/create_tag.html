@@ -17,7 +17,7 @@
                 // Got multisearch, attach events
                 multisearch.subscribe('click_create_new_tag', function(multisearch, event, data) {
                     // User clicked on "create new tag" link, show page in lightbox
-                    Lightbox.show('{% url admin_create_tag %}?default_tag_name=' + escape(data.tag_name) + '&society_id={{ society_id }}', {
+                    Lightbox.show('{% url 'admin_create_tag' %}?default_tag_name=' + escape(data.tag_name) + '&society_id={{ society_id }}', {
                         closeOnClickOutside: false
                     });
                 });
@@ -87,12 +87,12 @@
     {% comment %}
     {% if sector %}
         <p>
-            <a href="{% url admin_view_sector sector.id %}">back</a>
+            <a href="{% url 'admin_view_sector' sector.id %}">back</a>
         </p>
     {% endif %}
     {% endcomment %}
     
-    <form action="{% url admin_create_tag %}?society_id={{ society_id }}&amp;add_to_society={{ add_to_society }}&amp;return_url={{ return_url|urlencode }}" method="post">
+    <form action="{% url 'admin_create_tag' %}?society_id={{ society_id }}&amp;add_to_society={{ add_to_society }}&amp;return_url={{ return_url|urlencode }}" method="post">
         <div class="submit">
             <input type="submit" value="Save" class="button submit-button" />
             {% if is_ajax %}
@@ -103,7 +103,7 @@
                 {% endif %}
                 {% comment %}
                 {% if sector %}
-                    <input type='button' value='Cancel' class='submit-button' onclick='window.location="{% url admin_view_sector sector.id %};"' /> 
+                    <input type='button' value='Cancel' class='submit-button' onclick='window.location="{% url 'admin_view_sector' sector.id %};"' />
                 {% endif %}
                 {% endcomment %}
             {% endif %}
@@ -181,7 +181,7 @@
                 {% endif %}
                 {% comment %}
                 {% if sector %}
-                    <input type='button' value='Cancel' class='submit-button' onclick='window.location="{% url admin_view_sector sector.id %};"' /> 
+                    <input type='button' value='Cancel' class='submit-button' onclick='window.location="{% url 'admin_view_sector' sector.id %};"' />
                 {% endif %}
                 {% endcomment %}
             {% endif %}

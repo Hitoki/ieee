@@ -3,16 +3,16 @@
 {% block main_table_content %}
     <h1>{% if cluster %} Edit {% else %} Create New {% endif %} Topic Area</h1>
     {% if cluster %}
-        <form action="{% url admin_edit_cluster2 cluster.id %}?return_url={{ return_url|urlencode }}" method="post">
+        <form action="{% url 'admin_edit_cluster2' cluster.id %}?return_url={{ return_url|urlencode }}" method="post">
     {% else %}
-        <form action="{% url admin_create_cluster2 %}?return_url={{ return_url|urlencode }}" method="post">
+        <form action="{% url 'admin_create_cluster2' %}?return_url={{ return_url|urlencode }}" method="post">
     {% endif %}
         <div class="submit">
             <input type="submit" name="submit1" value="Save" class="submit-button" />
             <input type="submit" name="submit2" value="Save and exit" class="submit-button" />
             <input type='button' value='Cancel' class='submit-button' onclick='window.location="{{ return_url }}"' />
             {% if False and user.is_superuser and cluster %}
-                <a href="" onclick="if (confirm('Are you sure you want to delete this topic area?  This cannot be undone.')) window.location='{% url admin_delete_cluster cluster.id %}?return_url={{ return_url|urlencode }}';" class="cancel-link">Delete</a>
+                <a href="" onclick="if (confirm('Are you sure you want to delete this topic area?  This cannot be undone.')) window.location='{% url 'admin_delete_cluster' cluster.id %}?return_url={{ return_url|urlencode }}';" class="cancel-link">Delete</a>
             {% endif %}
         </div>
         {% csrf_token %}
@@ -24,7 +24,7 @@
             <input type="submit" name="submit2" value="Save and exit" class="submit-button" />
             <input type='button' value='Cancel' class='submit-button' onclick='window.location="{{ return_url }}"' />
             {% if False and user.is_superuser and cluster %}
-                <a href="" onclick="if (confirm('Are you sure you want to delete this topic area?  This cannot be undone.')) window.location='{% url admin_delete_cluster cluster.id %}?return_url={{ return_url|urlencode }}';" class="cancel-link">Delete</a>
+                <a href="" onclick="if (confirm('Are you sure you want to delete this topic area?  This cannot be undone.')) window.location='{% url 'admin_delete_cluster' cluster.id %}?return_url={{ return_url|urlencode }}';" class="cancel-link">Delete</a>
             {% endif %}
         </div>
     </form>

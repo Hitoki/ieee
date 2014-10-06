@@ -18,7 +18,7 @@
         {{ from_tag_names|join:", " }}
     </p>
     
-    <input type="button" value="Paste Topics" onclick="window.location='{% url admin_paste_resource to_resource.id %}';" />
+    <input type="button" value="Paste Topics" onclick="window.location='{% url 'admin_paste_resource' to_resource.id %}';" />
     <input type="button" value="Cancel" class="lightbox-close" />
     
 {% endblock %}

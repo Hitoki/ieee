@@ -37,7 +37,7 @@
         {% for conference_series, num_in_series in serieses %}
             <tr>
                 <td>
-                    <a href="{% url admin_conference_series_report2 conference_series %}">{{ conference_series }}</a> 
+                    <a href="{% url 'admin_conference_series_report2' conference_series %}">{{ conference_series }}</a>
                 </td>
                 <td>
                     {{ num_in_series }}

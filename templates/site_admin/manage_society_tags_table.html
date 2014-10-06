@@ -51,21 +51,21 @@
 </script>
 
 <div id='topic-filter'>
-    <form action="{% url admin_manage_society society.id %}" method="get">
+    <form action="{% url 'admin_manage_society' society.id %}" method="get">
         <input type="hidden" name="tag_sort" value="{{ tag_sort }}" />
         <input type="hidden" name="items_per_page" value="{{ items_per_page }}" />
         <input type="hidden" id="tag_type" name="tag_type" value="{{ tag_type }}" />
         <p>
             <input name="tag_filter" value="{{ tag_filter }}" class="blur-text {text: 'Enter whole or partial words', blurClass:'multi-search-input-blur'}" id="tag_filter" />
             <input type="submit" value="Filter By Topic / Topic Area Name" class="submit-button" />
-            <input type="button" value="Remove Filter" class="submit-button" onclick="window.location='{% url admin_manage_society society.id %}?tag_sort={{ tag_sort }}&amp;items_per_page={{ items_per_page }}';" />
+            <input type="button" value="Remove Filter" class="submit-button" onclick="window.location='{% url 'admin_manage_society' society.id %}?tag_sort={{ tag_sort }}&amp;items_per_page={{ items_per_page }}';" />
             {% ifnotequal num_filtered_tags num_unfiltered_tags %}
                 <span class="matching-filter">{{ num_filtered_tags }} Matching Topic{{ num_filtered_tags|pluralize }} / Topic Area{{ num_filtered_tags|pluralize }}</span>
             {% endifnotequal %}
             </p>
     </form>
 </div>
-<form action="{% url admin_manage_society society.id %}#tab-tags-tab" method="get" class="items-per-page">
+<form action="{% url 'admin_manage_society' society.id %}#tab-tags-tab" method="get" class="items-per-page">
     <input type="hidden" name="tag_sort" value="{{ tag_sort }}" />
     <input type="hidden" name="tag_type" value="{{ tag_type }}" />
     <p class="items-per-page">
@@ -75,7 +75,7 @@
     </p>
 </form>
 
-<form action="{% url admin_edit_tags %}?return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}" method="post">
+<form action="{% url 'admin_edit_tags' %}?return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}" method="post">
     {% comment %}
     <p class="batch-editing-button">
         <span class="edit-selected-tags-flyover">
@@ -101,14 +101,14 @@
             <th>
                 Topic/Topic Area <span class="help_icon tip">[?]</span><span class='tooltip-text' style='display:none;'>Keyword or phrase for related concept or technology area. Click topic to edit.</span>
                 <div class="table-sort">
-                <a href="{% url admin_manage_society society.id %}?tag_sort=name_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
+                <a href="{% url 'admin_manage_society' society.id %}?tag_sort=name_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "name_ascending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                     {% else %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                     {% endifequal %}
                 </a>
-                <a href="{% url admin_manage_society society.id %}?tag_sort=name_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
+                <a href="{% url 'admin_manage_society' society.id %}?tag_sort=name_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "name_descending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                     {% else %}
@@ -124,14 +124,14 @@
                 <span class='tooltip-text' style='display:none;'>Industry Topic for which the Topic is relevant, from the domain perspective of the S/C.</span>
                 
                 <div class="table-sort">
-                <a href="{% url admin_manage_society society.id %}?tag_sort=sector_list_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
+                <a href="{% url 'admin_manage_society' society.id %}?tag_sort=sector_list_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "sector_list_ascending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                     {% else %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                     {% endifequal %}
                 </a>
-                <a href="{% url admin_manage_society society.id %}?tag_sort=sector_list_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
+                <a href="{% url 'admin_manage_society' society.id %}?tag_sort=sector_list_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "sector_list_descending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                     {% else %}
@@ -145,14 +145,14 @@
                 Topic Areas </span>
                 
                 <div class="table-sort">
-                <a href="{% url admin_manage_society society.id %}?tag_sort=topic_area_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
+                <a href="{% url 'admin_manage_society' society.id %}?tag_sort=topic_area_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "topic_area_ascending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                     {% else %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                     {% endifequal %}
                 </a>
-                <a href="{% url admin_manage_society society.id %}?tag_sort=topic_area_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
+                <a href="{% url 'admin_manage_society' society.id %}?tag_sort=topic_area_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "topic_area_descending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                     {% else %}
@@ -166,14 +166,14 @@
                 <span class='tooltip-text' style='display:none;'>IEEE organizations that have associated Topic with their domain.</span>
                 
                 <div class="table-sort">
-                <a href="{% url admin_manage_society society.id %}?tag_sort=num_societies_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
+                <a href="{% url 'admin_manage_society' society.id %}?tag_sort=num_societies_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_societies_ascending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                     {% else %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                     {% endifequal %}
                 </a>
-                <a href="{% url admin_manage_society society.id %}?tag_sort=num_societies_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
+                <a href="{% url 'admin_manage_society' society.id %}?tag_sort=num_societies_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_societies_descending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                     {% else %}
@@ -188,14 +188,14 @@
                 <span class='tooltip-text' style='display:none;'>Categories that detail the concept or technology area.</span>
                 
                 <div class="table-sort">
-                <a href="{% url admin_manage_society society.id %}?tag_sort=num_filters_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
+                <a href="{% url 'admin_manage_society' society.id %}?tag_sort=num_filters_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_filters_ascending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                     {% else %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                     {% endifequal %}
                 </a>
-                <a href="{% url admin_manage_society society.id %}?tag_sort=num_filters_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
+                <a href="{% url 'admin_manage_society' society.id %}?tag_sort=num_filters_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_filters_descending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                     {% else %}
@@ -210,14 +210,14 @@
                 <span class='tooltip-text' style='display:none;'>IEEE Products or Services mapped to this Topic.</span>
                 
                 <div class="table-sort">
-                <a href="{% url admin_manage_society society.id %}?tag_sort=num_resources_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
+                <a href="{% url 'admin_manage_society' society.id %}?tag_sort=num_resources_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_resources_ascending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                     {% else %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                     {% endifequal %}
                 </a>
-                <a href="{% url admin_manage_society society.id %}?tag_sort=num_resources_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
+                <a href="{% url 'admin_manage_society' society.id %}?tag_sort=num_resources_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_resources_descending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                     {% else %}
@@ -231,14 +231,14 @@
                 <span class='tooltip-text' style='display:none;'>Topics that are related concepts or technology areas.</span>
                 
                 <div class="table-sort">
-                <a href="{% url admin_manage_society society.id %}?tag_sort=num_related_tags_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
+                <a href="{% url 'admin_manage_society' society.id %}?tag_sort=num_related_tags_ascending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_related_tags_ascending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_active.png" />
                     {% else %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_up_inactive.png" />
                     {% endifequal %}
                 </a>
-                <a href="{% url admin_manage_society society.id %}?tag_sort=num_related_tags_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
+                <a href="{% url 'admin_manage_society' society.id %}?tag_sort=num_related_tags_descending&amp;items_per_page={{ items_per_page }}#tab-tags-tab">
                     {% ifequal tag_sort "num_related_tags_descending" %}
                         <img src="{{ MEDIA_URL }}images/sort_arrow_down_active.png" />
                     {% else %}
@@ -261,9 +261,9 @@
                 {% endcomment %}
                 <td class="first-item">
                     {% if tag.node_type|stringformat:"s" == 'tag_cluster' %}
-                        <a href="{% url admin_edit_cluster tag.id %}?return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}&amp;society_id={{ society.id }}">{{ tag.name }}</a>
+                        <a href="{% url 'admin_edit_cluster' tag.id %}?return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}&amp;society_id={{ society.id }}">{{ tag.name }}</a>
                     {% else %}
-                        <a href="{% url admin_edit_tag tag.id %}?return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}&amp;society_id={{ society.id }}">{{ tag.name }}</a>
+                        <a href="{% url 'admin_edit_tag' tag.id %}?return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}&amp;society_id={{ society.id }}">{{ tag.name }}</a>
                     {% endif %}
                 </td>
                 {% comment %}
@@ -330,8 +330,8 @@
         {% pages tag_page num_tag_pages tag_page_url 13 %}
     </ul>
     {% if user.get_profile.role == 'admin' %}
-        <input type="button" id="create-topic-area" onclick="location.href='{% url admin_create_cluster %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic Area" />
+        <input type="button" id="create-topic-area" onclick="location.href='{% url 'admin_create_cluster' %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic Area" />
     {% endif %}
-    <input type="button" id="create-tag" onclick="location.href='{% url admin_create_tag %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic" />
+    <input type="button" id="create-tag" onclick="location.href='{% url 'admin_create_tag' %}?society_id={{ society.id }}&amp;return_url={{ return_url|urlencode }}{{ "#tab-tags-tab"|urlencode }}';" value="Create New Topic" />
         <span style="clear:both;">&nbsp;</span>
 </div>

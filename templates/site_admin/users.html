@@ -8,7 +8,7 @@
         // Delete all the selected users
         function delete_users() {
             var form = $('form#user-list');
-            form.attr('action', '{% url admin_delete_users %}');
+            form.attr('action', '{% url 'admin_delete_users' %}');
             form.submit();
         };
         
@@ -17,7 +17,7 @@
     <h1>Manage Users</h1>
     
     <p>
-        <a href="{% url admin_create_user %}">Create a new user</a>
+        <a href=" %}">Create a new user</a>
         | <a href="javascript:delete_users();" onclick="return confirm('Are you sure you want to delete these users?\nYou cannot undo this action.');">Delete selected users</a>
     </p>
     <form id="user-list" action="" method="post">
@@ -51,7 +51,7 @@
                         <input type="checkbox" name="user_ids" value="{{ user1.id }}" />
                     </td>
                     <td>
-                        <a href="{% url admin_view_user user1.id %}">{{ user1.username }}</a>
+                        <a href="{% url 'admin_view_user' user1.id %}">{{ user1.username }}</a>
                     </td>
                     <td>
                         {{ user1.first_name }}
@@ -67,7 +67,7 @@
                     </td>
                     <td>
                         {% for society in user1.societies.all %}
-                            <a href="{% url admin_view_society society.id %}">{{ society.name }}</a>{% if not forloop.last %},{% endif %}
+                            <a href="{% url 'admin_view_society' society.id %}">{{ society.name }}</a>{% if not forloop.last %},{% endif %}
                         {% endfor %}
                     </td>
                 </tr>
@@ -76,7 +76,7 @@
     </form>
     
     <p>
-        <a href="{% url admin_create_user %}">Create a new user</a>
+        <a href="{% url 'admin_create_user' %}">Create a new user</a>
     </p>
     
 {% endblock %}

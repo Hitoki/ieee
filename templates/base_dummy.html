@@ -94,9 +94,9 @@
 
     <script>
         // Create global JS variables
-        var INDEX_URL = "{% url index %}";
+        var INDEX_URL = "{% url 'index' %}";
         var MEDIA_URL = "{{ MEDIA_URL }}";
-        var TEXTUI_HELP_URL = "{% url textui_help %}";
+        var TEXTUI_HELP_URL = "{% url 'textui_help' %}";
         var ENABLE_PROGRESSIVE_LOADING = {{ ENABLE_PROGRESSIVE_LOADING|reprjs }};
         var DEBUG = {{ DEBUG|reprjs }};
     </script>

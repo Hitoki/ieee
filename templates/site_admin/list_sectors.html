@@ -18,7 +18,7 @@
         {% for sector in sectors %}
             <tr>
                 <td>
-                    <a href="{% url admin_view_sector sector.id %}">{{sector.name}}</a>
+                    <a href="{% url 'admin_view_sector' sector.id %}">{{sector.name}}</a>
                 </td>
                 <td>
                     {{ sector.child_nodes.all.count }}
@@ -27,6 +27,6 @@
         {% endfor %}
     </table>
     
-    <a href="{% url admin_create_tag %}?return_url={{ current_url|urlencode }}">Create a new Topic</a>
+    <a href="{% url 'admin_create_tag' %}?return_url={{ current_url|urlencode }}">Create a new Topic</a>
     
 {% endblock %}

@@ -4,7 +4,7 @@
     
     <h1>Search Organizations</h1>
     
-    <form action="{% url admin_search_societies %}" method="post">
+    <form action="{% url 'admin_search_societies' %}" method="post">
         {% csrf_token %}
         <table>
             {{ form }}
@@ -15,7 +15,7 @@
     {% if society_results %}
         <b>Results:</b><br/>
         {% for society in society_results %}
-            &nbsp;&nbsp; <a href="{% url admin_view_society society.id %}">{{ society.name }} ({{ society.id }})</a><br/>
+            &nbsp;&nbsp; <a href="{% url 'admin_view_society' society.id %}">{{ society.name }} ({{ society.id }})</a><br/>
         {% endfor %}
     {% endif %}
 

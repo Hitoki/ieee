@@ -8,7 +8,7 @@
     
     <h1>Topics Report</h1>
     <p class="export">
-        <a href="{% url admin_tags_report %}?export_csv=1">Export as CSV</a>
+        <a href="{% url 'admin_tags_report' %}?export_csv=1">Export as CSV</a>
     </p>
     
     <p>
@@ -89,6 +89,6 @@
         {% endfor %}
     </table>
     
-    <p><a href="{% url admin_home %}">home</a></p>
+    <p><a href="{% url 'admin_home' %}">home</a></p>
 
 {% endblock %}

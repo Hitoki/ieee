@@ -6,7 +6,7 @@
     
     <h1>"{{ society.name }}" Organization</h1>
     
-    <form action="{% url admin_save_society %}?return_url={{ return_url|urlencode }}" method="post">
+    <form action="{% url 'admin_save_society' %}?return_url={{ return_url|urlencode }}" method="post">
         {% csrf_token %}
         <table class="full-grid">
             {% eval form.as_table('id') %}

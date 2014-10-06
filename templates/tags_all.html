@@ -1,7 +1,7 @@
 {% extends "base_table.html" %}
 
 
-{% block logo_href %}{% url tags_list %}{% endblock %}
+{% block logo_href %}{% url 'tags_list' %}{% endblock %}
 {% block feedback %}{% endblock %}{# hide feedback link using blank block #}
 {% block main_table_content %}
 
@@ -45,7 +45,7 @@ $(document).ready(function(){
     <tbody>
       {% for tag in tags %}
       <tr>
-        <td><a href="{% url tag_landing tag.pk %}{{tag.name|slugify|slice:":40"}}">{{tag.name}}</a></td>
+        <td><a href="{% url 'tag_landing' tag.pk %}{{tag.name|slugify|slice:":40"}}">{{tag.name}}</a></td>
       </tr>
       {% endfor %}
     </tbody>
@@ -54,12 +54,12 @@ $(document).ready(function(){
 
 <div>Other topics:</div>
 <div>
-    <a href="{% url tags_starts '[0-9]'|urlencode %}">#'s</a> 
+    <a href="{% url 'tags_starts' '[0-9]'|urlencode %}">#'s</a>
   {% for x in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'  %}
-    <a href="{% url tags_starts x %}">{{ x }}</a>
+    <a href="{% url 'tags_starts' x %}">{{ x }}</a>
     {% if not forloop.last %} - {% endif %}
   {% endfor %}
-    <a href="{% url tags_starts '[^a-z0-9]'|urlencode %}">misc</a> 
+    <a href="{% url 'tags_starts' '[^a-z0-9]'|urlencode %}">misc</a>
 </div>
 
 {% endblock %}

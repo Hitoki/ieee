@@ -14,7 +14,7 @@
         });
 
         $('.printAll').click(function() {
-            window.open("{% url print_resource tag.id 'all' %}", "printWindow");
+            window.open("{% url 'print_resource' tag.id 'all' %}", "printWindow");
         });
 
         $('.printCur').click(function() {
@@ -122,60 +122,60 @@
 <!-- *** Content Panels *** -->
 
 <!-- Overview-->
-            <div id="overview-tab" class="overview-tab" data-printUrl='{% url print_resource tag.id "overview" %}'>
+            <div id="overview-tab" class="overview-tab" data-printUrl='{% url 'print_resource' tag.id "overview" %}'>
                     {% include 'ajax_over_tab.inc.html' %}
             </div>
 
 <!-- Organizations -->
-            <div id="society-tab" data-printUrl='{% url print_resource tag.id "societies" %}'>
+            <div id="society-tab" data-printUrl='{% url 'print_resource' tag.id "societies" %}'>
                 {% include 'ajax_organizations_tab.inc.html' %}
             </div>
 
 <!-- Conferences -->
-            <div id="conference-tab" data-printUrl='{% url print_resource tag.id "conferences" %}'>
+            <div id="conference-tab" data-printUrl='{% url 'print_resource' tag.id "conferences" %}'>
                 {% include 'ajax_conferences_tab.inc.html' %}
             </div>
 
 <!-- Periodicals -->
-            <div id="periodical-tab" data-printUrl='{% url print_resource tag.id "periodicals" %}'>
+            <div id="periodical-tab" data-printUrl='{% url 'print_resource' tag.id "periodicals" %}'>
                 {% include 'ajax_periodical_tab.inc.html' %}
             </div>
 
 <!-- Authors -->
-            <div id="authors-tab" data-printUrl='{% url print_resource tag.id "authors" %}'>
+            <div id="authors-tab" data-printUrl='{% url 'print_resource' tag.id "authors" %}'>
                 {% include 'ajax_authors_tab.inc.html' %}
             </div>
 
 <!-- Xplore Results -->
-            <div id="xplore-tab" data-printUrl='{% url print_resource tag.id "xplore" %}'>
+            <div id="xplore-tab" data-printUrl='{% url 'print_resource' tag.id "xplore" %}'>
                 {% include 'ajax_xplore_tab.inc.html' %}
             </div>
 
 <!-- New Education Results -->
-            <div id="education-tab" data-printUrl='{% url print_resource tag.id "xplore_edu" %}'>
+            <div id="education-tab" data-printUrl='{% url 'print_resource' tag.id "xplore_edu" %}'>
                 {% include 'ajax_new_education_tab.inc.html' %}
             </div>
 
 <!-- Xplore Education Results -->
             {% comment %}
-            <div id="education-tab" data-printUrl='{% url print_resource tag.id "xplore_edu" %}'>
+            <div id="education-tab" data-printUrl='{% url 'print_resource' tag.id "xplore_edu" %}'>
                 {% include 'ajax_education_tab.inc.html' %}
             </div>
             {% endcomment %}
 
 <!-- Standards -->
-            <div id="standard-tab" data-printUrl='{% url print_resource tag.id "standards" %}'>
+            <div id="standard-tab" data-printUrl='{% url 'print_resource' tag.id "standards" %}'>
                 {% include 'ajax_standard_tab.inc.html' %}
             </div>
 
                 
 <!-- Jobs -->
-            <div id="job-tab" data-printUrl='{% url print_resource tag.id "jobs" %}'>
+            <div id="job-tab" data-printUrl='{% url 'print_resource' tag.id "jobs" %}'>
                 {% include 'ajax_job_tab.inc.html' %}
             </div>
 {% if show_tv %}
 <!-- Tv -->
-            <div id="tv-tab" data-printUrl='{% url print_resource tag.id "tv" %}'>
+            <div id="tv-tab" data-printUrl='{% url 'print_resource' tag.id "tv" %}'>
                 {% comment %}
                 <div class="group">
                     Tv will go here  
@@ -193,7 +193,7 @@
 <!-- Disabled Items -->                       
                 {% comment %}
                 <!-- Sectors / Clusters -->
-                <div id="sector-tab" class="sector-tab" data-printUrl='{% url print_resource tag.id "sectors" %}'>
+                <div id="sector-tab" class="sector-tab" data-printUrl='{% url 'print_resource' tag.id "sectors" %}'>
                     <div class="group">
                     {% if parent_nodes|length %}
                     {% for parent_node in parent_nodes %}

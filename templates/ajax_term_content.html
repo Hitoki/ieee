@@ -37,14 +37,14 @@
                         </ul>
                         
                         <!-- Related Topics -->
-                        <div id="related-tab" data-printUrl='{% url print_resource tag.id "related_tags" %}'>
+                        <div id="related-tab" data-printUrl='{% url 'print_resource' tag.id "related_tags" %}'>
                             <div class="group">
                                 {% include 'ajax_related_tab.inc.html' %}
                             </div>
                         </div>
                         
                         <!-- Xplore Results -->
-                        <div id="xplore-tab" data-printUrl='{% url print_resource tag.id "xplore" %}'>
+                        <div id="xplore-tab" data-printUrl='{% url 'print_resource' tag.id "xplore" %}'>
                             <div id="xplore-results-container" class="{ tagId: {{ tag.id }} }">
                                 <div class="print-resource">
                                     <p id="xplore-totals"></p>
@@ -78,14 +78,14 @@
                                 printDropDown.bind('change', function(){
                                     var type = printDropDown.val();
                                     if (type === "all") {
-                                        printWin = window.open("{% url print_resource tag.id 'all' %}", "printWindow");
+                                        printWin = window.open("{% url 'print_resource' tag.id 'all' %}", "printWindow");
                                     } else if (type === "cur"){
                                         var printUrl = $('.nootabs-selected-tab[data-printUrl]').eq(0).attr('data-printUrl');
                                         printWin = window.open(printUrl, "printWindow");
                                     }
                                     printDropDown.close();
                                     printDropDown.reset();
-                                })
+                                });
                                 
                                 attachXploreResults('#xplore-results-container');
                             });

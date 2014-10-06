@@ -6,12 +6,12 @@
     
     <p>
         List:
-        <a href="{% url admin_list_resources "conferences" %}">Conferences</a>
-        | <a href="{% url admin_list_resources "standards" %}">Standards</a>
-        | <a href="{% url admin_list_resources "periodicals" %}">Periodicals</a>
+        <a href="{% url 'admin_list_resources' "conferences" %}">Conferences</a>
+        | <a href="{% url 'admin_list_resources' "standards" %}">Standards</a>
+        | <a href="{% url 'admin_list_resources' "periodicals" %}">Periodicals</a>
     </p>
     
-    <p><a href="{% url admin_create_resource %}?return_url={{ current_url|urlencode }}">Create a resource</a></p>
+    <p><a href="{% url 'admin_create_resource' %}?return_url={{ current_url|urlencode }}">Create a resource</a></p>
     
     <table class="grid">
         <tr>
@@ -37,7 +37,7 @@
                     {{ resource.ieee_id }}
                 </td>
                 <td>
-                    <a href="{% url admin_view_resource resource.id %}?return_url={{ current_url|urlencode }}">{{resource.name}}</a>
+                    <a href="{% url 'admin_view_resource' resource.id %}?return_url={{ current_url|urlencode }}">{{resource.name}}</a>
                 </td>
                 <td>
                     {{ resource.resource_type.name }}

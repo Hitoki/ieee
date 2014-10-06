@@ -1,7 +1,7 @@
 {% extends "base_table.html" %}
 
 
-{% block logo_href %}{% url tags_list %}{% endblock %}
+{% block logo_href %}{% url 'tags_list' %}{% endblock %}
 {% block feedback %}{% endblock %}{# hide feedback link using blank block #}
 {% block main_table_content %}
 
@@ -78,7 +78,7 @@ $('input:checkbox').change(function(event){
       {% for tag in tags %}
       <tr>
         {% if show_id %}<td class="nodeId">{{ tag.pk }}</td>{% endif %}
-        <td><a href="{% url tag_landing tag.pk %}{{tag.name|slugify|slice:":40"}}">{{tag.name}}</a></td>
+        <td><a href="{% url 'tag_landing' tag.pk %}{{tag.name|slugify|slice:":40"}}">{{tag.name}}</a></td>
 	{% if show_resource_count %}<td class="count">{{ tag.resource_count }}</td>{% endif %}
 	{% if show_checkbox %}<td class="cb"><input type="checkbox" data-nodeId="{{ tag.pk }}" {% if tag.high_potency %} checked="checked"{% endif %}></input></td><td class="result"></td>{% endif %}
       </tr>

@@ -4,7 +4,7 @@
     
     <h1>Search Resources</h1>
     
-    <form action="{% url admin_search_resources %}" method="post">
+    <form action="{% url 'admin_search_resources' %}" method="post">
         {% csrf_token %}
         <table>
             {{ form }}
@@ -15,7 +15,7 @@
     {% if resource_results %}
         <b>Results:</b><br/>
         {% for resource in resource_results %}
-            &nbsp;&nbsp; <a href="{% url admin_view_resource resource.id %}?return_url={{ current_url|urlencode }}">{{ resource.name }} ({{ resource.id }})</a><br/>
+            &nbsp;&nbsp; <a href="{% url 'admin_view_resource' resource.id %}?return_url={{ current_url|urlencode }}">{{ resource.name }} ({{ resource.id }})</a><br/>
         {% endfor %}
     {% endif %}
 

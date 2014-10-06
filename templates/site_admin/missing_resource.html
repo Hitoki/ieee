@@ -4,7 +4,7 @@
     <div class="email-lightbox lightbox-pad">
         <h3>Missing-resource Form</h3>
         
-        <form action="{% url missing_resource society_id %}" method="post" class="block-labels">
+        <form action="{% url 'missing_resource' society_id %}" method="post" class="block-labels">
             {% csrf_token %}
             {{ form.as_p }}
         <div class="submit">

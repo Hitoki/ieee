@@ -31,7 +31,7 @@
         {% for society in societies %}
             <tr>
                 <td>
-                    <a href="{% url admin_manage_society society.id %}">{{ society.name }}</a> ({{ society.abbreviation }})
+                    <a href="{% url 'admin_manage_society' society.id %}">{{ society.name }}</a> ({{ society.abbreviation }})
                 </td>
                 <td>
                     <a href="{{ society.url }}" target="_blank" rel="nofollow">{{ society.url }}<span class="popup newWinIcon"></span></a>
@@ -40,7 +40,7 @@
                     {{ society.tags.get_tags.count }}
                     {% comment %}
                         {% for tag in society.tags.all %}
-                            <a href="{% url admin_view_tag tag.id %}">{{ tag.name }}</a>, 
+                            <a href="{% url 'admin_view_tag' tag.id %}">{{ tag.name }}</a>,
                         {% endfor %}
                         {% if society.more_tags %}
                             <em>... {{ society.more_tags }} more topics</em>
@@ -55,7 +55,7 @@
                 </td>
                 {% if user.get_profile.role == 'admin' %}
                 <td>
-                    <a href="{% url admin_edit_society society.id %}">edit</a>
+                    <a href="{% url 'admin_edit_society' society.id %}">edit</a>
                 </td>
                 {% endif %}
             </tr>
@@ -64,7 +64,7 @@
     
     {% comment %}
     #    {% if user.is_superuser %}
-    #        <p><a href="{% url admin_create_society %}">Create a new organization</a></p>
+    #        <p><a href="{% url 'admin_create_society' %}">Create a new organization</a></p>
     #    {% endif %}
     {% endcomment %}
     

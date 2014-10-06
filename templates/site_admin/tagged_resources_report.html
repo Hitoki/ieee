@@ -9,7 +9,7 @@
     {% endifequal %}
     
     <p class="export">
-        <a href="{% url admin_tagged_resources_report filter %}?export_csv=1">Export as CSV</a>
+        <a href="{% url 'admin_tagged_resources_report' filter %}?export_csv=1">Export as CSV</a>
     </p>
     
     <table class="tagged_resources_report grid">
@@ -59,6 +59,6 @@
         {% endfor %}
     </table>
     
-    <p><a href="{% url admin_home %}">home</a></p>
+    <p><a href="{% url 'admin_home' %}">home</a></p>
 
 {% endblock %}

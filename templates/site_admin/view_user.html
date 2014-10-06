@@ -4,7 +4,7 @@
     
     <h1>View User</h1>
     
-    <p><a href="{% url admin_edit_user view_user.id %}">Edit User</a></p>
+    <p><a href="{% url 'admin_edit_user' view_user.id %}">Edit User</a></p>
     
     <table class="grid">
         <tr>
@@ -61,7 +61,7 @@
             </th>
             <td>
                 {% for society in view_user.societies.all %}
-                    <a href="{% url admin_view_society society.id %}">{{ society.name }}</a>{% if not forloop.last %}, {% endif %}
+                    <a href="{% url 'admin_view_society' society.id %}">{{ society.name }}</a>{% if not forloop.last %}, {% endif %}
                 {% endfor %}
             </td>
         </tr>

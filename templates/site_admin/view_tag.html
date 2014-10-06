@@ -4,7 +4,7 @@
     
     <h1>{{ tag.name }} Topic</h1>
     
-    <p><a href="{% url admin_edit_tag tag.id %}">Edit topic</a></p>
+    <p><a href="{% url 'admin_edit_tag' tag.id %}">Edit topic</a></p>
     
     <table class="grid">
         {% comment %}
@@ -24,7 +24,7 @@
             </th>
             <td>
                 {% for sector in tag.get_sectors.all %}
-                    <a href="{% url admin_view_sector sector.id %}">{{ sector.name }}</a>{% if not forloop.last %},{% endif %}
+                    <a href="{% url 'admin_view_sector' sector.id %}">{{ sector.name }}</a>{% if not forloop.last %},{% endif %}
                 {% endfor %}
             </td>
         </tr>
@@ -35,7 +35,7 @@
             </th>
             <td>
                 {% for cluster in tag.get_parent_clusters.all %}
-                    <a href="{% url admin_view_cluster cluster.id %}">{{ cluster.name }}</a>{% if not forloop.last %},{% endif %}
+                    <a href="{% url 'admin_view_cluster' cluster.id %}">{{ cluster.name }}</a>{% if not forloop.last %},{% endif %}
                 {% endfor %}
             </td>
         </tr>
@@ -67,7 +67,7 @@
             </th>
             <td>
                 {% for related_tag in tag.related_tags.all %}
-                    <a href="{% url admin_view_tag related_tag.id %}">{{ related_tag.name }}</a>{% if not forloop.last %},{% endif %}
+                    <a href="{% url 'admin_view_tag' related_tag.id %}">{{ related_tag.name }}</a>{% if not forloop.last %},{% endif %}
                 {% endfor %}
             </td>
         </tr>
@@ -88,12 +88,12 @@
                     {% if resource_node.is_machine_generated %}
                         <span class="drive flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;"></span>
                     {% endif %}
-                    <a href="{% url admin_view_resource resource_node.resource.id %}?return_url={{ current_url|urlencode }}">{{ resource_node.resource.name }}</a><br/>
+                    <a href="{% url 'admin_view_resource' resource_node.resource.id %}?return_url={{ current_url|urlencode }}">{{ resource_node.resource.name }}</a><br/>
                 {% endfor %}
             </td>
         </tr>
     </table>
     
-    <p><a href="{% url admin_home %}">home</a></p>
+    <p><a href="{% url 'admin_home' %}">home</a></p>
     
 {% endblock %}

@@ -63,7 +63,7 @@
                                 <table id='roamer-header'>
                                     <tr>
                                         <td class="roamer-beta-warning-cell">
-                                            <span id="roamer-beta-warning">This beta interface uses a subset of data from the topics with the highest "Linkages". To explore all the data, switch to the <a href="{% url textui %}">Textual Interface</a>.
+                                            <span id="roamer-beta-warning">This beta interface uses a subset of data from the topics with the highest "Linkages". To explore all the data, switch to the <a href="{% url 'textui' %}">Textual Interface</a>.
                                             </span>
                                         </td>
                                         <td class="key-cell">
@@ -149,7 +149,7 @@
                     
                     <div id="footer">
                             <div id="roamerswitchlink-container">
-                                <a id="switch-link" class="roamer-switch floating { content: 'Please select a sector to enable this link.', position:'left' }" href="{% url textui %}">
+                                <a id="switch-link" class="roamer-switch floating { content: 'Please select a sector to enable this link.', position:'left' }" href="{% url 'textui' %}">
                                     Textual Interface
                                 </a>
                             </div>
@@ -161,18 +161,18 @@
                             {% if user %}
                             <p class="admin-links">                                
                                 {% ifequal user.get_profile.role "admin" %}
-                                    <a href="{% url admin_home %}">Admin</a>
+                                    <a href="{% url 'admin_home' %}">Admin</a>
                                 {% endifequal %}
                                 {% ifequal user.get_profile.role "society_admin" %}
-                                    <a href="{% url admin_home %}">Organization Admin</a>
+                                    <a href="{% url 'admin_home' %}">Organization Admin</a>
                                 {% endifequal %}
                                 {% ifequal user.get_profile.role "society_manager" %}
-                                    <a href="{% url admin_home %}">Organization Manager</a>
+                                    <a href="{% url 'admin_home' %}">Organization Manager</a>
                                 {% endifequal %}
                                 {% if user.is_authenticated %}
-                                    <a href="{% url admin_logout %}">*</a>
+                                    <a href="{% url 'admin_logout' %}">*</a>
                                 {% else %}
-                                    <a href="{% url admin_login %}">*</a>
+                                    <a href="{% url 'admin_login' %}">*</a>
                                 {% endif %}
                             </p>
                             {% endif %}

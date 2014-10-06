@@ -12,6 +12,6 @@
     <span>Relationships Created: </span>{{ resSum.relationships_created }}</span><br/>
     <span>Xplore Hits with no Matching Technav Topic: </span>{{ resSum.resources_not_found }}</span><br/>
 
-    <p><a href="{% url admin_update_resources_from_xplore_index %}">Back to Update Resources from Xplore home</a></p>
+    <p><a href="{% url 'admin_update_resources_from_xplore_index' %}">Back to Update Resources from Xplore home</a></p>
     
 {% endblock %}

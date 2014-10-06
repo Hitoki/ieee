@@ -27,7 +27,7 @@
     
         <!-- Login tab -->
         <div id="login-tab" class="nootabs-tab">
-            <form action="{% url admin_login %}" method="post">
+            <form action="{% url 'admin_login' %}" method="post">
                 {% csrf_token %}
                 {# NOTE: We need to use a hidden field for "next" and use javascript to add the #hash, otherwise the #hash is lost by django. #}
                 <input type="hidden" id="full_url" name="next" value="{{ next }}" />
@@ -46,7 +46,7 @@
                             <div class="submit">
                             <input type="submit" value="Okay" id="login-table-okay" />
                                 <p>
-                                    <a href="{% url forgot_password %}?cancel_page={% url admin_login %}">Forget your password?</a>
+                                    <a href="{% url 'forgot_password' %}?cancel_page={% url 'admin_login' %}">Forget your password?</a>
                                 </p>                            
                             </div>
                          </td>
@@ -56,7 +56,7 @@
             
             {% comment %}
             <div id="overview-video-link">
-                <a id="show-video-link" href="{% url ajax_video %}" class="lightbox {customClass: 'overview-video'}"><span class="{customClass: 'overview-video'}" style="margin:0 0 10px 10px;display:inline-block">Watch the overview video</span><img src='{{ MEDIA_URL}}images/video-still.png' alt="IEEE Video Still" style="width: 223px; height: 125px; vertical-align: middle" /></a>
+                <a id="show-video-link" href="{% url 'ajax_video' %}" class="lightbox {customClass: 'overview-video'}"><span class="{customClass: 'overview-video'}" style="margin:0 0 10px 10px;display:inline-block">Watch the overview video</span><img src='{{ MEDIA_URL}}images/video-still.png' alt="IEEE Video Still" style="width: 223px; height: 125px; vertical-align: middle" /></a>
             </div>
             {% endcomment %}
                 

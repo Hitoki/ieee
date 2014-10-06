@@ -6,7 +6,7 @@
     
     <h1>Edit {{ resources|length }} Resources <span class="batch-editing-note">(See list of resources in table below)</span></h1>
     
-    <form action="{% url admin_edit_resources %}?process_form=1&amp;return_url={{ return_url|urlencode }}&amp;society_id={{ society.id }}" method="post">
+    <form action="{% url 'admin_edit_resources' %}?process_form=1&amp;return_url={{ return_url|urlencode }}&amp;society_id={{ society.id }}" method="post">
         {% csrf_token %}
         <table class="grid edit-create">
             {% comment %}

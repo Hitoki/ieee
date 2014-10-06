@@ -8,15 +8,15 @@
         Do you want to send the login info for this account to the user's email <strong>{{ edited_user.email }}</strong>?
     </p>
     <p>
-        <form action="{% url admin_send_login_info "password_changed" %}" method="post" style="text-align:center;">
+        <form action="{% url 'admin_send_login_info' "password_changed" %}" method="post" style="text-align:center;">
             {% csrf_token %}
             <input type="hidden" name="user_ids" value="{{ edited_user.id }}" />
             <input type="hidden" name="plaintext_passwords" value="{{ plaintext_password }}" />
             <input type="submit" value="Send login info email" />
-            <input type="button" value="Don't send" onclick="window.location='{% url admin_users %}';"/>
+            <input type="button" value="Don't send" onclick="window.location='{% url 'admin_users' %}';"/>
         </form>
     </p>
     
-    <p><a href="{% url admin_home %}">home</a></p>
+    <p><a href="{% url 'admin_home' %}">home</a></p>
     
 {% endblock %}

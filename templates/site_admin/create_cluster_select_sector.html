@@ -11,7 +11,7 @@
     <ul>
         {% for sector in sectors %}
             <li>
-                <a href="{% url admin_create_cluster %}?sector_id={{ sector.id }}">{{ sector.name }}</a>
+                <a href="{% url 'admin_create_cluster' %}?sector_id={{ sector.id }}">{{ sector.name }}</a>
             </li>
         {% endfor %}
     </ul>

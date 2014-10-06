@@ -5,7 +5,7 @@
 {% block main_table_content %}
     
     {% ifpermission "user_can_edit_society" society %}
-        <a href="{% url admin_edit_society society.id %}" class="edit">Edit Organization</a>
+        <a href="{% url 'admin_edit_society' society.id %}" class="edit">Edit Organization</a>
     {% endifpermission %}
     
     <h1>{{ society.name }} ({{ society.abbreviation }}) Organization</h1>
@@ -42,7 +42,7 @@
             </th>
             <td>
                 {% for user in society.users.all %}
-                    <a href="{% url admin_view_user user.id %}">{{ user.username }}</a>, 
+                    <a href="{% url 'admin_view_user' user.id %}">{{ user.username }}</a>,
                 {% endfor %}
             </td>
         </tr>
@@ -60,7 +60,7 @@
                             <em>No topics associated yet with this organization.</em>
                         {% else %}
                             {% for topic in society.tags.all %}
-                                <a href="{% url admin_view_tag tag.id %}">{{ tag.name }}</a><br/>
+                                <a href="{% url 'admin_view_tag' tag.id %}">{{ tag.name }}</a><br/>
                             {% endfor %}
                         {% endif %}
                     </div>
@@ -72,7 +72,7 @@
                                 {% for resource in society.resources.all %}
                                     <tr>
                                         <td>
-                                            <a href="{% url admin_view_resource resource.id %}?return_url={{ current_url|urlencode }}">{{ resource.name }}</a><br/>
+                                            <a href="{% url 'admin_view_resource' resource.id %}?return_url={{ current_url|urlencode }}">{{ resource.name }}</a><br/>
                                         </td>
                                         <td>
                                             {{ resource.resource_type.name }}
@@ -82,7 +82,7 @@
                             </table>
                         {% endif %}
                         <p>
-                            <a href="{% url admin_create_resource %}?society_id={{ society.id }}&amp;return_url={{ current_url|urlencode }}">(create a new resource)</a>
+                            <a href="{% url 'admin_create_resource' %}?society_id={{ society.id }}&amp;return_url={{ current_url|urlencode }}">(create a new resource)</a>
                         </p>
                     </div>
                 </div>
