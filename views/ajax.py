@@ -359,6 +359,12 @@ def ajax_tag_content(request, tag_id, ui=None, tab='overview'):
 
 def ajax_favorite_list(request):
     member = request.user
+
+    if request.path == '/textui/':
+        landing_page = False
+    else:
+        landing_page = True
+
     try:
         user_favorites = UserFavorites.objects.get(user=member)
         favorite_topics = user_favorites.topics.all()
@@ -377,6 +383,7 @@ def ajax_favorite_list(request):
         'favorite_resources': favorite_resources,
         'favorite_societies': favorite_societies,
         'external_favorites': external_favorites,
+        'landing_page': landing_page
     }
 
     for topic in favorite_topics:
@@ -519,6 +526,9 @@ def ajax_tv_results(request):
                     ' title="%(title_text)s"></span>' % \
                     dict(star_class=star_class, ext_id=ext_id,
                          title_text=title_text)
+            else:
+                star = \
+                    '<span class="deferRegister icon-star icomoon-icon" title="Join IEEE Technology Navigator<br/>to add topic to favorites."></span>'
             tv_html += '<div><img src="%(thumb)s" height="60" width="105"/>' \
                        '<span class="newWinTrigger">' \
                        '<a href="%(url)s" target="_blank">%(title)s</a>' \
@@ -574,6 +584,7 @@ def ajax_authors_results(request):
     data = {
         'num_results': authors_count,
         'html': authors_html,
+        'xplore_error': xplore_error,
         'search_term': name,
         'token': token
     }

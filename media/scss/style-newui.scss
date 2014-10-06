@@ -215,6 +215,7 @@ table.main {
 }
 .signinBtns {
     text-align: center;
+    line-height: initial;
     .btn {
         margin: 0 10px 0 0;
         padding: 4px 10px;
@@ -270,6 +271,10 @@ table.main {
     .icomoon-icon {
         text-decoration: none;
     }
+    strong {
+        display: inline-block;
+        margin-bottom: 5px;
+    }
 }
 
 .topicList {
@@ -316,6 +321,7 @@ table.main {
         width: 100%;
         box-sizing: border-box;
         overflow-y: auto;
+        line-height: 1.5;
     }
     .nootabs-menus a {
         padding: 3px 5px;
@@ -331,6 +337,14 @@ table.main {
             list-style-type: disc;
             margin-left: 15px;
         }
+    }
+}
+
+.deleteLink {
+    font-size: 11px;
+    color: $medium-gray;
+    &:hover {
+        color: $secondaryColor;
     }
 }
 
@@ -747,6 +761,9 @@ div.image-container {
     }
     .articleDesc {
         display: block;
+        .truncatedText {
+            margin-left: 10px;
+        }
     }
 }
   
@@ -2440,9 +2457,6 @@ header {
 
 #header-logo {
   float: left;
-  a {
-    float: left;
-  }
 }
 
 #header-links {
@@ -2450,6 +2464,11 @@ header {
    white-space: nowrap;
    right: 0px;
    top: 10px;
+}
+
+#signinLink {
+    float: left;
+    margin: 6px 15px 0 0;
 }
 
 #corner-notch {
@@ -2628,7 +2647,6 @@ td.machine-generated-column {
     border-bottom: 1px dotted black;
     display: inline;
     cursor: default;
-    margin-left: 10px;
 }
 
 .ui-tooltip.ui-tooltip-default {

@@ -39,7 +39,6 @@ font-size: 18pt;
 .tag_header_inner  h1.title {
 display: inline-block; 
 color: #000000;  
-min-width: 558px;
 }
 
 #tag_definition {
@@ -214,7 +213,9 @@ color: #9F9F9F;
 }
 
 #totalTagLink { 
-margin-left: 130px;
+  margin: 0;
+  display: block;
+  float: none;
 }
 
 .tag-section {
@@ -317,4 +318,19 @@ a.featured,
 
 #tag-xplore_edu .tag-sub-section {
   padding-left: 25px;
+}
+
+.favoriteUi {
+  display: inline-block;
+  position: relative;
+}
+
+.tag_header_inner .icomoon-icon {
+  font-size: 20px;
+  margin-left: 5px;
+}
+
+.tag_header_inner .alertMenu {
+  left: 5px;
+  right: auto;
 }

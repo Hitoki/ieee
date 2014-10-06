@@ -49,7 +49,7 @@
                                 {% endif %}
                                     <div>
                                         <span>{{close_conference.name}}</span>{% if close_conference.url and close_conference.url_status != "bad" %}<span class="popup newWinIcon"></span>{% endif %}{% if close_conference.is_machine_generated %}<span class="sprite-drive flyover {width:300}"  alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;"></span>{% endif %}
-                                        {% if user.is_authenticated %}<span class="{% if close_conference.is_favorite %}icon-star-whole enabled{% else %}icon-star{% endif %} over-favorite-resource icomoon-icon" data-nodeid="{{ close_conference.id }}" title="{% if close_conference.is_favorite %}Remove conference from Your Favorites{% else %}Add conference to Your Favorites{% endif %}"></span>{% endif %}
+                                        {% if user.is_authenticated %}<span class="{% if close_conference.is_favorite %}icon-star-whole enabled{% else %}icon-star{% endif %} over-favorite-resource icomoon-icon" data-nodeid="{{ close_conference.id }}" title="{% if close_conference.is_favorite %}Remove conference from Your Favorites{% else %}Add conference to Your Favorites{% endif %}"></span>{% else %}<span class="deferRegister icon-star icomoon-icon" title="Join IEEE Technology Navigator<br/>to add topic to favorites."></span>{% endif %}
                                     </div>
                                 {% if close_conference.url and close_conference_status != "bad" %}
                                 </a>

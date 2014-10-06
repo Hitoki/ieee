@@ -29,6 +29,23 @@ Include file used by both print_resource.html and tag_landing.html
         {% comment %}{% include 'includes/alert_updates_form.html' %}{% endcomment %}
         <div class="tag_header_inner">
             <h1 class="title">{{ tag.name }}</h1>
+            {% if user.is_authenticated %}
+            <div class="favoriteUi">
+                {% if tag.is_favorite %}
+                <span class="openAlerts icon-star-whole{% if tag.enable_alerts %}-alert{% endif %} enabled icomoon-icon" data-nodeid="{{ tag.id }}" title="Click to edit tracking<br/>options for this topic"></span>
+                {% else %}
+                <span class="openAlerts icon-star-whole icomoon-icon" title="Click to set options" data-nodeid="{{ tag.id }}" title="Click to set options"></span>
+                {% endif %}
+                <div class="alertMenu">
+                    <span><input type="radio" name="topicOpt" id="fav" value="fav"{% if tag.is_favorite and not tag.enable_alerts %} checked="checked"{% endif %}> <label for="fav">Add this topic to Your Favorites</label></span><br/>
+                    <span class="alertOpt" title="We'll email you alerts when<br/>resources are added to this topic"><input type="radio" name="topicOpt" id="favAlert" value="favalert"{% if tag.is_favorite and tag.enable_alerts %} checked="checked"{% endif %}> <label for="favAlert">Add to Your Favorites + receive email alerts</label></span><br/>
+                    <span><input type="radio" name="topicOpt" id="nofav" value="nofav"{% if not tag.is_favorite %} checked="checked"{% endif %}> <label for="nofav">Do nothing</label></span>
+                    <div class="center"><span class="closeAlertMenu smallFont">Close</span></div>
+                </div>
+            </div>
+            {% else %}
+            <span class="deferRegister icon-star icomoon-icon" title="Join IEEE Technology Navigator<br/>to add topic to favorites."></span>
+            {% endif %}
             {% if tag and create_links %}
                 <div id="tag_technav" onclick="location.href='/textui/?autoload={{ tag.id }}';" rel="nofollow">
                     <div><span>View this topic in</span></div>
@@ -41,6 +58,15 @@ Include file used by both print_resource.html and tag_landing.html
             {% endif %}
         </div>
     </div>
+{% if messages %}
+<ul class="messages blip">
+    {% for message in messages %}
+    <li{% if message.tags %} class="message-{{ message.tags }}"{% endif %}>
+        {{ message }}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
 <div id="tag_page">
     
     <hr/>
@@ -517,6 +543,14 @@ Include file used by both print_resource.html and tag_landing.html
         // Specify search quer(ies)
     //patentSearch1.execute($('h1.title').text());
 
+    {% if messages %}
+    $(window).load(function() {
+        setTimeout(function () {
+            $('.messages.blip').fadeOut();
+        }, 5000);
+    });
+    {% endif %}
+
     // Dynamically number the section content blocks.
     $(document).ready(function(){
         {% if toc %}
@@ -549,6 +583,94 @@ Include file used by both print_resource.html and tag_landing.html
                 $(textEl).remove();
         });
 
-        $('span.Featured').children('table').attr('id','jobs-table')
+        $('.openAlerts').click(function() {
+            $('.qtip').hide();
+            $('.alertMenu').toggle();
+        });
+        $('.closeAlertMenu').click(function() {
+            $('.alertMenu').hide();
+        });
+
+        $('span.Featured').children('table').attr('id','jobs-table');
+
+        $('.deferRegister').click(function() {
+            Lightbox.hide();
+            $('.qtip').hide();
+            setTimeout(function () {
+                $('#signinLink').click();
+            }, 100);
+        }).qtip();
+
+        var action;
+        $('input[type=radio][name=topicOpt]').change(function() {
+            if (this.value == 'nofav') {
+                $('.favoriteUi').children('.openAlerts').removeClass('enabled icon-star-whole-alert').addClass('icon-star-whole');
+                $.post('/ajax/favorite-topic/request',
+                    {
+                        nodeid: {{ tag.id }},
+                        action: 'disable'
+                    },
+                    function(){
+                        return false;
+                    }
+                );
+                $.post('/ajax/notification/request',
+                    {
+                        email: '{{ user.email }}',
+                        nodeid: {{ tag.id }},
+                        action: 'disable'
+                    },
+                    function(){
+                        return false;
+                    }
+                );
+            }
+            else if (this.value == 'fav') {
+                $('.favoriteUi').children('.openAlerts').removeClass('icon-star icon-star-whole-alert').addClass('enabled icon-star-whole');
+                $.post('/ajax/favorite-topic/request',
+                    {
+                        nodeid: {{ tag.id }},
+                        action: 'enable'
+                    },
+                    function(){
+                        return false;
+                    }
+                );
+                $.post('/ajax/notification/request',
+                    {
+                        email: '{{ user.email }}',
+                        nodeid: {{ tag.id }},
+                        action: 'disable'
+                    },
+                    function(){
+                        return false;
+                    }
+                );
+            }
+            else if (this.value == 'favalert') {
+                $('.favoriteUi').children('.openAlerts').removeClass('icon-star-whole icon-star').addClass('enabled icon-star-whole-alert');
+                $.post('/ajax/favorite-topic/request',
+                    {
+                        nodeid: {{ tag.id }},
+                        action: 'enable'
+                    },
+                    function(){
+                        return false;
+                    }
+                );
+                $.post('/ajax/notification/request',
+                    {
+                        email: '{{ user.email }}',
+                        nodeid: {{ tag.id }},
+                        action: 'enable'
+                    },
+                    function(){
+                        return false;
+                    }
+                );
+            }
+            $('.qtip').hide();
+            $('.alertMenu').hide();
+        });
     });
 </script>

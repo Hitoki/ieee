@@ -36,6 +36,7 @@ from models.node import Node
 from models.society import Society
 from models.types import ResourceType, Filter
 from models.resource import Resource
+from models.notification import ResourceAdditionNotificationRequest
 from models.conference_application import TagKeyword, ConferenceApplication
 from models.favorites import UserFavorites, UserExternalFavorites
 
@@ -406,6 +407,17 @@ def print_resource(request, tag_id, resource_type, node_slug='',
             return redirect(url_name, *args, permanent=True)
         except ObjectDoesNotExist:
             return HttpResponse("gone", status=410)  # gone
+
+    if request.user.is_authenticated():
+        member = User.objects.get(id=request.user.id)
+        email = request.user.email
+        tag.is_favorite = UserFavorites.objects.filter(user=member).filter(topics=tag_id).exists()
+        tag.enable_alerts = ResourceAdditionNotificationRequest.objects. \
+            filter(email=email).filter(node_id=tag_id).exists()
+    else:
+        tag.is_favorite = False
+        tag.enable_alerts = False
+
     sectors = Node.objects.none()
     related_tags = Node.objects.none()
     societies = Society.objects.none()
@@ -563,14 +575,24 @@ def log_out(request):
     auth.logout(request)
 
     messages.success(request, "You have been signed out.")
-    response = HttpResponseRedirect(reverse('index'))
+
+    referer = request.META.get('HTTP_REFERER', None)
+    if referer is None:
+        pass
+        # do something here
+    try:
+        redirect_to = urlsplit(referer, 'http', False)[2]
+    except IndexError:
+        pass
+    # do another thing here
+    return HttpResponseRedirect(redirect_to)
 
     #if settings.USE_SITEMINDER_LOGIN:
-    host = request.META['HTTP_HOST']
-    if host.count('.') > 1:
-        host = host[host.find('.'):]
-    response.delete_cookie("SMSESSION", domain=host)
-    return response
+    #host = request.META['HTTP_HOST']
+    #if host.count('.') > 1:
+    #    host = host[host.find('.'):]
+    #response.delete_cookie("SMSESSION", domain=host)
+    #return response
 
 
 def debug_error(request):
@@ -657,6 +679,9 @@ def get_jobs_info(tag, offset=None, user=None):
                 '<span class="%(StarClass)s favorite-job icomoon-icon"'\
                 ' data-nodeid="%(Id)s" data-rtype="job"' \
                 ' title="%(TitleText)s"></span>' % job
+        if user and not user.is_authenticated():
+            job['Star'] = \
+                '<span class="deferRegister icon-star icomoon-icon" title="Join IEEE Technology Navigator<br/>to add topic to favorites."></span>'
         jobs_html += '<li><span class="newWinTrigger">' \
                      '<a href="%(Url)s" target="_blank" class="featured">'\
                      '%(JobTitle)s</a><span class="popup newWinIcon"></span>' \

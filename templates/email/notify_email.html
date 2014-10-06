@@ -61,15 +61,15 @@
                 {% for topic in notification_requests %}
                     <br/>
                     <br/>
-                    The topic <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}">{{ topic.node }}</a> has:
+                    <span style="font-size:16px">Topic: <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}">{{ topic.node }}</a></span>
                     <br/>
                     <div style="padding-left:25px;line-height:1">
                     {% for resource_type, resources in topic.grouped_resources.items %}
                         <br/>
                         {{ resources|length }} new
                         <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}&tab={{ resource_type }}-tab">
-                            {{ resource_type|slice:"0:1"|upper }}{{ resource_type|slice:"1:" }}s</a>:<br/>
-                            <div class="padding-left:15px">
+                            {{ resource_type.grouper|title }}{% if resource_type.list|length > 1 %}s{% endif %}</a>:<br/>
+                            <div style="padding-left:15px">
                         {% for resource in resources %}
                             <br/>
                             {% if resource.url %}<a href="{{ resource.url }}">{{ resource.name }}</a>{% else %}{{ resource.name }}{% endif %}

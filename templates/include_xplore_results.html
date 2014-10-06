@@ -14,6 +14,8 @@
                   data-nodeid="{{ result.ext_id }}"
                   data-rtype="{{ result.external_resource_type }}"
                   title="{% if result.is_favorite %}Remove article from Your Favorites{% else %}Add article to Your Favorites{% endif %}"></span>
+        {% else %}
+        <span class="deferRegister icon-star icomoon-icon" title="Join IEEE Technology Navigator<br/>to add topic to favorites."></span>
         {% endif %}
         <span class="articleDesc">
             <span class="{% cycle 'pub_odd' 'pub_even' %}">{{ result.authors|safe }} {{ result.pub_title|safe }},  {{ result.pub_year|safe }}</span>
