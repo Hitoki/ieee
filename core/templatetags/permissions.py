@@ -84,7 +84,7 @@ class IfPermissionNode(template.Node):
         user = self.user.resolve(context)
         
         # Get the function Permission.objects[permission_type]() and call with the current user & object
-        from models.profile import Permission
+        from webapp.models.profile import Permission
         fn = getattr(Permission.objects, self.permission_type)
         has_permission = fn(user, object)
         
