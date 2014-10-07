@@ -28,29 +28,28 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
-from django.utils import simplejson as json
+import json
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 from csv_utf8 import UnicodeReader
-from ieeetags import settings
-from ieeetags import permissions
-from ieeetags import url_checker
-from ieeetags.util import *
-from ieeetags.views.views import render
-from ieeetags.widgets import DisplayOnlyWidget
-from forms import *
-from models.logs import FailedLoginLog, UrlCheckerLog, ProfileLog
-from models.node import Node
-from models.node_extra import get_node_extra_info
-from models.profile import Permission, Profile, UserManager, \
+from django.conf import settings
+from core import permissions
+from core import url_checker
+from core.util import *
+from core.widgets import DisplayOnlyWidget, make_display_only
+from webapp.views.views import render
+from webapp.forms import *
+from webapp.models.logs import FailedLoginLog, UrlCheckerLog, ProfileLog
+from webapp.models.node import Node
+from webapp.models.node_extra import get_node_extra_info
+from webapp.models.profile import Permission, Profile, UserManager, \
     get_user_from_username, get_user_from_email
-from models.resource import Resource, ResourceNodes
-from models.society import NodeSocieties, Society
-from models.system import Cache, ProcessControl, PROCESS_CONTROL_TYPES
-from models.taxonomy import TaxonomyTerm, TaxonomyCluster
-from models.types import NodeType, ResourceType, Filter
-from widgets import make_display_only
+from webapp.models.resource import Resource, ResourceNodes
+from webapp.models.society import NodeSocieties, Society
+from webapp.models.system import Cache, ProcessControl, PROCESS_CONTROL_TYPES
+from webapp.models.taxonomy import TaxonomyTerm, TaxonomyCluster
+from webapp.models.types import NodeType, ResourceType, Filter
 
 
 def _get_version():
