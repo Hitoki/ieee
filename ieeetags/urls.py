@@ -1,13 +1,13 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 import django.contrib.admin
 import os.path
+from django.shortcuts import render as django_render
 
 import site_admin.views
-import settings
-from django.views.generic.simple import direct_to_template
-from views import *
+from django.conf import settings
+from webapp.views import *
 
-from ieeetags.sitemaps import *
+from sitemaps import *
 
 django.contrib.admin.autodiscover()
 
@@ -80,7 +80,7 @@ else:
         url(r'^admin/(?P<path>SkinUnderAllNoCaption.swf)$', 'django.views.static.serve', {'document_root': '%s/flash' % settings.MEDIA_ROOT}),
         
         # Site Admin
-        (r'^admin/', include('ieeetags.site_admin.urls')),
+        (r'^admin/', include('site_admin.urls')),
         
         # Django Admin
         #url(r'^djangoadmin/(.*)', django.contrib.admin.site.root, name='admin'),
@@ -92,7 +92,7 @@ else:
         url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
         
         # Faux page for demo
-        (r'^scss/$', direct_to_template, {'template': 'scss.html'}),
+        (r'^scss/$', django_render, {'template': 'scss.html'}),
     )
 
 if settings.DEBUG:
