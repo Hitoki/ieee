@@ -11,13 +11,14 @@ import hotshot
 import os
 import time
 from xml.etree.ElementTree import fromstring
+from django.conf import settings
 
 from django.core import serializers
 from django.core.mail import mail_admins, send_mail
 from django.core.urlresolvers import reverse
 from django.db.models import Count, Q
 from django.http import HttpResponse, HttpResponseRedirect
-from django.utils import simplejson as json
+import json
 from django.middleware import csrf
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render_to_response
@@ -25,26 +26,25 @@ from django.template import RequestContext
 from django.template.loader import render_to_string
 import sys
 
-from decorators import optional_login_required as login_required
-from ieeetags.forms import *
+from core.decorators import optional_login_required as login_required
+from webapp.forms import *
 
 #from profiler import Profiler
-from models.logs import ProfileLog
-from models.node import Node
-from models.node_extra import get_node_extra_info
-from models.notification import ResourceAdditionNotificationRequest
-from models.profile import Profile
-from models.resource import Resource
-from models.society import Society
-from models.system import Cache
-from models.types import NodeType, ResourceType, Filter
-from models.utils import single_row
-import settings
-import util
+from webapp.models.logs import ProfileLog
+from webapp.models.node import Node
+from webapp.models.node_extra import get_node_extra_info
+from webapp.models.notification import ResourceAdditionNotificationRequest
+from webapp.models.profile import Profile
+from webapp.models.resource import Resource
+from webapp.models.society import Society
+from webapp.models.system import Cache
+from webapp.models.types import NodeType, ResourceType, Filter
+from webapp.models.utils import single_row
+from core import util
 from BeautifulSoup import BeautifulSoup
 
 from .views import render, get_jobs_info
-from widgets import make_display_only
+from core.widgets import make_display_only
 from .xplore import _get_xplore_results, ajax_xplore_authors
 
 

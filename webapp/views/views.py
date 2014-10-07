@@ -9,10 +9,9 @@ import urllib2
 import hotshot
 import os
 import time
+from django.conf import settings
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
-import settings
-
 
 from django.core.mail import mail_admins
 from django.core.mail import send_mail
@@ -20,19 +19,19 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, redirect
 from django.template import RequestContext
-from django.utils import simplejson as json
+import json
 
-from decorators import optional_login_required as login_required
-from ieeetags.forms import *
-from models.node import Node
-from models.society import Society
-from models.types import ResourceType, Filter
-from models.resource import Resource
-from models.conference_application import TagKeyword, ConferenceApplication
+from core.decorators import optional_login_required as login_required
+from webapp.forms import *
+from webapp.models.node import Node
+from webapp.models.society import Society
+from webapp.models.types import ResourceType, Filter
+from webapp.models.resource import Resource
+from webapp.models.conference_application import TagKeyword, ConferenceApplication
 
 #from profiler import Profiler
-import util
-from widgets import make_display_only
+from core import util
+from core.widgets import make_display_only
 
 from .xplore import _get_xplore_results
 from .xplore import ajax_xplore_authors
