@@ -94,7 +94,7 @@ class CProfilerMiddleware(object):
                 import re
                 seconds = re.search('in ([\d.]+) CPU seconds', out.getvalue()).group(1)
                 
-                path = os.path.join(os.path.dirname(__file__), '..', 'logs')
+                path = os.path.join(os.path.dirname(__file__), '..', '..', 'logs')
                 if not os.path.exists(path):
                     os.mkdir(path)
                 
