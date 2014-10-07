@@ -1,8 +1,9 @@
 from django import forms
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.safestring import mark_safe
-from models.node import Node
-from models.conference_application import ConferenceApplication, TagKeyword
+from webapp.models.node import Node
+from webapp.models.conference_application import ConferenceApplication, \
+    TagKeyword
 
 
 class FeedbackForm(forms.Form):
