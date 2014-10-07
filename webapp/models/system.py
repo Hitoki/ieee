@@ -1,8 +1,8 @@
 from django.core.exceptions import MultipleObjectsReturned
 from django.db import models
 from enum import Enum
-from models.node import Node
-import util
+from webapp.models.node import Node
+from core import util
 
 
 def urlencode_sorted(d):

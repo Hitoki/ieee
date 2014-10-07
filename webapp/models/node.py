@@ -3,11 +3,11 @@ import re
 import string
 from django.db import models
 from django.db.models import Q
-from models.node_extra import get_node_extra_info
-from models.resource import Resource, ResourceNodes
-from models.society import NodeSocieties, Society
-from models.types import NodeType, ResourceType
-from models.utils import single_row, single_row_or_none
+from webapp.models.node_extra import get_node_extra_info
+from webapp.models.resource import Resource, ResourceNodes
+from webapp.models.society import NodeSocieties, Society
+from webapp.models.types import NodeType, ResourceType
+from webapp.models.utils import single_row, single_row_or_none
 
 
 class NodeManager(models.Manager):

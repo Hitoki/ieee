@@ -1,5 +1,5 @@
 from django.db import models
-from models.utils import single_row
+from webapp.models.utils import single_row
 
 
 class NamedTypeManager(models.Manager):

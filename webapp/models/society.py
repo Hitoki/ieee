@@ -1,9 +1,9 @@
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.db import models
-from models.node_extra import get_node_extra_info
-from models.profile import Profile
-from models.utils import single_row_or_none
+from webapp.models.node_extra import get_node_extra_info
+from webapp.models.profile import Profile
+from webapp.models.utils import single_row_or_none
 
 
 class NodeSocietiesManager(models.Manager):

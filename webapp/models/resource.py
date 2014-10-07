@@ -1,6 +1,6 @@
 from datetime import datetime
 from django.db import models, connection
-from models.types import ResourceType
+from webapp.models.types import ResourceType
 
 
 class ResourceManager(models.Manager):

@@ -3,8 +3,8 @@ from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models.signals import post_save
-from models.resource import Resource
-from models.utils import list_to_choices, single_row_or_none
+from webapp.models.resource import Resource
+from webapp.models.utils import list_to_choices, single_row_or_none
 
 
 class PermissionManager(models.Manager):

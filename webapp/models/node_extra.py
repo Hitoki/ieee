@@ -1,4 +1,4 @@
-from models.types import NodeType
+from webapp.models.types import NodeType
 
 
 def get_node_extra_info(queryset, order_by=None, selected_filter_ids=None):
