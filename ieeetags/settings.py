@@ -5,7 +5,7 @@ Django settings for the ieeetags project.
 import logging
 import os
 
-from util import relpath
+from core.util import relpath
 
 RELEASE_VERSION = "1.31"
 
@@ -123,7 +123,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'ieeetags.middleware.ExceptionMiddleware.ExceptionMiddleware',
+    'core.middleware.ExceptionMiddleware.ExceptionMiddleware',
     #'ieeetags.djangologging.middleware.LoggingMiddleware',
     #'ieeetags.middleware.ProfilingMiddleware.ProfileMiddleware',
 ]
@@ -144,25 +144,29 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.humanize',
     'django.contrib.sitemaps',
+    # 'django.contrib.staticfiles',
     'south',
-    'ieeetags',
-    'ieeetags.site_admin',
+    'webapp',
+    'core',
+    'site_admin',
     'noomake',
 ]
+
+# STATIC_URL = '/static/'
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.request',
-    'ieeetags.context_processors.media_url',
-    'ieeetags.context_processors.logo_href',
-    'ieeetags.context_processors.external_help_url',
-    'ieeetags.context_processors.user',
-    'ieeetags.context_processors.current_url',
-    'ieeetags.context_processors.is_ajax',
-    'ieeetags.context_processors.survey',
-    'ieeetags.context_processors.settings',
-    'ieeetags.context_processors.host_info',
-    'ieeetags.context_processors.total_tag_count'
+    'core.context_processors.media_url',
+    'core.context_processors.logo_href',
+    'core.context_processors.external_help_url',
+    'core.context_processors.user',
+    'core.context_processors.current_url',
+    'core.context_processors.is_ajax',
+    'core.context_processors.survey',
+    'core.context_processors.settings',
+    'core.context_processors.host_info',
+    'core.context_processors.total_tag_count'
 )
 
 # Application Settings ---------------------------------------------------------
@@ -265,31 +269,32 @@ DEBUG_IGNORE_CACHE = False
 # Local Settings ---------------------------------------------------------------
 
 try:
-    from local_settings import *
+    from ieeetags.local_settings import *
 except ImportError, e:
     print 'ERROR: "local_settings.py" file not found'
 
 # django debug toolbar
-if DEBUG:
-    INSTALLED_APPS += (
-        'debug_toolbar',
-    )
-
-    MIDDLEWARE_CLASSES += (
-        'debug_toolbar.middleware.DebugToolbarMiddleware',
-    )
-
-    DEBUG_TOOLBAR_PANELS = (
-        'debug_toolbar.panels.version.VersionDebugPanel',
-        'debug_toolbar.panels.timer.TimerDebugPanel',
-        'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
-        'debug_toolbar.panels.headers.HeaderDebugPanel',
-        'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
-        'debug_toolbar.panels.template.TemplateDebugPanel',
-        'debug_toolbar.panels.sql.SQLDebugPanel',
-        'debug_toolbar.panels.signals.SignalDebugPanel',
-        'debug_toolbar.panels.logger.LoggingPanel',
-    )
+# if DEBUG:
+#     INSTALLED_APPS += (
+#         'debug_toolbar.apps.DebugToolbarConfig',
+#         # 'debug_toolbar',
+#     )
+#
+#     MIDDLEWARE_CLASSES += (
+#         'debug_toolbar.middleware.DebugToolbarMiddleware',
+#     )
+#
+#     DEBUG_TOOLBAR_PANELS = (
+#         'debug_toolbar.panels.version.VersionDebugPanel',
+#         'debug_toolbar.panels.timer.TimerDebugPanel',
+#         'debug_toolbar.panels.settings_vars.SettingsVarsDebugPanel',
+#         'debug_toolbar.panels.headers.HeaderDebugPanel',
+#         'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
+#         'debug_toolbar.panels.template.TemplateDebugPanel',
+#         'debug_toolbar.panels.sql.SQLDebugPanel',
+#         'debug_toolbar.panels.signals.SignalDebugPanel',
+#         'debug_toolbar.panels.logger.LoggingPanel',
+#     )
 
 # Setup testing database -------------------------------------------------------
 
@@ -390,9 +395,10 @@ if not hasattr(logging, "is_setup"):
 
     logging.is_setup = True
 
-if ENABLE_DEBUG_TOOLBAR:
-    MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
-    INSTALLED_APPS.append('debug_toolbar')
+# if ENABLE_DEBUG_TOOLBAR and 'debug_toolbar' not in INSTALLED_APPS:
+#     MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+#     INSTALLED_APPS.append('debug_toolbar.apps.DebugToolbarConfig')
+#     # INSTALLED_APPS.append('debug_toolbar')
 
 try:
     if RAVEN_CONFIG:
