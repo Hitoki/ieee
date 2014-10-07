@@ -1,0 +1,127 @@
+
+body {
+    margin:.5em 0 .5em 0;
+    font-family:verdana,tahoma,sans-serif;
+    font-size:10pt;
+    background-color:#FFFFFF;
+    margin: 1em;
+}
+
+h1, h2, h3 {
+    font-weight:bold;
+}
+
+h1 {
+    font-size:160%;
+}
+
+h2 {
+    font-size:140%;
+}
+
+h3 {
+    font-size:120%;
+    margin-bottom: 5px;
+}
+
+li, ul, ol {
+margin: 0;
+padding: 0;   
+}
+
+.topLink,
+#tag_middle,
+#header,
+#corner-notch,
+.newWinIcon,
+.more-link {
+    display: none;
+}
+
+.print-resource h1 {
+    font-size:2em;
+}
+
+.print-resource .page-date {
+    float:right;
+    margin:0em 1em 1em 1em;
+    font-weight:bold;
+    font-size:.8em;
+    color:gray;
+}
+
+.description {
+    margin:.3em 1em .7em 1.5em;
+    font-size:90%;
+    color:#222;
+}
+
+.pub-info {
+    font-style: italic;
+}
+
+#tag_page p,
+a.featured, 
+#tag-societies div a, 
+#tag-related-tags div a {
+    margin: 0;
+}
+
+#tag_page #tag_frozen_header {
+    background-color: #FFFFFF;
+    margin: 0;
+    min-height: 0px;
+    min-width: 0px;
+    padding: 0;
+    position: relative;
+    top: 0;
+    width: 100%;
+}
+
+#tag_frozen_header .tag_header_inner {
+    background-color: #FFFFFF;
+    margin-top: 0px;
+    min-height: 0px;
+    padding: 0;
+}
+
+#tag_page #tag_frozen_header .tag_header_inner .left {
+    padding-left: 0;   
+}
+
+.addthis_16x16_style,
+#totalTagLink,
+#utility-links,
+#tagline,
+.header-btns {
+   display: none;
+}
+
+.print-resource #tag_page ul {
+   margin-left: 0;
+}
+
+#tag_page #tag_frozen_header #header {
+   padding: 0;
+   margin: 0;
+}
+
+.print-resource #tag_page ul li {
+    margin: 0 0 15px !important;
+}
+
+a.home {
+   text-decoration: none;
+}
+
+.tag-sub-section h4 {
+    font-weight: bold;
+}
+
+.tag-sub-section img {
+    display: none;
+}
+
+.tag-sub-section {
+    margin-top: 10px;
+}
