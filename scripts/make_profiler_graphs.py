@@ -2,8 +2,8 @@ import os
 import glob
 import sys
 sys.path.insert(0, '..')
-import settings
-import util
+import ieeetags.settings
+from core import util
 
 root = util.relpath(__file__, '..')
 folder = os.path.join(root, settings.PROFILER_OUTPUT_ROOT, )

@@ -3,8 +3,8 @@ from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse
 from datetime import datetime
 from urllib import quote
-from models.node import Node
-from models.types import NodeType
+from webapp.models.node import Node
+from webapp.models.types import NodeType
 
 
 class BaseSitemap(Sitemap):

@@ -5,13 +5,13 @@ from django.core.mail import EmailMultiAlternatives
 from django.template import Context, loader
 from django.contrib.sites.models import Site
 
-from models.notification import ResourceAdditionNotificationRequest, \
+from webapp.models.notification import ResourceAdditionNotificationRequest, \
     ResourceAdditionNotification
-from models.resource import Resource, ResourceNodes, ResourceType
-from models.node import Node
+from webapp.models.resource import Resource, ResourceNodes, ResourceType
+from webapp.models.node import Node
 
-from models.society import NodeSocieties
-import settings
+from webapp.models.society import NodeSocieties
+from django.conf import settings
 
 import logging
 

@@ -13,7 +13,7 @@ parent_path = os.path.join(path, '..')
 
 import sys
 sys.path = [parent_path] + sys.path
-import util
+from core import util
 
 if len(sys.argv) < 2:
 	print 'Must specify migration name.'

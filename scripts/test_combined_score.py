@@ -12,9 +12,9 @@ import sys
 sys.path = ['../..'] + sys.path
 import ieeetags.settings
 setup_environ(ieeetags.settings)
-from models.node import Node
-from models.node_extra import get_node_extra_info
-from models.society import Society
+from webapp.models.node import Node
+from webapp.models.node_extra import get_node_extra_info
+from webapp.models.society import Society
 
 
 # -----

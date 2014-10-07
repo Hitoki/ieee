@@ -11,8 +11,8 @@ import sys
 sys.path = ['../..'] + sys.path
 import ieeetags.settings
 setup_environ(ieeetags.settings)
-from ieeetags import url_checker
-from models.resource import Resource
+from core import url_checker
+from webapp.models.resource import Resource
 import logging
 
 # -----

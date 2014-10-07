@@ -1,8 +1,8 @@
 from sys import argv
 import csv
 import MySQLdb
-from models.node import Node
-from models.types import NodeType
+from webapp.models.node import Node
+from webapp.models.types import NodeType
 
 
 script, filepath = argv

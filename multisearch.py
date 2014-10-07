@@ -1,7 +1,7 @@
 
 
 def make_options(objects):
-    from models.node import Node
+    from webapp.models.node import Node
     results = []
     for object in objects:
         if type(object) is Node:

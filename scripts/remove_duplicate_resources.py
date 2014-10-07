@@ -13,7 +13,7 @@ setup_environ(ieeetags.settings)
 # ------------------------------------------------------------------------------
 
 #import time
-from models.resource import Resource, ResourceNodes
+from webapp.models.resource import Resource, ResourceNodes
 
 
 

@@ -14,7 +14,7 @@ setup_environ(ieeetags.settings)
 # ------------------------------------------------------------------------------
 
 def main():
-    from ieeetags.util import get_svn_info, relpath, send_admin_email
+    from core.util import get_svn_info, relpath, send_admin_email
     import subprocess
     import time
     import getopt

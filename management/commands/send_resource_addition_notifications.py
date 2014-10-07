@@ -6,12 +6,12 @@ from django.template import Context, loader
 from html2text import html2text
 from django.contrib.sites.models import Site
 
-from models.notification import ResourceAdditionNotificationRequest, \
+from webapp.models.notification import ResourceAdditionNotificationRequest, \
     ResourceAdditionNotification
-from models.resource import ResourceNodes
+from webapp.models.resource import ResourceNodes
 
-from models.society import NodeSocieties
-import settings
+from webapp.models.society import NodeSocieties
+from django.conf import settings
 
 
 class Command(NoArgsCommand):

@@ -13,10 +13,10 @@ setup_environ(ieeetags.settings)
 
 # --
 
-from models.resource import Resource
-from models.society import Society
-from models.types import ResourceType
-from ieeetags.site_admin.views import _open_unicode_csv_reader, \
+from webapp.models.resource import Resource
+from webapp.models.society import Society
+from webapp.models.types import ResourceType
+from site_admin.views import _open_unicode_csv_reader, \
     _open_unicode_csv_writer
 from logging import debug as log
 import re
