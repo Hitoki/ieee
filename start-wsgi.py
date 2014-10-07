@@ -18,7 +18,7 @@ except ImportError:
 
 import django.core.handlers.wsgi
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'ieeetags.settings'
 DEBUG = os.environ.get('DEBUG', False)
 sys.stdout = sys.stderr # in case there are any errant 'print' statements
 
