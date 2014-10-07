@@ -1,6 +1,5 @@
-
 from django.forms import fields
-from django.utils import simplejson as json
+import json
 import widgets
 
 class MultiSearchField(fields.Field):

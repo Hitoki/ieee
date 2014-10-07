@@ -47,7 +47,7 @@ def survey(request):
 
 def settings(request):
 	'Adds various settings variables to the current context for all pages.'
-	import settings
+	from django.conf import settings
 	return {
 		'ENABLE_FIREBUG_LITE': settings.ENABLE_FIREBUG_LITE,
 		'ENABLE_PROGRESSIVE_LOADING': settings.ENABLE_PROGRESSIVE_LOADING,
@@ -56,8 +56,8 @@ def settings(request):
 	}
 
 def total_tag_count(request):
-    from models.node import Node
-    from models.types import NodeType
+    from webapp.models.node import Node
+    from webapp.models.types import NodeType
     c = Node.objects.filter(node_type__name=NodeType.TAG).count() - 1
     return {
         'total_tag_count': c

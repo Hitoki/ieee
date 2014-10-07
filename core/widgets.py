@@ -3,7 +3,7 @@ from django.db.models import Model
 from django.core.urlresolvers import reverse
 from django.forms import widgets
 from django.utils.safestring import mark_safe
-from django.utils import simplejson as json
+import json
 from django.utils.html import escape
 from urllib import quote
 

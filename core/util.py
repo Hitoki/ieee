@@ -272,7 +272,7 @@ def profiler(view_func):
             # For Python 2.4:
             import profile
             
-        import settings
+        from django.conf import settings
         import sys
         
         # NOTE: Must use this, or the 'filename' global/local var gets messed up.
@@ -498,7 +498,7 @@ def get_min_max(list, attr):
 
 def send_admin_email(subject, body):
     'Sends an email to the admins.'
-    import settings
+    from django.conf import settings
     from django.core.mail import send_mail
     
     emails = [temp[1] for temp in settings.ADMINS]
@@ -557,8 +557,8 @@ def update_conference_series_tags(conferences=None, conference_series=None):
     @param conferences A list of conferences to update, should be sorted by conference_series, then year.  All conferences should have a valid conference_series value, and a valid year value.
     @param conference_series (string) A series to parse through. Will grab all conferences of this series and update them.
     '''
-    from models.resource import Resource, ResourceNodes
-    from models.types import ResourceType
+    from webapp.models.resource import Resource, ResourceNodes
+    from webapp.models.types import ResourceType
     #from ieeetags.models import Resource, ResourceNodes, ResourceType
     #import models
     if conferences is not None and conference_series is None:
@@ -683,9 +683,9 @@ def get_svn_info(path):
 
 # NOTE: Cannot remove these yet, since they're included by default into any file that does "from util import *".  Need to fix all those first.
 import subprocess
-import settings
+from django.conf import settings
 from getopt import getopt
-import settings
+from django.conf import settings
 import subprocess
 import sys
 
