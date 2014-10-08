@@ -1,0 +1,205 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% load smartif %}
+
+{% block main_table_content %}
+    <script>
+        var pageReloadDelay = 5000;
+        
+        function reloadPage() {
+            window.location.reload();
+            setTimeout('reloadPage();', pageReloadDelay);
+        }
+        
+        $(function() {
+            setTimeout('reloadPage();', pageReloadDelay);
+        });
+    </script>
+    
+    <h1>Import Xplore</h1>
+    
+    <h2>Status</h2>
+    
+    <table class="grid">
+        <tr>
+            <th>
+                PID (from file)
+            </th>
+            <td>
+                {{ pid|default:"No pidfile found" }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Process Is Running
+            </th>
+            <td>
+                {{ is_process_running }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Log file
+            </th>
+            <td>
+                {% if process.log_filename %}
+                    <a href="{% url 'admin_import_xplore_log' process.log_filename %}">
+                        {{ process.log_filename }}
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        
+        <tr>
+            <td colspan="2">
+                &nbsp;
+            </td>
+        </tr>
+        
+        {% if process %}
+            <!--
+            <tr>
+                <th>
+                    Is_alive
+                </th>
+                <td>
+                    {{ process.is_alive }}
+                </td>
+            </tr>
+            -->
+            <tr>
+                <th>
+                    Last Processed Topic
+                </th>
+                <td>
+                    {{ process.last_processed_tag }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Date Created
+                </th>
+                <td>
+                    {{ process.date_created }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Date Updated
+                </th>
+                <td>
+                    {{ process.date_updated }}
+                    ({{ process.date_updated|timesince }} ago)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Log
+                </th>
+                <td>
+                    {{ process.log|linebreaksbr }}
+                </td>
+            </tr>
+        {% endif %}
+    </table>
+    
+    
+    {% if not process %}
+        <p>
+            <i>No process running.</i>
+        </p>
+    {% endif %}
+    
+    {% if not process %}
+        <p>
+            <a href="{% url 'admin_import_xplore' %}?action=launch">Launch the Import Process</a>
+        </p>
+    {% else %}
+        
+        {% if pid %}
+            {% if process.is_alive %}
+                <p>
+                    <a href="{% url 'admin_import_xplore' %}?action=stop">Stop the Import Process</a>
+                </p>
+            {% endif %}
+            {% if not process.is_alive %}
+                <p>
+                    Signaling process to stop...
+                </p>
+            {% endif %}
+        {% endif %}
+        
+        {% comment %}
+        #<p>
+        #    <a href="{% url 'admin_import_xplore' %}?action=force_clear">(DEBUG) Force Clear</a>
+        #</p>
+        {% endcomment %}
+        
+        {% if not pid %}
+            <p>
+                <a href="{% url 'admin_import_xplore' %}?action=clear">Clear this entry</a>
+            </p>
+            <p>
+                <a href="{% url 'admin_import_xplore' %}?action=launch">Launch the Import Process</a>
+            </p>
+            {% if process.last_processed_tag %}
+                <!-- Resume -->
+                <p>
+                    <a href="{% url 'admin_import_xplore' %}?action=launch_resume">Resume the Import Process from the "{{ process.last_processed_tag.name }}" topic.</a>
+                </p>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+    
+    <br/>
+    
+    <h2>Log Files</h2>
+    
+    <table class="grid">
+        <tr>
+            <th>
+                Filename
+            </th>
+            <th>
+                Size
+            </th>
+            <th>
+                
+            </th>
+        </tr>
+        {% for file in files %}
+            <tr>
+                <td>
+                    {{ file.filename }}
+                </td>
+                <td style="text-align:right;">
+                    {{ file.size|filesizeformat }}
+                </td>
+                <td>
+                    <a href="{% url 'admin_import_xplore_log' file.filename %}">
+                        view
+                    </a>
+                    |
+                    <a href="{% url 'admin_import_xplore_download_log' file.filename %}">
+                        download
+                    </a>
+                    |
+                    <a href="{% url 'admin_import_xplore_delete_log' file.filename %}">
+                        delete
+                    </a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td>
+                    (None)
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+    <br/>
+    <br/>
+    
+    
+{% endblock %}

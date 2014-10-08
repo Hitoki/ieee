@@ -1,0 +1,20 @@
+{% extends "base_tag.html" %}
+
+{% block logo_href %}{% url 'clusters_list' %}{% endblock %}
+{% block feedback %}{% endblock %}{# hide feedback link using blank block #}
+
+{% block content %}
+    {% block main_content_nopad %}    
+        {% if not is_ajax %}    
+            <div class="center-pad">
+        {% endif %}
+        {% block main_table_content %}
+            <div class="">
+                {% include 'flat_resources.inc.html' %}
+            </div>
+        {% endblock %}
+        {% if not is_ajax %}    
+            </div>
+        {% endif %}
+    {% endblock %}
+{% endblock %}

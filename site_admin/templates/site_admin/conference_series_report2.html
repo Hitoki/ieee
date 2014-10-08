@@ -1,0 +1,51 @@
+{% extends 'site_admin/admin_base.html' %}
+{% load filters %}
+
+{% block main_table_content %}
+    <h1>Conference Series Report</h1>
+    
+    <p>
+        Found {{ conferences|length }} conferences in the "{{ conferences.0.conference_series }}" series.
+    </p>
+    
+    <table class="grid">
+        <tr>
+            <th>
+                Series
+            </th>
+            <th>
+                Year
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Topics
+            </th>
+        </tr>
+        {% for conference in conferences %}
+            <tr>
+                <td>
+                    {{ conference.conference_series }}
+                </td>
+                <td>
+                    {{ conference.year }}
+                </td>
+                <td>
+                    {{ conference.name }}
+                </td>
+                <td>
+                    <ul>
+                        {% for tag in conference.nodes.all %}
+                            <li>
+                                {{ tag.name }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    {# {{ conference.nodes.all|join:", " }} #}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}
