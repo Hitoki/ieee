@@ -145,7 +145,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.sitemaps',
     # 'django.contrib.staticfiles',
-    'south',
+    # 'south',
     'webapp',
     'core',
     'site_admin',
@@ -405,3 +405,6 @@ try:
         INSTALLED_APPS.append('raven.contrib.django.raven_compat')
 except NameError:
     pass
+
+
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
