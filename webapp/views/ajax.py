@@ -674,7 +674,7 @@ def ajax_node(request):
 
     json1 = json.dumps(data, sort_keys=True, indent=4)
 
-    return HttpResponse(json1, mimetype="text/plain")
+    return HttpResponse(json1, content_type="text/plain")
 
 
 @login_required
