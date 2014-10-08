@@ -18,7 +18,7 @@ class NamedType(models.Model):
     name = models.CharField(max_length=50)
 
     class Meta:
-        app_label = 'ieeetags'
+        app_label = 'webapp'
         abstract = True
 
     def __unicode__(self):
@@ -42,7 +42,7 @@ class NamedValueType(NamedType):
         return '%s (%s)' % (self.name, self.value)
 
     class Meta:
-        app_label = 'ieeetags'
+        app_label = 'webapp'
         abstract = True
 
 
@@ -60,7 +60,8 @@ class NodeType(NamedType):
     objects = NodeTypeManager()
 
     class Meta:
-        app_label = 'ieeetags'
+        app_label = 'webapp'
+        db_table = 'ieeetags_nodetype'
 
 
 class ResourceTypeManager(NamedTypeManager):
@@ -79,7 +80,8 @@ class ResourceType(NamedType):
     EBOOK = 'ebook'
 
     class Meta:
-        app_label = 'ieeetags'
+        app_label = 'webapp'
+        db_table = 'ieeetags_resourcetype'
 
 
 class FilterManager(NamedValueTypeManager):
@@ -108,7 +110,8 @@ class Filter(NamedValueType):
     objects = FilterManager()
 
     class Meta:
-        app_label = 'ieeetags'
+        app_label = 'webapp'
+        db_table = 'ieeetags_filter'
 
     def __unicode__(self):
         return self.name

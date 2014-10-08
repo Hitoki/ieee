@@ -52,7 +52,8 @@ class Permission(models.Model):
     objects = PermissionManager()
 
     class Meta:
-        app_label = 'ieeetags'
+        app_label = 'webapp'
+        db_table = 'ieeetags_permission'
 
 
 class Profile(models.Model):
@@ -80,7 +81,8 @@ class Profile(models.Model):
     'This stores the source resource for copy & pasting tags.'
 
     class Meta:
-        app_label = 'ieeetags'
+        app_label = 'webapp'
+        db_table = 'ieeetags_profile'
 
 
 class UserManager:

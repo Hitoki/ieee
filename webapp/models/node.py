@@ -324,7 +324,8 @@ class Node(models.Model):
     objects = NodeManager()
 
     class Meta:
-        app_label = 'ieeetags'
+        app_label = 'webapp'
+        db_table = 'ieeetags_node'
         ordering = ['name']
 
     def __unicode__(self):

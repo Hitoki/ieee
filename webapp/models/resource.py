@@ -170,8 +170,8 @@ class Resource(models.Model):
     url = models.CharField(blank=True, max_length=1000)
     year = models.IntegerField(blank=True, null=True)
     standard_status = models.CharField(blank=True, max_length=100)
-    priority_to_tag = models.BooleanField()
-    completed = models.BooleanField()
+    priority_to_tag = models.BooleanField(default=False)
+    completed = models.BooleanField(default=False)
     keywords = models.CharField(max_length=5000, blank=True)
     'This field is a text field, displayed to society managers ' \
     'on Edit Resource page to help them tag.  Not used in any other way.'
@@ -205,7 +205,8 @@ class Resource(models.Model):
         return self.name
 
     class Meta:
-        app_label = 'ieeetags'
+        app_label = 'webapp'
+        db_table = 'ieeetags_resource'
         ordering = ['resource_type__name', 'name']
 
 
@@ -216,7 +217,7 @@ class ResourceNodes(models.Model):
     is_machine_generated = models.BooleanField(default=False)
 
     class Meta:
-        app_label = 'ieeetags'
+        app_label = 'webapp'
         db_table = 'ieeetags_resource_nodes'
         ordering = ['node__name', 'resource__name']
 

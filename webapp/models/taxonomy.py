@@ -36,7 +36,8 @@ class TaxonomyTerm(models.Model):
     objects = TaxonomyTermManager()
 
     class Meta:
-        app_label = 'ieeetags'
+        app_label = 'webapp'
+        db_table = 'ieeetags_taxonomyterm'
 
     def __str__(self):
         return '<%s: %s>' % (self.__class__.__name__, self.name)
@@ -53,7 +54,8 @@ class TaxonomyCluster(models.Model):
     name = models.CharField(max_length=500)
 
     class Meta:
-        app_label = 'ieeetags'
+        app_label = 'webapp'
+        db_table = 'ieeetags_taxonomycluster'
 
     def __str__(self):
         return '<%s: %s>' % (self.__class__.__name__, self.name)

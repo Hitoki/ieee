@@ -18,7 +18,8 @@ class ConferenceApplication(models.Model):
                                       related_name="conference_applications")
 
     class Meta:
-        app_label = 'ieeetags'
+        app_label = 'webapp'
+        db_table = 'ieeetags_conferenceapplication'
 
 
 class TagKeyword(models.Model):
@@ -26,4 +27,5 @@ class TagKeyword(models.Model):
     tag = models.ForeignKey(Node, null=True)
 
     class Meta:
-        app_label = 'ieeetags'
+        app_label = 'webapp'
+        db_table = 'ieeetags_tagkeyword'

@@ -88,13 +88,14 @@ class FailedLoginLog(models.Model):
 
     username = models.CharField(max_length=30)
     ip = models.CharField(max_length=16)
-    disabled = models.BooleanField()
+    disabled = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True)
 
     objects = FailedLoginLogManager()
 
     class Meta:
-        app_label = 'ieeetags'
+        app_label = 'webapp'
+        db_table = 'ieeetags_failedloginlog'
 
 
 class UrlCheckerLog(models.Model):
@@ -105,7 +106,8 @@ class UrlCheckerLog(models.Model):
     status = models.CharField(max_length=1000)
 
     class Meta:
-        app_label = 'ieeetags'
+        app_label = 'webapp'
+        db_table = 'ieeetags_urlcheckerlog'
 
 
 class ProfileLog(models.Model):
@@ -117,7 +119,8 @@ class ProfileLog(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        app_label = 'ieeetags'
+        app_label = 'webapp'
+        db_table = 'ieeetags_profilelog'
 
     def short_user_agent(self):
         short_user_agent1 = self.user_agent
