@@ -189,8 +189,8 @@ XPLORE_IMPORT_MAX_QUERY_RESULTS = 10
 'Will be used for the "hc" parameter when querying xplore. Controls the max number of results returned.' 
 
 # Disable south logging.
-import south.logger
-logging.getLogger('south').setLevel(logging.CRITICAL)
+# import south.logger
+# logging.getLogger('south').setLevel(logging.CRITICAL)
 
 # This forces south to use 'syncdb' when running tests, vs. using the migrations.
 SOUTH_TESTS_MIGRATE = False
@@ -269,7 +269,7 @@ DEBUG_IGNORE_CACHE = False
 # Local Settings ---------------------------------------------------------------
 
 try:
-    from ieeetags.local_settings import *
+    from local_settings import *
 except ImportError, e:
     print 'ERROR: "local_settings.py" file not found'
 
