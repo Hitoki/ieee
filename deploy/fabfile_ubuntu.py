@@ -332,7 +332,7 @@ def checkout_site():
     
     run('mkdir -p "%(site_code)s"' % env, pty=True)
     run_prompted(
-        'curl %(scm_url)s/archive/%(scm_branch)s.zip -o %(site_code)s/../%(scm_branch)s.zip --user %(scm_username)s -L --verbose' % params,
+        'curl %(scm_url)s/archive/%(scm_branch)s.zip -o %(site_code)s/../%(scm_branch)s.zip --user %(scm_username)s -L --verbose -k' % params,
         prompt="Enter host password for user '%(scm_username)s':" % params,
         password=env.scm_password, pty=True)
     run('unzip -q  %(site_code)s/../%(scm_branch)s.zip -d %(site_code)s/../' % params)
@@ -343,8 +343,8 @@ def checkout_site():
     # Make a 'ieeetags' link to the 'project' directory. References to the ieeetags module are hardcoded in codebase.
     run('ln -s %(site_code)s %(site_code)s/../ieeetags' % env);
     
-    if files.exists("%s/local_settings.py" % code_symlink):
-        run('cp -p "%s/local_settings.py" "%s/"' % (code_symlink, env.site_code))
+    if files.exists("%s/ieeetags/local_settings.py" % code_symlink):
+        run('cp -p "%s/ieeetags/local_settings.py" "%s/"' % (code_symlink, env.site_code))
     
     # Create log.txt
     run('touch %(site_code)s/log.txt' % env)
