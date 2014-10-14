@@ -350,8 +350,8 @@ def checkout_site():
     run('touch %(site_code)s/log.txt' % env)
     run('chmod 666 %(site_code)s/log.txt' % env)
         
-    sudo('mkdir -p "%(site_code)s/media/caches"' % env, pty=True)
-    sudo('chmod 777 "%(site_code)s/media/caches"' % env, pty=True)
+    sudo('mkdir -p "%(site_code)s/ieeetags/media/caches"' % env, pty=True)
+    sudo('chmod 777 "%(site_code)s/ieeetags/media/caches"' % env, pty=True)
     sudo('chmod o+x ~', pty=True)
     
     # Move the site_down directory to /html/maintenance. When the instance.lockify.com.down.conf config file is used
