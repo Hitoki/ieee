@@ -343,8 +343,8 @@ def checkout_site():
     # Make a 'ieeetags' link to the 'project' directory. References to the ieeetags module are hardcoded in codebase.
     run('ln -s %(site_code)s %(site_code)s/../ieeetags' % env);
     
-    if files.exists("%s/ieeetags/local_settings.py" % code_symlink):
-        run('cp -p "%s/ieeetags/local_settings.py" "%s/ieeetags/"' % (code_symlink, env.site_code))
+    if files.exists("%s/ieeetags/ieeetags/local_settings.py" % code_symlink):
+        run('cp -p "%s/ieeetags/ieeetags/local_settings.py" "%s/ieeetags/"' % (code_symlink, env.site_code))
     
     # Create log.txt
     run('touch %(site_code)s/log.txt' % env)
