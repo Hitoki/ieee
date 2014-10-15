@@ -38,8 +38,7 @@ from core import permissions
 from core import url_checker
 from core.util import *
 from core.widgets import DisplayOnlyWidget, make_display_only
-from webapp.views.views import render
-from webapp.forms import *
+from forms import *
 from webapp.models.logs import FailedLoginLog, UrlCheckerLog, ProfileLog
 from webapp.models.node import Node
 from webapp.models.node_extra import get_node_extra_info
@@ -50,6 +49,7 @@ from webapp.models.society import NodeSocieties, Society
 from webapp.models.system import Cache, ProcessControl, PROCESS_CONTROL_TYPES
 from webapp.models.taxonomy import TaxonomyTerm, TaxonomyCluster
 from webapp.models.types import NodeType, ResourceType, Filter
+from webapp.views.views import render
 
 
 def _get_version():
