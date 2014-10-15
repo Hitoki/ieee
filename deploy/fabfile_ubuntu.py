@@ -347,7 +347,7 @@ def checkout_site():
         run('cp -p "%s/ieeetags/local_settings.py" "%s/ieeetags/"' % (code_symlink, env.site_code))
     
     # Install package requirements
-    run('cd "%(site_home)s/python" && source bin/activate && cd "%(site_home)s/python/releases/current/ieeetags/" && pip install -r requirements.txt' % env)
+    run('cd "%(site_home)s/python" && source bin/activate && cd "%(site_home)s/python/releases/current/project/" && pip install -r requirements.txt' % env)
 
     # Create log.txt
     run('touch %(site_code)s/log.txt' % env)
