@@ -14,7 +14,7 @@ from logging import debug as log
 from raven.contrib.django.raven_compat.models import client as raven_client
 
 from core.decorators import optional_login_required as login_required
-from webapp.models.favorite import UserExternalFavorites
+from webapp.models.favorites import UserExternalFavorites
 from webapp.models.node import Node
 
 
