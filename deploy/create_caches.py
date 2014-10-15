@@ -1,9 +1,9 @@
-from ieeetags.views.ajax import _render_textui_nodes
+from webapp.views.ajax import _render_textui_nodes
 import simplejson as json
-from models.node import Node
-from models.society import Society
-from models.system import Cache
-from models.types import NodeType
+from webapp.models.node import Node
+from webapp.models.society import Society
+from webapp.models.system import Cache
+from webapp.models.types import NodeType
 from noomake import *
 
 def main():

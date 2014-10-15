@@ -9,6 +9,6 @@ import os
 import sys
 import django.core.handlers.wsgi
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'ieeetags.settings'
 sys.stdout = sys.stderr # in case there are any errant 'print' statements
 application = django.core.handlers.wsgi.WSGIHandler()

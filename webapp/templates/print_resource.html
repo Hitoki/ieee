@@ -1,0 +1,13 @@
+{% extends "base_print.html" %}
+
+{% block body %}
+    <script>
+        window.onload = function() {
+            //window.print();
+        }
+    </script>
+    
+    <div class="print-resource">
+        {% include 'flat_resources.inc.html' %}
+    </div>
+{% endblock %}

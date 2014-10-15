@@ -1,0 +1,138 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>"{{ resource.name }}" Resource</h1>
+    
+    <p>
+        <a href="{% url 'admin_edit_resource' resource.id %}?return_url={{ return_url }}">Edit Resource</a>
+    </p>
+    
+    <table class="full-grid">
+        <tr>
+            <th>
+                ID:
+            </th>
+            <td>
+                {{ resource.ieee_id }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Name:
+            </th>
+            <td>
+                {{ resource.name }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Type:
+            </th>
+            <td>
+                {{ resource.resource_type.name }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Year:
+            </th>
+            <td>
+                {{ resource.year|default:"" }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Date:
+            </th>
+            <td>
+                {{ resource.date|date }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Conference Series:
+            </th>
+            <td>
+                {{ resource.conference_series }}
+            </td>
+        </tr>
+        {% ifequal resource.resource_type.name "standard" %}
+            <tr>
+                <th>
+                    Status:
+                </th>
+                <td>
+                    {{ resource.standard_status }}
+                </td>
+            </tr>
+        {% endifequal %}
+        <tr>
+            <th>
+                Description
+            </th>
+            <td>
+                {{ resource.description|linebreaksbr }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                URL
+            </th>
+            <td>
+				{% if resource.url %}
+					{% ifequal resource.url_status "bad" %}
+						<div class="error">URL is broken: {{ resource.url_error }} <a href="{% url 'admin_broken_links_check' "resource" resource.id %}?next={{ current_url|urlencode }}">[recheck url]</a></div>
+					{% endifequal %}
+					<a href="{{ resource.url }}">{{ resource.url }}</a>
+				{% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Topics
+            </th>
+            <td>
+                {% for tag in resource.nodes.all %}
+                    <a href="{% url 'admin_view_tag' tag.id %}">{{ tag.name }}</a>{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Organizations
+            </th>
+            <td>
+                {% for society in resource.societies.all %}
+                    <a href="{% url 'admin_view_society' society.id %}">{{ society.name }}</a>{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Keywords
+            </th>
+            <td>
+                {{ resource.keywords }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Priority
+            </th>
+            <td>
+                {{ resource.priority_to_tag|yesno|capfirst }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Completed
+            </th>
+            <td>
+                {{ resource.completed|yesno|capfirst }}
+            </td>
+        </tr>
+
+    </table>
+    
+{% endblock %}

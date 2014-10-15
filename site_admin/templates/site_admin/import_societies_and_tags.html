@@ -1,0 +1,14 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>Admin Import Organizations and Topics</h1>
+    
+    <p>
+    Page time: {{page_time}}<br/>
+    Rows: {{row_count}}<br/>
+    Organizations created: {{ societies_created }}<br/>
+    Topics created: {{ tags_created }}<br/>
+    <p><a href="{% url 'admin_home' %}">home</a></p>
+    
+{% endblock %}

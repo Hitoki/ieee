@@ -1,0 +1,46 @@
+{% load filters smartif %}
+
+{% spaceless %}
+    
+    {# Extra message for when there are zero results #}
+    {% ifequal child_nodes|length 0 %}
+        <span id='no-results-container'>
+            <strong>No results</strong><br/>
+            Try one or more of the following:<br/><br />
+            <ul id='no-results-choices'>
+                {% if search_length > 2 %}
+                    <li>Shorten or <a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click();">clear the filter phrase</a></li>
+                {% endif %}
+                {% if cluster_id and society_id %}
+                    <li><a href="javascript:Tags.selectSociety({{ society_id }},null,1);">Search across the entire "{{ society.name }}" organization</li></a>
+                {% endif %}
+                {% if society_id %}
+                    <li><a href="javascript:Tags.selectSociety('all');">Search across all organizations</a></li>
+                {% endif %}
+            </ul>
+        {% comment %}
+        Try {% if search_length > 2 %} entering more or fewer characters or {% endif %}<a href="javascript:void(0)" onclick="$('#textui-tags-search-clear').click()">clearing the filter phrase now</a><br />
+        {% if society_id %}
+            <a href="javascript:Tags.selectSociety('all');">Search all organizations</a>
+        {% endif %}
+        {% endcomment %}
+        <span>
+    {% endifequal %}
+
+    {% for tag in child_nodes %}
+        <div id="tag-{{ tag.id }}" data-tag-score="{% if not tag.score1 %}1{% endif %}" data-tag-level="{{ tag.level }}" data-tag-id="{{ tag.id }}" data-tag-name="{{ tag.name|truncatechars:30 }}" data-tag-type="{% if tag.is_taxonomy_term %}term{% elif tag.node_type__name == 'tag' %}tag{% elif tag.node_type__name == 'tag_cluster' %}tag_cluster{% else %}{{ tag.node_type__name }}{% endif %}" data-cluster-args="{{ tag.id }}, {{ sector_id|reprjs }}, {{ society_id|reprjs}}">
+            {% comment %}
+            #if (!simplified) {
+            #    // NOTE: Only show the separate color blocks if we're not using the simplified mode
+            #    str += "      <td>";
+            #    str += "        <div class=\"node-block-container\">";
+            #    str += "          <div class=\"block-top " + tag.sectorLevel + "\">&nbsp;</div>";
+            #    str += "          <div class=\"block-bottom " + tag.relatedTagLevel + "\">&nbsp;</div>";
+            #    str += "        </div>";
+            #    str += "      </td>";
+            #}
+            {% endcomment %}
+        </div>
+        <!--SPLIT-->
+    {% endfor %}
+{% endspaceless %}

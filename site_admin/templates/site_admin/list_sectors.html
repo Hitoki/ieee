@@ -1,0 +1,32 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block nav_sectors %}highlight{% endblock %}
+
+{% block main_table_content %}
+    
+    <h1>Industry Topic List</h1>
+    
+    <table class="grid">
+        <tr>
+            <th>
+                Industry Topic
+            </th>
+            <th>
+                # Topics
+            </th>
+        </tr>
+        {% for sector in sectors %}
+            <tr>
+                <td>
+                    <a href="{% url 'admin_view_sector' sector.id %}">{{sector.name}}</a>
+                </td>
+                <td>
+                    {{ sector.child_nodes.all.count }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+    <a href="{% url 'admin_create_tag' %}?return_url={{ current_url|urlencode }}">Create a new Topic</a>
+    
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>Permission Denied</h1>
+    
+    <p>
+        You do not have permission to access that page.  You can use the back button to go back to the page you were previously viewing, or go back to the <a href="{% url 'index' %}">home page</a>.
+    </p>
+    
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>{{ cluster.name }} Topic Area</h1>
+    
+    <p>
+        {% if user.get_profile.role == "admin" %}<a href="{% url 'admin_edit_cluster2' cluster.id %}">Edit topic area</a>
+        | <a href="{% url 'admin_delete_cluster' cluster.id %}" onclick="return confirm('Delete this topic area?');">Delete topic area</a>
+        | {% endif %}<a href="{% url 'admin_clusters_report' %}">Back to All Topic Areas</a>
+    </p>
+    
+    <table class="grid">
+        {% comment %}
+        <tr>
+            <th>
+                Industry Topic
+            </th>
+            <td>
+                <ul>
+                    {% for sector in cluster.get_sectors.all %}
+                        <li><a href="{% url 'admin_view_sector' sector.id %}">{{ sector.name }}</a></li>
+                    {% empty %}
+                        <li>None</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        {% endcomment %}
+        <tr>
+            <th>
+                Organization
+            </th>
+            <td>
+                <ul>
+                    {% for society in cluster.societies.all %}
+                        <li><a href="{% url 'admin_manage_society' society.id %}">{{ society.name }}</a></li>
+                    {% empty %}
+                        <li>None</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        {% comment %}
+        <tr>
+            <th>
+                Filters
+            </th>
+            <td>
+                <ul>
+                    {% for filter in cluster.filters.all %}
+                        <li>{{ filter.name }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        {% endcomment %}
+        <tr>
+            <th>
+                Topics
+            </th>
+            <td>
+                <ul>
+                    {% for tag in cluster.get_tags %}
+                        <li><a href="{% url 'admin_view_tag' tag.id %}">{{ tag.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </td>
+        </tr>
+        {% comment %}
+            <tr>
+                <th>
+                    Filters
+                </th>
+                <td>
+                    {% for filter in cluster.filters.all %}
+                        {{ filter.name }}{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endcomment %}
+    </table>
+    
+{% endblock %}

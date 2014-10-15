@@ -1,0 +1,91 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% load eval includes pagination permissions %}
+
+{% block main_table_content %}
+    
+    <h1>Edit {{ tags|length }} Topics <span class="batch-editing-note">(See list of topics in table below)</span></h1>
+    
+    <form action="{% url 'admin_edit_tags' %}?process_form=1&amp;return_url={{ return_url|urlencode }}#tab-tags-tab" method="post">
+        {% csrf_token %}
+        <table class="grid edit-create nowrap-labels">
+            <tr>
+                <th>
+                    <h2>Filters</h2>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_emerging_technologies_filter">{{ form.emerging_technologies_filter.label }}:</label>
+                </th>
+                <td>
+                    {{ form.emerging_technologies_filter.errors }}
+                    <span class="horizontal-radios">
+                        {{ form.emerging_technologies_filter }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_foundation_technologies_filter">{{ form.foundation_technologies_filter.label }}:</label>
+                </th>
+                <td>
+                    {{ form.foundation_technologies_filter.errors }}
+                    <span class="horizontal-radios">
+                        {{ form.foundation_technologies_filter }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_hot_topics_filter">{{ form.hot_topics_filter.label }}:</label>
+                </th>
+                <td>
+                    {{ form.hot_topics_filter.errors }}
+                    <span class="horizontal-radios">
+                        {{ form.hot_topics_filter }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_market_areas_filter">{{ form.market_areas_filter.label }}:</label>
+                </th>
+                <td>
+                    {{ form.market_areas_filter.errors }}
+                    <span class="horizontal-radios">
+                        {{ form.market_areas_filter }}
+                    </span>
+                </td>
+            </tr>
+        </table>
+        <div class="submit">
+            <input type="submit" value="Save" class="submit-button" />
+            <a href="{{ return_url }}" class="cancel-link">Cancel</a>
+        </div>
+        <br/>
+        
+        <table class="grid selected-tags">
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Filters
+                </th>
+            </tr>
+            {% for tag in tags %}
+                <tr>
+                    <td class="first-item">
+                        <input type="hidden" name="tag_ids" value="{{ tag.id }}" />
+                        {{ tag.name }}
+                    </td>
+                    <td>
+                        {{ tag.filters.all|join:", " }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </form>
+        
+{% endblock %}

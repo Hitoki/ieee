@@ -1,0 +1,36 @@
+<div id="footer">
+    <div id="copyright">
+        &copy; Copyright 2014 <a href="http://ieee.org" title="Visit IEEE Home" id="ieee-home" rel="nofollow">IEEE</a> – All rights reserved. Use of this Web site signifies your agreement to the terms and conditions. <a href="http://www.ieee.org/privacy" id="opt-link">Privacy &amp; Opting Out of Cookies</a>
+        {% comment %}
+        <span id="footer-login">
+            {% if user %}
+                <p class="admin-links">                                
+                    {% ifequal user.get_profile.role "admin" %}
+                        <a href="{% url 'admin_home' %}">Admin</a>
+                        &nbsp;&nbsp;
+                    {% endifequal %}
+                    {% ifequal user.get_profile.role "society_admin" %}
+                        <a href="{% url 'admin_home' %}">Organization Admin</a>
+                        &nbsp;&nbsp;
+                    {% endifequal %}
+                    {% ifequal user.get_profile.role "society_manager" %}
+                        <a href="{% url 'admin_home' %}">Organization Manager</a>
+                        &nbsp;&nbsp;
+                    {% endifequal %}
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'logout' %}" rel="nofollow">Sign Out</a>
+                        &nbsp;&nbsp;
+                    {% else %}
+                        <a href="{% url 'admin_login' %}" rel="nofollow">*</a>
+                    {% endif %}
+                </p>
+            {% endif %}
+         </span>
+         {% endcomment %}
+         <span id="footer-login">
+            {% if not user.is_authenticated %}
+                <a href="{% url admin_login %}" rel="nofollow">*</a>
+            {% endif %}
+         </span>
+    </div>
+</div>

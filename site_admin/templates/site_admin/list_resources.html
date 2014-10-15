@@ -1,0 +1,55 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>Resource List</h1>
+    
+    <p>
+        List:
+        <a href="{% url 'admin_list_resources' "conferences" %}">Conferences</a>
+        | <a href="{% url 'admin_list_resources' "standards" %}">Standards</a>
+        | <a href="{% url 'admin_list_resources' "periodicals" %}">Periodicals</a>
+    </p>
+    
+    <p><a href="{% url 'admin_create_resource' %}?return_url={{ current_url|urlencode }}">Create a resource</a></p>
+    
+    <table class="grid">
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Resource ({{ resources.count }})
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                Topics
+            </th>
+            <th>
+                Organizations
+            </th>
+        </tr>
+        {% for resource in resources %}
+            <tr>
+                <td style="white-space:nowrap;">
+                    {{ resource.ieee_id }}
+                </td>
+                <td>
+                    <a href="{% url 'admin_view_resource' resource.id %}?return_url={{ current_url|urlencode }}">{{resource.name}}</a>
+                </td>
+                <td>
+                    {{ resource.resource_type.name }}
+                </td>
+                <td>
+                    {{ resource.nodes.all.count }}
+                </td>
+                <td>
+                    {{ resource.societies.all.count }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+{% endblock %}

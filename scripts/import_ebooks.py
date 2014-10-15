@@ -4,10 +4,10 @@ import csv
 from django.db.utils import IntegrityError
 
 from dateutil import parser
-from models.node import Node
-from models.resource import Resource, ResourceNodes
-from models.society import Society
-from models.types import NodeType, ResourceType
+from webapp.models.node import Node
+from webapp.models.resource import Resource, ResourceNodes
+from webapp.models.society import Society
+from webapp.models.types import NodeType, ResourceType
 
 
 script, filepath = argv
@@ -17,7 +17,7 @@ reader = csv.reader(open(filepath, "rb"))
 for row in reader:
     if reader.line_num <= 1:
         continue
-    rrr = Resource();
+    rrr = Resource()
     rrr.resource_type = ResourceType.objects.get(name="ebook")
     rrr.ieee_id = row[1]
     rrr.name = row[2]

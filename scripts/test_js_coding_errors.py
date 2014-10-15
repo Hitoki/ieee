@@ -14,7 +14,7 @@ setup_environ(ieeetags.settings)
 
 # ------------------------------------------------------------------------------
 
-import util
+from core import util
 
 def check_js_files(path):
     import os

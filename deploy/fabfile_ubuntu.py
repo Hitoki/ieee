@@ -332,7 +332,7 @@ def checkout_site():
     
     run('mkdir -p "%(site_code)s"' % env, pty=True)
     run_prompted(
-        'curl %(scm_url)s/archive/%(scm_branch)s.zip -o %(site_code)s/../%(scm_branch)s.zip --user %(scm_username)s -L --verbose' % params,
+        'curl %(scm_url)s/archive/%(scm_branch)s.zip -o %(site_code)s/../%(scm_branch)s.zip --user %(scm_username)s -L --verbose -k' % params,
         prompt="Enter host password for user '%(scm_username)s':" % params,
         password=env.scm_password, pty=True)
     run('unzip -q  %(site_code)s/../%(scm_branch)s.zip -d %(site_code)s/../' % params)
@@ -341,10 +341,10 @@ def checkout_site():
     
 
     # Make a 'ieeetags' link to the 'project' directory. References to the ieeetags module are hardcoded in codebase.
-    run('ln -s %(site_code)s %(site_code)s/../ieeetags' % env);
-    
-    if files.exists("%s/local_settings.py" % code_symlink):
-        run('cp -p "%s/local_settings.py" "%s/"' % (code_symlink, env.site_code))
+    # run('ln -s %(site_code)s %(site_code)s/../ieeetags' % env)
+
+    if files.exists("%s/ieeetags/local_settings.py" % code_symlink):
+        run('cp -p "%s/ieeetags/local_settings.py" "%s/ieeetags/"' % (code_symlink, env.site_code))
     
     # Install package requirements
     run('cd "%(site_home)s/python" && source bin/activate && cd "%(site_home)s/python/releases/current/ieeetags/" && pip install -r requirements.txt' % env)
@@ -353,8 +353,8 @@ def checkout_site():
     run('touch %(site_code)s/log.txt' % env)
     run('chmod 666 %(site_code)s/log.txt' % env)
         
-    sudo('mkdir -p "%(site_code)s/media/caches"' % env, pty=True)
-    sudo('chmod 777 "%(site_code)s/media/caches"' % env, pty=True)
+    sudo('mkdir -p "%(site_code)s/ieeetags/media/caches"' % env, pty=True)
+    sudo('chmod 777 "%(site_code)s/ieeetags/media/caches"' % env, pty=True)
     sudo('chmod o+x ~', pty=True)
     
     # Move the site_down directory to /html/maintenance. When the instance.lockify.com.down.conf config file is used
@@ -370,9 +370,12 @@ def checkout_site():
     # Use sudo for next line. Some cached django media files won't delete otherwise.
     sudo('cd "%(site_home)s/python/releases" && rm -rf $(ls | grep -v -E previous\|current\|`readlink previous`\|`readlink current`)' % env, pty=True)
     
-    # Apply any south migrations.
-    run('cd "%(site_home)s/python" && source bin/activate && cd "%(site_home)s/python/releases/current/ieeetags/" && export PYTHONPATH=..:../../../lib/python2.6/site-packages/ && python "%(site_code)s/manage.py" syncdb --noinput && python manage.py migrate --delete-ghost-migrations' % env)
-    
+    # Old apply syncdb and south migrations
+    # run('cd "%(site_home)s/python" && source bin/activate && cd "%(site_home)s/python/releases/current/project/" && export PYTHONPATH=..:../../../lib/python2.6/site-packages/ && python "%(site_code)s/manage.py" syncdb --noinput && python manage.py migrate --fake ' % env)
+
+    # Apply migrations.
+    run('cd "%(site_home)s/python" && source bin/activate && cd "%(site_home)s/python/releases/current/project/" && export PYTHONPATH=..:../../../lib/python2.6/site-packages/ && python "%(site_code)s/manage.py" migrate --noinput --fake' % env)
+
     env.site_code = code_symlink
     run('touch "%(site_code)s/start-wsgi.py"' % env)
     

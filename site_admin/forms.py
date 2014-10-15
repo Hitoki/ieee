@@ -2,15 +2,15 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.forms import *
 
-from ieeetags.fields import MultiSearchField
-from ieeetags.widgets import MultiSearchWidget, DisplayOnlyWidget, CheckboxSelectMultipleColumns
-from ieeetags import url_checker
-from models.node import Node
-from models.profile import Profile
-from models.resource import Resource
-from models.society import Society
-from models.types import NodeType, ResourceType, Filter
-from models.utils import list_to_choices
+from core.fields import MultiSearchField
+from core.widgets import MultiSearchWidget, DisplayOnlyWidget, CheckboxSelectMultipleColumns
+from core import url_checker
+from webapp.models.node import Node
+from webapp.models.profile import Profile
+from webapp.models.resource import Resource
+from webapp.models.society import Society
+from webapp.models.types import NodeType, ResourceType, Filter
+from webapp.models.utils import list_to_choices
 
 
 TRISTATE_CHOICES = [

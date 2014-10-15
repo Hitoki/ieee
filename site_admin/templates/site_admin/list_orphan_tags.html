@@ -1,0 +1,44 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block nav_tags %}highlight{% endblock %}
+
+{% block main_table_content %}
+    
+    <h1>Orphan Topics</h1>
+    
+    <p>
+        Found {{ tags|length }} topics.
+    </p>
+    
+    <table class="grid">
+        <tr>
+            <th width="66%">
+                Topic 
+                {% comment %}(Related Topics){% endcomment %}
+            </th>
+            <th width="34%">
+                Organizations
+            </th>
+        </tr>
+        {% for tag in tags %}
+            <tr>
+                <td>
+                    <a href="{% url 'admin_view_tag' tag.id %}">{{tag.name}}</a>
+                    {% comment %}
+                    (
+                        {% for sector in tag.parents.all %}
+                            <a href="{% url 'admin_view_sector' sector.id %}">{{ sector.name }}</a>{% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                    )
+                    {% endcomment %}
+                </td>
+                <td>
+                    {{ tag.societies.all|join:", " }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+    <a href="{% url 'admin_create_tag' %}?return_url={{ current_url|urlencode }}">Create a new Topic</a>
+    
+{% endblock %}

@@ -1,9 +1,0 @@
-[
-    {
-        "pk": 5,
-        "model": "ieeetags.resourcetype",
-        "fields": {
-            "name": "ebook"
-        }
-    }
-]

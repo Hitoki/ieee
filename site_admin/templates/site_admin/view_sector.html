@@ -1,0 +1,80 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>"{{ sector.name }}" Industry Topic</h1>
+    
+    {% if sector.get_child_clusters %}
+        <h2>Topic Areas</h2>
+        <table class="grid">
+            <tr>
+                <th>
+                    Topic Area Name
+                </th>
+            </tr>
+            {% for cluster in sector.get_child_clusters %}
+                <tr>
+                    <td>
+                        <a href="{% url 'admin_view_cluster' cluster.id %}">{{ cluster.name }}</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+        
+        <h2>Topics</h2>
+    {% endif %}
+    
+    <table class="grid">
+        <tr>
+            <th>
+                Topic
+            </th>
+            <th>
+                Resources
+            </th>
+            <th>
+                Related<br/>
+                Topics
+            </th>
+           {% comment %}
+            <th>
+                Filters
+            </th>
+           {% endcomment %}
+            <th>
+                Organizations
+            </th>
+        </tr>
+        {% for tag in sector.get_tags %}
+            <tr>
+                <td>
+                    <a href="{% url 'admin_view_tag' tag.id %}">{{ tag.name }}</a>
+                </td>
+                <td>
+                    {{ tag.resources.count }}
+                </td>
+                <td>
+                    {{ tag.related_tags.count }}
+                </td>
+                {% comment %}
+                <td>
+                    {{ tag.filters.all|join:", " }}
+                </td>
+                {% endcomment %}
+                <td>
+                    {{ tag.societies.all|join:", " }}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+    <p>
+        {% comment %}
+        TODO: Fix this link
+        <a href="{% url 'admin_show_create_tag_form' sector.id %}">Create a topic</a>
+        {% endcomment %}
+    </p>
+    
+    <p><a href="{% url 'admin_home' %}">home</a></p>
+    
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>View User</h1>
+    
+    <p><a href="{% url 'admin_edit_user' view_user.id %}">Edit User</a></p>
+    
+    <table class="grid">
+        <tr>
+            <th>
+                Username:
+            </th>
+            <td>
+                {{ view_user.username }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Name:
+            </th>
+            <td>
+                {{ view_user.first_name }} {{ view_user.last_name }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Email:
+            </th>
+            <td>
+                {{ view_user.email }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Is Staff:
+            </th>
+            <td>
+                {{ view_user.is_staff|yesno }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Is Superuser:
+            </th>
+            <td>
+                {{ view_user.is_superuser|yesno }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Role:
+            </th>
+            <td>
+                {{ view_user.get_profile.role }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Organizations:
+            </th>
+            <td>
+                {% for society in view_user.societies.all %}
+                    <a href="{% url 'admin_view_society' society.id %}">{{ society.name }}</a>{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+    
+{% endblock %}

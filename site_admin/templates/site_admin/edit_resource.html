@@ -1,0 +1,231 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <script type="text/javascript">
+        
+        window.notify = function(action, data) {
+            if (action == 'created_tag') {
+                // Just created a tag, add it to the field
+                var multisearch = $('#multisearch_nodes').data('multisearch');
+                
+                // Add the newly created tag to the list of options
+                multisearch.addSelectedOption({
+                    name: data.tag.name,
+                    value: data.tag.value,
+                    societies: data.tag.societies
+                });
+                
+                // Trigger a refresh of the popup
+                multisearch.updatePopup();
+                
+            } else if (action == 'multisearch_create_new_tag') {
+                {% if society_id %}
+                    Lightbox.show('{% url 'admin_create_tag' %}?default_tag_name=' + escape(data.tag_name) + '&society_id=' + {{ society_id }} + '&add_to_society=0', {
+                        closeOnClickOutside: false
+                    });
+                {% else %}
+                    Lightbox.show('{% url 'admin_create_tag' %}?default_tag_name=' + escape(data.tag_name), {
+                        closeOnClickOutside: false
+                    });
+                {% endif %}
+            }
+        }
+        
+        function updateStandardStatus() {
+            var resourceTypeElem = $('#id_resource_type');
+            // Silently fail if the resource type SELECT doesn't exist (ie. if the widget is read-only)
+            if (resourceTypeElem.selectedIndex) {
+                if ($(resourceTypeElem[0].options[resourceTypeElem[0].selectedIndex]).text() == 'standard') {
+                    $('#id_standard_status').attr('disabled', '');
+                }
+                else {
+                    $('#id_standard_status')[0].selectedIndex = 0;
+                    $('#id_standard_status').attr('disabled', 'disabled');
+                }
+            }
+        }
+        
+        $(function() {
+            updateStandardStatus();
+            $('#id_resource_type').change(function() {
+                updateStandardStatus();
+            });
+        });
+
+    </script>
+    
+    {% if resource %}
+        <h1>Edit Resource {% if society %}&#40;for {{ society.name }}&#41;{% endif %}</h1>
+    {% else %}
+        <h1>Create Resource {% if society %}&#40;for {{ society.name }}&#41;{% endif %}</h1>
+    {% endif %}
+    
+    {% if errors %}
+        {{ errors|safe }}
+    {% endif %}
+    
+    <form action="{% url 'admin_save_resource' %}?return_url={{ return_url|urlencode }}" method="post">
+         {% csrf_token %}
+        <input type="hidden" name="ignore_url_error" value="{{ ignore_url_error }}" />
+        <table class="full-grid edit-create">
+            {{ form.id }}
+            <tr>
+                <th>
+                    <label for="id_name">{{ form.name.label }} <span class="help_icon flyover {position:'top', customClass:'editForm'}" title="Name of the Product or Service.">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.name.errors }}
+                    {{ form.name }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_resource_type">{{ form.resource_type.label }} <span class="help_icon flyover {position:'top', customClass:'editForm'} " title="Publication, Conference, or Standard.">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.resource_type.errors }}
+                    {{ form.resource_type }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_conference_series">{{ form.conference_series.label }} <span class="help_icon flyover {position:'top', customClass:'editForm'} " title="Conference Series.">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.conference_series.errors }}
+                    {{ form.conference_series }}
+                </td>
+            </tr>
+            {% if show_standard_status %}
+                <tr>
+                    <th>
+                        <label for="id_standard_status">{{ form.standard_status.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title='IEEE-provided status of the Standard: Published, Withdrawn or Project (active PAR)'>[?]</span>:</label>
+                    </th>
+                    <td>
+                        {{ form.standard_status.errors }}
+                        {{ form.standard_status }}
+                    </td>
+                </tr>
+            {% endif %}
+            <tr>
+                <th>
+                    <label for="id_id">{{ form.ieee_id.label }} <span class="help_icon flyover {position:'top', customClass:'editForm'}" title="IEEE unique identifier.">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.ieee_id.errors }}
+                    {{ form.ieee_id }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_societies">{{ form.societies.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title="IEEE organizations that sponsor this resource.">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.societies.errors }}
+                    {{ form.societies }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_description">{{ form.description.label }} <span class="help_icon flyover {position:'top', customClass:'editForm'}" title="Short description of the Resource. 1-3 short sentences recommended.">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.description.errors }}
+                    {{ form.description }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_url">{{ form.url.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title="Web link for the resource in format: www.resource.com/path">[?]</span>:</label>
+                </th>
+                <td>
+                    {% if url_error %}
+                        <div class="error">
+                            URL is broken: {{ url_error }}<br/>
+                            Click "Save" below to ignore this error and continue saving.
+                        </div>
+                    {% else %}
+                        {% ifequal resource.url_status "bad" %}
+                            <div class="error">URL is broken: {{ resource.url_error }}</div>
+                        {% endifequal %}
+                    {% endif %}
+                    {{ form.url.errors }}
+                    {{ form.url }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_nodes">{{ form.nodes.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title='Typing a portion of a word or phrase will bring up a list of all matching topics. Choose "Create a new topic" if a matching topic does not exist.'>[?]</span>:</label>
+                    {% comment %}
+                    <br/>
+                    <a href="#" class="copy-tags-to-clipboard { resourceId: {{ resource.id }} }"><img src="{{ MEDIA_URL }}images/copy_to_clipboard2.png" /> <span>Copy topics to clipboard</span></a>
+                    {% if user.get_profile.copied_resource %}
+                        <a href="#" class="paste-tags { resourceId: {{ resource.id }} }"><img src="{{ MEDIA_URL }}images/copy_to_clipboard2.png" /> <span>Paste topics from clipboard</span></a>
+                    {% endif %}
+                    {% endcomment %}
+                </th>
+                <td>
+                    {{ form.nodes.errors }}
+                    {{ form.nodes }}
+                    {% if resource and society %}
+                        <div class="multisearch-note">Type * to show all<br/>of this organization's topics</div>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_priority_to_tag">{{ form.priority_to_tag.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title='If "yes", this resource should be as complete as possible. Topics, Description, and URL.'>[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.priority_to_tag.errors }}
+                    {{ form.priority_to_tag }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_completed">{{ form.completed.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title='If "yes", this resource is completed. At least one Topic is mapped. Description, and URL are added/validated.'>[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.completed.errors }}
+                    {{ form.completed }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_keywords">{{ form.keywords.label }}  <span class="help_icon flyover {position:'top', customClass:'editForm'}" title="IEEE-provided keywords in the resource libraries. These may serve as Topic suggestions.">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.keywords.errors }}
+                    {{ form.keywords }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_year">{{ form.year.label }} <span class="help_icon flyover {position:'top', customClass:'editForm'} " title="Year.">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.year.errors }}
+                    {{ form.year }}
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="id_date">{{ form.date.label }} <span class="help_icon flyover {position:'top', customClass:'editForm'} " title="Date.">[?]</span>:</label>
+                </th>
+                <td>
+                    {{ form.date.errors }}
+                    {{ form.date }}
+                </td>
+            </tr>
+        </table>
+        <div class="submit">
+            <input type="submit" value="Save" class="button submit-button" />
+            {% if user.is_superuser and resource %}
+                <input type="button" value="Delete" class="submit-button" onclick="if (confirm('Delete this resource?')) window.location='{% url 'admin_delete_resource' resource.id %}?next={{ return_url|urlencode }}';" />
+            {% endif %}
+            <a href="{{ return_url }}" class="cancel-link">Cancel</a>
+        </div>
+    </form>
+    
+{% endblock %}

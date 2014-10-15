@@ -1,0 +1,240 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block extra_head2 %}
+    <script>
+        $(function() {
+            $('#id_username').focus();
+        });
+        
+        $(function() {
+            var url = $('#full_url').attr('value');
+            $('#full_url').attr('value', url + window.location.hash);
+        });
+    </script>
+    <style type="text/css">
+        #header #tagline { display: inline }
+    </style>
+{% endblock %}
+
+{% block main_table_content %}
+<div id="adminLogin">
+    <div id="login-tabs" class="nootabs {useCookies:false, useHash:true}">
+        <ul class="nootabs-menus">
+            <li><a href="">Login</a></li>
+            <li class="last-menu"><a href="">About the Tool</a></li>
+            {% comment %}<li class="last-menu"><a href="">About the Team</a></li>{% endcomment %}
+        </ul>
+    
+        <!-- Login tab -->
+        <div id="login-tab" class="nootabs-tab">
+            <form action="{% url 'admin_login' %}" method="post">
+                {% csrf_token %}
+                {# NOTE: We need to use a hidden field for "next" and use javascript to add the #hash, otherwise the #hash is lost by django. #}
+                <input type="hidden" id="full_url" name="next" value="{{ next }}" />
+                {% if error %}
+                    <ul class="error">
+                        <li>{{ error }}</li>
+                    </ul>
+                {% endif %}
+                <table id="login-table">
+                    <tr><td colspan="2">
+                        Don't have an account? <a href="mailto:technav@ieee.org?subject=Requesting%20an%20account">Request one here.</a>
+                    </td></tr>
+                    {{ form }}
+                    <tr>
+                        <td colspan="2">
+                            <div class="submit">
+                            <input type="submit" value="Okay" id="login-table-okay" />
+                                <p>
+                                    <a href="{% url 'forgot_password' %}?cancel_page={% url 'admin_login' %}">Forget your password?</a>
+                                </p>                            
+                            </div>
+                         </td>
+                    </tr>
+                </table>
+            </form>
+            
+            {% comment %}
+            <div id="overview-video-link">
+                <a id="show-video-link" href="{% url 'ajax_video' %}" class="lightbox {customClass: 'overview-video'}"><span class="{customClass: 'overview-video'}" style="margin:0 0 10px 10px;display:inline-block">Watch the overview video</span><img src='{{ MEDIA_URL}}images/video-still.png' alt="IEEE Video Still" style="width: 223px; height: 125px; vertical-align: middle" /></a>
+            </div>
+            {% endcomment %}
+                
+            {% if feedback %}
+                <div id="logout-message">
+                    <div class="notification">
+                        <h1>
+                            You Have Been Logged Out.
+                        </h1>
+                        {% comment %}
+                        <script type="text/javascript">var host = (("https:" == document.location.protocol) ? "https://secure." : "http://");document.write(unescape("%3Cscript src='" + host + "wufoo.com/scripts/embed/form.js' type='text/javascript'%3E%3C/script%3E"));</script>
+                        <script type="text/javascript">
+                        var q7x3z9 = new WufooForm();
+                        q7x3z9.initialize({
+                        'userName':'aptuscollaborative', 
+                        'formHash':'q7x3z9', 
+                        'autoResize':true,
+                        'height':'654'});
+                        q7x3z9.display();
+                        </script>
+                        {% endcomment %}
+                    </div>
+                </div>
+            {% else %} 
+                {% comment %}
+                <div style="text-align:center;">
+                    <script type="text/javascript" src="{{ MEDIA_URL }}js/AC_RunActiveContent.js"></script>
+                    <script>
+                        AC_FL_RunContent(
+                            'codebase','http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,28,0',
+                            'width','640',
+                            'height','410',
+                            'title','Technology Navigator Promo',
+                            'src','{{ MEDIA_URL }}flash/TechNav-640-false',
+                            'quality','high',
+                            'allowFullScreen','true',
+                            'pluginspage','http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash',
+                            'movie','{{ MEDIA_URL }}flash/TechNav-640-false'
+                        );
+                        //end AC code
+                    </script>
+                    <noscript>
+                        <object
+                            classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+                            codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,28,0"
+                            width="640"
+                            height="410"
+                            title="Technology Navigator Promo">
+                            <param name="movie" value="{{ MEDIA_URL }}flash/TechNav-640-false.swf" />
+                            <param name="quality" value="high" />
+                            <param name="allowFullScreen" value="true" />
+                            <embed
+                                src="{{ MEDIA_URL }}flash/TechNav-640-false.swf"
+                                quality="high"
+                                pluginspage="http://www.adobe.com/shockwave/download/download.cgi?P1_Prod_Version=ShockwaveFlash"
+                                type="application/x-shockwave-flash"
+                                width="640"
+                                height="410"
+                                allowFullScreen="true">
+                            </embed>
+                        </object>
+                    </noscript>
+                </div>
+                {% endcomment %}
+            {% endif %}
+            {% comment %}
+            <div class="login-help-video">
+                <h3>Video Overview of Administrative Interface</h3>
+                <object id='stU09QREBIR11eQFtbUlNYUlJV' width='425' height='344' type='application/x-shockwave-flash' data='http://www.screentoaster.com/swf/STPlayer.swf' codebase='http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,115,0'>
+                        <param name='movie' value='http://www.screentoaster.com/swf/STPlayer.swf'/>
+                        <param name='allowFullScreen' value='true'/>
+                        <param name='allowScriptAccess' value='always'/>
+                        <param name='flashvars' value='video=stU09QREBIR11eQFtbUlNYUlJV'/>
+                        <param name='wmode' value='opaque'/>
+                </object>
+            </div> 
+            {% endcomment %}
+        </div>
+        
+        <!-- About the Project tab -->
+        <div id="about-project-tab" class="nootabs-tab">
+            <p>The IEEE Technology Navigator is a web-based discovery tool that helps IEEE members, prospective members, engineering practitioners and corporate partners to connect to IEEE resources and intellectual property.</p>
+
+            <p>Unlike standard search engines, Technology Navigator uses visual navigation to present key concepts that match a user's needs and interests.</p>
+            <p>Industry, education and government users can now connect to all IEEE products, services, and intellectual property from a single point of entry.</p>
+            <p>Users can "drill down" from general industry and technology terms to specific IEEE organization - and council-developed resources - publications, conferences and standards.</p>
+            <p class="about-header">Presenting IEEE information through the Technology Navigator:</p>
+
+            <ul>
+                <li>Connects IEEE resources and IP to real-world applications</li>
+                <li>Breaks down discipline-specific silos</li>
+                <li>Provides access to information and resources regarding emerging technologies</li>
+                <li>Identifies areas of intersection that will encourage technical organizations and councils to cooperate in overlapping areas</li>
+            </ul>
+
+            <p>Technology Navigator is currently in private Beta to select IEEE communities, and will be publicly available in Fall 2010.</p>
+
+            <p class="about-header">The goals for the Technology Navigator are to help IEEE to:</p>
+
+            <ul>
+                <li>Become a global information resource.</li>
+                <li>Be the preferred place to go for timely, relevant scientific information.</li>
+                <li>Be recognized as the leading organization for forming new knowledge communities, delivering quality information and supporting technical professionals.</li>
+                <li>Connect industry "edge users" to "rich" and relevant IEEE content.</li>
+                <li>Gather together IEEE Organizations and Councils, Conferences, Standards and Publications in one place.</li>
+                <li>Indicate future activity, for example Conferences that have not taken place, but are on the books.</li>
+            </ul>
+
+            <p>Questions or comments about the Technology Navigator? Contact us at <a href="mailto:technav@ieee.org">technav@ieee.org</a>.</p>
+
+        </div>
+        {% comment %}
+        <!-- About the Team tab -->
+        <div id="about-team-tab" class="nootabs-tab">
+            <h1 class="about-team-section" id="top-section">IEEE Leadership Team</h1>
+            <p class="name">
+                Hal Flescher
+            </p>
+            
+            <p class="name">
+                Randi Sumner
+            </p>
+            
+            <p class="name">
+                Bill Tonti
+            </p>
+            
+            <p class="name">
+                Peter Wiesner
+            </p>
+            
+            <h1 class="about-team-section">Consultant Team</h1>
+            
+            <p class="name">
+                Allan Tear
+            </p>
+            <p>
+                <img src="{{ MEDIA_URL }}images/about_team_allan.jpg" />
+                An expert consultant in new product and service launches, Allan is the Managing Partner of Aptus Collaborative. Aptus assists large organizations with technology-enabled innovation strategy. Allan previously was a founder of three venture-funded startups. He advises students and schools on entrepreneurship through the Betaspring startup accelerator, the RI Center for Innovation and Entrepreneurship, and the Carnegie Mellon Dean's Leadership Council. He was selected in 2008 for the Providence Business News "40 Under Forty" list. Allan is a graduate of Carnegie Mellon University, with B.S. degrees in Electrical & Computer Engineering, and Public Policy.
+            </p>
+
+            <p class="name">
+                Jack Templin
+            </p>
+            <p>
+                <img src="{{ MEDIA_URL }}images/about_team_jack.jpg" />
+                Jack specializes in online business strategy, experience design and web application development. Prior to moving to Rhode Island from New York City, Jack was a Lead Strategist at iXL (now Microsoft), and co-founded Arc, a venture-backed consultancy widely recognized as a leader in the field of customer experience design. As a Co-Founder of Providence Geeks and the RI Nexus program, Jack plays a leading role in Rhode Island's burgeoning info-tech and digital media sector. Jack is a graduate of Middlebury College with a B.A. in Economics., and has a Masters from New York University's Interactive Telecommunications Program (ITP). The Providence Journal recently named Jack one of 9 Rhode Islanders "to watch" in 2009.
+            </p>
+
+            <p class="name">
+                Hilary Mason
+            </p>
+            <p>
+                <img src="{{ MEDIA_URL }}images/about_team_hillary.jpg" />
+                Hilary is a computer science professor and data scientist focused on web applications and data mining. She's generally interested in techniques for finding insight in the large, unstructured data sets. Hilary has a M.S. Computer Science from Brown University, is an assistant professor at Johnson &amp; Wales University and is the Chief Scientist at Path101, Inc.
+            </p>
+
+            <p class="name">
+                TJ Sondermann
+            </p>
+            <p>
+                <img src="{{ MEDIA_URL }}images/about_team_tj.jpg" />
+                TJ combines his broad knowledge in the area of User Experience Design with formal training as a librarian and seven plus years of information search and retrieval experience. He has a B.S. in Management from Binghamton University and an MLIS from the University of Rhode Island.
+            </p>
+            
+            <p class="name">
+                James Yoneda
+            </p>
+            <p>
+                <img src="{{ MEDIA_URL }}images/about_team_james.jpg" />
+                James Yoneda is a senior software developer specializing in data-driven web applications. Over the past 10 years, James has built a wide variety of systems for clients ranging from Fortune 1000 companies to start-ups. James has a B.S. in Computer Engineering from the University of Rhode Island.
+            </p>
+            
+            <br style="clear:both;" />
+            
+        </div>
+        {% endcomment %}
+    </div>
+    
+</div>
+{% endblock %}

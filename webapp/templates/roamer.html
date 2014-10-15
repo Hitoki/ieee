@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+
+{% block extra_head %}
+    <script type="text/javascript">
+        $(function() {
+            $(window).resize(resizeLightboxTab);
+            $(document).bind('onShowLightboxTab', resizeLightboxTab);
+        });
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div id="alternate-page" class="roamer-page">
+        <table class="main alternate-page">
+            <tr>
+                <td class="left">
+                </td>
+                <td class="center">
+                    
+                    <!-- Begin center column -->
+                    
+                    <div id="page-min-width"></div>
+                    
+                    {% include "header.inc.html" %}
+                                        
+                    <div class="center-pad">
+                        
+                        <!-- Navigation links -->
+                        <div id="left-column">
+                            <span id="homeico"><a href="javascript:Roamer.setNode(1);"><img src="{{MEDIA_URL}}images/home_icon.png" alt="home" height="18" /></a></span>
+                            <h2 class="feature_label">Choose Sector:</h2>
+                            <div id="left-column-container">  
+                            
+                                <div class="sectors-vert-box alt-box">
+                                    <ul id="sectors">
+                                        {% for sector in sectors %}
+                                            <li><a href="javascript:Roamer.setNode({{sector.id}});" class="{id:{{sector.id}}}">{{sector.name}}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                
+                                {% comment %}
+                                #<!-- Filters -->
+                                #<h2 class="feature_label">View Filters:</h2>
+                                #<div class="filters-vert-box alt-box">
+                                #    <ul id="views">
+                                #        {% for filter in filters %}
+                                #            <li id="{{filter.value}}_highlight" class="filter_background">
+                                #                <input id="{{filter.value}}" value="{{filter.value}}" type="checkbox" onclick="Roamer.filter(this.id, this.checked);" class="filter highlight-checkbox { highlightElem: '#{{filter.value}}_highlight' }" checked="checked" />
+                                #                <label for="{{filter.value}}">{{filter.name}}</label>
+                                #            </li>
+                                #        {% endfor %}
+                                #    </ul>
+                                #</div>  
+                                {% endcomment %}
+                            </div>
+                       </div>
+                           
+                        <!-- Constellation Roamer -->
+                        <div id="right-column">
+                            
+                            <div id="frequencybar">
+                                <table id='roamer-header'>
+                                    <tr>
+                                        <td class="roamer-beta-warning-cell">
+                                            <span id="roamer-beta-warning">This beta interface uses a subset of data from the topics with the highest "Linkages". To explore all the data, switch to the <a href="{% url 'textui' %}">Textual Interface</a>.
+                                            </span>
+                                        </td>
+                                        <td class="key-cell">
+                                            <span style="float: right;">
+                                                <span class="feature_label">Key:</span>
+                                                <span id="roamer-key-sector">Sector <img src="{{MEDIA_URL}}images/sector.png" alt="sector" height="15" /></span>
+                                                {% comment %}
+                                                #TODO: Re-enable when we have clusters in.
+                                                #Cluster: <img src="{{MEDIA_URL}}images/cluster.png" alt="cluster" height="15" />
+                                                {% endcomment %}
+                                                <span id="roamer-key-tag">Topic <img src="{{MEDIA_URL}}images/tag.png" alt="tag" height="15" /></span>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <div id="roamer-outline">
+                                <script type="text/javascript">
+                                    // Constellation Roamer configuration
+                                    
+                                    /** the background color of the Constellation SWF */
+                                    var backgroundColor = "#ffffff";
+                                    
+                                    /** the dimensions of the Constellation SWF */
+                                    var constellationWidth = "100%";
+                                    var constellationHeight = "413px";
+                                    
+                                    /** the ID of the node which is displayed as soon as the Constellation SWF loads */
+                                    var selectedNodeID = "{{nodeId}}";
+                                    
+                                    /** the ID of this instance of the Constellation SWF */
+                                    var instanceID = "1";
+                                    
+                                    // The path to the config xml file
+                                    var configURL = "/media/flash/constellation_config.xml";
+                                    
+                                    var flashvars = 'selected_node_id=' + selectedNodeID + '&instance_id=' + instanceID + "&config_url=" + configURL;
+                                    
+                                    // print out the HTML which embeds the Constellation SWF in this page
+                                    writeHTML('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" '
+                                        + 'codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" '
+                                        + 'width="' + constellationWidth + '" '
+                                        + 'height="' + constellationHeight + '" '
+                                        + 'id="constellation-roamer-object">'
+                                            + '<param name="allowScriptAccess" value="sameDomain">'
+                                            + '<param name="movie" value="{{MEDIA_URL}}flash/constellation_roamer.swf">'
+                                            + '<param name="quality" value="high">'
+                                            + '<param name="bgcolor" value="' + backgroundColor + '">'
+                                            + '<param name="scale" value="noscale">'
+                                            + '<param name="flashvars" value="' + flashvars + '">'
+                                            + '<param name="wmode" value="transparent">'
+                                        + '<embed id="constellation-roamer-embed" src="{{MEDIA_URL}}flash/constellation_roamer.swf" quality="high" '
+                                            + 'bgcolor="' + backgroundColor + '" '
+                                            + 'width="' + constellationWidth + '" '
+                                            + 'height="' + constellationHeight + '" '
+                                            + 'name="constellation_roamer" align="middle" '
+                                            + 'scale="noscale" allowScriptAccess="sameDomain" '
+                                            + 'type="application/x-shockwave-flash" '
+                                            + 'flashvars="' + flashvars + '" '
+                                            + 'wmode="transparent" '
+                                            + 'pluginspage="http://www.macromedia.com/go/getflashplayer"><\/object>');
+                                </script>
+                            </div>
+                            
+                            <div id="resources-explanation" class="alt-box">
+                                <div id="content" class="alt-box-pad">
+                                    <p id="resources-explanation-text" class="hide-initally">
+                                        Click a topic above to display associated resources.
+                                    </p>
+                                    <p id="no-resources" class="hide-initally">
+                                        There are no Resources Tagged for the "<span class="resources-tag-name"></span>" Tag
+                                    </p>
+                                    <a id="resources-link" href="javascript:Roamer.showResourceResultsLightbox();" class="hide-initally">
+                                        View the <span id="resources-count"></span>&nbsp;Resource<span id="resources-plural"></span> Tagged for the "<span class="resources-tag-name"></span>" Topic
+                                    </a>
+                                </div>
+                            </div>
+                            
+                        </div>
+                                            
+                    </div>
+                    
+                    <div id="footer">
+                            <div id="roamerswitchlink-container">
+                                <a id="switch-link" class="roamer-switch floating { content: 'Please select a sector to enable this link.', position:'left' }" href="{% url 'textui' %}">
+                                    Textual Interface
+                                </a>
+                            </div>
+                        <img class="leftCorner" src="{{MEDIA_URL}}images/mainBottomLeftCorner.png" width="26" height="40" />
+                        <img class="rightCorner" src="{{MEDIA_URL}}images/mainBottomRightCorner.png" width="26" height="40" />
+                        <div id="copyright">
+                            &copy; Copyright 2011 IEEE – All rights reserved. Use of this Web site signifies your agreement to the terms and conditions.
+                            <span id="footer-login">
+                            {% if user %}
+                            <p class="admin-links">                                
+                                {% ifequal user.get_profile.role "admin" %}
+                                    <a href="{% url 'admin_home' %}">Admin</a>
+                                {% endifequal %}
+                                {% ifequal user.get_profile.role "society_admin" %}
+                                    <a href="{% url 'admin_home' %}">Organization Admin</a>
+                                {% endifequal %}
+                                {% ifequal user.get_profile.role "society_manager" %}
+                                    <a href="{% url 'admin_home' %}">Organization Manager</a>
+                                {% endifequal %}
+                                {% if user.is_authenticated %}
+                                    <a href="{% url 'logout' %}">*</a>
+                                {% else %}
+                                    <a href="{% url 'admin_login' %}">*</a>
+                                {% endif %}
+                            </p>
+                            {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- End center column -->
+                    
+                </td>
+                <td class="right" rowspan="2">
+                </td>
+            </tr>
+        </table>
+    </div>
+
+{% endblock %}

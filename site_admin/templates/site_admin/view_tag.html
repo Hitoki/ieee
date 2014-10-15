@@ -1,0 +1,99 @@
+{% extends 'site_admin/admin_base.html' %}
+
+{% block main_table_content %}
+    
+    <h1>{{ tag.name }} Topic</h1>
+    
+    <p><a href="{% url 'admin_edit_tag' tag.id %}">Edit topic</a></p>
+    
+    <table class="grid">
+        {% comment %}
+        <tr>
+            <th>
+                Name
+            </th>
+            <td>
+                {{ tag.name }} <!--({{ tag.id }})-->
+            </td>
+        </tr>
+        {% endcomment %}
+        {% comment %}
+        <tr>
+            <th>
+                Industry Topics
+            </th>
+            <td>
+                {% for sector in tag.get_sectors.all %}
+                    <a href="{% url 'admin_view_sector' sector.id %}">{{ sector.name }}</a>{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        {% endcomment %}
+        <tr>
+            <th>
+                Topic Areas
+            </th>
+            <td>
+                {% for cluster in tag.get_parent_clusters.all %}
+                    <a href="{% url 'admin_view_cluster' cluster.id %}">{{ cluster.name }}</a>{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Organizations
+            </th>
+            <td>
+                {% for society in tag.societies.all %}
+                    {{ society.name }}<br/>
+                {% endfor %}
+            </td>
+        </tr>
+        {% comment %}
+        <tr>
+            <th>
+                Filters
+            </th>
+            <td>
+                {% for filter in tag.filters.all %}
+                    {{ filter.name }}{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        {% endcomment %}
+        <tr>
+            <th>
+                Related Topics
+            </th>
+            <td>
+                {% for related_tag in tag.related_tags.all %}
+                    <a href="{% url 'admin_view_tag' related_tag.id %}">{{ related_tag.name }}</a>{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                # Resources
+            </th>
+            <td>
+                {{ tag.resources.count }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Resources
+            </th>
+            <td>
+                {% for resource_node in resource_nodes %}
+                    {% if resource_node.is_machine_generated %}
+                        <span class="drive flyover {width:300}" alt="Machine-generated relationship" title="Machine-generated relationship" style="vertical-align:middle;"></span>
+                    {% endif %}
+                    <a href="{% url 'admin_view_resource' resource_node.resource.id %}?return_url={{ current_url|urlencode }}">{{ resource_node.resource.name }}</a><br/>
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
+    
+    <p><a href="{% url 'admin_home' %}">home</a></p>
+    
+{% endblock %}

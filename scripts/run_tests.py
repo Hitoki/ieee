@@ -13,7 +13,7 @@ setup_environ(ieeetags.settings)
 
 # ------------------------------------------------------------------------------
 
-from ieeetags.util import send_admin_email, get_svn_info, relpath
+from core.util import send_admin_email, get_svn_info, relpath
 
 def main():
     import re
@@ -52,4 +52,3 @@ def main():
     
 if __name__ == '__main__':
     main()
-    
