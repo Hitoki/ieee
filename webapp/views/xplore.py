@@ -7,6 +7,7 @@ import urllib2
 import xml.dom.minidom
 from django.conf import settings
 from django.http import HttpResponse
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from html2text import html2text
 from HTMLParser import HTMLParseError

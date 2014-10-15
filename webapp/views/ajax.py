@@ -22,7 +22,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 import json
 from django.middleware import csrf
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response, get_object_or_404, render
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.contrib.auth.models import User
@@ -45,7 +45,7 @@ from webapp.models.favorites import UserFavorites, UserExternalFavorites
 from core import util
 from BeautifulSoup import BeautifulSoup
 
-from .views import render, get_jobs_info, get_tv_xml_tree
+from .views import get_jobs_info, get_tv_xml_tree
 from core.widgets import make_display_only
 from .xplore import _get_xplore_results, ajax_xplore_authors
 

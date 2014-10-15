@@ -2,9 +2,9 @@ from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 
-from models.node import Node
-from models.resource import Resource
-from models.society import Society
+from webapp.models.node import Node
+from webapp.models.resource import Resource
+from webapp.models.society import Society
 
 
 class UserFavorites(models.Model):

@@ -193,7 +193,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'core.context_processors.current_url',
     'core.context_processors.is_ajax',
     'core.context_processors.survey',
-    'core.context_processors.settings',
+    'core.context_processors.django_settings',
     'core.context_processors.host_info',
     'core.context_processors.total_tag_count',
     'core.context_processors.socialauth_using_providers',

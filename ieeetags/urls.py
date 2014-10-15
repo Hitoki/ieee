@@ -14,7 +14,7 @@ django.contrib.admin.autodiscover()
 
 if not settings.DEBUG:
     # Set the custom error handler for production servers
-    handler500 = 'ieeetags.views.views.error_view'
+    handler500 = 'webapp.views.views.error_view'
 
 if settings.DISABLE_SITE:
     # Disable the entire site!

@@ -22,7 +22,7 @@ from django.core.mail import mail_admins
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render_to_response, redirect, render
 from django.template import RequestContext
 import json
 from django.contrib import auth
@@ -38,8 +38,7 @@ from webapp.models.resource import Resource
 from webapp.models.conference_application import TagKeyword, ConferenceApplication
 from webapp.models.notification import ResourceAdditionNotificationRequest
 from webapp.models.favorites import UserFavorites, UserExternalFavorites
-
-from models import Cache
+from webapp.models.system import Cache
 
 #from profiler import Profiler
 from core import util
@@ -52,13 +51,13 @@ from .xplore import ajax_xplore_authors
 TOOLTIP_MAX_CHARS = 120
 
 
-def render(request, template, dictionary=None):
-    """
-    Use this instead of 'render_to_response' to enable custom context
-    processors, which add things like MEDIA_URL to the page automatically.
-    """
-    return render_to_response(template, dictionary=dictionary,
-                              context_instance=RequestContext(request))
+# def render(request, template, dictionary=None):
+#     """
+#     Use this instead of 'render_to_response' to enable custom context
+#     processors, which add things like MEDIA_URL to the page automatically.
+#     """
+#     return render_to_response(template, dictionary=dictionary,
+#                               context_instance=RequestContext(request))
 
 # ----------------------------------------------------------------------------
 
@@ -185,7 +184,7 @@ def textui(request, survey=False, account=False):
         'SEARCH_KEY_DELAY': settings.SEARCH_KEY_DELAY,
         'NEWUI': NEWUI,
         'ENABLE_SEARCH_BUTTON': newui_search_button,
-        'ENABLE_JOYRIDE': enable_joyride
+        'ENABLE_JOYRIDE': enable_joyride,
     })
 
 
