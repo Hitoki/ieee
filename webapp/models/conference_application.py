@@ -9,7 +9,7 @@ from webapp.models.node import Node
 #     test_field = models.IntegerField(default=0)
 #
 #     class Meta:
-#         app_label = 'ieeetags'
+#         app_label = 'webapp'
 
 
 class ConferenceApplication(models.Model):
