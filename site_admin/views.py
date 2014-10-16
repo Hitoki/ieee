@@ -4889,12 +4889,12 @@ def ajax_search_tags(request):
     try:
         return HttpResponse(json.dumps(data, sort_keys=True, indent=4,
                                        use_decimal=True),
-                            mimetype="application/json")
+                            content_type="application/json")
     except TypeError:
         import simplejson
         return HttpResponse(simplejson.dumps(data, sort_keys=True, indent=4,
                                              use_decimal=True),
-                            mimetype="application/json")
+                            content_type="application/json")
 
 
 from django.views.decorators.csrf import csrf_exempt
@@ -4926,7 +4926,7 @@ def ajax_search_tags_new(request):
                 'value': tag.id,
             })
 
-    return HttpResponse(json.dumps(data), mimetype="application/json")
+    return HttpResponse(json.dumps(data), content_type="application/json")
 
 
 @csrf_exempt
@@ -4957,7 +4957,7 @@ def ajax_search_topic_areas_new(request):
                 'value': topic_area.id,
             })
 
-    return HttpResponse(json.dumps(data), mimetype="application/json")
+    return HttpResponse(json.dumps(data), content_type="application/json")
 
 
 @csrf_exempt
@@ -5070,7 +5070,7 @@ def ajax_search_resources(request):
             })
 
     return HttpResponse(json.dumps(data, sort_keys=True, indent=4),
-                        mimetype="application/json")
+                        content_type="application/json")
 
 
 @login_required
@@ -5101,7 +5101,7 @@ def ajax_search_societies(request):
             })
 
     return HttpResponse(json.dumps(data, sort_keys=True, indent=4),
-                        mimetype="application/json")
+                        content_type="application/json")
 
 
 @login_required
@@ -5152,7 +5152,7 @@ def ajax_copy_resource_tags(request):
     # Invalidate all resource-related caches, so they are regenerated.
     cache = Cache.objects.delete('ajax_textui_nodes')
 
-    return HttpResponse('Success', mimetype='text/plain')
+    return HttpResponse('Success', content_type='text/plain')
 
 
 @login_required
@@ -5903,9 +5903,9 @@ def live_search_results(request):
             'num_more_tags': num_more_tags,
             'results': results,
         }),
-        #mimetype='application/json'
-        mimetype='text/plain'
-        #mimetype='text/html'
+        #content_type='application/json'
+        content_type='text/plain'
+        #content_type='text/html'
     )
 
 
