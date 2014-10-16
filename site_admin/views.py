@@ -218,7 +218,8 @@ Username: %s
 Email: %s
 """ % (abs_reset_url, user.username, user.email)
 
-    logging.debug('settings.DEFAULT_FROM_EMAIL: %s' % settings.DEFAULT_FROM_EMAIL)
+    logging.debug('settings.DEFAULT_FROM_EMAIL: %s' %
+                  settings.DEFAULT_FROM_EMAIL)
     logging.debug('user.email: %s' % user.email)
     logging.debug('subject: %s' % subject)
     logging.debug('message: %s' % message)
@@ -232,10 +233,11 @@ def _send_password_change_notification(user):
     Sends an email to the user that their password has changed.
     """
     subject = 'Your password has been changed'
-    message = """The password on your account has been changed.  Please use the new password to login to your account.
-"""
+    message = "The password on your account has been changed.  " \
+              "Please use the new password to login to your account.\n"
 
-    logging.debug('settings.DEFAULT_FROM_EMAIL: %s' % settings.DEFAULT_FROM_EMAIL)
+    logging.debug('settings.DEFAULT_FROM_EMAIL: %s' %
+                  settings.DEFAULT_FROM_EMAIL)
     logging.debug('user.email: %s' % user.email)
     logging.debug('subject: %s' % subject)
     logging.debug('message: %s' % message)
@@ -281,9 +283,12 @@ def list_to_html_list(list, className=''):
 def _failed_logins(request):
     """
     Shows the failed login page.
-    NOTE: This page does not have its own URL.  Instead, it is rendered directly from a view like this:
+    NOTE: This page does not have its own URL.  Instead, it is rendered
+      directly from a view like this:
         return _failed_logins(request)
-    That way the browser's URL is preserved.  If a user reloads the page after the timeout, they reload the original URL and not the failed logins page.
+    That way the browser's URL is preserved.
+    If a user reloads the page after the timeout, they reload the original URL
+    and not the failed logins page.
     """
     next = request.GET.get('next', reverse('admin_home'))
     return render(request, 'site_admin/failed_logins.html', {
@@ -306,11 +311,17 @@ def _parse_tristate_value(value):
 
 def society_manager_or_admin_required(fn):
     """
-    This is used as a decorator.  The decorated view is restricted to users with the role of society manager, society admin, or admin.  Other roles are sent to the "permission denied" page.
+    This is used as a decorator.  The decorated view is restricted to users
+    with the role of society manager, society admin, or admin.
+    Other roles are sent to the "permission denied" page.
     This should be used in conjunction with the @login_required decorator.
     """
     def _decorator_society_manager_or_admin_required(request, *args, **kwargs):
-        if not request.user.is_anonymous() and (request.user.get_profile().role in [Profile.ROLE_ADMIN, Profile.ROLE_SOCIETY_ADMIN, Profile.ROLE_SOCIETY_MANAGER]):
+        roles = [Profile.ROLE_ADMIN,
+                 Profile.ROLE_SOCIETY_ADMIN,
+                 Profile.ROLE_SOCIETY_MANAGER]
+        if not request.user.is_anonymous() \
+                and (request.user.get_profile().role in roles):
             # User is an admin or society manager, allow
             return fn(request, *args, **kwargs)
         else:
@@ -321,11 +332,15 @@ def society_manager_or_admin_required(fn):
 
 def society_admin_or_admin_required(fn):
     """
-    This is used as a decorator.  The decorated view is restricted to users with the role of society admin or admin.  Other roles are sent to the "permission denied" page.
+    This is used as a decorator.
+    The decorated view is restricted to users with the role of society admin
+    or admin.  Other roles are sent to the "permission denied" page.
     This should be used in conjunction with the @login_required decorator.
     """
     def _decorator_society_admin_or_admin_required(request, *args, **kwargs):
-        if not request.user.is_anonymous() and (request.user.get_profile().role in [Profile.ROLE_ADMIN, Profile.ROLE_SOCIETY_ADMIN]):
+        roles = [Profile.ROLE_ADMIN, Profile.ROLE_SOCIETY_ADMIN]
+        if not request.user.is_anonymous() \
+                and (request.user.get_profile().role in roles):
             # User is an admin or society manager, allow
             return fn(request, *args, **kwargs)
         else:
@@ -336,11 +351,14 @@ def society_admin_or_admin_required(fn):
 
 def admin_required(fn):
     """
-    This is used as a decorator.  The decorated view is restricted to users with the role of admin only.  Other roles are send to the "permission denied" page.
+    This is used as a decorator.
+    The decorated view is restricted to users with the role of admin only.
+    Other roles are send to the "permission denied" page.
     This should be used in conjunction with the @login_required decorator.
     """
     def _decorator_admin_required(request, *args, **kwargs):
-        if not request.user.is_anonymous() and (request.user.get_profile().role in [Profile.ROLE_ADMIN]):
+        if not request.user.is_anonymous() \
+                and (request.user.get_profile().role in [Profile.ROLE_ADMIN]):
             # User is an admin, allow
             return fn(request, *args, **kwargs)
         else:
@@ -367,15 +385,18 @@ def login(request):
     else:
         form = LoginForm(request.POST)
 
-        # Grab the full "next" URL from the hidden form field, including the #hash part
+        # Grab the full "next" URL from the hidden form field, including
+        # the #hash part
         next = request.POST['next']
 
-        # TODO: this hack is to account for the bug where the 'next' var has the hash instead of a real url
+        # TODO: this hack is to account for the bug where the 'next' var has
+        # the hash instead of a real url
         if next.startswith('#'):
             next = ''
 
         if form.is_valid():
-            user = auth.authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+            user = auth.authenticate(username=form.cleaned_data['username'],
+                                     password=form.cleaned_data['password'])
 
             username = form.cleaned_data['username']
 
@@ -392,14 +413,16 @@ def login(request):
 
                 error = 'Invalid login, please try again.'
 
-            elif user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER and user.societies.count() == 0:
+            elif user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER \
+                    and user.societies.count() == 0:
                 # Society Manage doesn't have an assigned society
 
                 # If too many bad logins, redirect to bad login page
                 if FailedLoginLog.objects.add_and_check_if_disabled(username, remote_addr):
                     return _failed_logins(request)
 
-                error = 'Your account has not been assigned to a society yet.  Please contact the administrator to fix this.'
+                error = 'Your account has not been assigned to a society yet.'\
+                        '  Please contact the administrator to fix this.'
 
             else:
                 # Successful login
@@ -411,7 +434,8 @@ def login(request):
 
                 if next != '':
                     return HttpResponseRedirect(next)
-                elif user.get_profile().role == Profile.ROLE_ADMIN or user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER:
+                elif user.get_profile().role == Profile.ROLE_ADMIN \
+                        or user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER:
                     return HttpResponseRedirect(reverse('admin_home'))
                 elif user.get_profile().role == Profile.ROLE_END_USER:
                     return HttpResponseRedirect(reverse('index'))
@@ -446,7 +470,9 @@ def forgot_password(request):
                 if user is None:
                     error = '<ul class="error"><li>The username "%s" was not found.</li></ul>' % username
                 elif user.email is None or user.email.strip() == '':
-                    error = '<ul class="error"><li>The account with username "%s" does not have a valid email.</li></ul>' % username
+                    error = '<ul class="error"><li>The account with username '\
+                            '"%s" does not have a valid email.</li></ul>' % \
+                            username
                 else:
                     try:
                         _send_password_reset_email(request, user)
@@ -459,7 +485,8 @@ def forgot_password(request):
                         error = None
                     url = reverse('forgot_password_confirmation')
                     if error is not None:
-                        logging.error('Error sending reset email: %s: %s' % (type(e), e))
+                        logging.error('Error sending reset email: %s: %s' %
+                                      (type(e), e))
                         url += '?error=' + quote(error)
                     return HttpResponseRedirect(url)
 
@@ -627,7 +654,8 @@ def home(request):
             return HttpResponseRedirect(reverse('admin_societies'))
 
         else:
-            raise Exception('User is an organization manager but is not assigned to any organization.')
+            raise Exception('User is an organization manager but is not '
+                            'assigned to any organization.')
 
     else:
         raise Exception('Unknown role %s' % role)
@@ -914,11 +942,13 @@ def tag_set_high_potency(request):
     tag = Node.objects.get(id=request.GET.get('id'))
     tag.high_potency = request.GET.get('value') == 'true'
     tag.save()
-    return HttpResponse(json.dumps({'success': True}), 'application/javascript')
+    return HttpResponse(json.dumps({'success': True}),
+                        'application/javascript')
 
 
 def _remove_society_acronym(society_name):
-    # Make sure the society name field does not contain a redundant acronym (there is already have an acronym field)
+    # Make sure the society name field does not contain a redundant acronym
+    # (there is already have an acronym field)
     matches = re.match(r'^(.+) \((.+)\)$', society_name)
     if matches is not None:
         society_name = matches.group(1)
@@ -947,7 +977,8 @@ def _import_societies(file1):
             # URL doesn't start with "http", throw error
             errors.append('For "%s", url "%s" does not start with "http" or "https"' % (society_name, url))
         else:
-            society = Society.objects.filter(name=society_name, abbreviation=abbreviation)
+            society = Society.objects.filter(name=society_name,
+                                             abbreviation=abbreviation)
             assert society.count() >= 0 and society.count() <= 1
             if society.count() == 1:
                 # Found matching society, update it
@@ -965,7 +996,8 @@ def _import_societies(file1):
                 societies_updated += 1
             else:
                 society_names = Society.objects.filter(name=society_name)
-                society_abbreviations = Society.objects.filter(abbreviation=abbreviation)
+                society_abbreviations = \
+                    Society.objects.filter(abbreviation=abbreviation)
                 if society_names.count() > 0:
                     # Found a duplicate name
                     #logging.debug('Found a duplicate society name "%s", but the abbreviation "%s" did not match the file "%s"' % (society_name, society_names[0].abbreviation, abbreviation))
@@ -1071,7 +1103,8 @@ def fix_societies_import(request):
         tag_names.extend(tag_names3)
 
         # Filter out blank tag names
-        tag_names = [tag_name for tag_name in tag_names if tag_name is not None and tag_name.strip() != '']
+        tag_names = [tag_name for tag_name in tag_names
+                     if tag_name is not None and tag_name.strip() != '']
 
         tag_names = ', '.join(tag_names)
 
@@ -1151,7 +1184,9 @@ def _import_resources(file, batch_commits=False):
     for row in reader:
 
         #Type, ID, Name, Description, URL, Tags, Society Abbreviations, Conference Year, Standard Status, Technical Committees, Keywords, Priority, Completed, Project Code, PubID, Date
-        type1, ieee_id, name, description, url, tag_names, society_abbreviations, year, standard_status, technical_committees, keywords, priority_to_tag, completed, project_code, pub_id, date1 = row
+        type1, ieee_id, name, description, url, tag_names, \
+        society_abbreviations, year, standard_status, technical_committees, \
+        keywords, priority_to_tag, completed, project_code, pub_id, date1 = row
 
         #logging.debug('    type1: %s' % type1)
         #logging.debug('    ieee_id: %s' % ieee_id)
@@ -1181,13 +1216,17 @@ def _import_resources(file, batch_commits=False):
         # Societies
         societies = []
         has_mga_society = False
-        society_abbreviations = [society_abbreviations.strip() for society_abbreviations in society_abbreviations.split('|')]
+        society_abbreviations = [society_abbreviations.strip()
+                                 for society_abbreviations in society_abbreviations.split('|')]
         for society_abbreviation in society_abbreviations:
             if society_abbreviation != '':
                 society = Society.objects.getFromAbbreviation(society_abbreviation)
                 if society is None:
                     # Check for MGA societies:
-                    if society_abbreviation.lower().count('chapter') or society_abbreviation.lower().count('council') or society_abbreviation.lower().count('region') or society_abbreviation.lower().count('section'):
+                    if society_abbreviation.lower().count('chapter') \
+                            or society_abbreviation.lower().count('council') \
+                            or society_abbreviation.lower().count('region') \
+                            or society_abbreviation.lower().count('section'):
                         # Replace any mention of these with the "MGA" society.
                         society = mga_society
                         has_mga_society = True
@@ -1269,7 +1308,8 @@ def _import_resources(file, batch_commits=False):
             elif standard_status.lower() in Resource.STANDARD_STATUSES:
                 standard_status = standard_status.lower()
             else:
-                raise Exception('Unknown standard status "%s"' % standard_status)
+                raise Exception('Unknown standard status "%s"' %
+                                standard_status)
 
             # Truncate keywords to 1000 chars
             keywords = keywords[:1000]
@@ -1327,7 +1367,8 @@ def _import_resources(file, batch_commits=False):
             for tag_name in tag_names.split('|'):
                 tag_name = tag_name.strip()
                 try:
-                    tag = Node.objects.get(node_type__name=NodeType.TAG, name=tag_name)
+                    tag = Node.objects.get(node_type__name=NodeType.TAG,
+                                           name=tag_name)
                 except Node.DoesNotExist:
                     pass
                 else:
@@ -1346,7 +1387,8 @@ def _import_resources(file, batch_commits=False):
 
         if not last_update_time or time.time() - last_update_time > 1:
             try:
-                logging.debug('    Parsing row %d, row/sec %f' % (row_count, row_count/(time.time()-start)))
+                logging.debug('    Parsing row %d, row/sec %f' %
+                              (row_count, row_count/(time.time()-start)))
             except Exception:
                 pass
             last_update_time = time.time()
@@ -1448,7 +1490,8 @@ def import_users(request):
         for row in reader:
 
             #Username,Password,First Name,Last Name,Email,Role,Society Abbreviations
-            username, password, first_name, last_name, email, role, society_abbreviations = row
+            username, password, first_name, last_name, email, \
+            role, society_abbreviations = row
 
             username = username.strip()
             password = password.strip()
@@ -1472,7 +1515,8 @@ def import_users(request):
             if email == '':
                 errors.append('Email is blank for user "%s"' % username)
 
-            society_abbreviations = [society_abbreviation.strip() for society_abbreviation in _split_no_empty(society_abbreviations, ',')]
+            society_abbreviations = [society_abbreviation.strip()
+                                     for society_abbreviation in _split_no_empty(society_abbreviations, ',')]
 
             societies = []
             for society_abbreviation in society_abbreviations:
@@ -1639,7 +1683,8 @@ def import_conference_series(request):
         start = time.time()
 
         count = 0
-        conference_type = ResourceType.objects.getFromName(ResourceType.CONFERENCE)
+        conference_type = \
+            ResourceType.objects.getFromName(ResourceType.CONFERENCE)
         for row in reader:
 
             count += 1
@@ -1650,7 +1695,8 @@ def import_conference_series(request):
 
             ieee_id, conference_series = row
             try:
-                resource = Resource.objects.get(ieee_id=ieee_id, resource_type=conference_type)
+                resource = Resource.objects.get(ieee_id=ieee_id,
+                                                resource_type=conference_type)
             except Resource.DoesNotExist, e:
                 print 'ieee_id: %s' % ieee_id
                 raise
@@ -1673,14 +1719,17 @@ def import_conference_series(request):
 @login_required
 @admin_required
 def update_resources_from_xplore_index(request):
-    log_dirname = os.path.join(os.path.dirname(settings.LOG_FILENAME), 'xplore_imports')
+    log_dirname = os.path.join(os.path.dirname(settings.LOG_FILENAME),
+                               'xplore_imports')
     logs = os.listdir(log_dirname)
     logs.reverse()
     context = {
         'page_title': "Update Node Resource's from Xplore",
         'logs': logs
     }
-    return render(request, 'site_admin/update_resources_from_xplore_index.html', context)
+    return render(request,
+                  'site_admin/update_resources_from_xplore_index.html',
+                  context)
 
 
 #login_required
@@ -1688,7 +1737,8 @@ def update_resources_from_xplore_index(request):
 def update_resource_from_xplore_log(request, filename):
     response = HttpResponse()
     response.write('<pre>')
-    log_dirname = os.path.join(os.path.dirname(settings.LOG_FILENAME), 'xplore_imports')
+    log_dirname = os.path.join(os.path.dirname(settings.LOG_FILENAME),
+                               'xplore_imports')
     log_filename = os.path.join(log_dirname, filename)
     f = open(log_filename)
     response.write(f.read())
@@ -1723,7 +1773,8 @@ def _update_periodical_from_xplore(request):
 
     resSum = XploreUpdateResultsSummary
 
-    log_dirname = os.path.join(os.path.dirname(settings.LOG_FILENAME), 'xplore_imports')
+    log_dirname = os.path.join(os.path.dirname(settings.LOG_FILENAME),
+                               'xplore_imports')
     if not os.path.exists(log_dirname):
         os.makedirs(log_dirname)
 
@@ -1931,7 +1982,8 @@ def import_xplore(request):
     if not os.path.exists(settings.XPLORE_IMPORT_LOG_PATH):
         raise Exception('The settings.XPLORE_IMPORT_LOG_PATH directory (%r) does not exist.' % settings.XPLORE_IMPORT_LOG_PATH)
 
-    pidfilename = os.path.join(settings.XPLORE_IMPORT_LOG_PATH, 'update_resources_from_xplore.pid')
+    pidfilename = os.path.join(settings.XPLORE_IMPORT_LOG_PATH,
+                               'update_resources_from_xplore.pid')
 
     action = request.REQUEST.get('action', '')
     try:
@@ -1969,7 +2021,8 @@ def import_xplore(request):
             if not pid:
                 process.delete()
             else:
-                raise Exception('PID file still exists, cannot remove previous process object.')
+                raise Exception('PID file still exists, cannot remove '
+                                'previous process object.')
 
         log_filename_abs = os.path.join(settings.XPLORE_IMPORT_LOG_PATH, 'update_resources_from_xplore_%s.log' % datetime.now().strftime('%Y%m%d-%H%M%S'))
 
@@ -2011,7 +2064,8 @@ def import_xplore(request):
         # Immediate start of daemon (UNIX-only):
 
         scripts_path = relpath(__file__, '../scripts')
-        script_path = os.path.join(scripts_path, 'update_resources_from_xplore.py')
+        script_path = os.path.join(scripts_path,
+                                   'update_resources_from_xplore.py')
 
         paths = ':'.join(sys.path)
 
@@ -2201,7 +2255,8 @@ def _import_standards(file):
 
         if not last_update_time or time.time() - last_update_time > 1:
             try:
-                logging.debug('    Parsing row %d, row/sec %f' % (row_count, row_count/(time.time()-start)))
+                logging.debug('    Parsing row %d, row/sec %f' %
+                              (row_count, row_count/(time.time()-start)))
             except Exception:
                 pass
             last_update_time = time.time()
@@ -2242,8 +2297,10 @@ def import_standards(request):
             #    # DEBUG: Prevent changes for now.
             #    transaction.rollback()
 
-            results['valid_organizations'] = list_to_html_list(results['valid_organizations'])
-            results['invalid_organizations'] = list_to_html_list(results['invalid_organizations'])
+            results['valid_organizations'] = \
+                list_to_html_list(results['valid_organizations'])
+            results['invalid_organizations'] = \
+                list_to_html_list(results['invalid_organizations'])
 
             return render(request, 'site_admin/import_file.html', {
                 'page_title': 'Import Standards File',
@@ -2360,7 +2417,8 @@ def _import_mai(file):
 
         if not last_update_time or time.time() - last_update_time > 1:
             try:
-                logging.debug('    Parsing row %d, row/sec %f' % (row_count, row_count/(time.time()-start)))
+                logging.debug('    Parsing row %d, row/sec %f' %
+                              (row_count, row_count/(time.time()-start)))
             except Exception:
                 pass
             last_update_time = time.time()
@@ -2458,9 +2516,11 @@ def _import_taxonomy(file):
     def _get_child_by_name(node, name):
         child_nodes = node.getElementsByTagName(name)
         if len(child_nodes) == 0:
-            raise XmlNodeNotFoundError('Could not find child %r for node %r' % (name, node.nodeName))
+            raise XmlNodeNotFoundError('Could not find child %r for node %r' %
+                                       (name, node.nodeName))
         elif len(child_nodes) > 1:
-            raise XmlTooManyNodesError('Found too many nodes (%s) for node %r' % (len(child_nodes), name))
+            raise XmlTooManyNodesError('Found too many nodes (%s) for node %r'
+                                       % (len(child_nodes), name))
         return child_nodes[0]
 
     def _get_child_text_by_name(node, name):
@@ -2569,7 +2629,8 @@ def _import_taxonomy(file):
             cluster.name = name
             cluster.save()
 
-    logging.debug('There are %s clusters.' % TaxonomyCluster.objects.all().count())
+    logging.debug('There are %s clusters.' %
+                  TaxonomyCluster.objects.all().count())
 
     # Create terms, assign clusters and related nodes.
     logging.debug('Create terms, assign clusters and related nodes.')
@@ -2825,7 +2886,8 @@ IEEE Technology Navigator
 
                 subject = form.cleaned_data['subject']
                 body = form.cleaned_data['body']
-                msg = EmailMessage(subject, body, to=[settings.SERVER_EMAIL], bcc=user_emails)
+                msg = EmailMessage(subject, body, to=[settings.SERVER_EMAIL],
+                                   bcc=user_emails)
                 msg.send()
 
                 return HttpResponseRedirect(reverse('admin_send_email_all_users_confirmation'))
@@ -2996,7 +3058,8 @@ def create_tag(request):
 
             # Don't add society if "add_to_society" is 0
             # Unless we're an admin
-            if up.role == up.ROLE_ADMIN or (society_id != '' and add_to_society != '0'):
+            if up.role == up.ROLE_ADMIN or (society_id != ''
+                                            and add_to_society != '0'):
                 NodeSocieties.objects.update_for_node(tag, form.cleaned_data['societies'])
 
             tag.filters = form.cleaned_data['filters']
@@ -3093,7 +3156,8 @@ def edit_tag(request, tag_id):
 
     if request.user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER:
         # Disable certain fields for the society managers
-        make_display_only(form.fields['societies'], model=Society, is_multi_search=True)
+        make_display_only(form.fields['societies'], model=Society,
+                          is_multi_search=True)
         sector_ids = [str(sector.id) for sector in tag.parents.all()]
         #form.fields['related_tags'].widget.set_search_url(reverse('ajax_search_tags') + '?filter_sector_ids=' + ','.join(sector_ids))
 
@@ -3128,7 +3192,8 @@ def save_tag(request, tag_id):
 
         if request.user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER:
             # Disable certain fields for the society managers
-            make_display_only(form.fields['societies'], model=Society, is_multi_search=True)
+            make_display_only(form.fields['societies'], model=Society,
+                              is_multi_search=True)
             tag_id = int(request.POST['id'])
             tag = Node.objects.get(id=tag_id)
             sector_ids = [str(sector.id) for sector in tag.parents.all()]
@@ -3182,7 +3247,8 @@ def save_tag(request, tag_id):
         if return_url != '':
             return HttpResponseRedirect(return_url)
         else:
-            return HttpResponseRedirect(reverse('admin_view_tag', args=[tag.id]))
+            return HttpResponseRedirect(reverse('admin_view_tag',
+                                                args=[tag.id]))
 
 
 def _tag_not_found_response(request, tag_id, return_url):
@@ -3301,7 +3367,8 @@ def _combine_tags(tag_id1, tag_id2):
     #logging.debug('tag2.related_tags: %r' % tag2.related_tags.all())
     for related_tag in tag2.related_tags.all():
         # NOTE: Make sure that tag1 doesn't end up with itself as a related tag
-        if tag1.related_tags.filter(id=related_tag.id).count() == 0 and tag1 != related_tag:
+        if tag1.related_tags.filter(id=related_tag.id).count() == 0 \
+                and tag1 != related_tag:
             tag1.related_tags.add(related_tag)
     #logging.debug('----------')
     #logging.debug('tag1.related_tags: %r' % tag1.related_tags.all())
@@ -3432,7 +3499,8 @@ def edit_cluster(request, cluster_id=None):
             if return_url != '':
                 return HttpResponseRedirect(return_url)
             else:
-                return HttpResponseRedirect(reverse('admin_view_cluster', args=[cluster.id]))
+                return HttpResponseRedirect(reverse('admin_view_cluster',
+                                                    args=[cluster.id]))
 
     return render(request, 'site_admin/edit_cluster.html', {
         'cluster': cluster,
@@ -3502,7 +3570,8 @@ def edit_cluster2(request, cluster_id=None):
                 else:
                     return HttpResponseRedirect(reverse('admin_home'))
             else:
-                return HttpResponseRedirect(reverse('admin_edit_cluster2', args=[cluster.id]))
+                return HttpResponseRedirect(reverse('admin_edit_cluster2',
+                                                    args=[cluster.id]))
 
     return render(request, 'site_admin/edit_cluster2.html', {
         'cluster': cluster,
@@ -3681,7 +3750,8 @@ def save_user(request):
                 user.is_superuser = False
                 user.is_staff = False
             else:
-                raise Exception('Unknown role "%s"' % form.cleaned_data['role'])
+                raise Exception('Unknown role "%s"' %
+                                form.cleaned_data['role'])
 
             user.societies = form.cleaned_data['societies']
             user.save()
@@ -4126,7 +4196,8 @@ def manage_society(request, society_id):
         else:
             resources1[i].classes = ''
 
-        if resources1[i].conference_series != '' and resources1[i].is_current_conference:
+        if resources1[i].conference_series != '' \
+                and resources1[i].is_current_conference:
             resources1[i].classes += ' current-conference current-conference-%s { id:%s }' % (resources1[i].id, resources1[i].id)
 
     resources = resources1
@@ -4280,7 +4351,8 @@ def save_society(request):
         society.url = form.cleaned_data['url']
         society.users = form.cleaned_data['users']
         if form.cleaned_data['tags'] is not None:
-            NodeSocieties.objects.update_for_society(society, form.cleaned_data['tags'])
+            NodeSocieties.objects.update_for_society(society,
+                                                     form.cleaned_data['tags'])
 
         # Add/remove society-resource relationships
         allr = society.resources.all()
@@ -4351,7 +4423,8 @@ def edit_resources(request):
     assert(return_url is not None)
 
     resource_ids = request.POST.getlist('resource_ids')
-    resources = [Resource.objects.get(id=resource_id) for resource_id in resource_ids]
+    resources = [Resource.objects.get(id=resource_id)
+                 for resource_id in resource_ids]
 
     if process_form is not None:
         # Parse form
@@ -4391,7 +4464,8 @@ def edit_resources(request):
 
             # Remove selected tags
             remove_tag_ids = request.POST.getlist('remove_tag_ids')
-            remove_tags = [Node.objects.get(id=remove_tag_id) for remove_tag_id in remove_tag_ids]
+            remove_tags = [Node.objects.get(id=remove_tag_id)
+                           for remove_tag_id in remove_tag_ids]
             for resource in resources:
                 for tag in remove_tags:
                     resource.nodes.remove(tag)
@@ -4588,14 +4662,16 @@ def save_resource(request):
     if form.is_valid():
 
         # Validate form
-        if form.cleaned_data['resource_type'].name == ResourceType.STANDARD and form.cleaned_data['standard_status'] == '':
+        if form.cleaned_data['resource_type'].name == ResourceType.STANDARD \
+                and form.cleaned_data['standard_status'] == '':
             errors.append('A Status is required for Standards')
 
         if form.cleaned_data['url'] != '':
             # Has a URL, check it
             print 'Checking url %s' % form.cleaned_data['url']
 
-            (url_status, url_error1) = url_checker.check_url(form.cleaned_data['url'], 4)
+            (url_status, url_error1) = \
+                url_checker.check_url(form.cleaned_data['url'], 4)
 
             if url_status == Resource.URL_STATUS_BAD:
                 #errors.append('URL is broken: %s' % url_error)
@@ -4673,7 +4749,8 @@ def save_resource(request):
                     <a href="javascript:window.close();">Close window</a>
                 """)
             elif return_url == '':
-                return HttpResponseRedirect(reverse('admin_view_resource', args=[resource.id]))
+                return HttpResponseRedirect(reverse('admin_view_resource',
+                                                    args=[resource.id]))
 
             else:
                 return HttpResponseRedirect(return_url)
@@ -4733,7 +4810,8 @@ def search_resources(request):
         form = SearchResourcesForm(request.POST)
         if form.is_valid():
             resource_name = form.cleaned_data['resource_name']
-            resource_results = Resource.objects.searchByNameSubstring(resource_name)
+            resource_results = \
+                Resource.objects.searchByNameSubstring(resource_name)
 
     return render(request, 'site_admin/search_resources.html', {
         'form': form,
@@ -4769,7 +4847,9 @@ def ajax_search_tags(request):
         temp_society_id = int(society_id)
     else:
         temp_society_id = None
-    tags = Node.objects.searchTagsByNameSubstring(search_for, sector_ids, exclude_tag_id, temp_society_id)
+    tags = Node.objects.searchTagsByNameSubstring(search_for, sector_ids,
+                                                  exclude_tag_id,
+                                                  temp_society_id)
 
     tags = get_node_extra_info(tags)
 
@@ -4807,10 +4887,14 @@ def ajax_search_tags(request):
             })
 
     try:
-        return HttpResponse(json.dumps(data, sort_keys=True, indent=4, use_decimal=True), mimetype="application/json")
+        return HttpResponse(json.dumps(data, sort_keys=True, indent=4,
+                                       use_decimal=True),
+                            mimetype="application/json")
     except TypeError:
         import simplejson
-        return HttpResponse(simplejson.dumps(data, sort_keys=True, indent=4, use_decimal=True), mimetype="application/json")
+        return HttpResponse(simplejson.dumps(data, sort_keys=True, indent=4,
+                                             use_decimal=True),
+                            mimetype="application/json")
 
 
 from django.views.decorators.csrf import csrf_exempt
@@ -4985,7 +5069,8 @@ def ajax_search_resources(request):
                 'value': resource.id,
             })
 
-    return HttpResponse(json.dumps(data, sort_keys=True, indent=4), mimetype="application/json")
+    return HttpResponse(json.dumps(data, sort_keys=True, indent=4),
+                        mimetype="application/json")
 
 
 @login_required
@@ -5015,7 +5100,8 @@ def ajax_search_societies(request):
                 'value': society.id,
             })
 
-    return HttpResponse(json.dumps(data, sort_keys=True, indent=4), mimetype="application/json")
+    return HttpResponse(json.dumps(data, sort_keys=True, indent=4),
+                        mimetype="application/json")
 
 
 @login_required
@@ -5122,7 +5208,8 @@ def login_report(request):
                 user.username,
                 user.get_profile().last_login_time,
             ])
-        filename = 'login_report_%s.csv' % datetime.today().strftime('%Y-%m-%d')
+        filename = 'login_report_%s.csv' % \
+                   datetime.today().strftime('%Y-%m-%d')
         return _response_csv_attachment(data, filename)
 
     else:
@@ -5153,7 +5240,8 @@ def tagged_resources_report(request, filter):
         if resource.nodes.count() > 0:
             all_tagged_resources += 1
 
-    all_percent_resources = all_tagged_resources / float(all_total_resources) * 100
+    all_percent_resources = \
+        all_tagged_resources / float(all_total_resources) * 100
 
     # Calc per-society totals
 
@@ -5174,7 +5262,8 @@ def tagged_resources_report(request, filter):
         if total_resources == 0:
             percent_resources = 0
         else:
-            percent_resources = num_tagged_resources / float(total_resources) * 100
+            percent_resources = \
+                num_tagged_resources / float(total_resources) * 100
         result_societies.append({
             'name': society.name,
             'total_resources': total_resources,
@@ -5200,7 +5289,8 @@ def tagged_resources_report(request, filter):
                 society['total_resources'],
                 '%s%%' % society['percent_resources']
             ])
-        filename = 'login_report_%s.csv' % datetime.today().strftime('%Y-%m-%d')
+        filename = 'login_report_%s.csv' % \
+                   datetime.today().strftime('%Y-%m-%d')
         return _response_csv_attachment(data, filename)
 
     else:
@@ -5236,9 +5326,12 @@ def tags_report(request):
 
     tags = Node.objects.get_tags().extra(
         select={
-            'num_filters': 'SELECT COUNT(*) FROM ieeetags_node_filters WHERE ieeetags_node_filters.node_id = ieeetags_node.id',
-            'num_resources1': 'SELECT COUNT(*) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id',
-            'num_societies': 'SELECT COUNT(*) FROM ieeetags_node_societies WHERE ieeetags_node_societies.node_id = ieeetags_node.id',
+            'num_filters': 'SELECT COUNT(*) FROM ieeetags_node_filters '
+                           'WHERE ieeetags_node_filters.node_id = ieeetags_node.id',
+            'num_resources1': 'SELECT COUNT(*) FROM ieeetags_resource_nodes '
+                              'WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id',
+            'num_societies': 'SELECT COUNT(*) FROM ieeetags_node_societies '
+                             'WHERE ieeetags_node_societies.node_id = ieeetags_node.id',
         }
     )
 
@@ -5268,9 +5361,12 @@ def tags_report(request):
 
         society_tags = society.tags.extra(
             select={
-                'num_filters': 'SELECT COUNT(*) FROM ieeetags_node_filters WHERE ieeetags_node_filters.node_id = ieeetags_node.id',
-                'num_resources1': 'SELECT COUNT(*) FROM ieeetags_resource_nodes WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id',
-                'num_societies': 'SELECT COUNT(*) FROM ieeetags_node_societies WHERE ieeetags_node_societies.node_id = ieeetags_node.id',
+                'num_filters': 'SELECT COUNT(*) FROM ieeetags_node_filters '
+                               'WHERE ieeetags_node_filters.node_id = ieeetags_node.id',
+                'num_resources1': 'SELECT COUNT(*) FROM ieeetags_resource_nodes '
+                                  'WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id',
+                'num_societies': 'SELECT COUNT(*) FROM ieeetags_node_societies '
+                                 'WHERE ieeetags_node_societies.node_id = ieeetags_node.id',
             }
         )
 
@@ -5312,7 +5408,9 @@ def tags_report(request):
     if export_csv:
         # Export as a CSV file
         data = []
-        data.append(['Name', 'Total', '# Filtered', '% Filtered', '# Resources', '% Resources', '# Societies', '% Societies'])
+        data.append(['Name', 'Total', '# Filtered', '% Filtered',
+                     '# Resources', '% Resources', '# Societies',
+                     '% Societies'])
         data.append([
             'All Tags',
             all_total_tags,
