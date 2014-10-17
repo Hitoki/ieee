@@ -78,7 +78,7 @@ MOBILE_URL_PREFIX = 'm.'
 SECRET_KEY = 'o5tqsvh$&e3@@jzm)uvc02s*lsuw+5*r6jd%d+8u-6lzi3i%6j'
 
 # Specify the user profile model
-AUTH_PROFILE_MODULE = 'ieeetags.profile'
+AUTH_PROFILE_MODULE = 'webapp.profile'
 
 DEFAULT_CHARSET = 'utf-8'
 
@@ -138,8 +138,8 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'core.middleware.ExceptionMiddleware.ExceptionMiddleware',
-    #'ieeetags.djangologging.middleware.LoggingMiddleware',
-    #'ieeetags.middleware.ProfilingMiddleware.ProfileMiddleware',
+    #'core.djangologging.middleware.LoggingMiddleware',
+    #'core.middleware.ProfilingMiddleware.ProfileMiddleware',
 ]
 
 INTERNAL_IPS = ('127.0.0.1',)
@@ -205,7 +205,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 # auth and allauth settings
 LOGIN_REDIRECT_URL = '/'
-ACCOUNT_USER_DISPLAY = 'ieeetags.models.profile.email_user_display'
+ACCOUNT_USER_DISPLAY = 'webapp.models.profile.email_user_display'
 ACCOUNT_USERNAME_REQUIRED = False
 SOCIALACCOUNT_QUERY_EMAIL = True
 SOCIALACCOUNT_PROVIDERS = {
@@ -395,7 +395,7 @@ for varname in MANDATORY_VARS:
 
 if DEBUG_ENABLE_CPROFILE:
     list1 = list(MIDDLEWARE_CLASSES)
-    list1.append('ieeetags.middleware.ProfilingMiddleware.CProfilerMiddleware')
+    list1.append('core.middleware.ProfilingMiddleware.CProfilerMiddleware')
     MIDDLEWARE_CLASSES = tuple(list1)
 
 # Logging setup
