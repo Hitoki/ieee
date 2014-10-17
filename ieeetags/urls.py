@@ -18,22 +18,25 @@ if not settings.DEBUG:
 
 if settings.DISABLE_SITE:
     # Disable the entire site!
-    urlpatterns = patterns('',
+    urlpatterns = patterns(
+        '',
         url(r'^.*$', 
             views.site_disabled,
             name='site_disabled'),
     )
     
 else:
-    urlpatterns = patterns('',
+    urlpatterns = patterns(
+        '',
         url(r'^sitemap\.xml$',
             'django.contrib.sitemaps.views.sitemap',
-            {'sitemaps': {
-                    'OneOffs':        OneOffsSitemap
-                    ,'TagsStartWith': TagsStartWithSitemap
-                    ,'Tags':          TagLandingSitemap
-                    }
-             }
+            {
+                'sitemaps': {
+                    'OneOffs': OneOffsSitemap,
+                    'TagsStartWith': TagsStartWithSitemap,
+                    'Tags': TagLandingSitemap
+                }
+            }
         ),
 
         url(r'^$',
