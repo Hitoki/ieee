@@ -1128,12 +1128,14 @@ def import_societies(request):
     if request.method == 'GET':
         # Display form
         form = ImportFileForm()
-        return render(request, 'site_admin/import_file.html', {
+        transaction.rollback()
+        response = render(request, 'site_admin/import_file.html', {
             'page_title': 'Import Organization',
             'form': form,
             'submit_url': reverse('admin_import_societies'),
         })
-
+        transaction.commit()
+        return response
     else:
         file1 = request.FILES['file']
         results = _import_societies(file1)
@@ -1568,7 +1570,7 @@ def _get_random_from_sequence(seq, num):
 
 @login_required
 @admin_required
-@transaction.commit_manually
+# @transaction.commit_manually
 def import_users(request):
     """
     Imports users from an import file.
@@ -1576,10 +1578,11 @@ def import_users(request):
     if request.method == 'GET':
         # Display form
         form = ImportFileForm()
-        return render(request, 'site_admin/import_users.html', {
+        response = render(request, 'site_admin/import_users.html', {
             'form': form,
         })
-
+        transaction.commit()
+        return response
     else:
         # Import users from uploaded file
         logging.debug('import_users()')
