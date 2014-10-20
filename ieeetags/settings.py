@@ -64,10 +64,12 @@ LOGIN_URL = '/admin/login'
 
 EXTERNAL_HELP_URL = 'http://help.technav.systemicist.com/forums'
 
-#EXTERNAL_XPLORE_URL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?'
+# EXTERNAL_XPLORE_URL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?'
 EXTERNAL_XPLORE_URL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?'
-EXTERNAL_XPLORE_AUTHORS_URL = 'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?'
-#EXTERNAL_XPLORE_AUTHORS_URL = 'http://xploreqa.ieee.org/gateway/ipsSearch.jsp?'
+EXTERNAL_XPLORE_AUTHORS_URL = \
+    'http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?'
+# EXTERNAL_XPLORE_AUTHORS_URL = \
+#     'http://xploreqa.ieee.org/gateway/ipsSearch.jsp?'
 EXTERNAL_XPLORE_TIMEOUT_SECS = 10
 XPLORE_TIMEOUT_RECENT_MESSAGE = 'Xplore is not currently responding. ' \
                                 'Please try again later.'
@@ -96,7 +98,10 @@ EMAIL_BACKEND = 'postmark.django_backend.EmailBackend'
 #EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 POSTMARK_SENDER = 'IEEE Technology Navigator <technav_admin@systemicist.com>'
-DEFAULT_FROM_EMAIL = 'IEEE Technology Navigator <technav_admin@systemicist.com>' # Address from which non-error emails will be sent
+
+# Address from which non-error emails will be sent
+DEFAULT_FROM_EMAIL = \
+    'IEEE Technology Navigator <technav_admin@systemicist.com>'
 
 # Google Analytics
 GA_SITE_NUM = 1
@@ -114,17 +119,19 @@ JOBS_URL = "http://jobs.ieee.org/jobs/search/results"
 # External resources' urls
 EXTERNAL_RESOURCE_URLS = {
     'job': "http://jobs.ieee.org/jobs/-%(id)s-d",
-    'author': "http://ieeexplore.ieee.org/search/searchresult.jsp?facet=d-au&refinements=%(id)s",
+    'author': "http://ieeexplore.ieee.org/search/searchresult.jsp?"
+              "facet=d-au&refinements=%(id)s",
     'article': "http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=%(id)s",
     'video': "http://ieeetv.ieee.org/%(id)s",
-    'educational course': "http://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=%(id)s",
+    'educational course': "http://ieeexplore.ieee.org/stamp/stamp.jsp?"
+                          "arnumber=%(id)s",
 }
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#	 'django.template.loaders.eggs.load_template_source',
+    # 'django.template.loaders.eggs.load_template_source',
 )
 
 MIDDLEWARE_CLASSES = [
@@ -135,8 +142,8 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'core.middleware.ExceptionMiddleware.ExceptionMiddleware',
-    #'core.djangologging.middleware.LoggingMiddleware',
-    #'core.middleware.ProfilingMiddleware.ProfileMiddleware',
+    # 'core.djangologging.middleware.LoggingMiddleware',
+    # 'core.middleware.ProfilingMiddleware.ProfileMiddleware',
 ]
 
 INTERNAL_IPS = ('127.0.0.1',)
@@ -198,7 +205,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "allauth.socialaccount.context_processors.socialaccount",
 )
 
-# Application Settings --------------------------------------------------------
+# Application Settings -------------------------------------------------------
 
 # auth and allauth settings
 LOGIN_REDIRECT_URL = '/'
@@ -225,7 +232,8 @@ SOCIALACCOUNT_PROVIDERS = {
 
 SOCIALACCOUNT_KEYS = {
     'google': {
-        'client_id': '769505530548-k75b93tfttmhaojb1vf3btca36dljjrd.apps.googleusercontent.com',
+        'client_id': '769505530548-k75b93tfttmhaojb1vf3btca36dljjrd.'
+                     'apps.googleusercontent.com',
         'secret': '_UrMw6FDhYpiUuw3MWsJzWH5',
     },
     'linkedin_oauth2': {
@@ -238,31 +246,37 @@ USING_GOOGLE_PROVIDER = True
 USING_LINKEDIN_PROVIDER = False
 USING_FACEBOOK_PROVIDER = False
 
+# If True application authorizes users against IEEE SiteMinder database.
+# Otherwise use local database.'
 USE_SITEMINDER_LOGIN = False
-'If True application authorizes users against IEEE SiteMinder database. Otherwise use local database.'
 
+# If False the optional_login_required decorator will allow unauthenticated
+# users.
 REQUIRE_LOGIN_FOR_NON_ADMIN_VIEWS = False
-'If False the optional_login_required decorator will allow unauthenticated users.'
 
-# Django Debug Toolbar Settings -----------------------------------------------
+# Django Debug Toolbar Settings ----------------------------------------------
 
 DEBUG_TOOLBAR_CONFIG = {
     'INTERCEPT_REDIRECTS': False,
 }
 
-#XPLORE_IMPORT_LOG_PATH = None
-#'Must be set in local_settings.py.  The path wherein to save the xplore import process log files.'
+# Must be set in local_settings.py.
+# The path wherein to save the xplore import process log files.
+# XPLORE_IMPORT_LOG_PATH = None
+
+# Will be used for the "hc" parameter when querying xplore.
+# Controls the max number of results returned.
 XPLORE_IMPORT_MAX_QUERY_RESULTS = 10
-'Will be used for the "hc" parameter when querying xplore. Controls the max number of results returned.' 
 
 # Disable south logging.
 # import south.logger
 # logging.getLogger('south').setLevel(logging.CRITICAL)
 
-# This forces south to use 'syncdb' when running tests, vs. using the migrations.
+# This forces south to use 'syncdb' when running tests, vs. using the
+# migrations.
 SOUTH_TESTS_MIGRATE = False
 
-# Debug Settings --------------------------------------------------------------
+# Debug Settings -------------------------------------------------------------
 
 # Used for the COMSOC demo to assign all tags to comsoc by default
 DEBUG_IMPORT_ASSIGN_ALL_TAGS_TO_COMSOC = False
@@ -277,63 +291,68 @@ PROCESS_CONF_DIFF_LOG = None
 DMIGRATIONS_DIR = relpath(__file__, 'migrations')
 DISABLE_SYNCDB = True
 
+# Print all exceptions to the console.
+# Should not be used with WSGI, only local dev.
 DEBUG_PRINT_EXCEPTIONS = False
-'Print all exceptions to the console.  Should not be used with WSGI, only local dev.'
 
+# Email all exceptions to the admins.
 DEBUG_EMAIL_EXCEPTIONS = False
-'Email all exceptions to the admins.'
 
+# Enable the /debug/email test.
 DEBUG_ENABLE_EMAIL_TEST = False
-'Enable the /debug/email test.'
 
+# Enable the profiling middleware
+# (necessary for the DEBUG_WRITE_PROFILING option).
 DEBUG_ENABLE_CPROFILE = False
-'Enable the profiling middleware (necessary for the DEBUG_WRITE_PROFILING option).'
 
+# Writes profiling logs for every request.
 DEBUG_WRITE_PROFILING = False
-'Writes profiling logs for every request.'
 
+# Enables clusters in the admin UI.
 DEBUG_ENABLE_CLUSTERS = True
-'Enables clusters in the admin UI.'
 
+# Disables the entire site, printing a "Site is disabled" message.
+# Used for server maintenance.
 DISABLE_SITE = False
-'Disables the entire site, printing a "Site is disabled" message.  Used for server maintenance.'
 
+# Enables firebug lite JS.
 ENABLE_FIREBUG_LITE = False
-'Enables firebug lite JS.'
 
+# Specifies the folder to store profiler output.
 PROFILER_OUTPUT_ROOT = None
-'Specifies the folder to store profiler output.'
 
+# Saves a line-by-line profiling summary.
+# This is mutually exclusive with all the other profiler output settings.
 PROFILER_OUTPUT_LINEBYLINE = False
-'Saves a line-by-line profiling summary.  This is mutually exclusive with all the other profiler output settings.'
 
+# Saves a .txt summary file in the profiler output folder.
 PROFILER_OUTPUT_TXT = True
-'Saves a .txt summary file in the profiler output folder.'
 
+# Saves a binary cProfile file in the profiler output folder.
 PROFILER_OUTPUT_BINARY = True
-'Saves a binary cProfile file in the profiler output folder.'
 
+# Saves a PNG callgraph in the profiler output folder.
 PROFILER_OUTPUT_PNG = True
-'Saves a PNG callgraph in the profiler output folder.'
 
+# Saves a binary kCacheGrind file in the profiler output folder.
 PROFILER_OUTPUT_KCACHEGRIND = True
-'Saves a binary kCacheGrind file in the profiler output folder.'
 
+# Enables the "Show Clusters" link on textui page.
 ENABLE_SHOW_CLUSTERS_CHECKBOX = False
-'Enables the "Show Clusters" link on textui page.'
 
+# Enables the "Show Terms" link on textui page.
 ENABLE_SHOW_TERMS_CHECKBOX = False
-'Enables the "Show Terms" link on textui page.'
 
 ENABLE_DEBUG_TOOLBAR = False
 
+# Enables loading the tags progressively (piecemeal) for textui page.
 ENABLE_PROGRESSIVE_LOADING = True
-'Enables loading the tags progressively (piecemeal) for textui page.'
 
+# If enabled, the cache is never used
+# (ie. pages are regenerated for each view).
 DEBUG_IGNORE_CACHE = False
-'If enabled, the cache is never used (ie. pages are regenerated for each view).'
 
-# Local Settings --------------------------------------------------------------
+# Local Settings -------------------------------------------------------------
 
 try:
     from local_settings import *
@@ -363,7 +382,7 @@ except ImportError, e:
 #         'debug_toolbar.panels.logger.LoggingPanel',
 #     )
 
-# Setup testing database ------------------------------------------------------
+# Setup testing database -----------------------------------------------------
 
 import sys
 if 'test' in sys.argv:
@@ -376,7 +395,7 @@ if 'test' in sys.argv:
     DATABASE_PORT = ''
     TEST_DATABASE_NAME = ":memory:"
 
-# Check for mandatory settings ------------------------------------------------
+# Check for mandatory settings -----------------------------------------------
 
 MANDATORY_VARS = [
     'DEFAULT_FROM_EMAIL',
@@ -397,9 +416,9 @@ if DEBUG_ENABLE_CPROFILE:
 
 # Logging setup
 logging.basicConfig(
-    level = logging.DEBUG,
-    #format = '%(asctime)s %(levelname)s %(message)s',
-    format = '%(levelname)s %(message)s',
+    level=logging.DEBUG,
+    #format='%(asctime)s %(levelname)s %(message)s',
+    format='%(levelname)s %(message)s',
 )
 
 LOGGING = {
@@ -411,13 +430,15 @@ LOGGING = {
     },
     'formatters': {
         'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d '
+                      '%(thread)d %(message)s'
         },
     },
     'handlers': {
         'sentry': {
             'level': 'ERROR',
-            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+            'class': 'raven.contrib.django.raven_compat.handlers.'
+                     'SentryHandler',
         },
         'console': {
             'level': 'DEBUG',
@@ -451,20 +472,22 @@ if not hasattr(logging, "is_setup"):
         # Add the file handler
         file_logger = logging.FileHandler(LOG_FILENAME)
         file_logger.setLevel(logging.DEBUG)
-        file_logger.setFormatter(logging.Formatter('%(asctime)s: %(levelname)s: %(message)s'))
+        file_logger.setFormatter(logging.Formatter(
+            '%(asctime)s: %(levelname)s: %(message)s'))
         logging.getLogger().addHandler(file_logger)
 
         process_conf_diff_logger = logging.FileHandler(PROCESS_CONF_DIFF_LOG)
         process_conf_diff_logger.setLevel(logging.DEBUG)
-        process_conf_diff_logger.setFormatter(logging.Formatter('%(asctime)s: %(levelname)s: %(message)s'))
-        logging.getLogger('process_conf_diff').addHandler(process_conf_diff_logger)
-
-
+        process_conf_diff_logger.setFormatter(
+            logging.Formatter('%(asctime)s: %(levelname)s: %(message)s'))
+        logging.getLogger('process_conf_diff').\
+            addHandler(process_conf_diff_logger)
 
     logging.is_setup = True
 
 # if ENABLE_DEBUG_TOOLBAR and 'debug_toolbar' not in INSTALLED_APPS:
-#     MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.DebugToolbarMiddleware')
+#     MIDDLEWARE_CLASSES.append('debug_toolbar.middleware.'
+#                               'DebugToolbarMiddleware')
 #     INSTALLED_APPS.append('debug_toolbar.apps.DebugToolbarConfig')
 #     # INSTALLED_APPS.append('debug_toolbar')
 
