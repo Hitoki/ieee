@@ -77,9 +77,6 @@ MOBILE_URL_PREFIX = 'm.'
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'o5tqsvh$&e3@@jzm)uvc02s*lsuw+5*r6jd%d+8u-6lzi3i%6j'
 
-# Specify the user profile model
-AUTH_PROFILE_MODULE = 'webapp.profile'
-
 DEFAULT_CHARSET = 'utf-8'
 
 # Outgoing Email Settings

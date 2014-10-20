@@ -569,7 +569,7 @@ def print_resource(request, tag_id, resource_type, node_slug='',
 
 def log_out(request):
     if request.user.is_authenticated():
-        profile = request.user.get_profile()
+        profile = request.user.profile
         profile.last_logout_time = datetime.now()
         profile.save()
     auth.logout(request)

@@ -1383,7 +1383,7 @@ def tooltip(request, tag_id=None):
             )
 
             show_edit_link = request.user.is_authenticated() and \
-                             request.user.get_profile().role in \
+                             request.user.profile.role in \
                              (Profile.ROLE_SOCIETY_MANAGER, Profile.ROLE_ADMIN)
 
             if sectors_str == '':

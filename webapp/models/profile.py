@@ -82,7 +82,7 @@ class Profile(models.Model):
         ROLE_END_USER,
     ]
 
-    user = models.ForeignKey(User, unique=True)
+    user = models.OneToOneField(User, unique=True)
     role = models.CharField(choices=list_to_choices(ROLES), max_length=1000)
     reset_key = models.CharField(max_length=1000, null=True)
     last_login_time = models.DateTimeField(blank=True, null=True)

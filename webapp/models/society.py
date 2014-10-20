@@ -80,13 +80,13 @@ class SocietyManager(models.Manager):
         """
         Returns all societies that the given user has access to.
         """
-        if user.get_profile().role == Profile.ROLE_ADMIN:
+        if user.profile.role == Profile.ROLE_ADMIN:
             return self.all()
-        elif user.get_profile().role == Profile.ROLE_SOCIETY_ADMIN:
+        elif user.profile.role == Profile.ROLE_SOCIETY_ADMIN:
             return self.all()
-        elif user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER:
+        elif user.profile.role == Profile.ROLE_SOCIETY_MANAGER:
             return self.filter(users=user)
-        raise Exception('Unknown role "%s"' % user.get_profile().role)
+        raise Exception('Unknown role "%s"' % user.profile.role)
 
     def searchByNameSubstringForUser(self, substring, user):
         """

@@ -443,7 +443,7 @@ class EditClusterForm(ModelForm):
         society = kwargs.pop('society', None)
         super(EditClusterForm, self).__init__(*args, **kwargs)
 
-        user_role = user.get_profile().role
+        user_role = user.profile.role
         if user_role == Profile.ROLE_SOCIETY_MANAGER:
             # Name is read-only
             self.fields['name'] = \

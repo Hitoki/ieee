@@ -191,8 +191,8 @@ def _send_password_reset_email(request, user):
     """
     Sends the user a password reset email, with a confirmation link.
     """
-    if user.get_profile().reset_key is None:
-        profile = user.get_profile()
+    if user.profile.reset_key is None:
+        profile = user.profile
 
         hash = hashlib.md5()
         hash.update(str(random.random()))
@@ -204,7 +204,7 @@ def _send_password_reset_email(request, user):
     abs_reset_url = \
         request.build_absolute_uri(
             reverse('password_reset',
-                    args=[user.id, user.get_profile().reset_key]))
+                    args=[user.id, user.profile.reset_key]))
 
     subject = 'Password reset confirmation'
     message = """You have requested to reset your password for the IEEE Technology Navigator.
@@ -321,7 +321,7 @@ def society_manager_or_admin_required(fn):
                  Profile.ROLE_SOCIETY_ADMIN,
                  Profile.ROLE_SOCIETY_MANAGER]
         if not request.user.is_anonymous() \
-                and (request.user.get_profile().role in roles):
+                and (request.user.profile.role in roles):
             # User is an admin or society manager, allow
             return fn(request, *args, **kwargs)
         else:
@@ -340,7 +340,7 @@ def society_admin_or_admin_required(fn):
     def _decorator_society_admin_or_admin_required(request, *args, **kwargs):
         roles = [Profile.ROLE_ADMIN, Profile.ROLE_SOCIETY_ADMIN]
         if not request.user.is_anonymous() \
-                and (request.user.get_profile().role in roles):
+                and (request.user.profile.role in roles):
             # User is an admin or society manager, allow
             return fn(request, *args, **kwargs)
         else:
@@ -358,7 +358,7 @@ def admin_required(fn):
     """
     def _decorator_admin_required(request, *args, **kwargs):
         if not request.user.is_anonymous() \
-                and (request.user.get_profile().role in [Profile.ROLE_ADMIN]):
+                and (request.user.profile.role in [Profile.ROLE_ADMIN]):
             # User is an admin, allow
             return fn(request, *args, **kwargs)
         else:
@@ -397,7 +397,7 @@ def login(request):
         if form.is_valid():
             user = auth.authenticate(username=form.cleaned_data['username'],
                                      password=form.cleaned_data['password'])
-
+            print user
             username = form.cleaned_data['username']
 
             # If account is disabled, prevent from logging in
@@ -416,7 +416,7 @@ def login(request):
 
                 error = 'Invalid login, please try again.'
 
-            elif user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER \
+            elif user.profile.role == Profile.ROLE_SOCIETY_MANAGER \
                     and user.societies.count() == 0:
                 # Society Manage doesn't have an assigned society
 
@@ -434,7 +434,7 @@ def login(request):
                 # Successful login
                 auth.login(request, user)
 
-                profile = user.get_profile()
+                profile = user.profile
                 profile.last_login_time = datetime.now()
                 profile.save()
 
@@ -442,13 +442,13 @@ def login(request):
                                     Profile.ROLE_SOCIETY_MANAGER]
                 if next != '':
                     return HttpResponseRedirect(next)
-                elif user.get_profile().role in admin_or_manager:
+                elif user.profile.role in admin_or_manager:
                     return HttpResponseRedirect(reverse('admin_home'))
-                elif user.get_profile().role == Profile.ROLE_END_USER:
+                elif user.profile.role == Profile.ROLE_END_USER:
                     return HttpResponseRedirect(reverse('index'))
                 else:
                     raise Exception('Unknown user role "%s"' %
-                                    user.get_profile().role)
+                                    user.profile.role)
 
     return render(request, 'site_admin/login.html', {
         'error': error,
@@ -531,7 +531,7 @@ def forgot_password_confirmation(request):
 
 def password_reset(request, user_id, reset_key):
     user = User.objects.get(id=user_id)
-    profile = user.get_profile()
+    profile = user.profile
 
     if profile.reset_key is not None and reset_key == profile.reset_key:
         # Got the right reset key
@@ -621,7 +621,7 @@ def change_password_success(request):
 @login_required
 @society_manager_or_admin_required
 def home(request):
-    role = request.user.get_profile().role
+    role = request.user.profile.role
 
     if role == Profile.ROLE_ADMIN:
         # Show the admin home page
@@ -1631,7 +1631,7 @@ def import_users(request):
             society_abbreviations = [
                 society_abbreviation.strip()
                 for society_abbreviation in
-                    _split_no_empty(society_abbreviations, ',')
+                _split_no_empty(society_abbreviations, ',')
             ]
 
             societies = []
@@ -1663,7 +1663,7 @@ def import_users(request):
                     user.societies = societies
                     user.save()
 
-                    profile = user.get_profile()
+                    profile = user.profile
                     profile.role = role
                     profile.save()
 
@@ -2443,9 +2443,9 @@ def _import_standards(file):
         'valid_organizations': valid_organizations,
         'invalid_organizations': invalid_organizations,
         'num_standards_with_valid_organization':
-            num_standards_with_valid_organization,
+        num_standards_with_valid_organization,
         'num_standards_without_valid_organization':
-            num_standards_without_valid_organization,
+        num_standards_without_valid_organization,
     }
 
 
@@ -3241,7 +3241,7 @@ def create_tag(request):
     else:
         # Process the form
         form = CreateTagForm(request.user, request.POST)
-        up = request.user.get_profile()
+        up = request.user.profile
         form.user_role = up.role
 
         if request.is_ajax():
@@ -3360,7 +3360,7 @@ def edit_tag(request, tag_id):
     if society_id != '':
         form.fields['related_tags'].widget.set_society_id(int(society_id))
 
-    if request.user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER:
+    if request.user.profile.role == Profile.ROLE_SOCIETY_MANAGER:
         # Disable certain fields for the society managers
         make_display_only(form.fields['societies'], model=Society,
                           is_multi_search=True)
@@ -3398,7 +3398,7 @@ def save_tag(request, tag_id):
         if society_id != '':
             form.fields['related_tags'].widget.set_society_id(int(society_id))
 
-        if request.user.get_profile().role == Profile.ROLE_SOCIETY_MANAGER:
+        if request.user.profile.role == Profile.ROLE_SOCIETY_MANAGER:
             # Disable certain fields for the society managers
             make_display_only(form.fields['societies'], model=Society,
                               is_multi_search=True)
@@ -3693,7 +3693,7 @@ def edit_cluster(request, cluster_id=None):
                     NodeSocieties.objects.update_for_node(
                         cluster, form.cleaned_data['societies'])
 
-                user_role = request.user.get_profile().role
+                user_role = request.user.profile.role
                 if user_role == Profile.ROLE_ADMIN and society is None:
                     cluster.child_nodes = form.cleaned_data['topics']
                 if user_role == Profile.ROLE_SOCIETY_MANAGER:
@@ -3885,7 +3885,7 @@ def edit_user(request, user_id=None):
             'first_name': user.first_name,
             'last_name': user.last_name,
             'email': user.email,
-            'role': user.get_profile().role,
+            'role': user.profile.role,
             'societies': [society.id for society in user.societies.all()],
         })
     return render(request, 'site_admin/edit_user.html', {
@@ -4005,7 +4005,7 @@ def save_user(request):
             user.societies = form.cleaned_data['societies']
             user.save()
 
-            profile = user.get_profile()
+            profile = user.profile
             profile.role = form.cleaned_data['role']
             profile.save()
 
@@ -4060,8 +4060,8 @@ def _send_user_login_info_email(request, user, plaintext_password, reason):
     else:
         raise Exception('Unknown reason "%s"' % reason)
 
-    if user.get_profile().reset_key is None:
-        profile = user.get_profile()
+    if user.profile.reset_key is None:
+        profile = user.profile
 
         hash = hashlib.md5()
         hash.update(str(random.random()))
@@ -4074,7 +4074,7 @@ def _send_user_login_info_email(request, user, plaintext_password, reason):
     abs_login_url = request.build_absolute_uri(reverse('admin_login'))
     abs_reset_url = request.build_absolute_uri(
         reverse('password_reset',
-                args=[user.id, user.get_profile().reset_key])
+                args=[user.id, user.profile.reset_key])
     )
 
     subject = 'Your login information for %s' % abs_index_url
@@ -4834,7 +4834,7 @@ def list_resources(request, type1):
 #    """
 #    to_resource = Resource.objects.get(id=resource_id)
 #
-#    from_resource = request.user.get_profile().copied_resource
+#    from_resource = request.user.profile.copied_resource
 #    assert from_resource is not None
 #
 #    to_resource.nodes.clear()
@@ -5462,7 +5462,7 @@ def ajax_copy_resource_tags(request):
     resource_id = request.POST['resource_id']
     resource = Resource.objects.get(id=resource_id)
 
-    profile = request.user.get_profile()
+    profile = request.user.profile
     profile.copied_resource = resource
     profile.save()
 
@@ -5483,7 +5483,7 @@ def ajax_paste_resource_tags(request):
     to_resource = Resource.objects.get(id=resource_id)
     to_tag_names = [tag.name for tag in to_resource.nodes.all()]
 
-    from_resource = request.user.get_profile().copied_resource
+    from_resource = request.user.profile.copied_resource
     assert from_resource is not None
     from_tag_names = [tag.name for tag in from_resource.nodes.all()]
 
@@ -5523,7 +5523,7 @@ def login_report(request):
         for user in users:
             data.append([
                 user.username,
-                user.get_profile().last_login_time,
+                user.profile.last_login_time,
             ])
         filename = 'login_report_%s.csv' % \
                    datetime.today().strftime('%Y-%m-%d')
@@ -6309,7 +6309,7 @@ def admin_machine_generated_data_report(request):
 #    user.is_superuser = True
 #    user.save()
 #
-#    profile = user.get_profile()
+#    profile = user.profile
 #    profile.role = Profile.ROLE_ADMIN
 #    profile.save()
 #
