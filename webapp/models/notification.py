@@ -31,4 +31,4 @@ class ResourceAdditionNotification(models.Model):
 
     class Meta:
         app_label = 'webapp'
-        db_table = 'ieeetags_resourcesdditionNotification'
+        db_table = 'ieeetags_resourcesadditionnotification'
