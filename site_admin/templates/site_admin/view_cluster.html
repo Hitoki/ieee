@@ -5,7 +5,7 @@
     <h1>{{ cluster.name }} Topic Area</h1>
     
     <p>
-        {% if user.get_profile.role == "admin" %}<a href="{% url 'admin_edit_cluster2' cluster.id %}">Edit topic area</a>
+        {% if user.profile.role == "admin" %}<a href="{% url 'admin_edit_cluster2' cluster.id %}">Edit topic area</a>
         | <a href="{% url 'admin_delete_cluster' cluster.id %}" onclick="return confirm('Delete this topic area?');">Delete topic area</a>
         | {% endif %}<a href="{% url 'admin_clusters_report' %}">Back to All Topic Areas</a>
     </p>
