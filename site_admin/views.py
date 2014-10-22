@@ -4322,12 +4322,12 @@ def manage_society(request, society_id):
 
     form.fields['tags'].widget.set_society_id(society_id)
 
-    num_tags = """
+    sql_num_tags = """
         SELECT COUNT(ieeetags_resource_nodes.id)
         FROM ieeetags_resource_nodes
         WHERE ieeetags_resource_nodes.resource_id = ieeetags_resource.id
     """
-    num_societies = """
+    sql_num_societies = """
         SELECT COUNT(ieeetags_resource_societies.id)
         FROM ieeetags_resource_societies
         WHERE ieeetags_resource_societies.resource_id = ieeetags_resource.id
@@ -4382,26 +4382,26 @@ def manage_society(request, society_id):
 
     elif resource_sort == 'num_tags_ascending':
         resources1 = resources1.extra(select={
-            'num_tags': num_tags,
+            'num_tags': sql_num_tags,
         }, order_by=[
             'num_tags',
         ])
     elif resource_sort == 'num_tags_descending':
         resources1 = resources1.extra(select={
-            'num_tags': num_tags,
+            'num_tags': sql_num_tags,
         }, order_by=[
             '-num_tags',
         ])
 
     elif resource_sort == 'num_societies_ascending':
         resources1 = resources1.extra(select={
-            'num_societies': num_societies,
+            'num_societies': sql_num_societies,
         }, order_by=[
             'num_societies',
         ])
     elif resource_sort == 'num_societies_descending':
         resources1 = resources1.extra(select={
-            'num_societies': num_societies,
+            'num_societies': sql_num_societies,
         }, order_by=[
             '-num_societies',
         ])
