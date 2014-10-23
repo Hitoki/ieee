@@ -1,5 +1,7 @@
 local_settings.py
 *.pyc
+ieeetags/media/caches/*
 media/caches/*
 .sass-cache/*
 views/*.pyc
+log.txt
