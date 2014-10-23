@@ -23,10 +23,10 @@
                     {{ user1.username }}
                 </td>
                 <td>
-                    {{ user1.get_profile.last_login_time|date }} {{ user1.get_profile.last_login_time|time }}
+                    {{ user1.profile.last_login_time|date }} {{ user1.profile.last_login_time|time }}
                 </td>
                 <td>
-                    {{ user1.get_profile.last_login_time|timesince }} ago
+                    {{ user1.profile.last_login_time|timesince }} ago
                 </td>
             </tr>
         {% endfor %}

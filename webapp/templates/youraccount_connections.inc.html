@@ -16,7 +16,7 @@
     {% for key, values in accounts.items %}
         {% for account in values %}
             <li class="accountField row-{{ forloop.parentloop.counter }}">
-                {% if accounts|length > 1 or accounts.items.0.1|length > 1 or user.get_profile.role = "admin" and password_exists or user.get_profile.role = "society_admin" and password_exists or user.get_profile.role = "society_manager" and password_exists %}
+                {% if accounts|length > 1 or accounts.items.0.1|length > 1 or user.profile.role = "admin" and password_exists or user.profile.role = "society_admin" and password_exists or user.profile.role = "society_manager" and password_exists %}
                 <a class="disconnect_account icon-cancel2 icomoon-icon" href="#" title="Disconnect account" data-account-id="{{ account.id }}"></a>
                 {% endif %}
                 <span class="icomoon-icon service-icon{{ forloop.parentloop.counter }}"></span> {{ account.extra_data.email }}{{ account.extra_data.emailAddress }}<br/><span class="smallFont">{{ key|title }} Account</span>

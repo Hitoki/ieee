@@ -23,7 +23,7 @@
             <th>
                 # Resources
             </th>
-            {% if user.get_profile.role == 'admin' %}
+            {% if user.profile.role == 'admin' %}
             <th>
             </th>
             {% endif %}
@@ -53,7 +53,7 @@
                 <td>
                     {{ society.resources.all.count }}
                 </td>
-                {% if user.get_profile.role == 'admin' %}
+                {% if user.profile.role == 'admin' %}
                 <td>
                     <a href="{% url 'admin_edit_society' society.id %}">edit</a>
                 </td>

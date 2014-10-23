@@ -5,7 +5,7 @@
     <h1>Topic Area Report</h1>
     
     <p>
-        {% if user.get_profile.role == "admin" %}
+        {% if user.profile.role == "admin" %}
         <a href="{% url 'admin_create_cluster2' %}?return_url={{ current_url|urlencode }}">Create a Topic Area</a>
         {% else %}
         <a href="{% url 'admin_create_cluster' %}">Create a Topic Area</a>

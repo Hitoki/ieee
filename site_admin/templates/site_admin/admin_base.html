@@ -15,7 +15,7 @@
     {% if user.is_authenticated %}
         <div id="admin_header" class='admin-user-links'>
             <span id="left">
-            {{ user.username }} ({{ user.get_profile.role }}) | <a href="{% url 'change_password' %}?return_url=" class="changePassword { varName:'return_url' }">Change Password</a> | <a href="{% url 'logout' %}" class="logout">Sign Out</a>
+            {{ user.username }} ({{ user.profile.role }}) | <a href="{% url 'change_password' %}?return_url=" class="changePassword { varName:'return_url' }">Change Password</a> | <a href="{% url 'logout' %}" class="logout">Sign Out</a>
         </span>
         </div>
     {% endif %}    
@@ -23,17 +23,17 @@
 {% if not is_ajax %}    
     {% if user.is_authenticated %}
         <ul class="nav">
-            {% if user.get_profile.role == "society_manager" or user.get_profile.role == "society_admin" or user.get_profile.role == "admin" %}
+            {% if user.profile.role == "society_manager" or user.profile.role == "society_admin" or user.profile.role == "admin" %}
                 <li class="{% block nav_home %}{% endblock %}">
-                    <a href="{% url 'admin_home' %}">{% if user.get_profile.role == "society_manager" %}Your Organizations{% else %}Home{% endif %}</a>
+                    <a href="{% url 'admin_home' %}">{% if user.profile.role == "society_manager" %}Your Organizations{% else %}Home{% endif %}</a>
                 </li>
             {% endif %}
-            {% if user.get_profile.role == "society_manager" %}
+            {% if user.profile.role == "society_manager" %}
                 <li class="{% block nav_actions %}{% endblock %}">
                     <a href="{% url 'key_actions' %}">Key Actions</a>
                 </li>   
             {% endif %}
-            {% if user.get_profile.role == "admin" %} 
+            {% if user.profile.role == "admin" %}
                 <li class="{% block nav_users %}{% endblock %}">
                     <a href="{% url 'admin_users' %}">Users</a>
                 </li>            
@@ -46,7 +46,7 @@
                     <a href="{% url 'admin_societies' %}">IEEE Organizations</a>
                 </li>
             {% endif %}
-            {% if user.get_profile.role == "society_manager" or user.get_profile.role == "admin" %}
+            {% if user.profile.role == "society_manager" or user.profile.role == "admin" %}
                 <li class="end-user-view">
                     <a href="{% url 'index' %}">Go to the End-user view</a>
                 </li>
@@ -67,7 +67,7 @@
     {% if user.is_authenticated %}
         <div id="admin_footer" class='admin-user-links'>
             <span id="left">
-            {{ user.username }} ({{ user.get_profile.role }}) | <a href="{% url 'change_password' %}?return_url=" class="changePassword { varName:'return_url' }">Change Password</a> | <a href="{% url 'logout' %}" class="logout">Sign Out</a>
+            {{ user.username }} ({{ user.profile.role }}) | <a href="{% url 'change_password' %}?return_url=" class="changePassword { varName:'return_url' }">Change Password</a> | <a href="{% url 'logout' %}" class="logout">Sign Out</a>
         </span>
         </div>
     {% endif %}

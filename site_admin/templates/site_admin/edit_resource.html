@@ -160,7 +160,7 @@
                     {% comment %}
                     <br/>
                     <a href="#" class="copy-tags-to-clipboard { resourceId: {{ resource.id }} }"><img src="{{ MEDIA_URL }}images/copy_to_clipboard2.png" /> <span>Copy topics to clipboard</span></a>
-                    {% if user.get_profile.copied_resource %}
+                    {% if user.profile.copied_resource %}
                         <a href="#" class="paste-tags { resourceId: {{ resource.id }} }"><img src="{{ MEDIA_URL }}images/copy_to_clipboard2.png" /> <span>Paste topics from clipboard</span></a>
                     {% endif %}
                     {% endcomment %}

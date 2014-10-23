@@ -5,15 +5,15 @@
         <span id="footer-login">
             {% if user %}
                 <p class="admin-links">                                
-                    {% ifequal user.get_profile.role "admin" %}
+                    {% ifequal user.profile.role "admin" %}
                         <a href="{% url 'admin_home' %}">Admin</a>
                         &nbsp;&nbsp;
                     {% endifequal %}
-                    {% ifequal user.get_profile.role "society_admin" %}
+                    {% ifequal user.profile.role "society_admin" %}
                         <a href="{% url 'admin_home' %}">Organization Admin</a>
                         &nbsp;&nbsp;
                     {% endifequal %}
-                    {% ifequal user.get_profile.role "society_manager" %}
+                    {% ifequal user.profile.role "society_manager" %}
                         <a href="{% url 'admin_home' %}">Organization Manager</a>
                         &nbsp;&nbsp;
                     {% endifequal %}
