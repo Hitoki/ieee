@@ -13,6 +13,7 @@ import os
 import time
 from allauth.socialaccount.models import SocialApp
 from django.contrib.sites.models import Site
+from django.views.generic import TemplateView
 from django.views.generic.edit import CreateView
 from django.views.generic.list import ListView
 from xml.etree.ElementTree import fromstring
@@ -757,3 +758,7 @@ def allauth_init(request):
             client_id=data['client_id'], secret=data['secret'])
         app.sites.add(settings.SITE_ID)
     return HttpResponse('allauth_init - ok')
+
+
+class LoginRedirectView(TemplateView):
+    template_name = "socialaccount/login_redirect.html"
