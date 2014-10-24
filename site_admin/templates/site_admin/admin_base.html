@@ -33,7 +33,7 @@
                     <a href="{% url 'key_actions' %}">Key Actions</a>
                 </li>   
             {% endif %}
-            {% if user.profile.role == "admin" %} 
+            {% if user.profile.role == "admin" %}
                 <li class="{% block nav_users %}{% endblock %}">
                     <a href="{% url 'admin_users' %}">Users</a>
                 </li>            

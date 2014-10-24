@@ -3,19 +3,23 @@
 <a class="lightbox-close"></a>
 <h2>Sign In or Join Technology Navigator</h2>
 <div class="lightbox-box">
+    <div class="messages">
+        <span class="message-error" id="signin_error_block">
+        </span>
+    </div>
 	<div class="signinBtns">
         {% if USING_GOOGLE_PROVIDER %}
-		    <a class="btn account" href="{% provider_login_url "google" %}">
+		    <a class="btn account" href="{% provider_login_url "google" %}" target="_blank">
                 <span class="icon-google icomoon-icon"></span>Sign In or Join with Google
             </a>
         {% endif %}
         {% if USING_LINKEDIN_PROVIDER %}
-		    <a class="btn account" href="{% provider_login_url "linkedin_oauth2" %}">
+		    <a class="btn account" href="{% provider_login_url "linkedin_oauth2" %}" target="_blank">
                 <span class="icon-linkedin icomoon-icon"></span>Sign In or Join with LinkedIn
             </a>
         {% endif %}
         {% if USING_FACEBOOK_PROVIDER %}
-		    <a class="btn account" href="{% provider_login_url "facebook" %}">
+		    <a class="btn account" href="{% provider_login_url "facebook" %}" target="_blank">
                 <span class="icon-facebook icomoon-icon"></span>Sign In or Join with Facebook
             </a>
         {% endif %}
@@ -26,3 +30,9 @@
 	</div>
 	<br/>
 </div>
+
+<script type="text/javascript">
+    function update_signin_error(message) {
+        $('#signin_error_block').html(message);
+    }
+</script>
