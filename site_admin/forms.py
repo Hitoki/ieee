@@ -139,7 +139,7 @@ class CreateTagForm(Form):
             # in the DB.
             # If the name value has not changed the user is resubmitting
             # the same name, despite the warning that it is a duplicate.
-            if 'name' in self._get_changed_data() \
+            if 'name' in self.changed_data \
                     and len(Node.objects.getTagsByName(data)):
                 msg = "A topic with this name already exists. " \
                       "To create this tag anyway resubmit the form."
