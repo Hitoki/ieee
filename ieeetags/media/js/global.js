@@ -605,7 +605,7 @@ ResourceLoader.prototype.onLoadData = function (data) {
 
         if (data.xplore_error != null && data.num_results != 0) {
             // Xplore error, show the error message.
-            this.errorElem = $('<p class="error" style="margin: 50px 0 0 10px;"></p>').appendTo(this.scrollElem);
+            this.errorElem = $('<p class="error"></p>').appendTo(this.scrollElem);
             this.errorElem.text(data.xplore_error);
 
         } else {
