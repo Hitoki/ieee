@@ -112,9 +112,10 @@ ul.nootabs-menus li {
 
 .nootabs-selected-tab div.group {
     height: 100%;
-    overflow: auto;
     padding: 10px 15px 0 15px;
     line-height: 1.5;
+    overflow-x: hidden;
+    overflow-y: auto;
     a {
         outline: none;
     }
