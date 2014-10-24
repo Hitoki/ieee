@@ -205,7 +205,7 @@ class Migration(migrations.Migration):
                 ('date_notified', models.DateTimeField()),
             ],
             options={
-                'db_table': 'ieeetags_resourcesdditionNotification',
+                'db_table': 'ieeetags_resourceadditionnotification',
             },
             bases=(models.Model,),
         ),
