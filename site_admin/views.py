@@ -1128,12 +1128,14 @@ def import_societies(request):
     if request.method == 'GET':
         # Display form
         form = ImportFileForm()
-        return render(request, 'site_admin/import_file.html', {
+        transaction.rollback()
+        response = render(request, 'site_admin/import_file.html', {
             'page_title': 'Import Organization',
             'form': form,
             'submit_url': reverse('admin_import_societies'),
         })
-
+        transaction.commit()
+        return response
     else:
         file1 = request.FILES['file']
         results = _import_societies(file1)
@@ -1568,7 +1570,7 @@ def _get_random_from_sequence(seq, num):
 
 @login_required
 @admin_required
-@transaction.commit_manually
+# @transaction.commit_manually
 def import_users(request):
     """
     Imports users from an import file.
@@ -1576,10 +1578,11 @@ def import_users(request):
     if request.method == 'GET':
         # Display form
         form = ImportFileForm()
-        return render(request, 'site_admin/import_users.html', {
+        response = render(request, 'site_admin/import_users.html', {
             'form': form,
         })
-
+        transaction.commit()
+        return response
     else:
         # Import users from uploaded file
         logging.debug('import_users()')
@@ -4145,36 +4148,36 @@ def _get_paged_tags(items_per_page, society, tag_sort, tag_page, tag_filter,
     elif tag_type == 'topic-areas':
         node_types.remove(NodeType.TAG)
 
-    sectors_list = """
+    sql_sectors_list = """
         SELECT GROUP_CONCAT(sectors.name ORDER BY sectors.name SEPARATOR ', ')
         FROM ieeetags_node_parents INNER JOIN ieeetags_node AS sectors
         ON ieeetags_node_parents.to_node_id = sectors.id
         WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id
         GROUP BY ieeetags_node_parents.from_node_id
     """
-    topic_area = """
+    sql_topic_area = """
         SELECT GROUP_CONCAT(sectors.name ORDER BY sectors.name SEPARATOR ', ')
         FROM ieeetags_node_parents INNER JOIN ieeetags_node AS sectors
         ON ieeetags_node_parents.to_node_id = sectors.id
         WHERE ieeetags_node_parents.from_node_id = ieeetags_node.id
         GROUP BY ieeetags_node_parents.from_node_id
     """
-    num_societies = """
+    sql_num_societies = """
         SELECT COUNT(ieeetags_node_societies.id)
         FROM ieeetags_node_societies
         WHERE ieeetags_node_societies.node_id = ieeetags_node.id
     """
-    num_filters = """
+    sql_num_filters = """
         SELECT COUNT(ieeetags_node_filters.id)
         FROM ieeetags_node_filters
         WHERE ieeetags_node_filters.node_id = ieeetags_node.id
     """
-    num_resources1 = """
+    sql_num_resources1 = """
         SELECT COUNT(ieeetags_resource_nodes.id)
         FROM ieeetags_resource_nodes
         WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id
     """
-    num_related_tags1 = """
+    sql_num_related_tags1 = """
         SELECT COUNT(ieeetags_node_related_tags.id)
         FROM ieeetags_node_related_tags
         WHERE ieeetags_node_related_tags.from_node_id = ieeetags_node.id
@@ -4189,56 +4192,56 @@ def _get_paged_tags(items_per_page, society, tag_sort, tag_page, tag_filter,
 
     elif tag_sort == 'sector_list_ascending':
         tags = society.tags.filter(node_type__name__in=node_types).\
-            extra(select={'sectors_list': sectors_list},
+            extra(select={'sectors_list': sql_sectors_list},
                   order_by=['sectors_list', ])
     elif tag_sort == 'sector_list_descending':
         tags = society.tags.filter(node_type__name__in=node_types).\
-            extra(select={'sectors_list': sectors_list},
+            extra(select={'sectors_list': sql_sectors_list},
                   order_by=['-sectors_list', ])
     elif tag_sort == 'topic_area_ascending':
         tags = society.tags.filter(node_type__name__in=node_types).\
-            extra(select={'topic_area': topic_area},
+            extra(select={'topic_area': sql_topic_area},
                   order_by=['topic_area', ])
 
     elif tag_sort == 'topic_area_descending':
         tags = society.tags.filter(node_type__name__in=node_types).\
-            extra(select={'topic_area': topic_area},
+            extra(select={'topic_area': sql_topic_area},
                   order_by=['-topic_area', ])
 
     elif tag_sort == 'num_societies_ascending':
         tags = society.tags.filter(node_type__name__in=node_types).\
-            extra(select={'num_societies': num_societies},
+            extra(select={'num_societies': sql_num_societies},
                   order_by=['num_societies', ])
     elif tag_sort == 'num_societies_descending':
         tags = society.tags.filter(node_type__name__in=node_types).\
-            extra(select={'num_societies': num_societies},
+            extra(select={'num_societies': sql_num_societies},
                   order_by=['-num_societies', ])
 
     elif tag_sort == 'num_filters_ascending':
         tags = society.tags.filter(node_type__name__in=node_types).\
-            extra(select={'num_filters': num_filters},
+            extra(select={'num_filters': sql_num_filters},
                   order_by=['num_filters', ])
     elif tag_sort == 'num_filters_descending':
         tags = society.tags.filter(node_type__name__in=node_types).\
-            extra(select={'num_filters': num_filters},
+            extra(select={'num_filters': sql_num_filters},
                   order_by=['-num_filters', ])
 
     elif tag_sort == 'num_resources_ascending':
         tags = society.tags.filter(node_type__name__in=node_types).\
-            extra(select={'num_resources1': num_resources1},
+            extra(select={'num_resources1': sql_num_resources1},
                   order_by=['num_resources1', ])
     elif tag_sort == 'num_resources_descending':
         tags = society.tags.filter(node_type__name__in=node_types).\
-            extra(select={'num_resources1': num_resources1},
+            extra(select={'num_resources1': sql_num_resources1},
                   order_by=['-num_resources1', ])
 
     elif tag_sort == 'num_related_tags_ascending':
         tags = society.tags.filter(node_type__name__in=node_types).\
-            extra(select={'num_related_tags1': num_related_tags1},
+            extra(select={'num_related_tags1': sql_num_related_tags1},
                   order_by=['num_related_tags1', ])
     elif tag_sort == 'num_related_tags_descending':
         tags = society.tags.filter(node_type__name__in=node_types).\
-            extra(select={'num_related_tags1': num_related_tags1},
+            extra(select={'num_related_tags1': sql_num_related_tags1},
                   order_by=['-num_related_tags1', ])
 
     else:
@@ -4319,12 +4322,12 @@ def manage_society(request, society_id):
 
     form.fields['tags'].widget.set_society_id(society_id)
 
-    num_tags = """
+    sql_num_tags = """
         SELECT COUNT(ieeetags_resource_nodes.id)
         FROM ieeetags_resource_nodes
         WHERE ieeetags_resource_nodes.resource_id = ieeetags_resource.id
     """
-    num_societies = """
+    sql_num_societies = """
         SELECT COUNT(ieeetags_resource_societies.id)
         FROM ieeetags_resource_societies
         WHERE ieeetags_resource_societies.resource_id = ieeetags_resource.id
@@ -4379,26 +4382,26 @@ def manage_society(request, society_id):
 
     elif resource_sort == 'num_tags_ascending':
         resources1 = resources1.extra(select={
-            'num_tags': num_tags,
+            'num_tags': sql_num_tags,
         }, order_by=[
             'num_tags',
         ])
     elif resource_sort == 'num_tags_descending':
         resources1 = resources1.extra(select={
-            'num_tags': num_tags,
+            'num_tags': sql_num_tags,
         }, order_by=[
             '-num_tags',
         ])
 
     elif resource_sort == 'num_societies_ascending':
         resources1 = resources1.extra(select={
-            'num_societies': num_societies,
+            'num_societies': sql_num_societies,
         }, order_by=[
             'num_societies',
         ])
     elif resource_sort == 'num_societies_descending':
         resources1 = resources1.extra(select={
-            'num_societies': num_societies,
+            'num_societies': sql_num_societies,
         }, order_by=[
             '-num_societies',
         ])
@@ -5652,17 +5655,21 @@ def tags_report(request):
 
     # Calc the overall totals
 
-    num_filters = 'SELECT COUNT(*) FROM ieeetags_node_filters ' \
-                  'WHERE ieeetags_node_filters.node_id = ieeetags_node.id'
-    num_resources1 = 'SELECT COUNT(*) FROM ieeetags_resource_nodes ' \
-                     'WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id'
-    num_societies = 'SELECT COUNT(*) FROM ieeetags_node_societies ' \
-                    'WHERE ieeetags_node_societies.node_id = ieeetags_node.id'
+    sql_num_filters = \
+        'SELECT COUNT(*) FROM ieeetags_node_filters ' \
+        'WHERE ieeetags_node_filters.node_id = ieeetags_node.id'
+    sql_num_resources1 = \
+        'SELECT COUNT(*) FROM ieeetags_resource_nodes ' \
+        'WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id'
+    sql_num_societies = \
+        'SELECT COUNT(*) FROM ieeetags_node_societies ' \
+        'WHERE ieeetags_node_societies.node_id = ieeetags_node.id'
+
     tags = Node.objects.get_tags().extra(
         select={
-            'num_filters': num_filters,
-            'num_resources1': num_resources1,
-            'num_societies': num_societies,
+            'num_filters': sql_num_filters,
+            'num_resources1': sql_num_resources1,
+            'num_societies': sql_num_societies,
         }
     )
 
@@ -5688,18 +5695,12 @@ def tags_report(request):
 
     result_societies = []
 
-    num_filters = 'SELECT COUNT(*) FROM ieeetags_node_filters ' \
-                  'WHERE ieeetags_node_filters.node_id = ieeetags_node.id'
-    num_resources1 = 'SELECT COUNT(*) FROM ieeetags_resource_nodes ' \
-                     'WHERE ieeetags_resource_nodes.node_id = ieeetags_node.id'
-    num_societies = 'SELECT COUNT(*) FROM ieeetags_node_societies ' \
-                    'WHERE ieeetags_node_societies.node_id = ieeetags_node.id'
     for society in societies:
         society_tags = society.tags.extra(
             select={
-                'num_filters': num_filters,
-                'num_resources1': num_resources1,
-                'num_societies': num_societies,
+                'num_filters': sql_num_filters,
+                'num_resources1': sql_num_resources1,
+                'num_societies': sql_num_societies,
             }
         )
 

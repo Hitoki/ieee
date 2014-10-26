@@ -4,6 +4,7 @@ Django settings for the ieeetags project.
 
 import logging
 import os
+from django.core.urlresolvers import reverse_lazy
 
 from core.util import relpath
 
@@ -208,9 +209,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 # Application Settings -------------------------------------------------------
 
 # auth and allauth settings
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = reverse_lazy('login_redirect')
 ACCOUNT_USER_DISPLAY = 'webapp.models.profile.email_user_display'
 ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_EMAIL_REQUIRED = True
 SOCIALACCOUNT_QUERY_EMAIL = True
 SOCIALACCOUNT_PROVIDERS = {
     'google': {

@@ -30,6 +30,7 @@ class UserFavorites(models.Model):
 
     class Meta:
         app_label = 'webapp'
+        db_table = 'ieeetags_userfavorites'
 
 
 class UserExternalFavoritesManager(models.Manager):
@@ -52,6 +53,7 @@ class UserExternalFavorites(models.Model):
 
     class Meta:
         app_label = 'webapp'
+        db_table = 'ieeetags_userexternalfavorites'
 
     def get_url(self):
         kwargs = dict(id=self.external_id)

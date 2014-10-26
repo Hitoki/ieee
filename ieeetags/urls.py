@@ -5,7 +5,7 @@ from django.shortcuts import render as django_render
 
 import site_admin.views
 from django.conf import settings
-from webapp.views import ajax, xplore, views
+from webapp.views import ajax, xplore, views, LoginRedirectView
 
 from sitemaps import *
 
@@ -254,6 +254,10 @@ else:
 
         url(r'^ajax/favorite-external/request$',
             ajax.ajax_external_favorite_request),
+
+        url(r'^allauth/login_redirect/$',
+            LoginRedirectView.as_view(),
+            name='login_redirect'),
 
         url(r'^accounts/', include('allauth.urls')),
     )

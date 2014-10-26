@@ -605,7 +605,7 @@ ResourceLoader.prototype.onLoadData = function (data) {
 
         if (data.xplore_error != null && data.num_results != 0) {
             // Xplore error, show the error message.
-            this.errorElem = $('<p class="error" style="margin: 50px 0 0 10px;"></p>').appendTo(this.scrollElem);
+            this.errorElem = $('<p class="error"></p>').appendTo(this.scrollElem);
             this.errorElem.text(data.xplore_error);
 
         } else {
@@ -683,7 +683,7 @@ ResourceLoader.prototype.onLoadData = function (data) {
                     if (data.xplore_error) {
                         $('#num-' + this.ctype + '-results').text('N/A');
                         this.noResultsElem = $('<p class="no-resources">' + 'Xplore is not currently responding. Please try again later.'  + '</p>').appendTo(this.scrollElem);
-                    } else {
+                    } else if (!this.ctype == 'xplore') {
                         $('#num-' + this.ctype + '-results').text('0');
                         //$('#xplore-results-container .print-resource').remove();
                         this.noResultsElem = $('<p class="no-resources">No ' + this.ctype + ' Articles are currently tagged "' + htmlentities(data.search_term) + '"</p>').appendTo(this.scrollElem);

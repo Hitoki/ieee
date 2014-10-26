@@ -546,7 +546,9 @@ input#id_username, input#id_password, input#id_email {
 }
 
 .matching-filter {
-    margin-left: 10px;
+    font-weight: bold;
+    margin-top: 5px;
+    display: block;
 }
 
 .batch-editing-note {

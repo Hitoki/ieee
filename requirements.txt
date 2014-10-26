@@ -1,5 +1,5 @@
 BeautifulSoup==3.2.1
-Django==1.7
+Django==1.7.1
 PIL==1.1.7
 SPARQLWrapper==1.5.0
 django-debug-toolbar==1.2.1
@@ -17,3 +17,4 @@ lxml
 django-allauth
 unicodecsv
 raven>=4.1.1
+Fabric==1.4.1

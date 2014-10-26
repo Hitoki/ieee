@@ -24,6 +24,7 @@ class Migration(migrations.Migration):
                 ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
             ],
             options={
+                'db_table': 'ieeetags_userexternalfavorites',
             },
             bases=(models.Model,),
         ),
@@ -37,6 +38,7 @@ class Migration(migrations.Migration):
                 ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
             options={
+                'db_table': 'ieeetags_userfavorites',
             },
             bases=(models.Model,),
         ),
