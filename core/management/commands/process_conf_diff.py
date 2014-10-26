@@ -81,7 +81,7 @@ class Command(BaseCommand):
                     conf.keywords = row[9].replace('|', ',')
                     conf.priority_to_tag = str2bool(row[10].lower())
                     conf.completed = str2bool(row[11].lower())
-                    # conf.project_code = row[12]
+                    conf.conference_series = row[12]
                     conf.date = datetime.strptime(row[15], '%d-%b-%y')
                     conf.date_end = datetime.strptime(row[16], '%d-%b-%y')
                     conf.city = row[17]
