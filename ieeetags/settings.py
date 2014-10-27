@@ -48,6 +48,7 @@ USE_I18N = True
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = relpath(__file__, 'media')
+STATIC_ROOT = relpath(__file__, 'static')
 CACHED_MEDIA_ROOT = os.path.join(MEDIA_ROOT, 'caches')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
