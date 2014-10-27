@@ -164,12 +164,14 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.humanize',
     'django.contrib.sitemaps',
-    # 'django.contrib.staticfiles',
+    'django.contrib.staticfiles',
     # 'south',
     'webapp',
     'core',
     'site_admin',
+    'api',
     'noomake',
+    'rest_framework',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -178,7 +180,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.linkedin_oauth2',
 ]
 
-# STATIC_URL = '/static/'
+STATIC_URL = '/static/'
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`

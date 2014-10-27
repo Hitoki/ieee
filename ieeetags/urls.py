@@ -260,6 +260,8 @@ else:
             name='login_redirect'),
 
         url(r'^accounts/', include('allauth.urls')),
+
+        url(r'^api/', include('api.urls')),
     )
 
 if settings.DEBUG:

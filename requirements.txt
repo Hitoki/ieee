@@ -18,3 +18,5 @@ django-allauth
 unicodecsv
 raven>=4.1.1
 Fabric==1.4.1
+djangorestframework
+mysql-python
