@@ -374,7 +374,7 @@ def checkout_site():
     # run('cd "%(site_home)s/python" && source bin/activate && cd "%(site_home)s/python/releases/current/project/" && export PYTHONPATH=..:../../../lib/python2.7/site-packages/ && python "%(site_code)s/manage.py" syncdb --noinput && python manage.py migrate --fake ' % env)
 
     # Apply collectstatic.
-    run('cd "%(site_home)s/python" && source bin/activate && cd "%(site_home)s/python/releases/current/project/" && export PYTHONPATH=..:../../../lib/python2.7/site-packages/ && python "%(site_code)s/manage.py" collectstatic' % env)
+    run('cd "%(site_home)s/python" && source bin/activate && cd "%(site_home)s/python/releases/current/project/" && export PYTHONPATH=..:../../../lib/python2.7/site-packages/ && python "%(site_code)s/manage.py" collectstatic --noinput' % env)
 
     # Apply migrations.
     run('cd "%(site_home)s/python" && source bin/activate && cd "%(site_home)s/python/releases/current/project/" && export PYTHONPATH=..:../../../lib/python2.7/site-packages/ && python "%(site_code)s/manage.py" migrate --noinput' % env)
