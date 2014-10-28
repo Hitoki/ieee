@@ -14,4 +14,5 @@ urlpatterns = patterns(
     '',
 
     url(r'', include(router.urls)),
+    url(r'^docs/', include('rest_framework_swagger.urls')),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
