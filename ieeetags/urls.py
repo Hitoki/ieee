@@ -262,6 +262,7 @@ else:
         url(r'^accounts/', include('allauth.urls')),
 
         url(r'^api/', include('api.urls')),
+        url(r'^docs/', include('rest_framework_swagger.urls')),
     )
 
 if settings.DEBUG:

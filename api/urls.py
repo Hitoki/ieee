@@ -1,18 +1,24 @@
-from django.conf import settings
 from django.conf.urls import patterns, include, url
-from django.conf.urls.static import static
-from rest_framework import routers
-from api.views import ConferenceApplicationViewSet, TagKeywordViewSet
-
-
-router = routers.DefaultRouter()
-router.register(r'conference_applications', ConferenceApplicationViewSet)
-router.register(r'tag-keywords', TagKeywordViewSet)
+from api.views import ConferenceApplicationDetail, ConferenceApplicationList, \
+    TagKeywordList, TagKeywordDetail
 
 
 urlpatterns = patterns(
     '',
 
-    url(r'', include(router.urls)),
-    url(r'^docs/', include('rest_framework_swagger.urls')),
-) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    url(r'^conference-applications/?$',
+        ConferenceApplicationList.as_view(),
+        name='api-conference-applications'),
+
+    url(r'^conference-applications/(?P<pk>[\w-]+)/?$',
+        ConferenceApplicationDetail.as_view(),
+        name='api-conference-application'),
+
+    url(r'^tag-keywords/?$',
+        TagKeywordList.as_view(),
+        name='api-tag-keywords'),
+
+    url(r'^tag-keywords/(?P<pk>[\w-]+)/?$',
+        TagKeywordDetail.as_view(),
+        name='api-tag-keyword'),
+)
