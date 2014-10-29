@@ -12,6 +12,7 @@
             <a href="{% url 'debug_conf_app_create' %}">Create Random</a>
         </div>
         <div style="margin: 5px;">
+            <span class="keyword_name">{{ keyword_name }}</span>
             {% if keyword_name %}
                 <i>Filtered by:</i> <b>{{ keyword_name }}</b>: (<a href="{% url 'conference_applications' %}">clear filter</a>)
             {% else %}

@@ -1,8 +1,13 @@
 
 $(document).ready(function () {
+    var filter_keyword = $('.keyword_name').text();
+    var url = '/api/conference-applications/';
+    if (filter_keyword) {
+        url += filter_keyword;
+    }
     $.ajax({
         type: "GET",
-        url: '/api/conference-applications/',
+        url: url,
         success: function(data) {
             var $ul = $('.conf-list');
             for(var i = 0; i < data.length; i++) {
