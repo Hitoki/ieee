@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 from api.views import ConferenceApplicationDetail, ConferenceApplicationList, \
-    TagKeywordList, TagKeywordDetail, ConferenceApplicationFilteredList
+    TagKeywordList, TagKeywordDetail, ConferenceApplicationFilteredList, \
+    NodesSearchList
 
 
 urlpatterns = patterns(
@@ -25,4 +26,8 @@ urlpatterns = patterns(
     url(r'^tag-keyword/(?P<pk>[\w-]+)/?$',
         TagKeywordDetail.as_view(),
         name='api-tag-keyword'),
+
+    url(r'^nodes/search/?$',
+        NodesSearchList.as_view(),
+        name='nodes-search'),
 )

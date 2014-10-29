@@ -3,11 +3,12 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from api.serializers import ConferenceApplicationSerializer, \
-    TagKeywordSerializer
+    TagKeywordSerializer, NodeSerializer
 from webapp.models import ConferenceApplication, TagKeyword
+from webapp.views import get_nodes
 
 
-class ConferenceApplicationList(generics.ListCreateAPIView):
+class ConferenceApplicationList(generics.ListAPIView):
     queryset = ConferenceApplication.objects.all()
     serializer_class = ConferenceApplicationSerializer
 
@@ -31,7 +32,7 @@ class ConferenceApplicationDetail(generics.RetrieveAPIView):
     serializer_class = ConferenceApplicationSerializer
 
 
-class TagKeywordList(generics.ListCreateAPIView):
+class TagKeywordList(generics.ListAPIView):
     queryset = TagKeyword.objects.all()
     serializer_class = TagKeywordSerializer
 
@@ -39,3 +40,12 @@ class TagKeywordList(generics.ListCreateAPIView):
 class TagKeywordDetail(generics.RetrieveAPIView):
     queryset = TagKeyword.objects.all()
     serializer_class = TagKeywordSerializer
+
+
+class NodesSearchList(APIView):
+    def get(self, request, format=None):
+        if not 's' in request.GET or not len(request.GET['s'].strip()):
+            return Response({'error': 'no search term provided'})
+        nodes = get_nodes(request.GET['s'])
+        serializer = NodeSerializer(nodes, many=True)
+        return Response(serializer.data)
