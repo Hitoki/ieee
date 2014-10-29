@@ -24,7 +24,7 @@ class ConferenceApplication(models.Model):
 
 class TagKeyword(models.Model):
     name = models.CharField(max_length=500)
-    tag = models.ForeignKey(Node, null=True)
+    tag = models.ForeignKey(Node, null=True, blank=True)
 
     class Meta:
         app_label = 'webapp'
