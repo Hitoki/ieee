@@ -1,5 +1,9 @@
 {% extends "base_table.html" %}
 
+{% block extra_head %}
+    <script src="{{ MEDIA_URL }}js/other/conf_app.js"></script>
+{% endblock %}
+
 {% block main_table_content %}
     <div style="padding: 20px;">
         <div style="margin: 5px;">
@@ -14,18 +18,7 @@
                 <b>All conference applications</b>:
             {% endif %}
         </div>
-        <ul style="margin-left: 20px;">
-        {% for item in items %}
-            <li>{{ item.name }}
-                {% if item.keywords.all %}
-                    ({% for keyword in item.keywords.all %}
-                        <a {% if keyword.tag %}style="color: blue;"{% else %}{# ... #}{% endif %}  {# todo: make special css-class for this #}
-                           href="{% url 'debug_conf_apps_by_keyword' keyword.name %}">
-                            {{ keyword.name }}</a>{% if not forloop.last %},{% endif %}
-                    {% endfor %})
-                {% endif %}
-            </li>
-        {% endfor %}
+        <ul class="conf-list" style="margin-left: 20px;">
         </ul>
     </div>
 {% endblock %}

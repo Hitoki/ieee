@@ -6,6 +6,7 @@ class ConferenceApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = ConferenceApplication
         fields = ('id', 'name', 'keywords', )
+        depth = 1
 
 
 class TagKeywordSerializer(serializers.ModelSerializer):
