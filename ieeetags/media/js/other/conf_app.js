@@ -3,7 +3,7 @@ $(document).ready(function () {
     var filter_keyword = $('.keyword_name').text();
     var url = '/api/conference-applications/';
     if (filter_keyword) {
-        url += filter_keyword;
+        url += "filter/" + filter_keyword;
     }
     $.ajax({
         type: "GET",

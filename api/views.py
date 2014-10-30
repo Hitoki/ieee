@@ -9,11 +9,18 @@ from webapp.views import get_nodes
 
 
 class ConferenceApplicationList(generics.ListAPIView):
+    """
+    API endpoint that returns a list of all conference applications
+    """
     queryset = ConferenceApplication.objects.all()
     serializer_class = ConferenceApplicationSerializer
 
 
 class ConferenceApplicationFilteredList(APIView):
+    """
+    API endpoint that returns a list of conference applications filtered by \
+    tag keyword
+    """
     def get_objects(self, keyword_name):
         try:
             keyword = TagKeyword.objects.get(name=keyword_name)
@@ -28,21 +35,33 @@ class ConferenceApplicationFilteredList(APIView):
 
 
 class ConferenceApplicationDetail(generics.RetrieveAPIView):
+    """
+    API endpoint that returns details for one conference application
+    """
     queryset = ConferenceApplication.objects.all()
     serializer_class = ConferenceApplicationSerializer
 
 
 class TagKeywordList(generics.ListAPIView):
+    """
+    API endpoint that returns a list of all tag keywords
+    """
     queryset = TagKeyword.objects.all()
     serializer_class = TagKeywordSerializer
 
 
 class TagKeywordDetail(generics.RetrieveAPIView):
+    """
+    API endpoint that returns details for one tag keyword
+    """
     queryset = TagKeyword.objects.all()
     serializer_class = TagKeywordSerializer
 
 
 class NodesSearchList(APIView):
+    """
+    API endpoint that returns search results for the nodes
+    """
     def get(self, request, format=None):
         if not 's' in request.GET or not len(request.GET['s'].strip()):
             return Response({'error': 'no search term provided'})

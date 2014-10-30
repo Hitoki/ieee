@@ -11,11 +11,11 @@ urlpatterns = patterns(
         ConferenceApplicationList.as_view(),
         name='api-conference-applications'),
 
-    url(r'^conference-application/(?P<pk>[-\w]+)/?$',
+    url(r'^conference-applications/(?P<pk>[-\w]+)/?$',
         ConferenceApplicationDetail.as_view(),
         name='api-conference-application'),
 
-    url(r'^conference-applications/(?P<keyword_name>.+)/?$',
+    url(r'^conference-applications/filter/(?P<keyword_name>.+)/?$',
         ConferenceApplicationFilteredList.as_view(),
         name='api-conference-applications'),
 
@@ -23,7 +23,7 @@ urlpatterns = patterns(
         TagKeywordList.as_view(),
         name='api-tag-keywords'),
 
-    url(r'^tag-keyword/(?P<pk>[\w-]+)/?$',
+    url(r'^tag-keywords/(?P<pk>[\w-]+)/?$',
         TagKeywordDetail.as_view(),
         name='api-tag-keyword'),
 
