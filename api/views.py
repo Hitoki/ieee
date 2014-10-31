@@ -8,9 +8,9 @@ from webapp.models import ConferenceApplication, TagKeyword
 from webapp.views import get_nodes
 
 
-class ConferenceApplicationList(generics.ListAPIView):
+class ConferenceApplicationList(generics.ListCreateAPIView):
     """
-    API endpoint that returns a list of all conference applications
+    API endpoint to list or create conference applications
     """
     queryset = ConferenceApplication.objects.all()
     serializer_class = ConferenceApplicationSerializer
@@ -42,9 +42,9 @@ class ConferenceApplicationDetail(generics.RetrieveAPIView):
     serializer_class = ConferenceApplicationSerializer
 
 
-class TagKeywordList(generics.ListAPIView):
+class TagKeywordList(generics.ListCreateAPIView):
     """
-    API endpoint that returns a list of all tag keywords
+    API endpoint to list or create tag keywords
     """
     queryset = TagKeyword.objects.all()
     serializer_class = TagKeywordSerializer
