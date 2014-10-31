@@ -68,7 +68,7 @@
                         <br/>
                         {{ resources|length }} new
                         <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}&tab={{ resource_type }}-tab">
-                            {{ resource_type.grouper|title }}{% if resource_type.list|length > 1 %}s{% endif %}</a>:<br/>
+                            {{ resource_type.title }}{% if resource_type.list|length > 1 %}s{% endif %}</a>:<br/>
                             <div style="padding-left:15px">
                         {% for resource in resources %}
                             <br/>
@@ -80,10 +80,10 @@
                     {% for society in topic.new_societies %}
                         {% ifchanged %}
                         <br/>
-                        <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}&tab=society-tab">New Organization</a>:
+                        <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}&tab=society-tab">New Organization</a>:<br/>
                         {% endifchanged %}
                         <br/>
-                        {% if society.society.url %}<a href="{{ society.society.url }}">{{ society.society.name }}</a>{% else %}{{ society.society.name }}{% endif %}
+                        <div style="padding-left:15px">{% if society.society.url %}<a href="{{ society.society.url }}">{{ society.society.name }}</a>{% else %}{{ society.society.name }}{% endif %}</div>
                         <br/>
                     {% endfor %}
                     </div>
