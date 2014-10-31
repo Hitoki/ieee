@@ -68,7 +68,7 @@
                         <br/>
                         {{ resources|length }} new
                         <a href="http://{{ domain }}/textui/?autoload={{ topic.node.id }}&tab={{ resource_type }}-tab">
-                            {{ resource_type.name }}{% if resource_type.list|length > 1 %}s{% endif %}</a>:<br/>
+                            {{ resource_type.name }}{% if resources|length > 1 %}s{% endif %}</a>:<br/>
                             <div style="padding-left:15px">
                         {% for resource in resources %}
                             <br/>
