@@ -1,3 +1,5 @@
+import os
+import django
 from webapp.views.ajax import _render_textui_nodes
 import simplejson as json
 from webapp.models.node import Node
@@ -55,4 +57,7 @@ def insert_cache(sector, society, page):
 
 
 if __name__ == '__main__':
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ieeetags.settings')
+
+    django.setup()
     main()
