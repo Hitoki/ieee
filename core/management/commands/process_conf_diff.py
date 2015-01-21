@@ -41,6 +41,10 @@ class Command(BaseCommand):
             lineno = -1
             for row in csv_reader:
                 lineno += 1
+                # remove garbage and double quotes from first cell of first line
+                if lineno == 0:
+                    row[0] = row[0].strip('\xef\xbb\xbf"')
+
                 ieee_id = row[1]
                 logger.warn("Found ieee_id: %s" % ieee_id)
                 if row[0].startswith('conference') \
