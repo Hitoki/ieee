@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse_lazy
 
 from core.util import relpath
 
-RELEASE_VERSION = "1.31"
+RELEASE_VERSION = "1.34"
 
 DEBUG = False
 
