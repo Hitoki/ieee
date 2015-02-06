@@ -841,8 +841,8 @@ def ajax_nodes_json(request):
                                          'charset=utf8')
     nodes = get_nodes(request.GET['s'])
     json = serializers.serialize("json", nodes, ensure_ascii=False,
-                                 fields=('id', 'name'))
-    json = json.replace(', "model": "ieeetags.node"', '')
+                                 fields=('id','name'))
+    json = json.replace(', "model": "webapp.node"', '')
     return HttpResponse(json,
                         content_type='application/javascript; charset=utf8')
 

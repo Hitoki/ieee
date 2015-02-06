@@ -27,7 +27,7 @@ class Command(BaseCommand):
         # import ipdb; ipdb.set_trace()
 
         logger = logging.getLogger('process_conf_diff')
-        logger.info('Starting processing of file %s' % args[0])
+        logger.warn('Starting processing of file %s' % args[0])
 
         NEW_COUNT = 0
         NEW_MARKED_OLD_COUNT = 0
@@ -41,8 +41,12 @@ class Command(BaseCommand):
             lineno = -1
             for row in csv_reader:
                 lineno += 1
+                # remove garbage and double quotes from first cell of first line
+                if lineno == 0:
+                    row[0] = row[0].strip('\xef\xbb\xbf"')
+
                 ieee_id = row[1]
-                logger.info("Found ieee_id: %s" % ieee_id)
+                logger.warn("Found ieee_id: %s" % ieee_id)
                 if row[0].startswith('conference') \
                         or row[0].startswith('Updated'):
                     try:
@@ -99,7 +103,7 @@ class Command(BaseCommand):
                             resource_type=resource_type,
                         )
                         conf.delete()
-                        logger.info('Conference deleted.')
+                        logger.warn('Conference deleted.')
                         DELETED_COUNT += 1
                     except Resource.DoesNotExist:
                         DELETED_MISSING_COUNT += 1
@@ -108,13 +112,13 @@ class Command(BaseCommand):
                                 " 'conference, 'Updated', nor 'Deleted'. "
                                 "Rows starts with: %s" % row[0])
 
-            logger.info("Processing complete.")
-            logger.info("NEW COUNT: %d" % NEW_COUNT)
-            logger.info("NEW COUNT (MARKED UPDATED): %d" %
+            logger.warn("Processing complete.")
+            logger.warn("NEW COUNT: %d" % NEW_COUNT)
+            logger.warn("NEW COUNT (MARKED UPDATED): %d" %
                         NEW_MARKED_OLD_COUNT)
-            logger.info("UPDATED COUNT: %d" % UPDATED_COUNT)
-            logger.info("UPDATED COUNT (MARKED NEW): %d" %
+            logger.warn("UPDATED COUNT: %d" % UPDATED_COUNT)
+            logger.warn("UPDATED COUNT (MARKED NEW): %d" %
                         UPDATED_MARKED_NEW_COUNT)
-            logger.info("DELETED COUNT: %d" % DELETED_COUNT)
-            logger.info("DELETED COUNT (MISSING): %d" % DELETED_MISSING_COUNT)
-            logger.info("")
+            logger.warn("DELETED COUNT: %d" % DELETED_COUNT)
+            logger.warn("DELETED COUNT (MISSING): %d" % DELETED_MISSING_COUNT)
+            logger.warn("")

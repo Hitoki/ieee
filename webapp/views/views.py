@@ -430,11 +430,12 @@ def print_resource(request, tag_id, resource_type, node_slug='',
     jobs_html = ''
     tv_html = ''
     conf_count = 0
-    total_found = 0
     xplore_edu_results = None
-    totaledufound = 0
+    total_edu_found = 0
     xplore_results = None
+    total_xplore_found = 0
     xplore_authors = None
+    total_xplore_authors_found = 0
 
     resource_types = ['all', 'sectors', 'related_tags', 'societies',
                       'conferences', 'periodicals', 'standards', 'xplore_edu',
@@ -479,7 +480,7 @@ def print_resource(request, tag_id, resource_type, node_slug='',
                                         resourceType=ResourceType.STANDARD)
     if resource_type == 'xplore_edu' or resource_type == 'all':
         # Educational Courses:
-        xplore_edu_results, xplore_edu_error, total_found = \
+        xplore_edu_results, xplore_edu_error, total_edu_found = \
             _get_xplore_results(tag.name, False, ctype='Educational Courses')
         # Videos:
         tv_xml = get_tv_xml_tree(tag.name)
@@ -499,18 +500,29 @@ def print_resource(request, tag_id, resource_type, node_slug='',
         ebooks = \
             Resource.objects.getForNode(tag, resourceType=ResourceType.EBOOK)
     if resource_type == 'xplore' or resource_type == 'all':
-        xplore_results, xplore_error, total_found = \
+        xplore_results, xplore_error, total_xplore_found = \
             _get_xplore_results(tag.name, False)
 
     if resource_type == 'authors' or resource_type == 'all':
-        xplore_authors, xplore_error, total_found = ajax_xplore_authors(tag_id)
+        xplore_authors, xplore_error, total_xplore_authors_found = ajax_xplore_authors(tag_id)
 
     page_date = datetime.now()
 
     related_items_count = \
         sectors.count() + related_tags.count() + societies.count() + \
-        conf_count + periodicals.count() + standards.count() + totaledufound +\
-        total_found
+        conf_count + periodicals.count() + standards.count() +\
+        (total_edu_found
+         if isinstance(total_edu_found, int)
+         else 0
+        ) +\
+        (total_xplore_found
+         if isinstance(total_xplore_found, int)
+         else 0
+        ) +\
+        (total_xplore_authors_found
+         if isinstance(total_xplore_authors_found, int)
+         else 0
+        )
 
     if resource_type == 'jobs' or resource_type == 'all':
         jobs_html, jobs_count, jobs_url = get_jobs_info(tag)
