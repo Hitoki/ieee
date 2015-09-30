@@ -5,3 +5,4 @@ media/caches/*
 .sass-cache/*
 views/*.pyc
 log.txt
+.idea/
